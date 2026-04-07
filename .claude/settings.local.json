@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Fam/OneDrive/Desktop/**)",
+      "Read(//c/Users/Fam/**)",
+      "WebFetch(domain:api.openweathermap.org)"
+    ]
+  }
+}
