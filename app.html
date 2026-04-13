@@ -3631,12 +3631,55 @@ function fetchDay1Brief() {
 // ============================================
 function checkAndGenerateMorningBrief() {
   if (!isOnboarded()) return;
+  // First visit: show static welcome tutorial instead of AI brief
+  if (!localStorage.getItem(storageKey('ctb_morning_brief_seen'))) {
+    localStorage.setItem(storageKey('ctb_morning_brief_seen'), 'true');
+    var el = document.getElementById('morning-brief-container');
+    if (el) el.innerHTML = buildWelcomeBrief();
+    return;
+  }
   var today = getTodayStr();
   try {
     var existing = JSON.parse(localStorage.getItem(storageKey('ctb_morning_brief')));
     if (existing && existing._generatedDate === today && existing.text) { renderMorningBrief(); return; }
   } catch(e) {}
   generateMorningBrief();
+}
+
+function buildWelcomeBrief() {
+  var dateStr = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var days = calcDaysToElection();
+  var elDate = campaignData.electionDate ? new Date(campaignData.electionDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '';
+  var features = [
+    {icon:'\uD83D\uDCC5',name:'Calendar',desc:'Schedule events, track deadlines, and manage your campaign day by day.'},
+    {icon:'\uD83D\uDCB0',name:'Budget',desc:'Track spending, log contributions, and keep your finances organized.'},
+    {icon:'\uD83D\uDD0D',name:'Intel',desc:'Research your opponent, monitor your race, and stay ahead of local issues.'},
+    {icon:'\u2705',name:'Compliance',desc:'Stay on top of filing deadlines and legal requirements for your race.'},
+    {icon:'\uD83D\uDCDD',name:'Notes & Folders',desc:'Save speeches, talking points, and important campaign documents.'},
+    {icon:'\uD83C\uDFC6',name:'Endorsements',desc:'Track and manage who is supporting your campaign.'},
+    {icon:'\uD83E\uDDF0',name:'Toolbox',desc:'Access campaign services and resources to help you win.'}
+  ];
+  var rows = '';
+  features.forEach(function(f, i) {
+    rows += '<div style="display:flex;gap:10px;padding:8px 0' + (i < features.length-1 ? ';border-bottom:1px solid rgba(255,255,255,.05)' : '') + '">' +
+      '<div style="font-size:18px;width:28px;flex-shrink:0;text-align:center">' + f.icon + '</div>' +
+      '<div><div style="font-weight:700;color:var(--t1);font-size:13px">' + f.name + '</div>' +
+      '<div style="color:var(--t2);font-size:12px;line-height:1.5">' + f.desc + '</div></div></div>';
+  });
+  var daysLine = '';
+  if (days != null && elDate) {
+    daysLine = '<div style="font-size:13px;color:var(--t2);margin:12px 0 14px">You have <span style="color:var(--red);font-weight:700">' + days + '</span> days until your election on <span style="color:var(--gold)">' + elDate + '</span>.</div>';
+  }
+  return '<div class="mb-card">' +
+    '<div class="mb-hdr"><div class="mb-hdr-left"><div class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</div><div class="mb-hdr-date">' + dateStr + '</div></div></div>' +
+    '<div class="mb-text" style="font-size:14px;color:var(--t1);font-weight:600">Welcome to The Candidate\u2019s Toolbox \u2014 we\u2019re excited to help you win.</div>' +
+    daysLine +
+    '<div style="font-size:13px;color:var(--t2);margin-bottom:10px;font-weight:600">Here\u2019s what this platform can do for you:</div>' +
+    rows +
+    '<div style="margin-top:16px;font-size:12px;color:var(--t2);font-style:italic;line-height:1.6">As we get to know each other \u2014 as you update your calendar, add expenses, and tell Sam about your race \u2014 this morning brief will get smarter and more specific to your campaign every single day.</div>' +
+    '<div style="margin-top:8px;font-size:11px;color:var(--t3)">Sam \u00B7 Your Campaign Manager</div>' +
+    '<div style="margin-top:14px"><button class="btn-primary" style="width:100%;font-size:13px;padding:11px" onclick="sendSamChip(\'I just joined The Candidate\\\'s Toolbox. What should I do first?\')">Get Started \u2014 Ask Sam anything \u2192</button></div>' +
+    '</div>';
 }
 
 function generateMorningBrief() {
