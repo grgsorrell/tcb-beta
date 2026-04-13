@@ -1917,13 +1917,10 @@ function renderFinanceSetupContent(data) {
   var html = '';
   // Budget allocation bars
   if (data.budgetAllocation && data.budgetAllocation.length) {
-    html += '<div class="card" style="padding:16px;margin-bottom:12px"><div style="font-family:var(--font-d);font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px">Recommended Budget Allocation</div>';
+    html += '<div class="card" style="padding:16px;margin-bottom:12px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><div style="font-family:var(--font-d);font-size:14px;font-weight:700;color:var(--gold)">Recommended Budget Allocation</div><button onclick="openApplyAllocationsModal()" style="font-size:11px;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.3);color:var(--gold);padding:5px 12px;border-radius:6px;cursor:pointer;font-weight:600">&#10003; Apply to My Budget</button></div>';
     data.budgetAllocation.forEach(function(a) {
       html += '<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:3px"><span>' + escapeHtml(a.category||'') + '</span><span style="color:var(--t1);font-weight:600">' + (a.percentage||0) + '%</span></div><div class="pbar" style="height:6px"><div class="pfill" style="width:' + (a.percentage||0) + '%;background:var(--gold)"></div></div>' + (a.reasoning ? '<div style="font-size:10px;color:var(--t3);margin-top:2px">' + escapeHtml(a.reasoning) + '</div>' : '') + '</div>';
     });
-    if (campaignBudget.totalBudget > 0) {
-      html += '<button class="btn-primary" style="font-size:12px;margin-top:8px;width:100%" onclick="applyAllocations()">Apply to My $' + campaignBudget.totalBudget.toLocaleString() + ' Budget</button>';
-    }
     html += '</div>';
   }
   if (data.filingRequirements && data.filingRequirements.length) {
@@ -1943,20 +1940,97 @@ function renderFinanceSetupContent(data) {
   return html;
 }
 
-function applyAllocations() {
+function openApplyAllocationsModal() {
+  var total = campaignBudget.totalBudget || campaignBudget.total || 0;
+  if (!total) { alert('Set a total budget first on the Budget tab.'); return; }
+  var setup = null;
+  try { setup = JSON.parse(localStorage.getItem(storageKey('ctb_finance_setup'))); } catch(e) {}
+  if (!setup || !setup.budgetAllocation || !setup.budgetAllocation.length) { alert('No recommended allocations found. Wait for Sam to generate your finance setup.'); return; }
+  var allocs = setup.budgetAllocation.map(function(a){ return { category: a.category||'Other', percentage: a.percentage||0 }; });
+  var overlay = document.createElement('div');
+  overlay.id = 'alloc-modal-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  var modal = document.createElement('div');
+  modal.style.cssText = 'background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;width:380px;max-width:90vw;max-height:85vh;overflow-y:auto;';
+  modal.innerHTML = buildAllocModalHTML(allocs, total);
+  overlay.appendChild(modal);
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+function buildAllocModalHTML(allocs, total) {
+  var html = '<div style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--t1);margin-bottom:4px">Review & Adjust Allocations</div>';
+  html += '<div style="font-size:11px;color:var(--t3);margin-bottom:16px">Based on Sam\'s recommendations for your race. Adjust percentages as needed.</div>';
+  allocs.forEach(function(a, i) {
+    var dollars = Math.round(total * (a.percentage||0) / 100);
+    html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">';
+    html += '<div style="flex:1;font-size:12px;color:var(--t2)">' + escapeHtml(a.category) + '</div>';
+    html += '<input type="number" min="0" max="100" value="' + a.percentage + '" data-alloc-idx="' + i + '" onchange="updateAllocModal()" oninput="updateAllocModal()" style="width:48px;background:var(--n3);border:1px solid var(--br);border-radius:4px;color:var(--t1);padding:4px 6px;font-size:12px;text-align:right">';
+    html += '<div style="font-size:11px;color:var(--t3);width:70px;text-align:right" id="alloc-dollar-' + i + '">$' + dollars.toLocaleString() + '</div>';
+    html += '</div>';
+  });
+  var pctTotal = allocs.reduce(function(s,a){return s+(a.percentage||0);},0);
+  html += '<div style="border-top:1px solid var(--br);margin-top:12px;padding-top:10px;display:flex;justify-content:space-between;font-size:12px;font-weight:600">';
+  html += '<span style="color:var(--t2)">Total</span>';
+  html += '<span id="alloc-total-pct" style="color:' + (pctTotal===100?'var(--green)':'var(--red)') + '">' + pctTotal + '% / $' + total.toLocaleString() + '</span>';
+  html += '</div>';
+  if (pctTotal !== 100) html += '<div id="alloc-warning" style="font-size:11px;color:var(--red);margin-top:6px">\u26A0\uFE0F Allocations must total 100%</div>';
+  else html += '<div id="alloc-warning" style="font-size:11px;color:var(--red);margin-top:6px;display:none"></div>';
+  html += '<div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end">';
+  html += '<button onclick="document.getElementById(\'alloc-modal-overlay\').remove()" style="font-size:12px;background:transparent;border:1px solid var(--br);color:var(--t2);padding:8px 16px;border-radius:6px;cursor:pointer">Cancel</button>';
+  html += '<button id="alloc-apply-btn" onclick="confirmApplyAllocations()" style="font-size:12px;background:var(--gold);border:none;color:var(--n1);padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:700' + (pctTotal!==100?';opacity:.4;pointer-events:none':'') + '">Apply Allocations \u2192</button>';
+  html += '</div>';
+  return html;
+}
+
+function updateAllocModal() {
+  var total = campaignBudget.totalBudget || campaignBudget.total || 0;
+  var inputs = document.querySelectorAll('[data-alloc-idx]');
+  var pctTotal = 0;
+  inputs.forEach(function(inp) {
+    var i = parseInt(inp.getAttribute('data-alloc-idx'));
+    var pct = parseFloat(inp.value) || 0;
+    pctTotal += pct;
+    var dollarEl = document.getElementById('alloc-dollar-' + i);
+    if (dollarEl) dollarEl.textContent = '$' + Math.round(total * pct / 100).toLocaleString();
+  });
+  var totalEl = document.getElementById('alloc-total-pct');
+  if (totalEl) { totalEl.textContent = Math.round(pctTotal) + '% / $' + total.toLocaleString(); totalEl.style.color = pctTotal===100?'var(--green)':'var(--red)'; }
+  var warn = document.getElementById('alloc-warning');
+  if (warn) { if (pctTotal!==100) { warn.textContent = '\u26A0\uFE0F Allocations must total 100%'; warn.style.display = ''; } else { warn.style.display = 'none'; } }
+  var btn = document.getElementById('alloc-apply-btn');
+  if (btn) { if (pctTotal===100) { btn.style.opacity='1'; btn.style.pointerEvents='auto'; } else { btn.style.opacity='.4'; btn.style.pointerEvents='none'; } }
+}
+
+function confirmApplyAllocations() {
   try {
     var setup = JSON.parse(localStorage.getItem(storageKey('ctb_finance_setup')));
     if (!setup || !setup.budgetAllocation) return;
     var total = campaignBudget.totalBudget || campaignBudget.total || 0;
-    if (!total) { alert('Set a total budget first'); return; }
     var catMap = { 'Direct Mail':'mail', 'Digital Ads':'digital', 'Signs & Materials':'signs', 'Signs':'signs', 'Events':'events', 'Staffing':'staffing', 'Compliance/Legal':'compliance', 'Compliance':'compliance', 'Miscellaneous':'misc', 'Other':'misc' };
     if (!campaignBudget.categories) campaignBudget.categories = {};
-    setup.budgetAllocation.forEach(function(a) {
+    var inputs = document.querySelectorAll('[data-alloc-idx]');
+    inputs.forEach(function(inp) {
+      var i = parseInt(inp.getAttribute('data-alloc-idx'));
+      var pct = parseFloat(inp.value) || 0;
+      var a = setup.budgetAllocation[i];
+      if (!a) return;
       var key = catMap[a.category] || 'misc';
       if (!campaignBudget.categories[key]) campaignBudget.categories[key] = { allocated:0, label: a.category };
-      campaignBudget.categories[key].allocated = Math.round(total * (a.percentage||0) / 100);
+      campaignBudget.categories[key].allocated = Math.round(total * pct / 100);
     });
-    saveBudget(); alert('Allocations applied!'); renderBudgetView();
+    saveBudget();
+    var overlay = document.getElementById('alloc-modal-overlay');
+    if (overlay) overlay.remove();
+    budgetTab = 'budget';
+    renderBudgetView();
+    refreshDashboard();
+    // Show success toast
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--n3);border:1px solid rgba(130,179,134,.3);color:var(--green);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+    toast.textContent = '\u2705 Budget allocations applied';
+    document.body.appendChild(toast);
+    setTimeout(function(){ toast.remove(); }, 3000);
   } catch(e) { alert('Error applying allocations'); }
 }
 
