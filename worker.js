@@ -1083,7 +1083,7 @@ RULES:
       let campaignPhase = 'planning';
       if (electionDate && electionDate !== 'not set') {
         const election = new Date(electionDate);
-        daysUntilElection = Math.ceil((election - today) / (1000 * 60 * 60 * 24));
+        daysUntilElection = Math.ceil((election.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
         
         if (daysUntilElection <= 0) {
           campaignPhase = 'post-election';
@@ -1194,6 +1194,7 @@ WHAT YOU ALREADY KNOW — NEVER ASK FOR THIS INFORMATION AGAIN:
 - Party: ${party || 'not specified'}
 - Filed for office: ${filingStatus || 'unknown'}
 ${effectiveDaysToElection != null ? `- Campaign phase: ${campaignPhase}` : ''}
+- Campaign planning stage: ${effectiveDaysToElection != null && effectiveDaysToElection > 180 ? 'Early planning — candidate is preparing well in advance. Do not ask about filing status. Focus on preparation, research, and early strategy.' : 'Active campaign — election is within 6 months. Filing and compliance are relevant topics.'}
 
 CRITICAL: All of the above is already saved in the app. NEVER re-ask for any of it.
 If the candidate asks you a question, use this data to give specific, personalized answers.
@@ -1222,6 +1223,7 @@ You are chatting, not writing a report. Follow these rules EVERY response:
 10. When you use tools, DO NOT write any text before or between tool calls. If you need multiple searches, do them ALL first, then write ONE response with the final answer. Any text before or between tool calls is shown to the user as awkward narration.
 11. When you receive a tool_result, your next response is a BRAND NEW message. Start completely fresh \u2014 do NOT continue a sentence or thought from your previous response. The user cannot see your previous response text, so your new message must stand on its own.
 12. After adding items to the calendar, keep it simple: confirm what you added in one sentence, then ask what to work on next. Do NOT explain what you searched for or how you found the dates.
+13. If daysToElection is greater than 180, do NOT ask the candidate if they have filed for office. Assume they are in early planning mode and treat them accordingly. Only ask about filing status if daysToElection is 180 or less.
 
 ================================================================
 ** MANDATORY: EVERY RESPONSE MUST END WITH A QUESTION **
