@@ -86,6 +86,8 @@ select{-webkit-appearance:none;appearance:none;}
 /* BUTTONS */
 .btn-primary{background:var(--n5);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:700;font-family:var(--font-b);cursor:pointer;}
 .btn-primary:hover{background:#3366b3;}
+.ask-sam-btn{font-size:11px;background:rgba(107,156,216,.12);border:1px solid rgba(107,156,216,.25);color:var(--blue);padding:5px 12px;border-radius:20px;cursor:pointer;font-weight:600;font-family:var(--font-b);white-space:nowrap;}
+.ask-sam-btn:hover{background:rgba(107,156,216,.22);}
 .btn-ghost{background:rgba(255,255,255,.08);color:var(--t1);border:1px solid var(--br2);border-radius:9px;padding:9px 16px;font-size:13px;font-weight:600;font-family:var(--font-b);cursor:pointer;}
 .btn-ghost:hover{background:rgba(255,255,255,.12);}
 .btn-danger{background:rgba(232,112,112,.15);color:var(--red);border:1px solid rgba(232,112,112,.3);border-radius:9px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;}
@@ -597,6 +599,7 @@ select{-webkit-appearance:none;appearance:none;}
     <div class="oh" style="background:#1a0808;border-bottom:1px solid rgba(232,112,112,.22)">
       <span class="ot" style="color:var(--red)">&#127919; Opponent Intel</span>
       <div style="display:flex;align-items:center;gap:8px">
+        <button class="ask-sam-btn" onclick="askSamAbout('Walk me through my opponent intelligence. What are the most important things I should know about my race?');closeOverlay()">&#128161; Ask Sam</button>
         <button id="intel-refresh-btn" onclick="refreshIntelFromPanel()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);font-size:11px;border-radius:8px;padding:5px 10px;color:var(--t2);cursor:pointer;white-space:nowrap">&#128260; Check for Updates</button>
         <button onclick="closeOverlay()" style="color:var(--t2);font-size:18px">&times;</button>
       </div>
@@ -608,7 +611,7 @@ select{-webkit-appearance:none;appearance:none;}
   <div class="overlay-panel endorse-panel" id="overlay-endorsements">
     <div class="oh" style="background:#0d1a0d;border-bottom:1px solid rgba(130,179,134,.22)">
       <span class="ot" style="color:var(--green)">&#9989; Endorsements</span>
-      <button onclick="closeOverlay()" style="color:var(--t2);font-size:18px">&times;</button>
+      <div style="display:flex;align-items:center;gap:8px"><button class="ask-sam-btn" onclick="askSamAbout('Help me build an endorsement strategy. Who should I be targeting for endorsements at this stage of my campaign?');closeOverlay()">&#128161; Ask Sam</button><button onclick="closeOverlay()" style="color:var(--t2);font-size:18px">&times;</button></div>
     </div>
     <div class="ob2" id="endorsements-content"></div>
   </div>
@@ -629,7 +632,8 @@ select{-webkit-appearance:none;appearance:none;}
       </div>
       <div id="dash-populated" style="display:none">
         <div id="morning-brief-container"></div>
-        <div class="stat-grid" id="stat-grid" style="margin-top:16px"></div>
+        <div style="display:flex;align-items:center;justify-content:flex-end;margin-top:12px"><button class="ask-sam-btn" onclick="askSamAbout('Give me a strategic overview of where my campaign stands today and what I should be focusing on.')">&#128161; Ask Sam</button></div>
+        <div class="stat-grid" id="stat-grid" style="margin-top:8px"></div>
         <div id="dash-tasks-section" style="margin-top:20px">
           <div class="section-ttl" style="font-size:15px">Upcoming Tasks</div>
           <div id="dash-task-list"></div>
@@ -649,7 +653,7 @@ select{-webkit-appearance:none;appearance:none;}
                 <button class="cal-nav-btn" onclick="calNav(1)">&rsaquo;</button>
                 <button class="cal-today-btn" id="cal-today-btn" onclick="calGoToday()">Today</button>
               </div>
-              <button class="btn-primary" style="font-size:12px;padding:7px 15px" onclick="openAddEventModal()">+ Add Event</button>
+              <div style="display:flex;gap:8px;align-items:center"><button class="ask-sam-btn" onclick="askSamAbout('How should I be using my campaign calendar right now? What types of events should I be scheduling at this stage of my campaign?')">&#128161; Ask Sam</button><button class="btn-primary" style="font-size:12px;padding:7px 15px" onclick="openAddEventModal()">+ Add Event</button></div>
             </div>
             <div id="cal-grid-container"></div>
             <div class="cal-legend" id="cal-legend">
@@ -690,7 +694,7 @@ select{-webkit-appearance:none;appearance:none;}
     <div class="view" id="view-notes">
       <div class="view-row">
         <div style="font-family:var(--font-d);font-size:17px;font-weight:700;color:var(--t1)">All Notes</div>
-        <button class="btn-primary" style="font-size:12px;padding:7px 15px" onclick="createNewNote()">+ New Note</button>
+        <div style="display:flex;gap:8px;align-items:center"><button class="ask-sam-btn" onclick="askSamAbout('How should I be using notes and documents in my campaign? What should I be saving and organizing?')">&#128161; Ask Sam</button><button class="btn-primary" style="font-size:12px;padding:7px 15px" onclick="createNewNote()">+ New Note</button></div>
       </div>
       <div id="notes-list"></div>
     </div>
@@ -698,7 +702,7 @@ select{-webkit-appearance:none;appearance:none;}
     <!-- TOOLBOX VIEW -->
     <div class="view" id="view-toolbox">
       <div>
-        <div style="font-family:var(--font-d);font-size:22px;font-weight:700;color:var(--gold);margin-bottom:6px">&#129520; The Toolbox</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div style="font-family:var(--font-d);font-size:22px;font-weight:700;color:var(--gold)">&#129520; The Toolbox</div><button class="ask-sam-btn" onclick="askSamAbout('Which of these campaign services would be most valuable for my race right now?')">&#128161; Ask Sam</button></div>
         <div style="font-size:13px;color:var(--t3);margin-bottom:18px">Professional campaign services. Click any service to request a quote — we'll reach out within 24 hours.</div>
       </div>
       <div class="svc-grid" id="toolbox-grid"></div>
@@ -1803,13 +1807,16 @@ function renderBudgetView() {
     return;
   }
 
+  var budgetAskQ = 'Help me understand how to manage my campaign finances effectively. What should I be tracking and watching closely?';
+  if (budgetTab === 'finance') budgetAskQ = 'Based on my race, how should I structure my campaign budget? What are the most important spending priorities?';
+  else if (budgetTab === 'compliance') budgetAskQ = 'What compliance and filing requirements should I be prioritizing right now for my race?';
   el.innerHTML =
-    '<div class="bud-tabs">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><div class="bud-tabs" style="margin-bottom:0">' +
       '<button class="bud-tab' + (budgetTab==='budget'?' on':'') + '" onclick="budgetTab=\'budget\';renderBudgetView()">Budget</button>' +
       '<button class="bud-tab' + (budgetTab==='finance'?' on':'') + '" onclick="budgetTab=\'finance\';renderBudgetView()">Finance Setup</button>' +
       '<button class="bud-tab' + (budgetTab==='donations'?' on':'') + '" onclick="budgetTab=\'donations\';renderBudgetView()">Donations</button>' +
       '<button class="bud-tab' + (budgetTab==='compliance'?' on':'') + '" onclick="budgetTab=\'compliance\';renderBudgetView()">Compliance</button>' +
-    '</div>' +
+    '</div>' + askSamBtnHTML(budgetAskQ) + '</div>' +
     '<div id="budget-tab-content"></div>';
 
   var tc = document.getElementById('budget-tab-content');
@@ -3970,6 +3977,16 @@ function sendSamChip(text) {
   document.getElementById('sam-input').value = text;
   openSam();
   sendSamMessage();
+}
+
+function askSamAbout(question) {
+  var days = calcDaysToElection();
+  var ctx = ' (Context: ' + (days != null ? days + ' days to election, ' : '') + (campaignData.party||'') + ' candidate for ' + (campaignData.specificOffice||campaignData.officeType||'office') + ' in ' + (campaignData.state||'their state') + ')';
+  sendSamChip(question + ctx);
+}
+
+function askSamBtnHTML(question) {
+  return '<button class="ask-sam-btn" onclick="askSamAbout(\'' + question.replace(/'/g, "\\'") + '\')">&#128161; Ask Sam</button>';
 }
 
 // ============================================
