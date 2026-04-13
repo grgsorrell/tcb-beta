@@ -4280,6 +4280,7 @@ async function sendSamMessage() {
   if (!message) return;
   samProcessing = true;
   input.value = '';
+  input.placeholder = 'Ask Sam anything...';
 
   var msgsEl = document.getElementById('sam-messages');
 
