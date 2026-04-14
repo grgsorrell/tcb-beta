@@ -1448,7 +1448,7 @@ TOOLS AVAILABLE:
 - add_event: Add events (activities AT a specific time and place)
 - add_calendar_event: Add a calendar event with full details (name, date, time, location, category, notes). Use this for rich events.
 - set_budget: Initialize campaign budget (only when user states their amount)
-- add_expense: Track an expense (only when user explicitly logs one)
+- add_expense: Log a campaign expense. ALWAYS call this tool when the candidate asks to log, add, record, or track any expense or purchase. Never just say you logged it without calling the tool. Map categories: signs/yard signs/banners\u2192signs, Facebook/Google/digital ads\u2192digital, mailers/direct mail\u2192mail, TV/radio\u2192broadcast, polling/surveys\u2192polling, canvassing/doors\u2192fieldOps, legal/filing fees\u2192fundraisingCompliance, consultants\u2192consulting, staff/salaries\u2192staffing, events/rallies\u2192events, emergency\u2192reserveFund, other\u2192misc
 - save_to_notes: Save content (scripts, drafts, plans, research) to the user's folders/notes system for later reference
 - add_note: Quick-add a note with title, content, folder, and status
 - save_document: Save a written document (speech, talking points, email draft, press release, etc.) to the appropriate folder with "Ready" status
@@ -1481,7 +1481,8 @@ If the win number context already shows a number is set, reference it instead of
 
 TOOL RULES:
 - ONLY use calendar/budget tools when the user explicitly asks (EXCEPT PFS deadline during onboarding \u2014 add that automatically)
-- For set_budget and add_expense, only use when user gives specific numbers
+- For set_budget, only use when user gives a specific budget amount
+- For add_expense, ALWAYS call the tool when the user asks to log/add/record any expense. If the user says "I spent $500 on yard signs" you MUST call add_expense with amount=500, category=signs, description="Yard signs". Never pretend to log it without calling the tool
 - If the budget context already shows a budget is set, do NOT call set_budget again. Just reference the existing budget.
 - If they ask about budget strategy, discuss first, then offer to set it up
 - After adding anything, offer a relevant next step
@@ -1662,18 +1663,18 @@ REMEMBER: Today is ${currentDate}. Be concise. Be accurate. Never assume complia
         },
         {
           name: "add_expense",
-          description: "Track a campaign expense against the budget. ONLY use when user explicitly logs an expense.",
+          description: "Log a campaign expense to the budget tracker. Use this when the candidate asks you to add, log, record, or track an expense or purchase. Always use this tool — never just say you logged it without calling it.",
           input_schema: {
             type: "object",
             properties: {
               amount: {
                 type: "number",
-                description: "Expense amount in dollars"
+                description: "The expense amount in dollars"
               },
               category: {
                 type: "string",
-                enum: ["mail", "direct mail", "signs", "yard signs", "digital", "digital ads", "facebook", "social media", "field", "canvassing", "door knocking", "compliance", "admin", "reserve", "other"],
-                description: "Budget category"
+                enum: ["digital", "mail", "broadcast", "polling", "fieldOps", "fundraisingCompliance", "consulting", "reserveFund", "signs", "events", "staffing", "compliance", "misc"],
+                description: "Budget category key. Map: signs/yard signs/banners→signs, Facebook/Google/digital ads→digital, mailers/direct mail→mail, TV/radio→broadcast, polling/surveys/research→polling, canvassing/field staff/doors→fieldOps, legal/filing fees→fundraisingCompliance, consultants/strategy→consulting, staff/salaries/payroll→staffing, events/rallies/venues→events, emergency/contingency→reserveFund, anything else→misc"
               },
               description: {
                 type: "string",

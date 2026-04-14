@@ -2004,7 +2004,7 @@ function renderTabBudget(t) {
   var availPct = t.totalBudget > 0 ? Math.round((t.totalBudget - t.totalSpent) / t.totalBudget * 100) : 100;
 
   // All transactions mixed
-  var txns = (campaignBudget.expenses||[]).map(function(e){return {type:'expense',name:e.description||e.name||'Expense',amount:e.amount,date:e.date,category:e.category};})
+  var txns = (campaignBudget.expenses||[]).map(function(e){return {type:'expense',name:e.description||e.name||'Expense',amount:e.amount,date:e.date,category:e.category,categoryLabel:e.categoryLabel,addedBySam:e.addedBySam};})
     .concat(contributions.map(function(c){return {type:'contribution',name:c.donorName||'Contribution',amount:c.amount,date:c.date,source:c.source};}))
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
 
@@ -2023,7 +2023,8 @@ function renderTabBudget(t) {
       badge = '<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(130,179,134,.12);border:1px solid rgba(130,179,134,.25);color:var(--green);font-weight:700;letter-spacing:.05em;text-transform:uppercase">' + escapeHtml(a.source||'donation') + '</span>';
     }
     var datePill = '<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.04);color:var(--t3);font-weight:600;letter-spacing:.04em">' + formatDate(a.date||'') + '</span>';
-    return '<div class="exp-row"><div style="flex:1;min-width:0"><div class="exp-nm">' + escapeHtml(a.name) + '</div><div class="exp-meta">' + datePill + badge + '</div></div><div class="exp-amt" style="color:' + amtColor + '">' + sign + '$' + (a.amount||0).toLocaleString() + '.00</div></div>';
+    var samTag = a.addedBySam ? '<span style="font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(107,156,216,.1);border:1px solid rgba(107,156,216,.2);color:var(--blue);font-weight:600;letter-spacing:.04em">via Sam</span>' : '';
+    return '<div class="exp-row"><div style="flex:1;min-width:0"><div class="exp-nm">' + escapeHtml(a.name) + samTag + '</div><div class="exp-meta">' + datePill + badge + '</div></div><div class="exp-amt" style="color:' + amtColor + '">' + sign + '$' + (a.amount||0).toLocaleString() + '.00</div></div>';
   }).join('') : '<div style="padding:16px;color:var(--t3);font-size:13px;text-align:center">No transactions yet. Add an expense or log a contribution to get started.</div>';
 
   // Stat boxes row
@@ -4261,21 +4262,26 @@ function executeToolCall(block) {
   else if (name === 'add_expense') {
     var rawCat = inp.category || 'misc';
     var normalizedCat = CATEGORY_KEY_MAP[rawCat] || rawCat;
+    var catData = campaignBudget.categories && campaignBudget.categories[normalizedCat];
     var expense = {
+      id: Date.now(),
       description: inp.description || inp.name || 'Expense',
       amount: parseFloat(inp.amount) || 0,
       category: normalizedCat,
-      categoryLabel: (campaignBudget.categories && campaignBudget.categories[normalizedCat]) ? campaignBudget.categories[normalizedCat].label : rawCat,
-      date: inp.date || getTodayStr()
+      categoryLabel: catData ? catData.label : rawCat,
+      date: inp.date || getTodayStr(),
+      addedBySam: true
     };
     if (!campaignBudget.expenses) campaignBudget.expenses = [];
     campaignBudget.expenses.push(expense);
     saveBudget();
+    var catSpent = getSpentByCategory(normalizedCat);
+    var catAllocated = catData ? (catData.allocated || 0) : 0;
     var spent = campaignBudget.expenses.reduce(function(s,e){return s+(e.amount||0);},0);
     var remaining = campaignBudget.total - spent;
     if (currentView === 'budget') renderBudgetView();
     if (currentView === 'dashboard') refreshDashboard();
-    confirmMsg = '\u2705 Logged $' + expense.amount.toLocaleString() + ' for ' + expense.description + '. Budget remaining: $' + remaining.toLocaleString();
+    confirmMsg = '\u2705 Logged $' + expense.amount.toLocaleString() + ' for ' + expense.description + ' under ' + expense.categoryLabel + '.' + (catAllocated > 0 ? ' Category: $' + catSpent.toLocaleString() + ' of $' + catAllocated.toLocaleString() + ' used.' : '') + ' Budget remaining: $' + remaining.toLocaleString();
   }
   else if (name === 'add_note') {
     var folderName = inp.folder || 'Campaign Notes';
