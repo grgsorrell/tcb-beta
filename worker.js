@@ -1139,14 +1139,14 @@ RULES:
         }
         if (b.districtPartisanLean) lines.push(`District partisan lean: ${b.districtPartisanLean}.`);
         if (b.districtDescription) lines.push(`District description: ${b.districtDescription}.`);
-        if (b.countiesOrAreas && b.countiesOrAreas.length) lines.push(`Counties/areas: ${b.countiesOrAreas.join(', ')}.`);
-        if (b.recentElectionResults && b.recentElectionResults.length) lines.push(`Recent election results: ${b.recentElectionResults.join('; ')}.`);
-        if (b.keyLocalIssues && b.keyLocalIssues.length) lines.push(`Key local issues: ${b.keyLocalIssues.join('; ')}.`);
+        if (b.countiesOrAreas) lines.push(`Counties/areas: ${Array.isArray(b.countiesOrAreas) ? b.countiesOrAreas.join(', ') : b.countiesOrAreas}.`);
+        if (b.recentElectionResults && (Array.isArray(b.recentElectionResults) ? b.recentElectionResults.length : b.recentElectionResults)) lines.push(`Recent election results: ${Array.isArray(b.recentElectionResults) ? b.recentElectionResults.join('; ') : b.recentElectionResults}.`);
+        if (b.keyLocalIssues && (Array.isArray(b.keyLocalIssues) ? b.keyLocalIssues.length : b.keyLocalIssues)) lines.push(`Key local issues: ${Array.isArray(b.keyLocalIssues) ? b.keyLocalIssues.join('; ') : b.keyLocalIssues}.`);
         if (b.candidateBackground) lines.push(`Candidate background: ${b.candidateBackground}.`);
-        if (b.candidateKeyVotes && b.candidateKeyVotes.length) lines.push(`Key votes/positions: ${b.candidateKeyVotes.join('; ')}.`);
-        if (b.candidateCommittees && b.candidateCommittees.length) lines.push(`Committee assignments: ${b.candidateCommittees.join('; ')}.`);
-        if (b.campaignStrategicPriorities && b.campaignStrategicPriorities.length) lines.push(`Strategic priorities: ${b.campaignStrategicPriorities.join('; ')}.`);
-        if (b.remainingDeadlines && b.remainingDeadlines.length) lines.push(`Remaining deadlines: ${b.remainingDeadlines.join('; ')}.`);
+        if (b.candidateKeyVotes && (Array.isArray(b.candidateKeyVotes) ? b.candidateKeyVotes.length : b.candidateKeyVotes)) lines.push(`Key votes/positions: ${Array.isArray(b.candidateKeyVotes) ? b.candidateKeyVotes.join('; ') : b.candidateKeyVotes}.`);
+        if (b.candidateCommittees && (Array.isArray(b.candidateCommittees) ? b.candidateCommittees.length : b.candidateCommittees)) lines.push(`Committee assignments: ${Array.isArray(b.candidateCommittees) ? b.candidateCommittees.join('; ') : b.candidateCommittees}.`);
+        if (b.campaignStrategicPriorities && (Array.isArray(b.campaignStrategicPriorities) ? b.campaignStrategicPriorities.length : b.campaignStrategicPriorities)) lines.push(`Strategic priorities: ${Array.isArray(b.campaignStrategicPriorities) ? b.campaignStrategicPriorities.join('; ') : b.campaignStrategicPriorities}.`);
+        if (b.remainingDeadlines && (Array.isArray(b.remainingDeadlines) ? b.remainingDeadlines.length : b.remainingDeadlines)) lines.push(`Remaining deadlines: ${Array.isArray(b.remainingDeadlines) ? b.remainingDeadlines.join('; ') : b.remainingDeadlines}.`);
         if (b.intelligenceNotes) lines.push(`Additional intelligence: ${b.intelligenceNotes}.`);
         briefProse = lines.join('\n');
       } else if (candidateBrief && candidateBrief.raw) {

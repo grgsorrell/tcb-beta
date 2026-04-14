@@ -2747,7 +2747,7 @@ function renderIntelPanel() {
 
   var opp = brief.generalOpponent || {};
   var hasOpponent = opp.name && opp.name.trim();
-  var hasGoodData = hasOpponent && (opp.background || opp.knownPositions || (brief.keyLocalIssues && brief.keyLocalIssues.length > 2));
+  var hasGoodData = hasOpponent && (opp.background || opp.knownPositions || (Array.isArray(brief.keyLocalIssues) && brief.keyLocalIssues.length > 2));
 
   // Parse threat level from partisan lean
   var threatPct = 50, threatColor = 'var(--amber)', threatLabel = 'Threat Level: Unknown';
@@ -2837,15 +2837,17 @@ function renderDistrictCards(brief) {
       '<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--t3);margin-bottom:4px">District</div>' +
       '<div style="font-size:12px;color:var(--t2);line-height:1.5">' + escapeHtml(brief.districtDescription) + '</div></div>';
   }
-  if (brief.keyLocalIssues && brief.keyLocalIssues.length) {
+  if (brief.keyLocalIssues && (Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues.length : brief.keyLocalIssues)) {
+    var issuesArr = Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues : [brief.keyLocalIssues];
     html += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--br);border-radius:9px;padding:10px 12px;margin-bottom:8px">' +
       '<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Key Issues</div>' +
-      brief.keyLocalIssues.map(function(i){return '<div style="font-size:12px;color:var(--t2);padding:2px 0">\u2022 ' + escapeHtml(i) + '</div>';}).join('') + '</div>';
+      issuesArr.map(function(i){return '<div style="font-size:12px;color:var(--t2);padding:2px 0">\u2022 ' + escapeHtml(i) + '</div>';}).join('') + '</div>';
   }
-  if (brief.recentElectionResults && brief.recentElectionResults.length) {
+  if (brief.recentElectionResults && (Array.isArray(brief.recentElectionResults) ? brief.recentElectionResults.length : brief.recentElectionResults)) {
+    var resultsArr = Array.isArray(brief.recentElectionResults) ? brief.recentElectionResults : [brief.recentElectionResults];
     html += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--br);border-radius:9px;padding:10px 12px;margin-bottom:8px">' +
       '<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Recent Results</div>' +
-      brief.recentElectionResults.map(function(r){return '<div style="font-size:12px;color:var(--t2);padding:2px 0">' + escapeHtml(r) + '</div>';}).join('') + '</div>';
+      resultsArr.map(function(r){return '<div style="font-size:12px;color:var(--t2);padding:2px 0">' + escapeHtml(r) + '</div>';}).join('') + '</div>';
   }
   return html;
 }
@@ -2864,11 +2866,12 @@ function renderIntelLive(brief, opp) {
   if (brief.districtPartisanLean) {
     items.push({ cls: 'g', tag: '\u2705 District Advantage', txt: 'Your district leans ' + brief.districtPartisanLean + '. This structural advantage means strong turnout is your path to victory.' });
   }
-  if (brief.keyLocalIssues && brief.keyLocalIssues.length > 0) {
-    items.push({ cls: 'a', tag: '\u{1F7E1} Contrast Opportunity', txt: 'Top local issue: ' + brief.keyLocalIssues[0] + '. How you frame this issue vs. ' + opp.name + ' could define the race.' });
+  if (brief.keyLocalIssues && (Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues.length > 0 : brief.keyLocalIssues)) {
+    var topIssue = Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues[0] : brief.keyLocalIssues;
+    items.push({ cls: 'a', tag: '\u{1F7E1} Contrast Opportunity', txt: 'Top local issue: ' + topIssue + '. How you frame this issue vs. ' + opp.name + ' could define the race.' });
   }
-  if (brief.candidateKeyVotes && brief.candidateKeyVotes.length > 0) {
-    items.push({ cls: 'g', tag: '\u2705 Your Record', txt: brief.candidateKeyVotes[0] });
+  if (brief.candidateKeyVotes && (Array.isArray(brief.candidateKeyVotes) ? brief.candidateKeyVotes.length > 0 : brief.candidateKeyVotes)) {
+    items.push({ cls: 'g', tag: '\u2705 Your Record', txt: Array.isArray(brief.candidateKeyVotes) ? brief.candidateKeyVotes[0] : brief.candidateKeyVotes });
   }
   if (brief.intelligenceNotes) {
     items.push({ cls: 'r', tag: '\u{1F534} Intelligence', txt: brief.intelligenceNotes, canDraft: true, issue: 'this intelligence' });
@@ -2921,6 +2924,7 @@ function renderIntelContrast(brief, opp) {
     var partyLists = [['republicans','Republican'],['democrats','Democrat'],['others','Other']];
     partyLists.forEach(function(pl) {
       var names = pf[pl[0]];
+      if (names) { names = Array.isArray(names) ? names : [names]; }
       if (names && names.length) {
         html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--t3);margin:8px 0 4px">' + pl[1] + '</div>';
         names.forEach(function(n) { html += '<div style="font-size:12px;color:var(--t1);padding:3px 0">\u2022 ' + escapeHtml(n) + '</div>'; });
@@ -2930,17 +2934,18 @@ function renderIntelContrast(brief, opp) {
       html += '<div style="font-size:12px;color:var(--t3);font-style:italic">Ask Sam for details on your primary field.</div>';
     }
     // Strategic priorities
-    if (brief.campaignStrategicPriorities && brief.campaignStrategicPriorities.length) {
+    if (brief.campaignStrategicPriorities && (Array.isArray(brief.campaignStrategicPriorities) ? brief.campaignStrategicPriorities.length : brief.campaignStrategicPriorities)) {
+      var stratArr = Array.isArray(brief.campaignStrategicPriorities) ? brief.campaignStrategicPriorities : [brief.campaignStrategicPriorities];
       html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--gold);margin:14px 0 6px">Primary Strategy</div>';
-      brief.campaignStrategicPriorities.forEach(function(p) { html += '<div style="font-size:12px;color:var(--t2);padding:3px 0;border-bottom:1px solid var(--br)">' + escapeHtml(p) + '</div>'; });
+      stratArr.forEach(function(p) { html += '<div style="font-size:12px;color:var(--t2);padding:3px 0;border-bottom:1px solid var(--br)">' + escapeHtml(p) + '</div>'; });
     }
     html += '<div style="margin-top:12px"><button class="draft-btn" style="width:100%;text-align:center;padding:10px" onclick="sendSamChip(\'What is my strategy to win my primary?\');closeOverlay()">Ask Sam about my primary strategy \u2192</button></div>';
     return html;
   }
 
   // MODE 2 — General election contrast matrix
-  var issues = brief.keyLocalIssues || [];
-  var myPositions = brief.candidateKeyVotes || [];
+  var issues = Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues : (brief.keyLocalIssues ? [brief.keyLocalIssues] : []);
+  var myPositions = Array.isArray(brief.candidateKeyVotes) ? brief.candidateKeyVotes : (brief.candidateKeyVotes ? [brief.candidateKeyVotes] : []);
   var oppPositionsRaw = opp.knownPositions || '';
   var oppPositions = oppPositionsRaw ? oppPositionsRaw.split(/[,;.]/).map(function(s){return s.trim();}).filter(function(s){return s.length > 3;}) : [];
   var oppLabel = opp.name ? opp.name.split(' ').pop().toUpperCase() : 'OPPONENT';
