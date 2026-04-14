@@ -156,34 +156,34 @@ select{-webkit-appearance:none;appearance:none;}
 /* CALENDAR */
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .cal-nav-left{display:flex;align-items:center;gap:8px;}
-.cal-nav-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--br2);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--t2);cursor:pointer;transition:background .15s;}
-.cal-nav-btn:hover{background:rgba(255,255,255,.15);}
-.cal-month-lbl{font-family:var(--font-d);font-size:20px;font-weight:700;color:var(--t1);min-width:160px;text-align:center;}
-.cal-today-btn{font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;background:rgba(212,165,116,.12);border:1px solid rgba(212,165,116,.3);color:var(--gold);cursor:pointer;display:none;}
+.cal-nav-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--t2);cursor:pointer;transition:background .15s;}
+.cal-nav-btn:hover{background:rgba(255,255,255,.12);}
+.cal-month-lbl{font-family:var(--font-d);font-size:22px;font-weight:700;font-style:italic;color:var(--t1);min-width:160px;text-align:center;}
+.cal-today-btn{font-size:10px;font-weight:700;padding:5px 12px;border-radius:3px;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.35);color:var(--gold);cursor:pointer;display:none;letter-spacing:.08em;text-transform:uppercase;}
 .cal-today-btn.show{display:inline-block;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;width:100%;}
-.cal-dh{font-size:10px;color:var(--t3);padding:6px 0;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--br);margin-bottom:4px;}
-.cd{padding:6px 4px 5px;border-radius:8px;min-height:52px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:1px solid transparent;overflow:hidden;cursor:pointer;transition:all .15s ease;position:relative;}
-.cd:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.15);}
-.cd.faded{opacity:.25;pointer-events:none;}
-.cd.today{background:var(--n5);border-left:3px solid var(--gold);border-color:rgba(107,156,216,.3);border-left-color:var(--gold);}
-.cd.elday{background:rgba(232,112,112,.2);border:2px solid var(--red);animation:elday-pulse 2s ease-in-out infinite;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;width:100%;background:rgba(255,255,255,.03);}
+.cal-dh{font-size:9px;color:rgba(212,165,116,.6);padding:8px 0;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.15em;border-bottom:1px solid rgba(212,165,116,.12);margin-bottom:2px;}
+.cd{padding:6px 4px 5px;border-radius:2px;min-height:52px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:1px solid rgba(255,255,255,.03);overflow:hidden;cursor:pointer;transition:all .15s ease;position:relative;background:rgba(255,255,255,.01);}
+.cd:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);}
+.cd.faded{opacity:.2;pointer-events:none;}
+.cd.today{background:rgba(212,165,116,.06);border-left:3px solid var(--gold);border-color:rgba(212,165,116,.15);border-left-color:var(--gold);}
+.cd.elday{background:rgba(232,112,112,.12);border:1px solid rgba(232,112,112,.3);animation:elday-pulse 2s ease-in-out infinite;}
 @keyframes elday-pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,112,112,.4);}50%{box-shadow:0 0 0 8px rgba(232,112,112,0);}}
 .cdn{font-size:12px;font-weight:600;color:var(--t3);line-height:1;padding:0 2px;}
 .cd.today .cdn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--gold);color:#0B1120;font-weight:700;font-size:12px;padding:0;}
 .cd.elday .cdn{color:var(--red);font-weight:700;}
 .cd-elday-lbl{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);line-height:1;margin-top:1px;}
 .cd-dot{position:absolute;top:5px;right:5px;width:5px;height:5px;border-radius:50%;}
-.cev{font-size:8px;font-weight:600;padding:2px 4px;border-radius:3px;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;border-left:3px solid transparent;margin-top:1px;}
-.cev.compliance{background:rgba(232,112,112,.15);color:var(--red);border-left-color:var(--red);}
-.cev.outreach{background:rgba(107,156,216,.12);color:var(--blue);border-left-color:var(--blue);}
-.cev.fundraising{background:rgba(130,179,134,.12);color:var(--green);border-left-color:var(--green);}
-.cev.internal{background:rgba(212,165,116,.12);color:var(--amber);border-left-color:var(--amber);}
-.cev.uncategorized{background:rgba(255,255,255,.06);color:var(--t2);border-left-color:var(--t3);}
+.cev{font-size:8px;font-weight:600;padding:2px 4px;border-radius:2px;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;border-left:3px solid transparent;margin-top:1px;}
+.cev.compliance{background:rgba(232,112,112,.1);color:var(--red);border-left-color:var(--red);}
+.cev.outreach{background:rgba(107,156,216,.08);color:var(--blue);border-left-color:var(--blue);}
+.cev.fundraising{background:rgba(130,179,134,.08);color:var(--green);border-left-color:var(--green);}
+.cev.internal{background:rgba(212,165,116,.08);color:var(--amber);border-left-color:var(--amber);}
+.cev.uncategorized{background:rgba(255,255,255,.04);color:var(--t2);border-left-color:var(--t3);}
 .cmore{font-size:8px;color:var(--t3);width:100%;text-align:center;margin-top:1px;}
-.cal-legend{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;}
-.leg{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t3);padding:4px 10px;border-radius:20px;border:1px solid var(--br);cursor:pointer;transition:all .15s;}
-.leg:hover{border-color:var(--br2);background:rgba(255,255,255,.04);}
+.cal-legend{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(255,255,255,.4);padding:4px 10px;border-radius:2px;border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .15s;letter-spacing:.08em;text-transform:uppercase;font-weight:600;}
+.leg:hover{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.03);}
 .leg.filtered{opacity:.25;}
 .leg-dot{width:7px;height:7px;border-radius:50%;}
 
@@ -495,27 +495,27 @@ select{-webkit-appearance:none;appearance:none;}
 /* CALENDAR SIDEBAR */
 .cal-layout{display:flex;gap:0;min-height:0;}
 .cal-main{flex:1;min-width:0;}
-.cal-sidebar{width:240px;flex-shrink:0;background:var(--n2);border-left:1px solid var(--br);padding:16px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;}
-.csb-divider{height:1px;background:var(--br);margin:0 -4px;}
-.csb-clock-time{font-family:var(--font-d);font-size:42px;font-weight:700;color:var(--t1);line-height:1;}
-.csb-clock-ampm{font-size:14px;color:var(--t3);font-weight:400;margin-left:4px;vertical-align:top;}
-.csb-clock-date{font-size:11px;color:var(--t3);margin-top:4px;}
-.csb-wx-loc{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.cal-sidebar{width:260px;flex-shrink:0;background:linear-gradient(180deg,rgba(21,27,43,.8),rgba(13,19,34,.9));border-left:1px solid rgba(255,255,255,.04);padding:20px 16px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+.csb-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:0 -4px;}
+.csb-clock-time{font-family:var(--font-d);font-size:48px;font-weight:800;color:var(--t1);line-height:1;letter-spacing:-.02em;}
+.csb-clock-ampm{font-size:14px;color:rgba(255,255,255,.3);font-weight:400;margin-left:4px;vertical-align:top;}
+.csb-clock-date{font-size:10px;color:rgba(255,255,255,.3);margin-top:6px;text-transform:uppercase;letter-spacing:.12em;font-weight:600;}
+.csb-wx-loc{font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;font-weight:700;}
 .csb-wx-row{display:flex;align-items:center;gap:10px;}
-.csb-wx-temp{font-family:var(--font-d);font-size:36px;font-weight:700;color:var(--t1);line-height:1;}
+.csb-wx-temp{font-family:var(--font-d);font-size:36px;font-weight:800;color:var(--t1);line-height:1;}
 .csb-wx-deg{font-size:18px;color:var(--t3);}
 .csb-wx-icon{font-size:32px;line-height:1;}
 .csb-wx-cond{font-size:12px;color:var(--t2);margin-top:2px;}
 .csb-wx-fc{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;}
-.csb-wx-fc-item{background:rgba(255,255,255,.05);border:1px solid var(--br);border-radius:8px;padding:6px 4px;text-align:center;}
+.csb-wx-fc-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);border-radius:3px;padding:6px 4px;text-align:center;}
 .csb-wx-fc-lbl{font-size:10px;color:var(--t3);}
 .csb-wx-fc-tmp{font-size:12px;color:var(--t1);font-weight:600;margin-top:2px;}
 .csb-wx-hl{font-size:11px;color:var(--t3);margin-top:6px;}
-.csb-section-lbl{font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;}
-.csb-agenda-item{display:flex;align-items:center;gap:8px;padding:4px 6px;border-radius:6px;cursor:pointer;min-height:32px;transition:background .12s;}
-.csb-agenda-item:hover{background:rgba(255,255,255,.04);}
-.csb-agenda-bar{width:3px;height:20px;border-radius:2px;flex-shrink:0;}
-.csb-agenda-time{font-size:10px;color:var(--t3);font-weight:600;min-width:36px;flex-shrink:0;}
+.csb-section-lbl{font-size:9px;color:rgba(212,165,116,.6);font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;}
+.csb-agenda-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:3px;cursor:pointer;min-height:36px;transition:background .12s;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.03);margin-bottom:4px;}
+.csb-agenda-item:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.06);}
+.csb-agenda-bar{width:3px;height:24px;border-radius:1px;flex-shrink:0;}
+.csb-agenda-time{font-size:10px;color:rgba(255,255,255,.35);font-weight:700;min-width:36px;flex-shrink:0;letter-spacing:.04em;}
 .csb-agenda-name{font-size:12px;color:var(--t1);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
 /* CALENDAR POPOVER */
@@ -650,9 +650,10 @@ select{-webkit-appearance:none;appearance:none;}
 
     <!-- CALENDAR VIEW -->
     <div class="view" id="view-calendar">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:6px">STRATEGIC SCHEDULING</div>
       <div class="cal-layout">
         <div class="cal-main">
-          <div class="card" style="padding:18px 16px 14px">
+          <div style="background:linear-gradient(180deg,rgba(36,42,58,.4),rgba(21,27,43,.6));backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 1px 1px rgba(255,255,255,.05);border-radius:6px;padding:18px 16px 14px">
             <div class="cal-nav">
               <div class="cal-nav-left">
                 <button class="cal-nav-btn" onclick="calNav(-1)">&lsaquo;</button>
@@ -660,14 +661,14 @@ select{-webkit-appearance:none;appearance:none;}
                 <button class="cal-nav-btn" onclick="calNav(1)">&rsaquo;</button>
                 <button class="cal-today-btn" id="cal-today-btn" onclick="calGoToday()">Today</button>
               </div>
-              <div style="display:flex;gap:8px;align-items:center"><button class="ask-sam-btn" onclick="askSamAbout('How should I be using my campaign calendar right now? What types of events should I be scheduling at this stage of my campaign?')">&#128161; Ask Sam</button><button class="btn-primary" style="font-size:12px;padding:7px 15px" onclick="openAddEventModal()">+ Add Event</button></div>
+              <div style="display:flex;gap:8px;align-items:center"><button class="ask-sam-btn" onclick="askSamAbout('How should I be using my campaign calendar right now? What types of events should I be scheduling at this stage of my campaign?')">&#128161; Ask Sam</button><button class="btn-primary" style="font-size:11px;padding:7px 15px;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.35);color:var(--gold);font-weight:700;letter-spacing:.04em" onclick="openAddEventModal()">+ ADD OPERATION</button></div>
             </div>
             <div id="cal-grid-container"></div>
             <div class="cal-legend" id="cal-legend">
-              <div class="leg" data-cat="compliance" onclick="toggleCalFilter('compliance',this)"><div class="leg-dot" style="background:var(--red)"></div>Compliance</div>
-              <div class="leg" data-cat="outreach" onclick="toggleCalFilter('outreach',this)"><div class="leg-dot" style="background:var(--blue)"></div>Outreach</div>
+              <div class="leg" data-cat="compliance" onclick="toggleCalFilter('compliance',this)"><div class="leg-dot" style="background:var(--red)"></div>Logistical</div>
+              <div class="leg" data-cat="outreach" onclick="toggleCalFilter('outreach',this)"><div class="leg-dot" style="background:var(--blue)"></div>Tactical</div>
               <div class="leg" data-cat="fundraising" onclick="toggleCalFilter('fundraising',this)"><div class="leg-dot" style="background:var(--green)"></div>Fundraising</div>
-              <div class="leg" data-cat="internal" onclick="toggleCalFilter('internal',this)"><div class="leg-dot" style="background:var(--amber)"></div>Internal</div>
+              <div class="leg" data-cat="internal" onclick="toggleCalFilter('internal',this)"><div class="leg-dot" style="background:var(--amber)"></div>Strategic</div>
               <div class="leg" data-cat="uncategorized" onclick="toggleCalFilter('uncategorized',this)"><div class="leg-dot" style="background:var(--t3)"></div>Other</div>
             </div>
           </div>
@@ -677,12 +678,12 @@ select{-webkit-appearance:none;appearance:none;}
           </div>
         </div>
         <div class="cal-sidebar" id="cal-sidebar">
-          <div id="csb-clock"><div class="csb-clock-time" id="csb-clock-time"></div><div class="csb-clock-date" id="csb-clock-date"></div></div>
+          <div><div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:6px">SYSTEM TIME</div><div id="csb-clock"><div class="csb-clock-time" id="csb-clock-time"></div><div class="csb-clock-date" id="csb-clock-date"></div></div></div>
           <div class="csb-divider"></div>
-          <div id="csb-weather"><div style="font-size:11px;color:var(--t3);font-style:italic">Loading weather...</div></div>
+          <div><div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:6px">FIELD CONDITIONS</div><div id="csb-weather"><div style="font-size:11px;color:var(--t3);font-style:italic">Loading weather...</div></div></div>
           <div class="csb-divider"></div>
           <div>
-            <div class="csb-section-lbl">Today</div>
+            <div class="csb-section-lbl">Today's Agenda</div>
             <div id="csb-agenda"></div>
           </div>
         </div>
@@ -1271,7 +1272,7 @@ function renderCalendar() {
   ensureSampleEvents();
   hideCalPopover();
   var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  document.getElementById('cal-month-label').textContent = monthNames[calMonth] + ' ' + calYear;
+  document.getElementById('cal-month-label').textContent = 'Field Operations \u2014 ' + monthNames[calMonth] + ' ' + calYear;
 
   // Show/hide Today button
   var now = new Date();
