@@ -1479,10 +1479,15 @@ When the user asks about their win number, vote target, or how many votes they n
 
 If the win number context already shows a number is set, reference it instead of recalculating. If the user wants to recalculate with new data, go through the flow again.
 
+CRITICAL TOOL RULE: When you take ANY action (adding an event, logging an expense, creating a task, saving a note, adding an endorsement), you MUST use the appropriate tool. NEVER tell the candidate you did something without calling the tool first. The tool call is what actually makes it happen in the app. If you say "I've added that" without calling a tool, NOTHING actually happened.
+
 TOOL RULES:
 - ONLY use calendar/budget tools when the user explicitly asks (EXCEPT PFS deadline during onboarding \u2014 add that automatically)
 - For set_budget, only use when user gives a specific budget amount
 - For add_expense, ALWAYS call the tool when the user asks to log/add/record any expense. If the user says "I spent $500 on yard signs" you MUST call add_expense with amount=500, category=signs, description="Yard signs". Never pretend to log it without calling the tool
+- For log_contribution, ALWAYS call the tool when user reports receiving money/donations
+- For add_calendar_event/add_event/add_to_calendar, ALWAYS call when user asks to schedule or add something to their calendar
+- For add_endorsement, ALWAYS call when user tells you about an endorsement
 - If the budget context already shows a budget is set, do NOT call set_budget again. Just reference the existing budget.
 - If they ask about budget strategy, discuss first, then offer to set it up
 - After adding anything, offer a relevant next step
@@ -1826,13 +1831,14 @@ REMEMBER: Today is ${currentDate}. Be concise. Be accurate. Never assume complia
         },
         {
           name: "update_budget",
-          description: "Update the allocated amount for a specific budget category. Use when the user wants to change how much is allocated to a category (e.g., reduce yard signs from $40,000 to $20,000). This does NOT change the total budget, only how it is distributed across categories.",
+          description: "Update the allocated amount for a specific budget category. Use when the user wants to change how much is allocated to a category. This does NOT change the total budget, only how it is distributed across categories.",
           input_schema: {
             type: "object",
             properties: {
               category: {
                 type: "string",
-                description: "The budget category to update (e.g., 'yard signs', 'direct mail', 'digital ads', 'field', 'compliance', 'reserve')"
+                enum: ["digital", "mail", "broadcast", "polling", "fieldOps", "fundraisingCompliance", "consulting", "reserveFund", "signs", "events", "staffing", "compliance", "misc"],
+                description: "Budget category key to update"
               },
               new_amount: {
                 type: "number",
@@ -1982,7 +1988,7 @@ REMEMBER: Today is ${currentDate}. Be concise. Be accurate. Never assume complia
           input_schema: {
             type: "object",
             properties: {
-              category: { type: "string", enum: ["mail", "digital", "signs", "events", "staffing", "compliance", "misc"], description: "Category key" },
+              category: { type: "string", enum: ["digital", "mail", "broadcast", "polling", "fieldOps", "fundraisingCompliance", "consulting", "reserveFund", "signs", "events", "staffing", "compliance", "misc"], description: "Budget category key" },
               amount: { type: "number", description: "Dollar amount to allocate" }
             },
             required: ["category", "amount"]

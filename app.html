@@ -4484,7 +4484,13 @@ function executeToolCall(block) {
     } else { confirmMsg = 'Could not find event matching "' + (inp.event_name||'') + '"'; }
   }
   else if (name === 'update_budget') {
-    confirmMsg = '\u2705 Budget category updated';
+    var ubCat = CATEGORY_KEY_MAP[inp.category] || inp.category || 'misc';
+    if (!campaignBudget.categories) campaignBudget.categories = {};
+    if (!campaignBudget.categories[ubCat]) campaignBudget.categories[ubCat] = { allocated: 0, label: inp.category || ubCat };
+    campaignBudget.categories[ubCat].allocated = parseFloat(inp.new_amount)||0;
+    saveBudget();
+    if (currentView === 'budget') renderBudgetView();
+    confirmMsg = '\u2705 Updated ' + (campaignBudget.categories[ubCat].label||ubCat) + ' allocation to $' + (parseFloat(inp.new_amount)||0).toLocaleString() + '.';
   }
   else if (name === 'log_contribution') {
     var c = { id: Date.now(), donorName: inp.donorName||'Donor', amount: parseFloat(inp.amount)||0, source: inp.source||'individual', date: inp.date||getTodayStr(), paymentMethod: inp.paymentMethod||'', employer: inp.employer||'', occupation: inp.occupation||'', notes: inp.notes||'' };
@@ -4504,12 +4510,12 @@ function executeToolCall(block) {
   }
   else if (name === 'set_category_allocation') {
     if (!campaignBudget.categories) campaignBudget.categories = {};
-    var catKey = inp.category || 'misc';
-    if (!campaignBudget.categories[catKey]) campaignBudget.categories[catKey] = { allocated: 0, label: catKey };
-    campaignBudget.categories[catKey].allocated = parseFloat(inp.amount)||0;
+    var scaKey = CATEGORY_KEY_MAP[inp.category] || inp.category || 'misc';
+    if (!campaignBudget.categories[scaKey]) campaignBudget.categories[scaKey] = { allocated: 0, label: inp.category || scaKey };
+    campaignBudget.categories[scaKey].allocated = parseFloat(inp.amount)||0;
     saveBudget();
     if (currentView === 'budget') renderBudgetView();
-    confirmMsg = '\u2705 Allocated $' + (parseFloat(inp.amount)||0).toLocaleString() + ' to ' + (campaignBudget.categories[catKey].label||catKey) + '.';
+    confirmMsg = '\u2705 Allocated $' + (parseFloat(inp.amount)||0).toLocaleString() + ' to ' + (campaignBudget.categories[scaKey].label||scaKey) + '.';
   }
   else if (name === 'update_starting_amount') {
     campaignBudget.startingAmount = parseFloat(inp.amount)||0;
@@ -4668,6 +4674,28 @@ async function sendSamMessage() {
       campaignBudget.expenses.slice(-5).forEach(function(e){ additionalCtx += '- $' + (e.amount||0).toLocaleString() + ' ' + (e.description||e.category||'') + '\n'; });
     }
   } else { additionalCtx += 'BUDGET: Not set yet.\n'; }
+  // Budget category allocations
+  if (campaignBudget.categories) {
+    var catKeys = Object.keys(campaignBudget.categories);
+    var allocCats = catKeys.filter(function(k){ return campaignBudget.categories[k].allocated > 0; });
+    if (allocCats.length > 0) {
+      additionalCtx += 'BUDGET ALLOCATIONS:\n';
+      allocCats.forEach(function(k){
+        var c = campaignBudget.categories[k];
+        var catSpent = (campaignBudget.expenses||[]).filter(function(e){return e.category===k;}).reduce(function(s,e){return s+(e.amount||0);},0);
+        additionalCtx += '- ' + c.label + ': $' + c.allocated.toLocaleString() + ' allocated, $' + catSpent.toLocaleString() + ' spent\n';
+      });
+    }
+  }
+  // Endorsements
+  var endorsements = [];
+  try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
+  if (endorsements.length > 0) {
+    additionalCtx += 'ENDORSEMENTS (' + endorsements.length + '):\n';
+    endorsements.slice(0,10).forEach(function(e){ additionalCtx += '- ' + (e.name||'Unknown') + (e.title?' ('+e.title+')':'') + ' [' + (e.status||'Announced') + ']\n'; });
+  }
+  // Current view
+  additionalCtx += 'CURRENT VIEW: ' + (currentView||'dashboard') + '\n';
   // Notes/folders summary
   if (folders.length > 0) {
     additionalCtx += 'SAVED NOTES:\n';
