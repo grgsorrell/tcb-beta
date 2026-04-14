@@ -219,25 +219,25 @@ select{-webkit-appearance:none;appearance:none;}
 .cat-pill.sel.c-internal{border-color:rgba(212,165,116,.5);background:rgba(212,165,116,.15);color:var(--amber);}
 
 /* BUDGET */
-.bud-tabs{background:var(--n3);border:1px solid var(--br);border-radius:10px;padding:4px;display:flex;gap:3px;margin-bottom:16px;}
-.bud-tab{font-size:12px;font-weight:600;padding:7px 16px;border-radius:7px;border:none;background:transparent;color:var(--t3);cursor:pointer;flex:1;text-align:center;}
-.bud-tab:hover{background:rgba(255,255,255,.06);color:var(--t2);}
-.bud-tab.on{background:var(--n5);color:var(--t1);box-shadow:0 1px 4px rgba(0,0,0,.3);}
-.bud-alert{border-radius:10px;padding:10px 14px;font-size:12px;display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.bud-tabs{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.06);border-radius:0;padding:0;display:flex;gap:0;margin-bottom:20px;}
+.bud-tab{font-size:10px;font-weight:700;padding:10px 18px;border-radius:0;border:none;background:transparent;color:var(--t3);cursor:pointer;flex:none;text-align:center;letter-spacing:.12em;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .15s;}
+.bud-tab:hover{background:transparent;color:var(--t2);border-bottom-color:rgba(255,255,255,.15);}
+.bud-tab.on{background:transparent;color:var(--gold);box-shadow:none;border-bottom:2px solid var(--gold);}
+.bud-alert{border-radius:4px;padding:10px 14px;font-size:12px;display:flex;align-items:center;gap:8px;margin-bottom:14px;}
 .bud-alert.amber{background:rgba(212,165,116,.1);border:1px solid rgba(212,165,116,.25);color:var(--amber);}
 .bud-alert.red{background:rgba(232,112,112,.1);border:1px solid rgba(232,112,112,.25);color:var(--red);}
 .bud-alert.green{background:rgba(130,179,134,.1);border:1px solid rgba(130,179,134,.25);color:var(--green);}
 .bud-big-num{font-family:var(--font-d);font-size:36px;font-weight:700;line-height:1.1;}
-.bud-mini{background:rgba(255,255,255,.04);border-radius:9px;padding:10px 12px;text-align:center;}
-.bud-mini-val{font-family:var(--font-d);font-size:16px;font-weight:700;}
-.bud-mini-lbl{font-size:10px;color:var(--t3);margin-top:2px;}
-.edit-bud-btn{background:rgba(255,255,255,.07);border:1px solid var(--br2);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;}
-.edit-bud-btn:hover{background:rgba(255,255,255,.12);}
-.exp-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--br);}
+.bud-mini{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);border-radius:4px;padding:14px 12px;text-align:center;}
+.bud-mini-val{font-family:var(--font-d);font-size:18px;font-weight:800;}
+.bud-mini-lbl{font-size:9px;color:rgba(255,255,255,.35);margin-top:4px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;}
+.edit-bud-btn{background:rgba(212,165,116,.1);border:1px solid rgba(212,165,116,.25);border-radius:4px;padding:5px 12px;font-size:10px;font-weight:700;color:var(--gold);cursor:pointer;letter-spacing:.08em;text-transform:uppercase;}
+.edit-bud-btn:hover{background:rgba(212,165,116,.2);}
+.exp-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);}
 .exp-row:last-child{border-bottom:none;}
-.exp-nm{font-size:13px;font-weight:500;color:var(--t1);}
-.exp-meta{font-size:10px;color:var(--t3);margin-top:1px;}
-.exp-amt{font-family:var(--font-d);font-size:14px;font-weight:700;}
+.exp-nm{font-size:13px;font-weight:600;color:var(--t1);}
+.exp-meta{font-size:10px;color:var(--t3);margin-top:2px;display:flex;align-items:center;gap:6px;}
+.exp-amt{font-family:var(--font-d);font-size:15px;font-weight:700;letter-spacing:-.01em;}
 .bud-setup{background:linear-gradient(135deg,#1a2a1a,var(--n3));border:1px solid rgba(130,179,134,.25);border-radius:14px;padding:32px;text-align:center;}
 .bud-setup-ttl{font-family:var(--font-d);font-size:20px;font-weight:700;color:var(--t1);margin-bottom:8px;}
 .bud-setup-sub{font-size:13px;color:var(--t3);margin-bottom:24px;line-height:1.6;}
@@ -1866,8 +1866,12 @@ function renderBudgetView() {
   if (budgetTab === 'finance') budgetAskQ = 'Based on my race, how should I structure my campaign budget? What are the most important spending priorities?';
   else if (budgetTab === 'compliance') budgetAskQ = 'What compliance and filing requirements should I be prioritizing right now for my race?';
   el.innerHTML =
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><div class="bud-tabs" style="margin-bottom:0">' +
-      '<button class="bud-tab' + (budgetTab==='budget'?' on':'') + '" onclick="budgetTab=\'budget\';renderBudgetView()">Budget</button>' +
+    '<div style="margin-bottom:16px">' +
+      '<span class="mb-classified">CLASSIFIED // FINANCIAL EYES ONLY</span>' +
+      '<div style="font-family:var(--font-d);font-size:28px;font-weight:700;font-style:italic;color:var(--t1);margin-top:8px">The Tactical Ledger</div>' +
+    '</div>' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0"><div class="bud-tabs">' +
+      '<button class="bud-tab' + (budgetTab==='budget'?' on':'') + '" onclick="budgetTab=\'budget\';renderBudgetView()">Overview</button>' +
       '<button class="bud-tab' + (budgetTab==='finance'?' on':'') + '" onclick="budgetTab=\'finance\';renderBudgetView()">Finance Setup</button>' +
       '<button class="bud-tab' + (budgetTab==='donations'?' on':'') + '" onclick="budgetTab=\'donations\';renderBudgetView()">Donations</button>' +
       '<button class="bud-tab' + (budgetTab==='compliance'?' on':'') + '" onclick="budgetTab=\'compliance\';renderBudgetView()">Compliance</button>' +
@@ -1928,10 +1932,10 @@ function renderBudgetAllocations(t) {
   var cats = campaignBudget.categories || {};
   var totalBudget = t.totalBudget || 0;
   var totalAllocated = 0, totalSpentAll = 0;
-  var html = '<div style="margin-top:16px">' +
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
-    '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--t3)">Budget Allocations</div>' +
-    '<div style="font-size:11px;color:var(--blue);cursor:pointer" onclick="openApplyAllocationsModal()">Edit</div></div>';
+  var html = '<div style="background:linear-gradient(180deg,rgba(36,42,58,.3),rgba(21,27,43,.4));border-radius:6px;padding:16px;box-shadow:inset 0 1px 1px rgba(255,255,255,.03)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">' +
+    '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35)">Budget Allocations</div>' +
+    '<button class="edit-bud-btn" onclick="openApplyAllocationsModal()">Adjust Reserves</button></div>';
   var keys = Object.keys(cats);
   keys.forEach(function(k, idx) {
     var c = cats[k];
@@ -2018,26 +2022,30 @@ function renderTabBudget(t) {
     } else {
       badge = '<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(130,179,134,.12);border:1px solid rgba(130,179,134,.25);color:var(--green);font-weight:700;letter-spacing:.05em;text-transform:uppercase">' + escapeHtml(a.source||'donation') + '</span>';
     }
-    return '<div class="exp-row"><div><div class="exp-nm">' + escapeHtml(a.name) + '</div><div class="exp-meta">' + formatDate(a.date||'') + ' ' + badge + '</div></div><div class="exp-amt" style="color:' + amtColor + '">' + sign + '$' + (a.amount||0).toLocaleString() + '</div></div>';
+    var datePill = '<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.04);color:var(--t3);font-weight:600;letter-spacing:.04em">' + formatDate(a.date||'') + '</span>';
+    return '<div class="exp-row"><div style="flex:1;min-width:0"><div class="exp-nm">' + escapeHtml(a.name) + '</div><div class="exp-meta">' + datePill + badge + '</div></div><div class="exp-amt" style="color:' + amtColor + '">' + sign + '$' + (a.amount||0).toLocaleString() + '.00</div></div>';
   }).join('') : '<div style="padding:16px;color:var(--t3);font-size:13px;text-align:center">No transactions yet. Add an expense or log a contribution to get started.</div>';
 
-  return '<div class="card" style="text-align:center;padding:24px 20px 20px">' +
-    '<div style="font-family:var(--font-d);font-size:36px;font-weight:700;color:' + availColor + ';margin-bottom:4px">$' + (t.totalBudget > 0 ? (t.totalBudget - t.totalSpent) : t.available).toLocaleString() + '</div>' +
-    '<div style="font-size:12px;color:var(--t3);margin-bottom:16px">remaining of <strong style="color:var(--t1)">$' + t.totalBudget.toLocaleString() + '</strong> total budget</div>' +
-    '<div class="pbar" style="height:8px;margin:0 0 16px"><div class="pfill" style="width:' + Math.max(availPct,0) + '%;background:var(--gold)"></div></div>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">' +
-      '<div class="bud-mini"><div class="bud-mini-val" style="color:var(--t1)">$' + t.totalBudget.toLocaleString() + '</div><div class="bud-mini-lbl">Total</div></div>' +
-      '<div class="bud-mini"><div class="bud-mini-val" style="color:var(--red)">$' + t.totalSpent.toLocaleString() + '</div><div class="bud-mini-lbl">Spent</div></div>' +
-      '<div class="bud-mini"><div class="bud-mini-val" style="color:var(--green)">$' + (t.totalBudget - t.totalSpent).toLocaleString() + '</div><div class="bud-mini-lbl">Available</div></div>' +
-    '</div>' +
-    '<button class="edit-bud-btn" onclick="promptEditBudget()">&#9999;&#65039; Edit Budget</button>' +
-  '</div>' +
+  // Stat boxes row
+  var statsHtml = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">' +
+    '<div class="bud-mini"><div class="bud-mini-lbl">Total Reserve</div><div class="bud-mini-val" style="color:var(--t1);margin-top:6px">$' + t.totalBudget.toLocaleString() + '</div></div>' +
+    '<div class="bud-mini"><div class="bud-mini-lbl">Spent to Date</div><div class="bud-mini-val" style="color:var(--red);margin-top:6px">$' + t.totalSpent.toLocaleString() + '</div></div>' +
+    '<div class="bud-mini"><div class="bud-mini-lbl">Available Balance</div><div class="bud-mini-val" style="color:var(--green);margin-top:6px">$' + (t.totalBudget - t.totalSpent).toLocaleString() + '</div></div>' +
+  '</div>';
+  // Audit badge
+  var auditColor = t.totalSpent <= t.totalBudget ? 'var(--green)' : 'var(--red)';
+  var auditLabel = t.totalSpent <= t.totalBudget ? 'AUDIT STATUS: PASS' : 'AUDIT STATUS: OVER BUDGET';
+  var auditHtml = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">' +
+    '<span style="font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:3px;background:rgba(130,179,134,.12);border:1px solid rgba(130,179,134,.25);color:' + auditColor + '">' + auditLabel + '</span>' +
+    '<button class="edit-bud-btn" onclick="promptEditBudget()">Adjust Budget</button></div>';
+
+  return statsHtml + auditHtml +
   renderBudgetAllocations(t) +
-  '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">' +
-    '<div style="font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--t1)">Transactions</div>' +
-    '<div style="display:flex;gap:8px"><button class="btn-primary" style="font-size:11px;padding:6px 14px" onclick="promptAddExpense()">+ Expense</button><button class="btn-primary" style="font-size:11px;padding:6px 14px;background:var(--green);color:#0B1120" onclick="promptAddContribution()">+ Contribution</button></div>' +
+  '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;margin-bottom:12px">' +
+    '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">\uD83D\uDCCB</span><span style="font-family:var(--font-d);font-size:17px;font-weight:700;font-style:italic;color:var(--t1)">Recent Disbursements</span></div>' +
+    '<div style="display:flex;gap:8px"><button class="edit-bud-btn" onclick="promptAddExpense()">+ Expense</button><button class="edit-bud-btn" style="background:rgba(130,179,134,.1);border-color:rgba(130,179,134,.25);color:var(--green)" onclick="promptAddContribution()">+ Contribution</button></div>' +
   '</div>' +
-  '<div class="card" style="margin-top:10px">' + txnHtml + '</div>';
+  '<div style="background:linear-gradient(180deg,rgba(36,42,58,.3),rgba(21,27,43,.4));border-radius:6px;padding:4px 14px;box-shadow:inset 0 1px 1px rgba(255,255,255,.03)">' + txnHtml + '</div>';
 }
 
 // ============================================
