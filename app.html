@@ -4642,8 +4642,8 @@ async function sendSamMessage() {
   msgsEl.innerHTML += '<div class="sam-msg typing" id="sam-typing"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
   msgsEl.scrollTop = msgsEl.scrollHeight;
 
-  // Calculate daysToElection and budget info for the Worker
-  var daysToElection = campaignData.electionDate ? Math.ceil((new Date(campaignData.electionDate + 'T12:00:00') - new Date()) / (1000*60*60*24)) : null;
+  // Always calculate fresh — must match topbar's calcDaysToElection()
+  var daysToElection = calcDaysToElection();
   var spent = (campaignBudget.expenses||[]).reduce(function(s,e){return s+(e.amount||0);},0);
   var budgetRemaining = campaignBudget.total - spent;
 
