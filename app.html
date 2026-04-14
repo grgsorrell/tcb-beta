@@ -1956,29 +1956,32 @@ function renderBudgetAllocations(t) {
     // Category name
     var nameColor = hasAllocated ? 'var(--t1)' : 'var(--t3)';
     var nameHtml = isReserve ? '<span style="cursor:help" title="Held for unexpected expenses, opportunities, or emergencies during the campaign. Political campaigns often face surprise costs \u2014 having reserves prevents budget crises.">' + escapeHtml(c.label) + ' \u24D8</span>' : escapeHtml(c.label);
-    // Right side: spent of allocated
-    var rightLabel = '';
-    if (hasAllocated) rightLabel = '$' + spent.toLocaleString() + ' of $' + allocated.toLocaleString();
-    else if (hasSpent) rightLabel = '$' + spent.toLocaleString() + ' spent';
-    else rightLabel = 'No budget set';
-    // Budgeted label far right
-    var budgetedLabel = hasAllocated ? '<span style="color:var(--t3)">$' + allocated.toLocaleString() + ' budgeted</span>' : '<span style="color:rgba(255,255,255,.2);font-style:italic">Not budgeted</span>';
+    // Right side: spent of allocated — styled
+    var rightHtml = '';
+    if (hasAllocated) {
+      var spentColor = overBudget ? 'var(--red)' : (hasSpent ? 'var(--green)' : 'var(--t1)');
+      rightHtml = '<span style="font-weight:700;color:' + spentColor + '">$' + spent.toLocaleString() + '</span><span style="color:var(--t3);font-weight:400"> of $' + allocated.toLocaleString() + '</span>';
+    } else if (hasSpent) {
+      rightHtml = '<span style="font-weight:700;color:var(--red)">$' + spent.toLocaleString() + '</span><span style="color:var(--t3);font-weight:400"> spent</span>';
+    } else {
+      rightHtml = '<span style="color:rgba(255,255,255,.2);font-style:italic">No budget set</span>';
+    }
     // Context line below bar
     var subLine = '';
-    if (overBudget) subLine = '<span style="color:var(--red);font-weight:700">OVER BUDGET by $' + (spent - allocated).toLocaleString() + '</span>';
-    else if (!hasAllocated && hasSpent) subLine = '<span style="color:var(--red)">No budget set \u00B7 $' + spent.toLocaleString() + ' spent</span>';
-    else if (hasSpent && spent === allocated) subLine = '<span style="color:var(--gold)">Fully spent \u00B7 $0 remaining</span>';
-    else if (hasSpent) subLine = '$' + remaining.toLocaleString() + ' remaining \u00B7 ' + spentPctRaw.toFixed(1) + '% used';
-    else if (hasAllocated) subLine = '<span style="opacity:.5">$' + allocated.toLocaleString() + ' budgeted \u00B7 nothing spent yet</span>';
-    html += '<div style="padding:10px 0' + (idx < keys.length - 1 ? ';border-bottom:1px solid rgba(255,255,255,.04)' : '') + '">' +
+    if (overBudget) subLine = '<span style="color:var(--red);font-weight:700;font-style:normal">OVER BUDGET by $' + (spent - allocated).toLocaleString() + '</span>';
+    else if (!hasAllocated && hasSpent) subLine = '<span style="color:var(--red);font-style:normal">No budget set \u00B7 $' + spent.toLocaleString() + ' spent</span>';
+    else if (hasSpent && spent === allocated) subLine = '<span style="color:var(--gold);font-style:normal">Fully spent \u00B7 $0 remaining</span>';
+    else if (hasSpent) subLine = '<span style="color:rgba(255,255,255,.5);font-style:normal">$' + remaining.toLocaleString() + ' remaining \u00B7 ' + spentPctRaw.toFixed(1) + '% used</span>';
+    else if (hasAllocated) subLine = '<span style="color:rgba(255,255,255,.3);font-style:italic">$' + allocated.toLocaleString() + ' budgeted \u00B7 nothing spent yet</span>';
+    html += '<div style="padding:10px 0' + (idx < keys.length - 1 ? ';border-bottom:1px solid rgba(255,255,255,.05)' : '') + '">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">' +
-        '<div style="font-size:13px;color:' + nameColor + ';font-weight:500">' + nameHtml + '</div>' +
-        '<div style="font-size:11px;color:var(--t3)">' + rightLabel + '</div>' +
+        '<div style="font-size:13px;color:' + nameColor + ';font-weight:600">' + nameHtml + '</div>' +
+        '<div style="font-size:12px;font-weight:500;white-space:nowrap">' + rightHtml + '</div>' +
       '</div>' +
-      '<div style="height:6px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden">' +
+      '<div style="height:5px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:4px">' +
         (hasSpent ? '<div style="height:100%;width:' + spentPctBar + '%;background:' + fillColor + ';border-radius:3px;transition:width .3s"></div>' : '') +
       '</div>' +
-      (subLine ? '<div style="font-size:10px;color:var(--t3);margin-top:4px">' + subLine + '</div>' : '') +
+      (subLine ? '<div style="font-size:10px;letter-spacing:.02em">' + subLine + '</div>' : '') +
     '</div>';
   });
   // Summary row
