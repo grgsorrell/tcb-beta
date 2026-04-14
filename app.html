@@ -3287,7 +3287,8 @@ function renderEndorsementsOverlay() {
   html += '<div class="end-add-btn" onclick="addEndorsement()"><span style="font-size:16px">+</span> Add Endorsement</div>';
   endorsements.forEach(function(e) {
     var statusCls = e.status === 'Announced' ? 'sp-an' : e.status === 'Pending' ? 'sp-pe' : 'sp-pu';
-    html += '<div class="ecard"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="enm">' + escapeHtml(e.name||'') + '</div><div class="ett">' + escapeHtml(e.title||'') + '</div></div><span class="spill ' + statusCls + '">' + escapeHtml(e.status||'Pursuing') + '</span></div>' +
+    var samBadge = e.addedBySam ? '<span style="font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(107,156,216,.1);border:1px solid rgba(107,156,216,.2);color:var(--blue);font-weight:600;letter-spacing:.04em;margin-left:6px">via Sam</span>' : '';
+    html += '<div class="ecard"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="enm">' + escapeHtml(e.name||'') + samBadge + '</div><div class="ett">' + escapeHtml(e.title||'') + '</div></div><span class="spill ' + statusCls + '">' + escapeHtml(e.status||'Pursuing') + '</span></div>' +
       (e.notes ? '<div class="ent">' + escapeHtml(e.notes) + '</div>' : '') + '</div>';
   });
   document.getElementById('endorsements-content').innerHTML = html;
@@ -4349,17 +4350,34 @@ function executeToolCall(block) {
   else if (name === 'add_endorsement') {
     var endorsements = [];
     try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
-    endorsements.push({
+    var statusVal = inp.status || 'Pursuing';
+    // Normalize status to match render expectations
+    if (statusVal !== 'Announced' && statusVal !== 'Pending' && statusVal !== 'Pursuing') {
+      statusVal = statusVal.charAt(0).toUpperCase() + statusVal.slice(1).toLowerCase();
+      if (statusVal !== 'Announced' && statusVal !== 'Pending') statusVal = 'Pursuing';
+    }
+    var newEndorsement = {
       id: Date.now(),
       name: inp.name || 'Unknown',
       title: inp.title || '',
       notes: inp.notes || '',
-      status: inp.status === 'an' ? 'Announced' : inp.status === 'pe' ? 'Pending' : inp.status === 'pu' ? 'Pursuing' : inp.status || 'Pursuing'
-    });
+      status: statusVal,
+      date: getTodayStr(),
+      addedBySam: true
+    };
+    endorsements.push(newEndorsement);
     localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
+    console.log('add_endorsement handler fired', newEndorsement);
+    console.log('Endorsements after save:', endorsements);
+    // Always re-render if overlay is open
     if (currentOverlay === 'endorsements') renderEndorsementsOverlay();
-    var statusLabel = endorsements[endorsements.length-1].status;
-    confirmMsg = '\u2705 Added ' + inp.name + ' as ' + statusLabel + ' endorsement';
+    // Show success toast
+    var eToast = document.createElement('div');
+    eToast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--n3);border:1px solid rgba(130,179,134,.3);color:var(--green);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+    eToast.textContent = '\u2705 Endorsement added: ' + newEndorsement.name;
+    document.body.appendChild(eToast);
+    setTimeout(function(){ eToast.remove(); }, 3000);
+    confirmMsg = '\u2705 Added ' + inp.name + ' as ' + statusVal + ' endorsement';
   }
   else if (name === 'navigate_to') {
     var view = inp.view || 'dashboard';
