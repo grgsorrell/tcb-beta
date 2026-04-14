@@ -1781,16 +1781,49 @@ try { contributions = JSON.parse(localStorage.getItem(storageKey('ctb_contributi
 function saveContributions() { saveState(storageKey('ctb_contributions'), contributions); }
 
 // Migrate old budget format
+var DEFAULT_CATEGORIES = {
+  digital:{label:'Digital Advertising',allocated:0}, mail:{label:'Direct Mail',allocated:0},
+  broadcast:{label:'Broadcast Television',allocated:0}, polling:{label:'Polling & Research',allocated:0},
+  fieldOps:{label:'Field Operations & Grassroots',allocated:0}, fundraisingCompliance:{label:'Fundraising & Compliance',allocated:0},
+  consulting:{label:'Consulting & Production',allocated:0}, reserveFund:{label:'Reserve Fund',allocated:0},
+  signs:{label:'Signs & Materials',allocated:0}, events:{label:'Events',allocated:0},
+  staffing:{label:'Staffing',allocated:0}, compliance:{label:'Compliance/Legal',allocated:0}, misc:{label:'Miscellaneous',allocated:0}
+};
+var CATEGORY_KEY_MAP = {
+  'Digital Advertising':'digital','Digital Ads':'digital','Direct Mail':'mail',
+  'Broadcast Television':'broadcast','Polling & Research':'polling','Polling':'polling',
+  'Field Operations & Grassroots':'fieldOps','Field Operations':'fieldOps',
+  'Fundraising & Compliance':'fundraisingCompliance','Fundraising':'fundraisingCompliance',
+  'Consulting & Production':'consulting','Consulting':'consulting',
+  'Reserve Fund':'reserveFund','Reserve':'reserveFund',
+  'Signs & Materials':'signs','Signs':'signs','Events':'events','Staffing':'staffing',
+  'Compliance/Legal':'compliance','Compliance':'compliance','Miscellaneous':'misc','Other':'misc'
+};
 (function migrateBudget() {
   if (campaignBudget.total > 0 && !campaignBudget.startingAmount && campaignBudget.startingAmount !== 0) {
     campaignBudget.startingAmount = 0;
     campaignBudget.fundraisingGoal = 0;
     campaignBudget.totalBudget = campaignBudget.total;
-    if (!campaignBudget.categories || !campaignBudget.categories.mail) {
-      campaignBudget.categories = { mail:{allocated:0,label:'Direct Mail'}, digital:{allocated:0,label:'Digital Ads'}, signs:{allocated:0,label:'Signs & Materials'}, events:{allocated:0,label:'Events'}, staffing:{allocated:0,label:'Staffing'}, compliance:{allocated:0,label:'Compliance/Legal'}, misc:{allocated:0,label:'Miscellaneous'}, reserve:{allocated:0,label:'Reserve Fund'} };
-    }
-    saveBudget();
   }
+  // Migrate old keys (full names or old short keys) into normalized keys
+  var oldCats = campaignBudget.categories || {};
+  var merged = {};
+  // Start with defaults
+  Object.keys(DEFAULT_CATEGORIES).forEach(function(k) { merged[k] = { label: DEFAULT_CATEGORIES[k].label, allocated: 0 }; });
+  // Merge saved allocations
+  Object.keys(oldCats).forEach(function(k) {
+    var c = oldCats[k];
+    var normalKey = CATEGORY_KEY_MAP[k] || CATEGORY_KEY_MAP[c.label] || k;
+    if (merged[normalKey]) {
+      merged[normalKey].allocated = Math.max(merged[normalKey].allocated, c.allocated || 0);
+    } else if (DEFAULT_CATEGORIES[k]) {
+      merged[k] = { label: DEFAULT_CATEGORIES[k].label, allocated: c.allocated || 0 };
+    } else {
+      merged[normalKey] = { label: c.label || k, allocated: c.allocated || 0 };
+    }
+  });
+  campaignBudget.categories = merged;
+  saveBudget();
 })();
 
 function getBudgetTotals() {
@@ -1862,8 +1895,10 @@ function saveBudgetSetup() {
   if (!b && !g) { alert('Please enter at least a budget or fundraising goal'); return; }
   campaignBudget.startingAmount = s; campaignBudget.fundraisingGoal = g; campaignBudget.totalBudget = b; campaignBudget.total = b;
   if (!campaignBudget.expenses) campaignBudget.expenses = [];
-  if (!campaignBudget.categories || !campaignBudget.categories.mail) {
-    campaignBudget.categories = { mail:{allocated:0,label:'Direct Mail'}, digital:{allocated:0,label:'Digital Ads'}, signs:{allocated:0,label:'Signs & Materials'}, events:{allocated:0,label:'Events'}, staffing:{allocated:0,label:'Staffing'}, compliance:{allocated:0,label:'Compliance/Legal'}, misc:{allocated:0,label:'Miscellaneous'}, reserve:{allocated:0,label:'Reserve Fund'} };
+  if (!campaignBudget.categories || !campaignBudget.categories.digital) {
+    var cats = {};
+    Object.keys(DEFAULT_CATEGORIES).forEach(function(k){ cats[k] = { label: DEFAULT_CATEGORIES[k].label, allocated: 0 }; });
+    campaignBudget.categories = cats;
   }
   saveBudget(); renderBudgetView(); refreshDashboard();
 }
@@ -1872,16 +1907,12 @@ function saveBudgetSetup() {
 // TAB 1 — BUDGET (transactions view)
 // ============================================
 function getAllocBarColor(label) {
-  var m = {'Digital Ads':'var(--blue)','Digital Advertising':'var(--blue)','Direct Mail':'var(--gold)','Broadcast Television':'var(--purple)','Polling & Research':'var(--green)','Polling':'var(--green)','Field Operations':'var(--red)','Fundraising & Compliance':'#e8a87c','Fundraising':'#e8a87c','Consulting & Production':'var(--t3)','Consulting':'var(--t3)','Reserve Fund':'#82b3c8','Signs & Materials':'var(--amber)','Events':'var(--green)','Staffing':'var(--blue)','Compliance/Legal':'var(--red)','Miscellaneous':'var(--t3)'};
+  var m = {'Digital Ads':'var(--blue)','Digital Advertising':'var(--blue)','Direct Mail':'var(--gold)','Broadcast Television':'var(--purple)','Polling & Research':'var(--green)','Polling':'var(--green)','Field Operations':'var(--red)','Field Operations & Grassroots':'var(--red)','Fundraising & Compliance':'#e8a87c','Fundraising':'#e8a87c','Consulting & Production':'var(--t3)','Consulting':'var(--t3)','Reserve Fund':'#82b3c8','Signs & Materials':'var(--amber)','Events':'var(--green)','Staffing':'var(--blue)','Compliance/Legal':'var(--red)','Miscellaneous':'var(--t3)'};
   return m[label] || 'var(--blue)';
 }
 
 function renderBudgetAllocations(t) {
   var cats = campaignBudget.categories || {};
-  var hasAllocs = Object.keys(cats).some(function(k){ return cats[k].allocated > 0; });
-  if (!hasAllocs) {
-    return '<div style="margin-top:16px;padding:16px;font-size:12px;color:var(--t3);font-style:italic;text-align:center">No budget allocations set yet. Go to Finance Setup \u2192 Apply to My Budget</div>';
-  }
   var totalBudget = t.totalBudget || 1;
   var expenses = campaignBudget.expenses || [];
   var html = '<div style="margin-top:16px">' +
@@ -1891,21 +1922,21 @@ function renderBudgetAllocations(t) {
   var keys = Object.keys(cats);
   keys.forEach(function(k, idx) {
     var c = cats[k];
-    if (!c.allocated) return;
-    var pct = Math.round(c.allocated / totalBudget * 100);
+    if (!c) return;
+    var pct = totalBudget > 0 ? Math.round((c.allocated||0) / totalBudget * 100) : 0;
     var spent = expenses.filter(function(e){ return e.category === k || e.category === c.label; }).reduce(function(s,e){ return s + (e.amount||0); }, 0);
     var spentPct = c.allocated > 0 ? Math.min(Math.round(spent / c.allocated * 100), 100) : 0;
     var color = getAllocBarColor(c.label);
-    var isReserve = k === 'reserve';
+    var isReserve = k === 'reserveFund';
     var nameHtml = isReserve ? '<span style="position:relative;cursor:help" title="Held for unexpected expenses, opportunities, or emergencies during the campaign. Political campaigns often face surprise costs \u2014 having reserves prevents budget crises.">' + escapeHtml(c.label) + ' \u24D8</span>' : escapeHtml(c.label);
     html += '<div style="display:flex;align-items:center;gap:12px;padding:8px 0' + (idx < keys.length - 1 ? ';border-bottom:1px solid rgba(255,255,255,.04)' : '') + '">' +
-      '<div style="font-size:12px;color:var(--t2);width:140px;flex-shrink:0">' + nameHtml + '</div>' +
+      '<div style="font-size:12px;color:var(--t2);width:160px;flex-shrink:0">' + nameHtml + '</div>' +
       '<div style="flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.06);position:relative;overflow:hidden">' +
         '<div style="position:absolute;top:0;left:0;height:100%;width:' + pct + '%;background:' + color + ';border-radius:2px"></div>' +
         (spentPct > 0 ? '<div style="position:absolute;top:0;left:0;height:100%;width:' + Math.min(spentPct * pct / 100, pct) + '%;background:var(--red);opacity:.6;border-radius:2px"></div>' : '') +
       '</div>' +
       '<div style="font-size:11px;color:var(--t3);width:32px;text-align:right;flex-shrink:0">' + pct + '%</div>' +
-      '<div style="font-size:12px;font-weight:600;color:var(--t1);width:90px;text-align:right;flex-shrink:0">$' + c.allocated.toLocaleString() + '</div>' +
+      '<div style="font-size:12px;font-weight:600;color:var(--t1);width:90px;text-align:right;flex-shrink:0">$' + (c.allocated||0).toLocaleString() + '</div>' +
     '</div>';
   });
   html += '</div>';
@@ -2077,23 +2108,21 @@ function confirmApplyAllocations() {
   try {
     var setup = null;
     try { setup = JSON.parse(localStorage.getItem(storageKey('ctb_finance_setup'))); } catch(e) {}
-    var defaultAllocs = [
-      {category:'Direct Mail'},{category:'Digital Ads'},{category:'Signs & Materials'},
-      {category:'Events'},{category:'Staffing'},{category:'Compliance/Legal'},{category:'Miscellaneous'},{category:'Reserve Fund'}
-    ];
+    var defaultAllocs = Object.keys(DEFAULT_CATEGORIES).map(function(k){ return {category: DEFAULT_CATEGORIES[k].label}; });
     var sourceAllocs = (setup && setup.budgetAllocation && setup.budgetAllocation.length) ? setup.budgetAllocation : defaultAllocs;
     var total = campaignBudget.totalBudget || campaignBudget.total || 0;
-    var catMap = { 'Direct Mail':'mail', 'Digital Ads':'digital', 'Signs & Materials':'signs', 'Signs':'signs', 'Events':'events', 'Staffing':'staffing', 'Compliance/Legal':'compliance', 'Compliance':'compliance', 'Miscellaneous':'misc', 'Other':'misc', 'Reserve Fund':'reserve', 'Reserve':'reserve' };
-    if (!campaignBudget.categories) campaignBudget.categories = {};
+    // Reset all categories to 0 first
+    Object.keys(campaignBudget.categories).forEach(function(k){ campaignBudget.categories[k].allocated = 0; });
     var inputs = document.querySelectorAll('[data-alloc-idx]');
     inputs.forEach(function(inp) {
       var i = parseInt(inp.getAttribute('data-alloc-idx'));
       var pct = parseFloat(inp.value) || 0;
       var a = sourceAllocs[i];
       if (!a) return;
-      var key = catMap[a.category] || 'misc';
+      var key = CATEGORY_KEY_MAP[a.category] || 'misc';
       if (!campaignBudget.categories[key]) campaignBudget.categories[key] = { allocated:0, label: a.category };
       campaignBudget.categories[key].allocated = Math.round(total * pct / 100);
+      campaignBudget.categories[key].label = a.category;
     });
     saveBudget();
     var overlay = document.getElementById('alloc-modal-overlay');
