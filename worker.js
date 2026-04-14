@@ -1113,6 +1113,12 @@ RULES:
       const winNumberStr = (winNumber != null && winNumber > 0) ? Number(winNumber).toLocaleString() + ' votes' : 'not yet calculated';
       const effectiveDaysToElection = daysToElection != null ? daysToElection : daysUntilElection;
       const effectiveGovLevel = govLevel || officeType || 'unknown';
+      // Geographic scope for research
+      const statewideOffices = ['governor','lieutenant governor','attorney general','secretary of state','state treasurer','comptroller','us senator','u.s. senator','united states senator','state senator','state representative'];
+      const isStatewide = statewideOffices.some(o => (specificOffice || '').toLowerCase().includes(o)) || effectiveGovLevel === 'state';
+      const isFederal = effectiveGovLevel === 'federal' || (specificOffice || '').toLowerCase().includes('congress') || (specificOffice || '').toLowerCase().includes('representative');
+      const researchScope = isStatewide ? `statewide across ${state}` : isFederal ? `${location} congressional district in ${state}` : `${location}, ${state}`;
+      const scopeType = isStatewide ? 'statewide' : isFederal ? 'district' : 'local';
 
       // Convert candidate brief JSON into readable prose for the system prompt
       let briefProse = '';
@@ -1195,6 +1201,7 @@ WHAT YOU ALREADY KNOW — NEVER ASK FOR THIS INFORMATION AGAIN:
 - Filed for office: ${filingStatus || 'unknown'}
 ${effectiveDaysToElection != null ? `- Campaign phase: ${campaignPhase}` : ''}
 - Campaign planning stage: ${effectiveDaysToElection != null && effectiveDaysToElection > 180 ? 'Early planning — candidate is preparing well in advance. Do not ask about filing status. Focus on preparation, research, and early strategy.' : 'Active campaign — election is within 6 months. Filing and compliance are relevant topics.'}
+- GEOGRAPHIC SCOPE: This candidate is running for ${specificOffice || 'office'} which is a ${scopeType} race. When researching news, issues, or voter data — always scope to: ${researchScope}. ${isStatewide || isFederal ? 'NEVER limit research to just the candidate\'s home city of ' + location + '. For this race, research the ' + (isStatewide ? 'entire state of ' + state : 'full congressional district') + '.' : 'Focus on ' + location + ' and surrounding area.'}
 
 CRITICAL: All of the above is already saved in the app. NEVER re-ask for any of it.
 If the candidate asks you a question, use this data to give specific, personalized answers.

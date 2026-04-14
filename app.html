@@ -3706,8 +3706,9 @@ function fetchDay1Brief() {
   } catch(e) {}
 
   var loc = campaignData.city || campaignData.location || '';
-  var prompt = 'You are a political research analyst. Search for current local issues and voter concerns in ' + loc + ', ' + (campaignData.state||'') + ' for a ' + (campaignData.party||'') + ' candidate running for ' + (campaignData.specificOffice||'') + '.\n\n' +
-    'Search for: local news headlines, infrastructure issues, economic concerns, public safety, education, local government controversies, quality of life complaints.\n\n' +
+  var scope = getIntelScope();
+  var prompt = 'You are a political research analyst. Search for current issues and voter concerns affecting ' + scope.descriptor + ' for a ' + (campaignData.party||'') + ' candidate running for ' + (campaignData.specificOffice||'') + '.\n\n' +
+    (scope.isStatewide ? 'This is a statewide race — research the ENTIRE STATE of ' + (campaignData.state||'') + ', not just ' + loc + '. Focus on: statewide political news, issues affecting voters across the state, other candidates in the race, state legislature or policy developments.\n\n' : 'Search for: local news headlines, infrastructure issues, economic concerns, public safety, education, local government controversies, quality of life complaints.\n\n') +
     'Return ONLY a JSON object:\n{\n  "districtPainPoints": [{"issue":"...","detail":"...","politicalAngle":"...","urgency":"high/medium/low"}],\n  "localSentiment": "1-2 sentence summary",\n  "topIssue": "single most important issue",\n  "campaignOpportunities": ["...","...","..."],\n  "firstMoves": ["specific action 1","specific action 2","specific action 3"]\n}';
 
   fetch(WORKER_URL, {
@@ -3776,12 +3777,13 @@ function generateMorningBrief() {
   var evtList = todayEvents.length > 0 ? todayEvents.map(function(e){return (e.time?formatTime12(e.time)+' ':'')+(e.name||'');}).join(', ') : 'nothing scheduled';
   var loc = campaignData.city || campaignData.location || '';
   var fullDate = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var mbScope = getIntelScope();
 
-  var prompt = 'You are Sam, a campaign manager writing a morning briefing paragraph for ' + (campaignData.candidateName||'the candidate') + ', a ' + (campaignData.party||'') + ' candidate running for ' + (campaignData.specificOffice||'office') + ' in ' + loc + ', ' + (campaignData.state||'') + '. Today is ' + fullDate + '. There are ' + (days||'?') + ' days until election day on ' + (campaignData.electionDate||'TBD') + '.\n\n' +
+  var prompt = 'You are Sam, a campaign manager writing a morning briefing paragraph for ' + (campaignData.candidateName||'the candidate') + ', a ' + (campaignData.party||'') + ' candidate running for ' + (campaignData.specificOffice||'office') + ' ' + mbScope.descriptor + '. Today is ' + fullDate + '. There are ' + (days||'?') + ' days until election day on ' + (campaignData.electionDate||'TBD') + '.\n\n' +
     'Write ONE short paragraph (5-7 sentences max) that:\n' +
     '1. Opens with: "Good morning, ' + firstName + '. You have ' + (days||'?') + ' days until election day."\n' +
     '2. Lists what they have scheduled today. Today\'s events: ' + evtList + '. If nothing is scheduled, say so briefly and suggest they ask Sam to plan their day.\n' +
-    '3. Includes a brief local news summary \u2014 search for 2-3 relevant news items from the past 48 hours related to ' + loc + ', ' + (campaignData.state||'') + ', ' + (campaignData.specificOffice||'') + ' level politics, or issues relevant to a ' + (campaignData.party||'') + ' candidate in this race. Mention them naturally in one or two sentences. Keep it hyper-local and relevant.\n\n' +
+    '3. Includes a brief news summary \u2014 search for 2-3 relevant news items from the past 48 hours related to ' + mbScope.descriptor + ', ' + (campaignData.specificOffice||'') + ' level politics, or issues relevant to a ' + (campaignData.party||'') + ' candidate in this race. Mention them naturally in one or two sentences.' + (mbScope.isStatewide ? ' This is a statewide race \u2014 focus on statewide news and issues, NOT just ' + loc + '.' : ' Keep it hyper-local and relevant.') + '\n\n' +
     'Write in a warm, direct, professional tone. Like a trusted chief of staff texting the candidate before they start their day. No bullet points, no headers, no markdown, no JSON. Just a clean paragraph. Return plain text only.';
 
   fetch(WORKER_URL, {
