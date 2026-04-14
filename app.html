@@ -22,7 +22,7 @@
   --font-b:"DM Sans",system-ui,sans-serif;
 }
 html,body{height:100%;overflow:hidden;}
-body{font-family:var(--font-b);background:var(--n1);color:var(--t1);display:flex;flex-direction:column;}
+body{font-family:var(--font-b);background:var(--n1);color:var(--t1);display:flex;flex-direction:column;background-image:radial-gradient(ellipse at 20% 50%,rgba(42,82,152,.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(212,165,116,.02) 0%,transparent 50%);}
 a{color:var(--blue);text-decoration:none;}
 button{cursor:pointer;font-family:var(--font-b);border:none;background:none;color:inherit;}
 input,textarea,select{font-family:var(--font-b);color:var(--t1);background:var(--n4);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:10px 13px;font-size:14px;width:100%;outline:none;}
@@ -33,16 +33,16 @@ select{-webkit-appearance:none;appearance:none;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
 
 /* TOPBAR */
-.topbar{background:var(--n2);border-bottom:1px solid var(--br);padding:0 16px;height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;z-index:100;}
+.topbar{background:rgba(8,14,26,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);padding:0 16px;height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;z-index:100;}
 .tb-logo-row{display:flex;align-items:center;gap:10px;}
 .tb-logo-box{width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0;}
 .tb-logo-box img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
 .tb-brand{font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--t1);white-space:nowrap;}
 .tb-brand span{color:var(--gold);}
-.cd-pill{background:rgba(232,112,112,.12);border:1px solid rgba(232,112,112,.35);border-radius:20px;padding:5px 13px;display:flex;align-items:center;gap:8px;}
-.cd-num{font-family:var(--font-d);font-size:22px;font-weight:700;color:var(--red);line-height:1;}
-.cd-sub{font-size:8px;color:var(--red);text-transform:uppercase;letter-spacing:.08em;font-weight:600;line-height:1.5;}
-.phase-pill{background:rgba(232,112,112,.1);border:1px solid rgba(232,112,112,.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--red);white-space:nowrap;position:relative;cursor:default;}
+.cd-pill{background:rgba(232,112,112,.15);border:1px solid rgba(232,112,112,.4);border-radius:20px;padding:5px 13px;display:flex;align-items:center;gap:8px;}
+.cd-num{font-family:var(--font-d);font-size:18px;font-weight:800;color:var(--red);line-height:1;}
+.cd-sub{font-size:8px;color:var(--red);text-transform:uppercase;letter-spacing:.1em;font-weight:600;line-height:1.5;}
+.phase-pill{background:rgba(212,165,116,.12);border:1px solid rgba(212,165,116,.3);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--gold);white-space:nowrap;position:relative;cursor:default;}
 .phase-tip{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#111827;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 14px;width:220px;max-width:220px;white-space:normal;word-wrap:break-word;overflow:hidden;font-size:12px;color:var(--t1);line-height:1.55;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:1000;pointer-events:none;opacity:0;transition:opacity .15s;}
 .phase-tip::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid rgba(255,255,255,.12);}
 .phase-tip::after{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #111827;}
@@ -56,18 +56,19 @@ select{-webkit-appearance:none;appearance:none;}
 
 /* LAYOUT */
 .app-body{display:flex;flex:1;overflow:hidden;position:relative;}
-.lnav{width:70px;background:var(--n2);border-right:1px solid var(--br);display:flex;flex-direction:column;align-items:center;padding:10px 0;flex-shrink:0;overflow-y:auto;}
+.lnav{width:70px;background:#080e1a;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;padding:10px 0;flex-shrink:0;overflow-y:auto;}
 .lnav-main{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;}
 .lnav-bot{display:flex;flex-direction:column;align-items:center;gap:2px;padding-top:8px;border-top:1px solid var(--br2);margin-top:4px;}
 .nb{width:58px;height:52px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;background:transparent;border:none;transition:background .15s;}
 .nb:hover{background:rgba(255,255,255,.05);}
-.nb.on{background:rgba(42,82,152,.28);}
+.nb.on{background:rgba(212,165,116,.12);border-left:2px solid var(--gold);}
 .nb.fol{background:rgba(30,58,95,.45);}
 .nb.intel{background:rgba(45,16,16,.45);}
 .nb.end{background:rgba(16,45,16,.45);}
 .ni{font-size:18px;line-height:1;}
-.nl{font-size:9px;color:var(--t3);font-weight:500;line-height:1;text-align:center;}
-.nb.on .nl{color:var(--blue);}
+.nl{font-size:9px;color:var(--t3);font-weight:500;line-height:1;text-align:center;letter-spacing:.08em;text-transform:uppercase;}
+.nb.on .nl{color:var(--gold)!important;}
+.nb.on .ni{filter:sepia(1) saturate(3) hue-rotate(-10deg) brightness(1.1);}
 .nl.gold{color:var(--gold)!important;}
 .nl.blue{color:var(--blue)!important;}
 .nl.red{color:var(--red)!important;}
@@ -112,11 +113,14 @@ select{-webkit-appearance:none;appearance:none;}
 
 /* STAT GRID */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.sc{background:var(--n3);border:1px solid var(--br);border-radius:14px;padding:20px 22px 18px;display:flex;flex-direction:column;gap:4px;}
+.sc{background:rgba(255,255,255,.03);border:1px solid var(--br);border-radius:14px;padding:20px 22px 18px;display:flex;flex-direction:column;gap:4px;transition:box-shadow .2s;}
 .sc:hover{border-color:var(--br2);}
-.sc.win{background:linear-gradient(135deg,#1a1a38,var(--n4));border-color:rgba(155,142,196,.35);}
-.sl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-weight:600;}
-.sn{font-family:var(--font-d);font-size:26px;font-weight:700;line-height:1.1;margin:6px 0 4px;}
+.sc.sc-red{border-top:2px solid var(--red);}.sc.sc-red:hover{box-shadow:0 0 20px rgba(232,112,112,.08);}
+.sc.sc-gold{border-top:2px solid var(--gold);}.sc.sc-gold:hover{box-shadow:0 0 20px rgba(212,165,116,.08);}
+.sc.sc-blue{border-top:2px solid var(--blue);}.sc.sc-blue:hover{box-shadow:0 0 20px rgba(107,156,216,.08);}
+.sc.sc-green{border-top:2px solid var(--green);}.sc.sc-green:hover{box-shadow:0 0 20px rgba(130,179,134,.08);}
+.sl{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.15em;font-weight:700;}
+.sn{font-family:var(--font-d);font-size:48px;font-weight:800;line-height:1.1;margin:6px 0 4px;}
 .ss{font-size:11px;color:var(--t3);}
 .pbar{background:rgba(255,255,255,.07);border-radius:4px;height:5px;overflow:hidden;margin:8px 0 0;}
 .pfill{height:100%;border-radius:4px;}
@@ -462,17 +466,19 @@ select{-webkit-appearance:none;appearance:none;}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
 
 /* MORNING BRIEF CARD */
-.mb-card{background:linear-gradient(135deg,#0d1f3c,#16213e);border:1px solid rgba(107,156,216,.2);border-radius:14px;padding:18px 20px;}
+.mb-card{background:linear-gradient(135deg,#0a1628,#0d1f3c);border:1px solid rgba(107,156,216,.15);border-left:3px solid var(--gold);border-radius:14px;padding:18px 20px;}
 .mb-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .mb-hdr-left{}
 .mb-hdr-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);}
 .mb-hdr-date{font-size:11px;color:var(--t3);margin-top:1px;}
 .mb-refresh{font-size:13px;color:var(--t3);background:rgba(255,255,255,.06);border:1px solid var(--br);border-radius:6px;padding:4px 8px;cursor:pointer;}
 .mb-refresh:hover{background:rgba(255,255,255,.1);}
-.mb-text{font-size:13px;line-height:1.75;color:var(--t1);}
+.mb-text{font-size:14px;line-height:1.8;color:rgba(255,255,255,.85);}
+.mb-greeting{font-family:var(--font-d);font-size:28px;font-style:italic;font-weight:700;color:#e8e8e8;margin-bottom:12px;}
+.mb-classified{display:inline-block;background:#8B0000;color:#ffcccc;font-size:10px;font-weight:700;letter-spacing:.1em;padding:3px 8px;border-radius:3px;margin-right:10px;}
 .mb-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
-.mb-chip{font-size:11px;background:rgba(42,82,152,.2);border:1px solid rgba(42,82,152,.35);color:var(--blue);padding:6px 13px;border-radius:20px;cursor:pointer;}
-.mb-chip:hover{background:rgba(42,82,152,.35);}
+.mb-chip{font-size:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);padding:6px 13px;border-radius:20px;cursor:pointer;letter-spacing:.03em;}
+.mb-chip:hover{background:rgba(255,255,255,.08);}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 .mb-shimmer{background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.04) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;height:13px;}
 .ob-party-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;}
@@ -631,6 +637,7 @@ select{-webkit-appearance:none;appearance:none;}
         </div>
       </div>
       <div id="dash-populated" style="display:none">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:4px">STRATEGIC COMMAND DASHBOARD</div>
         <div id="morning-brief-container"></div>
         <div style="display:flex;align-items:center;justify-content:flex-end;margin-top:12px"><button class="ask-sam-btn" onclick="askSamAbout('Give me a strategic overview of where my campaign stands today and what I should be focusing on.')">&#128161; Ask Sam</button></div>
         <div class="stat-grid" id="stat-grid" style="margin-top:8px"></div>
@@ -1166,11 +1173,13 @@ function refreshDashboard() {
   var tasksDone = tasks.filter(function(t){return t.completed;}).length;
   var tasksTotal = tasks.length;
 
+  var phase = getPhase(days);
+  var phaseName = phase.replace(/^[\s\S]*?\s/, '').toUpperCase();
   document.getElementById('stat-grid').innerHTML =
-    '<div class="sc win"><div class="sl">Days to Election</div><div class="sn" style="color:var(--purple)">' + (days > 0 ? days : 0) + '</div><div class="ss">days remaining</div></div>' +
-    '<div class="sc" style="border-color:rgba(107,156,216,.3)"><div class="sl">Campaign Budget</div><div class="sn" style="color:var(--gold)">' + (campaignBudget.total > 0 ? '$' + campaignBudget.total.toLocaleString() : '--') + '</div><div class="ss">' + budgetSub + '</div></div>' +
-    '<div class="sc"><div class="sl">Win Number</div><div class="sn" style="color:var(--green)">' + (typeof winNum === 'number' ? winNum.toLocaleString() : winNum) + '</div><div class="ss">votes to win</div></div>' +
-    '<div class="sc"><div class="sl">Tasks Complete</div><div class="sn" style="color:var(--blue)">' + (tasksTotal > 0 ? tasksDone + '/' + tasksTotal : '0') + '</div><div class="pbar"><div class="pfill" style="width:' + taskPct + '%;background:var(--blue)"></div></div><div class="ss">' + (tasksTotal > 0 ? taskPct + '% complete' : 'No tasks yet') + '</div></div>';
+    '<div class="sc sc-red"><div class="sl">Countdown</div><div class="sn" style="color:var(--red)">' + (days > 0 ? days : 0) + '</div><div class="ss">DAYS \u00B7 ' + phaseName + '</div></div>' +
+    '<div class="sc sc-gold"><div class="sl">War Chest</div><div class="sn" style="color:var(--gold)">' + (campaignBudget.total > 0 ? '$' + campaignBudget.total.toLocaleString() : '--') + '</div><div class="ss">' + budgetSub + '</div></div>' +
+    '<div class="sc sc-blue"><div class="sl">Win Target</div><div class="sn" style="color:var(--blue)">' + (typeof winNum === 'number' ? winNum.toLocaleString() : winNum) + '</div><div class="ss">VOTES</div></div>' +
+    '<div class="sc sc-green"><div class="sl">Operational Flow</div><div class="sn" style="color:var(--green)">' + (tasksTotal > 0 ? tasksDone + '/' + tasksTotal : '0') + '</div><div class="pbar"><div class="pfill" style="width:' + taskPct + '%;background:var(--green)"></div></div><div class="ss">' + (tasksTotal > 0 ? taskPct + '% complete' : 'PENDING') + '</div></div>';
 
   // Tasks
   renderDashTasks();
@@ -3651,9 +3660,11 @@ function buildWelcomeBrief() {
   var days = calcDaysToElection();
   var elDate = campaignData.electionDate ? new Date(campaignData.electionDate+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '';
   var daysSpan = (days != null && elDate) ? 'You have <span style="color:var(--red);font-weight:700">' + days + '</span> days until your election on <span style="color:var(--gold)">' + elDate + '</span>. ' : '';
+  var firstName = campaignData.candidateName ? campaignData.candidateName.split(' ')[0] : '';
   return '<div class="mb-card">' +
-    '<div class="mb-hdr"><div class="mb-hdr-left"><div class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</div><div class="mb-hdr-date">' + dateStr + '</div></div></div>' +
-    '<div class="mb-text" style="font-size:13px;color:var(--t1);line-height:1.75">Welcome to The Candidate\u2019s Toolbox \u2014 we\u2019re excited to help you win. ' + daysSpan + 'This is your campaign headquarters \u2014 from here you can manage your calendar, track your budget, research your opponent, stay compliant, organize your documents, and track endorsements. As we get to know each other and you start adding information about your race, this morning brief will get smarter and more specific to your campaign every single day. Ask Sam anything to get started \u2014 she already knows your race and is ready to help you win.</div>' +
+    '<div class="mb-hdr"><div class="mb-hdr-left"><span class="mb-classified">CLASSIFIED // EYES ONLY</span><span class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</span></div><div class="mb-hdr-date">' + dateStr + '</div></div>' +
+    '<div class="mb-greeting">Good Morning, ' + escapeHtml(firstName) + '.</div>' +
+    '<div class="mb-text">Welcome to The Candidate\u2019s Toolbox \u2014 we\u2019re excited to help you win. ' + daysSpan + 'This is your campaign headquarters \u2014 from here you can manage your calendar, track your budget, research your opponent, stay compliant, organize your documents, and track endorsements. As we get to know each other and you start adding information about your race, this morning brief will get smarter and more specific to your campaign every single day. Ask Sam anything to get started \u2014 she already knows your race and is ready to help you win.</div>' +
     '<div style="margin-top:12px;font-size:11px;color:var(--t3)">Sam \u00B7 Your Campaign Manager</div>' +
     '<div style="margin-top:14px"><button class="btn-primary" style="width:100%;font-size:13px;padding:11px" onclick="sendSamChip(\'I just joined The Candidate\\\'s Toolbox. What should I do first?\')">Get Started \u2014 Ask Sam anything \u2192</button></div>' +
     '</div>';
@@ -3700,8 +3711,8 @@ function renderMorningBriefLoading() {
   var firstName = campaignData.candidateName ? campaignData.candidateName.split(' ')[0] : '';
   var dateStr = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   el.innerHTML = '<div class="mb-card">' +
-    '<div class="mb-hdr"><div class="mb-hdr-left"><div class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</div><div class="mb-hdr-date">' + dateStr + '</div></div><div class="mb-refresh" style="opacity:.5">...</div></div>' +
-    '<div class="mb-text" style="color:var(--t1)">Good morning, ' + escapeHtml(firstName) + '.</div>' +
+    '<div class="mb-hdr"><div class="mb-hdr-left"><span class="mb-classified">CLASSIFIED // EYES ONLY</span><span class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</span></div><div style="display:flex;align-items:center;gap:8px"><div class="mb-hdr-date">' + dateStr + '</div><div class="mb-refresh" style="opacity:.5">...</div></div></div>' +
+    '<div class="mb-greeting">Good Morning, ' + escapeHtml(firstName) + '.</div>' +
     '<div style="margin-top:8px"><div class="mb-shimmer" style="width:100%"></div><div class="mb-shimmer" style="width:75%;margin-top:6px"></div></div>' +
     '</div>';
 }
@@ -3743,7 +3754,8 @@ function renderMorningBrief() {
   });
 
   el.innerHTML = '<div class="mb-card">' +
-    '<div class="mb-hdr"><div class="mb-hdr-left"><div class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</div><div class="mb-hdr-date">' + dateStr + '</div></div><button class="mb-refresh" onclick="generateMorningBrief()">\uD83D\uDD04</button></div>' +
+    '<div class="mb-hdr"><div class="mb-hdr-left"><span class="mb-classified">CLASSIFIED // EYES ONLY</span><span class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</span></div><div style="display:flex;align-items:center;gap:8px"><div class="mb-hdr-date">' + dateStr + '</div><button class="mb-refresh" onclick="generateMorningBrief()">\uD83D\uDD04</button></div></div>' +
+    '<div class="mb-greeting">Good Morning, ' + escapeHtml(firstName) + '.</div>' +
     '<div class="mb-text">' + displayText + '</div>' +
     '<div class="mb-chips">' +
       '<div class="mb-chip" onclick="sendSamChip(\'What should I focus on today?\')">What should I focus on?</div>' +
