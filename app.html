@@ -3793,6 +3793,7 @@ function generateMorningBrief() {
     var rawText = '';
     if (data.content && Array.isArray(data.content)) data.content.forEach(function(b){if(b.type==='text'&&b.text) rawText+=b.text;});
     rawText = rawText.replace(/\[\d+\]/g,'').replace(/\u3010[\s\S]*?\u3011/g,'').trim();
+    rawText = cleanResearchNarration(rawText);
     if (rawText) {
       var brief = { text: rawText, _generatedDate: getTodayStr(), _candidateName: campaignData.candidateName };
       localStorage.setItem(storageKey('ctb_morning_brief'), JSON.stringify(brief));
@@ -4539,8 +4540,23 @@ function extractDocTitle(text) {
 // ============================================
 // FORMAT SAM'S TEXT OUTPUT
 // ============================================
+function cleanResearchNarration(text) {
+  if (!text) return text;
+  var cleaned = text.trim();
+  var patterns = [/^I'll search for[^.]*\.\s*/i,/^Let me search[^.]*\.\s*/i,/^I'm searching[^.]*\.\s*/i,/^Searching for[^.]*\.\s*/i,/^I'll look up[^.]*\.\s*/i,/^I'll research[^.]*\.\s*/i,/^Let me research[^.]*\.\s*/i,/^I need to search[^.]*\.\s*/i,/^I'll find[^.]*\.\s*/i,/^Looking up[^.]*\.\s*/i,/^I'm going to search[^.]*\.\s*/i,/^I'll look into[^.]*\.\s*/i,/^Let me look[^.]*\.\s*/i,/^I found some info[^.]*\.\s*/i,/^Based on the search results,?\s*/i,/^Based on my research,?\s*/i,/^Based on my search,?\s*/i,/^Let me check[^.]*\.\s*/i];
+  var changed = true;
+  while (changed) {
+    changed = false;
+    for (var i = 0; i < patterns.length; i++) {
+      var newText = cleaned.replace(patterns[i], '').trim();
+      if (newText !== cleaned) { cleaned = newText; changed = true; }
+    }
+  }
+  return cleaned.trim();
+}
+
 function formatSamText(text) {
-  return text
+  return cleanResearchNarration(text)
     .replace(/\【\d+[:\d]*†?[a-z]*\】/g, '')       // Remove 【1†source】 style citations
     .replace(/\[\d+\]/g, '')                          // Remove [1] [2] style citations
     .replace(/\s*\.\s*\n/g, '.\n')                   // Fix ". \n" ��� ".\n"
