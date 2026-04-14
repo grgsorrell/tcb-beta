@@ -1926,10 +1926,10 @@ function getSpentByCategory(categoryKey) {
 
 function renderBudgetAllocations(t) {
   var cats = campaignBudget.categories || {};
-  var totalBudget = t.totalBudget || 1;
-  var totalAllocated = 0, totalSpentCat = 0;
+  var totalBudget = t.totalBudget || 0;
+  var totalAllocated = 0, totalSpentAll = 0;
   var html = '<div style="margin-top:16px">' +
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
     '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--t3)">Budget Allocations</div>' +
     '<div style="font-size:11px;color:var(--blue);cursor:pointer" onclick="openApplyAllocationsModal()">Edit</div></div>';
   var keys = Object.keys(cats);
@@ -1937,40 +1937,56 @@ function renderBudgetAllocations(t) {
     var c = cats[k];
     if (!c) return;
     var allocated = c.allocated || 0;
-    var pct = totalBudget > 0 ? Math.round(allocated / totalBudget * 100) : 0;
     var spent = getSpentByCategory(k);
     var remaining = allocated - spent;
     var overBudget = spent > allocated && allocated > 0;
-    var spentBarPct = allocated > 0 ? Math.min(Math.round(spent / allocated * 100), 100) : 0;
-    var color = getAllocBarColor(c.label);
+    var spentPctRaw = allocated > 0 ? (spent / allocated * 100) : 0;
+    var spentPctBar = Math.min(spentPctRaw, 100);
     var isReserve = k === 'reserveFund';
+    var hasAllocated = allocated > 0;
+    var hasSpent = spent > 0;
     totalAllocated += allocated;
-    totalSpentCat += spent;
+    totalSpentAll += spent;
+    // Fill color based on spending level
+    var fillColor;
+    if (overBudget || (spent > allocated && allocated > 0)) fillColor = 'var(--red)';
+    else if (spentPctRaw >= 86) fillColor = 'var(--red);opacity:.7';
+    else if (spentPctRaw >= 61) fillColor = 'var(--gold)';
+    else fillColor = 'var(--green)';
+    // Category name
+    var nameColor = hasAllocated ? 'var(--t1)' : 'var(--t3)';
     var nameHtml = isReserve ? '<span style="cursor:help" title="Held for unexpected expenses, opportunities, or emergencies during the campaign. Political campaigns often face surprise costs \u2014 having reserves prevents budget crises.">' + escapeHtml(c.label) + ' \u24D8</span>' : escapeHtml(c.label);
-    // Spent/remaining subtitle
+    // Right side: spent of allocated
+    var rightLabel = '';
+    if (hasAllocated) rightLabel = '$' + spent.toLocaleString() + ' of $' + allocated.toLocaleString();
+    else if (hasSpent) rightLabel = '$' + spent.toLocaleString() + ' spent';
+    else rightLabel = 'No budget set';
+    // Budgeted label far right
+    var budgetedLabel = hasAllocated ? '<span style="color:var(--t3)">$' + allocated.toLocaleString() + ' budgeted</span>' : '<span style="color:rgba(255,255,255,.2);font-style:italic">Not budgeted</span>';
+    // Context line below bar
     var subLine = '';
-    if (overBudget) subLine = '<span style="color:var(--red);font-weight:700">$' + (spent - allocated).toLocaleString() + ' over budget</span>';
-    else if (spent > 0) subLine = '$' + spent.toLocaleString() + ' spent \u00B7 $' + remaining.toLocaleString() + ' remaining';
-    else if (allocated > 0) subLine = '<span style="opacity:.5">$' + allocated.toLocaleString() + ' available</span>';
-    html += '<div style="padding:8px 0' + (idx < keys.length - 1 ? ';border-bottom:1px solid rgba(255,255,255,.04)' : '') + '">' +
-      '<div style="display:flex;align-items:center;gap:12px">' +
-      '<div style="font-size:12px;color:var(--t2);width:160px;flex-shrink:0">' + nameHtml + '</div>' +
-      '<div style="flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.06);position:relative;overflow:hidden">' +
-        '<div style="position:absolute;top:0;left:0;height:100%;width:' + pct + '%;background:' + color + ';opacity:.3;border-radius:2px"></div>' +
-        '<div style="position:absolute;top:0;left:0;height:100%;width:' + (pct > 0 ? Math.round(spentBarPct * pct / 100) : 0) + '%;background:' + (overBudget ? 'var(--red)' : color) + ';border-radius:2px"></div>' +
+    if (overBudget) subLine = '<span style="color:var(--red);font-weight:700">OVER BUDGET by $' + (spent - allocated).toLocaleString() + '</span>';
+    else if (!hasAllocated && hasSpent) subLine = '<span style="color:var(--red)">No budget set \u00B7 $' + spent.toLocaleString() + ' spent</span>';
+    else if (hasSpent && spent === allocated) subLine = '<span style="color:var(--gold)">Fully spent \u00B7 $0 remaining</span>';
+    else if (hasSpent) subLine = '$' + remaining.toLocaleString() + ' remaining \u00B7 ' + spentPctRaw.toFixed(1) + '% used';
+    else if (hasAllocated) subLine = '<span style="opacity:.5">$' + allocated.toLocaleString() + ' budgeted \u00B7 nothing spent yet</span>';
+    html += '<div style="padding:10px 0' + (idx < keys.length - 1 ? ';border-bottom:1px solid rgba(255,255,255,.04)' : '') + '">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">' +
+        '<div style="font-size:13px;color:' + nameColor + ';font-weight:500">' + nameHtml + '</div>' +
+        '<div style="font-size:11px;color:var(--t3)">' + rightLabel + '</div>' +
       '</div>' +
-      '<div style="font-size:11px;color:var(--t3);width:32px;text-align:right;flex-shrink:0">' + pct + '%</div>' +
-      '<div style="font-size:12px;font-weight:600;color:var(--t1);width:90px;text-align:right;flex-shrink:0">$' + allocated.toLocaleString() + '</div>' +
+      '<div style="height:6px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden">' +
+        (hasSpent ? '<div style="height:100%;width:' + spentPctBar + '%;background:' + fillColor + ';border-radius:3px;transition:width .3s"></div>' : '') +
       '</div>' +
-      (subLine ? '<div style="font-size:10px;color:var(--t3);margin-top:3px;padding-left:172px">' + subLine + '</div>' : '') +
+      (subLine ? '<div style="font-size:10px;color:var(--t3);margin-top:4px">' + subLine + '</div>' : '') +
     '</div>';
   });
   // Summary row
-  var totalRemaining = totalAllocated - totalSpentCat;
+  var totalAvailable = totalBudget - totalSpentAll;
   html += '<div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;margin-top:4px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:700">' +
-    '<span style="color:var(--t2)">Allocated: $' + totalAllocated.toLocaleString() + '</span>' +
-    '<span style="color:' + (totalSpentCat > 0 ? 'var(--red)' : 'var(--t3)') + '">Spent: $' + totalSpentCat.toLocaleString() + '</span>' +
-    '<span style="color:' + (totalRemaining >= 0 ? 'var(--green)' : 'var(--red)') + '">Remaining: $' + totalRemaining.toLocaleString() + '</span>' +
+    '<span style="color:var(--t2)">Budgeted: $' + totalAllocated.toLocaleString() + '</span>' +
+    '<span style="color:' + (totalSpentAll > 0 ? 'var(--red)' : 'var(--t3)') + '">Spent: $' + totalSpentAll.toLocaleString() + '</span>' +
+    '<span style="color:' + (totalAvailable >= 0 ? 'var(--green)' : 'var(--red)') + '">Available: $' + totalAvailable.toLocaleString() + '</span>' +
   '</div>';
   html += '</div>';
   return html;
