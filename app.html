@@ -2964,6 +2964,20 @@ function getElectionYear() {
   return campaignData.electionDate ? campaignData.electionDate.split('-')[0] : new Date().getFullYear().toString();
 }
 
+function getIntelScope() {
+  var office = (campaignData.specificOffice || '').toLowerCase();
+  var govLevel = (campaignData.officeType || campaignData.govLevel || '').toLowerCase();
+  var state = campaignData.state || '';
+  var loc = campaignData.location || campaignData.city || '';
+  var statewideOffices = ['governor','lieutenant governor','attorney general','secretary of state','state treasurer','comptroller','us senator','u.s. senator','united states senator','state senator','state representative'];
+  var isStatewide = statewideOffices.some(function(o){ return office.indexOf(o) >= 0; }) || govLevel === 'state';
+  var isFederal = govLevel === 'federal' || office.indexOf('congress') >= 0 || office.indexOf('representative') >= 0 || office.indexOf('senator') >= 0;
+  if (isStatewide || isFederal) {
+    return { scope: isFederal ? 'district' : 'statewide', location: isFederal ? loc + ', ' + state : state, descriptor: isFederal ? 'congressional district covering ' + loc + ' area in ' + state : 'statewide across ' + state, voterNote: isFederal ? 'voters in the congressional district' : 'all registered voters in ' + state, label: state.toUpperCase() || 'STATE', isStatewide: true };
+  }
+  return { scope: 'local', location: loc + ', ' + state, descriptor: loc + ', ' + state, voterNote: 'voters in ' + loc, label: (loc || state).toUpperCase(), isStatewide: false };
+}
+
 function fetchIntelData(tabKey) {
   var office = campaignData.specificOffice || 'office';
   var state = campaignData.state || '';
@@ -2971,15 +2985,16 @@ function fetchIntelData(tabKey) {
   var year = getElectionYear();
   var party = campaignData.party || '';
   var name = campaignData.candidateName || '';
+  var scope = getIntelScope();
   var prompt = '';
   if (tabKey === 'candidates') {
-    prompt = 'Search for all candidates who have officially filed to run for ' + office + ' in ' + state + ' in ' + year + '. For each candidate found return: full name, party affiliation, whether they are the incumbent, a 1-2 sentence background, and filing status (confirmed/rumored/withdrawn). Also indicate which one is ' + name + '. Return ONLY valid JSON: {"candidates":[{"name":"...","party":"...","isIncumbent":false,"background":"...","status":"confirmed","isCurrentCandidate":false}],"totalFiled":0,"raceNote":"..."}';
+    prompt = 'Search for all candidates who have officially filed to run for ' + office + ' ' + scope.descriptor + ' in ' + year + '. For each candidate found return: full name, party affiliation, whether they are the incumbent, a 1-2 sentence background, and filing status (confirmed/rumored/withdrawn). Also indicate which one is ' + name + '. Return ONLY valid JSON: {"candidates":[{"name":"...","party":"...","isIncumbent":false,"background":"...","status":"confirmed","isCurrentCandidate":false}],"totalFiled":0,"raceNote":"..."}';
   } else if (tabKey === 'pulse') {
-    prompt = 'Search for recent local news, events, and issues happening in ' + loc + ', ' + state + ' related to the ' + office + ' race and local politics. Find 5-8 recent news items or local issues that a candidate should know about. Focus on local political developments, voter concerns, controversies, and community issues. Return ONLY valid JSON: {"items":[{"headline":"...","summary":"...","relevance":"...","sentiment":"positive|negative|neutral","date":"...","category":"local-politics|issues|opponent|community|economy"}]}';
+    prompt = 'Search for recent news, events, and issues affecting ' + scope.descriptor + ' related to the ' + office + ' race and politics. Find 5-8 recent news items or issues that a candidate for ' + office + ' should know about. Focus on political developments, voter concerns, controversies, and community issues. Return ONLY valid JSON: {"items":[{"headline":"...","summary":"...","relevance":"...","sentiment":"positive|negative|neutral","date":"...","category":"local-politics|issues|opponent|community|economy"}]}';
   } else if (tabKey === 'outreach') {
-    prompt = 'Research voter data for the ' + office + ' race in ' + loc + ', ' + state + '. Find voter registration breakdown by party (percentages), turnout history for similar races, most persuadable voter segments, top issues ranked by voter concern, geographic hotspots where persuadable voters are concentrated, and a recommendation on where the candidate should focus. Return ONLY valid JSON: {"registration":{"republican":0,"democrat":0,"independent":0,"other":0},"turnoutHistory":[{"year":0,"turnout":0,"raceType":"..."}],"persuadableSegments":[{"segment":"...","size":"...","description":"..."}],"topIssues":[{"issue":"...","concern":0,"trend":"rising|falling|stable"}],"hotspots":["..."],"recommendation":"..."}';
+    prompt = 'Research voter data for the ' + office + ' race ' + scope.descriptor + '. Find voter registration breakdown by party (percentages) for ' + scope.voterNote + ', turnout history for similar races, most persuadable voter segments, top issues ranked by voter concern, geographic hotspots where persuadable voters are concentrated, and a recommendation on where the candidate should focus. Return ONLY valid JSON: {"registration":{"republican":0,"democrat":0,"independent":0,"other":0},"turnoutHistory":[{"year":0,"turnout":0,"raceType":"..."}],"persuadableSegments":[{"segment":"...","size":"...","description":"..."}],"topIssues":[{"issue":"...","concern":0,"trend":"rising|falling|stable"}],"hotspots":["..."],"recommendation":"..."}';
   } else if (tabKey === 'threats') {
-    prompt = 'Analyze all candidates running for ' + office + ' in ' + state + ' in ' + year + ' and assess each one as a threat to ' + name + ' who is a ' + party + ' candidate. For each opponent score them 1-10 on: Financial Strength, Name Recognition, Momentum, and Direct Threat. Calculate overall threat score (average). Classify: HIGH (7-10), MEDIUM (4-6.9), LOW (1-3.9). Return ONLY valid JSON: {"opponents":[{"name":"...","party":"...","overallScore":0,"threatLevel":"high|medium|low","scores":{"financial":0,"nameRecognition":0,"momentum":0,"directThreat":0},"summary":"...","keyRisk":"...","trend":"surging|stable|fading"}],"strategicSummary":"..."}';
+    prompt = 'Analyze all candidates running for ' + office + ' ' + scope.descriptor + ' in ' + year + ' and assess each one as a threat to ' + name + ' who is a ' + party + ' candidate. For each opponent score them 1-10 on: Financial Strength, Name Recognition, Momentum, and Direct Threat. Calculate overall threat score (average). Classify: HIGH (7-10), MEDIUM (4-6.9), LOW (1-3.9). Return ONLY valid JSON: {"opponents":[{"name":"...","party":"...","overallScore":0,"threatLevel":"high|medium|low","scores":{"financial":0,"nameRecognition":0,"momentum":0,"directThreat":0},"summary":"...","keyRisk":"...","trend":"surging|stable|fading"}],"strategicSummary":"..."}';
   }
   fetch(typeof WORKER_URL !== 'undefined' ? WORKER_URL : '', {
     method: 'POST', headers: {'Content-Type':'application/json'},
@@ -3059,8 +3074,9 @@ function renderCandidatesTab(data) {
 // TAB 2 — DISTRICT PULSE
 function renderPulseTab(data) {
   var items = data.items || [];
-  var loc = (campaignData.location||campaignData.city||'').toUpperCase();
-  var html = '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase">District Pulse \u2014 ' + loc + '</div>' +
+  var scope = getIntelScope();
+  var pulseLabel = scope.isStatewide ? 'Statewide Pulse \u2014 ' + scope.label : 'District Pulse \u2014 ' + scope.label;
+  var html = '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase">' + pulseLabel + '</div>' +
     '<div style="font-size:9px;color:rgba(255,255,255,.2);font-style:italic;margin-bottom:12px">Live intelligence updated daily</div>';
   if (items.length === 0) return html + '<div style="text-align:center;padding:24px;font-size:11px;color:rgba(255,255,255,.3)">No recent news items found for this area.</div>';
   var catColors = {'local-politics':'var(--purple)','issues':'var(--blue)','opponent':'var(--red)','community':'var(--green)','economy':'var(--gold)'};
