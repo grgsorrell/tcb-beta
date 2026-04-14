@@ -305,45 +305,23 @@ select{-webkit-appearance:none;appearance:none;}
 .fslbl{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);margin:10px 0 5px 2px;font-weight:700;}
 
 /* INTEL overlay specifics */
-.opp-prof{background:#1a0808;border:1px solid rgba(232,112,112,.22);border-radius:11px;padding:12px;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px;}
-.opp-av{width:44px;height:44px;border-radius:50%;background:rgba(232,112,112,.15);border:2px solid rgba(232,112,112,.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.opp-nm{font-family:var(--font-d);font-size:14px;font-weight:700;color:var(--red);}
-.opp-role{font-size:10px;color:var(--t3);margin-top:2px;}
-.threat-bar{background:rgba(255,255,255,.07);border-radius:3px;height:5px;margin:7px 0 3px;overflow:hidden;}
-.threat-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--amber),var(--red));}
-.threat-lbl{font-size:10px;color:var(--amber);font-weight:600;}
-.itabs{display:flex;gap:2px;background:rgba(255,255,255,.04);border-radius:8px;padding:3px;margin-bottom:14px;}
-.itab{font-size:11px;padding:6px 8px;border-radius:6px;color:var(--t3);font-weight:500;flex:1;text-align:center;cursor:pointer;}
-.itab.on{background:#1a0808;color:var(--red);border:1px solid rgba(232,112,112,.22);}
-.ifl{border-left:2px solid;padding:7px 0 7px 11px;margin-bottom:11px;}
-.ifl.r{border-color:var(--red);}
-.ifl.a{border-color:var(--amber);}
-.ifl.b{border-color:var(--blue);}
-.ifl.g{border-color:var(--green);}
-.iftag{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px;}
-.ifl.r .iftag{color:var(--red);}
-.ifl.a .iftag{color:var(--amber);}
-.ifl.b .iftag{color:var(--blue);}
-.ifl.g .iftag{color:var(--green);}
-.iftxt{font-size:12px;line-height:1.55;color:var(--t1);}
-.draft-btn{display:inline-block;margin-top:7px;font-size:11px;background:rgba(42,82,152,.28);border:1px solid rgba(42,82,152,.45);color:var(--blue);padding:5px 12px;border-radius:20px;font-weight:500;cursor:pointer;}
-.cg{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;}
-.crow{padding:7px 0;border-bottom:1px solid var(--br);}
-.crow:last-child{border-bottom:none;}
-.c-you{font-size:12px;color:var(--green);text-align:right;line-height:1.4;}
-.c-issue{font-size:9px;color:var(--t3);background:rgba(255,255,255,.05);border-radius:5px;padding:2px 6px;white-space:nowrap;text-align:center;}
-.c-them{font-size:12px;color:var(--red);line-height:1.4;}
-.mrow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--br);}
-.mrow:last-child{border-bottom:none;}
-.mlbl{font-size:13px;color:var(--t1);}
-.mval{font-family:var(--font-d);font-size:14px;font-weight:700;}
-.vcard{border-radius:9px;padding:10px 12px;margin-bottom:9px;}
-.vcard.high{background:rgba(232,112,112,.07);border:1px solid rgba(232,112,112,.2);}
-.vcard.med{background:rgba(212,165,116,.06);border:1px solid rgba(212,165,116,.25);}
-.vlbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px;}
-.vcard.high .vlbl{color:var(--red);}
-.vcard.med .vlbl{color:var(--amber);}
-.vtxt{font-size:12px;line-height:1.5;color:var(--t1);}
+.intel-panel{background:linear-gradient(180deg,#0d0e18,#0a0b14)!important;}
+.intel-tabs{display:flex;width:100%;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px;}
+.intel-tab{flex:1;text-align:center;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:10px 4px;color:rgba(255,255,255,.35);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s ease;}
+.intel-tab:hover{color:rgba(255,255,255,.5);}
+.intel-tab.on{color:var(--gold);border-bottom-color:var(--gold);}
+@keyframes intelSpin{to{transform:rotate(360deg);}}
+.intel-spinner{width:24px;height:24px;border:2px solid rgba(255,255,255,.1);border-top-color:var(--gold);border-radius:50%;animation:intelSpin .8s linear infinite;margin:0 auto 12px;}
+.intel-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:12px;margin-bottom:8px;}
+.intel-party-pill{font-size:9px;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:10px;display:inline-block;}
+.intel-score{font-size:14px;font-weight:800;padding:4px 10px;border-radius:4px;display:inline-block;}
+.intel-threat-high{border-left:3px solid var(--red);background:rgba(232,112,112,.05);}
+.intel-threat-med{border-left:3px solid var(--gold);background:rgba(212,165,116,.05);}
+.intel-threat-low{border-left:3px solid var(--green);background:rgba(130,179,134,.05);}
+.intel-relevance{margin-top:6px;background:rgba(212,165,116,.06);border-left:2px solid rgba(212,165,116,.3);padding:6px 8px;font-size:10px;color:rgba(212,165,116,.8);font-style:italic;}
+.intel-risk{background:rgba(232,112,112,.06);border-left:2px solid rgba(232,112,112,.3);padding:6px 8px;margin-top:6px;font-size:10px;color:rgba(255,255,255,.6);}
+.intel-rec{border:1px solid rgba(212,165,116,.25);background:rgba(212,165,116,.05);padding:12px;border-radius:6px;margin-top:14px;}
+.reg-bar{height:8px;border-radius:4px;display:flex;overflow:hidden;margin:8px 0;}
 
 /* ENDORSEMENTS specifics */
 .end-tagline{font-size:11px;color:var(--t3);font-style:italic;margin-top:4px;margin-bottom:14px;}
@@ -606,12 +584,11 @@ select{-webkit-appearance:none;appearance:none;}
 
   <!-- Intel -->
   <div class="overlay-panel wide intel-panel" id="overlay-intel">
-    <div class="oh" style="background:#1a0808;border-bottom:1px solid rgba(232,112,112,.22)">
-      <span class="ot" style="color:var(--red)">&#127919; Opponent Intel</span>
+    <div class="oh" style="background:linear-gradient(135deg,#0d0e18,#12131f);border-bottom:1px solid rgba(212,165,116,.12)">
+      <span class="ot" style="color:var(--gold)">&#127919; Intelligence Center</span>
       <div style="display:flex;align-items:center;gap:8px">
-        <button class="ask-sam-btn" onclick="askSamAbout('Walk me through my opponent intelligence. What are the most important things I should know about my race?');closeOverlay()">&#128161; Ask Sam</button>
-        <button id="intel-refresh-btn" onclick="refreshIntelFromPanel()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);font-size:11px;border-radius:8px;padding:5px 10px;color:var(--t2);cursor:pointer;white-space:nowrap">&#128260; Check for Updates</button>
-        <button onclick="closeOverlay()" style="color:var(--t2);font-size:18px">&times;</button>
+        <button id="intel-refresh-btn" onclick="refreshActiveIntelTab()" style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);padding:4px 10px;border-radius:3px;cursor:pointer">&#128260; Refresh</button>
+        <button onclick="closeOverlay()" style="color:var(--t2);font-size:18px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center">&times;</button>
       </div>
     </div>
     <div class="ob2" id="intel-content"></div>
@@ -2905,379 +2882,298 @@ function createFolderPrompt() {
   renderFoldersOverlay();
 }
 
-var intelActiveTab = 'live';
+var intelActiveTab = 'candidates';
+var intelLoadingMessages = ['Scanning local news sources...','Analyzing candidate filings...','Reviewing voter registration data...','Assessing threat levels...','Compiling district intelligence...'];
+
+function getIntelCache() {
+  try { return JSON.parse(localStorage.getItem(storageKey('ctb_intel_data'))) || {}; } catch(e) { return {}; }
+}
+function saveIntelCache(cache) {
+  localStorage.setItem(storageKey('ctb_intel_data'), JSON.stringify(cache));
+}
+function isIntelStale(tabKey) {
+  var cache = getIntelCache();
+  if (!cache[tabKey] || !cache[tabKey].fetchedAt) return true;
+  return (Date.now() - cache[tabKey].fetchedAt) > 24*60*60*1000;
+}
+function timeAgo(ts) {
+  if (!ts) return 'Never';
+  var diff = Math.floor((Date.now()-ts)/1000);
+  if (diff < 60) return 'Just now';
+  if (diff < 3600) return Math.floor(diff/60) + ' min ago';
+  if (diff < 86400) return Math.floor(diff/3600) + ' hours ago';
+  return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+}
 
 function renderIntelOverlay() { renderIntelPanel(); }
 
 function renderIntelPanel() {
   var el = document.getElementById('intel-content');
-  var brief = null;
-  try { brief = JSON.parse(localStorage.getItem(storageKey('ctb_candidate_brief'))); } catch(e) {}
-
-  // No brief at all
-  if (!brief || (!brief.generalOpponent && !brief.districtPartisanLean && !brief.keyLocalIssues)) {
-    el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--t3)">' +
-      '<div style="font-size:48px;margin-bottom:12px">&#127919;</div>' +
-      '<div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:8px">Intel not available yet</div>' +
-      '<div style="font-size:12px;line-height:1.6">Complete onboarding and Sam will automatically research your race and opponents.</div></div>';
-    return;
-  }
-
-  var opp = brief.generalOpponent || {};
-  var hasOpponent = opp.name && opp.name.trim();
-  var hasGoodData = hasOpponent && (opp.background || opp.knownPositions || (Array.isArray(brief.keyLocalIssues) && brief.keyLocalIssues.length > 2));
-
-  // Parse threat level from partisan lean
-  var threatPct = 50, threatColor = 'var(--amber)', threatLabel = 'Threat Level: Unknown';
-  if (brief.districtPartisanLean) {
-    var leanMatch = brief.districtPartisanLean.match(/([RD])\+(\d+)/i);
-    if (leanMatch) {
-      var party = leanMatch[1].toUpperCase();
-      var margin = parseInt(leanMatch[2]);
-      // Assume candidate is Republican for Pat Fallon context; generalize later
-      var isAdvantage = (party === 'R' && (campaignData.party||'').match(/rep/i)) || (party === 'D' && (campaignData.party||'').match(/dem/i));
-      if (!campaignData.party) isAdvantage = (party === 'R'); // default assumption
-      if (isAdvantage) {
-        if (margin >= 16) { threatPct = 15; threatColor = 'var(--green)'; threatLabel = 'Threat Level: Low \u2014 Safe Seat'; }
-        else if (margin >= 8) { threatPct = 35; threatColor = 'var(--amber)'; threatLabel = 'Threat Level: Medium'; }
-        else { threatPct = 55; threatColor = 'var(--amber)'; threatLabel = 'Threat Level: Medium-High'; }
-      } else {
-        if (margin >= 8) { threatPct = 80; threatColor = 'var(--red)'; threatLabel = 'Threat Level: High \u2014 Uphill Battle'; }
-        else { threatPct = 65; threatColor = 'var(--red)'; threatLabel = 'Threat Level: High'; }
-      }
-    }
-  }
-
-  var html = '';
-
-  // STATE 1 — No opponent known
-  if (!hasOpponent) {
-    html += '<div style="text-align:center;padding:24px 16px">' +
-      '<div style="font-size:40px;margin-bottom:10px">&#127919;</div>' +
-      '<div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:6px">No opponent identified yet.</div>' +
-      '<div style="font-size:12px;color:var(--t3);line-height:1.6;margin-bottom:20px">Sam will monitor for candidates who file against you. In the meantime, here\'s what we know about your district:</div></div>';
-    html += renderDistrictCards(brief);
-    html += '<div style="padding:0 4px;margin-top:14px"><button class="draft-btn" style="width:100%;text-align:center;padding:10px" onclick="sendSamChip(\'Tell me about the political landscape in my district\');closeOverlay()">Ask Sam about my district &#8594;</button></div>';
-    el.innerHTML = html;
-    return;
-  }
-
-  // Opponent profile card (STATE 2 + 3)
-  html += '<div class="opp-prof"><div class="opp-av">&#128100;</div><div style="flex:1">' +
-    '<div class="opp-nm">' + escapeHtml(opp.name) + '</div>' +
-    '<div class="opp-role">' + escapeHtml(opp.party ? opp.party : '') + (opp.background ? ' \u2014 ' + escapeHtml(opp.background.length > 80 ? opp.background.slice(0,80) + '...' : opp.background) : '') + '</div>' +
-    '<div class="threat-bar"><div class="threat-fill" style="width:' + threatPct + '%;background:' + threatColor + '"></div></div>' +
-    '<div class="threat-lbl" style="color:' + threatColor + '">' + threatLabel + '</div>' +
-    '</div></div>';
-
-  // STATE 2 — Limited data
-  if (!hasGoodData) {
-    html += '<div style="background:rgba(212,165,116,.08);border:1px solid rgba(212,165,116,.2);border-radius:9px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--amber)">' +
-      '&#9888;&#65039; Limited public information available on this candidate. Sam is monitoring news and public records.</div>';
-    html += renderDistrictCards(brief);
-    html += '<div style="padding:0 4px;margin-top:14px"><button class="draft-btn" style="width:100%;text-align:center;padding:10px" onclick="refreshIntelFromPanel()">&#128269; Search for more information on ' + escapeHtml(opp.name) + '</button></div>';
-    el.innerHTML = html;
-    return;
-  }
-
-  // STATE 3 — Full data: tabs
-  html += '<div class="itabs">' +
-    '<div class="itab' + (intelActiveTab==='live'?' on':'') + '" onclick="switchIntelTab(\'live\')">Live Intel</div>' +
-    '<div class="itab' + (intelActiveTab==='contrast'?' on':'') + '" onclick="switchIntelTab(\'contrast\')">Contrast</div>' +
-    '<div class="itab' + (intelActiveTab==='money'?' on':'') + '" onclick="switchIntelTab(\'money\')">Money</div>' +
-    '<div class="itab' + (intelActiveTab==='vulns'?' on':'') + '" onclick="switchIntelTab(\'vulns\')">Vulns</div>' +
-    '</div>';
-
-  html += '<div id="intel-tab-content">';
-  if (intelActiveTab === 'live') html += renderIntelLive(brief, opp);
-  else if (intelActiveTab === 'contrast') html += renderIntelContrast(brief, opp);
-  else if (intelActiveTab === 'money') html += renderIntelMoney(brief, opp);
-  else if (intelActiveTab === 'vulns') html += renderIntelVulns(brief, opp);
-  html += '</div>';
-
+  if (!el) return;
+  var html = '<div class="intel-tabs">';
+  var tabs = [{key:'candidates',label:'Filed Candidates'},{key:'pulse',label:'District Pulse'},{key:'outreach',label:'Voter Outreach'},{key:'threats',label:'Threat Assessment'}];
+  tabs.forEach(function(t){ html += '<div class="intel-tab' + (intelActiveTab===t.key?' on':'') + '" onclick="switchIntelTab(\'' + t.key + '\')">' + t.label + '</div>'; });
+  html += '</div><div id="intel-tab-content"></div>';
   el.innerHTML = html;
+  loadIntelTab(intelActiveTab, false);
 }
 
 function switchIntelTab(tab) {
   intelActiveTab = tab;
-  renderIntelPanel();
+  document.querySelectorAll('.intel-tab').forEach(function(t){ t.classList.remove('on'); });
+  var tabs = document.querySelectorAll('.intel-tab');
+  var tabKeys = ['candidates','pulse','outreach','threats'];
+  var idx = tabKeys.indexOf(tab);
+  if (idx >= 0 && tabs[idx]) tabs[idx].classList.add('on');
+  loadIntelTab(tab, false);
 }
 
-function renderDistrictCards(brief) {
-  var html = '';
-  if (brief.districtPartisanLean) {
-    html += '<div style="background:rgba(107,156,216,.06);border:1px solid rgba(107,156,216,.15);border-radius:9px;padding:10px 12px;margin-bottom:8px">' +
-      '<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Partisan Lean</div>' +
-      '<div style="font-size:13px;color:var(--t1)">' + escapeHtml(brief.districtPartisanLean) + '</div></div>';
-  }
-  if (brief.districtDescription) {
-    html += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--br);border-radius:9px;padding:10px 12px;margin-bottom:8px">' +
-      '<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--t3);margin-bottom:4px">District</div>' +
-      '<div style="font-size:12px;color:var(--t2);line-height:1.5">' + escapeHtml(brief.districtDescription) + '</div></div>';
-  }
-  if (brief.keyLocalIssues && (Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues.length : brief.keyLocalIssues)) {
-    var issuesArr = Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues : [brief.keyLocalIssues];
-    html += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--br);border-radius:9px;padding:10px 12px;margin-bottom:8px">' +
-      '<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Key Issues</div>' +
-      issuesArr.map(function(i){return '<div style="font-size:12px;color:var(--t2);padding:2px 0">\u2022 ' + escapeHtml(i) + '</div>';}).join('') + '</div>';
-  }
-  if (brief.recentElectionResults && (Array.isArray(brief.recentElectionResults) ? brief.recentElectionResults.length : brief.recentElectionResults)) {
-    var resultsArr = Array.isArray(brief.recentElectionResults) ? brief.recentElectionResults : [brief.recentElectionResults];
-    html += '<div style="background:rgba(255,255,255,.03);border:1px solid var(--br);border-radius:9px;padding:10px 12px;margin-bottom:8px">' +
-      '<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Recent Results</div>' +
-      resultsArr.map(function(r){return '<div style="font-size:12px;color:var(--t2);padding:2px 0">' + escapeHtml(r) + '</div>';}).join('') + '</div>';
-  }
-  return html;
-}
-
-// TAB 1: Live Intel
-function renderIntelLive(brief, opp) {
-  var items = [];
-
-  // Build feed from available data
-  if (opp.knownPositions) {
-    items.push({ cls: 'a', tag: '\u{1F7E1} Policy Position', txt: opp.knownPositions, canDraft: true, issue: 'their policy positions' });
-  }
-  if (opp.previousRaces) {
-    items.push({ cls: 'b', tag: '\u{1F4C5} Previous Races', txt: opp.previousRaces });
-  }
-  if (brief.districtPartisanLean) {
-    items.push({ cls: 'g', tag: '\u2705 District Advantage', txt: 'Your district leans ' + brief.districtPartisanLean + '. This structural advantage means strong turnout is your path to victory.' });
-  }
-  if (brief.keyLocalIssues && (Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues.length > 0 : brief.keyLocalIssues)) {
-    var topIssue = Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues[0] : brief.keyLocalIssues;
-    items.push({ cls: 'a', tag: '\u{1F7E1} Contrast Opportunity', txt: 'Top local issue: ' + topIssue + '. How you frame this issue vs. ' + opp.name + ' could define the race.' });
-  }
-  if (brief.candidateKeyVotes && (Array.isArray(brief.candidateKeyVotes) ? brief.candidateKeyVotes.length > 0 : brief.candidateKeyVotes)) {
-    items.push({ cls: 'g', tag: '\u2705 Your Record', txt: Array.isArray(brief.candidateKeyVotes) ? brief.candidateKeyVotes[0] : brief.candidateKeyVotes });
-  }
-  if (brief.intelligenceNotes) {
-    items.push({ cls: 'r', tag: '\u{1F534} Intelligence', txt: brief.intelligenceNotes, canDraft: true, issue: 'this intelligence' });
-  }
-
-  if (items.length === 0) {
-    return '<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">No live intel available yet. Click "Check for Updates" to research.</div>';
-  }
-
-  return items.map(function(item) {
-    var h = '<div class="ifl ' + item.cls + '"><div class="iftag">' + item.tag + '</div><div class="iftxt">' + escapeHtml(item.txt) + '</div>';
-    if (item.canDraft) {
-      h += '<div class="draft-btn" onclick="sendSamChip(\'Draft a response to ' + escapeHtml(opp.name) + ' on ' + escapeHtml(item.issue) + '\');closeOverlay()">Draft Response &#8594;</div>';
-    }
-    h += '</div>';
-    return h;
-  }).join('');
-}
-
-// TAB 2: Contrast
-function renderIntelContrast(brief, opp) {
-  var primaryStatus = brief.primaryStatus || null;
-  var isPrimary = primaryStatus === 'upcoming';
-  var isGeneral = primaryStatus === 'won';
-  var isOver = primaryStatus === 'lost';
-
-  // MODE 4 — No brief data
-  if (!primaryStatus) {
-    return '<div style="text-align:center;padding:24px;color:var(--t3);font-size:12px">Sam is still researching your race. Check back in a moment.</div>' +
-      '<div style="padding:0 4px;margin-top:8px"><button class="draft-btn" style="width:100%;text-align:center;padding:10px" onclick="refreshIntelFromPanel()">Refresh Intel</button></div>';
-  }
-
-  // MODE 3 — Race over (lost primary)
-  if (isOver) {
-    return '<div class="card" style="padding:20px;text-align:center"><div style="font-size:14px;color:var(--t1);margin-bottom:6px">Your primary has concluded.</div>' +
-      (brief.primaryResult ? '<div style="font-size:12px;color:var(--t3);margin-bottom:12px">' + escapeHtml(brief.primaryResult) + '</div>' : '') +
-      '<button class="draft-btn" style="padding:10px 20px" onclick="sendSamChip(\'What are my options now that the primary is over?\');closeOverlay()">Ask Sam what\'s next \u2192</button></div>';
-  }
-
-  // MODE 1 — Primary upcoming
-  if (isPrimary) {
-    var html = '<div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px">PRIMARY FIELD</div>';
-    var pf = brief.primaryField || {};
-    if (pf.totalCandidates) {
-      html += '<div style="font-size:12px;color:var(--t3);margin-bottom:12px">' + pf.totalCandidates + ' candidates</div>';
-    } else {
-      html += '<div style="font-size:12px;color:var(--t3);margin-bottom:12px">Multiple candidates in this primary</div>';
-    }
-    // Show candidate lists if available
-    var partyLists = [['republicans','Republican'],['democrats','Democrat'],['others','Other']];
-    partyLists.forEach(function(pl) {
-      var names = pf[pl[0]];
-      if (names) { names = Array.isArray(names) ? names : [names]; }
-      if (names && names.length) {
-        html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--t3);margin:8px 0 4px">' + pl[1] + '</div>';
-        names.forEach(function(n) { html += '<div style="font-size:12px;color:var(--t1);padding:3px 0">\u2022 ' + escapeHtml(n) + '</div>'; });
-      }
-    });
-    if (!pf.republicans && !pf.democrats && !pf.others && !pf.totalCandidates) {
-      html += '<div style="font-size:12px;color:var(--t3);font-style:italic">Ask Sam for details on your primary field.</div>';
-    }
-    // Strategic priorities
-    if (brief.campaignStrategicPriorities && (Array.isArray(brief.campaignStrategicPriorities) ? brief.campaignStrategicPriorities.length : brief.campaignStrategicPriorities)) {
-      var stratArr = Array.isArray(brief.campaignStrategicPriorities) ? brief.campaignStrategicPriorities : [brief.campaignStrategicPriorities];
-      html += '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--gold);margin:14px 0 6px">Primary Strategy</div>';
-      stratArr.forEach(function(p) { html += '<div style="font-size:12px;color:var(--t2);padding:3px 0;border-bottom:1px solid var(--br)">' + escapeHtml(p) + '</div>'; });
-    }
-    html += '<div style="margin-top:12px"><button class="draft-btn" style="width:100%;text-align:center;padding:10px" onclick="sendSamChip(\'What is my strategy to win my primary?\');closeOverlay()">Ask Sam about my primary strategy \u2192</button></div>';
-    return html;
-  }
-
-  // MODE 2 — General election contrast matrix
-  var issues = Array.isArray(brief.keyLocalIssues) ? brief.keyLocalIssues : (brief.keyLocalIssues ? [brief.keyLocalIssues] : []);
-  var myPositions = Array.isArray(brief.candidateKeyVotes) ? brief.candidateKeyVotes : (brief.candidateKeyVotes ? [brief.candidateKeyVotes] : []);
-  var oppPositionsRaw = opp.knownPositions || '';
-  var oppPositions = oppPositionsRaw ? oppPositionsRaw.split(/[,;.]/).map(function(s){return s.trim();}).filter(function(s){return s.length > 3;}) : [];
-  var oppLabel = opp.name ? opp.name.split(' ').pop().toUpperCase() : 'OPPONENT';
-
-  // Build rows — only where BOTH sides have real data
-  var rows = [];
-  for (var i = 0; i < issues.length && rows.length < 6; i++) {
-    var myPos = myPositions[i] || '';
-    var oppPos = oppPositions[i] || '';
-    if (myPos && oppPos) {
-      rows.push({ issue: issues[i], you: myPos, them: oppPos });
-    }
-  }
-
-  if (rows.length === 0) {
-    return '<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Not enough data to build a contrast matrix yet.</div>' +
-      '<div style="padding:0 4px;margin-top:10px"><button class="draft-btn" style="width:100%;text-align:center;padding:10px" onclick="sendSamChip(\'Build a contrast matrix between me and my opponent on the key issues in my race\');closeOverlay()">Ask Sam to build your contrast matrix \u2192</button></div>';
-  }
-
-  var html = '<div class="cg" style="margin-bottom:8px"><span style="font-size:10px;font-weight:700;color:var(--green);text-align:right">YOU</span><span style="font-size:10px;color:var(--t3);text-align:center">Issue</span><span style="font-size:10px;font-weight:700;color:var(--red)">' + escapeHtml(oppLabel) + '</span></div>';
-  rows.forEach(function(r) {
-    html += '<div class="cg crow"><div class="c-you">' + escapeHtml(r.you) + '</div><div class="c-issue">' + escapeHtml(r.issue) + '</div><div class="c-them">' + escapeHtml(r.them) + '</div></div>';
-  });
-
-  html += '<div style="padding:0 4px;margin-top:14px"><button class="draft-btn" style="width:100%;text-align:center;padding:10px" onclick="sendSamChip(\'Expand my contrast matrix with more issues and positions\');closeOverlay()">Ask Sam to expand this \u2192</button></div>';
-  return html;
-}
-
-// TAB 3: Money
-function renderIntelMoney(brief, opp) {
-  var html = '';
-  var isPrimary = brief.primaryStatus === 'upcoming';
-
-  // Opponent / primary field section
-  if (isPrimary) {
-    html += '<div style="background:rgba(232,112,112,.06);border:1px solid rgba(232,112,112,.15);border-radius:10px;padding:14px;margin-bottom:10px">' +
-      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--red);margin-bottom:10px">Primary Field Fundraising</div>' +
-      '<div style="font-size:12px;color:var(--t3);line-height:1.6;padding:6px 0">FEC fundraising data for all primary candidates will be available after the next filing deadline.</div>' +
-      '<div style="margin-top:8px"><button class="draft-btn" style="width:100%;text-align:center;padding:8px" onclick="sendSamChip(\'Tell me about fundraising in my primary race\');closeOverlay()">Ask Sam about fundraising in this race \u2192</button></div>' +
-      '</div>';
-  } else {
-    var oppLabel = opp.name ? escapeHtml(opp.name) : 'Opponent';
-    html += '<div style="background:rgba(232,112,112,.06);border:1px solid rgba(232,112,112,.15);border-radius:10px;padding:14px;margin-bottom:10px">' +
-      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--red);margin-bottom:10px">Opponent Fundraising</div>' +
-      '<div style="display:flex;align-items:center;gap:8px;padding:10px 0"><span style="font-size:20px">\uD83D\uDD0D</span><div style="font-size:12px;color:var(--t3);line-height:1.6">Fundraising data for ' + oppLabel + ' not yet available. Sam monitors FEC filings automatically. Check back after the next quarterly filing.</div></div>' +
-      '</div>';
-  }
-
-  // Your campaign finances — unchanged
-  var spent = (campaignBudget.expenses||[]).reduce(function(s,e){return s+(e.amount||0);},0);
-  html += '<div style="background:rgba(130,179,134,.06);border:1px solid rgba(130,179,134,.15);border-radius:10px;padding:14px">' +
-    '<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--green);margin-bottom:10px">Your Campaign Finances</div>';
-  if (campaignBudget.total > 0) {
-    html += '<div class="mrow"><div class="mlbl">Campaign Budget</div><div class="mval" style="color:var(--green)">$' + campaignBudget.total.toLocaleString() + '</div></div>';
-    html += '<div class="mrow"><div class="mlbl">Amount Spent</div><div class="mval">$' + spent.toLocaleString() + '</div></div>';
-    html += '<div class="mrow"><div class="mlbl">Remaining</div><div class="mval" style="color:var(--green)">$' + (campaignBudget.total - spent).toLocaleString() + '</div></div>';
-  } else {
-    html += '<div class="mrow"><div class="mlbl">Budget</div><div class="mval" style="color:var(--t3)">Not set</div></div>';
-  }
-  html += '<div class="mrow"><div class="mlbl">PAC Money</div><div class="mval" style="color:var(--green)">$0 \u2713</div></div>';
-  html += '</div>';
-
-  return html;
-}
-
-// TAB 4: Vulnerabilities
-function renderIntelVulns(brief, opp) {
-  var vulns = [];
-
-  // Build vulnerability cards from available data
-  if (opp.knownPositions) {
-    vulns.push({ level: 'med', label: '\u{1F7E1} Policy Contrast', txt: opp.knownPositions });
-  }
-  if (opp.previousRaces) {
-    vulns.push({ level: 'med', label: '\u{1F7E1} Track Record', txt: 'Previous races: ' + opp.previousRaces });
-  }
-  if (brief.intelligenceNotes) {
-    vulns.push({ level: 'high', label: '\u{1F534} Intelligence Note', txt: brief.intelligenceNotes });
-  }
-  if (brief.districtPartisanLean) {
-    var leanMatch = brief.districtPartisanLean.match(/([RD])\+(\d+)/i);
-    if (leanMatch && leanMatch[1].toUpperCase() === 'R' && parseInt(leanMatch[2]) >= 10) {
-      vulns.push({ level: 'high', label: '\u{1F534} Structural Disadvantage (Opponent)', txt: 'District leans ' + brief.districtPartisanLean + '. ' + opp.name + ' faces a significant structural headwind in this district.' });
-    }
-  }
-
-  if (vulns.length === 0) {
-    return '<div style="text-align:center;padding:24px;color:var(--t3);font-size:12px">' +
-      'Sam hasn\'t identified specific vulnerabilities yet.<br>Click "Check for Updates" to research ' + escapeHtml(opp.name) + '.</div>';
-  }
-
-  return vulns.map(function(v) {
-    return '<div class="vcard ' + v.level + '"><div class="vlbl">' + v.label + '</div><div class="vtxt">' + escapeHtml(v.txt) + '</div></div>';
-  }).join('');
-}
-
-// Refresh intel from the panel header button
-function refreshIntelFromPanel() {
-  var btn = document.getElementById('intel-refresh-btn');
-  if (btn) { btn.innerHTML = '&#8987; Researching...'; btn.style.opacity = '0.6'; }
-
-  // Store original refreshIntelligenceBrief behavior but add panel re-render
-  if (briefFetchInProgress) {
-    if (btn) { btn.innerHTML = '&#128260; Check for Updates'; btn.style.opacity = '1'; }
+function loadIntelTab(tabKey, forceRefresh) {
+  var tc = document.getElementById('intel-tab-content');
+  if (!tc) return;
+  var cache = getIntelCache();
+  if (!forceRefresh && cache[tabKey] && cache[tabKey].data && !isIntelStale(tabKey)) {
+    renderIntelTabContent(tabKey, cache[tabKey].data, cache[tabKey].fetchedAt);
     return;
   }
-
-  // Override the completion to re-render intel panel
-  var origFinally = function() {
-    briefFetchInProgress = false;
-    setTimeout(function() {
-      renderIntelPanel();
-      if (btn) { btn.innerHTML = '\u2705 Intel updated'; btn.style.opacity = '1'; }
-      setTimeout(function() { if (btn) btn.innerHTML = '&#128260; Check for Updates'; }, 2000);
-    }, 500);
-  };
-
-  // Run the brief fetch manually with custom completion
-  briefFetchInProgress = true;
-  var msgsEl = document.getElementById('sam-messages');
-  var indicatorId = 'brief-loading-' + Date.now();
-
-  var researchPrompt = 'Research the following candidate and race thoroughly using web search. You MUST call web_search multiple times to gather real data. Then return a structured JSON object \u2014 nothing else, no preamble, no markdown code fences.\n\n' +
-    'Candidate: ' + (campaignData.candidateName || '') + '\nOffice: ' + (campaignData.specificOffice || '') + '\nDistrict/Location: ' + (campaignData.location || '') + '\nState: ' + (campaignData.state || '') + '\nElection Date: ' + (campaignData.electionDate || '') + '\nParty: ' + (campaignData.party || 'not specified') + '\n\nRETURN ONLY VALID JSON with fields: incumbent, incumbentSince, primaryStatus, primaryDate, primaryOpponent, primaryResult, generalOpponent (name, party, background, previousRaces, knownPositions), districtPartisanLean, districtDescription, countiesOrAreas, recentElectionResults, keyLocalIssues, candidateBackground, candidateKeyVotes, candidateCommittees, campaignStrategicPriorities, remainingDeadlines, intelligenceNotes.';
-
-  fetch(WORKER_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: researchPrompt, mode: 'research', candidateName: campaignData.candidateName||'', specificOffice: campaignData.specificOffice||'', location: campaignData.location||'', state: campaignData.state||'', electionDate: campaignData.electionDate||'', party: campaignData.party||'' })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    var rawText = '';
-    if (data.content && Array.isArray(data.content)) {
-      data.content.forEach(function(block) { if (block.type === 'text' && block.text) rawText += block.text; });
-    }
-    if (rawText) {
-      var jsonStr = rawText.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-      var briefObj = null;
-      try { briefObj = JSON.parse(jsonStr); } catch(e) {
-        var match = jsonStr.match(/\{[\s\S]*\}/);
-        if (match) { try { briefObj = JSON.parse(match[0]); } catch(e2) {} }
-      }
-      if (briefObj && Object.keys(briefObj).length > 2) {
-        briefObj._generatedAt = new Date().toISOString();
-        briefObj._candidateName = campaignData.candidateName;
-        briefObj._office = campaignData.specificOffice;
-        localStorage.setItem(storageKey('ctb_candidate_brief'), JSON.stringify(briefObj));
-      }
-    }
-  })
-  .catch(function() {})
-  .finally(origFinally);
+  showIntelLoading(tc);
+  fetchIntelData(tabKey);
 }
+
+function refreshActiveIntelTab() {
+  var btn = document.getElementById('intel-refresh-btn');
+  if (btn) { btn.textContent = 'Researching...'; btn.style.opacity = '.5'; btn.style.pointerEvents = 'none'; }
+  loadIntelTab(intelActiveTab, true);
+}
+
+function showIntelLoading(tc) {
+  var msgIdx = 0;
+  tc.innerHTML = '<div style="text-align:center;padding:40px 20px">' +
+    '<div class="intel-spinner"></div>' +
+    '<div style="font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;margin-bottom:12px">Sam is researching...</div>' +
+    '<div id="intel-loading-msg" style="font-size:11px;color:rgba(255,255,255,.4);font-style:italic">' + intelLoadingMessages[0] + '</div></div>';
+  window._intelLoadingInterval = setInterval(function() {
+    msgIdx = (msgIdx + 1) % intelLoadingMessages.length;
+    var msgEl = document.getElementById('intel-loading-msg');
+    if (msgEl) msgEl.textContent = intelLoadingMessages[msgIdx];
+    else clearInterval(window._intelLoadingInterval);
+  }, 2000);
+}
+
+function getElectionYear() {
+  return campaignData.electionDate ? campaignData.electionDate.split('-')[0] : new Date().getFullYear().toString();
+}
+
+function fetchIntelData(tabKey) {
+  var office = campaignData.specificOffice || 'office';
+  var state = campaignData.state || '';
+  var loc = campaignData.location || campaignData.city || '';
+  var year = getElectionYear();
+  var party = campaignData.party || '';
+  var name = campaignData.candidateName || '';
+  var prompt = '';
+  if (tabKey === 'candidates') {
+    prompt = 'Search for all candidates who have officially filed to run for ' + office + ' in ' + state + ' in ' + year + '. For each candidate found return: full name, party affiliation, whether they are the incumbent, a 1-2 sentence background, and filing status (confirmed/rumored/withdrawn). Also indicate which one is ' + name + '. Return ONLY valid JSON: {"candidates":[{"name":"...","party":"...","isIncumbent":false,"background":"...","status":"confirmed","isCurrentCandidate":false}],"totalFiled":0,"raceNote":"..."}';
+  } else if (tabKey === 'pulse') {
+    prompt = 'Search for recent local news, events, and issues happening in ' + loc + ', ' + state + ' related to the ' + office + ' race and local politics. Find 5-8 recent news items or local issues that a candidate should know about. Focus on local political developments, voter concerns, controversies, and community issues. Return ONLY valid JSON: {"items":[{"headline":"...","summary":"...","relevance":"...","sentiment":"positive|negative|neutral","date":"...","category":"local-politics|issues|opponent|community|economy"}]}';
+  } else if (tabKey === 'outreach') {
+    prompt = 'Research voter data for the ' + office + ' race in ' + loc + ', ' + state + '. Find voter registration breakdown by party (percentages), turnout history for similar races, most persuadable voter segments, top issues ranked by voter concern, geographic hotspots where persuadable voters are concentrated, and a recommendation on where the candidate should focus. Return ONLY valid JSON: {"registration":{"republican":0,"democrat":0,"independent":0,"other":0},"turnoutHistory":[{"year":0,"turnout":0,"raceType":"..."}],"persuadableSegments":[{"segment":"...","size":"...","description":"..."}],"topIssues":[{"issue":"...","concern":0,"trend":"rising|falling|stable"}],"hotspots":["..."],"recommendation":"..."}';
+  } else if (tabKey === 'threats') {
+    prompt = 'Analyze all candidates running for ' + office + ' in ' + state + ' in ' + year + ' and assess each one as a threat to ' + name + ' who is a ' + party + ' candidate. For each opponent score them 1-10 on: Financial Strength, Name Recognition, Momentum, and Direct Threat. Calculate overall threat score (average). Classify: HIGH (7-10), MEDIUM (4-6.9), LOW (1-3.9). Return ONLY valid JSON: {"opponents":[{"name":"...","party":"...","overallScore":0,"threatLevel":"high|medium|low","scores":{"financial":0,"nameRecognition":0,"momentum":0,"directThreat":0},"summary":"...","keyRisk":"...","trend":"surging|stable|fading"}],"strategicSummary":"..."}';
+  }
+  fetch(typeof WORKER_URL !== 'undefined' ? WORKER_URL : '', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({message: prompt, mode: 'research', candidateName: name, specificOffice: office, location: loc, state: state, electionDate: campaignData.electionDate||'', party: party})
+  }).then(function(r){return r.json();}).then(function(data) {
+    var rawText = '';
+    if (data.content && Array.isArray(data.content)) data.content.forEach(function(b){if(b.type==='text'&&b.text) rawText+=b.text;});
+    var jsonStr = rawText.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+    var obj = null;
+    try { obj = JSON.parse(jsonStr); } catch(e) { var m = jsonStr.match(/\{[\s\S]*\}/); if(m) try{obj=JSON.parse(m[0]);}catch(e2){} }
+    if (obj) {
+      var cache = getIntelCache();
+      cache[tabKey] = { data: obj, fetchedAt: Date.now() };
+      saveIntelCache(cache);
+      if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
+      renderIntelTabContent(tabKey, obj, Date.now());
+    } else {
+      if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
+      showIntelError();
+    }
+  }).catch(function(){
+    if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
+    showIntelError();
+  }).finally(function(){
+    var btn = document.getElementById('intel-refresh-btn');
+    if (btn) { btn.textContent = '\uD83D\uDD04 Refresh'; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+  });
+}
+
+function showIntelError() {
+  var tc = document.getElementById('intel-tab-content');
+  if (tc) tc.innerHTML = '<div style="text-align:center;padding:32px 16px"><div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Limited Data Available</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;line-height:1.6">Sam couldn\'t find reliable data for this section. This is common for local races with limited media coverage. Try refreshing or check back as the race develops.</div></div>';
+}
+
+function renderIntelTabContent(tabKey, data, fetchedAt) {
+  var tc = document.getElementById('intel-tab-content');
+  if (!tc) return;
+  var timeLabel = '<div style="font-size:9px;color:rgba(255,255,255,.25);text-align:right;margin-bottom:8px">Last updated: ' + timeAgo(fetchedAt) + '</div>';
+  var html = timeLabel;
+  if (tabKey === 'candidates') html += renderCandidatesTab(data);
+  else if (tabKey === 'pulse') html += renderPulseTab(data);
+  else if (tabKey === 'outreach') html += renderOutreachTab(data);
+  else if (tabKey === 'threats') html += renderThreatsTab(data);
+  tc.innerHTML = html;
+}
+
+// TAB 1 — FILED CANDIDATES
+function renderCandidatesTab(data) {
+  var cands = data.candidates || [];
+  var html = '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">' + (data.totalFiled||cands.length) + ' Candidates Filed</div>';
+  if (cands.length === 0) {
+    return html + '<div style="text-align:center;padding:32px 0"><div style="font-size:13px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase">No Candidates Have Filed</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;margin-top:8px">Sam will monitor for filings and alert you when candidates enter the race.</div></div>';
+  }
+  cands.forEach(function(c) {
+    var partyStyle = '';
+    if ((c.party||'').match(/rep/i)) partyStyle = 'background:rgba(232,112,112,.15);border:1px solid rgba(232,112,112,.3);color:var(--red)';
+    else if ((c.party||'').match(/dem/i)) partyStyle = 'background:rgba(107,156,216,.15);border:1px solid rgba(107,156,216,.3);color:var(--blue)';
+    else partyStyle = 'background:rgba(255,255,255,.08);color:var(--t2)';
+    var youTag = c.isCurrentCandidate ? '<span style="color:var(--gold);font-size:11px;margin-left:4px">(You)</span>' : '';
+    var incumbentBadge = c.isIncumbent ? '<span style="font-size:8px;font-weight:700;letter-spacing:.1em;padding:2px 6px;border-radius:3px;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.3);color:var(--gold);margin-left:6px">INCUMBENT</span>' : '';
+    var statusBadge = '';
+    if (c.status === 'confirmed') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(130,179,134,.12);color:var(--green);font-weight:700">FILED</span>';
+    else if (c.status === 'rumored') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(212,165,116,.12);color:var(--gold);font-weight:700">RUMORED</span>';
+    else if (c.status === 'withdrawn') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--t3);font-weight:700;text-decoration:line-through">WITHDRAWN</span>';
+    html += '<div class="intel-card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+        '<div><span style="font-size:13px;font-weight:700;color:var(--t1)' + (c.status==='withdrawn'?';text-decoration:line-through;opacity:.5':'') + '">' + escapeHtml(c.name||'') + '</span>' + youTag + incumbentBadge + '</div>' +
+        '<div style="display:flex;gap:6px;align-items:center">' + statusBadge + '<span class="intel-party-pill" style="' + partyStyle + '">' + escapeHtml(c.party||'') + '</span></div>' +
+      '</div>' +
+      (c.background ? '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin-top:6px">' + escapeHtml(c.background) + '</div>' : '') +
+    '</div>';
+  });
+  if (data.raceNote) html += '<div style="font-size:10px;color:rgba(255,255,255,.35);font-style:italic;margin-top:8px">' + escapeHtml(data.raceNote) + '</div>';
+  return html;
+}
+
+// TAB 2 — DISTRICT PULSE
+function renderPulseTab(data) {
+  var items = data.items || [];
+  var loc = (campaignData.location||campaignData.city||'').toUpperCase();
+  var html = '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase">District Pulse \u2014 ' + loc + '</div>' +
+    '<div style="font-size:9px;color:rgba(255,255,255,.2);font-style:italic;margin-bottom:12px">Live intelligence updated daily</div>';
+  if (items.length === 0) return html + '<div style="text-align:center;padding:24px;font-size:11px;color:rgba(255,255,255,.3)">No recent news items found for this area.</div>';
+  var catColors = {'local-politics':'var(--purple)','issues':'var(--blue)','opponent':'var(--red)','community':'var(--green)','economy':'var(--gold)'};
+  items.forEach(function(item) {
+    var catColor = catColors[item.category] || 'var(--t3)';
+    var sentIcon = item.sentiment === 'positive' ? '<span style="color:var(--green)">\u2191</span>' : item.sentiment === 'negative' ? '<span style="color:var(--red)">\u2193</span>' : '<span style="color:var(--t3)">\u2192</span>';
+    html += '<div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05)">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+        '<span style="font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' + catColor + '">' + escapeHtml(item.category||'') + '</span>' +
+        sentIcon +
+      '</div>' +
+      '<div style="font-family:var(--font-d);font-style:italic;font-size:13px;font-weight:600;color:var(--t1);margin:4px 0">' + escapeHtml(item.headline||'') + '</div>' +
+      '<div style="font-size:11px;color:var(--t2);line-height:1.6">' + escapeHtml(item.summary||'') + '</div>' +
+      (item.relevance ? '<div class="intel-relevance">WHY IT MATTERS: ' + escapeHtml(item.relevance) + '</div>' : '') +
+    '</div>';
+  });
+  return html;
+}
+
+// TAB 3 — VOTER OUTREACH
+function renderOutreachTab(data) {
+  var html = '';
+  // Registration breakdown
+  if (data.registration) {
+    var r = data.registration;
+    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">Voter Registration</div>';
+    html += '<div class="reg-bar">';
+    if (r.republican) html += '<div style="width:' + r.republican + '%;background:var(--red);height:100%"></div>';
+    if (r.democrat) html += '<div style="width:' + r.democrat + '%;background:var(--blue);height:100%"></div>';
+    if (r.independent) html += '<div style="width:' + r.independent + '%;background:var(--gold);height:100%"></div>';
+    if (r.other) html += '<div style="width:' + r.other + '%;background:var(--t3);height:100%"></div>';
+    html += '</div>';
+    html += '<div style="display:flex;gap:12px;font-size:10px;margin-bottom:16px;flex-wrap:wrap">';
+    if (r.republican) html += '<span style="color:var(--red)">R: ' + r.republican + '%</span>';
+    if (r.democrat) html += '<span style="color:var(--blue)">D: ' + r.democrat + '%</span>';
+    if (r.independent) html += '<span style="color:var(--gold)">I: ' + r.independent + '%</span>';
+    if (r.other) html += '<span style="color:var(--t3)">Other: ' + r.other + '%</span>';
+    html += '</div>';
+  }
+  // Turnout history
+  if (data.turnoutHistory && data.turnoutHistory.length) {
+    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:8px">Turnout History</div>';
+    html += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">';
+    data.turnoutHistory.forEach(function(t) {
+      var tColor = t.turnout > 40 ? 'var(--green)' : t.turnout > 25 ? 'var(--gold)' : 'var(--red)';
+      html += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:4px;padding:8px 12px;text-align:center"><div style="font-size:10px;color:var(--t3)">' + (t.year||'') + '</div><div style="font-size:14px;font-weight:700;color:' + tColor + ';margin-top:2px">' + (t.turnout||0) + '%</div></div>';
+    });
+    html += '</div>';
+  }
+  // Persuadable segments
+  if (data.persuadableSegments && data.persuadableSegments.length) {
+    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:8px">Persuadable Segments</div>';
+    data.persuadableSegments.forEach(function(s) {
+      html += '<div class="intel-card"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--t1)">' + escapeHtml(s.segment||'') + '</span>' + (s.size ? '<span style="font-size:9px;padding:2px 6px;border-radius:10px;background:rgba(212,165,116,.12);color:var(--gold);font-weight:700">~' + escapeHtml(s.size) + '</span>' : '') + '</div>' +
+        (s.description ? '<div style="font-size:11px;color:var(--t2);margin-top:4px">' + escapeHtml(s.description) + '</div>' : '') + '</div>';
+    });
+  }
+  // Top issues
+  if (data.topIssues && data.topIssues.length) {
+    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin:12px 0 8px">Top Issues</div>';
+    data.topIssues.forEach(function(iss) {
+      var trendIcon = iss.trend === 'rising' ? '<span style="color:var(--red)">\u2191</span>' : iss.trend === 'falling' ? '<span style="color:var(--t3)">\u2193</span>' : '<span style="color:var(--gold)">\u2192</span>';
+      var barColor = iss.trend === 'rising' ? 'var(--red)' : 'var(--blue)';
+      html += '<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:3px"><span>' + escapeHtml(iss.issue||'') + ' ' + trendIcon + '</span><span style="color:var(--t3)">' + (iss.concern||0) + '/10</span></div>' +
+        '<div style="height:4px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden"><div style="height:100%;width:' + ((iss.concern||0)*10) + '%;background:' + barColor + ';border-radius:2px"></div></div></div>';
+    });
+  }
+  // Recommendation
+  if (data.recommendation) {
+    html += '<div class="intel-rec"><div style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:8px">\uD83D\uDCA1 Sam\'s Outreach Recommendation</div>' +
+      '<div style="font-size:12px;color:var(--t1);line-height:1.6">' + escapeHtml(data.recommendation) + '</div></div>';
+  }
+  return html || '<div style="text-align:center;padding:24px;color:rgba(255,255,255,.3);font-size:11px">No voter data available yet.</div>';
+}
+
+// TAB 4 — THREAT ASSESSMENT
+function renderThreatsTab(data) {
+  var opps = (data.opponents || []).sort(function(a,b){ return (b.overallScore||0)-(a.overallScore||0); });
+  var html = '';
+  if (opps.length === 0) return '<div style="text-align:center;padding:24px;color:rgba(255,255,255,.3);font-size:11px">No opponents identified for threat analysis yet.</div>';
+  opps.forEach(function(o) {
+    var lvl = o.threatLevel || 'low';
+    var threatCls = lvl === 'high' ? 'intel-threat-high' : lvl === 'medium' ? 'intel-threat-med' : 'intel-threat-low';
+    var scoreColor = (o.overallScore||0) >= 7 ? 'background:rgba(232,112,112,.2);color:var(--red);border:1px solid rgba(232,112,112,.4)' : (o.overallScore||0) >= 4 ? 'background:rgba(212,165,116,.2);color:var(--gold)' : 'background:rgba(130,179,134,.2);color:var(--green)';
+    var trendHtml = o.trend === 'surging' ? '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--red)">\u2191 SURGING</span>' : o.trend === 'fading' ? '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--green)">\u2193 FADING</span>' : '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--t3)">\u2192 STABLE</span>';
+    html += '<div class="intel-card ' + threatCls + '" style="padding:14px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+        '<div style="font-size:13px;font-weight:700;color:var(--t1)">' + escapeHtml(o.name||'') + '</div>' +
+        '<div style="display:flex;gap:8px;align-items:center">' + trendHtml + '<span class="intel-score" style="' + scoreColor + '">' + (o.overallScore||0).toFixed(1) + '/10</span></div>' +
+      '</div>';
+    // Score breakdown
+    if (o.scores) {
+      var sc = o.scores;
+      var scoreItems = [{l:'Financial',v:sc.financial},{l:'Name ID',v:sc.nameRecognition},{l:'Momentum',v:sc.momentum},{l:'Direct Threat',v:sc.directThreat}];
+      html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px">';
+      scoreItems.forEach(function(s) {
+        var sColor = (s.v||0) >= 7 ? 'var(--red)' : (s.v||0) >= 4 ? 'var(--gold)' : 'var(--green)';
+        html += '<div style="text-align:center"><div style="font-size:8px;letter-spacing:.08em;color:rgba(255,255,255,.3);text-transform:uppercase">' + s.l + '</div><div style="font-size:16px;font-weight:800;color:' + sColor + '">' + (s.v||0) + '</div></div>';
+      });
+      html += '</div>';
+    }
+    if (o.summary) html += '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin:8px 0">' + escapeHtml(o.summary) + '</div>';
+    if (o.keyRisk) html += '<div class="intel-risk">\u26A0 KEY RISK: ' + escapeHtml(o.keyRisk) + '</div>';
+    html += '</div>';
+  });
+  if (data.strategicSummary) {
+    html += '<div class="intel-rec"><div style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:8px">\uD83D\uDCA1 Strategic Assessment</div>' +
+      '<div style="font-size:12px;color:var(--t1);line-height:1.6">' + escapeHtml(data.strategicSummary) + '</div></div>';
+  }
+  return html;
+}
+
+function refreshIntelFromPanel() { refreshActiveIntelTab(); }
 
 function renderEndorsementsOverlay() {
   var endorsements = [];
