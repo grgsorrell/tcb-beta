@@ -13,11 +13,27 @@ named Sam powered by Claude Haiku.
 - samavatar.png — Sam avatar image
 - CLAUDE.md — This file
 
-## Deployment
+## Deployment — TWO COMMANDS REQUIRED
+Every change requires TWO separate deploys.
+Never deploy one without the other.
+
 - Frontend: https://tcb-beta.grgsorrell.workers.dev
 - Sam Worker: https://candidate-toolbox-secretary2.grgsorrell.workers.dev
 - GitHub: https://github.com/grgsorrell/tcb-beta
-- Deploy command: wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
+
+```bash
+# 1. Deploy backend (Sam/Worker)
+wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
+
+# 2. Deploy frontend (app.html + static assets)
+wrangler deploy --name tcb-beta --assets . --compatibility-date 2026-04-07
+
+# 3. Push to GitHub
+git add . && git commit -m "description" && git push
+```
+
+NEVER declare a fix complete without running both deploy commands.
+Playwright tests must run against the live site after BOTH deploys.
 
 ## Design System (LOCKED — never change these)
 CSS Variables:
@@ -57,21 +73,30 @@ ctb_finance_setup, ctb_day1_brief, ctb_budget
 Global keys (no namespacing):
 tcb_session, tcb_current_user, samVoiceEnabled
 
-## Sam Tools (all must stay in worker.js)
-add_calendar_event, add_expense, log_contribution,
-add_note, add_endorsement, navigate_to,
-update_budget_total, set_win_number, save_document,
-set_fundraising_goal, set_category_allocation,
-update_starting_amount
+## Sam 2.0 Tools (all defined in worker.js)
+web_search, add_calendar_event (tasks+events),
+update_task, delete_task, complete_task,
+update_event, delete_event, add_expense,
+log_contribution, set_budget (merged),
+set_category_allocation, save_note (merged),
+add_endorsement, navigate_to, save_win_number,
+save_candidate_profile
+
+Server-side tool loop (up to 10 rounds).
+Tool calls returned in data.toolCalls for
+client-side execution in app.html.
 
 ## Known Working State
 - Login system working with session cookies
 - Per-user data namespacing working
-- Intelligence brief research working
-- Morning brief generating daily
-- All Sam tools executing correctly
+- Intelligence brief research working (4-tab Intel panel)
+- Morning brief: AI-generated daily, background gen on day 1
+- Sam 2.0: server-side tool loop, 16 consolidated tools
+- All Sam tools executing correctly (10/10 Playwright tests)
 - Compliance checkboxes persisting
 - Voice TTS and mic STT working
+- Intel Ground Truth injected into Sam's system prompt
+- ID-based tool targeting for update/delete operations
 
 ## When Making Changes
 - Always test with localStorage.clear() + fresh onboarding
@@ -80,3 +105,5 @@ update_starting_amount
 - Always keep CORS headers on all Worker responses
 - Budget progress bar shows AVAILABLE not spent
 - Days to election always calculated fresh — never cached
+- Run `npx playwright test sam-tests.spec.js` after changes
+- Always deploy BOTH backend AND frontend (see Deployment above)
