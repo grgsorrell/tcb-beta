@@ -3888,7 +3888,8 @@ function generateMorningBrief(backgroundOnly) {
     '1. Opens with: "Good morning, ' + firstName + '. You have ' + (days||'?') + ' days until election day."\n' +
     '2. Lists what they have scheduled today. Today\'s events: ' + evtList + '. If nothing is scheduled, say so briefly and suggest they ask Sam to plan their day.\n' +
     '3. Includes a brief news summary \u2014 search for 2-3 relevant news items from the past 48 hours related to ' + mbScope.descriptor + ', ' + (campaignData.specificOffice||'') + ' level politics, or issues relevant to a ' + (campaignData.party||'') + ' candidate in this race. Mention them naturally in one or two sentences.' + (mbScope.isStatewide ? ' This is a statewide race \u2014 focus on statewide news and issues, NOT just ' + loc + '.' : ' Keep it hyper-local and relevant.') + '\n\n' +
-    'Write in a warm, direct, professional tone. Like a trusted chief of staff texting the candidate before they start their day. No bullet points, no headers, no markdown, no JSON. Just a clean paragraph. Return plain text only.';
+    'Write in a warm, direct, professional tone. Like a trusted chief of staff texting the candidate before they start their day. No bullet points, no headers, no markdown, no JSON. Just a clean paragraph. Return plain text only.\n\n' +
+    'CRITICAL: Never narrate your search process. Do not write "I\'ll search for...", "Let me search...", "Searching for...", "To include in your briefing...", or any sentence describing what you are about to do. Start your response DIRECTLY with "Good morning, ' + firstName + '." — the very first word must be "Good". Nothing before it.';
 
   console.log('[Brief] API call firing... backgroundOnly=' + !!backgroundOnly);
 
@@ -3900,7 +3901,7 @@ function generateMorningBrief(backgroundOnly) {
       var rawText = '';
       if (data.content && Array.isArray(data.content)) data.content.forEach(function(b){if(b.type==='text'&&b.text) rawText+=b.text;});
       rawText = rawText.replace(/\[\d+\]/g,'').replace(/\u3010[\s\S]*?\u3011/g,'').trim();
-      rawText = cleanResearchNarration(rawText);
+      rawText = cleanMorningBrief(rawText);
       if (rawText && rawText.length > 30) {
         var brief = { text: rawText, _generatedDate: getTodayStr(), _candidateName: campaignData.candidateName };
         localStorage.setItem(storageKey('ctb_morning_brief'), JSON.stringify(brief));
@@ -4723,6 +4724,31 @@ function cleanResearchNarration(text) {
   if (!text) return text;
   var cleaned = text.trim();
   var patterns = [/^I'll search for[^.]*\.\s*/i,/^Let me search[^.]*\.\s*/i,/^I'm searching[^.]*\.\s*/i,/^Searching for[^.]*\.\s*/i,/^I'll look up[^.]*\.\s*/i,/^I'll research[^.]*\.\s*/i,/^Let me research[^.]*\.\s*/i,/^I need to search[^.]*\.\s*/i,/^I'll find[^.]*\.\s*/i,/^Looking up[^.]*\.\s*/i,/^I'm going to search[^.]*\.\s*/i,/^I'll look into[^.]*\.\s*/i,/^Let me look[^.]*\.\s*/i,/^I found some info[^.]*\.\s*/i,/^Based on the search results,?\s*/i,/^Based on my research,?\s*/i,/^Based on my search,?\s*/i,/^Let me check[^.]*\.\s*/i];
+  var changed = true;
+  while (changed) {
+    changed = false;
+    for (var i = 0; i < patterns.length; i++) {
+      var newText = cleaned.replace(patterns[i], '').trim();
+      if (newText !== cleaned) { cleaned = newText; changed = true; }
+    }
+  }
+  return cleaned.trim();
+}
+
+// Dedicated morning brief cleaner — uses "Good morning/evening/afternoon" as anchor
+function cleanMorningBrief(text) {
+  if (!text) return text;
+  var cleaned = text.trim();
+  // Primary strategy: find the greeting and discard everything before it
+  var greetingMatch = cleaned.match(/(Good\s+(morning|evening|afternoon)[,.])/i);
+  if (greetingMatch) {
+    var greetingIndex = cleaned.indexOf(greetingMatch[0]);
+    if (greetingIndex > 0) {
+      cleaned = cleaned.substring(greetingIndex);
+    }
+  }
+  // Fallback: strip leading narration patterns (same as cleanResearchNarration plus brief-specific ones)
+  var patterns = [/^I'll search for[^.]*\.\s*/i,/^Let me search[^.]*\.\s*/i,/^I'm searching[^.]*\.\s*/i,/^Searching for[^.]*\.\s*/i,/^I'll look up[^.]*\.\s*/i,/^I'll research[^.]*\.\s*/i,/^Let me research[^.]*\.\s*/i,/^I need to search[^.]*\.\s*/i,/^I'll find[^.]*\.\s*/i,/^Looking up[^.]*\.\s*/i,/^I'm going to search[^.]*\.\s*/i,/^I'll look into[^.]*\.\s*/i,/^Let me look[^.]*\.\s*/i,/^I found some info[^.]*\.\s*/i,/^Based on the search results,?\s*/i,/^Based on my research,?\s*/i,/^Based on my search,?\s*/i,/^Let me check[^.]*\.\s*/i,/^To include in your briefing[^.]*\.\s*/i,/^Here's your morning briefing[^.]*[.:]\s*/i,/^Here is your morning briefing[^.]*[.:]\s*/i];
   var changed = true;
   while (changed) {
     changed = false;
