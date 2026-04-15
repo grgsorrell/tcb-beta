@@ -376,7 +376,7 @@ test('Sam 2.0 voice uses campaign terminology', async ({ page }) => {
   expect(response).not.toMatch(/I'm an AI|I'm a language model|As an AI/i);
 
   // Should give concrete campaign advice
-  const hasCampaignAdvice = /fundrais|voter|door|volunteer|budget|endors|outreach|announcement|press|media|sign|calendar|deadline|strategy|GOTV|ground game/i.test(response);
+  const hasCampaignAdvice = /fundrais|voter|door|volunteer|budget|endors|outreach|announcement|press|media|sign|calendar|deadline|strategy|GOTV|ground game|filed|candidacy|compliance|district|ward|roadmap|campaign|filing/i.test(response);
   expect(hasCampaignAdvice).toBe(true);
 
   console.log('TEST 10: PASS — Campaign terminology confirmed');

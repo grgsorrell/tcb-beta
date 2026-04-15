@@ -3889,7 +3889,8 @@ function generateMorningBrief(backgroundOnly) {
     '2. Lists what they have scheduled today. Today\'s events: ' + evtList + '. If nothing is scheduled, say so briefly and suggest they ask Sam to plan their day.\n' +
     '3. Includes a brief news summary \u2014 search for 2-3 relevant news items from the past 48 hours related to ' + mbScope.descriptor + ', ' + (campaignData.specificOffice||'') + ' level politics, or issues relevant to a ' + (campaignData.party||'') + ' candidate in this race. Mention them naturally in one or two sentences.' + (mbScope.isStatewide ? ' This is a statewide race \u2014 focus on statewide news and issues, NOT just ' + loc + '.' : ' Keep it hyper-local and relevant.') + '\n\n' +
     'Write in a warm, direct, professional tone. Like a trusted chief of staff texting the candidate before they start their day. No bullet points, no headers, no markdown, no JSON. Just a clean paragraph. Return plain text only.\n\n' +
-    'CRITICAL: Never narrate your search process. Do not write "I\'ll search for...", "Let me search...", "Searching for...", "To include in your briefing...", or any sentence describing what you are about to do. Start your response DIRECTLY with "Good morning, ' + firstName + '." — the very first word must be "Good". Nothing before it.';
+    'CRITICAL: Never narrate your search process. Do not write "I\'ll search for...", "Let me search...", "Searching for...", "To include in your briefing...", or any sentence describing what you are about to do. Start your response DIRECTLY with "Good morning, ' + firstName + '." — the very first word must be "Good". Nothing before it.\n\n' +
+    'Return plain text only. No HTML tags, no citation markup, no <cite> or <ancite> tags, no source references, no markdown. Plain conversational text that reads naturally when displayed as a paragraph.';
 
   console.log('[Brief] API call firing... backgroundOnly=' + !!backgroundOnly);
 
@@ -4757,11 +4758,35 @@ function cleanMorningBrief(text) {
       if (newText !== cleaned) { cleaned = newText; changed = true; }
     }
   }
-  return cleaned.trim();
+  // Strip citation tags but keep inner text
+  cleaned = cleaned.replace(/<ancite[^>]*>([\s\S]*?)<\/cite>/gi, '$1');
+  cleaned = cleaned.replace(/<cite[^>]*>([\s\S]*?)<\/cite>/gi, '$1');
+  // Strip any other HTML tags that leak through
+  cleaned = cleaned.replace(/<[^>]+>/g, '');
+  // Clean citation artifacts
+  cleaned = cleaned.replace(/\(Source:[^)]+\)/gi, '');
+  cleaned = cleaned.replace(/\[cite:[^\]]+\]/gi, '');
+  cleaned = cleaned.replace(/index="[^"]+"/gi, '');
+  // Clean double spaces left by removals
+  cleaned = cleaned.replace(/\s{2,}/g, ' ').trim();
+  return cleaned;
+}
+
+// Strip citation tags from any text (used for Sam chat too)
+function stripCitations(text) {
+  if (!text) return text;
+  return text
+    .replace(/<ancite[^>]*>([\s\S]*?)<\/cite>/gi, '$1')
+    .replace(/<cite[^>]*>([\s\S]*?)<\/cite>/gi, '$1')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\(Source:[^)]+\)/gi, '')
+    .replace(/\[cite:[^\]]+\]/gi, '')
+    .replace(/index="[^"]+"/gi, '')
+    .replace(/\s{2,}/g, ' ');
 }
 
 function formatSamText(text) {
-  return cleanResearchNarration(text)
+  return stripCitations(cleanResearchNarration(text))
     .replace(/\【\d+[:\d]*†?[a-z]*\】/g, '')       // Remove 【1†source】 style citations
     .replace(/\[\d+\]/g, '')                          // Remove [1] [2] style citations
     .replace(/\s*\.\s*\n/g, '.\n')                   // Fix ". \n" ��� ".\n"
