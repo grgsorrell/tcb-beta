@@ -2988,7 +2988,7 @@ function fetchIntelData(tabKey) {
   var scope = getIntelScope();
   var prompt = '';
   if (tabKey === 'candidates') {
-    prompt = 'Search for all candidates who have officially filed to run for ' + office + ' ' + scope.descriptor + ' in ' + year + '. For each candidate found return: full name, party affiliation, whether they are the incumbent, a 1-2 sentence background, and filing status (confirmed/rumored/withdrawn). Also indicate which one is ' + name + '. Return ONLY valid JSON: {"candidates":[{"name":"...","party":"...","isIncumbent":false,"background":"...","status":"confirmed","isCurrentCandidate":false}],"totalFiled":0,"raceNote":"..."}';
+    prompt = 'Search for all candidates who have officially filed to run for ' + office + ' ' + scope.descriptor + ' in ' + year + '. For each candidate found return: full name, party affiliation, whether they are the incumbent, a 1-2 sentence background, and filing status (confirmed/rumored/withdrawn). Also indicate which one is ' + name + ' by setting isCurrentCandidate:true ONLY for that exact person.\n\nAlso determine the current race phase:\n- "pre-primary" = primary hasn\'t happened yet\n- "post-primary" = primary occurred, general election candidates are now determined\n- "general" = general election is the active contest\n- "post-general" = election has passed\n\nIf the primary has occurred, list the candidates who advanced to the general election in generalCandidates array.\n\nReturn ONLY valid JSON: {"candidates":[{"name":"...","party":"...","isIncumbent":false,"background":"...","status":"confirmed","isCurrentCandidate":false}],"totalFiled":0,"raceNote":"...","racePhase":"pre-primary","primaryDate":null,"generalDate":null,"generalCandidates":[]}';
   } else if (tabKey === 'pulse') {
     prompt = 'Search for recent news, events, and issues affecting ' + scope.descriptor + ' related to the ' + office + ' race and politics. Find 5-8 recent news items or issues that a candidate for ' + office + ' should know about. Focus on political developments, voter concerns, controversies, and community issues. Return ONLY valid JSON: {"items":[{"headline":"...","summary":"...","relevance":"...","sentiment":"positive|negative|neutral","date":"...","category":"local-politics|issues|opponent|community|economy"}]}';
   } else if (tabKey === 'outreach') {
@@ -3041,32 +3041,111 @@ function renderIntelTabContent(tabKey, data, fetchedAt) {
   tc.innerHTML = html;
 }
 
-// TAB 1 — FILED CANDIDATES
+// HELPER: Strict isCurrentCandidate check — must match both first AND last name
+function isActuallyCurrentCandidate(candidateName, myName) {
+  if (!candidateName || !myName) return false;
+  var cn = candidateName.toLowerCase().trim();
+  var mn = myName.toLowerCase().trim();
+  // Exact match
+  if (cn === mn) return true;
+  // Both first AND last name must be present in the candidate name
+  var parts = mn.split(/\s+/).filter(function(p){ return p.length > 1; });
+  if (parts.length < 2) return cn.indexOf(mn) >= 0;
+  // Must match both first and last name
+  return parts.every(function(part){ return cn.indexOf(part) >= 0; });
+}
+
+// TAB 1 — FILED CANDIDATES (phase-aware)
 function renderCandidatesTab(data) {
   var cands = data.candidates || [];
-  var html = '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">' + (data.totalFiled||cands.length) + ' Candidates Filed</div>';
-  if (cands.length === 0) {
-    return html + '<div style="text-align:center;padding:32px 0"><div style="font-size:13px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase">No Candidates Have Filed</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;margin-top:8px">Sam will monitor for filings and alert you when candidates enter the race.</div></div>';
+  var myName = campaignData.candidateName || '';
+  var phase = (data.racePhase || 'pre-primary').toLowerCase();
+  var generalCandidateNames = (data.generalCandidates || []).map(function(n){ return n.toLowerCase().trim(); });
+  var isPostPrimary = phase === 'post-primary' || phase === 'general';
+  var html = '';
+
+  // Race phase header
+  if (isPostPrimary) {
+    html += '<div style="font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px">' +
+      '<span style="width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block"></span>' +
+      'GENERAL ELECTION' + (data.generalDate ? ' \u2014 ' + data.generalDate : '') +
+    '</div>';
+    if (data.primaryDate) {
+      html += '<div style="font-size:9px;color:var(--t3);margin-bottom:10px">Primary completed ' + data.primaryDate + '</div>';
+    }
+  } else if (phase === 'post-general') {
+    html += '<div style="font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">ELECTION COMPLETED</div>';
+  } else {
+    // pre-primary
+    html += '<div style="font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">' +
+      'PRIMARY ELECTION' + (data.primaryDate ? ' \u2014 ' + data.primaryDate : '') +
+    '</div>';
   }
-  cands.forEach(function(c) {
+
+  if (cands.length === 0) {
+    return html + '<div style="text-align:center;padding:32px 0"><div style="font-size:13px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase">No Candidates Found</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;margin-top:8px">Sam will monitor for filings and alert you when candidates enter the race.</div></div>';
+  }
+
+  // Separate candidates into general (active) vs eliminated if post-primary
+  var generalCands = [];
+  var eliminatedCands = [];
+  if (isPostPrimary && generalCandidateNames.length > 0) {
+    cands.forEach(function(c) {
+      var cLower = (c.name || '').toLowerCase().trim();
+      var isGeneral = generalCandidateNames.some(function(gn){ return cLower.indexOf(gn) >= 0 || gn.indexOf(cLower) >= 0; });
+      // Our candidate always goes to general section
+      if (isActuallyCurrentCandidate(c.name, myName)) isGeneral = true;
+      if (isGeneral) generalCands.push(c);
+      else eliminatedCands.push(c);
+    });
+  } else {
+    generalCands = cands;
+  }
+
+  // Render helper for a single candidate card
+  function renderCandCard(c, muted) {
     var partyStyle = '';
     if ((c.party||'').match(/rep/i)) partyStyle = 'background:rgba(232,112,112,.15);border:1px solid rgba(232,112,112,.3);color:var(--red)';
     else if ((c.party||'').match(/dem/i)) partyStyle = 'background:rgba(107,156,216,.15);border:1px solid rgba(107,156,216,.3);color:var(--blue)';
     else partyStyle = 'background:rgba(255,255,255,.08);color:var(--t2)';
-    var youTag = c.isCurrentCandidate ? '<span style="color:var(--gold);font-size:11px;margin-left:4px">(You)</span>' : '';
+    // Client-side verification of isCurrentCandidate — fixes BUG 1
+    var isYou = isActuallyCurrentCandidate(c.name, myName);
+    var youTag = isYou ? '<span style="color:var(--gold);font-size:11px;margin-left:4px">(You)</span>' : '';
     var incumbentBadge = c.isIncumbent ? '<span style="font-size:8px;font-weight:700;letter-spacing:.1em;padding:2px 6px;border-radius:3px;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.3);color:var(--gold);margin-left:6px">INCUMBENT</span>' : '';
     var statusBadge = '';
-    if (c.status === 'confirmed') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(130,179,134,.12);color:var(--green);font-weight:700">FILED</span>';
+    if (muted) {
+      statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(232,112,112,.1);color:var(--red);font-weight:700;letter-spacing:.05em">ELIMINATED IN PRIMARY</span>';
+    } else if (c.status === 'confirmed') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(130,179,134,.12);color:var(--green);font-weight:700">FILED</span>';
     else if (c.status === 'rumored') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(212,165,116,.12);color:var(--gold);font-weight:700">RUMORED</span>';
     else if (c.status === 'withdrawn') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--t3);font-weight:700;text-decoration:line-through">WITHDRAWN</span>';
-    html += '<div class="intel-card">' +
+    var cardStyle = muted ? 'background:rgba(255,255,255,.02);opacity:.6' : '';
+    var nameStyle = 'font-size:13px;font-weight:700;color:var(--t1)' + (muted || c.status==='withdrawn' ? ';opacity:.5' : '');
+    return '<div class="intel-card" style="' + cardStyle + '">' +
       '<div style="display:flex;justify-content:space-between;align-items:center">' +
-        '<div><span style="font-size:13px;font-weight:700;color:var(--t1)' + (c.status==='withdrawn'?';text-decoration:line-through;opacity:.5':'') + '">' + escapeHtml(c.name||'') + '</span>' + youTag + incumbentBadge + '</div>' +
+        '<div><span style="' + nameStyle + '">' + escapeHtml(c.name||'') + '</span>' + youTag + incumbentBadge + '</div>' +
         '<div style="display:flex;gap:6px;align-items:center">' + statusBadge + '<span class="intel-party-pill" style="' + partyStyle + '">' + escapeHtml(c.party||'') + '</span></div>' +
       '</div>' +
-      (c.background ? '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin-top:6px">' + escapeHtml(c.background) + '</div>' : '') +
+      (c.background ? '<div style="font-size:11px;color:' + (muted ? 'var(--t3)' : 'var(--t2)') + ';line-height:1.5;margin-top:6px">' + escapeHtml(c.background) + '</div>' : '') +
     '</div>';
-  });
+  }
+
+  // Render general/active candidates
+  if (isPostPrimary && generalCandidateNames.length > 0) {
+    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--green);text-transform:uppercase;margin-bottom:8px">' + generalCands.length + ' General Election Candidates</div>';
+  } else {
+    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:8px">' + (data.totalFiled||cands.length) + ' Candidates Filed</div>';
+  }
+  generalCands.forEach(function(c){ html += renderCandCard(c, false); });
+
+  // Render eliminated candidates (collapsed by default)
+  if (eliminatedCands.length > 0) {
+    html += '<details style="margin-top:12px"><summary style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;cursor:pointer;user-select:none;padding:6px 0">' +
+      'PRIMARY CANDIDATES (' + eliminatedCands.length + ' eliminated) \u25B6</summary>' +
+      '<div style="margin-top:6px">';
+    eliminatedCands.forEach(function(c){ html += renderCandCard(c, true); });
+    html += '</div></details>';
+  }
+
   if (data.raceNote) html += '<div style="font-size:10px;color:rgba(255,255,255,.35);font-style:italic;margin-top:8px">' + escapeHtml(data.raceNote) + '</div>';
   return html;
 }
