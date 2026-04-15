@@ -4389,7 +4389,9 @@ function executeToolCall(block) {
     confirmMsg = '\u2705 Profile updated';
   }
   else if (name === 'update_task') {
-    var found = tasks.find(function(t) { return !t.completed && t.name && t.name.toLowerCase().indexOf((inp.task_name||'').toLowerCase()) >= 0; });
+    // ID-based lookup first, name fallback
+    var found = inp.taskId ? tasks.find(function(t) { return String(t.id) === String(inp.taskId); }) : null;
+    if (!found) found = tasks.find(function(t) { return !t.completed && t.name && t.name.toLowerCase().indexOf((inp.task_name||'').toLowerCase()) >= 0; });
     if (found) {
       if (inp.new_name) found.name = inp.new_name;
       if (inp.new_date) found.date = inp.new_date;
@@ -4398,30 +4400,33 @@ function executeToolCall(block) {
       if (currentView === 'calendar') renderCalendar();
       if (currentView === 'dashboard') refreshDashboard();
       confirmMsg = '\u2705 Updated task: ' + found.name;
-    } else { confirmMsg = 'Could not find task matching "' + (inp.task_name||'') + '"'; }
+    } else { confirmMsg = 'Could not find task matching "' + (inp.taskId || inp.task_name || '') + '"'; }
   }
   else if (name === 'delete_task') {
-    var idx = tasks.findIndex(function(t) { return t.name && t.name.toLowerCase().indexOf((inp.task_name||'').toLowerCase()) >= 0; });
+    var idx = inp.taskId ? tasks.findIndex(function(t) { return String(t.id) === String(inp.taskId); }) : -1;
+    if (idx < 0) idx = tasks.findIndex(function(t) { return t.name && t.name.toLowerCase().indexOf((inp.task_name||'').toLowerCase()) >= 0; });
     if (idx >= 0) {
       var removed = tasks.splice(idx, 1)[0];
       saveTasks();
       if (currentView === 'calendar') renderCalendar();
       if (currentView === 'dashboard') refreshDashboard();
       confirmMsg = '\u2705 Removed task: ' + removed.name;
-    } else { confirmMsg = 'Could not find task matching "' + (inp.task_name||'') + '"'; }
+    } else { confirmMsg = 'Could not find task matching "' + (inp.taskId || inp.task_name || '') + '"'; }
   }
   else if (name === 'complete_task') {
-    var ct = tasks.find(function(t) { return !t.completed && t.name && t.name.toLowerCase().indexOf((inp.task_name||'').toLowerCase()) >= 0; });
+    var ct = inp.taskId ? tasks.find(function(t) { return String(t.id) === String(inp.taskId); }) : null;
+    if (!ct) ct = tasks.find(function(t) { return !t.completed && t.name && t.name.toLowerCase().indexOf((inp.task_name||'').toLowerCase()) >= 0; });
     if (ct) {
       ct.completed = true;
       saveTasks();
       if (currentView === 'calendar') renderCalendar();
       if (currentView === 'dashboard') refreshDashboard();
       confirmMsg = '\u2705 Completed: ' + ct.name;
-    } else { confirmMsg = 'Could not find task matching "' + (inp.task_name||'') + '"'; }
+    } else { confirmMsg = 'Could not find task matching "' + (inp.taskId || inp.task_name || '') + '"'; }
   }
   else if (name === 'update_event') {
-    var ue = events.find(function(e) { return e.name && e.name.toLowerCase().indexOf((inp.event_name||'').toLowerCase()) >= 0; });
+    var ue = inp.eventId ? events.find(function(e) { return String(e.id) === String(inp.eventId); }) : null;
+    if (!ue) ue = events.find(function(e) { return e.name && e.name.toLowerCase().indexOf((inp.event_name||'').toLowerCase()) >= 0; });
     if (ue) {
       if (inp.new_name) ue.name = inp.new_name;
       if (inp.new_date) ue.date = inp.new_date;
@@ -4430,16 +4435,17 @@ function executeToolCall(block) {
       saveEvents();
       if (currentView === 'calendar') renderCalendar();
       confirmMsg = '\u2705 Updated event: ' + ue.name;
-    } else { confirmMsg = 'Could not find event matching "' + (inp.event_name||'') + '"'; }
+    } else { confirmMsg = 'Could not find event matching "' + (inp.eventId || inp.event_name || '') + '"'; }
   }
   else if (name === 'delete_event') {
-    var ei = events.findIndex(function(e) { return e.name && e.name.toLowerCase().indexOf((inp.event_name||'').toLowerCase()) >= 0; });
+    var ei = inp.eventId ? events.findIndex(function(e) { return String(e.id) === String(inp.eventId); }) : -1;
+    if (ei < 0) ei = events.findIndex(function(e) { return e.name && e.name.toLowerCase().indexOf((inp.event_name||'').toLowerCase()) >= 0; });
     if (ei >= 0) {
       var re = events.splice(ei, 1)[0];
       saveEvents();
       if (currentView === 'calendar') renderCalendar();
       confirmMsg = '\u2705 Removed event: ' + re.name;
-    } else { confirmMsg = 'Could not find event matching "' + (inp.event_name||'') + '"'; }
+    } else { confirmMsg = 'Could not find event matching "' + (inp.eventId || inp.event_name || '') + '"'; }
   }
   else if (name === 'update_budget') {
     var ubCat = CATEGORY_KEY_MAP[inp.category] || inp.category || 'misc';
@@ -4620,24 +4626,24 @@ async function sendSamMessage() {
   var spent = (campaignBudget.expenses||[]).reduce(function(s,e){return s+(e.amount||0);},0);
   var budgetRemaining = campaignBudget.total - spent;
 
-  // Build additional context from live app data
+  // Build additional context from live app data — include IDs for tool targeting
   var additionalCtx = '';
-  // Tasks
+  // Tasks (with IDs for update/delete/complete targeting)
   var upTasks = tasks.filter(function(t){return !t.completed;}).sort(function(a,b){return a.date>b.date?1:-1;}).slice(0,10);
   var doneTasks = tasks.filter(function(t){return t.completed;}).slice(-5);
   if (upTasks.length > 0 || doneTasks.length > 0) {
-    additionalCtx += 'UPCOMING TASKS:\n';
-    upTasks.forEach(function(t){ additionalCtx += '- ' + formatDate(t.date) + ': ' + (t.name||t.text||'') + ' [' + (t.category||'other') + ']\n'; });
+    additionalCtx += 'UPCOMING TASKS (use taskId for update/delete/complete):\n';
+    upTasks.forEach(function(t){ additionalCtx += '- [taskId:' + t.id + '] ' + formatDate(t.date) + ': ' + (t.name||t.text||'') + ' [' + (t.category||'other') + ']\n'; });
     if (doneTasks.length > 0) {
       additionalCtx += 'COMPLETED:\n';
-      doneTasks.forEach(function(t){ additionalCtx += '- ' + (t.name||t.text||'') + ' (done)\n'; });
+      doneTasks.forEach(function(t){ additionalCtx += '- [taskId:' + t.id + '] ' + (t.name||t.text||'') + ' (done)\n'; });
     }
   } else { additionalCtx += 'TASKS: None scheduled yet.\n'; }
-  // Events
+  // Events (with IDs for update/delete targeting)
   var upEvents = events.filter(function(e){return e.date >= getTodayStr();}).sort(function(a,b){return a.date>b.date?1:-1;}).slice(0,10);
   if (upEvents.length > 0) {
-    additionalCtx += 'UPCOMING EVENTS:\n';
-    upEvents.forEach(function(e){ additionalCtx += '- ' + formatDate(e.date) + (e.time?' at '+e.time:'') + ': ' + (e.name||'') + (e.location?' ('+e.location+')':'') + '\n'; });
+    additionalCtx += 'UPCOMING EVENTS (use eventId for update/delete):\n';
+    upEvents.forEach(function(e){ additionalCtx += '- [eventId:' + e.id + '] ' + formatDate(e.date) + (e.time?' at '+e.time:'') + ': ' + (e.name||'') + (e.location?' ('+e.location+')':'') + '\n'; });
   }
   // Budget detail
   if (campaignBudget.total > 0) {
@@ -4669,16 +4675,44 @@ async function sendSamMessage() {
   }
   // Current view
   additionalCtx += 'CURRENT VIEW: ' + (currentView||'dashboard') + '\n';
-  // Notes/folders summary
-  if (folders.length > 0) {
-    additionalCtx += 'SAVED NOTES:\n';
-    folders.forEach(function(f){
-      var nc = f.notes ? f.notes.length : 0;
-      additionalCtx += '- Folder "' + f.name + '" (' + nc + ' note' + (nc!==1?'s':'') + ')';
-      if (f.notes && f.notes.length > 0) additionalCtx += ': ' + f.notes.map(function(n){return n.title;}).join(', ');
-      additionalCtx += '\n';
+
+  // Compliance checklist state
+  var complianceCtx = '';
+  try {
+    var cc = JSON.parse(localStorage.getItem(storageKey('ctb_compliance'))) || {};
+    var ccKeys = Object.keys(cc);
+    if (ccKeys.length > 0) {
+      var done = ccKeys.filter(function(k){ return cc[k] === true; });
+      var pending = ccKeys.filter(function(k){ return cc[k] !== true; });
+      complianceCtx = 'COMPLIANCE: ' + done.length + ' of ' + ccKeys.length + ' items completed.';
+      if (pending.length > 0) complianceCtx += ' Pending: ' + pending.slice(0, 5).join(', ') + '.';
+      additionalCtx += complianceCtx + '\n';
+    }
+  } catch(e) {}
+
+  // Morning brief summary
+  try {
+    var mb = localStorage.getItem(storageKey('ctb_morning_brief'));
+    if (mb && mb.length > 10) {
+      additionalCtx += 'TODAY\'S MORNING BRIEF (summary): ' + mb.substring(0, 400) + (mb.length > 400 ? '...' : '') + '\n';
+    }
+  } catch(e) {}
+
+  // Recent note titles with previews
+  var recentNotes = [];
+  try {
+    folders.forEach(function(f) {
+      if (f.notes) f.notes.forEach(function(n) {
+        recentNotes.push({ title: n.title || 'Untitled', folder: f.name, preview: (n.content || '').substring(0, 80) });
+      });
     });
-  }
+    if (recentNotes.length > 0) {
+      additionalCtx += 'SAVED DOCUMENTS (' + recentNotes.length + '):\n';
+      recentNotes.slice(0, 10).forEach(function(n) {
+        additionalCtx += '- "' + n.title + '" in ' + n.folder + (n.preview ? ': ' + n.preview + '...' : '') + '\n';
+      });
+    }
+  } catch(e) {}
 
   // Load candidate brief from localStorage if it exists
   var brief = null;
@@ -4703,6 +4737,16 @@ async function sendSamMessage() {
     }
   } catch(e) {}
 
+  // Reconstruct history with tool context for API
+  function buildApiHistory(rawHist) {
+    return rawHist.map(function(entry) {
+      if (entry.toolsSummary && entry.role === 'assistant') {
+        return { role: 'assistant', content: entry.content + '\n[Actions taken: ' + entry.toolsSummary + ']' };
+      }
+      return { role: entry.role, content: entry.content };
+    });
+  }
+
   function buildRequestBody(msg, hist) {
     return {
       message: msg,
@@ -4712,7 +4756,7 @@ async function sendSamMessage() {
       candidateName: campaignData.candidateName || '',
       specificOffice: campaignData.specificOffice || '',
       location: campaignData.location || '',
-      history: hist,
+      history: buildApiHistory(hist),
       mode: samMode,
       budget: campaignBudget.total || campaignBudget.totalBudget || null,
       startingAmount: campaignBudget.startingAmount || 0,
@@ -4753,13 +4797,19 @@ async function sendSamMessage() {
 
     // Sam 2.0: Server handles the full tool loop.
     // Response contains: data.content (final text) + data.toolCalls (accumulated tool_use blocks)
+    // IMPORTANT: Execute ALL tools BEFORE showing Sam's text to prevent confirmation of failed actions.
 
     // STEP 1: Execute all accumulated tool calls from server loop
     var confirmations = [];
+    var toolErrors = [];
     if (data.toolCalls && data.toolCalls.length > 0) {
       data.toolCalls.forEach(function(block) {
-        var result = executeToolCall(block);
-        if (result.confirmMsg) confirmations.push(result.confirmMsg);
+        try {
+          var result = executeToolCall(block);
+          if (result.confirmMsg) confirmations.push(result.confirmMsg);
+        } catch (toolErr) {
+          toolErrors.push('Failed to execute ' + block.name + ': ' + (toolErr.message || 'unknown error'));
+        }
       });
     }
 
@@ -4770,13 +4820,26 @@ async function sendSamMessage() {
         if (block.type === 'text' && block.text) {
           textParts.push(block.text);
         } else if (block.type === 'tool_use') {
-          var result = executeToolCall(block);
-          if (result.confirmMsg) confirmations.push(result.confirmMsg);
+          try {
+            var result = executeToolCall(block);
+            if (result.confirmMsg) confirmations.push(result.confirmMsg);
+          } catch (toolErr) {
+            toolErrors.push('Failed to execute ' + block.name);
+          }
         }
       });
     }
 
-    // STEP 2: Show Sam's final text
+    // STEP 2: Show tool confirmations FIRST (they executed before text)
+    confirmations.forEach(function(msg) {
+      msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>';
+    });
+    // Show any tool execution errors
+    toolErrors.forEach(function(err) {
+      msgsEl.innerHTML += '<div class="sam-confirm" style="color:var(--red);border-color:rgba(232,112,112,.25)">\u26a0\ufe0f ' + err + '</div>';
+    });
+
+    // STEP 3: Show Sam's final text AFTER tools have executed
     var fullText = textParts.join('\n');
     if (fullText.trim()) {
       if (isDocumentContent(fullText)) {
@@ -4786,22 +4849,23 @@ async function sendSamMessage() {
         msgsEl.innerHTML += '<div class="sam-msg">' + formatSamText(fullText) + '</div>';
         samSpeak(fullText);
       }
-      msgsEl.scrollTop = msgsEl.scrollHeight;
     }
-
-    // STEP 3: Show tool confirmations
-    confirmations.forEach(function(msg) {
-      msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>';
-    });
     msgsEl.scrollTop = msgsEl.scrollHeight;
 
-    // Save to history
+    // Save to history with tool context for structured persistence
     var historyContent = fullText;
     if (confirmations.length > 0) {
       historyContent += (historyContent ? '\n' : '') + confirmations.join('\n');
     }
-    if (historyContent) {
-      chatHistory.push({ role: 'assistant', content: historyContent });
+    if (historyContent || (data.toolCalls && data.toolCalls.length > 0)) {
+      var histEntry = { role: 'assistant', content: historyContent || '' };
+      // Persist tool call summaries so Sam knows what was done after page reload
+      if (data.toolCalls && data.toolCalls.length > 0) {
+        histEntry.toolsSummary = data.toolCalls.map(function(tc) {
+          return tc.name + '(' + JSON.stringify(tc.input || {}).substring(0, 120) + ')';
+        }).join('; ');
+      }
+      chatHistory.push(histEntry);
       saveChatHistory();
     }
 

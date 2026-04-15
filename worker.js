@@ -1289,67 +1289,69 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "update_task",
-          description: "Update an existing task on the calendar. Match by current name (partial match). Provide only the fields you want to change.",
+          description: "Update an existing task. Use the taskId from the UPCOMING TASKS list in context to target the exact task. Falls back to name matching if no ID provided.",
           input_schema: {
             type: "object",
             properties: {
-              task_name: { type: "string", description: "Current name of the task (partial match)" },
-              current_date: { type: "string", description: "Current date to help find the right task (YYYY-MM-DD)" },
+              taskId: { type: "string", description: "The unique taskId from the tasks list in context (e.g., '1713200000.5'). Always prefer this over name matching." },
+              task_name: { type: "string", description: "Fallback: task name for partial matching if taskId not available" },
               new_name: { type: "string", description: "New name (if changing)" },
-              new_date: { type: "string", description: "New date (if changing)" },
+              new_date: { type: "string", description: "New date in YYYY-MM-DD (if changing)" },
               new_category: { type: "string", description: "New category (if changing)" }
             },
-            required: ["task_name"]
+            required: ["taskId"]
           }
         },
         {
           name: "delete_task",
-          description: "Remove a task from the calendar. Match by name (partial match).",
+          description: "Remove a task from the calendar. Use the taskId from the tasks list in context.",
           input_schema: {
             type: "object",
             properties: {
-              task_name: { type: "string", description: "Name of the task to delete" },
-              date: { type: "string", description: "Date to help find the right task" }
+              taskId: { type: "string", description: "The unique taskId from the tasks list in context" },
+              task_name: { type: "string", description: "Fallback: task name for partial matching" }
             },
-            required: ["task_name"]
+            required: ["taskId"]
           }
         },
         {
           name: "complete_task",
-          description: "Mark a task as completed. Use when the candidate says they finished, filed, or submitted something.",
+          description: "Mark a task as completed. Use when the candidate says they finished, filed, or submitted something. Use the taskId from the tasks list in context.",
           input_schema: {
             type: "object",
             properties: {
-              task_name: { type: "string", description: "Name of the task to complete" },
-              date: { type: "string", description: "Date to help find the right task" }
+              taskId: { type: "string", description: "The unique taskId from the tasks list in context" },
+              task_name: { type: "string", description: "Fallback: task name for partial matching" }
             },
-            required: ["task_name"]
+            required: ["taskId"]
           }
         },
         {
           name: "update_event",
-          description: "Update an existing event on the calendar. Match by current name (partial match).",
+          description: "Update an existing event. Use the eventId from the UPCOMING EVENTS list in context.",
           input_schema: {
             type: "object",
             properties: {
-              event_name: { type: "string", description: "Current name of the event" },
-              current_date: { type: "string", description: "Current date to disambiguate" },
-              new_name: { type: "string" }, new_date: { type: "string" },
-              new_time: { type: "string" }, new_location: { type: "string" }
+              eventId: { type: "string", description: "The unique eventId from the events list in context" },
+              event_name: { type: "string", description: "Fallback: event name for partial matching" },
+              new_name: { type: "string", description: "New name (if changing)" },
+              new_date: { type: "string", description: "New date in YYYY-MM-DD (if changing)" },
+              new_time: { type: "string", description: "New time in HH:MM 24h (if changing)" },
+              new_location: { type: "string", description: "New location (if changing)" }
             },
-            required: ["event_name"]
+            required: ["eventId"]
           }
         },
         {
           name: "delete_event",
-          description: "Remove an event from the calendar. Match by name (partial match).",
+          description: "Remove an event from the calendar. Use the eventId from the events list in context.",
           input_schema: {
             type: "object",
             properties: {
-              event_name: { type: "string", description: "Name of the event to delete" },
-              date: { type: "string", description: "Date to help find the right event" }
+              eventId: { type: "string", description: "The unique eventId from the events list in context" },
+              event_name: { type: "string", description: "Fallback: event name for partial matching" }
             },
-            required: ["event_name"]
+            required: ["eventId"]
           }
         },
         {
@@ -1385,12 +1387,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "set_budget",
-          description: "Set or update campaign budget settings. Can set total budget, starting cash, and/or fundraising goal in a single call. Only include fields the candidate mentions.",
+          description: "Set or update campaign budget settings. You MUST include at least one of: total, startingAmount, or fundraisingGoal. Can set multiple in one call. Example: to set a $25K budget use {total: 25000}. To set a fundraising goal use {fundraisingGoal: 50000}.",
           input_schema: {
             type: "object",
             properties: {
               total: { type: "number", description: "Total campaign budget in dollars" },
-              startingAmount: { type: "number", description: "Starting cash on hand" },
+              startingAmount: { type: "number", description: "Starting cash on hand in dollars" },
               fundraisingGoal: { type: "number", description: "Fundraising goal in dollars" }
             },
             required: []
@@ -1492,7 +1494,15 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           case 'delete_event': return { success: true, message: `Event "${inp.event_name}" removed` };
           case 'add_expense': return { success: true, message: `$${inp.amount} expense logged for ${inp.description} in ${inp.category}` };
           case 'log_contribution': return { success: true, message: `$${inp.amount} contribution from ${inp.donorName} logged` };
-          case 'set_budget': return { success: true, message: `Budget settings updated` };
+          case 'set_budget': {
+            const parts = [];
+            if (inp.total) parts.push(`Budget: $${inp.total}`);
+            if (inp.startingAmount) parts.push(`Starting cash: $${inp.startingAmount}`);
+            if (inp.fundraisingGoal) parts.push(`Goal: $${inp.fundraisingGoal}`);
+            return parts.length > 0
+              ? { success: true, message: parts.join(', ') + ' set' }
+              : { success: false, message: 'No budget fields provided — include total, startingAmount, or fundraisingGoal' };
+          }
           case 'set_category_allocation': return { success: true, message: `${inp.category} allocation set to $${inp.amount}` };
           case 'save_note': return { success: true, message: `"${inp.title}" saved to ${inp.folder}` };
           case 'add_endorsement': return { success: true, message: `${inp.name} added as ${inp.status} endorsement` };

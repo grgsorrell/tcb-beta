@@ -60,43 +60,38 @@ async function askSam(page, message) {
   await page.fill('#sam-input', message);
   await page.click('button.sp-send');
 
-  // Wait for typing indicator to appear then disappear
-  try {
-    await page.waitForSelector('#sam-typing', { timeout: 5000 });
-  } catch (e) {
-    // Typing indicator might appear and disappear very fast
-  }
+  // Wait for Sam to finish responding
+  // Strategy: wait until typing indicators are gone AND new content has stabilized
+  await page.waitForTimeout(3000); // initial API processing time
 
-  // Wait for Sam to finish responding (typing indicator gone + new messages stable)
-  let lastMsgCount = beforeCount;
   let lastText = '';
   let stableCount = 0;
 
-  for (let i = 0; i < 30; i++) {
-    await page.waitForTimeout(2000);
+  for (let i = 0; i < 25; i++) {
+    await page.waitForTimeout(2500);
 
     // Check if typing indicators are gone
     const typing1 = await page.$('#sam-typing');
     const typing2 = await page.$('#sam-typing2');
+    const isTyping = !!(typing1 || typing2);
 
-    // Get all non-typing sam messages
+    // Get all non-typing sam messages and confirms
     const msgs = await page.$$eval(
       '#sam-messages .sam-msg:not(.typing)',
       els => els.map(el => el.textContent.trim())
     );
-    const confirms = await page.$$eval(
-      '#sam-messages .sam-confirm',
-      els => els.map(el => el.textContent.trim())
-    );
 
-    const allText = [...msgs, ...confirms].join('\n');
-
-    if (!typing1 && !typing2 && allText === lastText && msgs.length > beforeCount) {
-      stableCount++;
-      if (stableCount >= 2) break;
+    if (!isTyping && msgs.length > beforeCount) {
+      const currentText = msgs.slice(beforeCount).join('\n');
+      if (currentText === lastText && currentText.length > 0) {
+        stableCount++;
+        if (stableCount >= 2) break;
+      } else {
+        stableCount = 0;
+        lastText = currentText;
+      }
     } else {
       stableCount = 0;
-      lastText = allText;
     }
   }
 
@@ -110,7 +105,7 @@ async function askSam(page, message) {
     els => els.map(el => el.textContent.trim())
   );
 
-  // Return new messages only
+  // Return new messages + any new confirms
   const newMsgs = allMsgs.slice(beforeCount);
   const response = [...newMsgs, ...allConfirms.slice(-5)].join('\n');
 
