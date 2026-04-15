@@ -1145,14 +1145,13 @@ function refreshDashboard() {
   // Morning Brief card
   renderMorningBrief();
 
-  // Stats
-  var spent = 0;
-  if (campaignBudget.expenses) spent = campaignBudget.expenses.reduce(function(s,e){return s+(e.amount||0);},0);
-  var remaining = campaignBudget.total - spent;
+  // Stats — use getBudgetTotals() as single source of truth
+  var bt = getBudgetTotals();
   var winNum = campaignData.winNumber || '--';
-  var taskCount = tasks.filter(function(t){return !t.completed;}).length;
 
-  var budgetSub = spent > 0 ? '$' + remaining.toLocaleString() + ' remaining of $' + campaignBudget.total.toLocaleString() : (campaignBudget.total > 0 ? 'No expenses yet' : 'Not set');
+  var budgetAvailable = bt.totalBudget - bt.totalSpent;
+  var budgetDisplay = bt.totalBudget > 0 ? '$' + budgetAvailable.toLocaleString() : '--';
+  var budgetSub = bt.totalSpent > 0 ? '$' + bt.totalSpent.toLocaleString() + ' spent of $' + bt.totalBudget.toLocaleString() : (bt.totalBudget > 0 ? '$' + bt.totalBudget.toLocaleString() + ' budget' : 'Not set');
   var taskPct = tasks.length ? Math.round(tasks.filter(function(t){return t.completed;}).length/tasks.length*100) : 0;
 
   var tasksDone = tasks.filter(function(t){return t.completed;}).length;
@@ -1162,7 +1161,7 @@ function refreshDashboard() {
   var phaseName = phase.replace(/^[\s\S]*?\s/, '').toUpperCase();
   document.getElementById('stat-grid').innerHTML =
     '<div class="sc sc-red"><div class="sl">Countdown</div><div class="sn" style="color:var(--red)">' + (days > 0 ? days : 0) + '</div><div class="ss">DAYS \u00B7 ' + phaseName + '</div></div>' +
-    '<div class="sc sc-gold"><div class="sl">War Chest</div><div class="sn" style="color:var(--gold)">' + (campaignBudget.total > 0 ? '$' + campaignBudget.total.toLocaleString() : '--') + '</div><div class="ss">' + budgetSub + '</div></div>' +
+    '<div class="sc sc-gold"><div class="sl">War Chest</div><div class="sn" style="color:var(--gold)">' + budgetDisplay + '</div><div class="ss">' + budgetSub + '</div></div>' +
     '<div class="sc sc-blue"><div class="sl">Win Target</div><div class="sn" style="color:var(--blue)">' + (typeof winNum === 'number' ? winNum.toLocaleString() : winNum) + '</div><div class="ss">VOTES</div></div>' +
     '<div class="sc sc-green"><div class="sl">Operational Flow</div><div class="sn" style="color:var(--green)">' + (tasksTotal > 0 ? tasksDone + '/' + tasksTotal : '0') + '</div><div class="pbar"><div class="pfill" style="width:' + taskPct + '%;background:var(--green)"></div></div><div class="ss">' + (tasksTotal > 0 ? taskPct + '% complete' : 'PENDING') + '</div></div>';
 
