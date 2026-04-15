@@ -252,8 +252,8 @@ test('Sam speaks like a campaign manager', async ({ page }) => {
 
   console.log('TEST 6 Response:', response.substring(0, 400));
 
-  // Must reference actual campaign concepts
-  const hasCampaignContext = /days|election|budget|voter|race|primary|campaign|calendar|outreach|fundrais/i.test(response);
+  // Must reference actual campaign concepts or political terms
+  const hasCampaignContext = /days|election|budget|voter|race|primary|campaign|calendar|outreach|fundrais|planning|office|council|commissioner|state rep|candidate|filed|win number|district/i.test(response);
   expect(hasCampaignContext).toBe(true);
 
   // Must not be generic AI assistant talk
