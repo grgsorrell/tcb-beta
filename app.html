@@ -3819,23 +3819,39 @@ function fetchDay1Brief() {
 }
 
 // ============================================
-// DAILY MORNING BRIEF — SIMPLE PARAGRAPH VERSION
+// DAILY MORNING BRIEF — ALWAYS AI-GENERATED
 // ============================================
 function checkAndGenerateMorningBrief() {
   if (!isOnboarded()) return;
-  // First visit: show static welcome tutorial instead of AI brief
+  console.log('[Brief] checking morning brief...');
+
+  // Day 1: show welcome tutorial AND fire background AI brief generation
   if (!localStorage.getItem(storageKey('ctb_morning_brief_seen'))) {
     localStorage.setItem(storageKey('ctb_morning_brief_seen'), 'true');
     var el = document.getElementById('morning-brief-container');
     if (el) el.innerHTML = buildWelcomeBrief();
+    console.log('[Brief] Day 1 — showing welcome, generating AI brief in background');
+    // Fire background brief generation so it's cached for next session
+    setTimeout(function() { generateMorningBrief(true); }, 8000);
     return;
   }
+
+  // Day 2+: check cache first
   var today = getTodayStr();
   try {
     var existing = JSON.parse(localStorage.getItem(storageKey('ctb_morning_brief')));
-    if (existing && existing._generatedDate === today && existing.text) { renderMorningBrief(); return; }
-  } catch(e) {}
-  generateMorningBrief();
+    if (existing && existing._generatedDate === today && existing.text) {
+      console.log('[Brief] Cache hit for ' + today + ' (' + existing.text.length + ' chars)');
+      renderMorningBrief();
+      return;
+    }
+    console.log('[Brief] Cache miss — cached date: ' + (existing ? existing._generatedDate : 'none') + ', today: ' + today);
+  } catch(e) {
+    console.log('[Brief] Cache parse error:', e);
+  }
+
+  // Generate fresh brief
+  generateMorningBrief(false);
 }
 
 function buildWelcomeBrief() {
@@ -3853,8 +3869,9 @@ function buildWelcomeBrief() {
     '</div>';
 }
 
-function generateMorningBrief() {
-  renderMorningBriefLoading();
+// backgroundOnly: if true, cache the result but don't update the display
+function generateMorningBrief(backgroundOnly) {
+  if (!backgroundOnly) renderMorningBriefLoading();
   var firstName = campaignData.candidateName ? campaignData.candidateName.split(' ')[0] : '';
   var days = calcDaysToElection();
   var today = getTodayStr();
@@ -3871,20 +3888,70 @@ function generateMorningBrief() {
     '3. Includes a brief news summary \u2014 search for 2-3 relevant news items from the past 48 hours related to ' + mbScope.descriptor + ', ' + (campaignData.specificOffice||'') + ' level politics, or issues relevant to a ' + (campaignData.party||'') + ' candidate in this race. Mention them naturally in one or two sentences.' + (mbScope.isStatewide ? ' This is a statewide race \u2014 focus on statewide news and issues, NOT just ' + loc + '.' : ' Keep it hyper-local and relevant.') + '\n\n' +
     'Write in a warm, direct, professional tone. Like a trusted chief of staff texting the candidate before they start their day. No bullet points, no headers, no markdown, no JSON. Just a clean paragraph. Return plain text only.';
 
-  fetch(WORKER_URL, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: prompt, mode: 'research', candidateName: campaignData.candidateName||'', specificOffice: campaignData.specificOffice||'', location: loc, state: campaignData.state||'', party: campaignData.party||'' })
-  }).then(function(r){return r.json();}).then(function(data) {
-    var rawText = '';
-    if (data.content && Array.isArray(data.content)) data.content.forEach(function(b){if(b.type==='text'&&b.text) rawText+=b.text;});
-    rawText = rawText.replace(/\[\d+\]/g,'').replace(/\u3010[\s\S]*?\u3011/g,'').trim();
-    rawText = cleanResearchNarration(rawText);
-    if (rawText) {
-      var brief = { text: rawText, _generatedDate: getTodayStr(), _candidateName: campaignData.candidateName };
-      localStorage.setItem(storageKey('ctb_morning_brief'), JSON.stringify(brief));
+  console.log('[Brief] API call firing... backgroundOnly=' + !!backgroundOnly);
+
+  function callBriefAPI(isRetry) {
+    return fetch(WORKER_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: prompt, mode: 'research', candidateName: campaignData.candidateName||'', specificOffice: campaignData.specificOffice||'', location: loc, state: campaignData.state||'', party: campaignData.party||'' })
+    }).then(function(r){return r.json();}).then(function(data) {
+      var rawText = '';
+      if (data.content && Array.isArray(data.content)) data.content.forEach(function(b){if(b.type==='text'&&b.text) rawText+=b.text;});
+      rawText = rawText.replace(/\[\d+\]/g,'').replace(/\u3010[\s\S]*?\u3011/g,'').trim();
+      rawText = cleanResearchNarration(rawText);
+      if (rawText && rawText.length > 30) {
+        var brief = { text: rawText, _generatedDate: getTodayStr(), _candidateName: campaignData.candidateName };
+        localStorage.setItem(storageKey('ctb_morning_brief'), JSON.stringify(brief));
+        console.log('[Brief] API success — ' + rawText.length + ' chars cached');
+        if (!backgroundOnly) renderMorningBrief();
+        return true;
+      }
+      console.log('[Brief] API returned empty/short text' + (isRetry ? ' (retry)' : ''));
+      return false;
+    }).catch(function(err) {
+      console.log('[Brief] API error: ' + (err.message || err));
+      return false;
+    });
+  }
+
+  // First attempt
+  callBriefAPI(false).then(function(ok) {
+    if (ok) return;
+    // If first attempt failed and not background, show "generating..." and retry after 3s
+    if (!backgroundOnly) {
+      var el = document.getElementById('morning-brief-container');
+      if (el) {
+        var dateStr = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+        el.innerHTML = '<div class="mb-card"><div class="mb-hdr"><div class="mb-hdr-left"><span class="mb-classified">CLASSIFIED // EYES ONLY</span><span class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</span></div><div class="mb-hdr-date">' + dateStr + '</div></div>' +
+          '<div class="mb-greeting">Good Morning, ' + escapeHtml(firstName) + '.</div>' +
+          '<div class="mb-text" style="color:var(--t3);font-style:italic">Generating your morning brief...</div></div>';
+      }
     }
-    renderMorningBrief();
-  }).catch(function(){ renderMorningBrief(); });
+    // Retry after 3 seconds
+    setTimeout(function() {
+      console.log('[Brief] Retrying API call...');
+      callBriefAPI(true).then(function(ok2) {
+        if (!ok2 && !backgroundOnly) {
+          // Both attempts failed — show unavailable message with retry button
+          renderMorningBriefUnavailable();
+        }
+      });
+    }, 3000);
+  });
+}
+
+function renderMorningBriefUnavailable() {
+  var el = document.getElementById('morning-brief-container');
+  if (!el) return;
+  var firstName = campaignData.candidateName ? campaignData.candidateName.split(' ')[0] : '';
+  var dateStr = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var days = calcDaysToElection();
+  el.innerHTML = '<div class="mb-card">' +
+    '<div class="mb-hdr"><div class="mb-hdr-left"><span class="mb-classified">CLASSIFIED // EYES ONLY</span><span class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</span></div><div style="display:flex;align-items:center;gap:8px"><div class="mb-hdr-date">' + dateStr + '</div><button class="mb-refresh" onclick="generateMorningBrief(false)">\uD83D\uDD04</button></div></div>' +
+    '<div class="mb-greeting">Good Morning, ' + escapeHtml(firstName) + '.</div>' +
+    '<div class="mb-text" style="color:var(--t3)">Brief unavailable \u2014 ask Sam directly for your daily update.</div>' +
+    '<div class="mb-chips"><div class="mb-chip" onclick="sendSamChip(\'What should I focus on today?\')">Ask Sam for today\'s update \u2192</div>' +
+    '<div class="mb-chip" onclick="generateMorningBrief(false)">\uD83D\uDD04 Try generating again</div></div></div>';
 }
 
 // ============================================
@@ -3911,14 +3978,13 @@ function renderMorningBrief() {
 
   var mb = null; try { mb = JSON.parse(localStorage.getItem(storageKey('ctb_morning_brief'))); } catch(e) {}
 
-  // Get the paragraph text
-  var paragraph = '';
-  if (mb && mb.text) {
-    paragraph = mb.text;
-  } else {
-    // Fallback
-    paragraph = 'Good morning, ' + firstName + '. You have ' + (days||'--') + ' days until election day. Ask Sam what you should focus on today.';
+  // Get the paragraph text — if no cached brief, trigger generation instead of static fallback
+  if (!mb || !mb.text) {
+    console.log('[Brief] renderMorningBrief called but no cached text — triggering generation');
+    generateMorningBrief(false);
+    return;
   }
+  var paragraph = mb.text;
 
   // Highlight candidate name in gold, days number in red, event names in blue
   var displayText = escapeHtml(paragraph);
