@@ -3823,6 +3823,18 @@ function fetchDay1Brief() {
 // ============================================
 // DAILY MORNING BRIEF — ALWAYS AI-GENERATED
 // ============================================
+function isBriefDirty(text) {
+  if (!text) return false;
+  return (
+    text.includes('<ancite') ||
+    text.includes('<cite') ||
+    text.includes('</cite>') ||
+    text.includes('index="') ||
+    /^I'll |^Let me |^Searching |^I'm searching /i.test(text.trim()) ||
+    /^To include in your briefing/i.test(text.trim())
+  );
+}
+
 function checkAndGenerateMorningBrief() {
   if (!isOnboarded()) return;
   console.log('[Brief] checking morning brief...');
@@ -3843,11 +3855,18 @@ function checkAndGenerateMorningBrief() {
   try {
     var existing = JSON.parse(localStorage.getItem(storageKey('ctb_morning_brief')));
     if (existing && existing._generatedDate === today && existing.text) {
-      console.log('[Brief] Cache hit for ' + today + ' (' + existing.text.length + ' chars)');
-      renderMorningBrief();
-      return;
+      // Check if cached brief is dirty (citation tags, narration, etc.)
+      if (isBriefDirty(existing.text)) {
+        console.log('[Brief] Cache dirty — clearing and regenerating');
+        localStorage.removeItem(storageKey('ctb_morning_brief'));
+      } else {
+        console.log('[Brief] Cache hit for ' + today + ' (' + existing.text.length + ' chars)');
+        renderMorningBrief();
+        return;
+      }
+    } else {
+      console.log('[Brief] Cache miss — cached date: ' + (existing ? existing._generatedDate : 'none') + ', today: ' + today);
     }
-    console.log('[Brief] Cache miss — cached date: ' + (existing ? existing._generatedDate : 'none') + ', today: ' + today);
   } catch(e) {
     console.log('[Brief] Cache parse error:', e);
   }
