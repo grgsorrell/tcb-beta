@@ -923,6 +923,9 @@ try { campaignData = JSON.parse(localStorage.getItem(storageKey('ctb_campaignDat
 try { tasks = JSON.parse(localStorage.getItem(storageKey('ctb_tasks'))) || []; } catch(e) { tasks = []; }
 try { events = JSON.parse(localStorage.getItem(storageKey('ctb_events'))) || []; } catch(e) { events = []; }
 try { campaignBudget = JSON.parse(localStorage.getItem(storageKey('ctb_budget'))) || { total: 0, expenses: [], categories: {} }; } catch(e) {}
+// Migrate: normalize totalBudget -> total as single source of truth
+if (campaignBudget.totalBudget && !campaignBudget.total) { campaignBudget.total = campaignBudget.totalBudget; }
+if (campaignBudget.totalBudget) { campaignBudget.total = campaignBudget.totalBudget; delete campaignBudget.totalBudget; saveBudget(); }
 try { folders = JSON.parse(localStorage.getItem(storageKey('ctb_folders'))) || []; } catch(e) { folders = []; }
 try { chatHistory = JSON.parse(localStorage.getItem(storageKey('ctb_chatHistory'))) || []; } catch(e) { chatHistory = []; }
 
@@ -1780,7 +1783,6 @@ var CATEGORY_KEY_MAP = {
   if (campaignBudget.total > 0 && !campaignBudget.startingAmount && campaignBudget.startingAmount !== 0) {
     campaignBudget.startingAmount = 0;
     campaignBudget.fundraisingGoal = 0;
-    campaignBudget.totalBudget = campaignBudget.total;
   }
   // Migrate old keys (full names or old short keys) into normalized keys
   var oldCats = campaignBudget.categories || {};
@@ -1812,7 +1814,7 @@ var CATEGORY_KEY_MAP = {
 })();
 
 function getBudgetTotals() {
-  var totalBudget = campaignBudget.totalBudget || campaignBudget.total || 0;
+  var totalBudget = campaignBudget.total || 0;
   var starting = campaignBudget.startingAmount || 0;
   var goal = campaignBudget.fundraisingGoal || 0;
   var expenses = campaignBudget.expenses || [];
@@ -1882,7 +1884,7 @@ function saveBudgetSetup() {
   var g = parseFloat(document.getElementById('bud-setup-goal').value) || 0;
   var b = parseFloat(document.getElementById('bud-setup-budget').value) || 0;
   if (!b && !g) { alert('Please enter at least a budget or fundraising goal'); return; }
-  campaignBudget.startingAmount = s; campaignBudget.fundraisingGoal = g; campaignBudget.totalBudget = b; campaignBudget.total = b;
+  campaignBudget.startingAmount = s; campaignBudget.fundraisingGoal = g; campaignBudget.total = b;
   if (!campaignBudget.expenses) campaignBudget.expenses = [];
   if (!campaignBudget.categories || !campaignBudget.categories.digital) {
     var cats = {};
@@ -2082,7 +2084,7 @@ function renderFinanceSetupContent(data) {
 }
 
 function openApplyAllocationsModal() {
-  var total = campaignBudget.totalBudget || campaignBudget.total || 0;
+  var total = campaignBudget.total || 0;
   if (!total) { alert('Set a total budget first on the Budget tab.'); return; }
   var setup = null;
   try { setup = JSON.parse(localStorage.getItem(storageKey('ctb_finance_setup'))); } catch(e) {}
@@ -2133,7 +2135,7 @@ function buildAllocModalHTML(allocs, total) {
 }
 
 function updateAllocModal() {
-  var total = campaignBudget.totalBudget || campaignBudget.total || 0;
+  var total = campaignBudget.total || 0;
   var inputs = document.querySelectorAll('[data-alloc-idx]');
   var pctTotal = 0;
   inputs.forEach(function(inp) {
@@ -2157,7 +2159,7 @@ function confirmApplyAllocations() {
     try { setup = JSON.parse(localStorage.getItem(storageKey('ctb_finance_setup'))); } catch(e) {}
     var defaultAllocs = Object.keys(DEFAULT_CATEGORIES).map(function(k){ return {category: DEFAULT_CATEGORIES[k].label}; });
     var sourceAllocs = (setup && setup.budgetAllocation && setup.budgetAllocation.length) ? setup.budgetAllocation : defaultAllocs;
-    var total = campaignBudget.totalBudget || campaignBudget.total || 0;
+    var total = campaignBudget.total || 0;
     // Reset all categories to 0 first
     Object.keys(campaignBudget.categories).forEach(function(k){ campaignBudget.categories[k].allocated = 0; });
     var inputs = document.querySelectorAll('[data-alloc-idx]');
@@ -2298,7 +2300,7 @@ function setBudget() {
   var inp = document.getElementById('budget-input');
   var val = inp ? parseFloat(inp.value) : 0;
   if (!val || val <= 0) { alert('Please enter a valid budget amount'); return; }
-  campaignBudget.total = val; campaignBudget.totalBudget = val;
+  campaignBudget.total = val;
   campaignBudget.startingAmount = campaignBudget.startingAmount || 0;
   campaignBudget.fundraisingGoal = campaignBudget.fundraisingGoal || 0;
   if (!campaignBudget.expenses) campaignBudget.expenses = [];
@@ -2306,8 +2308,8 @@ function setBudget() {
 }
 
 function promptEditBudget() {
-  var val = prompt('Enter new total spending budget:', campaignBudget.totalBudget || campaignBudget.total || '');
-  if (val && parseFloat(val) > 0) { campaignBudget.totalBudget = parseFloat(val); campaignBudget.total = parseFloat(val); saveBudget(); renderBudgetView(); refreshDashboard(); }
+  var val = prompt('Enter new total spending budget:', campaignBudget.total || '');
+  if (val && parseFloat(val) > 0) { campaignBudget.total = parseFloat(val); saveBudget(); renderBudgetView(); refreshDashboard(); }
 }
 
 function promptEditGoal() {
@@ -4903,7 +4905,7 @@ async function sendSamMessage() {
       location: campaignData.location || '',
       history: buildApiHistory(hist),
       mode: samMode,
-      budget: campaignBudget.total || campaignBudget.totalBudget || null,
+      budget: campaignBudget.total || null,
       startingAmount: campaignBudget.startingAmount || 0,
       fundraisingGoal: campaignBudget.fundraisingGoal || 0,
       totalRaised: contributions.reduce(function(s,c){return s+(c.amount||0);},0),
