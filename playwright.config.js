@@ -2,7 +2,7 @@ const { defineConfig } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: '.',
-  testMatch: 'sam-tests.spec.js',
+  testMatch: '*.spec.js',
   timeout: 90000,
   use: {
     headless: true,
