@@ -4805,6 +4805,8 @@ function stripCitations(text) {
 
 function formatSamText(text) {
   return stripCitations(cleanResearchNarration(text))
+    .replace(/\[Actions taken:[^\]]*\]/gi, '')        // Strip tool action log annotations
+    .replace(/\[Action:[^\]]*\]/gi, '')               // Strip action annotations
     .replace(/\【\d+[:\d]*†?[a-z]*\】/g, '')       // Remove 【1†source】 style citations
     .replace(/\[\d+\]/g, '')                          // Remove [1] [2] style citations
     .replace(/\s*\.\s*\n/g, '.\n')                   // Fix ". \n" ��� ".\n"
