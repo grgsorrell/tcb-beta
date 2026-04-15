@@ -3522,10 +3522,16 @@ function completeOnboarding() {
   document.getElementById('onboarding-overlay').classList.remove('active');
   showOnboardedUI();
   openSam();
-  addSamMsg("Welcome, <strong>" + escapeHtml(onboardingData.firstName||'') + "!</strong> You've got <strong>" + (daysUntil(campaignData.electionDate)||'--') + " days</strong> to election day. Sam is researching your race now \u2014 your Morning Brief will be ready shortly.");
-  // Fire both research calls in parallel
+  addSamMsg("Welcome, <strong>" + escapeHtml(onboardingData.firstName||'') + "!</strong> You've got <strong>" + (daysUntil(campaignData.electionDate)||'--') + " days</strong> to election day. Sam is researching your race now \u2014 your Intel Brief will be ready shortly.");
+  // Fire all research calls — candidate brief + day1 brief + all 4 Intel tabs
   fetchCandidateBrief();
   fetchDay1Brief();
+  // Auto-run Intel panel research after a short delay to avoid rate limiting
+  setTimeout(function() {
+    ['candidates', 'pulse', 'outreach', 'threats'].forEach(function(tab, i) {
+      setTimeout(function() { fetchIntelData(tab); }, i * 3000);
+    });
+  }, 5000);
   setTimeout(function() { delete window._onboardingJustCompleted; }, 0);
 }
 
@@ -4136,29 +4142,49 @@ function askSamBtnHTML(question) {
 }
 
 // ============================================
-// TOOL EXECUTION HANDLERS
+// TOOL EXECUTION HANDLERS — Sam 2.0
 // ============================================
 function executeToolCall(block) {
   var name = block.name;
   var inp = block.input || {};
   var confirmMsg = '';
 
+  // Sam 2.0 unified add_calendar_event handles both tasks and events
   if (name === 'add_calendar_event' || name === 'add_event') {
-    var evt = {
-      id: Date.now() + Math.random(),
-      name: inp.name || inp.event_name || 'Untitled Event',
-      date: inp.date,
-      time: inp.time || '',
-      location: inp.location || '',
-      category: inp.category || autoCategorize(inp.name || inp.event_name || ''),
-      notes: inp.notes || ''
-    };
-    events.push(evt);
-    saveEvents();
-    if (currentView === 'calendar') renderCalendar();
-    if (currentView === 'dashboard') refreshDashboard();
-    confirmMsg = '\u2705 Added to your calendar: ' + evt.name + ' on ' + formatDate(evt.date) + (evt.time ? ' at ' + evt.time : '');
+    // If type='task' or this was the old add_to_calendar, create a task
+    if (inp.type === 'task') {
+      var task = {
+        id: Date.now() + Math.random(),
+        name: inp.name || inp.task_name || 'Untitled Task',
+        date: inp.date,
+        category: inp.category || autoCategorize(inp.name || ''),
+        notes: inp.notes || '',
+        completed: false
+      };
+      tasks.push(task);
+      saveTasks();
+      if (currentView === 'calendar') renderCalendar();
+      if (currentView === 'dashboard') refreshDashboard();
+      confirmMsg = '\u2705 Added task: ' + task.name + ' on ' + formatDate(task.date);
+    } else {
+      // type='event' or default — create an event
+      var evt = {
+        id: Date.now() + Math.random(),
+        name: inp.name || inp.event_name || 'Untitled Event',
+        date: inp.date,
+        time: inp.time || '',
+        location: inp.location || '',
+        category: inp.category || autoCategorize(inp.name || inp.event_name || ''),
+        notes: inp.notes || ''
+      };
+      events.push(evt);
+      saveEvents();
+      if (currentView === 'calendar') renderCalendar();
+      if (currentView === 'dashboard') refreshDashboard();
+      confirmMsg = '\u2705 Added to your calendar: ' + evt.name + ' on ' + formatDate(evt.date) + (evt.time ? ' at ' + evt.time : '');
+    }
   }
+  // Backward compat: old add_to_calendar always creates a task
   else if (name === 'add_to_calendar' || name === 'add_task') {
     var task = {
       id: Date.now() + Math.random(),
@@ -4198,8 +4224,11 @@ function executeToolCall(block) {
     if (currentView === 'dashboard') refreshDashboard();
     confirmMsg = '\u2705 Logged $' + expense.amount.toLocaleString() + ' for ' + expense.description + ' under ' + expense.categoryLabel + '.' + (catAllocated > 0 ? ' Category: $' + catSpent.toLocaleString() + ' of $' + catAllocated.toLocaleString() + ' used.' : '') + ' Budget remaining: $' + remaining.toLocaleString();
   }
-  else if (name === 'add_note') {
-    var folderName = inp.folder || 'Campaign Notes';
+  // Sam 2.0 unified save_note (also handles old add_note, save_document, save_to_notes)
+  else if (name === 'save_note' || name === 'add_note' || name === 'save_document' || name === 'save_to_notes') {
+    var folderName = inp.folder || inp.folder_name || 'Campaign Notes';
+    var noteTitle = inp.title || inp.note_title || 'Untitled';
+    var noteStatus = inp.status || (name === 'save_document' ? 'Ready' : 'Ready');
     var folder = folders.find(function(f){return f.name.toLowerCase()===folderName.toLowerCase();});
     if (!folder) {
       folder = { id: Date.now(), name: folderName, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
@@ -4208,59 +4237,17 @@ function executeToolCall(block) {
     if (!folder.notes) folder.notes = [];
     folder.notes.push({
       id: Date.now() + Math.random(),
-      title: inp.title || 'Untitled',
+      title: noteTitle,
       content: inp.content || '',
-      status: inp.status || 'Draft',
+      status: noteStatus,
+      doc_type: inp.doc_type || 'Other',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
     folder.updatedAt = new Date().toISOString();
     saveFolders();
     if (currentView === 'notes') renderNotesView();
-    confirmMsg = "\u2705 Saved note '" + (inp.title||'Untitled') + "' to " + folder.name;
-  }
-  else if (name === 'save_document') {
-    var docFolder = inp.folder || 'Campaign Notes';
-    var df = folders.find(function(f){return f.name.toLowerCase()===docFolder.toLowerCase();});
-    if (!df) {
-      df = { id: Date.now(), name: docFolder, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-      folders.push(df);
-    }
-    if (!df.notes) df.notes = [];
-    df.notes.push({
-      id: Date.now() + Math.random(),
-      title: inp.title || 'Untitled Document',
-      content: inp.content || '',
-      status: 'Ready',
-      doc_type: inp.doc_type || 'Other',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    });
-    df.updatedAt = new Date().toISOString();
-    saveFolders();
-    if (currentView === 'notes') renderNotesView();
-    confirmMsg = "\u2705 Saved '" + (inp.title||'Untitled') + "' to your " + df.name + " folder. You can find it in Notes anytime.";
-  }
-  else if (name === 'save_to_notes') {
-    var stFolder = inp.folder_name || 'Campaign Notes';
-    var sf = folders.find(function(f){return f.name.toLowerCase()===stFolder.toLowerCase();});
-    if (!sf) {
-      sf = { id: Date.now(), name: stFolder, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-      folders.push(sf);
-    }
-    if (!sf.notes) sf.notes = [];
-    sf.notes.push({
-      id: Date.now() + Math.random(),
-      title: inp.note_title || 'Untitled',
-      content: inp.content || '',
-      status: 'Ready',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    });
-    sf.updatedAt = new Date().toISOString();
-    saveFolders();
-    if (currentView === 'notes') renderNotesView();
-    confirmMsg = "\u2705 Saved '" + (inp.note_title||'Untitled') + "' to " + sf.name;
+    confirmMsg = "\u2705 Saved '" + noteTitle + "' to " + folder.name;
   }
   else if (name === 'add_endorsement') {
     var endorsements = [];
@@ -4341,16 +4328,55 @@ function executeToolCall(block) {
     }
     confirmMsg = '\u2705 Win number set to ' + (wn||0).toLocaleString() + ' votes';
   }
+  // Sam 2.0 merged set_budget (handles total, startingAmount, fundraisingGoal)
   else if (name === 'set_budget') {
-    var budTotal = parseFloat(inp.total_budget);
+    var parts = [];
+    var budTotal = parseFloat(inp.total || inp.total_budget);
     if (budTotal > 0) {
       campaignBudget.total = budTotal;
-      if (!campaignBudget.expenses) campaignBudget.expenses = [];
+      parts.push('Budget set to $' + budTotal.toLocaleString());
+    }
+    if (inp.startingAmount != null) {
+      campaignBudget.startingAmount = parseFloat(inp.startingAmount) || 0;
+      parts.push('Starting cash: $' + campaignBudget.startingAmount.toLocaleString());
+    }
+    if (inp.fundraisingGoal != null) {
+      campaignBudget.fundraisingGoal = parseFloat(inp.fundraisingGoal) || 0;
+      parts.push('Fundraising goal: $' + campaignBudget.fundraisingGoal.toLocaleString());
+    }
+    if (!campaignBudget.expenses) campaignBudget.expenses = [];
+    saveBudget();
+    if (currentView === 'budget') renderBudgetView();
+    if (currentView === 'dashboard') refreshDashboard();
+    updateTopbar();
+    confirmMsg = '\u2705 ' + (parts.length > 0 ? parts.join('. ') : 'Budget updated');
+  }
+  // Backward compat: old update_budget_total
+  else if (name === 'update_budget_total') {
+    var amt = parseFloat(inp.amount);
+    if (amt > 0) {
+      campaignBudget.total = amt;
       saveBudget();
       if (currentView === 'budget') renderBudgetView();
       if (currentView === 'dashboard') refreshDashboard();
+      updateTopbar();
     }
-    confirmMsg = '\u2705 Budget set to $' + (budTotal||0).toLocaleString();
+    confirmMsg = '\u2705 Budget updated to $' + (amt||0).toLocaleString();
+  }
+  // Backward compat: old set_fundraising_goal
+  else if (name === 'set_fundraising_goal') {
+    campaignBudget.fundraisingGoal = parseFloat(inp.amount)||0;
+    saveBudget();
+    if (currentView === 'budget') renderBudgetView();
+    confirmMsg = '\u2705 Fundraising goal set at $' + campaignBudget.fundraisingGoal.toLocaleString();
+  }
+  // Backward compat: old update_starting_amount
+  else if (name === 'update_starting_amount') {
+    campaignBudget.startingAmount = parseFloat(inp.amount)||0;
+    saveBudget();
+    if (currentView === 'budget') renderBudgetView();
+    if (currentView === 'dashboard') refreshDashboard();
+    confirmMsg = '\u2705 Starting amount set at $' + campaignBudget.startingAmount.toLocaleString();
   }
   else if (name === 'save_candidate_profile') {
     if (inp.office) campaignData.specificOffice = inp.office;
@@ -4658,6 +4684,25 @@ async function sendSamMessage() {
   var brief = null;
   try { brief = JSON.parse(localStorage.getItem(storageKey('ctb_candidate_brief'))); } catch(e) {}
 
+  // Load Intel context for Ground Truth layer
+  var intelCtx = null;
+  try {
+    var intelCache = JSON.parse(localStorage.getItem(storageKey('ctb_intel_data'))) || {};
+    if (intelCache.candidates && intelCache.candidates.data) {
+      intelCtx = {};
+      var cd = intelCache.candidates.data;
+      intelCtx.candidates = cd.candidates || [];
+      intelCtx.raceNote = cd.raceNote || '';
+      if (intelCache.threats && intelCache.threats.data) {
+        intelCtx.threats = intelCache.threats.data.opponents || [];
+      }
+      if (intelCache.outreach && intelCache.outreach.data) {
+        intelCtx.topIssues = intelCache.outreach.data.topIssues || [];
+        intelCtx.outreachRecommendation = intelCache.outreach.data.recommendation || '';
+      }
+    }
+  } catch(e) {}
+
   function buildRequestBody(msg, hist) {
     return {
       message: msg,
@@ -4669,7 +4714,7 @@ async function sendSamMessage() {
       location: campaignData.location || '',
       history: hist,
       mode: samMode,
-      budget: campaignBudget.totalBudget || campaignBudget.total || null,
+      budget: campaignBudget.total || campaignBudget.totalBudget || null,
       startingAmount: campaignBudget.startingAmount || 0,
       fundraisingGoal: campaignBudget.fundraisingGoal || 0,
       totalRaised: contributions.reduce(function(s,c){return s+(c.amount||0);},0),
@@ -4679,12 +4724,13 @@ async function sendSamMessage() {
       daysToElection: daysToElection,
       govLevel: campaignData.officeType || '',
       additionalContext: additionalCtx,
-      candidateBrief: brief
+      candidateBrief: brief,
+      intelContext: intelCtx
     };
   }
 
   try {
-    var reqBody = buildRequestBody(message, chatHistory.slice(-20));
+    var reqBody = buildRequestBody(message, chatHistory.slice(-40));
     var response = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -4705,24 +4751,34 @@ async function sendSamMessage() {
       return;
     }
 
-    // Process response — handle text blocks, tool_use blocks, and document display
-    var textParts = [];
-    var toolBlocks = [];
+    // Sam 2.0: Server handles the full tool loop.
+    // Response contains: data.content (final text) + data.toolCalls (accumulated tool_use blocks)
 
+    // STEP 1: Execute all accumulated tool calls from server loop
+    var confirmations = [];
+    if (data.toolCalls && data.toolCalls.length > 0) {
+      data.toolCalls.forEach(function(block) {
+        var result = executeToolCall(block);
+        if (result.confirmMsg) confirmations.push(result.confirmMsg);
+      });
+    }
+
+    // Also handle any tool_use blocks in the final content (edge case / backward compat)
+    var textParts = [];
     if (data.content && Array.isArray(data.content)) {
       data.content.forEach(function(block) {
         if (block.type === 'text' && block.text) {
           textParts.push(block.text);
         } else if (block.type === 'tool_use') {
-          toolBlocks.push(block);
+          var result = executeToolCall(block);
+          if (result.confirmMsg) confirmations.push(result.confirmMsg);
         }
       });
     }
 
-    // STEP 1: Show any text that came before tool calls
+    // STEP 2: Show Sam's final text
     var fullText = textParts.join('\n');
     if (fullText.trim()) {
-      // Check if this looks like a long document (speech, email, etc.)
       if (isDocumentContent(fullText)) {
         var docTitle = extractDocTitle(fullText);
         msgsEl.innerHTML += renderDocumentBubble(docTitle, fullText);
@@ -4733,29 +4789,13 @@ async function sendSamMessage() {
       msgsEl.scrollTop = msgsEl.scrollHeight;
     }
 
-    // STEP 2: Execute all tool calls and collect confirmations
-    var confirmations = [];
-    var toolResults = [];
-    toolBlocks.forEach(function(block) {
-      var result = executeToolCall(block);
-      if (result.confirmMsg) {
-        confirmations.push(result.confirmMsg);
-      }
-      // Build tool result for potential follow-up
-      toolResults.push({
-        type: 'tool_result',
-        tool_use_id: block.id,
-        content: result.confirmMsg || 'Done'
-      });
-    });
-
-    // STEP 3: Show tool confirmations in chat
+    // STEP 3: Show tool confirmations
     confirmations.forEach(function(msg) {
       msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>';
     });
     msgsEl.scrollTop = msgsEl.scrollHeight;
 
-    // Save assistant message to history (text + tool execution)
+    // Save to history
     var historyContent = fullText;
     if (confirmations.length > 0) {
       historyContent += (historyContent ? '\n' : '') + confirmations.join('\n');
@@ -4765,80 +4805,7 @@ async function sendSamMessage() {
       saveChatHistory();
     }
 
-    // STEP 4: If there were tool calls, send tool results back to get Sam's follow-up
-    if (toolBlocks.length > 0 && toolResults.length > 0) {
-      // Add the assistant's original response to history for the API
-      var apiHistory = chatHistory.slice(-20);
-      // We need to send tool results back
-      apiHistory.push({ role: 'assistant', content: data.content });
-      apiHistory.push({ role: 'user', content: toolResults });
-
-      // Show typing again for follow-up
-      msgsEl.innerHTML += '<div class="sam-msg typing" id="sam-typing2"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
-      msgsEl.scrollTop = msgsEl.scrollHeight;
-
-      try {
-        var followUp = await fetch(WORKER_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(buildRequestBody(message, apiHistory))
-        });
-
-        var followData = await followUp.json();
-        var typing2 = document.getElementById('sam-typing2');
-        if (typing2) typing2.remove();
-
-        // Process follow-up response (may also contain tool calls)
-        var followText = '';
-        var followToolBlocks = [];
-        if (followData.content && Array.isArray(followData.content)) {
-          followData.content.forEach(function(block) {
-            if (block.type === 'text' && block.text) {
-              followText += block.text;
-            } else if (block.type === 'tool_use') {
-              followToolBlocks.push(block);
-            }
-          });
-        }
-
-        // Execute any follow-up tool calls (e.g., save_document after writing)
-        var followConfirms = [];
-        followToolBlocks.forEach(function(block) {
-          var result = executeToolCall(block);
-          if (result.confirmMsg) followConfirms.push(result.confirmMsg);
-        });
-
-        if (followText.trim()) {
-          if (isDocumentContent(followText)) {
-            msgsEl.innerHTML += renderDocumentBubble(extractDocTitle(followText), followText);
-          } else {
-            msgsEl.innerHTML += '<div class="sam-msg">' + formatSamText(followText) + '</div>';
-            samSpeak(followText);
-          }
-        }
-
-        followConfirms.forEach(function(msg) {
-          msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>';
-        });
-        msgsEl.scrollTop = msgsEl.scrollHeight;
-
-        var followHistory = followText;
-        if (followConfirms.length > 0) {
-          followHistory += (followHistory ? '\n' : '') + followConfirms.join('\n');
-        }
-        if (followHistory) {
-          chatHistory.push({ role: 'assistant', content: followHistory });
-          saveChatHistory();
-        }
-
-      } catch (followErr) {
-        var typing2b = document.getElementById('sam-typing2');
-        if (typing2b) typing2b.remove();
-        // Follow-up failed, but tools already executed — that's OK
-      }
-    }
-
-    // If no text and no confirmations at all, show a generic (should be rare now)
+    // If nothing to show at all
     if (!fullText.trim() && confirmations.length === 0) {
       msgsEl.innerHTML += '<div class="sam-msg">Done! What would you like to work on next?</div>';
       chatHistory.push({ role: 'assistant', content: 'Done! What would you like to work on next?' });

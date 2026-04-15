@@ -945,30 +945,21 @@ export default {
       return new Response('Method not allowed', { status: 405, headers: corsHeaders });
     }
 
+
     // ========================================
     // MAIN CHAT ENDPOINT (default)
     // ========================================
     try {
+      const body = await request.json();
       const {
-        message,
-        state,
-        officeType,
-        electionDate,
-        party,
-        needsOnboarding,
-        filingStatus,
-        candidateName,
-        specificOffice,
-        location,
-        history,
-        mode,
-        additionalContext,
-        budget,
-        winNumber,
-        daysToElection,
-        govLevel,
-        candidateBrief
-      } = await request.json();
+        message, state, officeType, electionDate, party,
+        needsOnboarding, filingStatus, candidateName,
+        specificOffice, location, history, mode,
+        additionalContext, budget, winNumber,
+        daysToElection, govLevel, candidateBrief,
+        startingAmount, fundraisingGoal, totalRaised,
+        donorCount, intelContext
+      } = body;
 
       // ========================================
       // RATE LIMITING: 100 messages per user per day
@@ -979,21 +970,16 @@ export default {
         const usage = await env.DB.prepare(
           'SELECT message_count FROM usage_logs WHERE user_id = ? AND date = ?'
         ).bind(rateLimitUserId, rateLimitDate).first();
-        
         if (usage && usage.message_count >= 100) {
-          return jsonResponse({ 
-            error: 'Daily message limit reached. You\u0027ve sent 100 messages today \u2014 Sam will be ready again tomorrow!' 
-          }, 429);
+          return jsonResponse({ error: 'Daily message limit reached. Sam will be ready again tomorrow!' }, 429);
         }
-        
         await env.DB.prepare(
           'INSERT INTO usage_logs (user_id, date, message_count) VALUES (?, ?, 1) ON CONFLICT(user_id, date) DO UPDATE SET message_count = message_count + 1'
         ).bind(rateLimitUserId, rateLimitDate).run();
       }
 
       // ========================================
-      // RESEARCH MODE — clean path for candidate brief generation
-      // Bypasses Sam persona and search restrictions entirely
+      // RESEARCH MODE — bypasses Sam persona
       // ========================================
       if (mode === 'research') {
         const researchSystemPrompt = `You are a political research analyst. Your job is to use web search to research candidates and races, then return structured data as JSON.
@@ -1004,13 +990,6 @@ RULES:
 3. If you cannot find information for a field, use null or an empty string — never omit the field.
 4. Be specific: use real names, real dates, real percentages. Do not make up data.
 5. Current year is ${new Date().getFullYear()}.`;
-
-        const researchTools = [
-          {
-            type: "web_search_20250305",
-            name: "web_search"
-          }
-        ];
 
         const researchResponse = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
@@ -1024,52 +1003,73 @@ RULES:
             max_tokens: 8000,
             temperature: 0.2,
             system: [{ type: "text", text: researchSystemPrompt }],
-            tools: researchTools,
+            tools: [{ type: "web_search_20250305", name: "web_search" }],
             messages: [{ role: "user", content: message }],
           }),
         });
 
         const researchData = await researchResponse.json();
-
         return new Response(JSON.stringify(researchData), {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
+          headers: { "Content-Type": "application/json", ...corsHeaders },
         });
       }
 
-      // Get current date in candidate's timezone
+      // ========================================
+      // HELPER: Determine geographic scope
+      // ========================================
+      function determineScope(office, level, st, loc) {
+        const o = (office || '').toLowerCase();
+        const statewideOffices = ['governor','lieutenant governor','attorney general',
+          'secretary of state','state treasurer','comptroller','us senator',
+          'u.s. senator','united states senator','state senate','state senator',
+          'state assembly','state representative','state rep'];
+        const isStatewide = statewideOffices.some(x => o.includes(x)) || level === 'state';
+        const isFederal = level === 'federal' || o.includes('congress') ||
+          (o.includes('representative') && !o.includes('state')) ||
+          o.includes('house') || (o.includes('senate') && !o.includes('state'));
+        if (isStatewide) return {
+          scope: 'statewide', researchArea: `all of ${st}`,
+          voterBase: `all registered voters across ${st}`,
+          briefScope: `statewide ${st} news and politics`
+        };
+        if (isFederal) return {
+          scope: 'district', researchArea: `${loc} area congressional district in ${st}`,
+          voterBase: `district voters`, briefScope: `${loc} district news and federal politics`
+        };
+        return {
+          scope: 'local', researchArea: `${loc}, ${st}`,
+          voterBase: `local voters in ${loc}`, briefScope: `${loc} local news and politics`
+        };
+      }
+
+      // ========================================
+      // HELPER: Build timezone-aware date
+      // ========================================
       const stateTimezones = {
-        'TX': 'America/Chicago', 'CA': 'America/Los_Angeles', 'NY': 'America/New_York',
-        'FL': 'America/New_York', 'IL': 'America/Chicago', 'PA': 'America/New_York',
-        'OH': 'America/New_York', 'GA': 'America/New_York', 'NC': 'America/New_York',
-        'MI': 'America/New_York', 'NJ': 'America/New_York', 'VA': 'America/New_York',
-        'WA': 'America/Los_Angeles', 'AZ': 'America/Phoenix', 'MA': 'America/New_York',
-        'TN': 'America/Chicago', 'IN': 'America/New_York', 'MO': 'America/Chicago',
-        'MD': 'America/New_York', 'WI': 'America/Chicago', 'CO': 'America/Denver',
-        'MN': 'America/Chicago', 'SC': 'America/New_York', 'AL': 'America/Chicago',
-        'LA': 'America/Chicago', 'KY': 'America/New_York', 'OR': 'America/Los_Angeles',
-        'OK': 'America/Chicago', 'CT': 'America/New_York', 'UT': 'America/Denver',
-        'IA': 'America/Chicago', 'NV': 'America/Los_Angeles', 'AR': 'America/Chicago',
-        'MS': 'America/Chicago', 'KS': 'America/Chicago', 'NM': 'America/Denver',
-        'NE': 'America/Chicago', 'ID': 'America/Boise', 'WV': 'America/New_York',
-        'HI': 'Pacific/Honolulu', 'NH': 'America/New_York', 'ME': 'America/New_York',
-        'MT': 'America/Denver', 'RI': 'America/New_York', 'DE': 'America/New_York',
-        'SD': 'America/Chicago', 'ND': 'America/Chicago', 'AK': 'America/Anchorage',
-        'VT': 'America/New_York', 'WY': 'America/Denver', 'DC': 'America/New_York'
+        'TX':'America/Chicago','CA':'America/Los_Angeles','NY':'America/New_York',
+        'FL':'America/New_York','IL':'America/Chicago','PA':'America/New_York',
+        'OH':'America/New_York','GA':'America/New_York','NC':'America/New_York',
+        'MI':'America/New_York','NJ':'America/New_York','VA':'America/New_York',
+        'WA':'America/Los_Angeles','AZ':'America/Phoenix','MA':'America/New_York',
+        'TN':'America/Chicago','IN':'America/New_York','MO':'America/Chicago',
+        'MD':'America/New_York','WI':'America/Chicago','CO':'America/Denver',
+        'MN':'America/Chicago','SC':'America/New_York','AL':'America/Chicago',
+        'LA':'America/Chicago','KY':'America/New_York','OR':'America/Los_Angeles',
+        'OK':'America/Chicago','CT':'America/New_York','UT':'America/Denver',
+        'IA':'America/Chicago','NV':'America/Los_Angeles','AR':'America/Chicago',
+        'MS':'America/Chicago','KS':'America/Chicago','NM':'America/Denver',
+        'NE':'America/Chicago','ID':'America/Boise','WV':'America/New_York',
+        'HI':'Pacific/Honolulu','NH':'America/New_York','ME':'America/New_York',
+        'MT':'America/Denver','RI':'America/New_York','DE':'America/New_York',
+        'SD':'America/Chicago','ND':'America/Chicago','AK':'America/Anchorage',
+        'VT':'America/New_York','WY':'America/Denver','DC':'America/New_York'
       };
       const stateAbbr = (state || '').toUpperCase().trim();
       const tz = stateTimezones[stateAbbr] || 'America/Chicago';
       const today = new Date();
-      const currentDate = today.toLocaleDateString('en-US', { 
-        timeZone: tz,
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+      const currentDate = today.toLocaleDateString('en-US', {
+        timeZone: tz, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
       });
-      // Build ISO date in candidate's timezone
       const localParts = new Intl.DateTimeFormat('en-US', {
         timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit'
       }).formatToParts(today);
@@ -1078,975 +1078,514 @@ RULES:
       const isoDay = localParts.find(p => p.type === 'day').value;
       const isoToday = `${isoYear}-${isoMonth}-${isoDay}`;
 
-      // Calculate days until election if date is set
-      let daysUntilElection = null;
+      // Campaign phase
+      const effectiveDays = daysToElection != null ? daysToElection : null;
       let campaignPhase = 'planning';
-      if (electionDate && electionDate !== 'not set') {
-        const election = new Date(electionDate);
-        daysUntilElection = Math.ceil((election.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        
-        if (daysUntilElection <= 0) {
-          campaignPhase = 'post-election';
-        } else if (daysUntilElection <= 7) {
-          campaignPhase = 'final-push';
-        } else if (daysUntilElection <= 14) {
-          campaignPhase = 'gotv';
-        } else if (daysUntilElection <= 30) {
-          campaignPhase = 'closing';
-        } else if (daysUntilElection <= 60) {
-          campaignPhase = 'peak-outreach';
-        } else if (daysUntilElection <= 120) {
-          campaignPhase = 'building-momentum';
-        } else {
-          campaignPhase = 'early-campaign';
-        }
+      if (effectiveDays != null && effectiveDays > 0) {
+        if (effectiveDays <= 7) campaignPhase = 'final-push';
+        else if (effectiveDays <= 14) campaignPhase = 'gotv';
+        else if (effectiveDays <= 30) campaignPhase = 'closing';
+        else if (effectiveDays <= 60) campaignPhase = 'peak-outreach';
+        else if (effectiveDays <= 120) campaignPhase = 'building-momentum';
+        else campaignPhase = 'early-campaign';
+      } else if (effectiveDays != null && effectiveDays <= 0) {
+        campaignPhase = 'post-election';
       }
 
-      // Detect if this is a brand new user (profile already collected, needs deadline onboarding)
-      const isNewUser = needsOnboarding === true;
-
-      // Detect returning user (has profile data already)
-      const isReturningUser = !isNewUser && officeType && officeType !== 'unknown';
-
-      // Build budget and win number strings from request body
+      const geo = determineScope(specificOffice, govLevel || officeType, state, location);
+      const effectiveGovLevel = govLevel || officeType || 'unknown';
       const budgetStr = (budget != null && budget > 0) ? '$' + Number(budget).toLocaleString() : 'not set';
       const winNumberStr = (winNumber != null && winNumber > 0) ? Number(winNumber).toLocaleString() + ' votes' : 'not yet calculated';
-      const effectiveDaysToElection = daysToElection != null ? daysToElection : daysUntilElection;
-      const effectiveGovLevel = govLevel || officeType || 'unknown';
-      // Geographic scope for research
-      const statewideOffices = ['governor','lieutenant governor','attorney general','secretary of state','state treasurer','comptroller','us senator','u.s. senator','united states senator','state senator','state representative'];
-      const isStatewide = statewideOffices.some(o => (specificOffice || '').toLowerCase().includes(o)) || effectiveGovLevel === 'state';
-      const isFederal = effectiveGovLevel === 'federal' || (specificOffice || '').toLowerCase().includes('congress') || (specificOffice || '').toLowerCase().includes('representative');
-      const researchScope = isStatewide ? `statewide across ${state}` : isFederal ? `${location} congressional district in ${state}` : `${location}, ${state}`;
-      const scopeType = isStatewide ? 'statewide' : isFederal ? 'district' : 'local';
+      const raisedStr = (totalRaised != null && totalRaised > 0) ? '$' + Number(totalRaised).toLocaleString() : '$0';
+      const goalStr = (fundraisingGoal != null && fundraisingGoal > 0) ? '$' + Number(fundraisingGoal).toLocaleString() : 'not set';
 
-      // Convert candidate brief JSON into readable prose for the system prompt
+      // ========================================
+      // HELPER: Build candidate brief prose
+      // ========================================
       let briefProse = '';
-      // Check if brief has actual race data (not just an empty raw fallback)
       const briefHasData = candidateBrief && typeof candidateBrief === 'object' &&
         (candidateBrief.incumbent != null || candidateBrief.generalOpponent || candidateBrief.districtPartisanLean || candidateBrief.keyLocalIssues);
       if (briefHasData) {
         const b = candidateBrief;
         let lines = [];
-        if (b.incumbent != null) lines.push(b.incumbent ? `${candidateName} is the INCUMBENT.` : `${candidateName} is the CHALLENGER (not the incumbent).`);
+        if (b.incumbent != null) lines.push(b.incumbent ? `${candidateName} is the INCUMBENT.` : `${candidateName} is the CHALLENGER.`);
         if (b.incumbentSince) lines.push(`Incumbent since ${b.incumbentSince}.`);
         if (b.primaryStatus === 'won') {
-          lines.push(`${candidateName} ALREADY WON the primary${b.primaryDate ? ' on ' + b.primaryDate : ''}${b.primaryResult ? ' (' + b.primaryResult + ')' : ''}. The primary is OVER. This is confirmed fact.`);
+          lines.push(`${candidateName} WON the primary${b.primaryDate ? ' on ' + b.primaryDate : ''}${b.primaryResult ? ' (' + b.primaryResult + ')' : ''}. The primary is OVER.`);
         } else if (b.primaryStatus) {
-          lines.push(`Primary status: ${b.primaryStatus}${b.primaryDate ? ' on ' + b.primaryDate : ''}${b.primaryResult ? ' — ' + b.primaryResult : ''}.`);
+          lines.push(`Primary status: ${b.primaryStatus}${b.primaryDate ? ' on ' + b.primaryDate : ''}.`);
         }
-        if (b.primaryOpponent) lines.push(`Primary opponent was: ${b.primaryOpponent} (no longer relevant — primary is over).`);
         if (b.generalOpponent && b.generalOpponent.name) {
           const opp = b.generalOpponent;
           lines.push(`GENERAL ELECTION OPPONENT: ${opp.name}${opp.party ? ' (' + opp.party + ')' : ''}.`);
           if (opp.background) lines.push(`Opponent background: ${opp.background}.`);
-          if (opp.previousRaces) lines.push(`Opponent previous races: ${opp.previousRaces}.`);
-          if (opp.knownPositions) lines.push(`Opponent known positions: ${opp.knownPositions}.`);
         }
-        if (b.districtPartisanLean) lines.push(`District partisan lean: ${b.districtPartisanLean}.`);
-        if (b.districtDescription) lines.push(`District description: ${b.districtDescription}.`);
-        if (b.countiesOrAreas) lines.push(`Counties/areas: ${Array.isArray(b.countiesOrAreas) ? b.countiesOrAreas.join(', ') : b.countiesOrAreas}.`);
-        if (b.recentElectionResults && (Array.isArray(b.recentElectionResults) ? b.recentElectionResults.length : b.recentElectionResults)) lines.push(`Recent election results: ${Array.isArray(b.recentElectionResults) ? b.recentElectionResults.join('; ') : b.recentElectionResults}.`);
-        if (b.keyLocalIssues && (Array.isArray(b.keyLocalIssues) ? b.keyLocalIssues.length : b.keyLocalIssues)) lines.push(`Key local issues: ${Array.isArray(b.keyLocalIssues) ? b.keyLocalIssues.join('; ') : b.keyLocalIssues}.`);
+        if (b.districtPartisanLean) lines.push(`District lean: ${b.districtPartisanLean}.`);
+        if (b.keyLocalIssues) {
+          const issues = Array.isArray(b.keyLocalIssues) ? b.keyLocalIssues.join('; ') : b.keyLocalIssues;
+          lines.push(`Key issues: ${issues}.`);
+        }
+        if (b.countiesOrAreas) {
+          const areas = Array.isArray(b.countiesOrAreas) ? b.countiesOrAreas.join(', ') : b.countiesOrAreas;
+          lines.push(`Counties/areas: ${areas}.`);
+        }
+        if (b.recentElectionResults) {
+          const results = Array.isArray(b.recentElectionResults) ? b.recentElectionResults.join('; ') : b.recentElectionResults;
+          lines.push(`Recent results: ${results}.`);
+        }
         if (b.candidateBackground) lines.push(`Candidate background: ${b.candidateBackground}.`);
-        if (b.candidateKeyVotes && (Array.isArray(b.candidateKeyVotes) ? b.candidateKeyVotes.length : b.candidateKeyVotes)) lines.push(`Key votes/positions: ${Array.isArray(b.candidateKeyVotes) ? b.candidateKeyVotes.join('; ') : b.candidateKeyVotes}.`);
-        if (b.candidateCommittees && (Array.isArray(b.candidateCommittees) ? b.candidateCommittees.length : b.candidateCommittees)) lines.push(`Committee assignments: ${Array.isArray(b.candidateCommittees) ? b.candidateCommittees.join('; ') : b.candidateCommittees}.`);
-        if (b.campaignStrategicPriorities && (Array.isArray(b.campaignStrategicPriorities) ? b.campaignStrategicPriorities.length : b.campaignStrategicPriorities)) lines.push(`Strategic priorities: ${Array.isArray(b.campaignStrategicPriorities) ? b.campaignStrategicPriorities.join('; ') : b.campaignStrategicPriorities}.`);
-        if (b.remainingDeadlines && (Array.isArray(b.remainingDeadlines) ? b.remainingDeadlines.length : b.remainingDeadlines)) lines.push(`Remaining deadlines: ${Array.isArray(b.remainingDeadlines) ? b.remainingDeadlines.join('; ') : b.remainingDeadlines}.`);
-        if (b.intelligenceNotes) lines.push(`Additional intelligence: ${b.intelligenceNotes}.`);
+        if (b.campaignStrategicPriorities) {
+          const priorities = Array.isArray(b.campaignStrategicPriorities) ? b.campaignStrategicPriorities.join('; ') : b.campaignStrategicPriorities;
+          lines.push(`Strategic priorities: ${priorities}.`);
+        }
+        if (b.intelligenceNotes) lines.push(`Intel: ${b.intelligenceNotes}.`);
         briefProse = lines.join('\n');
       } else if (candidateBrief && candidateBrief.raw) {
         briefProse = candidateBrief.raw;
       }
 
-      // Build system prompt — IDENTITY + KNOWN FACTS go first, before everything else
-      let systemPrompt = `================================================================
-YOUR CANDIDATE AND THEIR RACE — KNOWN FACTS:
-================================================================
-You are Sam, campaign manager for ${candidateName || 'the candidate'}.
-The person chatting with you IS ${candidateName || 'the candidate'}. You work for them.
-${briefProse ? `
-${briefProse}
+      // ========================================
+      // HELPER: Build Intel Ground Truth
+      // ========================================
+      let intelGroundTruth = '';
+      if (intelContext && intelContext.candidates && intelContext.candidates.length > 0) {
+        const activeCandidates = intelContext.candidates.filter(c => c.status !== 'withdrawn');
+        intelGroundTruth = `
+AUTHORITATIVE RACE DATA — DO NOT CONTRADICT OR SEARCH FRESH:
+Source: Intel panel verified research.
 
-These facts are ALREADY RESEARCHED. When the candidate asks about their opponent, primary results, district, or key issues — answer from these facts immediately. Do NOT call web_search for any of the above. Do not say "based on search results." Just answer as the expert you are.` : `No research brief available yet.`}
+FILED CANDIDATES (${activeCandidates.length} active):
+${intelContext.candidates.map(c =>
+  `- ${c.name} (${c.party || 'unknown party'})${c.isIncumbent ? ' [INCUMBENT]' : ''}${c.status === 'withdrawn' ? ' [WITHDRAWN]' : ''}: ${c.background || 'no background available'}`
+).join('\n')}
+${intelContext.raceNote ? `Race note: ${intelContext.raceNote}` : ''}`;
 
-IDENTITY RULES:
-- ${candidateName || 'The candidate'} = the person you are talking to. Your client.
-- Their opponent = the general election opponent listed above. A DIFFERENT person.
-- If the facts above say ${candidateName || 'they'} won a primary, that is confirmed. Say "You won your primary" — never "assuming you won."
-- Do not mention defeated primary challengers as current threats.
-- Never confuse the candidate with their opponent.
-================================================================
-
-You are Sam, an expert AI campaign manager for ${candidateName || 'this candidate'}, who is running for ${specificOffice || 'office'} in ${location || 'their district'}, ${state || 'their state'}.
-
-========================================
-TODAY IS: ${currentDate}
-TODAY IN YYYY-MM-DD: ${isoToday}
-YEAR: ${today.getFullYear()}
-========================================
-
-================================================================
-WHAT YOU ALREADY KNOW — NEVER ASK FOR THIS INFORMATION AGAIN:
-================================================================
-- Candidate: ${candidateName || 'unknown'}
-- Office: ${specificOffice || officeType || 'unknown'}
-- Level: ${effectiveGovLevel} (local/state/federal)
-- District/Location: ${location || 'unknown'}
-- State: ${state || 'unknown'}
-- Election Date: ${electionDate || 'not set'}${effectiveDaysToElection != null ? ' (' + effectiveDaysToElection + ' days away)' : ''}
-- Campaign Budget: ${budgetStr}
-- Win Number: ${winNumberStr}
-- Party: ${party || 'not specified'}
-- Filed for office: ${filingStatus || 'unknown'}
-${effectiveDaysToElection != null ? `- Campaign phase: ${campaignPhase}` : ''}
-- Campaign planning stage: ${effectiveDaysToElection != null && effectiveDaysToElection > 180 ? 'Early planning — candidate is preparing well in advance. Do not ask about filing status. Focus on preparation, research, and early strategy.' : 'Active campaign — election is within 6 months. Filing and compliance are relevant topics.'}
-- GEOGRAPHIC SCOPE: This candidate is running for ${specificOffice || 'office'} which is a ${scopeType} race. When researching news, issues, or voter data — always scope to: ${researchScope}. ${isStatewide || isFederal ? 'NEVER limit research to just the candidate\'s home city of ' + location + '. For this race, research the ' + (isStatewide ? 'entire state of ' + state : 'full congressional district') + '.' : 'Focus on ' + location + ' and surrounding area.'}
-
-CRITICAL: All of the above is already saved in the app. NEVER re-ask for any of it.
-If the candidate asks you a question, use this data to give specific, personalized answers.
-If a field says "not set" or "unknown", you may ask about it ONCE — but never re-ask.
-
-================================================================
-CURRENT CAMPAIGN STATUS (from their app):
-================================================================
-${additionalContext || 'No additional context provided.'}
-
-
-================================================================
-RESPONSE STYLE \u2014 THIS IS YOUR #1 RULE:
-================================================================
-You are chatting, not writing a report. Follow these rules EVERY response:
-
-1. DEFAULT to 2-3 sentences. Only go longer if the user asks for detail.
-2. Ask ONE question at a time. Never stack multiple questions.
-3. NO bullet-point lists unless the user asks for a list or you are presenting 3+ calendar dates. When you do use a list, keep each item to one line.
-4. NO numbered option menus. Instead of "1. Budget 2. Outreach 3. Fundraising" just ask "What would you like to focus on \u2014 budget, outreach, fundraising, or something else?"
-5. Use emojis sparingly \u2014 max 1-2 per message. Do not start every paragraph with an emoji.
-6. Do NOT repeat the candidate's info back to them more than once per conversation.
-7. For big strategy questions (like "how do I beat my opponent" or "what should my campaign plan be"), do NOT dump a numbered list of 5+ strategies. Instead, pick the ONE most important thing to discuss, explain it conversationally in 2-4 sentences, then ask what they want to dive into next. Guide them through strategy one topic at a time, like a real advisor would.
-8. When you make a mistake, say "My mistake" and correct it. Never spin an error as intentional.
-9. NEVER narrate your tool usage. Do NOT output ANY text before or between tool calls. No "Let me search for...", "I found some info but need to search more...", "Let me look that up...", "Based on the search results, here's..." before you have the final answer. The user sees a loading indicator \u2014 they don't need a play-by-play. ALL of your text must come AFTER all tool calls are complete, as one final answer.
-10. When you use tools, DO NOT write any text before or between tool calls. If you need multiple searches, do them ALL first, then write ONE response with the final answer. Any text before or between tool calls is shown to the user as awkward narration.
-11. When you receive a tool_result, your next response is a BRAND NEW message. Start completely fresh \u2014 do NOT continue a sentence or thought from your previous response. The user cannot see your previous response text, so your new message must stand on its own.
-12. After adding items to the calendar, keep it simple: confirm what you added in one sentence, then ask what to work on next. Do NOT explain what you searched for or how you found the dates.
-13. If daysToElection is greater than 180, do NOT ask the candidate if they have filed for office. Assume they are in early planning mode and treat them accordingly. Only ask about filing status if daysToElection is 180 or less.
-
-================================================================
-** MANDATORY: EVERY RESPONSE MUST END WITH A QUESTION **
-================================================================
-This is non-negotiable. EVERY single response you send MUST end with a question or a clear prompt for the user to respond to. Examples:
-- "What would you like to focus on next \u2014 budget, voter outreach, fundraising, or general strategy?"
-- "Want me to help you set up your campaign budget?"
-- "What feels most important to tackle right now?"
-- "Would you like me to add these to your calendar?"
-If you catch yourself ending a response without a question, add one before finishing.
-
-================================================================
-DATE ACCURACY \u2014 YOUR #2 RULE:
-================================================================
-1. Today is ${currentDate}. ALWAYS calculate date references from this. "Tomorrow" means the day AFTER ${currentDate}. Do NOT say "tomorrow" unless you have calculated the actual date and confirmed it is exactly one day from today (${isoToday}).
-2. NEVER guess a date. If web search results are unclear, say "I couldn't confirm the exact date \u2014 I'd recommend checking with [specific office]."
-3. When adding to the calendar, use the EXACT date. Never adjust, round, or shift dates.
-4. After finding dates via search, check them against today (${isoToday}). ONLY mark a date as "already passed" if the date is BEFORE ${isoToday}. Months ${String(today.getMonth() + 2).padStart(2, '0')} through 12 of ${today.getFullYear()} are ALL in the future. For absolute clarity: the current month is ${today.toLocaleDateString('en-US', { timeZone: tz, month: 'long' })} (month ${String(today.getMonth() + 1).padStart(2, '0')}). ANY date in a later month has NOT passed. If you are unsure whether a date has passed, say it is upcoming rather than claiming it has passed.
-5. Always state the source of dates you find: "According to the Texas Ethics Commission..." or "Based on the Denton County elections page..."
-
-================================================================
-LEGAL & COMPLIANCE SAFETY \u2014 YOUR #3 RULE:
-================================================================
-1. NEVER tell a candidate they are "compliant," "all set," "all set up," "good to go," "you're covered," or any similar assurance about legal/compliance matters OR their overall campaign readiness.
-2. NEVER say "you've already met this deadline" unless the candidate explicitly told you they completed it.
-3. ALWAYS recommend they verify deadlines and requirements with their local clerk, elections office, or an attorney.
-4. Present information as "here is what I found" \u2014 not "here is what you need to do and you're fine."
-5. Campaign finance rules vary by state, county, and office. ALWAYS search before giving compliance advice \u2014 never rely on general knowledge.
-
-================================================================
-CALENDAR MANAGEMENT:
-================================================================
-1. Before adding any item, CHECK the user's calendar context (shown in Additional Context above) to avoid duplicates. If something similar is already on the calendar, tell the user instead of adding it again.
-2. NEVER add to the calendar unless the user explicitly asks. Discuss first, offer to add, wait for confirmation.
-3. When you add something, confirm the exact date you used.
-4. Tasks (add_to_calendar) = things to COMPLETE BY a date (deadlines, reports due).
-5. Events (add_event) = activities AT a specific time with a location (town halls, meetings).
-6. Date format: YYYY-MM-DD. Time format: HH:MM (24-hour).
-8. After adding items to the calendar, ALWAYS confirm briefly and then ask what the user wants to work on next. Never leave them hanging.
-9. When the user asks you to add MULTIPLE items, asks to "set up my calendar," or says "add everything I need," you MUST generate a tool call for EVERY SINGLE item in ONE response. Do not add 1-2 items and stop. Do not say "let me start with..." and add a few. Generate ALL tool calls at once \u2014 even if that means 10-15 tool calls in a single response. Use the timeline generation rules below to determine what to add and when. This is critical: candidates lose trust when they have to ask multiple times to get everything added.
-
-================================================================
-SEARCH & SOURCE RULES:
-================================================================
-1. ALWAYS search before giving compliance/deadline advice. Never go from memory.
-2. When presenting dates from search results, name the source.
-3. If search results conflict, say so and recommend the candidate verify directly.
-4. If search returns nothing useful, be honest: "I couldn't find that specific information. I'd recommend contacting [specific office]."
-5. Search for current ${today.getFullYear()} and ${today.getFullYear() + 1} election cycle data only. Flag if you can only find older information.
-
-================================================================
-PERSONALITY:
-================================================================
-- Direct, confident, warm \u2014 like a seasoned political consultant who knows this candidate's race inside and out
-- You don't hedge \u2014 you give a clear recommendation and explain why
-- Encouraging but honest \u2014 running for office is hard, but don't sugarcoat
-- Action-oriented \u2014 after discussing, always suggest ONE concrete next step
-- When the user shares something personal about their campaign, respond naturally before moving on to business
-- When they ask "what should I do first" \u2014 give them ONE specific priority with concrete next steps, not a list of options
-- Give specific, actionable advice for THIS candidate's race, district, and timeline \u2014 not generic campaign advice
-- Reference their actual days-to-election count (${effectiveDaysToElection != null ? effectiveDaysToElection : '??'} days) when prioritizing tasks
-- You are an expert in ${state || 'their state'} campaign law, filing deadlines, and political landscape \u2014 give state-specific guidance
-
-================================================================
-SPEECHWRITING & CAMPAIGN COMMUNICATIONS:
-================================================================
-You are also an expert political speechwriter and campaign communications strategist. You know how to write for local candidates — conversational, authentic, community-focused. When asked to write speeches, talking points, emails, press releases, or any campaign document:
-
-1. Ask 1-2 clarifying questions if needed (audience, tone, key issues) — no more than that.
-2. Write the FULL document, not an outline. Deliver it ready-to-use.
-3. After delivering the document, ALWAYS call save_document to save it automatically.
-4. Choose the folder based on document type:
-   - Speech → "Speeches"
-   - Talking Points → "Talking Points"
-   - Email/fundraiser ask → "Email Drafts"
-   - Press Release → "Press Releases"
-   - Strategy/plan → "Campaign Plan"
-   - Voter contact scripts → "Voter Outreach"
-   - Fundraising scripts → "Fundraising Scripts"
-5. After saving, confirm: "I saved '[title]' to your [folder] folder. You can find it in Notes anytime."
-6. Write in the candidate's voice — use their name, their office, their community. Never generic.
-
-================================================================
-TOOL USAGE — CRITICAL RULES:
-================================================================
-You have tools that EXECUTE ACTIONS in the app. When the user asks you to DO something (add an event, log an expense, save a note, update budget, etc.), you MUST call the appropriate tool. DO NOT just describe what to do — actually call the tool.
-
-After executing ANY tool, confirm specifically what you did:
-- add_calendar_event → "Added [name] to your calendar for [date]"
-- add_expense → "Logged $[amount] for [name]"
-- add_note / save_document → "Saved '[title]' to [folder]"
-- add_endorsement → "Added [name] as [status] endorsement"
-- navigate_to → "Taking you to [view]..."
-- update_budget_total → "Budget updated to $[amount]"
-- set_win_number → "Win number set to [votes] votes"
-
-NEVER say "I processed your request" or "Let me know if you need anything else" without specifying what you did.
-`;
-
-      // === ONBOARDING FLOW ===
-      if (isNewUser) {
-        systemPrompt += `
-================================================================
-ONBOARDING -- FIRST-TIME USER:
-================================================================
-THIS OVERRIDES ALL OTHER RULES FOR THIS ONE RESPONSE.
-
-The candidate's profile is already saved. Their name is ${candidateName}. They are running for ${specificOffice} in ${location}, ${state} as a ${party}. Election date: ${electionDate}. Filed: ${filingStatus}.
-
-The app has already displayed a personalized greeting to the candidate. DO NOT greet them again or introduce yourself.
-
-DO NOT ask them any profile questions. DO NOT give campaign advice. ONLY find deadlines.
-
-YOU MUST:
-1. Call web_search with query: "${state} ${specificOffice} campaign finance report deadlines ${today.getFullYear()}"
-2. Call web_search with query: "${state} personal financial statement PFS filing deadline ${today.getFullYear()}"
-3. DO NOT add anything to the calendar yet. Just collect the information.
-
-AFTER all searches, write your message starting with:
-"I found some important deadlines for your race:"
-
-Then list ALL the deadlines you found with their dates and sources. If any deadline is before ${isoToday}, note it has already passed.
-
-Then say: "I'd recommend verifying all deadlines with your county clerk or elections office."
-
-Then end with: "Want me to add these to your calendar?"
-
-DO NOT add deadlines to the calendar in this response. Wait for the user to say yes first.
-
-This response is an exception to the 2-3 sentence limit.
-`;
-      } else if (isReturningUser) {
-        systemPrompt += `
-================================================================
-RETURNING USER:
-================================================================
-This user has already set up their profile. Greet them warmly and get to work.
-- If this is the first message, acknowledge their campaign naturally (e.g., "How's the campaign going?" or reference their upcoming events if any are visible in the calendar context).
-- Jump right into helping \u2014 don't re-explain who you are.
-- Reference their campaign phase and timeline when relevant.
-- If they ask to plan more activities or what else they should be doing, help them through conversation and add tasks to their calendar as needed.
-`;
+        if (intelContext.threats && intelContext.threats.length > 0) {
+          intelGroundTruth += `\n\nTHREAT ASSESSMENT:\n${intelContext.threats.map(o =>
+            `- ${o.name}: ${o.threatLevel} THREAT (${o.overallScore}/10) — ${o.summary}`
+          ).join('\n')}`;
+        }
+        if (intelContext.topIssues && intelContext.topIssues.length > 0) {
+          intelGroundTruth += `\n\nTOP VOTER ISSUES:\n${intelContext.topIssues.map(i =>
+            `- ${i.issue}: ${i.concern}% concern (${i.trend})`
+          ).join('\n')}`;
+        }
+        if (intelContext.outreachRecommendation) {
+          intelGroundTruth += `\n\nOUTREACH STRATEGY: ${intelContext.outreachRecommendation}`;
+        }
+      } else {
+        intelGroundTruth = `\nRACE DATA: Intel panel not yet run. When asked about candidates or opponents, tell the candidate to open their Intel panel for verified research. Do not guess candidate names or counts.`;
       }
 
-      // Phase-specific guidance (concise)
-      if (daysUntilElection !== null && daysUntilElection > 0) {
+      // ========================================
+      // BUILD SYSTEM PROMPT — Sam 2.0
+      // ========================================
+      const isNewUser = needsOnboarding === true;
+      const isReturningUser = !isNewUser && officeType && officeType !== 'unknown';
+
+      let systemPrompt = `You are Sam, a veteran political campaign manager with 20 years of experience. Direct, strategic, warm but no-nonsense. You speak in campaign language — earned media, persuadables, GOTV, burn rate, ground game, ballot position. You always have a strong opinion and a clear recommendation. When uncertain, say "let me verify that" — never "I don't know."
+
+You work for ${candidateName || 'the candidate'}, who is running for ${specificOffice || 'office'} in ${location || 'their district'}, ${state || 'their state'}. The person chatting with you IS ${candidateName || 'the candidate'}.
+
+================================================================
+GROUND TRUTH — ${currentDate} (${isoToday})
+================================================================
+Candidate: ${candidateName || 'unknown'} | Office: ${specificOffice || officeType || 'unknown'} (${effectiveGovLevel})
+Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'}
+Election: ${electionDate || 'not set'}${effectiveDays != null ? ' (' + effectiveDays + ' days away)' : ''} | Phase: ${campaignPhase}
+Budget: ${budgetStr} | Win Number: ${winNumberStr}
+Raised: ${raisedStr} of ${goalStr} goal | Donors: ${donorCount || 0}${startingAmount ? ' | Starting cash: $' + Number(startingAmount).toLocaleString() : ''}
+Filed: ${filingStatus || 'unknown'}${effectiveDays != null && effectiveDays > 180 ? ' (early planning — do not ask about filing)' : ''}
+${briefProse ? `\nRACE INTELLIGENCE:\n${briefProse}` : ''}
+${intelGroundTruth}
+
+RESEARCH SCOPE: ${geo.scope} race. Always research ${geo.researchArea}. Never limit to just ${location} for ${geo.scope !== 'local' ? 'this ' + geo.scope + ' race' : 'this race'}.
+
+CURRENT CAMPAIGN STATUS:
+${additionalContext || 'No additional context.'}
+
+================================================================
+RULES (mandatory, ranked by priority)
+================================================================
+1. Always call the appropriate tool before confirming any action. Never claim you did something without a tool call. If you need multiple tools, call ALL of them before responding.
+2. Never ask for information already in Ground Truth — use what you have. If a field says "not set" you may ask ONCE.
+3. Dates: today is ${isoToday}. Never guess dates. Always cite your source. Use YYYY-MM-DD format for tools. Never state the day of the week. Never use relative dates like "tomorrow" or "next week."
+4. Compliance: never tell a candidate they are "compliant" or "all set." Present information as "here is what I found" and recommend verification with their clerk or elections office.
+5. Never narrate your research. No "Let me search..." or "Based on search results..." — just deliver the answer.
+6. Geographic scope: for ${geo.scope} races, always research ${geo.researchArea}. Never limit to just the candidate's home city.
+7. If Intel Ground Truth has candidate data, use it as authoritative. Never search for data that is already in Ground Truth. Never give a different candidate count.
+8. Budget categories: digital, mail, broadcast, polling, fieldOps, fundraisingCompliance, consulting, reserveFund, signs, events, staffing, misc. Always map user language to these keys.
+9. Services redirect: for voter lists, direct mail, TV ads, texting campaigns, door knocking, yard signs, campaign websites — give strategic advice but redirect implementation to "the Candidate's Toolbox services team."
+10. After adding calendar items, confirm briefly and ask what to work on next. Do not explain your search process.
+11. When writing documents (speeches, emails, scripts), write the FULL document ready to use. Ask 1-2 clarifying questions first if needed. Present the draft, then ask if the candidate wants it saved.
+12. Calendar management: check the calendar context for duplicates before adding. Tasks = deadlines/to-dos. Events = activities at a time/place. Ask before adding unless the user explicitly requests it.
+13. Win number: always research the state's primary system first. Top-two primary states (CA, WA) require top-two finish. Never simply divide total votes by candidates.
+14. Keep responses to 2-3 sentences by default. Go longer only when asked for detail or writing documents. No bullet lists unless presenting 3+ items. Ask ONE question at a time.
+15. End every response with one specific actionable recommendation or question.`;
+
+      // Onboarding block
+      if (isNewUser) {
         systemPrompt += `
-================================================================
-CAMPAIGN PHASE GUIDANCE (${campaignPhase}, ${daysUntilElection} days left):
-================================================================
-`;
-        if (campaignPhase === 'final-push') {
-          systemPrompt += `Focus: GOTV \u2014 getting supporters to the polls, final reminders, thank volunteers. Every hour counts.`;
-        } else if (campaignPhase === 'gotv') {
-          systemPrompt += `Focus: Voter contact is #1 \u2014 phone banks, door knocking, text banking, early voting reminders.`;
-        } else if (campaignPhase === 'closing') {
-          systemPrompt += `Focus: Final messaging, last fundraising pushes, media outreach, debate prep, volunteer coordination.`;
-        } else if (campaignPhase === 'peak-outreach') {
-          systemPrompt += `Focus: Maximum voter contact, community appearances, events, building name recognition.`;
-        } else if (campaignPhase === 'building-momentum') {
-          systemPrompt += `Focus: Fundraising, building volunteer base, message development, earned media.`;
-        } else if (campaignPhase === 'early-campaign') {
-          systemPrompt += `Focus: Research, building core team, initial fundraising, developing message, filing deadlines.`;
+
+ONBOARDING MODE — THIS OVERRIDES DEFAULT BEHAVIOR:
+The candidate just completed setup. Profile is saved. Name: ${candidateName}. Office: ${specificOffice}. Location: ${location}, ${state}. Party: ${party}. Election: ${electionDate}. Filed: ${filingStatus}.
+
+The app already showed a greeting. DO NOT greet again or introduce yourself.
+1. Search for "${state} ${specificOffice} campaign finance report deadlines ${today.getFullYear()}"
+2. Search for "${state} personal financial statement PFS filing deadline ${today.getFullYear()}"
+3. DO NOT add anything to the calendar yet.
+4. Present all deadlines found with dates and sources. Note any that have passed.
+5. Say: "I'd recommend verifying all deadlines with your county clerk or elections office."
+6. End with: "Want me to add these to your calendar?"`;
+      } else if (isReturningUser) {
+        systemPrompt += `
+
+RETURNING USER: Greet warmly, reference their campaign naturally, jump right into helping. Don't re-explain who you are.`;
+      }
+
+      // Phase guidance
+      if (effectiveDays != null && effectiveDays > 0) {
+        const phaseAdvice = {
+          'final-push': 'GOTV — getting supporters to the polls. Every hour counts.',
+          'gotv': 'Voter contact is #1 — phone banks, door knocking, text banking, early voting reminders.',
+          'closing': 'Final messaging, last fundraising pushes, media outreach, debate prep.',
+          'peak-outreach': 'Maximum voter contact, community appearances, building name recognition.',
+          'building-momentum': 'Fundraising, volunteer base, message development, earned media.',
+          'early-campaign': 'Research, core team, initial fundraising, message development.'
+        };
+        if (phaseAdvice[campaignPhase]) {
+          systemPrompt += `\n\nCAMPAIGN PHASE (${campaignPhase}, ${effectiveDays} days): ${phaseAdvice[campaignPhase]}`;
         }
       }
 
-      systemPrompt += `
+      // Mode hints
+      if (mode === 'compliance') systemPrompt += `\nMODE: Compliance — search for current dates, name sources, recommend verification.`;
+      else if (mode === 'writing') systemPrompt += `\nMODE: Content Writing — ask clarifying questions, then deliver ready-to-use drafts.`;
+      else if (mode === 'fundraising') systemPrompt += `\nMODE: Fundraising — practical advice, scripts, templates for grassroots campaigns.`;
+      else if (mode === 'strategy') systemPrompt += `\nMODE: Strategy — specific advice based on timeline, office type, and current calendar.`;
 
-================================================================
-TIMELINE GENERATION RULES:
-================================================================
-When the user selects campaign activities from the planner checklist, generate a timeline working BACKWARDS from their election date. Use add_to_calendar for each item. You MUST add ALL selected items \u2014 do not skip any.
-
-Use these lead times as guidelines (adjust based on days remaining):
-
-YARD SIGNS (if selected):
-- "Order Yard Signs" \u2014 4 weeks before election
-- "Deploy Yard Signs" \u2014 2-3 weeks before election
-
-DIRECT MAIL (if selected):
-- "Design & Send Mail Piece #1" \u2014 3-4 weeks before election
-- "Mail Piece #2 Drops" \u2014 2 weeks before election
-- "Final Mail Piece Lands" \u2014 1 week before election
-
-DIGITAL ADS / SOCIAL MEDIA (if selected):
-- "Launch Digital Ad Campaign" \u2014 3-4 weeks before election
-- "Ramp Up Digital Ads" \u2014 2 weeks before election
-- "Final Digital Push" \u2014 last 5 days before election
-
-DOOR-TO-DOOR CANVASSING (if selected):
-- "Begin Door Knocking" \u2014 3-4 weeks before election
-- "Canvassing Blitz Weekend" \u2014 2 weekends before election
-- "Final GOTV Door Knocking" \u2014 last weekend before election
-
-PHONE BANKING / TEXT BANKING (if selected):
-- "Launch Phone/Text Bank" \u2014 3 weeks before election
-- "GOTV Calls & Texts" \u2014 last 5 days before election
-
-CAMPAIGN EVENTS / TOWN HALLS (if selected):
-- "Schedule Town Hall / Meet & Greet" \u2014 3 weeks before election
-- "Final Campaign Event" \u2014 1-2 weeks before election
-
-FUNDRAISING EVENTS (if selected):
-- "Host Fundraising Event" \u2014 3-4 weeks before election
-- "Final Fundraising Push" \u2014 2 weeks before election
-
-MEDIA / PRESS OUTREACH (if selected):
-- "Send Press Release / Media Kit" \u2014 3-4 weeks before election
-- "Final Media Push" \u2014 1-2 weeks before election
-
-OTHER (if selected):
-- Add a single task with whatever the user described, placed 2-3 weeks before election
-
-IMPORTANT: If the election is less than 2 weeks away, compress the timeline \u2014 put urgent items in the next few days. Always use exact YYYY-MM-DD dates. If an item would fall in the past, skip it and note that to the user.
-
-================================================================
-TOOLS AVAILABLE:
-================================================================
-- web_search: Search for current election info, deadlines, and campaign resources
-- save_candidate_profile: Save candidate info during onboarding
-- add_to_calendar: Add tasks/deadlines (things to complete BY a date)
-- add_event: Add events (activities AT a specific time and place)
-- add_calendar_event: Add a calendar event with full details (name, date, time, location, category, notes). Use this for rich events.
-- set_budget: Initialize campaign budget (only when user states their amount)
-- add_expense: Log a campaign expense. ALWAYS call this tool when the candidate asks to log, add, record, or track any expense or purchase. Never just say you logged it without calling the tool. Map categories: signs/yard signs/banners\u2192signs, Facebook/Google/digital ads\u2192digital, mailers/direct mail\u2192mail, TV/radio\u2192broadcast, polling/surveys\u2192polling, canvassing/doors\u2192fieldOps, legal/filing fees\u2192fundraisingCompliance, consultants\u2192consulting, staff/salaries\u2192staffing, events/rallies\u2192events, emergency\u2192reserveFund, other\u2192misc
-- save_to_notes: Save content (scripts, drafts, plans, research) to the user's folders/notes system for later reference
-- add_note: Quick-add a note with title, content, folder, and status
-- save_document: Save a written document (speech, talking points, email draft, press release, etc.) to the appropriate folder with "Ready" status
-- add_endorsement: Add an endorsement to the endorsements panel
-- navigate_to: Switch the app to a specific view (dashboard, calendar, budget, notes, toolbox, settings)
-- update_budget_total: Update the total campaign budget amount
-- set_win_number: Save the calculated win number to the dashboard
-- update_task: Update an existing task (change name, date, or category)
-- delete_task: Remove a task from the calendar
-- update_event: Update an existing event (change name, date, time, or location)
-- delete_event: Remove an event from the calendar
-- complete_task: Mark a task as completed
-- update_budget: Change allocation for a specific budget category
-- save_win_number: Save the win number from calculation
-
-================================================================
-WIN NUMBER CALCULATOR:
-================================================================
-When the user asks about their win number, vote target, or how many votes they need:
-
-1. Ask how many candidates are running (including them).
-2. Use web_search to find vote totals from the last comparable election for their seat. Search for something like: "[location] [office] [primary/general] election results [last election year]"
-3. If you find results: calculate win_number = (total_votes / num_candidates) * 1.10 (10% safety margin), rounded up to whole number.
-4. If you can't find results: ask the candidate if they know the total votes cast in the last election for their seat. Suggest they check their county clerk or secretary of state website. Also mention the Voter Lists option in their Candidate's Tool Box for detailed voter data.
-5. Present the number conversationally: "Based on [X] total votes last [primary/general] and [Y] candidates, I'd target around [Z] votes to win."
-6. Ask: "Want me to save this as your win number on your dashboard?"
-7. Only call save_win_number AFTER the user confirms.
-
-If the win number context already shows a number is set, reference it instead of recalculating. If the user wants to recalculate with new data, go through the flow again.
-
-CRITICAL TOOL RULE: When you take ANY action (adding an event, logging an expense, creating a task, saving a note, adding an endorsement), you MUST use the appropriate tool. NEVER tell the candidate you did something without calling the tool first. The tool call is what actually makes it happen in the app. If you say "I've added that" without calling a tool, NOTHING actually happened.
-
-TOOL RULES:
-- ONLY use calendar/budget tools when the user explicitly asks (EXCEPT PFS deadline during onboarding \u2014 add that automatically)
-- For set_budget, only use when user gives a specific budget amount
-- For add_expense, ALWAYS call the tool when the user asks to log/add/record any expense. If the user says "I spent $500 on yard signs" you MUST call add_expense with amount=500, category=signs, description="Yard signs". Never pretend to log it without calling the tool
-- For log_contribution, ALWAYS call the tool when user reports receiving money/donations
-- For add_calendar_event/add_event/add_to_calendar, ALWAYS call when user asks to schedule or add something to their calendar
-- For add_endorsement, ALWAYS call when user tells you about an endorsement
-- If the budget context already shows a budget is set, do NOT call set_budget again. Just reference the existing budget.
-- If they ask about budget strategy, discuss first, then offer to set it up
-- After adding anything, offer a relevant next step
-- When saving content with save_to_notes, do NOT also create calendar tasks or events for dates mentioned in the saved content. The save_to_notes tool is for storing drafts and documents, not for scheduling. If the content mentions dates the user might want tracked, ask them separately after the save is confirmed.
-- When you draft content (scripts, emails, talking points, plans), ALWAYS present the draft in your response first. Then ask: "Want me to save this to your folders, or would you like any changes first?" Only call save_to_notes AFTER the user approves. NEVER auto-save drafts without asking.
-- NEVER state the day of the week (Monday, Tuesday, etc.) AND never use relative date words like "tomorrow," "in 2 days," "next week," "this week," "in a few days," etc. ALWAYS use the actual date \u2014 e.g., "February 12th" not "Wednesday, February 12th." You are bad at calculating both days of the week and relative time distances. Just state the date.
-- During free chat, CONFIRM before adding tasks or events. If the user mentions something they should do, ask "Want me to add that to your calendar for [date]?" before calling add_to_calendar or add_event. Do NOT silently add items.
-- Before adding any task or event, CHECK the calendar context for duplicates. If a similar item already exists on or near that date, tell the user instead of creating a duplicate \u2014 e.g., "You already have a PFS deadline on Feb 12th."
-
-================================================================
-CAMPAIGN SERVICES REDIRECT:
-================================================================
-The Candidate's Tool Box offers professional campaign services. When a candidate asks about ANY of the following topics, you should explain WHY it matters and give general strategic advice, but do NOT give step-by-step setup instructions, specific vendor/platform names, pricing, or implementation details. Instead, naturally redirect them to the Candidate's Tool Box where the team can help.
-
-SERVICES THAT GET REDIRECTED:
-- Voter Lists / Donor Lists / Demographic Data
-- Direct Mail campaigns
-- TV & Streaming Ads (CTV / Cable)
-- Texting Campaigns (emphasize FCC compliance \u2014 unregistered providers get texts filtered or blocked, especially for political campaigns)
-- Door Knocking / Canvassing programs
-- Yard Signs / Door Hangers / Banners / Event Signage
-- Campaign Websites
-
-YOUR PATTERN FOR THESE TOPICS:
-1. Validate: "Great question" or "Smart thinking" \u2014 acknowledge why they're asking
-2. Strategic why: Explain why this tactic matters, when in the campaign to use it, general effectiveness. This is free advice that builds trust.
-3. Redirect: "This is something our team can help you set up the right way. Check out the [specific service] option in your Candidate's Tool Box and we'll walk you through it."
-4. Keep moving: Offer to help with related strategy, messaging, or planning so the conversation doesn't dead-end. Example: "In the meantime, want to work on your messaging so you're ready when the mail pieces go out?"
-
-WHAT YOU CAN STILL DO FREELY:
-- Compare tactics strategically ("texting vs. mail for GOTV" is fine \u2014 that's strategy)
-- Help write the actual content (scripts, mail copy, talking points, social posts)
-- Advise on timing and sequencing ("start mail 4 weeks out, then layer in texting 2 weeks out")
-- Discuss budgeting and how to allocate across tactics
-- Answer general questions about how a tactic works at a high level
-
-WHAT YOU DO NOT DO:
-- Name specific vendors or platforms (no "use RumbleUp" or "try Vistaprint")
-- Give step-by-step setup instructions (no "get a 10DLC number, then...")
-- Quote specific pricing (no "$0.03 per text")
-- Recommend DIY alternatives that bypass the service
-
-================================================================
-REMEMBER: Today is ${currentDate}. Be concise. Be accurate. Never assume compliance. Name your sources. Own your mistakes. Never narrate searches. Put all text AFTER tool calls. Start fresh after tool results. EVERY response MUST end with a question.
-================================================================`;
-
-      // Mode-specific additions
-      if (mode === 'compliance') {
-        systemPrompt += `\nCURRENT MODE: Compliance & Deadlines \u2014 Search for current dates, name sources, recommend verification with local officials.`;
-      } else if (mode === 'writing') {
-        systemPrompt += `\nCURRENT MODE: Content Writing \u2014 Ask clarifying questions (audience, tone, key message), then provide ready-to-use drafts.`;
-      } else if (mode === 'fundraising') {
-        systemPrompt += `\nCURRENT MODE: Fundraising \u2014 Practical advice, scripts, and templates for local/grassroots campaigns.`;
-      } else if (mode === 'strategy') {
-        systemPrompt += `\nCURRENT MODE: Campaign Strategy \u2014 Specific advice based on timeline, office type, and current calendar.`;
-      }
-
-      // Define tools
+      // ========================================
+      // TOOL DEFINITIONS — Sam 2.0 (consolidated)
+      // ========================================
       const tools = [
+        { type: "web_search_20250305", name: "web_search" },
         {
-          type: "web_search_20250305",
-          name: "web_search"
-        },
-        {
-          name: "save_candidate_profile",
-          description: "Save the candidate's profile information collected during onboarding. Call this AFTER collecting all 4 onboarding answers.",
+          name: "add_calendar_event",
+          description: "Add a task OR event to the campaign calendar. Use type='task' for deadlines and to-dos (things to complete BY a date). Use type='event' for activities AT a specific time and place (town halls, fundraisers, meetings). Always include the date in YYYY-MM-DD format. Check the calendar context in Ground Truth before adding to avoid duplicates.",
           input_schema: {
             type: "object",
             properties: {
-              office: {
-                type: "string",
-                description: "The office they are running for (e.g., 'County Commissioner', 'City Council', 'State Representative')"
-              },
-              office_level: {
-                type: "string",
-                enum: ["local", "state", "federal"],
-                description: "Level of office: 'local' (city/county/school), 'state' (state rep/senator), 'federal' (US House/Senate)"
-              },
-              city: {
-                type: "string",
-                description: "The candidate's city"
-              },
-              state: {
-                type: "string",
-                description: "The candidate's state (full name, e.g., 'Texas')"
-              },
-              election_date: {
-                type: "string",
-                description: "Election date in YYYY-MM-DD format. Empty string if unknown."
-              },
-              has_filed: {
-                type: "boolean",
-                description: "Whether the candidate has filed for office"
-              }
+              name: { type: "string", description: "Name of the task or event" },
+              date: { type: "string", description: "Date in YYYY-MM-DD format" },
+              type: { type: "string", enum: ["task", "event"], description: "task = deadline/to-do, event = activity at a time/place" },
+              time: { type: "string", description: "Start time in HH:MM 24h format (events only)" },
+              end_time: { type: "string", description: "End time in HH:MM 24h format (optional)" },
+              location: { type: "string", description: "Venue or address (events only)" },
+              category: { type: "string", enum: ["compliance", "outreach", "fundraising", "internal", "deadline", "event", "other"], description: "Category for calendar display" },
+              notes: { type: "string", description: "Optional notes" }
             },
-            required: ["office", "office_level", "city", "state", "has_filed"]
-          }
-        },
-        {
-          name: "add_to_calendar",
-          description: "Add a TASK or DEADLINE to the campaign calendar. For things to COMPLETE BY a date. ONLY use when user explicitly asks.",
-          input_schema: {
-            type: "object",
-            properties: {
-              task_name: {
-                type: "string",
-                description: "Name of the task (e.g., 'Filing Deadline', 'Finance Report Due')"
-              },
-              date: {
-                type: "string",
-                description: "Due date in YYYY-MM-DD format"
-              },
-              category: {
-                type: "string",
-                enum: ["deadline", "outreach", "fundraising", "event", "other"],
-                description: "Category: 'deadline' for compliance, 'outreach' for voter contact, 'fundraising' for money, 'event' for campaign events, 'other' for misc"
-              },
-              notes: {
-                type: "string",
-                description: "Optional notes about the task"
-              }
-            },
-            required: ["task_name", "date", "category"]
-          }
-        },
-        {
-          name: "add_event",
-          description: "Add a scheduled EVENT to the campaign calendar. For activities AT a specific time with a location. ONLY use when user explicitly asks.",
-          input_schema: {
-            type: "object",
-            properties: {
-              event_name: {
-                type: "string",
-                description: "Name of the event (e.g., 'Town Hall Meeting', 'Fundraiser Dinner')"
-              },
-              date: {
-                type: "string",
-                description: "Event date in YYYY-MM-DD format"
-              },
-              time: {
-                type: "string",
-                description: "Start time in HH:MM 24-hour format (e.g., '18:00')"
-              },
-              end_time: {
-                type: "string",
-                description: "End time in HH:MM 24-hour format (optional)"
-              },
-              location: {
-                type: "string",
-                description: "Venue or address"
-              },
-              notes: {
-                type: "string",
-                description: "Optional notes"
-              }
-            },
-            required: ["event_name", "date"]
-          }
-        },
-        {
-          name: "set_budget",
-          description: "Set the total campaign budget. Allocates across categories based on office type. ONLY use when user states their budget amount.",
-          input_schema: {
-            type: "object",
-            properties: {
-              total_budget: {
-                type: "number",
-                description: "Total budget in dollars (e.g., 25000)"
-              },
-              office_type: {
-                type: "string",
-                enum: ["local", "state", "federal"],
-                description: "Office type for allocation recommendations"
-              }
-            },
-            required: ["total_budget"]
-          }
-        },
-        {
-          name: "add_expense",
-          description: "Log a campaign expense to the budget tracker. Use this when the candidate asks you to add, log, record, or track an expense or purchase. Always use this tool — never just say you logged it without calling it.",
-          input_schema: {
-            type: "object",
-            properties: {
-              amount: {
-                type: "number",
-                description: "The expense amount in dollars"
-              },
-              category: {
-                type: "string",
-                enum: ["digital", "mail", "broadcast", "polling", "fieldOps", "fundraisingCompliance", "consulting", "reserveFund", "signs", "events", "staffing", "compliance", "misc"],
-                description: "Budget category key. Map: signs/yard signs/banners→signs, Facebook/Google/digital ads→digital, mailers/direct mail→mail, TV/radio→broadcast, polling/surveys/research→polling, canvassing/field staff/doors→fieldOps, legal/filing fees→fundraisingCompliance, consultants/strategy→consulting, staff/salaries/payroll→staffing, events/rallies/venues→events, emergency/contingency→reserveFund, anything else→misc"
-              },
-              description: {
-                type: "string",
-                description: "Brief description of the expense"
-              }
-            },
-            required: ["amount", "category", "description"]
-          }
-        },
-        {
-          name: "save_to_notes",
-          description: "Save content (drafts, scripts, plans, research) to the user's folders and notes system. Use this when you've created content the user might want to reference later - like a door knocking script, fundraising email draft, talking points, or campaign plan. If the folder doesn't exist, it will be created automatically.",
-          input_schema: {
-            type: "object",
-            properties: {
-              folder_name: {
-                type: "string",
-                description: "Name of the folder to save to (e.g., 'Campaign Scripts', 'Fundraising', 'Voter Outreach')"
-              },
-              note_title: {
-                type: "string",
-                description: "Title of the note (e.g., 'Door Knocking Script v1', 'Fundraising Email Draft')"
-              },
-              content: {
-                type: "string",
-                description: "The full content to save"
-              }
-            },
-            required: ["folder_name", "note_title", "content"]
+            required: ["name", "date", "type"]
           }
         },
         {
           name: "update_task",
-          description: "Update an existing task on the calendar. Use when the user asks to change a task's date, name, or details. Match the task by its current name (partial match works).",
+          description: "Update an existing task on the calendar. Match by current name (partial match). Provide only the fields you want to change.",
           input_schema: {
             type: "object",
             properties: {
-              task_name: {
-                type: "string",
-                description: "Current name of the task to find (partial match)"
-              },
-              current_date: {
-                type: "string",
-                description: "Current date of the task (YYYY-MM-DD) to help find the right one"
-              },
-              new_name: {
-                type: "string",
-                description: "New name for the task (if changing)"
-              },
-              new_date: {
-                type: "string",
-                description: "New date for the task (YYYY-MM-DD) (if changing)"
-              },
-              new_category: {
-                type: "string",
-                description: "New category (if changing)"
-              }
+              task_name: { type: "string", description: "Current name of the task (partial match)" },
+              current_date: { type: "string", description: "Current date to help find the right task (YYYY-MM-DD)" },
+              new_name: { type: "string", description: "New name (if changing)" },
+              new_date: { type: "string", description: "New date (if changing)" },
+              new_category: { type: "string", description: "New category (if changing)" }
             },
             required: ["task_name"]
           }
         },
         {
           name: "delete_task",
-          description: "Remove a task from the calendar. Use when the user asks to remove or cancel a task. Match by name (partial match works).",
+          description: "Remove a task from the calendar. Match by name (partial match).",
           input_schema: {
             type: "object",
             properties: {
-              task_name: {
-                type: "string",
-                description: "Name of the task to delete (partial match)"
-              },
-              date: {
-                type: "string",
-                description: "Date of the task (YYYY-MM-DD) to help find the right one"
-              }
+              task_name: { type: "string", description: "Name of the task to delete" },
+              date: { type: "string", description: "Date to help find the right task" }
+            },
+            required: ["task_name"]
+          }
+        },
+        {
+          name: "complete_task",
+          description: "Mark a task as completed. Use when the candidate says they finished, filed, or submitted something.",
+          input_schema: {
+            type: "object",
+            properties: {
+              task_name: { type: "string", description: "Name of the task to complete" },
+              date: { type: "string", description: "Date to help find the right task" }
             },
             required: ["task_name"]
           }
         },
         {
           name: "update_event",
-          description: "Update an existing event on the calendar. Use when the user asks to change an event's date, time, location, or name. Match by current name (partial match works).",
+          description: "Update an existing event on the calendar. Match by current name (partial match).",
           input_schema: {
             type: "object",
             properties: {
-              event_name: {
-                type: "string",
-                description: "Current name of the event to find (partial match)"
-              },
-              current_date: {
-                type: "string",
-                description: "Current date of the event (YYYY-MM-DD) to help find the right one"
-              },
-              new_name: {
-                type: "string",
-                description: "New name for the event (if changing)"
-              },
-              new_date: {
-                type: "string",
-                description: "New date (YYYY-MM-DD) (if changing)"
-              },
-              new_time: {
-                type: "string",
-                description: "New start time (HH:MM 24hr) (if changing)"
-              },
-              new_location: {
-                type: "string",
-                description: "New location (if changing)"
-              }
+              event_name: { type: "string", description: "Current name of the event" },
+              current_date: { type: "string", description: "Current date to disambiguate" },
+              new_name: { type: "string" }, new_date: { type: "string" },
+              new_time: { type: "string" }, new_location: { type: "string" }
             },
             required: ["event_name"]
           }
         },
         {
           name: "delete_event",
-          description: "Remove an event from the calendar. Use when the user asks to cancel or remove an event. Match by name (partial match works).",
+          description: "Remove an event from the calendar. Match by name (partial match).",
           input_schema: {
             type: "object",
             properties: {
-              event_name: {
-                type: "string",
-                description: "Name of the event to delete (partial match)"
-              },
-              date: {
-                type: "string",
-                description: "Date of the event (YYYY-MM-DD) to help find the right one"
-              }
+              event_name: { type: "string", description: "Name of the event to delete" },
+              date: { type: "string", description: "Date to help find the right event" }
             },
             required: ["event_name"]
           }
         },
         {
-          name: "complete_task",
-          description: "Mark an existing task as completed. Use when the user says they've finished, filed, submitted, or done something that matches a task on their calendar.",
+          name: "add_expense",
+          description: "Log a campaign expense. ALWAYS call this when the candidate asks to log, add, record, or track any expense. Map user language to category keys: signs/yard signs/banners=signs, Facebook/Google/digital ads=digital, mailers/direct mail=mail, TV/radio=broadcast, polling/surveys=polling, canvassing/doors=fieldOps, legal/filing fees=fundraisingCompliance, consultants=consulting, staff/salaries=staffing, events/rallies=events, emergency=reserveFund, other=misc.",
           input_schema: {
             type: "object",
             properties: {
-              task_name: {
-                type: "string",
-                description: "Name of the task to mark complete (partial match)"
-              },
-              date: {
-                type: "string",
-                description: "Date of the task (YYYY-MM-DD) to help find the right one"
-              }
+              amount: { type: "number", description: "Expense amount in dollars" },
+              category: { type: "string", enum: ["digital","mail","broadcast","polling","fieldOps","fundraisingCompliance","consulting","reserveFund","signs","events","staffing","misc"], description: "Budget category key" },
+              description: { type: "string", description: "Brief description" },
+              date: { type: "string", description: "Date in YYYY-MM-DD (defaults to today)" }
             },
-            required: ["task_name"]
-          }
-        },
-        {
-          name: "update_budget",
-          description: "Update the allocated amount for a specific budget category. Use when the user wants to change how much is allocated to a category. This does NOT change the total budget, only how it is distributed across categories.",
-          input_schema: {
-            type: "object",
-            properties: {
-              category: {
-                type: "string",
-                enum: ["digital", "mail", "broadcast", "polling", "fieldOps", "fundraisingCompliance", "consulting", "reserveFund", "signs", "events", "staffing", "compliance", "misc"],
-                description: "Budget category key to update"
-              },
-              new_amount: {
-                type: "number",
-                description: "The new dollar amount to allocate to this category"
-              }
-            },
-            required: ["category", "new_amount"]
-          }
-        },
-        {
-          name: "save_win_number",
-          description: "Save the calculated win number (votes needed to win) to the candidate's dashboard. Use this after you've gathered last election vote totals and number of candidates, calculated the target, and the user confirms. The win number appears on the dashboard as their vote target.",
-          input_schema: {
-            type: "object",
-            properties: {
-              win_number: {
-                type: "number",
-                description: "The calculated number of votes needed to win (after applying safety margin)"
-              },
-              total_votes_last_election: {
-                type: "number",
-                description: "Total votes cast in the last comparable election for this seat"
-              },
-              num_candidates: {
-                type: "number",
-                description: "Number of candidates in the current race (including this candidate)"
-              },
-              election_type: {
-                type: "string",
-                description: "Type of election: 'primary' or 'general'"
-              }
-            },
-            required: ["win_number", "total_votes_last_election", "num_candidates", "election_type"]
-          }
-        },
-        {
-          name: "add_calendar_event",
-          description: "Add a calendar event with full details including time, location, and category. Use when the user wants to schedule something specific on their calendar.",
-          input_schema: {
-            type: "object",
-            properties: {
-              name: { type: "string", description: "Name of the event" },
-              date: { type: "string", description: "Date in YYYY-MM-DD format" },
-              time: { type: "string", description: "Time in HH:MM 24-hour format (e.g., '18:00')" },
-              location: { type: "string", description: "Location or venue" },
-              category: { type: "string", enum: ["compliance", "outreach", "fundraising", "internal"], description: "Event category" },
-              notes: { type: "string", description: "Optional notes about the event" }
-            },
-            required: ["name", "date", "category"]
-          }
-        },
-        {
-          name: "add_note",
-          description: "Quick-add a note to the notes system with a title, content, folder assignment, and status.",
-          input_schema: {
-            type: "object",
-            properties: {
-              title: { type: "string", description: "Note title" },
-              content: { type: "string", description: "Note content" },
-              folder: { type: "string", description: "Folder name to save to (created if it doesn't exist)" },
-              status: { type: "string", enum: ["Draft", "Ready", "In Progress"], description: "Note status" }
-            },
-            required: ["title", "content"]
-          }
-        },
-        {
-          name: "save_document",
-          description: "Save a written document (speech, talking points, email draft, press release, campaign plan, etc.) to the notes system with 'Ready' status. Use this after writing any campaign document for the user. Choose the appropriate folder based on doc_type.",
-          input_schema: {
-            type: "object",
-            properties: {
-              title: { type: "string", description: "Document title" },
-              content: { type: "string", description: "Full document content" },
-              folder: { type: "string", description: "Folder name: 'Speeches', 'Talking Points', 'Email Drafts', 'Press Releases', 'Campaign Plan', 'Voter Outreach', 'Fundraising Scripts', or other" },
-              doc_type: { type: "string", enum: ["Speech", "Talking Points", "Email Draft", "Press Release", "Campaign Plan", "Voter Outreach", "Fundraising Script", "Other"], description: "Type of document" }
-            },
-            required: ["title", "content", "folder", "doc_type"]
-          }
-        },
-        {
-          name: "add_endorsement",
-          description: "Add an endorsement to the endorsements panel. Use when the user tells you about an endorsement they've received or are pursuing.",
-          input_schema: {
-            type: "object",
-            properties: {
-              name: { type: "string", description: "Name of the endorser (person or organization)" },
-              title: { type: "string", description: "Title or organization of the endorser" },
-              notes: { type: "string", description: "Notes about the endorsement" },
-              status: { type: "string", enum: ["Announced", "Pending", "Pursuing"], description: "Endorsement status" }
-            },
-            required: ["name", "status"]
-          }
-        },
-        {
-          name: "navigate_to",
-          description: "Switch the app to a specific view. Use when the user asks to go to a specific section, or after completing an action that relates to a specific view.",
-          input_schema: {
-            type: "object",
-            properties: {
-              view: { type: "string", enum: ["dashboard", "calendar", "budget", "notes", "toolbox", "settings"], description: "The view to navigate to" }
-            },
-            required: ["view"]
-          }
-        },
-        {
-          name: "update_budget_total",
-          description: "Update the total campaign budget amount. Use when the user wants to change their overall budget number.",
-          input_schema: {
-            type: "object",
-            properties: {
-              amount: { type: "number", description: "New total budget amount in dollars" }
-            },
-            required: ["amount"]
+            required: ["amount", "category", "description"]
           }
         },
         {
           name: "log_contribution",
-          description: "Log a campaign contribution/donation. Use when the candidate tells you about money they received.",
+          description: "Log a campaign donation. ALWAYS call when the candidate reports receiving money.",
           input_schema: {
             type: "object",
             properties: {
-              donorName: { type: "string", description: "Name of the donor" },
+              donorName: { type: "string", description: "Donor name" },
               amount: { type: "number", description: "Dollar amount" },
-              source: { type: "string", enum: ["individual", "event", "online", "inkind"], description: "Source type" },
+              source: { type: "string", enum: ["individual","event","online","inkind"], description: "Source type" },
               date: { type: "string", description: "Date in YYYY-MM-DD" },
-              employer: { type: "string", description: "Employer (required for >$200 donations)" },
-              occupation: { type: "string", description: "Occupation" },
-              notes: { type: "string", description: "Optional notes" }
+              employer: { type: "string", description: "Employer (required for >$200)" },
+              occupation: { type: "string" },
+              notes: { type: "string" }
             },
             required: ["donorName", "amount", "source"]
           }
         },
         {
-          name: "set_fundraising_goal",
-          description: "Set or update the campaign fundraising goal.",
+          name: "set_budget",
+          description: "Set or update campaign budget settings. Can set total budget, starting cash, and/or fundraising goal in a single call. Only include fields the candidate mentions.",
           input_schema: {
             type: "object",
             properties: {
-              amount: { type: "number", description: "Fundraising goal in dollars" }
+              total: { type: "number", description: "Total campaign budget in dollars" },
+              startingAmount: { type: "number", description: "Starting cash on hand" },
+              fundraisingGoal: { type: "number", description: "Fundraising goal in dollars" }
             },
-            required: ["amount"]
+            required: []
           }
         },
         {
           name: "set_category_allocation",
-          description: "Set the budget allocation for a spending category.",
+          description: "Set budget allocation for a spending category.",
           input_schema: {
             type: "object",
             properties: {
-              category: { type: "string", enum: ["digital", "mail", "broadcast", "polling", "fieldOps", "fundraisingCompliance", "consulting", "reserveFund", "signs", "events", "staffing", "compliance", "misc"], description: "Budget category key" },
+              category: { type: "string", enum: ["digital","mail","broadcast","polling","fieldOps","fundraisingCompliance","consulting","reserveFund","signs","events","staffing","misc"], description: "Budget category key" },
               amount: { type: "number", description: "Dollar amount to allocate" }
             },
             required: ["category", "amount"]
           }
         },
         {
-          name: "update_starting_amount",
-          description: "Set the campaign's starting cash on hand amount.",
+          name: "save_note",
+          description: "Save any content to the notes system — speeches, talking points, emails, press releases, scripts, plans, research. Choose folder based on content type: 'Speeches', 'Talking Points', 'Email Drafts', 'Press Releases', 'Campaign Plan', 'Voter Outreach', 'Fundraising Scripts', or create a new folder name.",
           input_schema: {
             type: "object",
             properties: {
-              amount: { type: "number", description: "Starting cash amount" }
+              title: { type: "string", description: "Document title" },
+              content: { type: "string", description: "Full content" },
+              folder: { type: "string", description: "Folder name (created if doesn't exist)" },
+              status: { type: "string", enum: ["Draft","Ready","In Progress"], description: "Document status (default: Ready)" },
+              doc_type: { type: "string", enum: ["Speech","Talking Points","Email Draft","Press Release","Campaign Plan","Voter Outreach","Fundraising Script","Other"], description: "Document type" }
             },
-            required: ["amount"]
+            required: ["title", "content", "folder"]
+          }
+        },
+        {
+          name: "add_endorsement",
+          description: "Add an endorsement to the endorsements panel.",
+          input_schema: {
+            type: "object",
+            properties: {
+              name: { type: "string", description: "Endorser name (person or organization)" },
+              title: { type: "string", description: "Title or organization" },
+              notes: { type: "string", description: "Notes about the endorsement" },
+              status: { type: "string", enum: ["Announced","Pending","Pursuing"], description: "Endorsement status" }
+            },
+            required: ["name", "status"]
+          }
+        },
+        {
+          name: "navigate_to",
+          description: "Switch the app to a specific view.",
+          input_schema: {
+            type: "object",
+            properties: {
+              view: { type: "string", enum: ["dashboard","calendar","budget","notes","toolbox","settings"], description: "View to navigate to" }
+            },
+            required: ["view"]
+          }
+        },
+        {
+          name: "save_win_number",
+          description: "Save the calculated win number to the dashboard. Only call after researching last election data, calculating the target, and the candidate confirms.",
+          input_schema: {
+            type: "object",
+            properties: {
+              win_number: { type: "number", description: "Votes needed to win (after safety margin)" },
+              total_votes_last_election: { type: "number", description: "Total votes in last comparable election" },
+              num_candidates: { type: "number", description: "Number of candidates including this one" },
+              election_type: { type: "string", description: "'primary' or 'general'" }
+            },
+            required: ["win_number", "total_votes_last_election", "num_candidates", "election_type"]
+          }
+        },
+        {
+          name: "save_candidate_profile",
+          description: "Update candidate profile data. Use during onboarding or when the candidate corrects their info.",
+          input_schema: {
+            type: "object",
+            properties: {
+              office: { type: "string" }, office_level: { type: "string", enum: ["local","state","federal"] },
+              city: { type: "string" }, state: { type: "string" },
+              election_date: { type: "string" }, has_filed: { type: "boolean" }
+            },
+            required: ["office", "office_level", "city", "state", "has_filed"]
           }
         }
       ];
 
-      // Call Claude API
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": env.ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 10000,
-          temperature: 0.4,
-          system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
-          tools: tools,
-          messages: (history && history.length > 0) ? history : [{ role: "user", content: message }],
-        }),
+      // ========================================
+      // SERVER-SIDE TOOL LOOP — Sam 2.0
+      // ========================================
+      function acknowledgeToolCall(name, input) {
+        const inp = input || {};
+        switch (name) {
+          case 'add_calendar_event':
+            return { success: true, message: `${inp.type === 'task' ? 'Task' : 'Event'} "${inp.name}" added for ${inp.date}${inp.time ? ' at ' + inp.time : ''}` };
+          case 'update_task': return { success: true, message: `Task "${inp.task_name}" updated` };
+          case 'delete_task': return { success: true, message: `Task "${inp.task_name}" removed` };
+          case 'complete_task': return { success: true, message: `Task "${inp.task_name}" completed` };
+          case 'update_event': return { success: true, message: `Event "${inp.event_name}" updated` };
+          case 'delete_event': return { success: true, message: `Event "${inp.event_name}" removed` };
+          case 'add_expense': return { success: true, message: `$${inp.amount} expense logged for ${inp.description} in ${inp.category}` };
+          case 'log_contribution': return { success: true, message: `$${inp.amount} contribution from ${inp.donorName} logged` };
+          case 'set_budget': return { success: true, message: `Budget settings updated` };
+          case 'set_category_allocation': return { success: true, message: `${inp.category} allocation set to $${inp.amount}` };
+          case 'save_note': return { success: true, message: `"${inp.title}" saved to ${inp.folder}` };
+          case 'add_endorsement': return { success: true, message: `${inp.name} added as ${inp.status} endorsement` };
+          case 'navigate_to': return { success: true, message: `Navigated to ${inp.view}` };
+          case 'save_win_number': return { success: true, message: `Win number set to ${inp.win_number} votes` };
+          case 'save_candidate_profile': return { success: true, message: `Profile saved` };
+          default: return { success: true, message: `${name} executed` };
+        }
+      }
+
+      async function callClaude(msgs) {
+        const resp = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": env.ANTHROPIC_API_KEY,
+            "anthropic-version": "2023-06-01",
+          },
+          body: JSON.stringify({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 10000,
+            temperature: 0.4,
+            system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
+            tools: tools,
+            messages: msgs,
+          }),
+        });
+        return resp.json();
+      }
+
+      // Build initial messages
+      const messages = (history && history.length > 0) ? [...history] : [{ role: "user", content: message }];
+
+      // Run tool loop
+      const MAX_ROUNDS = 10;
+      let round = 0;
+      const allToolCalls = [];
+      let finalResponse = null;
+
+      while (round < MAX_ROUNDS) {
+        const data = await callClaude(messages);
+
+        if (data.error) {
+          return new Response(JSON.stringify(data), {
+            headers: { "Content-Type": "application/json", ...corsHeaders },
+          });
+        }
+
+        // Collect non-search tool_use blocks
+        const toolUseBlocks = (data.content || []).filter(b => b.type === 'tool_use');
+
+        // If no tool calls, we're done
+        if (toolUseBlocks.length === 0) {
+          finalResponse = data;
+          break;
+        }
+
+        // Accumulate tool calls for client execution
+        allToolCalls.push(...toolUseBlocks);
+
+        // Build acknowledgment results
+        const toolResults = toolUseBlocks.map(block => ({
+          type: 'tool_result',
+          tool_use_id: block.id,
+          content: JSON.stringify(acknowledgeToolCall(block.name, block.input))
+        }));
+
+        // Continue conversation
+        messages.push({ role: 'assistant', content: data.content });
+        messages.push({ role: 'user', content: toolResults });
+
+        round++;
+      }
+
+      // If we hit max rounds without a text-only response, do one final call
+      if (!finalResponse) {
+        finalResponse = await callClaude(messages);
+      }
+
+      // Return response with accumulated tool calls
+      const responsePayload = {
+        ...finalResponse,
+        toolCalls: allToolCalls
+      };
+
+      return new Response(JSON.stringify(responsePayload), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
       });
 
-      const data = await response.json();
-
-      return new Response(JSON.stringify(data), {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
     } catch (error) {
       return new Response(JSON.stringify({ error: error.message }), {
         status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
   },
