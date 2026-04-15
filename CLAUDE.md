@@ -98,6 +98,14 @@ client-side execution in app.html.
 - Intel Ground Truth injected into Sam's system prompt
 - ID-based tool targeting for update/delete operations
 
+## Anti-Bloat Rule (check before every deploy)
+- System prompt: MUST be under 800 words (currently 623)
+- Rules: MUST be 15 or fewer (currently 15)
+- Tools: MUST be 16 or fewer (currently 16)
+- Never add a new rule without removing or merging one
+- Never add a new tool without removing or merging one
+- Quick check: `sed -n '/let systemPrompt/,/\`;$/p' worker.js | wc -w`
+
 ## When Making Changes
 - Always test with localStorage.clear() + fresh onboarding
 - Never modify the worker system prompt order
@@ -105,5 +113,6 @@ client-side execution in app.html.
 - Always keep CORS headers on all Worker responses
 - Budget progress bar shows AVAILABLE not spent
 - Days to election always calculated fresh — never cached
+- Budget key is `total` only — never use `totalBudget`
 - Run `npx playwright test sam-tests.spec.js` after changes
 - Always deploy BOTH backend AND frontend (see Deployment above)
