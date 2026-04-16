@@ -4403,7 +4403,7 @@ function openSam() {
   var panel = document.getElementById('sam-panel');
   var fab = document.getElementById('sam-fab');
   panel.classList.add('open');
-  fab.style.display = 'none';
+  fab.style.boxShadow = '0 0 0 3px rgba(212,165,116,.4), 0 4px 20px rgba(0,0,0,.5)';
   var msgs = document.getElementById('sam-messages');
   msgs.scrollTop = msgs.scrollHeight;
   // Scan line effect
@@ -4417,9 +4417,9 @@ function closeSam() {
   var panel = document.getElementById('sam-panel');
   var fab = document.getElementById('sam-fab');
   panel.classList.remove('open');
-  // Show FAB with gold pulse after panel animates out
+  fab.style.boxShadow = '';
+  // Pulse on close
   setTimeout(function(){
-    fab.style.display = 'flex';
     fab.classList.add('pulse-gold');
     setTimeout(function(){ fab.classList.remove('pulse-gold'); }, 500);
   }, 250);
