@@ -82,6 +82,119 @@ export default {
     }
 
     // ========================================
+    // AUTH: Create account
+    // ========================================
+    if (url.pathname === '/api/auth/create-account' && request.method === 'POST') {
+      try {
+        const { username, email, password, fullName } = await request.json();
+        if (!username || !email || !password || !fullName) return jsonResponse({ error: 'All fields required' }, 400);
+        if (password.length < 8) return jsonResponse({ error: 'weak_password' }, 400);
+        // Check username
+        const existingUser = await env.DB.prepare('SELECT id FROM users WHERE username = ?').bind(username.toLowerCase()).first();
+        if (existingUser) {
+          const suggestions = [username + '2', username + '3', username.charAt(0) + fullName.split(' ').pop().toLowerCase() + '1'];
+          return jsonResponse({ error: 'username_taken', suggestions }, 409);
+        }
+        // Check email
+        const existingEmail = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email.toLowerCase()).first();
+        if (existingEmail) return jsonResponse({ error: 'email_taken' }, 409);
+        // Hash password
+        const encoder = new TextEncoder();
+        const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(password + '_tcb_salt_2026'));
+        const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        const userId = generateId();
+        const now = new Date().toISOString();
+        const trialEnds = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
+        await env.DB.prepare(
+          'INSERT INTO users (id, username, email, password_hash, full_name, plan, trial_started, trial_ends, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'trial', now, trialEnds, 'active', now).run();
+        // Create session
+        const sessionId = generateId(48);
+        const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, userId, expiresAt).run();
+        return jsonResponse({ success: true, sessionId, userId, username: username.toLowerCase(), fullName, plan: 'trial', trialEnds });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // AUTH: Login (proper auth replacing beta)
+    // ========================================
+    if (url.pathname === '/api/auth/login' && request.method === 'POST') {
+      try {
+        const { username, password } = await request.json();
+        if (!username || !password) return jsonResponse({ error: 'Username and password required' }, 400);
+        const clean = username.toLowerCase().trim();
+        // Find user by username or email
+        const user = await env.DB.prepare('SELECT * FROM users WHERE username = ? OR email = ?').bind(clean, clean).first();
+        if (!user || !user.password_hash) return jsonResponse({ error: 'Invalid credentials' }, 401);
+        if (user.status === 'deleted') return jsonResponse({ error: 'Account has been deleted' }, 401);
+        // Check password
+        const encoder = new TextEncoder();
+        const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(password + '_tcb_salt_2026'));
+        const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        if (hashHex !== user.password_hash) {
+          // Try sub-user login as fallback
+          const sub = await env.DB.prepare('SELECT * FROM sub_users WHERE username = ? AND status = ?').bind(clean, 'active').first();
+          if (sub && sub.password_hash === hashHex) {
+            let subDbUser = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(clean + '@sub.tcb').first();
+            if (!subDbUser) { const uid = generateId(); await env.DB.prepare('INSERT INTO users (id, email) VALUES (?, ?)').bind(uid, clean + '@sub.tcb').run(); subDbUser = { id: uid }; }
+            const sid = generateId(48); const exp = new Date(Date.now() + 24*60*60*1000).toISOString();
+            await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sid, subDbUser.id, exp).run();
+            await env.DB.prepare('UPDATE sub_users SET last_login = datetime(\'now\') WHERE id = ?').bind(sub.id).run();
+            return jsonResponse({ success: true, sessionId: sid, userId: subDbUser.id, username: clean, isSubUser: true, name: sub.name, role: sub.role, permissions: JSON.parse(sub.permissions_json || '{}') });
+          }
+          return jsonResponse({ error: 'Invalid credentials' }, 401);
+        }
+        // Check trial expiry
+        if (user.plan === 'trial' && user.trial_ends && new Date(user.trial_ends) < new Date()) {
+          return jsonResponse({ error: 'trial_expired', trialEnds: user.trial_ends }, 403);
+        }
+        // Create session
+        const sessionId = generateId(48);
+        const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, user.id, expiresAt).run();
+        // Calculate trial days remaining
+        let trialDaysLeft = null;
+        if (user.plan === 'trial' && user.trial_ends) {
+          trialDaysLeft = Math.max(0, Math.ceil((new Date(user.trial_ends) - new Date()) / 86400000));
+        }
+        return jsonResponse({ success: true, sessionId, userId: user.id, username: user.username || clean, fullName: user.full_name, plan: user.plan, trialDaysLeft });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // AUTH: Check username availability
+    // ========================================
+    if (url.pathname.startsWith('/api/auth/check-username/') && request.method === 'GET') {
+      try {
+        const checkUser = decodeURIComponent(url.pathname.split('/').pop()).toLowerCase();
+        const existing = await env.DB.prepare('SELECT id FROM users WHERE username = ?').bind(checkUser).first();
+        const suggestions = [];
+        if (existing) { for (let i = 2; i <= 4; i++) { const alt = checkUser + i; const e = await env.DB.prepare('SELECT id FROM users WHERE username = ?').bind(alt).first(); if (!e) suggestions.push(alt); } }
+        return jsonResponse({ available: !existing, suggestions });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // AUTH: Verify session
+    // ========================================
+    if (url.pathname === '/api/auth/verify-session' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Invalid session' }, 401);
+        const user = await env.DB.prepare('SELECT id, username, email, full_name, plan, trial_ends, status FROM users WHERE id = ?').bind(userId).first();
+        if (!user || user.status === 'deleted') return jsonResponse({ error: 'Account not found' }, 401);
+        let trialDaysLeft = null;
+        if (user.plan === 'trial' && user.trial_ends) { trialDaysLeft = Math.max(0, Math.ceil((new Date(user.trial_ends) - new Date()) / 86400000)); }
+        return jsonResponse({ success: true, userId: user.id, username: user.username, fullName: user.full_name, plan: user.plan, trialDaysLeft });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
     // API: Create sub-user
     // ========================================
     if (url.pathname === '/api/users/create' && request.method === 'POST') {

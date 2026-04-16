@@ -1128,65 +1128,111 @@
     </script>
 
 <script>
-var BETA_USERS = {'greg':'Beta#01','shannan':'Beta#01','cjc':'Beta#01','jerry':'Beta#01'};
+var WORKER_AUTH_URL = 'https://candidate-toolbox-secretary2.grgsorrell.workers.dev';
 
 function openLoginModal() {
   document.getElementById('login-modal').style.display = 'flex';
+  showLoginForm();
   setTimeout(function() { document.getElementById('login-username').focus(); }, 100);
 }
 
 function closeLoginModal() {
   document.getElementById('login-modal').style.display = 'none';
-  document.getElementById('login-error').style.display = 'none';
+  var loginErr = document.getElementById('login-error');
+  var signupErr = document.getElementById('signup-error');
+  if (loginErr) loginErr.style.display = 'none';
+  if (signupErr) signupErr.style.display = 'none';
 }
 
+function showSignupForm() { document.getElementById('auth-login-form').style.display = 'none'; document.getElementById('auth-signup-form').style.display = ''; }
+function showLoginForm() { document.getElementById('auth-login-form').style.display = ''; document.getElementById('auth-signup-form').style.display = 'none'; }
+
 function attemptLogin() {
-  var username = document.getElementById('login-username').value.trim().toLowerCase();
+  var username = document.getElementById('login-username').value.trim();
   var password = document.getElementById('login-password').value;
-  var remember = document.getElementById('login-remember').checked;
   var errorEl = document.getElementById('login-error');
-  if (!username || !password) { errorEl.textContent = 'Please enter your username and password.'; errorEl.style.display = 'block'; return; }
-  if (BETA_USERS[username] && BETA_USERS[username] === password) {
-    errorEl.style.display = 'none';
-    var session = { userId: username, loginTime: Date.now(), expires: remember ? Date.now() + 2592000000 : Date.now() + 28800000 };
-    localStorage.setItem('tcb_session', JSON.stringify(session));
-    localStorage.setItem('tcb_current_user', username);
-    // Create D1 session in background — don't block login
-    fetch('https://candidate-toolbox-secretary2.grgsorrell.workers.dev/auth/beta-login', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username, password: password })
-    }).then(function(r){ return r.json(); }).then(function(data) {
-      if (data.sessionId) localStorage.setItem('tcb_d1_session', data.sessionId);
-    }).catch(function(){});
-    window.location.href = 'app.html';
-  } else {
-    // Try sub-user login via D1
-    errorEl.style.display = 'none';
-    fetch('https://candidate-toolbox-secretary2.grgsorrell.workers.dev/auth/subuser-login', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username, password: password })
-    }).then(function(r){ return r.json(); }).then(function(data) {
-      if (data.success) {
-        var session = { userId: data.username, loginTime: Date.now(), expires: Date.now() + 86400000, isSubUser: true, subUserName: data.name, subUserRole: data.role, permissions: data.permissions };
-        localStorage.setItem('tcb_session', JSON.stringify(session));
-        localStorage.setItem('tcb_current_user', data.username);
-        localStorage.setItem('tcb_d1_session', data.sessionId);
-        if (data.isSubUser) localStorage.setItem('tcb_is_sub_user', 'true');
-        if (data.permissions) localStorage.setItem('tcb_permissions', JSON.stringify(data.permissions));
-        window.location.href = 'app.html';
-      } else {
-        errorEl.textContent = data.error || 'Invalid username or password.';
-        errorEl.style.display = 'block';
-        document.getElementById('login-password').value = '';
-        document.getElementById('login-password').focus();
-      }
-    }).catch(function() {
-      errorEl.textContent = 'Invalid username or password. Please try again.';
-      errorEl.style.display = 'block';
-      document.getElementById('login-password').value = '';
-      document.getElementById('login-password').focus();
-    });
-  }
+  if (!username || !password) { errorEl.textContent = 'Please enter username and password.'; errorEl.style.display = 'block'; return; }
+  errorEl.style.display = 'none';
+  fetch(WORKER_AUTH_URL + '/api/auth/login', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: username, password: password })
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    if (data.error === 'trial_expired') {
+      errorEl.textContent = 'Your 14-day trial has ended. Contact us to upgrade.';
+      errorEl.style.display = 'block'; return;
+    }
+    if (data.error) {
+      errorEl.textContent = data.error === 'Invalid credentials' ? 'Invalid username or password.' : data.error;
+      errorEl.style.display = 'block'; document.getElementById('login-password').value = ''; return;
+    }
+    if (data.success) {
+      var session = { userId: data.username || username, loginTime: Date.now(), expires: Date.now() + 2592000000, fullName: data.fullName, plan: data.plan, trialDaysLeft: data.trialDaysLeft, isSubUser: !!data.isSubUser };
+      localStorage.setItem('tcb_session', JSON.stringify(session));
+      localStorage.setItem('tcb_current_user', data.username || username);
+      localStorage.setItem('tcb_d1_session', data.sessionId);
+      if (data.isSubUser) { localStorage.setItem('tcb_is_sub_user', 'true'); localStorage.setItem('tcb_permissions', JSON.stringify(data.permissions || {})); }
+      if (data.plan) localStorage.setItem('tcb_plan', data.plan);
+      if (data.trialDaysLeft != null) localStorage.setItem('tcb_trial_days', String(data.trialDaysLeft));
+      window.location.href = 'app.html';
+    }
+  }).catch(function() { errorEl.textContent = 'Connection error. Please try again.'; errorEl.style.display = 'block'; });
+}
+
+var _signupUsernameTimer = null;
+function checkSignupUsername() {
+  clearTimeout(_signupUsernameTimer);
+  var u = document.getElementById('signup-username').value.trim().toLowerCase();
+  var el = document.getElementById('signup-username-status');
+  if (!u || u.length < 3) { el.innerHTML = ''; return; }
+  _signupUsernameTimer = setTimeout(function() {
+    fetch(WORKER_AUTH_URL + '/api/auth/check-username/' + encodeURIComponent(u))
+    .then(function(r){ return r.json(); }).then(function(data) {
+      if (data.available) { el.innerHTML = '<span style="color:#82b386">\u2713 Available</span>'; }
+      else { var sug = (data.suggestions||[]).map(function(s){ return '<span onclick="document.getElementById(\'signup-username\').value=\'' + s + '\';checkSignupUsername()" style="color:#6b9cd8;cursor:pointer;text-decoration:underline">' + s + '</span>'; }).join(' '); el.innerHTML = '<span style="color:#e87070">\u2717 Taken</span>' + (sug ? ' \u2014 try: ' + sug : ''); }
+    }).catch(function(){ el.innerHTML = ''; });
+  }, 400);
+}
+
+function checkPasswordStrength() {
+  var pw = document.getElementById('signup-password').value;
+  var score = 0;
+  if (pw.length >= 8) score++;
+  if (pw.length >= 12) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  var bar = document.getElementById('password-strength-bar');
+  var colors = ['#e87070','#e87070','#d4a574','#d4a574','#82b386','#82b386'];
+  bar.style.width = (score * 20) + '%';
+  bar.style.background = colors[score] || '#e87070';
+}
+
+function createAccount() {
+  var name = document.getElementById('signup-name').value.trim();
+  var email = document.getElementById('signup-email').value.trim();
+  var username = document.getElementById('signup-username').value.trim().toLowerCase();
+  var password = document.getElementById('signup-password').value;
+  var confirm = document.getElementById('signup-confirm').value;
+  var errorEl = document.getElementById('signup-error');
+  if (!name || !email || !username || !password) { errorEl.textContent = 'All fields are required.'; errorEl.style.display = 'block'; return; }
+  if (password.length < 8) { errorEl.textContent = 'Password must be at least 8 characters.'; errorEl.style.display = 'block'; return; }
+  if (password !== confirm) { errorEl.textContent = 'Passwords do not match.'; errorEl.style.display = 'block'; return; }
+  errorEl.style.display = 'none';
+  fetch(WORKER_AUTH_URL + '/api/auth/create-account', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: username, email: email, password: password, fullName: name })
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    if (data.error === 'username_taken') { errorEl.textContent = 'Username taken. Try: ' + (data.suggestions||[]).join(', '); errorEl.style.display = 'block'; return; }
+    if (data.error === 'email_taken') { errorEl.textContent = 'An account with this email already exists.'; errorEl.style.display = 'block'; return; }
+    if (data.error) { errorEl.textContent = data.error; errorEl.style.display = 'block'; return; }
+    if (data.success) {
+      localStorage.setItem('tcb_session', JSON.stringify({ userId: data.username, loginTime: Date.now(), expires: Date.now() + 2592000000, fullName: data.fullName, plan: data.plan }));
+      localStorage.setItem('tcb_current_user', data.username);
+      localStorage.setItem('tcb_d1_session', data.sessionId);
+      localStorage.setItem('tcb_plan', data.plan || 'trial');
+      window.location.href = 'app.html';
+    }
+  }).catch(function() { errorEl.textContent = 'Connection error. Please try again.'; errorEl.style.display = 'block'; });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1196,35 +1242,37 @@ document.addEventListener('DOMContentLoaded', function() {
     var loginBtn = document.querySelector('.nav-login');
     if (loginBtn) { loginBtn.textContent = 'Go to My Campaign \u2192'; loginBtn.onclick = function() { window.location.href = 'app.html'; }; }
   }
-  var usernameInput = document.getElementById('login-username');
-  if (usernameInput) { usernameInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('login-password').focus(); }); }
 });
 
 document.addEventListener('click', function(e) { if (e.target === document.getElementById('login-modal')) closeLoginModal(); });
 </script>
 
-<div id="login-modal" style="position:fixed;inset:0;background:rgba(5,8,18,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:1000;display:none;align-items:center;justify-content:center">
-  <div style="background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:18px;width:420px;max-width:94vw;padding:40px;box-shadow:0 32px 80px rgba(0,0,0,.8);position:relative">
-    <button onclick="closeLoginModal()" style="position:absolute;top:16px;right:20px;background:none;border:none;color:#8899B0;font-size:22px;cursor:pointer">&times;</button>
-    <div style="text-align:center;margin-bottom:32px">
-      <img src="/icon512.png" style="width:48px;height:48px;border-radius:12px;margin-bottom:12px" alt="TCB">
-      <div style="font-family:'Playfair Display',serif;font-size:1.2em;font-weight:700;color:#fff">The Candidate's Toolbox</div>
-      <div style="font-size:0.75em;color:#d4a574;text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;font-weight:700">Beta Access</div>
+<div id="login-modal" style="position:fixed;inset:0;background:rgba(5,8,18,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:1000;display:none;align-items:center;justify-content:center">
+  <div style="width:400px;max-width:calc(100vw - 32px);background:#111827;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,.6)">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff">The Candidate's <span style="color:#d4a574;font-style:italic">Toolbox</span></div>
+      <div style="font-size:12px;color:#64748B;letter-spacing:.08em;margin-top:4px">YOUR AI CAMPAIGN MANAGER</div>
     </div>
-    <div id="login-error" style="display:none;color:#e87070;font-size:13px;background:rgba(232,112,112,.1);border:1px solid rgba(232,112,112,.2);border-radius:8px;padding:10px 14px;margin-bottom:16px"></div>
-    <div style="margin-bottom:16px">
-      <label style="display:block;font-size:13px;font-weight:600;color:#8899B0;margin-bottom:6px">Username</label>
-      <input id="login-username" type="text" placeholder="Enter username" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:14px 16px;color:#fff;font-size:15px;font-family:'DM Sans',sans-serif;outline:none" onfocus="this.style.borderColor='rgba(212,165,116,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.12)'">
+    <div id="auth-login-form">
+      <div style="margin-bottom:14px"><input id="login-username" type="text" placeholder="Username or email" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none" onfocus="this.style.borderColor='rgba(42,82,152,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'"></div>
+      <div style="margin-bottom:14px"><input id="login-password" type="password" placeholder="Password" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none" onfocus="this.style.borderColor='rgba(42,82,152,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'" onkeydown="if(event.key==='Enter')attemptLogin()"></div>
+      <div id="login-error" style="display:none;font-size:12px;color:#e87070;margin-bottom:10px;padding:8px 12px;background:rgba(232,112,112,.08);border-radius:4px"></div>
+      <button onclick="attemptLogin()" style="width:100%;padding:12px;background:#2A5298;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:12px">Sign In</button>
+      <div style="text-align:center;font-size:12px;color:#64748B">New to TCB? <span onclick="showSignupForm()" style="color:#d4a574;cursor:pointer;font-weight:600">Create an account &#8594;</span></div>
     </div>
-    <div style="margin-bottom:8px">
-      <label style="display:block;font-size:13px;font-weight:600;color:#8899B0;margin-bottom:6px">Password</label>
-      <input id="login-password" type="password" placeholder="Enter password" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:14px 16px;color:#fff;font-size:15px;font-family:'DM Sans',sans-serif;outline:none" onfocus="this.style.borderColor='rgba(212,165,116,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.12)'" onkeydown="if(event.key==='Enter')attemptLogin()">
+    <div id="auth-signup-form" style="display:none">
+      <div style="margin-bottom:14px"><input id="signup-name" type="text" placeholder="Full name" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none"></div>
+      <div style="margin-bottom:14px"><input id="signup-email" type="email" placeholder="Email address" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none"></div>
+      <div style="margin-bottom:4px"><input id="signup-username" type="text" placeholder="Choose a username" oninput="checkSignupUsername()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none"></div>
+      <div id="signup-username-status" style="font-size:10px;min-height:16px;margin-bottom:10px"></div>
+      <div style="margin-bottom:4px"><input id="signup-password" type="password" placeholder="Password (8+ characters)" oninput="checkPasswordStrength()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none"></div>
+      <div id="password-strength" style="height:3px;border-radius:2px;background:rgba(255,255,255,.06);margin-bottom:14px;overflow:hidden"><div id="password-strength-bar" style="height:100%;width:0;transition:width .3s,background .3s"></div></div>
+      <div style="margin-bottom:14px"><input id="signup-confirm" type="password" placeholder="Confirm password" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none" onkeydown="if(event.key==='Enter')createAccount()"></div>
+      <div id="signup-error" style="display:none;font-size:12px;color:#e87070;margin-bottom:10px;padding:8px 12px;background:rgba(232,112,112,.08);border-radius:4px"></div>
+      <button onclick="createAccount()" style="width:100%;padding:12px;background:transparent;border:1px solid #d4a574;color:#d4a574;border-radius:6px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:12px">Create My Account</button>
+      <div style="text-align:center;font-size:12px;color:#64748B">Already have an account? <span onclick="showLoginForm()" style="color:#6b9cd8;cursor:pointer;font-weight:600">Sign in &#8594;</span></div>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px">
-      <input type="checkbox" id="login-remember" style="accent-color:#d4a574">
-      <label for="login-remember" style="font-size:13px;color:#8899B0;cursor:pointer">Remember me</label>
-    </div>
-    <button onclick="attemptLogin()" style="width:100%;background:linear-gradient(135deg,#b85450,#c46460);color:#fff;border:none;border-radius:10px;padding:15px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer">Access My Campaign &#8594;</button>
+    <div style="text-align:center;margin-top:20px;font-size:10px;color:rgba(255,255,255,.15)">Powered by The Candidate's Toolbox</div>
   </div>
 </div>
 
