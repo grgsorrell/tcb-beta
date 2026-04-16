@@ -107,12 +107,13 @@ export default {
         const trialEnds = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
         await env.DB.prepare(
           'INSERT INTO users (id, username, email, password_hash, full_name, plan, trial_started, trial_ends, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'trial', now, trialEnds, 'active', now).run();
+        // BETA: All new accounts get 'beta' plan (no expiry). Change to 'trial' when billing activates.
+        ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'beta', now, trialEnds, 'active', now).run();
         // Create session
         const sessionId = generateId(48);
         const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
         await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, userId, expiresAt).run();
-        return jsonResponse({ success: true, sessionId, userId, username: username.toLowerCase(), fullName, plan: 'trial', trialEnds });
+        return jsonResponse({ success: true, sessionId, userId, username: username.toLowerCase(), fullName, plan: 'beta' });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -147,10 +148,10 @@ export default {
           }
           return jsonResponse({ error: 'Invalid credentials' }, 401);
         }
-        // Check trial expiry
-        if (user.plan === 'trial' && user.trial_ends && new Date(user.trial_ends) < new Date()) {
-          return jsonResponse({ error: 'trial_expired', trialEnds: user.trial_ends }, 403);
-        }
+        // BETA: Trial expiry not enforced. Activate when Stripe is live.
+        // if (user.plan === 'trial' && user.trial_ends && new Date(user.trial_ends) < new Date()) {
+        //   return jsonResponse({ error: 'trial_expired', trialEnds: user.trial_ends }, 403);
+        // }
         // Create session
         const sessionId = generateId(48);
         const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
