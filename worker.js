@@ -196,6 +196,67 @@ export default {
     }
 
     // ========================================
+    // API: List campaigns for user
+    // ========================================
+    if (url.pathname === '/api/campaigns/list' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const result = await env.DB.prepare('SELECT * FROM campaigns WHERE owner_id = ? ORDER BY status ASC, updated_at DESC').bind(userId).all();
+        return jsonResponse({ success: true, campaigns: result.results || [] });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // API: Create campaign
+    // ========================================
+    if (url.pathname === '/api/campaigns/create' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const body = await request.json();
+        const campaignId = generateId();
+        await env.DB.prepare(
+          'INSERT INTO campaigns (id, owner_id, candidate_name, party, specific_office, office_level, location, state, election_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(campaignId, userId, body.candidateName || '', body.party || '', body.specificOffice || '', body.officeLevel || '', body.location || '', body.state || '', body.electionDate || '', 'active').run();
+        return jsonResponse({ success: true, campaignId });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // API: Switch active campaign
+    // ========================================
+    if (url.pathname === '/api/campaigns/switch' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const { campaignId } = await request.json();
+        // Verify user owns this campaign
+        const campaign = await env.DB.prepare('SELECT * FROM campaigns WHERE id = ? AND owner_id = ?').bind(campaignId, userId).first();
+        if (!campaign) return jsonResponse({ error: 'Campaign not found' }, 404);
+        // Update session
+        const authHeader = request.headers.get('Authorization');
+        const sessionId = authHeader ? authHeader.slice(7) : null;
+        if (sessionId) await env.DB.prepare('UPDATE sessions SET campaign_id = ? WHERE session_id = ?').bind(campaignId, sessionId).run();
+        return jsonResponse({ success: true, campaign });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // API: Archive/restore campaign
+    // ========================================
+    if (url.pathname === '/api/campaigns/archive' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const { campaignId, action } = await request.json();
+        const newStatus = action === 'restore' ? 'active' : 'archived';
+        await env.DB.prepare('UPDATE campaigns SET status = ? WHERE id = ? AND owner_id = ?').bind(newStatus, campaignId, userId).run();
+        return jsonResponse({ success: true, status: newStatus });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
     // API: Create sub-user
     // ========================================
     if (url.pathname === '/api/users/create' && request.method === 'POST') {

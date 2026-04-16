@@ -1113,15 +1113,133 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function initApp() {
-  if (isOnboarded()) {
-    showOnboardedUI();
-    checkAndGenerateMorningBrief();
+  // Check for multiple campaigns
+  if (d1Session) {
+    fetch(D1_API + '/api/campaigns/list', { headers: { 'Authorization': 'Bearer ' + d1Session } })
+    .then(function(r){ return r.json(); }).then(function(data) {
+      if (data.success && data.campaigns && data.campaigns.length > 1) {
+        var activeCampaignId = localStorage.getItem('tcb_active_campaign');
+        if (!activeCampaignId) { showCampaignSelector(data.campaigns); return; }
+      }
+      // Single campaign or campaign already selected — proceed normally
+      if (isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
+      else { showNewUserUI(); }
+      renderSamMessages();
+      loadFromD1();
+    }).catch(function() {
+      // D1 unavailable — proceed with localStorage
+      if (isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
+      else { showNewUserUI(); }
+      renderSamMessages();
+    });
   } else {
-    showNewUserUI();
+    if (isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
+    else { showNewUserUI(); }
+    renderSamMessages();
   }
+}
+
+function showCampaignSelector(campaigns) {
+  var active = campaigns.filter(function(c){ return c.status === 'active'; });
+  var archived = campaigns.filter(function(c){ return c.status === 'archived'; });
+  var html = '<div style="position:fixed;inset:0;background:#0B1120;z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px">';
+  html += '<div style="text-align:center;margin-bottom:32px"><div style="font-family:var(--font-d);font-size:22px;color:#fff;font-weight:700">The Candidate\'s <span style="color:var(--gold);font-style:italic">Toolbox</span></div><div style="font-size:12px;color:var(--t3);margin-top:4px;letter-spacing:.08em">SELECT A CAMPAIGN TO MANAGE</div></div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:700px;width:100%">';
+  active.forEach(function(c) {
+    var days = c.election_date ? Math.ceil((new Date(c.election_date) - new Date()) / 86400000) : null;
+    var daysColor = days !== null ? (days < 30 ? 'var(--red)' : days < 90 ? 'var(--gold)' : 'var(--t3)') : 'var(--t3)';
+    html += '<div onclick="selectCampaign(\'' + c.id + '\')" style="background:#111827;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 24px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor=\'rgba(212,165,116,.4)\';this.style.background=\'#16213e\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,.08)\';this.style.background=\'#111827\'">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div style="font-family:var(--font-d);font-style:italic;font-size:20px;font-weight:700;color:var(--t1)">' + escapeHtml(c.candidate_name || 'Unnamed') + '</div><span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(130,179,134,.12);color:var(--green);font-weight:700;letter-spacing:.06em">ACTIVE</span></div>';
+    html += '<div style="font-size:12px;color:var(--t3)">' + escapeHtml(c.specific_office || '') + (c.party ? ' \u00b7 ' + escapeHtml(c.party) : '') + (c.state ? ' \u00b7 ' + escapeHtml(c.state) : '') + '</div>';
+    if (days !== null) html += '<div style="font-size:11px;color:' + daysColor + ';margin-top:8px">' + days + ' days to election</div>';
+    html += '</div>';
+  });
+  // Add New Campaign card
+  html += '<div onclick="startNewCampaign()" style="border:1px dashed rgba(255,255,255,.15);border-radius:12px;padding:20px 24px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:120px;transition:all .2s" onmouseover="this.style.borderColor=\'rgba(212,165,116,.3)\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,.15)\'">';
+  html += '<div style="font-size:28px;color:rgba(255,255,255,.2);margin-bottom:6px">+</div><div style="font-size:14px;color:var(--t3)">Add New Campaign</div></div>';
+  html += '</div>';
+  // Archived section
+  if (archived.length > 0) {
+    html += '<div style="max-width:700px;width:100%;margin-top:24px"><div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,.2);text-transform:uppercase;margin-bottom:8px">ARCHIVED</div>';
+    archived.forEach(function(c) {
+      html += '<div onclick="selectCampaign(\'' + c.id + '\')" style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:6px;cursor:pointer;opacity:.5" onmouseover="this.style.opacity=\'1\'" onmouseout="this.style.opacity=\'.5\'"><span style="font-size:13px;color:var(--t2)">' + escapeHtml(c.candidate_name || '') + ' \u00b7 ' + escapeHtml(c.specific_office || '') + '</span><span style="font-size:10px;color:var(--t3)">ARCHIVED</span></div>';
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function selectCampaign(campaignId) {
+  localStorage.setItem('tcb_active_campaign', campaignId);
+  // Switch campaign in D1
+  if (d1Session) {
+    fetch(D1_API + '/api/campaigns/switch', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+      body: JSON.stringify({ campaignId: campaignId })
+    }).catch(function(){});
+  }
+  // Remove selector and load app
+  var sel = document.querySelector('[style*="z-index:500"]');
+  if (sel) sel.remove();
+  if (isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
+  else { showNewUserUI(); }
   renderSamMessages();
-  // D1 sync: load from cloud on startup (background, doesn't block UI)
   loadFromD1();
+}
+
+function startNewCampaign() {
+  var sel = document.querySelector('[style*="z-index:500"]');
+  if (sel) sel.remove();
+  showNewUserUI();
+}
+
+function toggleCampaignDropdown() {
+  var existing = document.getElementById('campaign-dropdown');
+  if (existing) { existing.remove(); return; }
+  if (!d1Session) return;
+  fetch(D1_API + '/api/campaigns/list', { headers: { 'Authorization': 'Bearer ' + d1Session } })
+  .then(function(r){ return r.json(); }).then(function(data) {
+    if (!data.success || !data.campaigns || data.campaigns.length <= 1) return;
+    var activeCampaignId = localStorage.getItem('tcb_active_campaign');
+    var dd = document.createElement('div');
+    dd.id = 'campaign-dropdown';
+    dd.style.cssText = 'position:fixed;top:50px;right:16px;background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:4px 0;min-width:240px;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,.4)';
+    var html = '<div style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--t3);padding:8px 14px;text-transform:uppercase">SWITCH CAMPAIGN</div>';
+    data.campaigns.filter(function(c){ return c.status === 'active'; }).forEach(function(c) {
+      var isActive = c.id === activeCampaignId;
+      html += '<div onclick="switchToCampaign(\'' + c.id + '\')" style="padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;' + (isActive ? 'background:rgba(212,165,116,.1);color:var(--gold)' : 'color:var(--t2)') + '" onmouseover="if(!this.style.background.includes(\'gold\'))this.style.background=\'rgba(255,255,255,.04)\'" onmouseout="if(!this.style.background.includes(\'gold\'))this.style.background=\'\'">' + (isActive ? '<span style="font-size:12px">\u2713</span>' : '<span style="width:12px"></span>') + '<div><div style="font-size:13px;font-weight:600">' + escapeHtml(c.candidate_name || '') + '</div><div style="font-size:10px;color:var(--t3)">' + escapeHtml(c.specific_office || '') + (c.state ? ' \u00b7 ' + escapeHtml(c.state) : '') + '</div></div></div>';
+    });
+    html += '<div style="border-top:1px solid rgba(255,255,255,.06);margin:4px 0"></div>';
+    html += '<div onclick="startNewCampaignFromApp()" style="padding:10px 14px;cursor:pointer;color:var(--blue);font-size:12px" onmouseover="this.style.background=\'rgba(255,255,255,.04)\'" onmouseout="this.style.background=\'\'">+ Add New Campaign</div>';
+    dd.innerHTML = html;
+    dd.addEventListener('click', function(e) { e.stopPropagation(); });
+    document.body.appendChild(dd);
+    setTimeout(function() { document.addEventListener('click', function handler() { var d = document.getElementById('campaign-dropdown'); if (d) d.remove(); document.removeEventListener('click', handler); }); }, 10);
+  });
+}
+
+function switchToCampaign(campaignId) {
+  var dd = document.getElementById('campaign-dropdown');
+  if (dd) dd.remove();
+  localStorage.setItem('tcb_active_campaign', campaignId);
+  if (d1Session) {
+    fetch(D1_API + '/api/campaigns/switch', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+      body: JSON.stringify({ campaignId: campaignId })
+    }).then(function(){ loadFromD1(); updateTopbar(); refreshDashboard(); }).catch(function(){});
+  }
+  // Clear Sam chat for new campaign context
+  var msgs = document.getElementById('sam-messages');
+  if (msgs) msgs.innerHTML = '';
+  chatHistory = [];
+}
+
+function startNewCampaignFromApp() {
+  var dd = document.getElementById('campaign-dropdown');
+  if (dd) dd.remove();
+  localStorage.removeItem('tcb_active_campaign');
+  showNewUserUI();
 }
 
 function loadFromD1() {
@@ -1265,8 +1383,8 @@ function updateTopbar() {
   var office = campaignData.specificOffice || '';
   var initials = name.split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);
   document.getElementById('tb-right').innerHTML =
-    '<div style="text-align:right"><div class="cand-label">' + escapeHtml(name + (office ? ' · ' + office : '')) + '</div><div style="font-size:10px;color:var(--t3)">' + escapeHtml(window.TCB_USER || '') + '</div></div>' +
-    '<div class="av">' + initials + '</div>';
+    '<div onclick="toggleCampaignDropdown()" style="display:flex;align-items:center;gap:10px;cursor:pointer" title="Switch campaign"><div style="text-align:right"><div class="cand-label">' + escapeHtml(name + (office ? ' · ' + office : '')) + '</div><div style="font-size:10px;color:var(--t3)">' + escapeHtml(window.TCB_USER || '') + '</div></div>' +
+    '<div class="av">' + initials + '</div></div>';
 }
 
 function calcDaysToElection() {
