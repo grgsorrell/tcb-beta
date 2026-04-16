@@ -3867,11 +3867,12 @@ function renderOnboarding() {
     samMsg = "Great to meet you, <strong>" + escapeHtml(onboardingData.firstName||'') + "!</strong> Which party are you running with?";
     var selP = onboardingData.party || '';
     bodyHtml = '<div class="ob-ttl">Which party are you running with?</div><div class="ob-sub">This helps Sam tailor your strategy, messaging, and voter outreach approach.</div>' +
-      '<div class="ob-party-grid">' +
-        '<div class="ob-party-card' + (selP==='Republican'?' sel-rep':'') + '" onclick="selectParty(\'Republican\',this)"><div class="ob-party-icon">&#128024;</div><div><div class="ob-party-nm">Republican</div><div class="ob-party-desc">Conservative \u00b7 GOP</div></div></div>' +
-        '<div class="ob-party-card' + (selP==='Democrat'?' sel-dem':'') + '" onclick="selectParty(\'Democrat\',this)"><div class="ob-party-icon">&#129435;</div><div><div class="ob-party-nm">Democrat</div><div class="ob-party-desc">Progressive \u00b7 Blue</div></div></div>' +
-        '<div class="ob-party-card' + (selP==='Independent'?' sel-ind':'') + '" onclick="selectParty(\'Independent\',this)"><div class="ob-party-icon">&#128309;</div><div><div class="ob-party-nm">Independent</div><div class="ob-party-desc">No party affiliation</div></div></div>' +
-        '<div class="ob-party-card' + (selP==='Other'?' sel-oth':'') + '" onclick="selectParty(\'Other\',this)"><div class="ob-party-icon">&#9999;&#65039;</div><div><div class="ob-party-nm">Other</div><div class="ob-party-desc">Libertarian, Green, etc.</div></div></div>' +
+      '<div class="ob-party-grid" style="grid-template-columns:1fr 1fr 1fr">' +
+        '<div class="ob-party-card' + (selP==='Republican'?' sel-rep':'') + '" onclick="selectParty(\'Republican\',this)"><div class="ob-party-icon">&#128024;</div><div><div class="ob-party-nm">Republican</div></div></div>' +
+        '<div class="ob-party-card' + (selP==='Democrat'?' sel-dem':'') + '" onclick="selectParty(\'Democrat\',this)"><div class="ob-party-icon">&#128052;</div><div><div class="ob-party-nm">Democrat</div></div></div>' +
+        '<div class="ob-party-card' + (selP==='Independent'?' sel-ind':'') + '" onclick="selectParty(\'Independent\',this)"><div class="ob-party-icon">&#128309;</div><div><div class="ob-party-nm">Independent</div></div></div>' +
+        '<div class="ob-party-card' + (selP==='Nonpartisan'?' sel-ind':'') + '" onclick="selectParty(\'Nonpartisan\',this)"><div class="ob-party-icon">&#9878;&#65039;</div><div><div class="ob-party-nm">Non-Partisan</div></div></div>' +
+        '<div class="ob-party-card' + (selP==='Other'?' sel-oth':'') + '" onclick="selectParty(\'Other\',this)"><div class="ob-party-icon">&#9999;&#65039;</div><div><div class="ob-party-nm">Other</div></div></div>' +
       '</div>';
   } else if (step === 3) {
     samMsg = "Got it \u2014 <strong>" + escapeHtml(onboardingData.party||'') + "</strong>. What level of government are you running for?";
