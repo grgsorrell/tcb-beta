@@ -902,7 +902,7 @@ select{-webkit-appearance:none;appearance:none;}
       names.forEach(function(name) { caches.delete(name); });
     });
   }
-  var CURRENT_VERSION = 'sam-2.0-v4';
+  var CURRENT_VERSION = 'D1-Phase3-20260416';
   var storedVersion = localStorage.getItem('tcb_app_version');
   if (storedVersion !== CURRENT_VERSION) {
     // Preserve campaign data — but CLEAR chat history (may be corrupted from server-side loop era)
@@ -948,7 +948,7 @@ function storageKey(key) {
 // STATE
 // ============================================
 var WORKER_URL = 'https://candidate-toolbox-secretary2.grgsorrell.workers.dev';
-var APP_VERSION = 'sam-2.0-v4';
+var APP_VERSION = 'D1-Phase3';
 console.log('[TCB] App version:', APP_VERSION);
 // Show version badge briefly so user can confirm they have latest code
 setTimeout(function() {
@@ -992,21 +992,50 @@ try { chatHistory = JSON.parse(localStorage.getItem(storageKey('ctb_chatHistory'
 
 function saveState(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
 
-// D1 sync layer — background sync to Cloudflare D1 database
+// D1 data layer — D1 is source of truth, localStorage is speed cache
 var d1Session = localStorage.getItem('tcb_d1_session') || null;
 var D1_API = WORKER_URL;
-function d1Sync(endpoint, body) {
-  if (!d1Session) return;
+var d1Online = true;
+
+// Write to D1 first, then cache in localStorage. If D1 fails, cache locally and queue for sync.
+function d1Write(endpoint, body, onFail) {
+  if (!d1Session) { if (onFail) onFail(); return; }
   fetch(D1_API + endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
     body: JSON.stringify(body)
-  }).catch(function(e) { console.log('[D1] Sync error:', e.message); });
+  }).then(function(r) {
+    if (!r.ok) throw new Error('D1 ' + r.status);
+    if (!d1Online) { d1Online = true; showD1Status('synced'); }
+  }).catch(function(e) {
+    console.log('[D1] Write error:', e.message);
+    d1Online = false;
+    showD1Status('offline');
+    if (onFail) onFail();
+  });
+}
+
+function showD1Status(status) {
+  var el = document.getElementById('d1-status-pill');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'd1-status-pill';
+    el.style.cssText = 'position:fixed;top:8px;right:80px;font-size:9px;font-weight:700;letter-spacing:.08em;padding:3px 8px;border-radius:10px;z-index:200;transition:opacity .3s';
+    document.body.appendChild(el);
+  }
+  if (status === 'offline') {
+    el.style.background = 'rgba(232,112,112,.15)'; el.style.border = '1px solid rgba(232,112,112,.3)'; el.style.color = 'var(--red)';
+    el.textContent = '\ud83d\udce1 Offline Mode'; el.style.opacity = '1';
+  } else if (status === 'synced') {
+    el.style.background = 'rgba(130,179,134,.15)'; el.style.border = '1px solid rgba(130,179,134,.3)'; el.style.color = 'var(--green)';
+    el.textContent = '\u2713 Synced'; el.style.opacity = '1';
+    setTimeout(function() { el.style.opacity = '0'; }, 3000);
+  }
 }
 
 function saveCampaign() {
   saveState(storageKey('ctb_campaignData'), campaignData);
-  d1Sync('/api/profile/save', {
+  d1Write('/api/profile/save', {
     candidate_name: campaignData.candidateName, specific_office: campaignData.specificOffice,
     office_level: campaignData.officeType, party: campaignData.party, location: campaignData.location,
     state: campaignData.state, election_date: campaignData.electionDate,
@@ -1017,33 +1046,33 @@ function saveCampaign() {
 }
 function saveTasks() {
   saveState(storageKey('ctb_tasks'), tasks);
-  d1Sync('/api/tasks/sync', { tasks: tasks });
+  d1Write('/api/tasks/sync', { tasks: tasks });
 }
 function saveEvents() {
   saveState(storageKey('ctb_events'), events);
-  d1Sync('/api/events/sync', { events: events });
+  d1Write('/api/events/sync', { events: events });
 }
 function saveBudget() {
   saveState(storageKey('ctb_budget'), campaignBudget);
-  d1Sync('/api/budget/save', { budget: { total: campaignBudget.total, categories: JSON.stringify(campaignBudget.categories || {}) } });
+  d1Write('/api/budget/save', { budget: { total: campaignBudget.total, categories: JSON.stringify(campaignBudget.categories || {}) } });
 }
 function saveFolders() {
   saveState(storageKey('ctb_folders'), folders);
-  d1Sync('/api/notes/sync', { folders: folders });
+  d1Write('/api/notes/sync', { folders: folders });
 }
 function saveChatHistory() {
   if (chatHistory.length > 100) chatHistory = chatHistory.slice(-100);
   saveState(storageKey('ctb_chatHistory'), chatHistory);
-  d1Sync('/api/chat-history/save', { messages: chatHistory });
+  d1Write('/api/chat-history/save', { messages: chatHistory });
 }
 function saveContributions() {
   saveState(storageKey('ctb_contributions'), contributions);
-  d1Sync('/api/contributions/sync', { contributions: contributions });
+  d1Write('/api/contributions/sync', { contributions: contributions });
 }
 function saveEndorsements() {
   var endorsements = [];
   try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
-  d1Sync('/api/endorsements/sync', { endorsements: endorsements });
+  d1Write('/api/endorsements/sync', { endorsements: endorsements });
 }
 
 function escapeHtml(t) {
@@ -1101,9 +1130,12 @@ function loadFromD1() {
     headers: { 'Authorization': 'Bearer ' + d1Session }
   }).then(function(r){ return r.json(); }).then(function(data) {
     if (!data.success) return;
-    console.log('[D1] Cloud data loaded');
-    // Merge profile if D1 has data and localStorage doesn't
-    if (data.profile && data.profile.candidate_name && !campaignData.candidateName) {
+    d1Online = true;
+    console.log('[D1] Source of truth loaded');
+    var needsRerender = false;
+
+    // D1 WINS: Profile — always overwrite localStorage from D1
+    if (data.profile && data.profile.candidate_name) {
       campaignData.candidateName = data.profile.candidate_name;
       campaignData.specificOffice = data.profile.specific_office;
       campaignData.officeType = data.profile.office_level;
@@ -1112,32 +1144,46 @@ function loadFromD1() {
       campaignData.state = data.profile.state;
       campaignData.electionDate = data.profile.election_date;
       campaignData.winNumber = data.profile.win_number;
+      campaignData.filingStatus = data.profile.filing_status;
       campaignData.onboardingComplete = !!data.profile.onboarding_complete;
+      if (data.profile.win_number_data) {
+        try { campaignData.winNumberData = JSON.parse(data.profile.win_number_data); } catch(e) {}
+      }
       saveState(storageKey('ctb_campaignData'), campaignData);
-      if (campaignData.onboardingComplete && !isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
+      needsRerender = true;
     }
-    // Merge events if D1 has more than localStorage
-    if (data.events && data.events.length > events.length) {
-      events = data.events; saveState(storageKey('ctb_events'), events);
-    }
-    // Merge tasks
-    if (data.tasks && data.tasks.length > tasks.length) {
-      tasks = data.tasks; saveState(storageKey('ctb_tasks'), tasks);
-    }
-    // Merge endorsements
-    if (data.endorsements && data.endorsements.length > 0) {
-      var existing = []; try { existing = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements')) || '[]'); } catch(e) {}
-      if (data.endorsements.length > existing.length) {
-        localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(data.endorsements));
+    // D1 WINS: Events
+    if (data.events) { events = data.events; saveState(storageKey('ctb_events'), events); }
+    // D1 WINS: Tasks
+    if (data.tasks) { tasks = data.tasks; saveState(storageKey('ctb_tasks'), tasks); }
+    // D1 WINS: Budget
+    if (data.budget) {
+      campaignBudget.total = data.budget.total || campaignBudget.total;
+      if (data.budget.categories) {
+        try { var cats = typeof data.budget.categories === 'string' ? JSON.parse(data.budget.categories) : data.budget.categories; campaignBudget.categories = cats; } catch(e) {}
       }
+      saveState(storageKey('ctb_budget'), campaignBudget);
     }
-    // Merge contributions
-    if (data.contributions && data.contributions.length > 0) {
-      if (data.contributions.length > contributions.length) {
-        contributions = data.contributions; saveState(storageKey('ctb_contributions'), contributions);
-      }
+    // D1 WINS: Folders/Notes
+    if (data.folders) { folders = data.folders; saveState(storageKey('ctb_folders'), folders); }
+    // D1 WINS: Endorsements
+    if (data.endorsements) { localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(data.endorsements)); }
+    // D1 WINS: Contributions
+    if (data.contributions) { contributions = data.contributions; saveState(storageKey('ctb_contributions'), contributions); }
+    // D1 WINS: Chat history
+    if (data.chatHistory && data.chatHistory.length > 0) { chatHistory = data.chatHistory; saveState(storageKey('ctb_chatHistory'), chatHistory); }
+
+    // Re-render if data changed
+    if (needsRerender && isOnboarded()) {
+      showOnboardedUI();
+      updateTopbar();
+      refreshDashboard();
     }
-  }).catch(function(e) { console.log('[D1] Cloud load skipped:', e.message); });
+  }).catch(function(e) {
+    console.log('[D1] Load failed, using localStorage:', e.message);
+    d1Online = false;
+    showD1Status('offline');
+  });
 }
 
 function showNewUserUI() {
