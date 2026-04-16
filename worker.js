@@ -1452,7 +1452,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "save_win_number",
-          description: "Save the calculated win number to the dashboard. Only call after researching last election data, calculating the target, and the candidate confirms.",
+          description: "Save the calculated win number to the dashboard. Only call after researching last election data, calculating the target, and the candidate confirms. Pass win_number as a plain integer with no commas or formatting (e.g., 176650 not 176,650).",
           input_schema: {
             type: "object",
             properties: {

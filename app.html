@@ -4519,7 +4519,7 @@ function executeToolCall(block) {
     confirmMsg = '\u2705 Budget updated to $' + (amt||0).toLocaleString();
   }
   else if (name === 'set_win_number') {
-    var votes = parseInt(inp.votes || inp.win_number);
+    var votes = parseInt(String(inp.votes || inp.win_number || 0).replace(/[^0-9]/g, ''));
     if (votes > 0) {
       campaignData.winNumber = votes;
       if (inp.reasoning) campaignData.winNumberReasoning = inp.reasoning;
@@ -4536,7 +4536,7 @@ function executeToolCall(block) {
     confirmMsg = '\u2705 Win number set to ' + (votes||0).toLocaleString() + ' votes';
   }
   else if (name === 'save_win_number') {
-    var wn = parseInt(inp.win_number);
+    var wn = parseInt(String(inp.win_number || 0).replace(/[^0-9]/g, ''));
     if (wn > 0) {
       campaignData.winNumber = wn;
       campaignData.winNumberData = {
