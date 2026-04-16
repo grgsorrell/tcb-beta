@@ -1582,9 +1582,14 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         finalResponse = await callClaude(messages);
       }
 
-      // Return response with accumulated tool calls
+      // Return response with tool calls in BOTH places:
+      // 1. data.toolCalls — for Sam 2.0 client code
+      // 2. data.content — inject tool_use blocks so old cached clients can find and execute them
+      // This ensures backward compatibility regardless of which app.html version the browser has cached
+      const finalContent = [...allToolCalls, ...(finalResponse.content || [])];
       const responsePayload = {
         ...finalResponse,
+        content: finalContent,
         toolCalls: allToolCalls
       };
 

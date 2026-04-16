@@ -5062,30 +5062,36 @@ async function sendSamMessage() {
     // Response contains: data.content (final text) + data.toolCalls (accumulated tool_use blocks)
     // IMPORTANT: Execute ALL tools BEFORE showing Sam's text to prevent confirmation of failed actions.
 
-    // STEP 1: Execute all accumulated tool calls from server loop
+    // Execute tool calls — check data.toolCalls first (Sam 2.0), then scan content for tool_use blocks
+    // Track executed IDs to prevent double-execution (worker includes tools in both places for backward compat)
     var confirmations = [];
     var toolErrors = [];
+    var executedToolIds = {};
+
+    // Sam 2.0 path: data.toolCalls
     if (data.toolCalls && data.toolCalls.length > 0) {
       data.toolCalls.forEach(function(block) {
         try {
           var result = executeToolCall(block);
           if (result.confirmMsg) confirmations.push(result.confirmMsg);
+          if (block.id) executedToolIds[block.id] = true;
         } catch (toolErr) {
           toolErrors.push('Failed to execute ' + block.name + ': ' + (toolErr.message || 'unknown error'));
         }
       });
     }
 
-    // Also handle any tool_use blocks in the final content (edge case / backward compat)
+    // Scan content for tool_use blocks (backward compat + catches any the server didn't accumulate)
     var textParts = [];
     if (data.content && Array.isArray(data.content)) {
       data.content.forEach(function(block) {
         if (block.type === 'text' && block.text) {
           textParts.push(block.text);
-        } else if (block.type === 'tool_use') {
+        } else if (block.type === 'tool_use' && !executedToolIds[block.id]) {
           try {
             var result = executeToolCall(block);
             if (result.confirmMsg) confirmations.push(result.confirmMsg);
+            if (block.id) executedToolIds[block.id] = true;
           } catch (toolErr) {
             toolErrors.push('Failed to execute ' + block.name);
           }
