@@ -902,14 +902,16 @@ select{-webkit-appearance:none;appearance:none;}
       names.forEach(function(name) { caches.delete(name); });
     });
   }
-  var CURRENT_VERSION = 'sam-2.0-20260415c';
+  var CURRENT_VERSION = 'sam-2.0-v3';
   var storedVersion = localStorage.getItem('tcb_app_version');
   if (storedVersion !== CURRENT_VERSION) {
-    // Preserve campaign data keys
+    // Preserve campaign data — but CLEAR chat history (may be corrupted from server-side loop era)
     var preserved = {};
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
       if (k && (k.indexOf('ctb_') === 0 || k === 'tcb_session' || k === 'tcb_current_user' || k === 'samVoiceEnabled')) {
+        // Skip chat history — it may have corrupted entries that prevent tool calls
+        if (k.indexOf('ctb_chatHistory') >= 0) continue;
         preserved[k] = localStorage.getItem(k);
       }
     }
@@ -919,7 +921,7 @@ select{-webkit-appearance:none;appearance:none;}
       localStorage.setItem(keys[j], preserved[keys[j]]);
     }
     localStorage.setItem('tcb_app_version', CURRENT_VERSION);
-    console.log('[TCB] Cache cleared for version', CURRENT_VERSION);
+    console.log('[TCB] Cache cleared + chat history reset for version', CURRENT_VERSION);
     window.location.reload(true);
     return;
   }
@@ -946,8 +948,15 @@ function storageKey(key) {
 // STATE
 // ============================================
 var WORKER_URL = 'https://candidate-toolbox-secretary2.grgsorrell.workers.dev';
-var APP_VERSION = 'sam-2.0-20260415';
+var APP_VERSION = 'sam-2.0-v3';
 console.log('[TCB] App version:', APP_VERSION);
+// Show version badge briefly so user can confirm they have latest code
+setTimeout(function() {
+  var vb = document.createElement('div');
+  vb.style.cssText = 'position:fixed;bottom:4px;left:4px;font-size:9px;color:rgba(255,255,255,.2);z-index:1;pointer-events:none;font-family:monospace';
+  vb.textContent = APP_VERSION;
+  document.body.appendChild(vb);
+}, 2000);
 var campaignData = {};
 var tasks = [];
 var events = [];
