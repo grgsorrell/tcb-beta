@@ -902,7 +902,7 @@ select{-webkit-appearance:none;appearance:none;}
       names.forEach(function(name) { caches.delete(name); });
     });
   }
-  var CURRENT_VERSION = 'D1-Phase3-20260416';
+  var CURRENT_VERSION = 'D1-Phase6-20260416';
   var storedVersion = localStorage.getItem('tcb_app_version');
   if (storedVersion !== CURRENT_VERSION) {
     // Preserve campaign data — but CLEAR chat history (may be corrupted from server-side loop era)
@@ -948,7 +948,7 @@ function storageKey(key) {
 // STATE
 // ============================================
 var WORKER_URL = 'https://candidate-toolbox-secretary2.grgsorrell.workers.dev';
-var APP_VERSION = 'D1-Phase3';
+var APP_VERSION = 'D1-Phase6';
 console.log('[TCB] App version:', APP_VERSION);
 // Show version badge briefly so user can confirm they have latest code
 setTimeout(function() {
@@ -991,6 +991,21 @@ try { folders = JSON.parse(localStorage.getItem(storageKey('ctb_folders'))) || [
 try { chatHistory = JSON.parse(localStorage.getItem(storageKey('ctb_chatHistory'))) || []; } catch(e) { chatHistory = []; }
 
 function saveState(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
+
+// Cache management — localStorage is a speed cache for D1
+function checkStorageSize() {
+  var total = 0;
+  for (var key in localStorage) {
+    if (localStorage.hasOwnProperty(key)) total += (localStorage[key] || '').length * 2;
+  }
+  var mb = (total / 1024 / 1024).toFixed(2);
+  console.log('[TCB] localStorage: ' + mb + 'MB');
+  if (total > 4 * 1024 * 1024) {
+    console.warn('[TCB] Storage near limit, clearing old caches');
+    Object.keys(localStorage).filter(function(k){ return k.indexOf('ctb_chatHistory') >= 0 || k.indexOf('ctb_morning_brief') >= 0; }).forEach(function(k){ localStorage.removeItem(k); });
+  }
+}
+checkStorageSize();
 
 // D1 data layer — D1 is source of truth, localStorage is speed cache
 var d1Session = localStorage.getItem('tcb_d1_session') || null;
@@ -1113,30 +1128,40 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function initApp() {
-  // Check for multiple campaigns
   if (d1Session) {
-    fetch(D1_API + '/api/campaigns/list', { headers: { 'Authorization': 'Bearer ' + d1Session } })
-    .then(function(r){ return r.json(); }).then(function(data) {
-      if (data.success && data.campaigns && data.campaigns.length > 1) {
-        var activeCampaignId = localStorage.getItem('tcb_active_campaign');
-        if (!activeCampaignId) { showCampaignSelector(data.campaigns); return; }
+    // Verify session is still valid, then load D1 data
+    fetch(D1_API + '/api/auth/verify-session', { headers: { 'Authorization': 'Bearer ' + d1Session } })
+    .then(function(r){ return r.json(); }).then(function(sessionData) {
+      if (!sessionData.success) {
+        console.log('[D1] Session expired, clearing');
+        localStorage.removeItem('tcb_d1_session'); d1Session = null;
+        proceedWithLocalData();
+        return;
       }
-      // Single campaign or campaign already selected — proceed normally
-      if (isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
-      else { showNewUserUI(); }
-      renderSamMessages();
-      loadFromD1();
+      d1Online = true;
+      // Check for multiple campaigns
+      return fetch(D1_API + '/api/campaigns/list', { headers: { 'Authorization': 'Bearer ' + d1Session } })
+      .then(function(r){ return r.json(); }).then(function(data) {
+        if (data.success && data.campaigns && data.campaigns.length > 1) {
+          var activeCampaignId = localStorage.getItem('tcb_active_campaign');
+          if (!activeCampaignId) { showCampaignSelector(data.campaigns); return; }
+        }
+        proceedWithLocalData();
+        loadFromD1();
+      });
     }).catch(function() {
-      // D1 unavailable — proceed with localStorage
-      if (isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
-      else { showNewUserUI(); }
-      renderSamMessages();
+      d1Online = false; showD1Status('offline');
+      proceedWithLocalData();
     });
   } else {
-    if (isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
-    else { showNewUserUI(); }
-    renderSamMessages();
+    proceedWithLocalData();
   }
+}
+
+function proceedWithLocalData() {
+  if (isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
+  else { showNewUserUI(); }
+  renderSamMessages();
 }
 
 function showCampaignSelector(campaigns) {
