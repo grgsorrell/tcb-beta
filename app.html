@@ -3689,7 +3689,7 @@ function renderEndorsementsOverlay() {
   endorsements.forEach(function(e) {
     var statusCls = e.status === 'Announced' ? 'sp-an' : e.status === 'Pending' ? 'sp-pe' : 'sp-pu';
     var samBadge = e.addedBySam ? '<span style="font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(107,156,216,.1);border:1px solid rgba(107,156,216,.2);color:var(--blue);font-weight:600;letter-spacing:.04em;margin-left:6px">via Sam</span>' : '';
-    html += '<div class="ecard"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="enm">' + escapeHtml(e.name||'') + samBadge + '</div><div class="ett">' + escapeHtml(e.title||'') + '</div></div><span class="spill ' + statusCls + '">' + escapeHtml(e.status||'Pursuing') + '</span></div>' +
+    html += '<div class="ecard"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="enm">' + escapeHtml(e.name||'') + samBadge + '</div><div class="ett">' + escapeHtml(e.title||'') + '</div></div><div style="display:flex;align-items:center;gap:8px"><span class="spill ' + statusCls + '">' + escapeHtml(e.status||'Pursuing') + '</span><button onclick="deleteEndorsement(' + e.id + ')" style="font-size:11px;color:rgba(255,255,255,.25);background:none;border:none;cursor:pointer" title="Remove">\u00d7</button></div></div>' +
       (e.notes ? '<div class="ent">' + escapeHtml(e.notes) + '</div>' : '') + '</div>';
   });
   document.getElementById('endorsements-content').innerHTML = html;
@@ -3703,6 +3703,15 @@ function addEndorsement() {
   var endorsements = [];
   try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
   endorsements.push({ id: Date.now(), name: name, title: title||'', status: status||'Pursuing', notes: '' });
+  localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
+  renderEndorsementsOverlay();
+}
+
+function deleteEndorsement(id) {
+  if (!confirm('Remove this endorsement?')) return;
+  var endorsements = [];
+  try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
+  endorsements = endorsements.filter(function(e){ return e.id !== id; });
   localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
   renderEndorsementsOverlay();
 }
