@@ -1,0 +1,1563 @@
+export default {
+  async fetch(request, env) {
+    // CORS headers helper
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Admin-Key",
+    };
+
+    // Handle CORS preflight
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    const url = new URL(request.url);
+
+    // ========================================
+    // HELPER: Generate random ID
+    // ========================================
+    function generateId(length = 32) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      const bytes = new Uint8Array(length);
+      crypto.getRandomValues(bytes);
+      for (let i = 0; i < length; i++) {
+        result += chars[bytes[i] % chars.length];
+      }
+      return result;
+    }
+
+    // ========================================
+    // HELPER: JSON response
+    // ========================================
+    function jsonResponse(data, status = 200) {
+      return new Response(JSON.stringify(data), {
+        status,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    // ========================================
+    // HELPER: Get user from session
+    // ========================================
+    async function getUserFromSession(req) {
+      const authHeader = req.headers.get('Authorization');
+      if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
+      const sessionId = authHeader.slice(7);
+      const session = await env.DB.prepare(
+        'SELECT user_id FROM sessions WHERE session_id = ? AND expires_at > datetime(\'now\')'
+      ).bind(sessionId).first();
+      return session ? session.user_id : null;
+    }
+
+    // ========================================
+    // AUTH: Send magic link
+    // ========================================
+    if (url.pathname === '/auth/login' && request.method === 'POST') {
+      try {
+        const { email } = await request.json();
+        if (!email || !email.includes('@')) {
+          return jsonResponse({ error: 'Valid email required' }, 400);
+        }
+        const cleanEmail = email.toLowerCase().trim();
+
+        // Find or create user
+        let user = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(cleanEmail).first();
+        if (!user) {
+          const userId = generateId();
+          await env.DB.prepare('INSERT INTO users (id, email) VALUES (?, ?)').bind(userId, cleanEmail).run();
+          user = { id: userId };
+        }
+
+        // Create magic link token (expires in 15 minutes)
+        const token = generateId(48);
+        const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+        await env.DB.prepare(
+          'INSERT INTO auth_tokens (token, user_id, expires_at) VALUES (?, ?, ?)'
+        ).bind(token, user.id, expiresAt).run();
+
+        // Build magic link
+        const appUrl = 'https://thecandidatestoolbox.com/app';
+        const magicLink = appUrl + '?auth_token=' + token;
+
+        // Send email via Resend
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + env.RESEND_API_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: 'Candidate Tool Box <sam@thecandidatestoolbox.com>',
+            to: [cleanEmail],
+            subject: 'Your Candidate\'s Toolbox Login Link',
+            html: '<div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 20px;">' +
+              '<h2 style="color: #1a1a2e;">The Candidate\'s Toolbox</h2>' +
+              '<p>Click the button below to log in. This link expires in 15 minutes.</p>' +
+              '<a href="' + magicLink + '" style="display: inline-block; background: #16213e; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; margin: 16px 0;">Log In to Your Campaign</a>' +
+              '<p style="color: #666; font-size: 13px;">If you didn\'t request this, you can ignore this email.</p>' +
+              '</div>'
+          })
+        });
+
+        return jsonResponse({ success: true, message: 'Check your email for a login link' });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // AUTH: Verify magic link token
+    // ========================================
+    if (url.pathname === '/auth/verify' && request.method === 'POST') {
+      try {
+        const { token } = await request.json();
+        if (!token) return jsonResponse({ error: 'Token required' }, 400);
+
+        const authToken = await env.DB.prepare(
+          'SELECT user_id, used FROM auth_tokens WHERE token = ? AND expires_at > datetime(\'now\')'
+        ).bind(token).first();
+
+        if (!authToken) return jsonResponse({ error: 'Invalid or expired link' }, 401);
+        if (authToken.used) return jsonResponse({ error: 'Link already used' }, 401);
+
+        // Mark token as used
+        await env.DB.prepare('UPDATE auth_tokens SET used = 1 WHERE token = ?').bind(token).run();
+
+        // Create session (30 days)
+        const sessionId = generateId(48);
+        const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        await env.DB.prepare(
+          'INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)'
+        ).bind(sessionId, authToken.user_id, expiresAt).run();
+
+        // Get user email
+        const user = await env.DB.prepare('SELECT email FROM users WHERE id = ?').bind(authToken.user_id).first();
+
+        return jsonResponse({ success: true, sessionId, email: user.email });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // AUTH: Check session
+    // ========================================
+    if (url.pathname === '/auth/session' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const user = await env.DB.prepare('SELECT email FROM users WHERE id = ?').bind(userId).first();
+        return jsonResponse({ success: true, email: user.email, userId });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // AUTH: Logout
+    // ========================================
+    if (url.pathname === '/auth/logout' && request.method === 'POST') {
+      try {
+        const authHeader = request.headers.get('Authorization');
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+          const sessionId = authHeader.slice(7);
+          await env.DB.prepare('DELETE FROM sessions WHERE session_id = ?').bind(sessionId).run();
+        }
+        return jsonResponse({ success: true });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Save Profile
+    // ========================================
+    if (url.pathname === '/api/profile/save' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const data = await request.json();
+
+        await env.DB.prepare(`
+          INSERT INTO profiles (user_id, candidate_name, specific_office, office_level, party, location, state, election_date, filing_status, win_number, win_number_data, onboarding_complete, updated_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+          ON CONFLICT(user_id) DO UPDATE SET
+            candidate_name = excluded.candidate_name,
+            specific_office = excluded.specific_office,
+            office_level = excluded.office_level,
+            party = excluded.party,
+            location = excluded.location,
+            state = excluded.state,
+            election_date = excluded.election_date,
+            filing_status = excluded.filing_status,
+            win_number = excluded.win_number,
+            win_number_data = excluded.win_number_data,
+            onboarding_complete = excluded.onboarding_complete,
+            updated_at = datetime('now')
+        `).bind(
+          userId,
+          data.candidate_name || null,
+          data.specific_office || null,
+          data.office_level || null,
+          data.party || null,
+          data.location || null,
+          data.state || null,
+          data.election_date || null,
+          data.filing_status || null,
+          data.win_number || null,
+          data.win_number_data ? JSON.stringify(data.win_number_data) : null,
+          data.onboarding_complete ? 1 : 0
+        ).run();
+
+        return jsonResponse({ success: true });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load Profile
+    // ========================================
+    if (url.pathname === '/api/profile/load' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const profile = await env.DB.prepare(
+          'SELECT * FROM profiles WHERE user_id = ?'
+        ).bind(userId).first();
+
+        if (!profile) return jsonResponse({ success: true, profile: null });
+
+        // Parse win_number_data JSON if present
+        if (profile.win_number_data) {
+          try { profile.win_number_data = JSON.parse(profile.win_number_data); } catch (e) { /* leave as string */ }
+        }
+
+        return jsonResponse({ success: true, profile });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Sync Tasks (full replace)
+    // ========================================
+    if (url.pathname === '/api/tasks/sync' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const { tasks } = await request.json();
+
+        // Delete existing tasks for this user
+        await env.DB.prepare('DELETE FROM tasks WHERE user_id = ?').bind(userId).run();
+
+        // Insert all current tasks
+        if (tasks && tasks.length > 0) {
+          const stmt = env.DB.prepare(
+            'INSERT INTO tasks (id, user_id, name, date, category, completed, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+          );
+          const batch = tasks.map(t => stmt.bind(
+            String(t.id),
+            userId,
+            t.name || t.text || '',
+            t.date || null,
+            t.category || 'other',
+            t.completed ? 1 : 0,
+            t.created_at || new Date().toISOString()
+          ));
+          await env.DB.batch(batch);
+        }
+
+        return jsonResponse({ success: true, count: tasks ? tasks.length : 0 });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load Tasks
+    // ========================================
+    if (url.pathname === '/api/tasks/load' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const result = await env.DB.prepare(
+          'SELECT * FROM tasks WHERE user_id = ? ORDER BY date ASC'
+        ).bind(userId).all();
+
+        // Convert D1 rows back to app format
+        const tasks = (result.results || []).map(row => ({
+          id: parseFloat(row.id) || row.id,
+          name: row.name,
+          text: row.name,
+          date: row.date,
+          category: row.category,
+          completed: row.completed === 1,
+          created_at: row.created_at
+        }));
+
+        return jsonResponse({ success: true, tasks });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Sync Events (full replace)
+    // ========================================
+    if (url.pathname === '/api/events/sync' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const { events } = await request.json();
+
+        // Delete existing events for this user
+        await env.DB.prepare('DELETE FROM events WHERE user_id = ?').bind(userId).run();
+
+        // Insert all current events
+        if (events && events.length > 0) {
+          const stmt = env.DB.prepare(
+            'INSERT INTO events (id, user_id, name, date, time, end_time, location, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+          );
+          const batch = events.map(e => stmt.bind(
+            String(e.id),
+            userId,
+            e.name || e.title || '',
+            e.date || null,
+            e.time || null,
+            e.end_time || e.endTime || null,
+            e.location || null,
+            e.created_at || new Date().toISOString()
+          ));
+          await env.DB.batch(batch);
+        }
+
+        return jsonResponse({ success: true, count: events ? events.length : 0 });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load Events
+    // ========================================
+    if (url.pathname === '/api/events/load' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const result = await env.DB.prepare(
+          'SELECT * FROM events WHERE user_id = ? ORDER BY date ASC'
+        ).bind(userId).all();
+
+        const events = (result.results || []).map(row => ({
+          id: parseFloat(row.id) || row.id,
+          name: row.name,
+          title: row.name,
+          date: row.date,
+          time: row.time,
+          end_time: row.end_time,
+          endTime: row.end_time,
+          location: row.location,
+          created_at: row.created_at
+        }));
+
+        return jsonResponse({ success: true, events });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Save Budget
+    // ========================================
+    if (url.pathname === '/api/budget/save' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const { budget } = await request.json();
+
+        await env.DB.prepare(`
+          INSERT INTO budget (user_id, total, categories, updated_at)
+          VALUES (?, ?, ?, datetime('now'))
+          ON CONFLICT(user_id) DO UPDATE SET
+            total = excluded.total,
+            categories = excluded.categories,
+            updated_at = datetime('now')
+        `).bind(
+          userId,
+          budget.total || 0,
+          JSON.stringify(budget.categories || {})
+        ).run();
+
+        return jsonResponse({ success: true });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load Budget
+    // ========================================
+    if (url.pathname === '/api/budget/load' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const row = await env.DB.prepare(
+          'SELECT * FROM budget WHERE user_id = ?'
+        ).bind(userId).first();
+
+        if (!row) return jsonResponse({ success: true, budget: null });
+
+        const budget = {
+          total: row.total,
+          categories: JSON.parse(row.categories || '{}'),
+          updated_at: row.updated_at
+        };
+
+        return jsonResponse({ success: true, budget });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Sync Folders & Notes (full replace)
+    // ========================================
+    if (url.pathname === '/api/notes/sync' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const { folders } = await request.json();
+
+        // Delete existing notes and folders for this user
+        await env.DB.prepare('DELETE FROM notes WHERE user_id = ?').bind(userId).run();
+        await env.DB.prepare('DELETE FROM folders WHERE user_id = ?').bind(userId).run();
+
+        // Insert folders and their notes
+        if (folders && folders.length > 0) {
+          for (const folder of folders) {
+            const folderId = String(folder.id || generateId(16));
+            await env.DB.prepare(
+              'INSERT INTO folders (id, user_id, name, created_at) VALUES (?, ?, ?, ?)'
+            ).bind(folderId, userId, folder.name || '', folder.created_at || new Date().toISOString()).run();
+
+            if (folder.notes && folder.notes.length > 0) {
+              const stmt = env.DB.prepare(
+                'INSERT INTO notes (id, folder_id, user_id, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+              );
+              const batch = folder.notes.map(n => stmt.bind(
+                String(n.id || generateId(16)),
+                folderId,
+                userId,
+                n.title || '',
+                n.content || '',
+                n.created_at || new Date().toISOString(),
+                n.updated_at || new Date().toISOString()
+              ));
+              await env.DB.batch(batch);
+            }
+          }
+        }
+
+        return jsonResponse({ success: true });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load Folders & Notes
+    // ========================================
+    if (url.pathname === '/api/notes/load' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const foldersResult = await env.DB.prepare(
+          'SELECT * FROM folders WHERE user_id = ? ORDER BY created_at ASC'
+        ).bind(userId).all();
+
+        const notesResult = await env.DB.prepare(
+          'SELECT * FROM notes WHERE user_id = ? ORDER BY created_at ASC'
+        ).bind(userId).all();
+
+        // Assemble folders with their notes
+        const folders = (foldersResult.results || []).map(f => ({
+          id: f.id,
+          name: f.name,
+          created_at: f.created_at,
+          notes: (notesResult.results || [])
+            .filter(n => n.folder_id === f.id)
+            .map(n => ({
+              id: n.id,
+              title: n.title,
+              content: n.content,
+              created_at: n.created_at,
+              updated_at: n.updated_at
+            }))
+        }));
+
+        return jsonResponse({ success: true, folders });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Save Briefing
+    // ========================================
+    if (url.pathname === '/api/briefing/save' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const { date, text } = await request.json();
+
+        await env.DB.prepare(`
+          INSERT INTO briefings (user_id, date, text)
+          VALUES (?, ?, ?)
+          ON CONFLICT(user_id, date) DO UPDATE SET
+            text = excluded.text
+        `).bind(userId, date, text).run();
+
+        return jsonResponse({ success: true });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load Briefing
+    // ========================================
+    if (url.pathname === '/api/briefing/load' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const row = await env.DB.prepare(
+          'SELECT * FROM briefings WHERE user_id = ? ORDER BY date DESC LIMIT 1'
+        ).bind(userId).first();
+
+        return jsonResponse({ success: true, briefing: row || null });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Save Chat History
+    // ========================================
+    if (url.pathname === '/api/chat-history/save' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const { messages } = await request.json();
+
+        await env.DB.prepare(`
+          INSERT INTO chat_history (user_id, messages, updated_at)
+          VALUES (?, ?, datetime('now'))
+          ON CONFLICT(user_id) DO UPDATE SET
+            messages = excluded.messages,
+            updated_at = datetime('now')
+        `).bind(userId, JSON.stringify(messages)).run();
+
+        return jsonResponse({ success: true });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load Chat History
+    // ========================================
+    if (url.pathname === '/api/chat-history/load' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        const row = await env.DB.prepare(
+          'SELECT messages FROM chat_history WHERE user_id = ?'
+        ).bind(userId).first();
+
+        let messages = [];
+        if (row && row.messages) {
+          try { messages = JSON.parse(row.messages); } catch (e) { /* empty */ }
+        }
+
+        return jsonResponse({ success: true, messages });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load All (bulk load on login)
+    // ========================================
+    if (url.pathname === '/api/data/load-all' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        // Run all queries in parallel
+        const [profileRow, tasksResult, eventsResult, budgetRow, foldersResult, notesResult, briefingRow, chatRow] = await Promise.all([
+          env.DB.prepare('SELECT * FROM profiles WHERE user_id = ?').bind(userId).first(),
+          env.DB.prepare('SELECT * FROM tasks WHERE user_id = ? ORDER BY date ASC').bind(userId).all(),
+          env.DB.prepare('SELECT * FROM events WHERE user_id = ? ORDER BY date ASC').bind(userId).all(),
+          env.DB.prepare('SELECT * FROM budget WHERE user_id = ?').bind(userId).first(),
+          env.DB.prepare('SELECT * FROM folders WHERE user_id = ? ORDER BY created_at ASC').bind(userId).all(),
+          env.DB.prepare('SELECT * FROM notes WHERE user_id = ? ORDER BY created_at ASC').bind(userId).all(),
+          env.DB.prepare('SELECT * FROM briefings WHERE user_id = ? ORDER BY date DESC LIMIT 1').bind(userId).first(),
+          env.DB.prepare('SELECT messages FROM chat_history WHERE user_id = ?').bind(userId).first()
+        ]);
+
+        // Format profile
+        let profile = profileRow || null;
+        if (profile && profile.win_number_data) {
+          try { profile.win_number_data = JSON.parse(profile.win_number_data); } catch (e) { /* leave as string */ }
+        }
+
+        // Format tasks
+        const tasks = (tasksResult.results || []).map(row => ({
+          id: parseFloat(row.id) || row.id,
+          name: row.name,
+          text: row.name,
+          date: row.date,
+          category: row.category,
+          completed: row.completed === 1,
+          created_at: row.created_at
+        }));
+
+        // Format events
+        const events = (eventsResult.results || []).map(row => ({
+          id: parseFloat(row.id) || row.id,
+          name: row.name,
+          title: row.name,
+          date: row.date,
+          time: row.time,
+          end_time: row.end_time,
+          endTime: row.end_time,
+          location: row.location,
+          created_at: row.created_at
+        }));
+
+        // Format budget
+        let budget = null;
+        if (budgetRow) {
+          budget = {
+            total: budgetRow.total,
+            categories: JSON.parse(budgetRow.categories || '{}'),
+            updated_at: budgetRow.updated_at
+          };
+        }
+
+        // Format folders with notes
+        const folders = (foldersResult.results || []).map(f => ({
+          id: f.id,
+          name: f.name,
+          created_at: f.created_at,
+          notes: (notesResult.results || [])
+            .filter(n => n.folder_id === f.id)
+            .map(n => ({
+              id: n.id,
+              title: n.title,
+              content: n.content,
+              created_at: n.created_at,
+              updated_at: n.updated_at
+            }))
+        }));
+
+        // Format briefing
+        const briefing = briefingRow || null;
+
+        // Format chat history
+        let chatHistory = [];
+        if (chatRow && chatRow.messages) {
+          try { chatHistory = JSON.parse(chatRow.messages); } catch (e) { /* empty */ }
+        }
+
+        return jsonResponse({ success: true, profile, tasks, events, budget, folders, briefing, chatHistory });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Reset All User Data
+    // ========================================
+    if (url.pathname === '/api/data/reset' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+
+        await Promise.all([
+          env.DB.prepare('DELETE FROM tasks WHERE user_id = ?').bind(userId).run(),
+          env.DB.prepare('DELETE FROM events WHERE user_id = ?').bind(userId).run(),
+          env.DB.prepare('DELETE FROM budget WHERE user_id = ?').bind(userId).run(),
+          env.DB.prepare('DELETE FROM notes WHERE user_id = ?').bind(userId).run(),
+          env.DB.prepare('DELETE FROM folders WHERE user_id = ?').bind(userId).run(),
+          env.DB.prepare('DELETE FROM briefings WHERE user_id = ?').bind(userId).run(),
+          env.DB.prepare('DELETE FROM chat_history WHERE user_id = ?').bind(userId).run(),
+          env.DB.prepare('DELETE FROM profiles WHERE user_id = ?').bind(userId).run()
+        ]);
+
+        return jsonResponse({ success: true, message: 'All user data reset' });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // SERVICE INTEREST EMAIL ENDPOINT
+    // ========================================
+    if (url.pathname === '/service-interest' && request.method === 'POST') {
+      try {
+        const data = await request.json();
+        
+        const emailHtml = `
+          <h2>New Campaign Services Interest</h2>
+          <table style="border-collapse: collapse; width: 100%;">
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Service:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.service}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Name:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.candidate}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Email:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.email}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Phone:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.phone}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Office:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.office}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Location:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.location}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Election Date:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.electionDate || 'Not set'}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">Submitted:</td><td style="padding: 8px;">${data.submitted}</td></tr>
+          </table>
+        `;
+
+        const emailResponse = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + env.RESEND_API_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: 'Candidate Tool Box <sam@thecandidatestoolbox.com>',
+            to: ['grgsorrell@gmail.com'],
+            subject: 'Campaign Services Interest: ' + data.service + ' - ' + data.candidate,
+            html: emailHtml
+          })
+        });
+
+        const result = await emailResponse.json();
+        
+        return new Response(JSON.stringify({ success: true, id: result.id }), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ success: false, error: error.message }), {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+      }
+    }
+
+    // ========================================
+    // CONTACT FORM EMAIL ENDPOINT
+    // ========================================
+    if (url.pathname === '/contact' && request.method === 'POST') {
+      try {
+        const data = await request.json();
+        
+        const emailHtml = `
+          <h2>New Contact Form Message</h2>
+          <table style="border-collapse: collapse; width: 100%;">
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Name:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.name}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Email:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.email}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Phone:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.phone}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Office:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.office || 'Not set'}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Location:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.location || 'Not set'}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Submitted:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${data.submitted}</td></tr>
+          </table>
+          <div style="margin-top: 20px; padding: 16px; background: #f8f8f8; border-radius: 8px;">
+            <p style="font-weight: bold; margin: 0 0 8px 0;">Message:</p>
+            <p style="margin: 0; white-space: pre-wrap;">${data.message}</p>
+          </div>
+        `;
+
+        const emailResponse = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + env.RESEND_API_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: 'Candidate Tool Box <sam@thecandidatestoolbox.com>',
+            to: ['grgsorrell@gmail.com'],
+            subject: 'Contact Form: ' + data.name + ' - ' + (data.office || 'General Inquiry'),
+            html: emailHtml,
+            reply_to: data.email
+          })
+        });
+
+        const result = await emailResponse.json();
+        
+        return new Response(JSON.stringify({ success: true, id: result.id }), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ success: false, error: error.message }), {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+      }
+    }
+
+    // ========================================
+    // ADMIN: Dashboard Stats
+    // ========================================
+    if (url.pathname === '/api/admin/stats' && request.method === 'GET') {
+      try {
+        const adminPass = request.headers.get('X-Admin-Key');
+        if (!adminPass || adminPass !== env.ADMIN_PASSWORD) {
+          return jsonResponse({ error: 'Unauthorized' }, 401);
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+        const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+        const [
+          totalUsers,
+          activeToday,
+          activeWeek,
+          activeMonth,
+          messagesToday,
+          messagesTotal,
+          onboardingComplete,
+          totalTasks,
+          totalEvents,
+          budgetsSet
+        ] = await Promise.all([
+          env.DB.prepare('SELECT COUNT(*) as count FROM users').first(),
+          env.DB.prepare('SELECT COUNT(DISTINCT user_id) as count FROM usage_logs WHERE date = ?').bind(today).first(),
+          env.DB.prepare('SELECT COUNT(DISTINCT user_id) as count FROM usage_logs WHERE date >= ?').bind(weekAgo).first(),
+          env.DB.prepare('SELECT COUNT(DISTINCT user_id) as count FROM usage_logs WHERE date >= ?').bind(monthAgo).first(),
+          env.DB.prepare('SELECT COALESCE(SUM(message_count), 0) as count FROM usage_logs WHERE date = ?').bind(today).first(),
+          env.DB.prepare('SELECT COALESCE(SUM(message_count), 0) as count FROM usage_logs').first(),
+          env.DB.prepare('SELECT COUNT(*) as count FROM profiles WHERE onboarding_complete = 1').first(),
+          env.DB.prepare('SELECT COUNT(*) as count FROM tasks').first(),
+          env.DB.prepare('SELECT COUNT(*) as count FROM events').first(),
+          env.DB.prepare('SELECT COUNT(*) as count FROM budget').first()
+        ]);
+
+        // Messages per day (last 14 days)
+        const dailyMessages = await env.DB.prepare(
+          'SELECT date, SUM(message_count) as messages, COUNT(DISTINCT user_id) as users FROM usage_logs WHERE date >= ? GROUP BY date ORDER BY date DESC'
+        ).bind(new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]).all();
+
+        return jsonResponse({
+          success: true,
+          stats: {
+            totalUsers: totalUsers.count,
+            activeToday: activeToday.count,
+            activeWeek: activeWeek.count,
+            activeMonth: activeMonth.count,
+            messagesToday: messagesToday.count,
+            messagesTotal: messagesTotal.count,
+            onboardingComplete: onboardingComplete.count,
+            totalTasks: totalTasks.count,
+            totalEvents: totalEvents.count,
+            budgetsSet: budgetsSet.count,
+            dailyMessages: dailyMessages.results || []
+          }
+        });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // ADMIN: User List
+    // ========================================
+    if (url.pathname === '/api/admin/users' && request.method === 'GET') {
+      try {
+        const adminPass = request.headers.get('X-Admin-Key');
+        if (!adminPass || adminPass !== env.ADMIN_PASSWORD) {
+          return jsonResponse({ error: 'Unauthorized' }, 401);
+        }
+
+        const users = await env.DB.prepare(`
+          SELECT 
+            u.id,
+            u.email,
+            u.created_at,
+            p.candidate_name,
+            p.specific_office,
+            p.location,
+            p.state,
+            p.party,
+            p.election_date,
+            p.onboarding_complete,
+            COALESCE(msg.total_messages, 0) as total_messages,
+            msg.last_active,
+            COALESCE(t.task_count, 0) as task_count,
+            COALESCE(e.event_count, 0) as event_count
+          FROM users u
+          LEFT JOIN profiles p ON u.id = p.user_id
+          LEFT JOIN (
+            SELECT user_id, SUM(message_count) as total_messages, MAX(date) as last_active 
+            FROM usage_logs GROUP BY user_id
+          ) msg ON u.id = msg.user_id
+          LEFT JOIN (
+            SELECT user_id, COUNT(*) as task_count FROM tasks GROUP BY user_id
+          ) t ON u.id = t.user_id
+          LEFT JOIN (
+            SELECT user_id, COUNT(*) as event_count FROM events GROUP BY user_id
+          ) e ON u.id = e.user_id
+          ORDER BY msg.last_active DESC NULLS LAST
+        `).all();
+
+        return jsonResponse({ success: true, users: users.results || [] });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // Only allow POST for the main chat endpoint
+    if (request.method !== 'POST') {
+      return new Response('Method not allowed', { status: 405, headers: corsHeaders });
+    }
+
+
+    // ========================================
+    // MAIN CHAT ENDPOINT (default)
+    // ========================================
+    try {
+      const body = await request.json();
+      const {
+        message, state, officeType, electionDate, party,
+        needsOnboarding, filingStatus, candidateName,
+        specificOffice, location, history, mode,
+        additionalContext, budget, winNumber,
+        daysToElection, govLevel, candidateBrief,
+        startingAmount, fundraisingGoal, totalRaised,
+        donorCount, intelContext, raceProfile
+      } = body;
+
+      // ========================================
+      // RATE LIMITING: 100 messages per user per day
+      // ========================================
+      const rateLimitUserId = await getUserFromSession(request);
+      if (rateLimitUserId) {
+        const rateLimitDate = new Date().toISOString().split('T')[0];
+        const usage = await env.DB.prepare(
+          'SELECT message_count FROM usage_logs WHERE user_id = ? AND date = ?'
+        ).bind(rateLimitUserId, rateLimitDate).first();
+        if (usage && usage.message_count >= 100) {
+          return jsonResponse({ error: 'Daily message limit reached. Sam will be ready again tomorrow!' }, 429);
+        }
+        await env.DB.prepare(
+          'INSERT INTO usage_logs (user_id, date, message_count) VALUES (?, ?, 1) ON CONFLICT(user_id, date) DO UPDATE SET message_count = message_count + 1'
+        ).bind(rateLimitUserId, rateLimitDate).run();
+      }
+
+      // ========================================
+      // RESEARCH MODE — bypasses Sam persona
+      // ========================================
+      if (mode === 'research') {
+        const researchSystemPrompt = `You are a political research analyst. Your job is to use web search to research candidates and races, then return structured data as JSON.
+
+RULES:
+1. You MUST use web_search to find current, accurate information. Search multiple times if needed.
+2. Return ONLY a valid JSON object. No preamble, no explanation, no markdown code fences, no text before or after the JSON.
+3. If you cannot find information for a field, use null or an empty string — never omit the field.
+4. Be specific: use real names, real dates, real percentages. Do not make up data.
+5. Current year is ${new Date().getFullYear()}.`;
+
+        const researchResponse = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": env.ANTHROPIC_API_KEY,
+            "anthropic-version": "2023-06-01",
+          },
+          body: JSON.stringify({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 8000,
+            temperature: 0.2,
+            system: [{ type: "text", text: researchSystemPrompt }],
+            tools: [{ type: "web_search_20250305", name: "web_search" }],
+            messages: [{ role: "user", content: message }],
+          }),
+        });
+
+        const researchData = await researchResponse.json();
+        return new Response(JSON.stringify(researchData), {
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+
+      // ========================================
+      // HELPER: Determine geographic scope
+      // ========================================
+      function determineScope(office, level, st, loc) {
+        const o = (office || '').toLowerCase();
+        const statewideOffices = ['governor','lieutenant governor','attorney general',
+          'secretary of state','state treasurer','comptroller','us senator',
+          'u.s. senator','united states senator','state senate','state senator',
+          'state assembly','state representative','state rep'];
+        const isStatewide = statewideOffices.some(x => o.includes(x)) || level === 'state';
+        const isFederal = level === 'federal' || o.includes('congress') ||
+          (o.includes('representative') && !o.includes('state')) ||
+          o.includes('house') || (o.includes('senate') && !o.includes('state'));
+        if (isStatewide) return {
+          scope: 'statewide', researchArea: `all of ${st}`,
+          voterBase: `all registered voters across ${st}`,
+          briefScope: `statewide ${st} news and politics`
+        };
+        if (isFederal) return {
+          scope: 'district', researchArea: `${loc} area congressional district in ${st}`,
+          voterBase: `district voters`, briefScope: `${loc} district news and federal politics`
+        };
+        return {
+          scope: 'local', researchArea: `${loc}, ${st}`,
+          voterBase: `local voters in ${loc}`, briefScope: `${loc} local news and politics`
+        };
+      }
+
+      // ========================================
+      // HELPER: Build timezone-aware date
+      // ========================================
+      const stateTimezones = {
+        'TX':'America/Chicago','CA':'America/Los_Angeles','NY':'America/New_York',
+        'FL':'America/New_York','IL':'America/Chicago','PA':'America/New_York',
+        'OH':'America/New_York','GA':'America/New_York','NC':'America/New_York',
+        'MI':'America/New_York','NJ':'America/New_York','VA':'America/New_York',
+        'WA':'America/Los_Angeles','AZ':'America/Phoenix','MA':'America/New_York',
+        'TN':'America/Chicago','IN':'America/New_York','MO':'America/Chicago',
+        'MD':'America/New_York','WI':'America/Chicago','CO':'America/Denver',
+        'MN':'America/Chicago','SC':'America/New_York','AL':'America/Chicago',
+        'LA':'America/Chicago','KY':'America/New_York','OR':'America/Los_Angeles',
+        'OK':'America/Chicago','CT':'America/New_York','UT':'America/Denver',
+        'IA':'America/Chicago','NV':'America/Los_Angeles','AR':'America/Chicago',
+        'MS':'America/Chicago','KS':'America/Chicago','NM':'America/Denver',
+        'NE':'America/Chicago','ID':'America/Boise','WV':'America/New_York',
+        'HI':'Pacific/Honolulu','NH':'America/New_York','ME':'America/New_York',
+        'MT':'America/Denver','RI':'America/New_York','DE':'America/New_York',
+        'SD':'America/Chicago','ND':'America/Chicago','AK':'America/Anchorage',
+        'VT':'America/New_York','WY':'America/Denver','DC':'America/New_York'
+      };
+      const stateAbbr = (state || '').toUpperCase().trim();
+      const tz = stateTimezones[stateAbbr] || 'America/Chicago';
+      const today = new Date();
+      const currentDate = today.toLocaleDateString('en-US', {
+        timeZone: tz, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      const localParts = new Intl.DateTimeFormat('en-US', {
+        timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit'
+      }).formatToParts(today);
+      const isoYear = localParts.find(p => p.type === 'year').value;
+      const isoMonth = localParts.find(p => p.type === 'month').value;
+      const isoDay = localParts.find(p => p.type === 'day').value;
+      const isoToday = `${isoYear}-${isoMonth}-${isoDay}`;
+
+      // Campaign phase
+      const effectiveDays = daysToElection != null ? daysToElection : null;
+      let campaignPhase = 'planning';
+      if (effectiveDays != null && effectiveDays > 0) {
+        if (effectiveDays <= 7) campaignPhase = 'final-push';
+        else if (effectiveDays <= 14) campaignPhase = 'gotv';
+        else if (effectiveDays <= 30) campaignPhase = 'closing';
+        else if (effectiveDays <= 60) campaignPhase = 'peak-outreach';
+        else if (effectiveDays <= 120) campaignPhase = 'building-momentum';
+        else campaignPhase = 'early-campaign';
+      } else if (effectiveDays != null && effectiveDays <= 0) {
+        campaignPhase = 'post-election';
+      }
+
+      const geo = determineScope(specificOffice, govLevel || officeType, state, location);
+      const effectiveGovLevel = govLevel || officeType || 'unknown';
+      const budgetStr = (budget != null && budget > 0) ? '$' + Number(budget).toLocaleString() : 'not set';
+      const winNumberStr = (winNumber != null && winNumber > 0) ? Number(winNumber).toLocaleString() + ' votes' : 'not yet calculated';
+      const raisedStr = (totalRaised != null && totalRaised > 0) ? '$' + Number(totalRaised).toLocaleString() : '$0';
+      const goalStr = (fundraisingGoal != null && fundraisingGoal > 0) ? '$' + Number(fundraisingGoal).toLocaleString() : 'not set';
+
+      // ========================================
+      // HELPER: Build candidate brief prose
+      // ========================================
+      let briefProse = '';
+      const briefHasData = candidateBrief && typeof candidateBrief === 'object' &&
+        (candidateBrief.incumbent != null || candidateBrief.generalOpponent || candidateBrief.districtPartisanLean || candidateBrief.keyLocalIssues);
+      if (briefHasData) {
+        const b = candidateBrief;
+        let lines = [];
+        if (b.incumbent != null) lines.push(b.incumbent ? `${candidateName} is the INCUMBENT.` : `${candidateName} is the CHALLENGER.`);
+        if (b.incumbentSince) lines.push(`Incumbent since ${b.incumbentSince}.`);
+        if (b.primaryStatus === 'won') {
+          lines.push(`${candidateName} WON the primary${b.primaryDate ? ' on ' + b.primaryDate : ''}${b.primaryResult ? ' (' + b.primaryResult + ')' : ''}. The primary is OVER.`);
+        } else if (b.primaryStatus) {
+          lines.push(`Primary status: ${b.primaryStatus}${b.primaryDate ? ' on ' + b.primaryDate : ''}.`);
+        }
+        if (b.generalOpponent && b.generalOpponent.name) {
+          const opp = b.generalOpponent;
+          lines.push(`GENERAL ELECTION OPPONENT: ${opp.name}${opp.party ? ' (' + opp.party + ')' : ''}.`);
+          if (opp.background) lines.push(`Opponent background: ${opp.background}.`);
+        }
+        if (b.districtPartisanLean) lines.push(`District lean: ${b.districtPartisanLean}.`);
+        if (b.keyLocalIssues) {
+          const issues = Array.isArray(b.keyLocalIssues) ? b.keyLocalIssues.join('; ') : b.keyLocalIssues;
+          lines.push(`Key issues: ${issues}.`);
+        }
+        if (b.countiesOrAreas) {
+          const areas = Array.isArray(b.countiesOrAreas) ? b.countiesOrAreas.join(', ') : b.countiesOrAreas;
+          lines.push(`Counties/areas: ${areas}.`);
+        }
+        if (b.recentElectionResults) {
+          const results = Array.isArray(b.recentElectionResults) ? b.recentElectionResults.join('; ') : b.recentElectionResults;
+          lines.push(`Recent results: ${results}.`);
+        }
+        if (b.candidateBackground) lines.push(`Candidate background: ${b.candidateBackground}.`);
+        if (b.campaignStrategicPriorities) {
+          const priorities = Array.isArray(b.campaignStrategicPriorities) ? b.campaignStrategicPriorities.join('; ') : b.campaignStrategicPriorities;
+          lines.push(`Strategic priorities: ${priorities}.`);
+        }
+        if (b.intelligenceNotes) lines.push(`Intel: ${b.intelligenceNotes}.`);
+        briefProse = lines.join('\n');
+      } else if (candidateBrief && candidateBrief.raw) {
+        briefProse = candidateBrief.raw;
+      }
+
+      // ========================================
+      // HELPER: Build Intel Ground Truth
+      // ========================================
+      let intelGroundTruth = '';
+      if (intelContext && intelContext.candidates && intelContext.candidates.length > 0) {
+        const activeCandidates = intelContext.candidates.filter(c => c.status !== 'withdrawn');
+        intelGroundTruth = `
+AUTHORITATIVE RACE DATA — DO NOT CONTRADICT OR SEARCH FRESH:
+Source: Intel panel verified research.
+
+FILED CANDIDATES (${activeCandidates.length} active):
+${intelContext.candidates.map(c =>
+  `- ${c.name} (${c.party || 'unknown party'})${c.isIncumbent ? ' [INCUMBENT]' : ''}${c.status === 'withdrawn' ? ' [WITHDRAWN]' : ''}: ${c.background || 'no background available'}`
+).join('\n')}
+${intelContext.raceNote ? `Race note: ${intelContext.raceNote}` : ''}`;
+
+        if (intelContext.threats && intelContext.threats.length > 0) {
+          intelGroundTruth += `\n\nTHREAT ASSESSMENT:\n${intelContext.threats.map(o =>
+            `- ${o.name}: ${o.threatLevel} THREAT (${o.overallScore}/10) — ${o.summary}`
+          ).join('\n')}`;
+        }
+        if (intelContext.topIssues && intelContext.topIssues.length > 0) {
+          intelGroundTruth += `\n\nTOP VOTER ISSUES:\n${intelContext.topIssues.map(i =>
+            `- ${i.issue}: ${i.concern}% concern (${i.trend})`
+          ).join('\n')}`;
+        }
+        if (intelContext.outreachRecommendation) {
+          intelGroundTruth += `\n\nOUTREACH STRATEGY: ${intelContext.outreachRecommendation}`;
+        }
+      } else {
+        intelGroundTruth = `\nRACE DATA: Intel panel not yet run. When asked about candidates or opponents, tell the candidate to open their Intel panel for verified research. Do not guess candidate names or counts.`;
+      }
+
+      // ========================================
+      // BUILD SYSTEM PROMPT — Sam 2.0
+      // ========================================
+      const isNewUser = needsOnboarding === true;
+      const isReturningUser = !isNewUser && officeType && officeType !== 'unknown';
+
+      let systemPrompt = `You are Sam, a veteran political campaign manager with 20 years of experience. Direct, strategic, warm but no-nonsense. You speak in campaign language — earned media, persuadables, GOTV, burn rate, ground game, ballot position. You always have a strong opinion and a clear recommendation. When uncertain, say "let me verify that" — never "I don't know."
+
+You work for ${candidateName || 'the candidate'}, who is running for ${specificOffice || 'office'} in ${location || 'their district'}, ${state || 'their state'}. The person chatting with you IS ${candidateName || 'the candidate'}.
+
+================================================================
+GROUND TRUTH — ${currentDate} (${isoToday})
+================================================================
+Candidate: ${candidateName || 'unknown'} | Office: ${specificOffice || officeType || 'unknown'} (${effectiveGovLevel})
+Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'}
+Election: ${electionDate || 'not set'}${effectiveDays != null ? ' (' + effectiveDays + ' days away)' : ''} | Phase: ${campaignPhase}
+Budget: ${budgetStr} | Win Number: ${winNumberStr}
+Raised: ${raisedStr} of ${goalStr} goal | Donors: ${donorCount || 0}${startingAmount ? ' | Starting cash: $' + Number(startingAmount).toLocaleString() : ''}
+Filed: ${filingStatus || 'unknown'}${effectiveDays != null && effectiveDays > 180 ? ' (early planning — do not ask about filing)' : ''}
+${briefProse ? `\nRACE INTELLIGENCE:\n${briefProse}` : ''}
+${intelGroundTruth}
+
+${body.raceProfile && body.raceProfile.raceType !== 'political' ? `
+RACE TYPE — THIS IS A ${(body.raceProfile.raceType || '').toUpperCase().replace(/_/g,' ')} RACE:
+${body.raceProfile.raceNotes || ''}
+Key endorsements: ${(body.raceProfile.keyEndorsements || []).join(', ')}
+Messaging priorities: ${(body.raceProfile.messagingPriorities || []).join(', ')}
+Budget priorities: ${(body.raceProfile.budgetPriorities || []).join(', ')}
+Avoid: ${(body.raceProfile.avoidTactics || []).join(', ')}
+Voter priorities: ${(body.raceProfile.voterPriorities || []).join(', ')}
+${(body.raceProfile.specialRules || []).length ? 'Special rules: ' + body.raceProfile.specialRules.join(', ') : ''}
+Adjust ALL advice for this race type. Never give generic political campaign advice when race-specific guidance exists.
+` : ''}
+RESEARCH SCOPE: ${geo.scope} race. Always research ${geo.researchArea}. Never limit to just ${location} for ${geo.scope !== 'local' ? 'this ' + geo.scope + ' race' : 'this race'}.
+
+CURRENT CAMPAIGN STATUS:
+${additionalContext || 'No additional context.'}
+
+================================================================
+RULES (mandatory, ranked by priority)
+================================================================
+1. Always call the appropriate tool before confirming any action. Never claim you did something without a tool call. If you need multiple tools, call ALL of them before responding.
+2. Never ask for information already in Ground Truth — use what you have. If a field says "not set" you may ask ONCE.
+3. Dates: today is ${isoToday}. Never guess dates. Always cite your source. Use YYYY-MM-DD format for tools. Never state the day of the week. Never use relative dates like "tomorrow" or "next week."
+4. Compliance: never tell a candidate they are "compliant" or "all set." Present information as "here is what I found" and recommend verification with their clerk or elections office.
+5. Never narrate your research. No "Let me search..." or "Based on search results..." — just deliver the answer.
+6. Geographic scope: for ${geo.scope} races, always research ${geo.researchArea}. Never limit to just the candidate's home city.
+7. If Intel Ground Truth has candidate data, use it as authoritative. Never search for data that is already in Ground Truth. Never give a different candidate count.
+8. Budget categories: digital, mail, broadcast, polling, fieldOps, fundraisingCompliance, consulting, reserveFund, signs, events, staffing, misc. Always map user language to these keys.
+9. Services redirect: for voter lists, direct mail, TV ads, texting campaigns, door knocking, yard signs, campaign websites — give strategic advice but redirect implementation to "the Candidate's Toolbox services team."
+10. After adding calendar items, confirm briefly and ask what to work on next. Do not explain your search process.
+11. When writing documents (speeches, emails, scripts), write the FULL document ready to use. Ask 1-2 clarifying questions first if needed. Present the draft, then ask if the candidate wants it saved.
+12. Calendar management: check the calendar context for duplicates before adding. Tasks = deadlines/to-dos. Events = activities at a time/place. Ask before adding unless the user explicitly requests it.
+13. Win number: always research the state's primary system first. Top-two primary states (CA, WA) require top-two finish. Never simply divide total votes by candidates.
+14. Keep responses to 2-3 sentences by default. Go longer only when asked for detail or writing documents. No bullet lists unless presenting 3+ items. Ask ONE question at a time.
+15. End every response with one specific actionable recommendation or question.`;
+
+      // Onboarding block
+      if (isNewUser) {
+        systemPrompt += `
+
+ONBOARDING MODE — THIS OVERRIDES DEFAULT BEHAVIOR:
+The candidate just completed setup. Profile is saved. Name: ${candidateName}. Office: ${specificOffice}. Location: ${location}, ${state}. Party: ${party}. Election: ${electionDate}. Filed: ${filingStatus}.
+
+The app already showed a greeting. DO NOT greet again or introduce yourself.
+1. Search for "${state} ${specificOffice} campaign finance report deadlines ${today.getFullYear()}"
+2. Search for "${state} personal financial statement PFS filing deadline ${today.getFullYear()}"
+3. DO NOT add anything to the calendar yet.
+4. Present all deadlines found with dates and sources. Note any that have passed.
+5. Say: "I'd recommend verifying all deadlines with your county clerk or elections office."
+6. End with: "Want me to add these to your calendar?"`;
+      } else if (isReturningUser) {
+        systemPrompt += `
+
+RETURNING USER: Greet warmly, reference their campaign naturally, jump right into helping. Don't re-explain who you are.`;
+      }
+
+      // Phase guidance
+      if (effectiveDays != null && effectiveDays > 0) {
+        const phaseAdvice = {
+          'final-push': 'GOTV — getting supporters to the polls. Every hour counts.',
+          'gotv': 'Voter contact is #1 — phone banks, door knocking, text banking, early voting reminders.',
+          'closing': 'Final messaging, last fundraising pushes, media outreach, debate prep.',
+          'peak-outreach': 'Maximum voter contact, community appearances, building name recognition.',
+          'building-momentum': 'Fundraising, volunteer base, message development, earned media.',
+          'early-campaign': 'Research, core team, initial fundraising, message development.'
+        };
+        if (phaseAdvice[campaignPhase]) {
+          systemPrompt += `\n\nCAMPAIGN PHASE (${campaignPhase}, ${effectiveDays} days): ${phaseAdvice[campaignPhase]}`;
+        }
+      }
+
+      // Mode hints
+      if (mode === 'compliance') systemPrompt += `\nMODE: Compliance — search for current dates, name sources, recommend verification.`;
+      else if (mode === 'writing') systemPrompt += `\nMODE: Content Writing — ask clarifying questions, then deliver ready-to-use drafts.`;
+      else if (mode === 'fundraising') systemPrompt += `\nMODE: Fundraising — practical advice, scripts, templates for grassroots campaigns.`;
+      else if (mode === 'strategy') systemPrompt += `\nMODE: Strategy — specific advice based on timeline, office type, and current calendar.`;
+
+      // ========================================
+      // TOOL DEFINITIONS — Sam 2.0 (consolidated)
+      // ========================================
+      const tools = [
+        { type: "web_search_20250305", name: "web_search" },
+        {
+          name: "add_calendar_event",
+          description: "Add a task OR event to the campaign calendar. Use type='task' for deadlines and to-dos (things to complete BY a date). Use type='event' for activities AT a specific time and place (town halls, fundraisers, meetings). Always include the date in YYYY-MM-DD format. Check the calendar context in Ground Truth before adding to avoid duplicates.",
+          input_schema: {
+            type: "object",
+            properties: {
+              name: { type: "string", description: "Name of the task or event" },
+              date: { type: "string", description: "Date in YYYY-MM-DD format" },
+              type: { type: "string", enum: ["task", "event"], description: "task = deadline/to-do, event = activity at a time/place" },
+              time: { type: "string", description: "Start time in HH:MM 24h format (events only)" },
+              end_time: { type: "string", description: "End time in HH:MM 24h format (optional)" },
+              location: { type: "string", description: "Venue or address (events only)" },
+              category: { type: "string", enum: ["compliance", "outreach", "fundraising", "internal", "deadline", "event", "other"], description: "Category for calendar display" },
+              notes: { type: "string", description: "Optional notes" }
+            },
+            required: ["name", "date", "type"]
+          }
+        },
+        {
+          name: "update_task",
+          description: "Update an existing task. Use the taskId from the UPCOMING TASKS list in context to target the exact task. Falls back to name matching if no ID provided.",
+          input_schema: {
+            type: "object",
+            properties: {
+              taskId: { type: "string", description: "The unique taskId from the tasks list in context (e.g., '1713200000.5'). Always prefer this over name matching." },
+              task_name: { type: "string", description: "Fallback: task name for partial matching if taskId not available" },
+              new_name: { type: "string", description: "New name (if changing)" },
+              new_date: { type: "string", description: "New date in YYYY-MM-DD (if changing)" },
+              new_category: { type: "string", description: "New category (if changing)" }
+            },
+            required: ["taskId"]
+          }
+        },
+        {
+          name: "delete_task",
+          description: "Remove a task from the calendar. Use the taskId from the tasks list in context.",
+          input_schema: {
+            type: "object",
+            properties: {
+              taskId: { type: "string", description: "The unique taskId from the tasks list in context" },
+              task_name: { type: "string", description: "Fallback: task name for partial matching" }
+            },
+            required: ["taskId"]
+          }
+        },
+        {
+          name: "complete_task",
+          description: "Mark a task as completed. Use when the candidate says they finished, filed, or submitted something. Use the taskId from the tasks list in context.",
+          input_schema: {
+            type: "object",
+            properties: {
+              taskId: { type: "string", description: "The unique taskId from the tasks list in context" },
+              task_name: { type: "string", description: "Fallback: task name for partial matching" }
+            },
+            required: ["taskId"]
+          }
+        },
+        {
+          name: "update_event",
+          description: "Update an existing event. Use the eventId from the UPCOMING EVENTS list in context.",
+          input_schema: {
+            type: "object",
+            properties: {
+              eventId: { type: "string", description: "The unique eventId from the events list in context" },
+              event_name: { type: "string", description: "Fallback: event name for partial matching" },
+              new_name: { type: "string", description: "New name (if changing)" },
+              new_date: { type: "string", description: "New date in YYYY-MM-DD (if changing)" },
+              new_time: { type: "string", description: "New time in HH:MM 24h (if changing)" },
+              new_location: { type: "string", description: "New location (if changing)" }
+            },
+            required: ["eventId"]
+          }
+        },
+        {
+          name: "delete_event",
+          description: "Remove an event from the calendar. Use the eventId from the events list in context.",
+          input_schema: {
+            type: "object",
+            properties: {
+              eventId: { type: "string", description: "The unique eventId from the events list in context" },
+              event_name: { type: "string", description: "Fallback: event name for partial matching" }
+            },
+            required: ["eventId"]
+          }
+        },
+        {
+          name: "add_expense",
+          description: "Log a campaign expense. ALWAYS call this when the candidate asks to log, add, record, or track any expense. Map user language to category keys: signs/yard signs/banners=signs, Facebook/Google/digital ads=digital, mailers/direct mail=mail, TV/radio=broadcast, polling/surveys=polling, canvassing/doors=fieldOps, legal/filing fees=fundraisingCompliance, consultants=consulting, staff/salaries=staffing, events/rallies=events, emergency=reserveFund, other=misc.",
+          input_schema: {
+            type: "object",
+            properties: {
+              amount: { type: "number", description: "Expense amount in dollars" },
+              category: { type: "string", enum: ["digital","mail","broadcast","polling","fieldOps","fundraisingCompliance","consulting","reserveFund","signs","events","staffing","misc"], description: "Budget category key" },
+              description: { type: "string", description: "Brief description" },
+              date: { type: "string", description: "Date in YYYY-MM-DD (defaults to today)" }
+            },
+            required: ["amount", "category", "description"]
+          }
+        },
+        {
+          name: "log_contribution",
+          description: "Log a campaign donation. ALWAYS call when the candidate reports receiving money.",
+          input_schema: {
+            type: "object",
+            properties: {
+              donorName: { type: "string", description: "Donor name" },
+              amount: { type: "number", description: "Dollar amount" },
+              source: { type: "string", enum: ["individual","event","online","inkind"], description: "Source type" },
+              date: { type: "string", description: "Date in YYYY-MM-DD" },
+              employer: { type: "string", description: "Employer (required for >$200)" },
+              occupation: { type: "string" },
+              notes: { type: "string" }
+            },
+            required: ["donorName", "amount", "source"]
+          }
+        },
+        {
+          name: "set_budget",
+          description: "Set or update campaign budget settings. You MUST include at least one of: total, startingAmount, or fundraisingGoal. Can set multiple in one call. Example: to set a $25K budget use {total: 25000}. To set a fundraising goal use {fundraisingGoal: 50000}.",
+          input_schema: {
+            type: "object",
+            properties: {
+              total: { type: "number", description: "Total campaign budget in dollars" },
+              startingAmount: { type: "number", description: "Starting cash on hand in dollars" },
+              fundraisingGoal: { type: "number", description: "Fundraising goal in dollars" }
+            },
+            required: []
+          }
+        },
+        {
+          name: "set_category_allocation",
+          description: "Set budget allocation for a spending category.",
+          input_schema: {
+            type: "object",
+            properties: {
+              category: { type: "string", enum: ["digital","mail","broadcast","polling","fieldOps","fundraisingCompliance","consulting","reserveFund","signs","events","staffing","misc"], description: "Budget category key" },
+              amount: { type: "number", description: "Dollar amount to allocate" }
+            },
+            required: ["category", "amount"]
+          }
+        },
+        {
+          name: "save_note",
+          description: "Save any content to the notes system — speeches, talking points, emails, press releases, scripts, plans, research. Choose folder based on content type: 'Speeches', 'Talking Points', 'Email Drafts', 'Press Releases', 'Campaign Plan', 'Voter Outreach', 'Fundraising Scripts', or create a new folder name.",
+          input_schema: {
+            type: "object",
+            properties: {
+              title: { type: "string", description: "Document title" },
+              content: { type: "string", description: "Full content" },
+              folder: { type: "string", description: "Folder name (created if doesn't exist)" },
+              status: { type: "string", enum: ["Draft","Ready","In Progress"], description: "Document status (default: Ready)" },
+              doc_type: { type: "string", enum: ["Speech","Talking Points","Email Draft","Press Release","Campaign Plan","Voter Outreach","Fundraising Script","Other"], description: "Document type" }
+            },
+            required: ["title", "content", "folder"]
+          }
+        },
+        {
+          name: "add_endorsement",
+          description: "Add an endorsement to the endorsements panel.",
+          input_schema: {
+            type: "object",
+            properties: {
+              name: { type: "string", description: "Endorser name (person or organization)" },
+              title: { type: "string", description: "Title or organization" },
+              notes: { type: "string", description: "Notes about the endorsement" },
+              status: { type: "string", enum: ["Announced","Pending","Pursuing"], description: "Endorsement status" }
+            },
+            required: ["name", "status"]
+          }
+        },
+        {
+          name: "navigate_to",
+          description: "Switch the app to a specific view.",
+          input_schema: {
+            type: "object",
+            properties: {
+              view: { type: "string", enum: ["dashboard","calendar","budget","notes","toolbox","settings"], description: "View to navigate to" }
+            },
+            required: ["view"]
+          }
+        },
+        {
+          name: "save_win_number",
+          description: "Save the calculated win number to the dashboard. Only call after researching last election data, calculating the target, and the candidate confirms. Pass win_number as a plain integer with no commas or formatting (e.g., 176650 not 176,650).",
+          input_schema: {
+            type: "object",
+            properties: {
+              win_number: { type: "number", description: "Votes needed to win (after safety margin)" },
+              total_votes_last_election: { type: "number", description: "Total votes in last comparable election" },
+              num_candidates: { type: "number", description: "Number of candidates including this one" },
+              election_type: { type: "string", description: "'primary' or 'general'" }
+            },
+            required: ["win_number", "total_votes_last_election", "num_candidates", "election_type"]
+          }
+        },
+        {
+          name: "save_candidate_profile",
+          description: "Update candidate profile data. Use during onboarding or when the candidate corrects their info.",
+          input_schema: {
+            type: "object",
+            properties: {
+              office: { type: "string" }, office_level: { type: "string", enum: ["local","state","federal"] },
+              city: { type: "string" }, state: { type: "string" },
+              election_date: { type: "string" }, has_filed: { type: "boolean" }
+            },
+            required: ["office", "office_level", "city", "state", "has_filed"]
+          }
+        }
+      ];
+
+      // ========================================
+      // SERVER-SIDE TOOL LOOP — Sam 2.0
+      // ========================================
+      function acknowledgeToolCall(name, input) {
+        const inp = input || {};
+        switch (name) {
+          case 'add_calendar_event':
+            return { success: true, message: `${inp.type === 'task' ? 'Task' : 'Event'} "${inp.name}" added for ${inp.date}${inp.time ? ' at ' + inp.time : ''}` };
+          case 'update_task': return { success: true, message: `Task "${inp.task_name}" updated` };
+          case 'delete_task': return { success: true, message: `Task "${inp.task_name}" removed` };
+          case 'complete_task': return { success: true, message: `Task "${inp.task_name}" completed` };
+          case 'update_event': return { success: true, message: `Event "${inp.event_name}" updated` };
+          case 'delete_event': return { success: true, message: `Event "${inp.event_name}" removed` };
+          case 'add_expense': return { success: true, message: `$${inp.amount} expense logged for ${inp.description} in ${inp.category}` };
+          case 'log_contribution': return { success: true, message: `$${inp.amount} contribution from ${inp.donorName} logged` };
+          case 'set_budget': {
+            const parts = [];
+            if (inp.total) parts.push(`Budget: $${inp.total}`);
+            if (inp.startingAmount) parts.push(`Starting cash: $${inp.startingAmount}`);
+            if (inp.fundraisingGoal) parts.push(`Goal: $${inp.fundraisingGoal}`);
+            return parts.length > 0
+              ? { success: true, message: parts.join(', ') + ' set' }
+              : { success: false, message: 'No budget fields provided — include total, startingAmount, or fundraisingGoal' };
+          }
+          case 'set_category_allocation': return { success: true, message: `${inp.category} allocation set to $${inp.amount}` };
+          case 'save_note': return { success: true, message: `"${inp.title}" saved to ${inp.folder}` };
+          case 'add_endorsement': return { success: true, message: `${inp.name} added as ${inp.status} endorsement` };
+          case 'navigate_to': return { success: true, message: `Navigated to ${inp.view}` };
+          case 'save_win_number': return { success: true, message: `Win number set to ${inp.win_number} votes` };
+          case 'save_candidate_profile': return { success: true, message: `Profile saved` };
+          default: return { success: true, message: `${name} executed` };
+        }
+      }
+
+      async function callClaude(msgs) {
+        const resp = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": env.ANTHROPIC_API_KEY,
+            "anthropic-version": "2023-06-01",
+          },
+          body: JSON.stringify({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 10000,
+            temperature: 0.4,
+            system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
+            tools: tools,
+            messages: msgs,
+          }),
+        });
+        return resp.json();
+      }
+
+      // Simple pass-through: one API call, return raw response
+      // Client handles tool execution and follow-up calls
+      const messages = (history && history.length > 0) ? [...history] : [{ role: "user", content: message }];
+      const data = await callClaude(messages);
+
+      return new Response(JSON.stringify(data), {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+
+    } catch (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+  },
+};
