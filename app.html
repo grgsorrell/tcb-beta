@@ -890,7 +890,19 @@ select{-webkit-appearance:none;appearance:none;}
 // VERSION CHECK — force cache clear for stale clients
 // ============================================
 (function() {
-  var CURRENT_VERSION = 'sam-2.0-20260415';
+  // Unregister any stale service workers
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(regs) {
+      regs.forEach(function(r) { r.unregister(); });
+    });
+  }
+  // Clear all caches
+  if ('caches' in window) {
+    caches.keys().then(function(names) {
+      names.forEach(function(name) { caches.delete(name); });
+    });
+  }
+  var CURRENT_VERSION = 'sam-2.0-20260415b';
   var storedVersion = localStorage.getItem('tcb_app_version');
   if (storedVersion !== CURRENT_VERSION) {
     // Preserve campaign data keys
