@@ -902,7 +902,7 @@ select{-webkit-appearance:none;appearance:none;}
       names.forEach(function(name) { caches.delete(name); });
     });
   }
-  var CURRENT_VERSION = 'sam-2.0-v3';
+  var CURRENT_VERSION = 'sam-2.0-v4';
   var storedVersion = localStorage.getItem('tcb_app_version');
   if (storedVersion !== CURRENT_VERSION) {
     // Preserve campaign data — but CLEAR chat history (may be corrupted from server-side loop era)
@@ -948,7 +948,7 @@ function storageKey(key) {
 // STATE
 // ============================================
 var WORKER_URL = 'https://candidate-toolbox-secretary2.grgsorrell.workers.dev';
-var APP_VERSION = 'sam-2.0-v3';
+var APP_VERSION = 'sam-2.0-v4';
 console.log('[TCB] App version:', APP_VERSION);
 // Show version badge briefly so user can confirm they have latest code
 setTimeout(function() {
@@ -974,6 +974,13 @@ var pendingService = '';
 
 // Load persisted state (namespaced per user)
 try { campaignData = JSON.parse(localStorage.getItem(storageKey('ctb_campaignData'))) || {}; } catch(e) { campaignData = {}; }
+// Migrate: clear truncated win numbers (parseInt bug: 176,650 → 176)
+if (campaignData.winNumber && campaignData.winNumber > 0 && campaignData.winNumber < 500) {
+  console.log('[TCB] Clearing truncated win number:', campaignData.winNumber);
+  campaignData.winNumber = null;
+  campaignData.winNumberData = null;
+  localStorage.setItem(storageKey('ctb_campaignData'), JSON.stringify(campaignData));
+}
 try { tasks = JSON.parse(localStorage.getItem(storageKey('ctb_tasks'))) || []; } catch(e) { tasks = []; }
 try { events = JSON.parse(localStorage.getItem(storageKey('ctb_events'))) || []; } catch(e) { events = []; }
 try { campaignBudget = JSON.parse(localStorage.getItem(storageKey('ctb_budget'))) || { total: 0, expenses: [], categories: {} }; } catch(e) {}
