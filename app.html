@@ -626,10 +626,6 @@ select{-webkit-appearance:none;appearance:none;}
         <div id="morning-brief-container"></div>
         <div style="display:flex;align-items:center;justify-content:flex-end;margin-top:12px"><button class="ask-sam-btn" onclick="askSamAbout('Give me a strategic overview of where my campaign stands today and what I should be focusing on.')">&#128161; Ask Sam</button></div>
         <div class="stat-grid" id="stat-grid" style="margin-top:8px"></div>
-        <div id="dash-tasks-section" style="margin-top:20px">
-          <div class="section-ttl" style="font-size:15px">Upcoming Tasks</div>
-          <div id="dash-task-list"></div>
-        </div>
       </div>
     </div>
 
@@ -1224,10 +1220,106 @@ function refreshDashboard() {
     '<div class="sc sc-red"><div class="sl">Countdown</div><div class="sn" style="color:var(--red)">' + (days > 0 ? days : 0) + '</div><div class="ss">DAYS \u00B7 ' + phaseName + '</div></div>' +
     '<div class="sc sc-gold"><div class="sl">War Chest</div><div class="sn" style="color:var(--gold)">' + budgetDisplay + '</div><div class="ss">' + budgetSub + '</div></div>' +
     '<div class="sc sc-blue"><div class="sl">Win Target</div><div class="sn" style="color:var(--blue)">' + (typeof winNum === 'number' ? winNum.toLocaleString() : winNum) + '</div><div class="ss">VOTES</div></div>' +
-    '<div class="sc sc-green"><div class="sl">Operational Flow</div><div class="sn" style="color:var(--green)">' + (tasksTotal > 0 ? tasksDone + '/' + tasksTotal : '0') + '</div><div class="pbar"><div class="pfill" style="width:' + taskPct + '%;background:var(--green)"></div></div><div class="ss">' + (tasksTotal > 0 ? taskPct + '% complete' : 'PENDING') + '</div></div>';
+    '<div class="sc sc-green" style="padding:0;overflow:hidden" id="dash-tasks-card">' + renderDashTasksCard() + '</div>';
 
   // Tasks
   renderDashTasks();
+}
+
+function renderDashTasksCard() {
+  var today = getTodayStr();
+  var overdue = tasks.filter(function(t){ return !t.completed && t.date && t.date < today; });
+  var todayTasks = tasks.filter(function(t){ return !t.completed && t.date === today; });
+  var completedToday = tasks.filter(function(t){ return t.completed && t.date === today; });
+  var allToday = overdue.concat(todayTasks).concat(completedToday);
+  var shown = allToday.slice(0, 3);
+  var remaining = allToday.length - shown.length;
+
+  var html = '<div style="padding:12px 14px 8px">';
+  // Header
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+  html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase">Today\'s Tasks</div>';
+  html += '<button onclick="toggleDashTaskInput()" style="font-size:9px;font-weight:700;color:var(--gold);background:transparent;border:1px solid rgba(212,165,116,.3);padding:3px 8px;border-radius:3px;cursor:pointer">+ Add Task</button>';
+  html += '</div>';
+
+  // Inline add input (hidden by default)
+  html += '<div id="dash-task-input-row" style="display:none;margin-bottom:8px"><input id="dash-task-input" type="text" placeholder="What needs to get done today?" style="width:100%;font-size:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:6px 10px;color:var(--t1);outline:none;font-family:var(--font-b)" onkeydown="if(event.key===\'Enter\')addDashTask()"></div>';
+
+  // Tasks
+  if (shown.length === 0) {
+    html += '<div style="text-align:center;padding:12px 0;font-size:11px;color:rgba(255,255,255,.25);font-style:italic">No tasks yet \u2014 ask Sam to plan your day</div>';
+  } else {
+    shown.forEach(function(t) {
+      var isOverdue = !t.completed && t.date && t.date < today;
+      var isComplete = !!t.completed;
+      var checkStyle = isComplete
+        ? 'width:16px;height:16px;border-radius:3px;background:var(--green);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:10px;color:#fff'
+        : 'width:16px;height:16px;border-radius:3px;background:transparent;border:1.5px solid rgba(255,255,255,.2);cursor:pointer;flex-shrink:0';
+      var nameStyle = isComplete
+        ? 'font-size:12px;color:var(--t3);text-decoration:line-through'
+        : isOverdue
+          ? 'font-size:12px;color:var(--red)'
+          : 'font-size:12px;color:var(--t1)';
+      var prefix = isOverdue ? '\u26a0\ufe0f ' : '';
+      var dateLabel = isOverdue ? '<span style="font-size:9px;color:var(--t3);margin-left:auto;flex-shrink:0">' + formatDate(t.date) + '</span>' : '';
+      html += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)">';
+      html += '<div style="' + checkStyle + '" onclick="toggleDashTaskComplete(\'' + t.id + '\')">' + (isComplete ? '\u2713' : '') + '</div>';
+      html += '<span style="' + nameStyle + ';flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + prefix + escapeHtml(t.name || t.text || '') + '</span>';
+      html += dateLabel;
+      html += '<span onclick="deleteDashTask(\'' + t.id + '\')" style="font-size:10px;color:rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;padding:0 2px">\u00d7</span>';
+      html += '</div>';
+    });
+  }
+
+  // Overflow link
+  if (remaining > 0) {
+    html += '<div style="padding:6px 0;text-align:center"><button onclick="showView(\'calendar\')" style="font-size:10px;color:var(--blue);background:none;border:none;cursor:pointer;font-weight:600">+ ' + remaining + ' more \u2192 View all tasks</button></div>';
+  }
+
+  // Progress bar
+  var total = todayTasks.length + overdue.length + completedToday.length;
+  var done = completedToday.length;
+  var pct = total > 0 ? Math.round(done / total * 100) : 0;
+  if (total > 0) {
+    html += '<div style="margin-top:6px">';
+    html += '<div style="height:3px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden"><div style="height:100%;width:' + pct + '%;background:var(--green);border-radius:2px;transition:width .3s"></div></div>';
+    html += '<div style="font-size:9px;color:' + (done === total ? 'var(--green)' : 'var(--t3)') + ';margin-top:3px;text-align:center">' + (done === total && total > 0 ? 'All tasks complete \ud83c\udf89' : done + ' of ' + total + ' tasks complete') + '</div>';
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+function toggleDashTaskInput() {
+  var row = document.getElementById('dash-task-input-row');
+  if (!row) return;
+  row.style.display = row.style.display === 'none' ? '' : 'none';
+  if (row.style.display !== 'none') document.getElementById('dash-task-input').focus();
+}
+
+function addDashTask() {
+  var inp = document.getElementById('dash-task-input');
+  if (!inp || !inp.value.trim()) return;
+  tasks.push({ id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false });
+  saveTasks();
+  inp.value = '';
+  document.getElementById('dash-task-input-row').style.display = 'none';
+  refreshDashboard();
+}
+
+function toggleDashTaskComplete(id) {
+  var t = tasks.find(function(x){ return String(x.id) === String(id); });
+  if (t) { t.completed = !t.completed; t.completedAt = t.completed ? new Date().toISOString() : null; saveTasks(); }
+  var card = document.getElementById('dash-tasks-card');
+  if (card) card.innerHTML = renderDashTasksCard();
+}
+
+function deleteDashTask(id) {
+  var idx = tasks.findIndex(function(x){ return String(x.id) === String(id); });
+  if (idx >= 0) { tasks.splice(idx, 1); saveTasks(); }
+  var card = document.getElementById('dash-tasks-card');
+  if (card) card.innerHTML = renderDashTasksCard();
 }
 
 function renderDashTasks() {
@@ -3968,6 +4060,13 @@ function generateMorningBrief(backgroundOnly) {
     '2. Lists what they have scheduled today. Today\'s events: ' + evtList + '. If nothing is scheduled, say so briefly and suggest they ask Sam to plan their day.\n' +
     '3. Includes a brief news summary \u2014 search for 2-3 relevant news items from the past 48 hours related to ' + mbScope.descriptor + ', ' + (campaignData.specificOffice||'') + ' level politics, or issues relevant to a ' + (campaignData.party||'') + ' candidate in this race. Mention them naturally in one or two sentences.' + (mbScope.isStatewide ? ' This is a statewide race \u2014 focus on statewide news and issues, NOT just ' + loc + '.' : ' Keep it hyper-local and relevant.') + '\n\n' +
     'Write in a warm, direct, professional tone. Like a trusted chief of staff texting the candidate before they start their day. No bullet points, no headers, no markdown, no JSON. Just a clean paragraph. Return plain text only.\n\n' +
+    'After the brief paragraph, add exactly this section:\n\n' +
+    'SUGGESTED_TASKS:\n' +
+    '- [specific actionable task based on brief content]\n' +
+    '- [specific actionable task based on brief content]\n' +
+    '- [specific actionable task based on brief content]\n' +
+    'END_SUGGESTED_TASKS\n\n' +
+    'Tasks must be specific, actionable, completable in one day, and maximum 8 words each. Base them on actual news or data from the brief. Good: "Develop messaging on Swalwell exit". Bad: "Work on campaign".\n\n' +
     'CRITICAL: Never narrate your search process. Do not write "I\'ll search for...", "Let me search...", "Searching for...", "To include in your briefing...", or any sentence describing what you are about to do. Start your response DIRECTLY with "Good morning, ' + firstName + '." — the very first word must be "Good". Nothing before it.\n\n' +
     'Return plain text only. No HTML tags, no citation markup, no <cite> or <ancite> tags, no source references, no markdown. Plain conversational text that reads naturally when displayed as a paragraph.';
 
@@ -4087,16 +4186,69 @@ function renderMorningBrief() {
     }
   });
 
+  // Extract suggested tasks from brief
+  var suggestedTasks = [];
+  var taskMatch = paragraph.match(/SUGGESTED_TASKS:([\s\S]*?)END_SUGGESTED_TASKS/);
+  if (taskMatch) {
+    suggestedTasks = taskMatch[1].split('\n').filter(function(l){ return l.trim().indexOf('-') === 0; }).map(function(l){ return l.replace(/^[\s-]+/, '').trim(); }).filter(function(t){ return t.length > 0; }).slice(0, 5);
+    // Remove the block from display text
+    paragraph = paragraph.replace(/SUGGESTED_TASKS:[\s\S]*?END_SUGGESTED_TASKS/, '').trim();
+    displayText = escapeHtml(paragraph);
+    // Re-apply highlights
+    if (firstName) displayText = displayText.replace(new RegExp(escapeHtml(firstName), 'g'), '<span style="color:var(--gold)">' + escapeHtml(firstName) + '</span>');
+    if (days !== null) displayText = displayText.replace(new RegExp('\\b' + days + ' days\\b'), '<span style="color:var(--red);font-weight:700">' + days + ' days</span>');
+    todayEvents.forEach(function(evt) { if (evt.name) { var escaped = escapeHtml(evt.name); displayText = displayText.replace(escaped, '<span style="color:var(--blue)">' + escaped + '</span>'); } });
+  }
+
+  // Build suggested tasks HTML
+  var suggestedHtml = '';
+  if (suggestedTasks.length > 0) {
+    // Check which are already added
+    var todayStr2 = getTodayStr();
+    var existingNames = tasks.map(function(t){ return (t.name || '').toLowerCase(); });
+    suggestedHtml = '<div style="margin-top:16px;margin-bottom:8px"><div style="font-size:9px;font-weight:700;letter-spacing:.12em;color:rgba(212,165,116,.7);text-transform:uppercase;margin-bottom:8px">\ud83d\udca1 SUGGESTED TASKS FOR TODAY</div><div style="display:flex;flex-wrap:wrap;gap:4px">';
+    suggestedTasks.forEach(function(st, idx) {
+      var alreadyAdded = existingNames.indexOf(st.toLowerCase()) >= 0;
+      if (alreadyAdded) {
+        suggestedHtml += '<span style="display:inline-flex;align-items:center;gap:6px;background:rgba(130,179,134,.15);border:1px solid rgba(130,179,134,.3);color:var(--green);font-size:11px;padding:6px 12px;border-radius:20px">\u2713 ' + escapeHtml(st) + '</span>';
+      } else {
+        suggestedHtml += '<span onclick="addSuggestedTask(this,' + idx + ')" style="display:inline-flex;align-items:center;gap:6px;background:rgba(212,165,116,.08);border:1px solid rgba(212,165,116,.2);color:var(--gold);font-size:11px;padding:6px 12px;border-radius:20px;cursor:pointer">+ ' + escapeHtml(st) + '</span>';
+      }
+    });
+    suggestedHtml += '</div></div>';
+  }
+
   el.innerHTML = '<div class="mb-card">' +
     '<div class="mb-hdr"><div class="mb-hdr-left"><span class="mb-classified">CLASSIFIED // EYES ONLY</span><span class="mb-hdr-tag">\u2600\uFE0F MORNING BRIEF</span></div><div style="display:flex;align-items:center;gap:8px"><div class="mb-hdr-date">' + dateStr + '</div><button class="mb-refresh" onclick="generateMorningBrief()">\uD83D\uDD04</button></div></div>' +
     '<div class="mb-greeting">Good Morning, ' + escapeHtml(firstName) + '.</div>' +
     '<div class="mb-text">' + displayText + '</div>' +
+    suggestedHtml +
     '<div class="mb-chips">' +
       '<div class="mb-chip" onclick="sendSamChip(\'What should I focus on today?\')">What should I focus on?</div>' +
       '<div class="mb-chip" onclick="showView(\'calendar\')">Set up my calendar \u2192</div>' +
       '<div class="mb-chip" onclick="showView(\'toolbox\')">Visit the Toolbox \u2192</div>' +
       '<div class="mb-chip" onclick="sendSamChip(\'Help me plan today\')">Plan my day \u2192</div>' +
     '</div></div>';
+}
+
+// Store suggested tasks for click handler
+var _suggestedTaskCache = [];
+function addSuggestedTask(el, idx) {
+  // Get task text from the element
+  var text = el.textContent.replace(/^\+\s*/, '').trim();
+  if (!text) return;
+  tasks.push({ id: Date.now() + Math.random(), name: text, date: getTodayStr(), category: 'other', completed: false, source: 'sam_suggested', fromBrief: true });
+  saveTasks();
+  // Update pill appearance
+  el.style.background = 'rgba(130,179,134,.15)';
+  el.style.borderColor = 'rgba(130,179,134,.3)';
+  el.style.color = 'var(--green)';
+  el.style.cursor = 'default';
+  el.textContent = '\u2713 ' + text;
+  el.onclick = null;
+  // Refresh dashboard tasks card
+  var card = document.getElementById('dash-tasks-card');
+  if (card) card.innerHTML = renderDashTasksCard();
 }
 
 // ============================================
