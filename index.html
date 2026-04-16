@@ -1151,6 +1151,13 @@ function attemptLogin() {
     var session = { userId: username, loginTime: Date.now(), expires: remember ? Date.now() + 2592000000 : Date.now() + 28800000 };
     localStorage.setItem('tcb_session', JSON.stringify(session));
     localStorage.setItem('tcb_current_user', username);
+    // Create D1 session in background — don't block login
+    fetch('https://candidate-toolbox-secretary2.grgsorrell.workers.dev/auth/beta-login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: username, password: password })
+    }).then(function(r){ return r.json(); }).then(function(data) {
+      if (data.sessionId) localStorage.setItem('tcb_d1_session', data.sessionId);
+    }).catch(function(){});
     window.location.href = 'app.html';
   } else {
     errorEl.textContent = 'Invalid username or password. Please try again.';

@@ -1,0 +1,8 @@
+name = "candidate-toolbox-secretary2"
+main = "worker.js"
+compatibility_date = "2026-04-07"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "candidates-toolbox-db"
+database_id = "c0c58f4f-309e-487d-bbbc-f80b0714c137"

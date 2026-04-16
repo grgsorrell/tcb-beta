@@ -991,12 +991,60 @@ try { folders = JSON.parse(localStorage.getItem(storageKey('ctb_folders'))) || [
 try { chatHistory = JSON.parse(localStorage.getItem(storageKey('ctb_chatHistory'))) || []; } catch(e) { chatHistory = []; }
 
 function saveState(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
-function saveCampaign() { saveState(storageKey('ctb_campaignData'), campaignData); }
-function saveTasks() { saveState(storageKey('ctb_tasks'), tasks); }
-function saveEvents() { saveState(storageKey('ctb_events'), events); }
-function saveBudget() { saveState(storageKey('ctb_budget'), campaignBudget); }
-function saveFolders() { saveState(storageKey('ctb_folders'), folders); }
-function saveChatHistory() { if (chatHistory.length > 100) chatHistory = chatHistory.slice(-100); saveState(storageKey('ctb_chatHistory'), chatHistory); }
+
+// D1 sync layer — background sync to Cloudflare D1 database
+var d1Session = localStorage.getItem('tcb_d1_session') || null;
+var D1_API = WORKER_URL;
+function d1Sync(endpoint, body) {
+  if (!d1Session) return;
+  fetch(D1_API + endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    body: JSON.stringify(body)
+  }).catch(function(e) { console.log('[D1] Sync error:', e.message); });
+}
+
+function saveCampaign() {
+  saveState(storageKey('ctb_campaignData'), campaignData);
+  d1Sync('/api/profile/save', {
+    candidate_name: campaignData.candidateName, specific_office: campaignData.specificOffice,
+    office_level: campaignData.officeType, party: campaignData.party, location: campaignData.location,
+    state: campaignData.state, election_date: campaignData.electionDate,
+    filing_status: campaignData.filingStatus, win_number: campaignData.winNumber,
+    win_number_data: campaignData.winNumberData ? JSON.stringify(campaignData.winNumberData) : null,
+    onboarding_complete: campaignData.onboardingComplete ? 1 : 0
+  });
+}
+function saveTasks() {
+  saveState(storageKey('ctb_tasks'), tasks);
+  d1Sync('/api/tasks/sync', { tasks: tasks });
+}
+function saveEvents() {
+  saveState(storageKey('ctb_events'), events);
+  d1Sync('/api/events/sync', { events: events });
+}
+function saveBudget() {
+  saveState(storageKey('ctb_budget'), campaignBudget);
+  d1Sync('/api/budget/save', { budget: { total: campaignBudget.total, categories: JSON.stringify(campaignBudget.categories || {}) } });
+}
+function saveFolders() {
+  saveState(storageKey('ctb_folders'), folders);
+  d1Sync('/api/notes/sync', { folders: folders });
+}
+function saveChatHistory() {
+  if (chatHistory.length > 100) chatHistory = chatHistory.slice(-100);
+  saveState(storageKey('ctb_chatHistory'), chatHistory);
+  d1Sync('/api/chat-history/save', { messages: chatHistory });
+}
+function saveContributions() {
+  saveState(storageKey('ctb_contributions'), contributions);
+  d1Sync('/api/contributions/sync', { contributions: contributions });
+}
+function saveEndorsements() {
+  var endorsements = [];
+  try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
+  d1Sync('/api/endorsements/sync', { endorsements: endorsements });
+}
 
 function escapeHtml(t) {
   var d = document.createElement('div'); d.textContent = t; return d.innerHTML.replace(/'/g,'&#39;');
@@ -1043,6 +1091,53 @@ function initApp() {
     showNewUserUI();
   }
   renderSamMessages();
+  // D1 sync: load from cloud on startup (background, doesn't block UI)
+  loadFromD1();
+}
+
+function loadFromD1() {
+  if (!d1Session) return;
+  fetch(D1_API + '/api/data/load-all', {
+    headers: { 'Authorization': 'Bearer ' + d1Session }
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    if (!data.success) return;
+    console.log('[D1] Cloud data loaded');
+    // Merge profile if D1 has data and localStorage doesn't
+    if (data.profile && data.profile.candidate_name && !campaignData.candidateName) {
+      campaignData.candidateName = data.profile.candidate_name;
+      campaignData.specificOffice = data.profile.specific_office;
+      campaignData.officeType = data.profile.office_level;
+      campaignData.party = data.profile.party;
+      campaignData.location = data.profile.location;
+      campaignData.state = data.profile.state;
+      campaignData.electionDate = data.profile.election_date;
+      campaignData.winNumber = data.profile.win_number;
+      campaignData.onboardingComplete = !!data.profile.onboarding_complete;
+      saveState(storageKey('ctb_campaignData'), campaignData);
+      if (campaignData.onboardingComplete && !isOnboarded()) { showOnboardedUI(); checkAndGenerateMorningBrief(); }
+    }
+    // Merge events if D1 has more than localStorage
+    if (data.events && data.events.length > events.length) {
+      events = data.events; saveState(storageKey('ctb_events'), events);
+    }
+    // Merge tasks
+    if (data.tasks && data.tasks.length > tasks.length) {
+      tasks = data.tasks; saveState(storageKey('ctb_tasks'), tasks);
+    }
+    // Merge endorsements
+    if (data.endorsements && data.endorsements.length > 0) {
+      var existing = []; try { existing = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements')) || '[]'); } catch(e) {}
+      if (data.endorsements.length > existing.length) {
+        localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(data.endorsements));
+      }
+    }
+    // Merge contributions
+    if (data.contributions && data.contributions.length > 0) {
+      if (data.contributions.length > contributions.length) {
+        contributions = data.contributions; saveState(storageKey('ctb_contributions'), contributions);
+      }
+    }
+  }).catch(function(e) { console.log('[D1] Cloud load skipped:', e.message); });
 }
 
 function showNewUserUI() {
@@ -3704,6 +3799,7 @@ function addEndorsement() {
   try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
   endorsements.push({ id: Date.now(), name: name, title: title||'', status: status||'Pursuing', notes: '' });
   localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
+  saveEndorsements();
   renderEndorsementsOverlay();
 }
 
@@ -3713,6 +3809,7 @@ function deleteEndorsement(id) {
   try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
   endorsements = endorsements.filter(function(e){ return e.id !== id; });
   localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
+  saveEndorsements();
   renderEndorsementsOverlay();
 }
 
@@ -4946,8 +5043,8 @@ function executeToolCall(block) {
     };
     endorsements.push(newEndorsement);
     localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
+    saveEndorsements();
     console.log('add_endorsement handler fired', newEndorsement);
-    console.log('Endorsements after save:', endorsements);
     // Re-render endorsements panel if open
     if (currentOverlay === 'endorsements') renderEndorsementsOverlay();
     // Show success toast

@@ -52,6 +52,36 @@ export default {
     }
 
     // ========================================
+    // AUTH: Beta login (username/password)
+    // ========================================
+    if (url.pathname === '/auth/beta-login' && request.method === 'POST') {
+      try {
+        const { username, password } = await request.json();
+        const BETA_USERS = { greg: 'Beta#01', shannan: 'Beta#01', cjc: 'Beta#01', jerry: 'Beta#01' };
+        const cleanUser = (username || '').toLowerCase().trim();
+        if (!BETA_USERS[cleanUser] || BETA_USERS[cleanUser] !== password) {
+          return jsonResponse({ error: 'Invalid credentials' }, 401);
+        }
+        // Find or create D1 user
+        let user = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(cleanUser + '@beta.tcb').first();
+        if (!user) {
+          const userId = generateId();
+          await env.DB.prepare('INSERT INTO users (id, email) VALUES (?, ?)').bind(userId, cleanUser + '@beta.tcb').run();
+          user = { id: userId };
+        }
+        // Create session (30 days)
+        const sessionId = generateId(48);
+        const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        await env.DB.prepare(
+          'INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)'
+        ).bind(sessionId, user.id, expiresAt).run();
+        return jsonResponse({ success: true, sessionId, userId: user.id, username: cleanUser });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
     // AUTH: Send magic link
     // ========================================
     if (url.pathname === '/auth/login' && request.method === 'POST') {
@@ -603,6 +633,99 @@ export default {
     }
 
     // ========================================
+    // DATA API: Sync Endorsements (full replace)
+    // ========================================
+    if (url.pathname === '/api/endorsements/sync' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const { endorsements } = await request.json();
+        await env.DB.prepare('DELETE FROM endorsements WHERE user_id = ?').bind(userId).run();
+        if (endorsements && endorsements.length > 0) {
+          const stmt = env.DB.prepare(
+            'INSERT INTO endorsements (id, user_id, name, title, status, notes, date, added_by_sam, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+          );
+          const batch = endorsements.map(e => stmt.bind(
+            String(e.id), userId, e.name || '', e.title || '', e.status || 'Pursuing',
+            e.notes || '', e.date || null, e.addedBySam ? 1 : 0, e.created_at || new Date().toISOString()
+          ));
+          await env.DB.batch(batch);
+        }
+        return jsonResponse({ success: true, count: endorsements ? endorsements.length : 0 });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load Endorsements
+    // ========================================
+    if (url.pathname === '/api/endorsements/load' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const result = await env.DB.prepare(
+          'SELECT * FROM endorsements WHERE user_id = ? ORDER BY created_at DESC'
+        ).bind(userId).all();
+        const endorsements = (result.results || []).map(row => ({
+          id: parseFloat(row.id) || row.id, name: row.name, title: row.title,
+          status: row.status, notes: row.notes, date: row.date,
+          addedBySam: row.added_by_sam === 1, created_at: row.created_at
+        }));
+        return jsonResponse({ success: true, endorsements });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Sync Contributions (full replace)
+    // ========================================
+    if (url.pathname === '/api/contributions/sync' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const { contributions } = await request.json();
+        await env.DB.prepare('DELETE FROM contributions WHERE user_id = ?').bind(userId).run();
+        if (contributions && contributions.length > 0) {
+          const stmt = env.DB.prepare(
+            'INSERT INTO contributions (id, user_id, donor_name, amount, source, date, employer, occupation, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+          );
+          const batch = contributions.map(c => stmt.bind(
+            String(c.id), userId, c.donorName || '', c.amount || 0, c.source || 'individual',
+            c.date || null, c.employer || '', c.occupation || '', c.notes || '',
+            c.created_at || new Date().toISOString()
+          ));
+          await env.DB.batch(batch);
+        }
+        return jsonResponse({ success: true, count: contributions ? contributions.length : 0 });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: Load Contributions
+    // ========================================
+    if (url.pathname === '/api/contributions/load' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const result = await env.DB.prepare(
+          'SELECT * FROM contributions WHERE user_id = ? ORDER BY date DESC'
+        ).bind(userId).all();
+        const contributions = (result.results || []).map(row => ({
+          id: parseFloat(row.id) || row.id, donorName: row.donor_name, amount: row.amount,
+          source: row.source, date: row.date, employer: row.employer,
+          occupation: row.occupation, notes: row.notes, created_at: row.created_at
+        }));
+        return jsonResponse({ success: true, contributions });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
     // DATA API: Load All (bulk load on login)
     // ========================================
     if (url.pathname === '/api/data/load-all' && request.method === 'GET') {
@@ -611,7 +734,7 @@ export default {
         if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
 
         // Run all queries in parallel
-        const [profileRow, tasksResult, eventsResult, budgetRow, foldersResult, notesResult, briefingRow, chatRow] = await Promise.all([
+        const [profileRow, tasksResult, eventsResult, budgetRow, foldersResult, notesResult, briefingRow, chatRow, endorseResult, contribResult] = await Promise.all([
           env.DB.prepare('SELECT * FROM profiles WHERE user_id = ?').bind(userId).first(),
           env.DB.prepare('SELECT * FROM tasks WHERE user_id = ? ORDER BY date ASC').bind(userId).all(),
           env.DB.prepare('SELECT * FROM events WHERE user_id = ? ORDER BY date ASC').bind(userId).all(),
@@ -619,7 +742,9 @@ export default {
           env.DB.prepare('SELECT * FROM folders WHERE user_id = ? ORDER BY created_at ASC').bind(userId).all(),
           env.DB.prepare('SELECT * FROM notes WHERE user_id = ? ORDER BY created_at ASC').bind(userId).all(),
           env.DB.prepare('SELECT * FROM briefings WHERE user_id = ? ORDER BY date DESC LIMIT 1').bind(userId).first(),
-          env.DB.prepare('SELECT messages FROM chat_history WHERE user_id = ?').bind(userId).first()
+          env.DB.prepare('SELECT messages FROM chat_history WHERE user_id = ?').bind(userId).first(),
+          env.DB.prepare('SELECT * FROM endorsements WHERE user_id = ? ORDER BY created_at DESC').bind(userId).all().catch(() => ({ results: [] })),
+          env.DB.prepare('SELECT * FROM contributions WHERE user_id = ? ORDER BY date DESC').bind(userId).all().catch(() => ({ results: [] }))
         ]);
 
         // Format profile
@@ -687,7 +812,21 @@ export default {
           try { chatHistory = JSON.parse(chatRow.messages); } catch (e) { /* empty */ }
         }
 
-        return jsonResponse({ success: true, profile, tasks, events, budget, folders, briefing, chatHistory });
+        // Format endorsements
+        const endorsements = (endorseResult.results || []).map(row => ({
+          id: parseFloat(row.id) || row.id, name: row.name, title: row.title,
+          status: row.status, notes: row.notes, date: row.date,
+          addedBySam: row.added_by_sam === 1, created_at: row.created_at
+        }));
+
+        // Format contributions
+        const contributions = (contribResult.results || []).map(row => ({
+          id: parseFloat(row.id) || row.id, donorName: row.donor_name, amount: row.amount,
+          source: row.source, date: row.date, employer: row.employer,
+          occupation: row.occupation, notes: row.notes, created_at: row.created_at
+        }));
+
+        return jsonResponse({ success: true, profile, tasks, events, budget, folders, briefing, chatHistory, endorsements, contributions });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
