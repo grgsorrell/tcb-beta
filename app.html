@@ -4015,6 +4015,48 @@ function obNext() {
 
 function obBack() { if (onboardingStep > 1) { onboardingStep--; renderOnboarding(); } }
 
+function getRaceTypeProfile(specificOffice) {
+  var office = (specificOffice || '').toLowerCase();
+  // Law enforcement
+  if (office.indexOf('sheriff') >= 0 || office.indexOf('marshal') >= 0 || office.indexOf('constable') >= 0) {
+    return { raceType: 'law_enforcement', raceCategory: 'law_enforcement', source: 'hardcoded', keyEndorsements: ['Police unions and associations','Sheriff associations','Law enforcement fraternal organizations','Veterans groups','Victims advocacy organizations'], messagingPriorities: ['Public safety record and experience','Crime statistics and reduction','Department management and leadership','Community policing philosophy','Support for law enforcement officers'], budgetPriorities: ['Direct mail to law enforcement community','Community events and appearances','Yard signs in high-visibility areas','Law enforcement association outreach'], avoidTactics: ['Generic political attack ads','Heavy digital social media spend','Promises that undermine law enforcement'], voterPriorities: ['Law enforcement community','Veterans and military families','Public safety voters','Rural and suburban homeowners'], specialRules: ['Sheriff is nonpartisan in some states','May not use department resources for campaign','Careful with use of badge/uniform in materials'], raceNotes: 'Law enforcement races reward experience and community trust over political skills.' };
+  }
+  // Judicial
+  if (office.indexOf('judge') >= 0 || office.indexOf('justice') >= 0 || office.indexOf('magistrate') >= 0 || office.indexOf('court') >= 0) {
+    return { raceType: 'judicial', raceCategory: 'judicial', source: 'hardcoded', keyEndorsements: ['State and local bar association','Fellow attorneys','Former judges and justices','Law enforcement organizations','Newspaper editorial boards'], messagingPriorities: ['Judicial temperament and fairness','Legal experience and qualifications','Rule of law and integrity','Community service record'], budgetPriorities: ['Direct mail to legal community','Community visibility events','Bar association outreach','Voter guide advertising','Yard signs'], avoidTactics: ['Attack advertising','Promises about how you will rule','Partisan political messaging','Anything violating judicial conduct codes'], voterPriorities: ['Legal community voters','Civic leaders','High-information voters','Business community'], specialRules: ['Cannot promise rulings on specific issues','Cannot personally solicit funds in many states','Must follow judicial conduct codes','May be nonpartisan depending on state'], raceNotes: 'Judicial races are governed by strict ethics rules that vary by state.' };
+  }
+  // School board
+  if (office.indexOf('school board') >= 0 || office.indexOf('board of education') >= 0) {
+    return { raceType: 'school_board', raceCategory: 'educational', source: 'hardcoded', keyEndorsements: ['Parent organizations and PTAs','Local civic organizations','Business community','Faith community leaders','Teacher groups'], messagingPriorities: ['Education quality and student outcomes','Parental rights and transparency','Curriculum concerns','School safety','Fiscal responsibility'], budgetPriorities: ['Door to door canvassing','Yard signs','Direct mail to parent households','Community events at schools'], avoidTactics: ['Expensive broadcast TV','Statewide digital campaigns'], voterPriorities: ['Parents with children in schools','Teachers and school staff','Local taxpayers'], specialRules: ['Often nonpartisan','Very low turnout — base mobilization critical','Small budget typically sufficient'], raceNotes: 'School board races are hyper-local. Personal relationships and community trust matter more than money.' };
+  }
+  // Mayor
+  if (office.indexOf('mayor') >= 0) {
+    return { raceType: 'mayor', raceCategory: 'local_government', source: 'hardcoded', keyEndorsements: ['Local business community and chamber','Police and fire unions','Civic organizations','Neighborhood associations','Local newspaper editorial board'], messagingPriorities: ['Economic development and jobs','Public safety and crime','Infrastructure and roads','Property taxes and fiscal responsibility','Quality of life issues'], budgetPriorities: ['Direct mail','Community events','Digital advertising (local geo-targeted)','Yard signs','Local cable TV in larger cities'], avoidTactics: ['Broadcast TV unless large city','Statewide messaging'], voterPriorities: ['Local business owners','Homeowners and property taxpayers','Community and civic leaders'], specialRules: ['May be nonpartisan depending on city','City charter may limit campaign activities'], raceNotes: 'Mayor races vary enormously by city size.' };
+  }
+  // DA / Prosecutor
+  if (office.indexOf('district attorney') >= 0 || office.indexOf('prosecutor') >= 0 || office.indexOf('state attorney') >= 0 || office.indexOf('commonwealth attorney') >= 0) {
+    return { raceType: 'prosecutor', raceCategory: 'law_enforcement', source: 'hardcoded', keyEndorsements: ['Law enforcement unions','Victims advocacy organizations','Bar association','Business community','Local newspaper'], messagingPriorities: ['Prosecutorial record and results','Crime reduction and public safety','Victim advocacy','Accountability and rule of law','Experience and qualifications'], budgetPriorities: ['Direct mail','Community events','Law enforcement outreach','Digital advertising','Yard signs'], avoidTactics: ['Promises about specific pending cases','Anything appearing to prejudge defendants'], voterPriorities: ['Law enforcement community','Crime victims and advocacy groups','Business community','Public safety voters'], specialRules: ['Cannot comment on pending cases','Bar ethics rules apply'], raceNotes: 'DA races blend law enforcement and legal community dynamics.' };
+  }
+  // County/Local government
+  if (office.indexOf('commissioner') >= 0 || office.indexOf('supervisor') >= 0 || office.indexOf('alderman') >= 0 || office.indexOf('county clerk') >= 0 || office.indexOf('treasurer') >= 0 || office.indexOf('assessor') >= 0 || office.indexOf('auditor') >= 0) {
+    return { raceType: 'local_government', raceCategory: 'local_government', source: 'hardcoded', keyEndorsements: ['Local business community','Civic organizations','Current and former local officials','Local newspaper editorial board'], messagingPriorities: ['Local issues: roads, zoning, services','Property taxes and fiscal responsibility','Government efficiency','Community relationships'], budgetPriorities: ['Yard signs','Door to door canvassing','Direct mail','Community events'], avoidTactics: ['Broadcast TV','Expensive statewide digital'], voterPriorities: ['Local property owners','Business community','Civic leaders'], specialRules: ['Often nonpartisan','Very small electorate','Personal relationships matter most'], raceNotes: 'Local government races are won on relationships and local credibility.' };
+  }
+  // City Council
+  if (office.indexOf('city council') >= 0 || office.indexOf('council member') >= 0 || office.indexOf('councilman') >= 0 || office.indexOf('councilwoman') >= 0) {
+    return { raceType: 'city_council', raceCategory: 'local_government', source: 'hardcoded', keyEndorsements: ['Neighborhood associations','Local business community','Civic organizations','Current council members','Local newspaper'], messagingPriorities: ['Neighborhood issues','Property taxes','Public safety','Development and zoning','City services'], budgetPriorities: ['Door to door canvassing','Yard signs','Direct mail','Community events','Minimal digital'], avoidTactics: ['Broadcast TV','Expensive digital campaigns','Generic political messaging'], voterPriorities: ['District residents','Homeowners','Local business owners','Community association members'], specialRules: ['Often nonpartisan','District-based vs at-large affects strategy','Very small voter universe'], raceNotes: 'City council races are hyper-local. Door knocking and personal contact win these races.' };
+  }
+  // State Rep / State Senate
+  if (office.indexOf('state rep') >= 0 || office.indexOf('state house') >= 0 || office.indexOf('state senate') >= 0 || office.indexOf('state senator') >= 0 || office.indexOf('state assembly') >= 0) {
+    return { raceType: 'state_legislature', raceCategory: 'political', source: 'hardcoded', keyEndorsements: ['State party organization','Sitting legislators','Labor or business groups','Issue advocacy organizations','Local newspaper'], messagingPriorities: ['State-level policy positions','Local district issues','Party platform alignment','Legislative experience or fresh perspective','Constituent services'], budgetPriorities: ['Direct mail','Digital advertising','Door to door canvassing','Yard signs','Limited broadcast in competitive races'], avoidTactics: ['Ignoring district-specific issues for statewide messaging'], voterPriorities: ['District voters by precinct turnout','Party base voters','Swing precincts','Issue-motivated voters'], specialRules: ['Partisan race','State campaign finance laws apply','May have contribution limits'], raceNotes: 'State legislative races are the workhorse of politics. Strong ground game + targeted mail wins.' };
+  }
+  // US Congress
+  if (office.indexOf('congress') >= 0 || office.indexOf('u.s. rep') >= 0 || office.indexOf('us rep') >= 0 || office.indexOf('u.s. house') >= 0 || office.indexOf('us house') >= 0) {
+    return { raceType: 'congressional', raceCategory: 'political', source: 'hardcoded', keyEndorsements: ['National party committees','Sitting members of Congress','Major PACs','Labor or business coalitions','State party organization'], messagingPriorities: ['National and local issues blend','Party platform','Economic messaging','Healthcare','Immigration or security depending on district'], budgetPriorities: ['Broadcast and cable TV','Digital advertising','Direct mail','Field operations','Polling and research'], avoidTactics: ['Ignoring local issues for national talking points only','Under-investing in field'], voterPriorities: ['District-wide by precinct performance','Party base + swing voters','High-propensity voters','Issue-motivated demographics'], specialRules: ['FEC regulations apply','Contribution limits strict','Must report quarterly','Coordinated expenditure rules'], raceNotes: 'Congressional races require significant fundraising and full-spectrum campaign operations.' };
+  }
+  // Fallback — generic political race
+  return { raceType: 'political', raceCategory: 'political', source: 'generic', raceNotes: 'Standard political campaign. Sam will adjust advice based on race context.' };
+}
+
 function completeOnboarding() {
   window._onboardingJustCompleted = true;
   document.getElementById('onboarding-overlay').classList.remove('active');
@@ -4023,6 +4065,9 @@ function completeOnboarding() {
   addSamMsg("Welcome, <strong>" + escapeHtml(onboardingData.firstName||'') + "!</strong> You've got <strong>" + (daysUntil(campaignData.electionDate)||'--') + " days</strong> to election day. Sam is researching your race now \u2014 your Intel Brief will be ready shortly.");
   // Fire all research calls — candidate brief + day1 brief + all 4 Intel tabs
   fetchCandidateBrief();
+  // Cache race type profile
+  var raceProfile = getRaceTypeProfile(campaignData.specificOffice);
+  localStorage.setItem(storageKey('ctb_race_profile'), JSON.stringify({ office: campaignData.specificOffice, profile: raceProfile, cachedAt: new Date().toISOString() }));
   fetchDay1Brief();
   // Auto-run Intel panel research after a short delay to avoid rate limiting
   setTimeout(function() {
@@ -5441,7 +5486,8 @@ async function sendSamMessage() {
       govLevel: campaignData.officeType || '',
       additionalContext: additionalCtx,
       candidateBrief: brief,
-      intelContext: intelCtx
+      intelContext: intelCtx,
+      raceProfile: (function(){ try { var rp = JSON.parse(localStorage.getItem(storageKey('ctb_race_profile'))); return rp ? rp.profile : null; } catch(e) { return null; } })()
     };
   }
 

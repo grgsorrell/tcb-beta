@@ -958,7 +958,7 @@ export default {
         additionalContext, budget, winNumber,
         daysToElection, govLevel, candidateBrief,
         startingAmount, fundraisingGoal, totalRaised,
-        donorCount, intelContext
+        donorCount, intelContext, raceProfile
       } = body;
 
       // ========================================
@@ -1199,6 +1199,17 @@ Filed: ${filingStatus || 'unknown'}${effectiveDays != null && effectiveDays > 18
 ${briefProse ? `\nRACE INTELLIGENCE:\n${briefProse}` : ''}
 ${intelGroundTruth}
 
+${body.raceProfile && body.raceProfile.raceType !== 'political' ? `
+RACE TYPE — THIS IS A ${(body.raceProfile.raceType || '').toUpperCase().replace(/_/g,' ')} RACE:
+${body.raceProfile.raceNotes || ''}
+Key endorsements: ${(body.raceProfile.keyEndorsements || []).join(', ')}
+Messaging priorities: ${(body.raceProfile.messagingPriorities || []).join(', ')}
+Budget priorities: ${(body.raceProfile.budgetPriorities || []).join(', ')}
+Avoid: ${(body.raceProfile.avoidTactics || []).join(', ')}
+Voter priorities: ${(body.raceProfile.voterPriorities || []).join(', ')}
+${(body.raceProfile.specialRules || []).length ? 'Special rules: ' + body.raceProfile.specialRules.join(', ') : ''}
+Adjust ALL advice for this race type. Never give generic political campaign advice when race-specific guidance exists.
+` : ''}
 RESEARCH SCOPE: ${geo.scope} race. Always research ${geo.researchArea}. Never limit to just ${location} for ${geo.scope !== 'local' ? 'this ' + geo.scope + ' race' : 'this race'}.
 
 CURRENT CAMPAIGN STATUS:
