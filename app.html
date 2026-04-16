@@ -1264,9 +1264,10 @@ function renderDashTasksCard() {
     });
   }
 
-  // Overflow link
-  if (remaining > 0) {
-    html += '<div style="padding:6px 0;text-align:center"><button onclick="showView(\'calendar\')" style="font-size:10px;color:var(--blue);background:none;border:none;cursor:pointer;font-weight:600">+ ' + remaining + ' more \u2192 View all tasks</button></div>';
+  // Overflow link — opens popup
+  var totalActive = active.length + completedToday.length;
+  if (totalActive > 3) {
+    html += '<div style="padding:6px 0;text-align:center"><button onclick="openTasksPopup()" style="font-size:10px;color:var(--blue);background:none;border:none;cursor:pointer;font-weight:600">\ud83d\udccb View all ' + totalActive + ' tasks</button></div>';
   }
 
   // Progress bar
@@ -1313,6 +1314,114 @@ function deleteDashTask(id) {
   if (idx >= 0) { tasks.splice(idx, 1); saveTasks(); }
   var card = document.getElementById('dash-tasks-card');
   if (card) card.innerHTML = renderDashTasksCard();
+}
+
+function openTasksPopup() {
+  // Remove existing popup
+  var existing = document.getElementById('tasks-popup-backdrop');
+  if (existing) existing.remove();
+
+  var today = getTodayStr();
+  var dateStr = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var overdue = tasks.filter(function(t){ return !t.completed && t.date && t.date < today; });
+  var todayActive = tasks.filter(function(t){ return !t.completed && t.date === today; });
+  var completedToday = tasks.filter(function(t){ return t.completed && t.completedAt && t.completedAt.substring(0,10) === today; });
+  var totalScope = overdue.length + todayActive.length + completedToday.length;
+  var doneCount = completedToday.length;
+  var pct = totalScope > 0 ? Math.round(doneCount / totalScope * 100) : 0;
+
+  function taskRow(t, isOverdue, isComplete) {
+    var nameStyle = isComplete ? 'font-size:13px;color:var(--t3);text-decoration:line-through' : isOverdue ? 'font-size:13px;color:var(--red)' : 'font-size:13px;color:var(--t1)';
+    var prefix = isOverdue ? '\u26a0\ufe0f ' : '';
+    var checkHtml = isComplete
+      ? '<div onclick="popupToggleTask(\'' + t.id + '\')" style="width:18px;height:18px;border-radius:3px;background:var(--green);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:11px;color:#fff">\u2713</div>'
+      : '<div onclick="popupToggleTask(\'' + t.id + '\')" style="width:18px;height:18px;border-radius:3px;background:transparent;border:1.5px solid rgba(255,255,255,.2);cursor:pointer;flex-shrink:0"></div>';
+    var dateLabel = isOverdue ? '<span style="font-size:9px;color:var(--t3);flex-shrink:0">' + formatDate(t.date) + '</span>' : '';
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)">' +
+      checkHtml +
+      '<span style="' + nameStyle + ';flex:1;min-width:0">' + prefix + escapeHtml(t.name || t.text || '') + '</span>' +
+      dateLabel +
+      '<span onclick="popupDeleteTask(\'' + t.id + '\')" style="font-size:11px;color:rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;padding:0 4px">\u00d7</span>' +
+    '</div>';
+  }
+
+  var content = '';
+  if (overdue.length > 0) {
+    content += '<div style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--red);text-transform:uppercase;margin:12px 0 4px">\u26a0\ufe0f OVERDUE</div>';
+    overdue.forEach(function(t){ content += taskRow(t, true, false); });
+  }
+  if (todayActive.length > 0) {
+    content += '<div style="font-size:9px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase;margin:12px 0 4px">TODAY</div>';
+    todayActive.forEach(function(t){ content += taskRow(t, false, false); });
+  }
+  if (completedToday.length > 0) {
+    content += '<div style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin:12px 0 4px">\u2713 COMPLETED</div>';
+    completedToday.forEach(function(t){ content += taskRow(t, false, true); });
+  }
+  if (overdue.length === 0 && todayActive.length === 0 && completedToday.length === 0) {
+    content = '<div style="text-align:center;padding:24px 0;font-size:12px;color:var(--t3);font-style:italic">No tasks for today</div>';
+  }
+
+  var backdrop = document.createElement('div');
+  backdrop.id = 'tasks-popup-backdrop';
+  backdrop.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.6);z-index:999;display:flex;align-items:center;justify-content:center';
+  backdrop.onclick = function(e) { if (e.target === backdrop) closeTasksPopup(); };
+
+  backdrop.innerHTML = '<div style="position:relative;width:480px;max-width:calc(100vw - 32px);max-height:75vh;overflow-y:auto;background:var(--n2);border:1px solid var(--br);border-radius:12px;z-index:1000;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
+    '<div style="padding:20px 20px 0">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">' +
+        '<div style="font-family:var(--font-d);font-style:italic;font-size:20px;color:var(--t1)">Today\'s Tasks</div>' +
+        '<div style="display:flex;align-items:center;gap:12px"><span style="font-size:11px;color:var(--t3)">' + dateStr + '</span><button onclick="closeTasksPopup()" style="font-size:18px;color:var(--t3);background:none;border:none;cursor:pointer;line-height:1">\u00d7</button></div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="padding:0 20px" id="tasks-popup-content">' + content + '</div>' +
+    '<div style="padding:16px 20px;border-top:1px solid rgba(255,255,255,.04);margin-top:8px">' +
+      '<div style="height:3px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:4px"><div style="height:100%;width:' + pct + '%;background:var(--green);border-radius:2px;transition:width .3s"></div></div>' +
+      '<div style="font-size:9px;color:' + (doneCount === totalScope && totalScope > 0 ? 'var(--green)' : 'var(--t3)') + ';text-align:center;margin-bottom:10px">' + (doneCount === totalScope && totalScope > 0 ? 'All tasks complete \ud83c\udf89' : doneCount + ' of ' + totalScope + ' complete') + '</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+        '<div id="popup-task-input-wrap" style="flex:1;margin-right:8px;display:none"><input id="popup-task-input" type="text" placeholder="What needs to get done?" style="width:100%;font-size:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:7px 10px;color:var(--t1);outline:none;font-family:var(--font-b)" onkeydown="if(event.key===\'Enter\')popupAddTask()"></div>' +
+        '<button onclick="togglePopupTaskInput()" style="font-size:10px;font-weight:700;color:var(--gold);background:transparent;border:1px solid rgba(212,165,116,.3);padding:5px 12px;border-radius:4px;cursor:pointer">+ Add Task</button>' +
+        '<button onclick="closeTasksPopup();showView(\'calendar\')" style="font-size:11px;color:var(--blue);background:none;border:none;cursor:pointer;margin-left:8px">View full task manager \u2192</button>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  document.body.appendChild(backdrop);
+}
+
+function closeTasksPopup() {
+  var b = document.getElementById('tasks-popup-backdrop');
+  if (b) b.remove();
+  var card = document.getElementById('dash-tasks-card');
+  if (card) card.innerHTML = renderDashTasksCard();
+}
+
+function popupToggleTask(id) {
+  var t = tasks.find(function(x){ return String(x.id) === String(id); });
+  if (t) { t.completed = !t.completed; t.completedAt = t.completed ? new Date().toISOString() : null; saveTasks(); }
+  openTasksPopup(); // re-render popup
+}
+
+function popupDeleteTask(id) {
+  var idx = tasks.findIndex(function(x){ return String(x.id) === String(id); });
+  if (idx >= 0) { tasks.splice(idx, 1); saveTasks(); }
+  openTasksPopup();
+}
+
+function togglePopupTaskInput() {
+  var wrap = document.getElementById('popup-task-input-wrap');
+  if (!wrap) return;
+  wrap.style.display = wrap.style.display === 'none' ? '' : 'none';
+  if (wrap.style.display !== 'none') document.getElementById('popup-task-input').focus();
+}
+
+function popupAddTask() {
+  var inp = document.getElementById('popup-task-input');
+  if (!inp || !inp.value.trim()) return;
+  tasks.push({ id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false });
+  saveTasks();
+  inp.value = '';
+  openTasksPopup();
 }
 
 function renderDashTasks() {
