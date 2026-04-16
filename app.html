@@ -10,6 +10,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0B1120">
+<meta name="app-version" content="sam-2.0-20260415">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -883,6 +887,33 @@ select{-webkit-appearance:none;appearance:none;}
 
 <script>
 // ============================================
+// VERSION CHECK — force cache clear for stale clients
+// ============================================
+(function() {
+  var CURRENT_VERSION = 'sam-2.0-20260415';
+  var storedVersion = localStorage.getItem('tcb_app_version');
+  if (storedVersion !== CURRENT_VERSION) {
+    // Preserve campaign data keys
+    var preserved = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && (k.indexOf('ctb_') === 0 || k === 'tcb_session' || k === 'tcb_current_user' || k === 'samVoiceEnabled')) {
+        preserved[k] = localStorage.getItem(k);
+      }
+    }
+    localStorage.clear();
+    var keys = Object.keys(preserved);
+    for (var j = 0; j < keys.length; j++) {
+      localStorage.setItem(keys[j], preserved[keys[j]]);
+    }
+    localStorage.setItem('tcb_app_version', CURRENT_VERSION);
+    console.log('[TCB] Cache cleared for version', CURRENT_VERSION);
+    window.location.reload(true);
+    return;
+  }
+})();
+
+// ============================================
 // SESSION CHECK — runs immediately
 // ============================================
 (function() {
@@ -903,7 +934,7 @@ function storageKey(key) {
 // STATE
 // ============================================
 var WORKER_URL = 'https://candidate-toolbox-secretary2.grgsorrell.workers.dev';
-var APP_VERSION = 'sam-2.0-build-20260415';
+var APP_VERSION = 'sam-2.0-20260415';
 console.log('[TCB] App version:', APP_VERSION);
 var campaignData = {};
 var tasks = [];
