@@ -902,7 +902,7 @@ select{-webkit-appearance:none;appearance:none;}
       names.forEach(function(name) { caches.delete(name); });
     });
   }
-  var CURRENT_VERSION = 'sam-2.0-20260415b';
+  var CURRENT_VERSION = 'sam-2.0-20260415c';
   var storedVersion = localStorage.getItem('tcb_app_version');
   if (storedVersion !== CURRENT_VERSION) {
     // Preserve campaign data keys
@@ -5000,16 +5000,6 @@ async function sendSamMessage() {
     }
   } catch(e) {}
 
-  // Reconstruct history with tool context for API
-  function buildApiHistory(rawHist) {
-    return rawHist.map(function(entry) {
-      if (entry.toolsSummary && entry.role === 'assistant') {
-        return { role: 'assistant', content: entry.content + '\n[Actions taken: ' + entry.toolsSummary + ']' };
-      }
-      return { role: entry.role, content: entry.content };
-    });
-  }
-
   function buildRequestBody(msg, hist) {
     return {
       message: msg,
@@ -5019,7 +5009,7 @@ async function sendSamMessage() {
       candidateName: campaignData.candidateName || '',
       specificOffice: campaignData.specificOffice || '',
       location: campaignData.location || '',
-      history: buildApiHistory(hist),
+      history: hist,
       mode: samMode,
       budget: campaignBudget.total || null,
       startingAmount: campaignBudget.startingAmount || 0,
@@ -5058,87 +5048,100 @@ async function sendSamMessage() {
       return;
     }
 
-    // Sam 2.0: Server handles the full tool loop.
-    // Response contains: data.content (final text) + data.toolCalls (accumulated tool_use blocks)
-    // IMPORTANT: Execute ALL tools BEFORE showing Sam's text to prevent confirmation of failed actions.
-
-    // Execute tool calls — check data.toolCalls first (Sam 2.0), then scan content for tool_use blocks
-    // Track executed IDs to prevent double-execution (worker includes tools in both places for backward compat)
-    var confirmations = [];
-    var toolErrors = [];
-    var executedToolIds = {};
-
-    // Sam 2.0 path: data.toolCalls
-    if (data.toolCalls && data.toolCalls.length > 0) {
-      data.toolCalls.forEach(function(block) {
-        try {
-          var result = executeToolCall(block);
-          if (result.confirmMsg) confirmations.push(result.confirmMsg);
-          if (block.id) executedToolIds[block.id] = true;
-        } catch (toolErr) {
-          toolErrors.push('Failed to execute ' + block.name + ': ' + (toolErr.message || 'unknown error'));
-        }
-      });
-    }
-
-    // Scan content for tool_use blocks (backward compat + catches any the server didn't accumulate)
+    // Process response: extract text and tool_use blocks from content
     var textParts = [];
+    var toolBlocks = [];
     if (data.content && Array.isArray(data.content)) {
       data.content.forEach(function(block) {
         if (block.type === 'text' && block.text) {
           textParts.push(block.text);
-        } else if (block.type === 'tool_use' && !executedToolIds[block.id]) {
-          try {
-            var result = executeToolCall(block);
-            if (result.confirmMsg) confirmations.push(result.confirmMsg);
-            if (block.id) executedToolIds[block.id] = true;
-          } catch (toolErr) {
-            toolErrors.push('Failed to execute ' + block.name);
-          }
+        } else if (block.type === 'tool_use') {
+          toolBlocks.push(block);
         }
       });
     }
 
-    // STEP 2: Show tool confirmations FIRST (they executed before text)
-    confirmations.forEach(function(msg) {
-      msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>';
-    });
-    // Show any tool execution errors
-    toolErrors.forEach(function(err) {
-      msgsEl.innerHTML += '<div class="sam-confirm" style="color:var(--red);border-color:rgba(232,112,112,.25)">\u26a0\ufe0f ' + err + '</div>';
-    });
-
-    // STEP 3: Show Sam's final text AFTER tools have executed
+    // Show any text that came with tool calls
     var fullText = textParts.join('\n');
     if (fullText.trim()) {
       if (isDocumentContent(fullText)) {
-        var docTitle = extractDocTitle(fullText);
-        msgsEl.innerHTML += renderDocumentBubble(docTitle, fullText);
+        msgsEl.innerHTML += renderDocumentBubble(extractDocTitle(fullText), fullText);
       } else {
         msgsEl.innerHTML += '<div class="sam-msg">' + formatSamText(fullText) + '</div>';
         samSpeak(fullText);
       }
+      msgsEl.scrollTop = msgsEl.scrollHeight;
     }
+
+    // Execute all tool calls and show confirmations
+    var confirmations = [];
+    var toolResults = [];
+    toolBlocks.forEach(function(block) {
+      var result = executeToolCall(block);
+      if (result.confirmMsg) confirmations.push(result.confirmMsg);
+      toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: result.confirmMsg || 'Done' });
+    });
+    confirmations.forEach(function(msg) {
+      msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>';
+    });
     msgsEl.scrollTop = msgsEl.scrollHeight;
 
-    // Save to history with tool context for structured persistence
+    // Save to history
     var historyContent = fullText;
-    if (confirmations.length > 0) {
-      historyContent += (historyContent ? '\n' : '') + confirmations.join('\n');
-    }
-    if (historyContent || (data.toolCalls && data.toolCalls.length > 0)) {
-      var histEntry = { role: 'assistant', content: historyContent || '' };
-      // Persist tool call summaries so Sam knows what was done after page reload
-      if (data.toolCalls && data.toolCalls.length > 0) {
-        histEntry.toolsSummary = data.toolCalls.map(function(tc) {
-          return tc.name + '(' + JSON.stringify(tc.input || {}).substring(0, 120) + ')';
-        }).join('; ');
+    if (confirmations.length > 0) historyContent += (historyContent ? '\n' : '') + confirmations.join('\n');
+    if (historyContent) { chatHistory.push({ role: 'assistant', content: historyContent }); saveChatHistory(); }
+
+    // If there were tool calls, send results back for Sam's follow-up (multi-round loop)
+    if (toolBlocks.length > 0 && toolResults.length > 0) {
+      var apiHistory = chatHistory.slice(-40);
+      apiHistory.push({ role: 'assistant', content: data.content });
+      apiHistory.push({ role: 'user', content: toolResults });
+
+      msgsEl.innerHTML += '<div class="sam-msg typing" id="sam-typing2"><div class="typing-indicator"><span></span><span></span><span></span></div></div>';
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+
+      try {
+        var followUp = await fetch(WORKER_URL, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(buildRequestBody(message, apiHistory))
+        });
+        var followData = await followUp.json();
+        var typing2 = document.getElementById('sam-typing2');
+        if (typing2) typing2.remove();
+
+        var followText = '';
+        var followToolBlocks = [];
+        if (followData.content && Array.isArray(followData.content)) {
+          followData.content.forEach(function(block) {
+            if (block.type === 'text' && block.text) followText += block.text;
+            else if (block.type === 'tool_use') followToolBlocks.push(block);
+          });
+        }
+        var followConfirms = [];
+        followToolBlocks.forEach(function(block) {
+          var result = executeToolCall(block);
+          if (result.confirmMsg) followConfirms.push(result.confirmMsg);
+        });
+        if (followText.trim()) {
+          if (isDocumentContent(followText)) {
+            msgsEl.innerHTML += renderDocumentBubble(extractDocTitle(followText), followText);
+          } else {
+            msgsEl.innerHTML += '<div class="sam-msg">' + formatSamText(followText) + '</div>';
+            samSpeak(followText);
+          }
+        }
+        followConfirms.forEach(function(msg) { msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>'; });
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+        var followHistory = followText;
+        if (followConfirms.length > 0) followHistory += (followHistory ? '\n' : '') + followConfirms.join('\n');
+        if (followHistory) { chatHistory.push({ role: 'assistant', content: followHistory }); saveChatHistory(); }
+      } catch (followErr) {
+        var typing2b = document.getElementById('sam-typing2');
+        if (typing2b) typing2b.remove();
       }
-      chatHistory.push(histEntry);
-      saveChatHistory();
     }
 
-    // If nothing to show at all
+    // If no text and no confirmations
     if (!fullText.trim() && confirmations.length === 0) {
       msgsEl.innerHTML += '<div class="sam-msg">Done! What would you like to work on next?</div>';
       chatHistory.push({ role: 'assistant', content: 'Done! What would you like to work on next?' });

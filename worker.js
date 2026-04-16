@@ -1533,67 +1533,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return resp.json();
       }
 
-      // Build initial messages
+      // Simple pass-through: one API call, return raw response
+      // Client handles tool execution and follow-up calls
       const messages = (history && history.length > 0) ? [...history] : [{ role: "user", content: message }];
+      const data = await callClaude(messages);
 
-      // Run tool loop
-      const MAX_ROUNDS = 10;
-      let round = 0;
-      const allToolCalls = [];
-      let finalResponse = null;
-
-      while (round < MAX_ROUNDS) {
-        const data = await callClaude(messages);
-
-        if (data.error) {
-          return new Response(JSON.stringify(data), {
-            headers: { "Content-Type": "application/json", ...corsHeaders },
-          });
-        }
-
-        // Collect non-search tool_use blocks
-        const toolUseBlocks = (data.content || []).filter(b => b.type === 'tool_use');
-
-        // If no tool calls, we're done
-        if (toolUseBlocks.length === 0) {
-          finalResponse = data;
-          break;
-        }
-
-        // Accumulate tool calls for client execution
-        allToolCalls.push(...toolUseBlocks);
-
-        // Build acknowledgment results
-        const toolResults = toolUseBlocks.map(block => ({
-          type: 'tool_result',
-          tool_use_id: block.id,
-          content: JSON.stringify(acknowledgeToolCall(block.name, block.input))
-        }));
-
-        // Continue conversation
-        messages.push({ role: 'assistant', content: data.content });
-        messages.push({ role: 'user', content: toolResults });
-
-        round++;
-      }
-
-      // If we hit max rounds without a text-only response, do one final call
-      if (!finalResponse) {
-        finalResponse = await callClaude(messages);
-      }
-
-      // Return response with tool calls in BOTH places:
-      // 1. data.toolCalls — for Sam 2.0 client code
-      // 2. data.content — inject tool_use blocks so old cached clients can find and execute them
-      // This ensures backward compatibility regardless of which app.html version the browser has cached
-      const finalContent = [...allToolCalls, ...(finalResponse.content || [])];
-      const responsePayload = {
-        ...finalResponse,
-        content: finalContent,
-        toolCalls: allToolCalls
-      };
-
-      return new Response(JSON.stringify(responsePayload), {
+      return new Response(JSON.stringify(data), {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
 
