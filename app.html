@@ -1381,7 +1381,7 @@ function openTasksPopup() {
       '<div style="display:flex;justify-content:space-between;align-items:center">' +
         '<div id="popup-task-input-wrap" style="flex:1;margin-right:8px;display:none"><input id="popup-task-input" type="text" placeholder="What needs to get done?" style="width:100%;font-size:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:7px 10px;color:var(--t1);outline:none;font-family:var(--font-b)" onkeydown="if(event.key===\'Enter\')popupAddTask()"></div>' +
         '<button onclick="togglePopupTaskInput()" style="font-size:10px;font-weight:700;color:var(--gold);background:transparent;border:1px solid rgba(212,165,116,.3);padding:5px 12px;border-radius:4px;cursor:pointer">+ Add Task</button>' +
-        '<button onclick="closeTasksPopup();showView(\'calendar\')" style="font-size:11px;color:var(--blue);background:none;border:none;cursor:pointer;margin-left:8px">View full task manager \u2192</button>' +
+        '<button onclick="closeTasksPopup()" style="font-size:11px;font-weight:700;color:var(--t1);background:var(--n4);border:1px solid var(--br);padding:5px 16px;border-radius:4px;cursor:pointer;margin-left:8px">OK</button>' +
       '</div>' +
     '</div>' +
   '</div>';
