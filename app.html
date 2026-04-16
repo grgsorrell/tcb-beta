@@ -847,9 +847,12 @@ select{-webkit-appearance:none;appearance:none;}
     <h3 id="note-modal-title">New Note</h3>
     <div class="form-group"><label>Title</label><input id="note-title-input" placeholder="Note title"></div>
     <div class="form-group"><label>Content</label><textarea id="note-content-input" rows="8" placeholder="Write your note..."></textarea></div>
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeNoteModal()">Cancel</button>
-      <button class="btn-primary" onclick="saveNoteFromModal()">Save Note</button>
+    <div class="modal-actions" style="display:flex;justify-content:space-between;align-items:center">
+      <div id="note-modal-left-actions"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-ghost" onclick="closeNoteModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveNoteFromModal()">Save Note</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2680,8 +2683,9 @@ function renderNotesView() {
   el.innerHTML = allNotes.map(function(item) {
     var n = item.note;
     var preview = (n.content||'').replace(/\*\*/g,'').slice(0,120);
-    return '<div class="note-card" onclick="openNoteEditor(' + n.id + ')">' +
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="note-ttl">' + escapeHtml(n.title||'Untitled') + '</div><span class="nbadge nb-draft">Draft</span></div>' +
+    return '<div class="note-card" style="position:relative" onclick="openNoteEditor(' + n.id + ')">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="note-ttl">' + escapeHtml(n.title||'Untitled') + '</div>' +
+      '<div style="display:flex;gap:6px;align-items:center"><button onclick="event.stopPropagation();printNote(' + n.id + ')" style="font-size:11px;color:var(--t3);background:none;border:none;cursor:pointer" title="Print">\ud83d\udda8</button><button onclick="event.stopPropagation();deleteNoteConfirm(' + n.id + ')" style="font-size:11px;color:rgba(255,255,255,.25);background:none;border:none;cursor:pointer" title="Delete">\u00d7</button></div></div>' +
       '<div class="note-prev">' + escapeHtml(preview) + '</div>' +
       '<div class="note-meta">' + escapeHtml(item.folder) + ' · ' + formatDate((n.updatedAt||n.createdAt||'').slice(0,10)) + '</div></div>';
   }).join('');
@@ -2693,6 +2697,8 @@ function createNewNote() {
   document.getElementById('note-content-input').value = '';
   document.getElementById('note-modal').classList.add('active');
   document.getElementById('note-modal')._editId = null;
+  var leftActions = document.getElementById('note-modal-left-actions');
+  if (leftActions) leftActions.innerHTML = '';
 }
 
 function openNoteEditor(noteId) {
@@ -2704,6 +2710,8 @@ function openNoteEditor(noteId) {
   document.getElementById('note-content-input').value = found.content || '';
   document.getElementById('note-modal').classList.add('active');
   document.getElementById('note-modal')._editId = noteId;
+  var leftActions = document.getElementById('note-modal-left-actions');
+  if (leftActions) leftActions.innerHTML = '<button onclick="printNote(' + noteId + ')" style="font-size:11px;color:var(--t3);background:none;border:none;cursor:pointer;margin-right:12px">\ud83d\udda8 Print</button><button onclick="deleteNoteConfirm(' + noteId + ')" style="font-size:11px;color:var(--red);background:none;border:none;cursor:pointer">Delete this note</button>';
 }
 
 function closeNoteModal() { document.getElementById('note-modal').classList.remove('active'); }
@@ -2727,6 +2735,115 @@ function saveNoteFromModal() {
     folders[0].notes.push({ id: Date.now(), title: title || 'Untitled', content: content, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
   }
   saveFolders();
+  closeNoteModal();
+  renderNotesView();
+}
+
+// Sam note preview modal
+function showSamNotePreview(title, content, folderName, status, docType) {
+  var existing = document.getElementById('sam-note-preview');
+  if (existing) existing.remove();
+  var preview = content.length > 200 ? content.substring(0, 200) + '...' : content;
+  // Check for duplicate
+  var isDupe = false;
+  folders.forEach(function(f) {
+    if (f.name.toLowerCase() === folderName.toLowerCase()) {
+      (f.notes||[]).forEach(function(n) { if ((n.title||'').toLowerCase() === title.toLowerCase()) isDupe = true; });
+    }
+  });
+  var dupeWarning = isDupe ? '<div style="font-size:11px;color:var(--gold);margin-top:8px;padding:6px 10px;background:rgba(212,165,116,.08);border:1px solid rgba(212,165,116,.2);border-radius:4px">\u26a0\ufe0f A note titled "' + escapeHtml(title) + '" already exists in this folder.</div>' : '';
+  var backdrop = document.createElement('div');
+  backdrop.id = 'sam-note-preview';
+  backdrop.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.6);z-index:999;display:flex;align-items:center;justify-content:center';
+  backdrop.onclick = function(e) { if (e.target === backdrop) backdrop.remove(); };
+  backdrop.innerHTML = '<div style="width:480px;max-width:calc(100vw - 32px);max-height:75vh;overflow-y:auto;background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
+    '<div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Sam created a draft</div>' +
+    '<div style="font-family:var(--font-d);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:12px">' + escapeHtml(title) + '</div>' +
+    '<div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:12px;max-height:200px;overflow-y:auto;white-space:pre-wrap">' + escapeHtml(preview) + '</div>' +
+    '<div style="font-size:11px;color:var(--t3);margin-bottom:8px">Will be saved to: <span style="color:var(--t1)">' + escapeHtml(folderName) + '</span></div>' +
+    dupeWarning +
+    (isDupe ? '<div style="display:flex;gap:8px;margin-top:14px"><button onclick="document.getElementById(\'sam-note-preview\').remove()" style="flex:1;padding:9px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">Discard</button><button onclick="confirmSaveNote(\'' + escapeHtml(title).replace(/'/g,"\\'") + '\',true)" style="flex:1;padding:9px;font-size:12px;background:var(--gold);color:#0B1120;border:none;border-radius:6px;cursor:pointer;font-weight:700">Replace Existing</button><button onclick="confirmSaveNote(\'' + escapeHtml(title).replace(/'/g,"\\'") + '\',false)" style="flex:1;padding:9px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Save as New</button></div>' :
+    '<div style="display:flex;gap:8px;margin-top:14px"><button onclick="editSamNote()" style="flex:1;padding:9px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">Edit First</button><button onclick="confirmSaveNote(\'' + escapeHtml(title).replace(/'/g,"\\'") + '\',false)" style="flex:1;padding:9px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">\u2713 Save Note</button></div>') +
+  '</div>';
+  // Store data for confirm/edit
+  backdrop._noteData = { title: title, content: content, folder: folderName, status: status, docType: docType };
+  document.body.appendChild(backdrop);
+}
+
+function confirmSaveNote(title, replace) {
+  var modal = document.getElementById('sam-note-preview');
+  if (!modal || !modal._noteData) return;
+  var d = modal._noteData;
+  var folder = folders.find(function(f){return f.name.toLowerCase()===d.folder.toLowerCase();});
+  if (!folder) { folder = { id: Date.now(), name: d.folder, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }; folders.push(folder); }
+  if (!folder.notes) folder.notes = [];
+  if (replace) {
+    var idx = folder.notes.findIndex(function(n){ return (n.title||'').toLowerCase() === d.title.toLowerCase(); });
+    if (idx >= 0) { folder.notes[idx].content = d.content; folder.notes[idx].updatedAt = new Date().toISOString(); }
+    else { folder.notes.push({ id: Date.now() + Math.random(), title: d.title, content: d.content, status: d.status, doc_type: d.docType, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }); }
+  } else {
+    folder.notes.push({ id: Date.now() + Math.random(), title: d.title, content: d.content, status: d.status, doc_type: d.docType, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+  }
+  folder.updatedAt = new Date().toISOString();
+  saveFolders();
+  modal.remove();
+  if (currentView === 'notes') renderNotesView();
+}
+
+function editSamNote() {
+  var modal = document.getElementById('sam-note-preview');
+  if (!modal || !modal._noteData) return;
+  var d = modal._noteData;
+  modal.remove();
+  document.getElementById('note-modal-title').textContent = 'Edit Draft';
+  document.getElementById('note-title-input').value = d.title;
+  document.getElementById('note-content-input').value = d.content;
+  document.getElementById('note-modal').classList.add('active');
+  document.getElementById('note-modal')._editId = null;
+  document.getElementById('note-modal')._samFolder = d.folder;
+  document.getElementById('note-modal')._samStatus = d.status;
+  document.getElementById('note-modal')._samDocType = d.docType;
+}
+
+// Print note
+function printNote(noteId) {
+  var found = null, folderName = '';
+  folders.forEach(function(f) { (f.notes||[]).forEach(function(n) { if (n.id === noteId) { found = n; folderName = f.name; } }); });
+  if (!found) return;
+  var w = window.open('', '_blank');
+  var dateStr = found.createdAt ? new Date(found.createdAt).toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '';
+  w.document.write('<!DOCTYPE html><html><head><title>' + escapeHtml(found.title||'Note') + '</title><style>body{font-family:Georgia,serif;max-width:800px;margin:40px auto;padding:0 40px;color:#000;line-height:1.8}h1{font-size:24px;margin-bottom:8px;border-bottom:1px solid #ccc;padding-bottom:8px}.meta{font-size:12px;color:#666;margin-bottom:24px}.content{font-size:14px;white-space:pre-wrap}@media print{body{margin:0}}</style></head><body><h1>' + escapeHtml(found.title||'Untitled') + '</h1><div class="meta">' + escapeHtml(folderName) + ' \u00b7 ' + dateStr + '</div><div class="content">' + escapeHtml(found.content||'') + '</div></body></html>');
+  w.document.close();
+  w.focus();
+  w.print();
+}
+
+// Delete note with confirmation
+function deleteNoteConfirm(noteId) {
+  var found = null;
+  folders.forEach(function(f) { (f.notes||[]).forEach(function(n) { if (n.id === noteId) found = n; }); });
+  if (!found) return;
+  var existing = document.getElementById('delete-note-modal');
+  if (existing) existing.remove();
+  var backdrop = document.createElement('div');
+  backdrop.id = 'delete-note-modal';
+  backdrop.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.6);z-index:1001;display:flex;align-items:center;justify-content:center';
+  backdrop.onclick = function(e) { if (e.target === backdrop) backdrop.remove(); };
+  backdrop.innerHTML = '<div style="width:380px;max-width:calc(100vw - 32px);background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
+    '<div style="font-size:15px;color:var(--t1);font-weight:700;margin-bottom:12px">Delete this note?</div>' +
+    '<div style="font-family:var(--font-d);font-style:italic;font-size:16px;color:var(--gold);margin-bottom:8px">' + escapeHtml(found.title||'Untitled') + '</div>' +
+    '<div style="font-size:12px;color:var(--red);margin-bottom:16px">This cannot be undone.</div>' +
+    '<div style="display:flex;gap:8px"><button onclick="document.getElementById(\'delete-note-modal\').remove()" style="flex:1;padding:9px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">Cancel</button><button onclick="executeDeleteNote(' + noteId + ')" style="flex:1;padding:9px;font-size:12px;background:var(--red);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Delete Note</button></div></div>';
+  document.body.appendChild(backdrop);
+}
+
+function executeDeleteNote(noteId) {
+  folders.forEach(function(f) {
+    if (f.notes) f.notes = f.notes.filter(function(n){ return n.id !== noteId; });
+  });
+  saveFolders();
+  var dm = document.getElementById('delete-note-modal');
+  if (dm) dm.remove();
   closeNoteModal();
   renderNotesView();
 }
@@ -4743,30 +4860,16 @@ function executeToolCall(block) {
     if (currentView === 'dashboard') refreshDashboard();
     confirmMsg = '\u2705 Logged $' + expense.amount.toLocaleString() + ' for ' + expense.description + ' under ' + expense.categoryLabel + '.' + (catAllocated > 0 ? ' Category: $' + catSpent.toLocaleString() + ' of $' + catAllocated.toLocaleString() + ' used.' : '') + ' Budget remaining: $' + remaining.toLocaleString();
   }
-  // Sam 2.0 unified save_note (also handles old add_note, save_document, save_to_notes)
+  // Sam 2.0 unified save_note — show preview modal for confirmation
   else if (name === 'save_note' || name === 'add_note' || name === 'save_document' || name === 'save_to_notes') {
     var folderName = inp.folder || inp.folder_name || 'Campaign Notes';
     var noteTitle = inp.title || inp.note_title || 'Untitled';
-    var noteStatus = inp.status || (name === 'save_document' ? 'Ready' : 'Ready');
-    var folder = folders.find(function(f){return f.name.toLowerCase()===folderName.toLowerCase();});
-    if (!folder) {
-      folder = { id: Date.now(), name: folderName, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-      folders.push(folder);
-    }
-    if (!folder.notes) folder.notes = [];
-    folder.notes.push({
-      id: Date.now() + Math.random(),
-      title: noteTitle,
-      content: inp.content || '',
-      status: noteStatus,
-      doc_type: inp.doc_type || 'Other',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    });
-    folder.updatedAt = new Date().toISOString();
-    saveFolders();
-    if (currentView === 'notes') renderNotesView();
-    confirmMsg = "\u2705 Saved '" + noteTitle + "' to " + folder.name;
+    var noteContent = inp.content || '';
+    var noteStatus = inp.status || 'Ready';
+    var noteDocType = inp.doc_type || 'Other';
+    // Show confirmation modal instead of saving immediately
+    showSamNotePreview(noteTitle, noteContent, folderName, noteStatus, noteDocType);
+    confirmMsg = "\ud83d\udcdd Sam drafted '" + noteTitle + "' \u2014 review and confirm to save.";
   }
   else if (name === 'add_endorsement') {
     var endorsements = [];
