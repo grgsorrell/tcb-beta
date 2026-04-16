@@ -903,6 +903,8 @@ function storageKey(key) {
 // STATE
 // ============================================
 var WORKER_URL = 'https://candidate-toolbox-secretary2.grgsorrell.workers.dev';
+var APP_VERSION = 'sam-2.0-build-20260415';
+console.log('[TCB] App version:', APP_VERSION);
 var campaignData = {};
 var tasks = [];
 var events = [];
@@ -4438,13 +4440,8 @@ function executeToolCall(block) {
     localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
     console.log('add_endorsement handler fired', newEndorsement);
     console.log('Endorsements after save:', endorsements);
-    // Re-render endorsements panel if open, or auto-open it briefly
-    if (currentOverlay === 'endorsements') {
-      renderEndorsementsOverlay();
-    } else {
-      // Auto-open endorsements overlay so user can see the addition
-      toggleOverlay('endorsements');
-    }
+    // Re-render endorsements panel if open
+    if (currentOverlay === 'endorsements') renderEndorsementsOverlay();
     // Show success toast
     var eToast = document.createElement('div');
     eToast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--n3);border:1px solid rgba(130,179,134,.3);color:var(--green);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);';
