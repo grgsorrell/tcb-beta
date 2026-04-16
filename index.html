@@ -1160,10 +1160,32 @@ function attemptLogin() {
     }).catch(function(){});
     window.location.href = 'app.html';
   } else {
-    errorEl.textContent = 'Invalid username or password. Please try again.';
-    errorEl.style.display = 'block';
-    document.getElementById('login-password').value = '';
-    document.getElementById('login-password').focus();
+    // Try sub-user login via D1
+    errorEl.style.display = 'none';
+    fetch('https://candidate-toolbox-secretary2.grgsorrell.workers.dev/auth/subuser-login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: username, password: password })
+    }).then(function(r){ return r.json(); }).then(function(data) {
+      if (data.success) {
+        var session = { userId: data.username, loginTime: Date.now(), expires: Date.now() + 86400000, isSubUser: true, subUserName: data.name, subUserRole: data.role, permissions: data.permissions };
+        localStorage.setItem('tcb_session', JSON.stringify(session));
+        localStorage.setItem('tcb_current_user', data.username);
+        localStorage.setItem('tcb_d1_session', data.sessionId);
+        if (data.isSubUser) localStorage.setItem('tcb_is_sub_user', 'true');
+        if (data.permissions) localStorage.setItem('tcb_permissions', JSON.stringify(data.permissions));
+        window.location.href = 'app.html';
+      } else {
+        errorEl.textContent = data.error || 'Invalid username or password.';
+        errorEl.style.display = 'block';
+        document.getElementById('login-password').value = '';
+        document.getElementById('login-password').focus();
+      }
+    }).catch(function() {
+      errorEl.textContent = 'Invalid username or password. Please try again.';
+      errorEl.style.display = 'block';
+      document.getElementById('login-password').value = '';
+      document.getElementById('login-password').focus();
+    });
   }
 }
 

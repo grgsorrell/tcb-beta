@@ -2944,6 +2944,147 @@ function executeDeleteNote(noteId) {
 }
 
 // ============================================
+// USER ACCESS MANAGEMENT
+// ============================================
+function openAddUserModal() {
+  var ownerUser = window.TCB_USER || 'user';
+  var existing = document.getElementById('add-user-modal-backdrop');
+  if (existing) existing.remove();
+  var backdrop = document.createElement('div');
+  backdrop.id = 'add-user-modal-backdrop';
+  backdrop.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.6);z-index:999;display:flex;align-items:center;justify-content:center';
+  backdrop.onclick = function(e) { if (e.target === backdrop) backdrop.remove(); };
+  var roleCodes = { 'Campaign Manager':'mgr', 'Field Director':'field', 'Finance Director':'finance', 'Communications Director':'comms', 'Volunteer Coordinator':'vol', 'Social Media Manager':'social', 'Scheduler':'sched', 'Other':'staff' };
+  var roleOptions = Object.keys(roleCodes).map(function(r){ return '<option value="' + r + '">' + r + '</option>'; }).join('');
+  var tabs = ['Calendar','Budget','Notes','Intel','Tasks','Endorsements','Toolbox','Folders'];
+  var permHtml = tabs.map(function(t){ return '<div style="display:flex;align-items:center;gap:8px;padding:4px 0"><input type="checkbox" checked id="perm-' + t.toLowerCase() + '"><label style="font-size:12px;color:var(--t1);width:100px">' + t + '</label><label style="font-size:10px;color:var(--t3)"><input type="radio" name="access-' + t.toLowerCase() + '" value="read" style="margin-right:2px">Read</label><label style="font-size:10px;color:var(--t3)"><input type="radio" name="access-' + t.toLowerCase() + '" value="full" checked style="margin-right:2px">Full</label></div>'; }).join('');
+  backdrop.innerHTML = '<div style="width:480px;max-width:calc(100vw - 32px);max-height:80vh;overflow-y:auto;background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
+    '<div style="font-family:var(--font-d);font-size:20px;color:var(--t1);margin-bottom:4px">Add Team Member</div>' +
+    '<div style="font-size:11px;color:var(--t3);margin-bottom:16px">They will get their own login to access your campaign.</div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Full Name</label><input id="au-name" placeholder="John Smith" style="width:100%;margin-top:4px;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--t1);font-size:13px;font-family:var(--font-b);outline:none"></div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Role</label><select id="au-role" onchange="updateAutoUsername()" style="width:100%;margin-top:4px;padding:8px 10px;background:var(--n3);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--t1);font-size:13px;font-family:var(--font-b)"><option value="">Select role...</option>' + roleOptions + '</select></div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Tab Permissions</label><div style="margin-top:6px;padding:8px 12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:4px">' + permHtml + '</div></div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Username</label><input id="au-username" style="width:100%;margin-top:4px;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--t1);font-size:13px;font-family:monospace;outline:none" oninput="checkUsernameAvail()"><div id="au-username-status" style="font-size:10px;margin-top:4px"></div></div>' +
+    '<div style="margin-bottom:16px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Password</label><div style="display:flex;gap:6px;margin-top:4px"><input id="au-password" readonly value="' + generateUserPassword() + '" style="flex:1;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--gold);font-size:13px;font-family:monospace"><button onclick="document.getElementById(\'au-password\').value=generateUserPassword()" style="font-size:10px;color:var(--blue);background:none;border:1px solid rgba(107,156,216,.3);padding:4px 8px;border-radius:4px;cursor:pointer">\ud83d\udd04</button></div></div>' +
+    '<div style="display:flex;gap:8px;justify-content:flex-end"><button onclick="document.getElementById(\'add-user-modal-backdrop\').remove()" style="padding:9px 16px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">Cancel</button><button onclick="createSubUser()" style="padding:9px 16px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Create User</button></div></div>';
+  document.body.appendChild(backdrop);
+}
+
+function generateUserPassword() {
+  var chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  var symbols = '#@!$';
+  var pw = '';
+  for (var i = 0; i < 7; i++) pw += chars[Math.floor(Math.random() * chars.length)];
+  pw += symbols[Math.floor(Math.random() * symbols.length)];
+  return pw;
+}
+
+function updateAutoUsername() {
+  var role = document.getElementById('au-role').value;
+  var roleCodes = { 'Campaign Manager':'mgr', 'Field Director':'field', 'Finance Director':'finance', 'Communications Director':'comms', 'Volunteer Coordinator':'vol', 'Social Media Manager':'social', 'Scheduler':'sched', 'Other':'staff' };
+  var code = roleCodes[role] || 'staff';
+  var owner = window.TCB_USER || 'user';
+  document.getElementById('au-username').value = owner + '-' + code + '1';
+  checkUsernameAvail();
+}
+
+var _usernameCheckTimer = null;
+function checkUsernameAvail() {
+  clearTimeout(_usernameCheckTimer);
+  var username = document.getElementById('au-username').value.trim();
+  var el = document.getElementById('au-username-status');
+  if (!username || username.length < 3) { el.innerHTML = ''; return; }
+  _usernameCheckTimer = setTimeout(function() {
+    fetch(D1_API + '/api/users/check-username/' + encodeURIComponent(username), {
+      headers: { 'Authorization': 'Bearer ' + d1Session }
+    }).then(function(r){ return r.json(); }).then(function(data) {
+      if (data.available) {
+        el.innerHTML = '<span style="color:var(--green)">\u2713 Available</span>';
+      } else {
+        var suggestions = (data.suggestions || []).map(function(s){ return '<span onclick="document.getElementById(\'au-username\').value=\'' + s + '\';checkUsernameAvail()" style="color:var(--blue);cursor:pointer;text-decoration:underline">' + s + '</span>'; }).join(' ');
+        el.innerHTML = '<span style="color:var(--red)">\u2717 Taken</span>' + (suggestions ? ' — try: ' + suggestions : '');
+      }
+    }).catch(function(){ el.innerHTML = ''; });
+  }, 400);
+}
+
+function createSubUser() {
+  var name = document.getElementById('au-name').value.trim();
+  var role = document.getElementById('au-role').value;
+  var username = document.getElementById('au-username').value.trim();
+  var password = document.getElementById('au-password').value;
+  if (!name || !role || !username) { alert('Please fill all required fields'); return; }
+  var tabs = ['calendar','budget','notes','intel','tasks','endorsements','toolbox','folders'];
+  var permissions = {};
+  tabs.forEach(function(t) {
+    var cb = document.getElementById('perm-' + t);
+    if (cb && cb.checked) {
+      var radios = document.getElementsByName('access-' + t);
+      var access = 'full';
+      for (var i = 0; i < radios.length; i++) { if (radios[i].checked) access = radios[i].value; }
+      permissions[t] = access;
+    }
+  });
+  fetch(D1_API + '/api/users/create', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    body: JSON.stringify({ name: name, role: role, username: username, password: password, permissions: permissions })
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    if (data.error) { alert(data.error); return; }
+    document.getElementById('add-user-modal-backdrop').remove();
+    showCredentialsModal(name, username, password);
+    loadSubUsers();
+  }).catch(function(e){ alert('Error: ' + e.message); });
+}
+
+function showCredentialsModal(name, username, password) {
+  var existing = document.getElementById('creds-modal-backdrop');
+  if (existing) existing.remove();
+  var backdrop = document.createElement('div');
+  backdrop.id = 'creds-modal-backdrop';
+  backdrop.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.6);z-index:999;display:flex;align-items:center;justify-content:center';
+  var credsText = 'TCB Login Credentials\nURL: https://tcb-beta.grgsorrell.workers.dev\nUsername: ' + username + '\nPassword: ' + password + '\nYou will be asked to create a new password on first login.';
+  backdrop.innerHTML = '<div style="width:420px;max-width:calc(100vw - 32px);background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
+    '<div style="font-size:16px;color:var(--green);font-weight:700;margin-bottom:12px">\u2705 User Created</div>' +
+    '<div style="font-size:12px;color:var(--t2);margin-bottom:14px">Share these login credentials with <strong style="color:var(--t1)">' + escapeHtml(name) + '</strong>.</div>' +
+    '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:14px;font-family:monospace;font-size:13px;color:var(--gold);margin-bottom:8px">Username: ' + escapeHtml(username) + '<br>Password: ' + escapeHtml(password) + '</div>' +
+    '<div style="font-size:11px;color:var(--red);margin-bottom:14px">\u26a0\ufe0f Password shown once. Copy it now.</div>' +
+    '<div style="display:flex;gap:8px;justify-content:flex-end"><button onclick="navigator.clipboard.writeText(\'' + credsText.replace(/'/g,"\\'").replace(/\n/g,"\\n") + '\');this.textContent=\'\u2713 Copied\'" style="padding:8px 14px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">\ud83d\udccb Copy Credentials</button><button onclick="document.getElementById(\'creds-modal-backdrop\').remove()" style="padding:8px 14px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Done</button></div></div>';
+  document.body.appendChild(backdrop);
+}
+
+function loadSubUsers() {
+  if (!d1Session) return;
+  var el = document.getElementById('sub-users-list');
+  if (!el) return;
+  fetch(D1_API + '/api/users/list', { headers: { 'Authorization': 'Bearer ' + d1Session } })
+  .then(function(r){ return r.json(); }).then(function(data) {
+    if (!data.success || !data.users || data.users.length === 0) { el.innerHTML = '<div style="font-size:11px;color:var(--t3);font-style:italic">No team members added yet.</div>'; return; }
+    el.innerHTML = data.users.map(function(u) {
+      var permPills = Object.keys(u.permissions || {}).map(function(t) {
+        var access = u.permissions[t];
+        var color = access === 'full' ? 'var(--blue)' : 'var(--t3)';
+        return '<span style="font-size:8px;padding:2px 5px;border-radius:3px;background:rgba(255,255,255,.06);color:' + color + ';text-transform:uppercase;letter-spacing:.05em">' + t + '</span>';
+      }).join(' ');
+      var statusColor = u.status === 'active' ? 'var(--green)' : 'var(--red)';
+      var lastLogin = u.last_login ? u.last_login.substring(0, 16).replace('T', ' ') : 'Never';
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)">' +
+        '<div><div style="font-size:13px;font-weight:600;color:var(--t1)">' + escapeHtml(u.name) + ' <span style="font-size:10px;color:' + statusColor + '">\u2022 ' + u.status + '</span></div><div style="font-size:10px;color:var(--t3)">' + escapeHtml(u.role) + ' \u00b7 <span style="font-family:monospace">' + escapeHtml(u.username) + '</span></div><div style="margin-top:4px">' + permPills + '</div></div>' +
+        '<div style="text-align:right"><div style="font-size:9px;color:var(--t3)">Last login: ' + lastLogin + '</div>' +
+        (u.status === 'active' ? '<button onclick="revokeSubUser(\'' + u.id + '\',\'' + escapeHtml(u.name).replace(/'/g,"\\'") + '\')" style="font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;margin-top:4px">Revoke</button>' : '') +
+        '</div></div>';
+    }).join('');
+  }).catch(function(){ el.innerHTML = ''; });
+}
+
+function revokeSubUser(id, name) {
+  if (!confirm('Revoke access for ' + name + '? They will be immediately logged out.')) return;
+  fetch(D1_API + '/api/users/revoke', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    body: JSON.stringify({ subUserId: id })
+  }).then(function(r){ return r.json(); }).then(function() { loadSubUsers(); });
+}
+
+// ============================================
 // TOOLBOX
 // ============================================
 var toolboxServices = [
@@ -3040,6 +3181,11 @@ function renderSettings() {
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128276;</div><div><div class="sr-nm">Deadline Reminders</div><div class="sr-desc">Alerts 7, 3, and 1 day before deadlines</div></div></div><div class="on-badge">ON</div></div>' +
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128241;</div><div><div class="sr-nm">Sam Morning Briefs</div><div class="sr-desc">Daily briefing at 7am local time</div></div></div><div class="on-badge">ON</div></div>' +
     '</div>' +
+    '<div class="settings-section"><div class="settings-lbl">User Access</div>' +
+      '<div style="font-size:12px;color:var(--t3);margin-bottom:12px">Grant team members access to your campaign.</div>' +
+      '<button onclick="openAddUserModal()" style="font-size:12px;font-weight:600;color:#fff;background:var(--blue);border:none;padding:8px 16px;border-radius:6px;cursor:pointer;margin-bottom:14px">+ Add User</button>' +
+      '<div id="sub-users-list"></div>' +
+    '</div>' +
     '<div class="settings-section"><div class="settings-lbl">Account</div>' +
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128100;</div><div><div class="sr-nm">Logged in as</div><div class="sr-desc">' + escapeHtml(window.TCB_USER || 'unknown') + ' (beta)</div></div></div><div class="sr-arrow"></div></div>' +
       '<div class="settings-row" onclick="logoutUser()" style="cursor:pointer"><div class="sr-left"><div class="sr-icon">&#128682;</div><div><div class="sr-nm">Sign Out</div><div class="sr-desc">Sign out of The Candidate\'s Toolbox</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
@@ -3047,6 +3193,7 @@ function renderSettings() {
     '<div class="settings-section"><div class="settings-lbl">Danger Zone</div>' +
       '<div class="settings-row danger" onclick="resetAllData()"><div class="sr-left"><div class="sr-icon">&#128260;</div><div><div class="sr-nm">Reset Campaign Data</div><div class="sr-desc">Clears all tasks, expenses, and notes. Cannot be undone.</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
     '</div>';
+  loadSubUsers();
 }
 
 function editCampaignInfo() {

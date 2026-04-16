@@ -82,6 +82,137 @@ export default {
     }
 
     // ========================================
+    // API: Create sub-user
+    // ========================================
+    if (url.pathname === '/api/users/create' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const { name, role, username, password, permissions } = await request.json();
+        if (!name || !role || !username || !password) return jsonResponse({ error: 'All fields required' }, 400);
+        // Check username available
+        const existing = await env.DB.prepare('SELECT id FROM sub_users WHERE username = ?').bind(username).first();
+        if (existing) return jsonResponse({ error: 'Username taken' }, 409);
+        // Hash password (simple SHA-256 for beta — upgrade to bcrypt later)
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password + '_tcb_salt_2026');
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        const subUserId = generateId();
+        await env.DB.prepare(
+          'INSERT INTO sub_users (id, owner_id, username, password_hash, name, role, permissions_json, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(subUserId, userId, username, hashHex, name, role, JSON.stringify(permissions || {}), 'active').run();
+        // Log activity
+        await env.DB.prepare('INSERT INTO activity_log (id, user_id, user_name, action, details) VALUES (?, ?, ?, ?, ?)').bind(generateId(16), userId, 'Owner', 'Created sub-user', name + ' (' + role + ')').run();
+        return jsonResponse({ success: true, userId: subUserId, username });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // API: List sub-users
+    // ========================================
+    if (url.pathname === '/api/users/list' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const result = await env.DB.prepare('SELECT id, username, name, role, permissions_json, status, created_at, last_login FROM sub_users WHERE owner_id = ? ORDER BY created_at DESC').bind(userId).all();
+        const users = (result.results || []).map(u => ({
+          id: u.id, username: u.username, name: u.name, role: u.role,
+          permissions: JSON.parse(u.permissions_json || '{}'),
+          status: u.status, created_at: u.created_at, last_login: u.last_login
+        }));
+        return jsonResponse({ success: true, users });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // API: Revoke sub-user
+    // ========================================
+    if (url.pathname === '/api/users/revoke' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const { subUserId } = await request.json();
+        await env.DB.prepare('UPDATE sub_users SET status = ? WHERE id = ? AND owner_id = ?').bind('revoked', subUserId, userId).run();
+        // Delete their sessions
+        const sub = await env.DB.prepare('SELECT username FROM sub_users WHERE id = ?').bind(subUserId).first();
+        if (sub) {
+          const subUser = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(sub.username + '@sub.tcb').first();
+          if (subUser) await env.DB.prepare('DELETE FROM sessions WHERE user_id = ?').bind(subUser.id).run();
+        }
+        return jsonResponse({ success: true });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // API: Check username availability
+    // ========================================
+    if (url.pathname.startsWith('/api/users/check-username/') && request.method === 'GET') {
+      try {
+        const checkUsername = url.pathname.split('/').pop();
+        const existing = await env.DB.prepare('SELECT id FROM sub_users WHERE username = ?').bind(checkUsername).first();
+        const suggestions = [];
+        if (existing) {
+          for (let i = 2; i <= 4; i++) {
+            const alt = checkUsername.replace(/\d*$/, '') + i;
+            const altExists = await env.DB.prepare('SELECT id FROM sub_users WHERE username = ?').bind(alt).first();
+            if (!altExists) suggestions.push(alt);
+          }
+        }
+        return jsonResponse({ available: !existing, suggestions }, 200, corsHeaders);
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // AUTH: Sub-user login
+    // ========================================
+    if (url.pathname === '/auth/subuser-login' && request.method === 'POST') {
+      try {
+        const { username, password } = await request.json();
+        const sub = await env.DB.prepare('SELECT * FROM sub_users WHERE username = ? AND status = ?').bind(username, 'active').first();
+        if (!sub) return jsonResponse({ error: 'Invalid credentials or account revoked' }, 401);
+        // Hash and compare
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password + '_tcb_salt_2026');
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        if (hashHex !== sub.password_hash) return jsonResponse({ error: 'Invalid credentials' }, 401);
+        // Create session user entry if needed
+        let user = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(username + '@sub.tcb').first();
+        if (!user) {
+          const uid = generateId();
+          await env.DB.prepare('INSERT INTO users (id, email) VALUES (?, ?)').bind(uid, username + '@sub.tcb').run();
+          user = { id: uid };
+        }
+        // Create session
+        const sessionId = generateId(48);
+        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+        await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, user.id, expiresAt).run();
+        // Update last login
+        await env.DB.prepare('UPDATE sub_users SET last_login = datetime(\'now\') WHERE id = ?').bind(sub.id).run();
+        return jsonResponse({
+          success: true, sessionId, userId: user.id, username: sub.username,
+          isSubUser: true, name: sub.name, role: sub.role,
+          permissions: JSON.parse(sub.permissions_json || '{}'),
+          mustChangePassword: sub.must_change_password === 1,
+          ownerUsername: sub.owner_id
+        });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
     // AUTH: Send magic link
     // ========================================
     if (url.pathname === '/auth/login' && request.method === 'POST') {
