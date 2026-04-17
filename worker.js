@@ -1275,6 +1275,132 @@ export default {
     }
 
     // ========================================
+    // BILLING: All endpoints guarded by STRIPE_ACTIVE
+    // ========================================
+    const STRIPE_ACTIVE = env.STRIPE_ACTIVE === 'true';
+
+    if (url.pathname === '/api/billing/status' && request.method === 'GET') {
+      return jsonResponse({ active: STRIPE_ACTIVE });
+    }
+
+    if (url.pathname === '/api/billing/create-checkout' && request.method === 'POST') {
+      if (!STRIPE_ACTIVE) return jsonResponse({ error: 'billing_inactive' }, 503);
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const user = await env.DB.prepare('SELECT email FROM users WHERE id = ?').bind(userId).first();
+        const { plan, billingPeriod } = await request.json();
+        const priceMap = {
+          'starter_monthly': env.STRIPE_STARTER_MONTHLY, 'starter_annual': env.STRIPE_STARTER_ANNUAL,
+          'campaign_monthly': env.STRIPE_CAMPAIGN_MONTHLY, 'campaign_annual': env.STRIPE_CAMPAIGN_ANNUAL,
+          'pro_monthly': env.STRIPE_PRO_MONTHLY, 'pro_annual': env.STRIPE_PRO_ANNUAL,
+          'consultant_monthly': env.STRIPE_CONSULTANT_MONTHLY, 'consultant_annual': env.STRIPE_CONSULTANT_ANNUAL
+        };
+        const priceId = priceMap[plan + '_' + (billingPeriod || 'monthly')];
+        if (!priceId) return jsonResponse({ error: 'Invalid plan' }, 400);
+        const params = new URLSearchParams();
+        params.append('mode', 'subscription');
+        params.append('payment_method_types[0]', 'card');
+        params.append('line_items[0][price]', priceId);
+        params.append('line_items[0][quantity]', '1');
+        params.append('success_url', 'https://tcb-beta.grgsorrell.workers.dev/app?upgraded=true');
+        params.append('cancel_url', 'https://tcb-beta.grgsorrell.workers.dev/app?cancelled=true');
+        if (user && user.email) params.append('customer_email', user.email);
+        params.append('metadata[userId]', userId);
+        params.append('metadata[plan]', plan);
+        const resp = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+          method: 'POST',
+          headers: { 'Authorization': 'Basic ' + btoa(env.STRIPE_SECRET_KEY + ':'), 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString()
+        });
+        const session = await resp.json();
+        if (session.error) return jsonResponse({ error: session.error.message }, 400);
+        return jsonResponse({ success: true, checkoutUrl: session.url });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/billing/create-portal' && request.method === 'POST') {
+      if (!STRIPE_ACTIVE) return jsonResponse({ error: 'billing_inactive' }, 503);
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const sub = await env.DB.prepare('SELECT stripe_customer_id FROM subscriptions WHERE user_id = ?').bind(userId).first();
+        if (!sub || !sub.stripe_customer_id) return jsonResponse({ error: 'No subscription found' }, 404);
+        const params = new URLSearchParams();
+        params.append('customer', sub.stripe_customer_id);
+        params.append('return_url', 'https://tcb-beta.grgsorrell.workers.dev/app');
+        const resp = await fetch('https://api.stripe.com/v1/billing_portal/sessions', {
+          method: 'POST',
+          headers: { 'Authorization': 'Basic ' + btoa(env.STRIPE_SECRET_KEY + ':'), 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString()
+        });
+        const session = await resp.json();
+        return jsonResponse({ success: true, portalUrl: session.url });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/billing/subscription' && request.method === 'GET') {
+      if (!STRIPE_ACTIVE) return jsonResponse({ active: false, plan: 'beta' });
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const sub = await env.DB.prepare('SELECT * FROM subscriptions WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').bind(userId).first();
+        if (!sub) return jsonResponse({ success: true, subscription: null });
+        const pm = await env.DB.prepare('SELECT brand, last4 FROM payment_methods WHERE user_id = ? AND is_default = 1').bind(userId).first();
+        return jsonResponse({ success: true, subscription: { plan: sub.plan, status: sub.status, billingPeriod: sub.billing_period, currentPeriodEnd: sub.current_period_end, cancelAtPeriodEnd: sub.cancel_at_period_end === 1, paymentMethod: pm || null } });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/billing/webhook' && request.method === 'POST') {
+      if (!STRIPE_ACTIVE) return new Response('OK', { status: 200 });
+      try {
+        const body = await request.text();
+        const sig = request.headers.get('stripe-signature');
+        // TODO: Verify webhook signature with env.STRIPE_WEBHOOK_SECRET
+        const event = JSON.parse(body);
+        switch (event.type) {
+          case 'customer.subscription.created':
+          case 'customer.subscription.updated': {
+            const sub = event.data.object;
+            const userId = sub.metadata?.userId;
+            if (userId) {
+              await env.DB.prepare(
+                'INSERT INTO subscriptions (id, user_id, stripe_customer_id, stripe_subscription_id, plan, status, current_period_start, current_period_end, cancel_at_period_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(stripe_subscription_id) DO UPDATE SET status = excluded.status, current_period_start = excluded.current_period_start, current_period_end = excluded.current_period_end, cancel_at_period_end = excluded.cancel_at_period_end, updated_at = datetime(\'now\')'
+              ).bind(generateId(16), userId, sub.customer, sub.id, sub.metadata?.plan || 'starter', sub.status, new Date(sub.current_period_start * 1000).toISOString(), new Date(sub.current_period_end * 1000).toISOString(), sub.cancel_at_period_end ? 1 : 0).run();
+              await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind(sub.metadata?.plan || 'starter', userId).run();
+            }
+            break;
+          }
+          case 'customer.subscription.deleted': {
+            const sub = event.data.object;
+            const userId = sub.metadata?.userId;
+            if (userId) {
+              await env.DB.prepare('UPDATE subscriptions SET status = ? WHERE stripe_subscription_id = ?').bind('canceled', sub.id).run();
+              await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind('trial', userId).run();
+            }
+            break;
+          }
+          case 'invoice.payment_succeeded': {
+            const inv = event.data.object;
+            await env.DB.prepare(
+              'INSERT OR IGNORE INTO invoices (id, user_id, stripe_invoice_id, amount, status, paid_at) VALUES (?, ?, ?, ?, ?, ?)'
+            ).bind(generateId(16), inv.metadata?.userId || '', inv.id, (inv.amount_paid || 0) / 100, 'paid', new Date().toISOString()).run();
+            break;
+          }
+        }
+        return new Response('OK', { status: 200, headers: corsHeaders });
+      } catch (error) { return new Response('Webhook error', { status: 400, headers: corsHeaders }); }
+    }
+
+    // Plan limit check helper (used by other endpoints)
+    function checkPlanLimit(plan, resource, current) {
+      if (!STRIPE_ACTIVE) return { allowed: true };
+      const limits = { starter: { users: 1, campaigns: 1 }, campaign: { users: 3, campaigns: 3 }, pro: { users: 10, campaigns: 10 }, consultant: { users: 999, campaigns: 999 }, beta: { users: 999, campaigns: 999 } };
+      var limit = (limits[plan] || limits.starter)[resource] || 1;
+      return current >= limit ? { allowed: false, limit: limit, upgradeRequired: true } : { allowed: true };
+    }
+
+    // ========================================
     // ADMIN: Dashboard Stats
     // ========================================
     if (url.pathname === '/api/admin/stats' && request.method === 'GET') {
