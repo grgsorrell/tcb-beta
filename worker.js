@@ -52,6 +52,27 @@ export default {
     }
 
     // ========================================
+    // HELPER: Log API usage to console and D1
+    // ========================================
+    async function logApiUsage(feature, data, userId) {
+      const usage = data && data.usage ? data.usage : {};
+      const inputTokens = (usage.input_tokens || 0) + (usage.cache_creation_input_tokens || 0) + (usage.cache_read_input_tokens || 0);
+      const outputTokens = usage.output_tokens || 0;
+      // Haiku 4.5 rates: $0.80/M input, $4.00/M output
+      // Cache creation: $1.00/M, Cache read: $0.08/M
+      const cacheCreate = usage.cache_creation_input_tokens || 0;
+      const cacheRead = usage.cache_read_input_tokens || 0;
+      const regularInput = usage.input_tokens || 0;
+      const cost = (regularInput * 0.80 / 1000000) + (cacheCreate * 1.00 / 1000000) + (cacheRead * 0.08 / 1000000) + (outputTokens * 4.00 / 1000000);
+      console.log(`[API] ${feature}: ${inputTokens} in / ${outputTokens} out = $${cost.toFixed(4)}`);
+      try {
+        await env.DB.prepare(
+          'INSERT INTO api_usage (id, user_id, feature, input_tokens, output_tokens, estimated_cost, model) VALUES (?, ?, ?, ?, ?, ?, ?)'
+        ).bind(generateId(16), userId || '', feature, inputTokens, outputTokens, cost, 'claude-haiku-4-5-20251001').run();
+      } catch(e) { /* don't fail the request if logging fails */ }
+    }
+
+    // ========================================
     // AUTH: Beta login (username/password)
     // ========================================
     if (url.pathname === '/auth/beta-login' && request.method === 'POST') {
@@ -1401,6 +1422,25 @@ export default {
     }
 
     // ========================================
+    // ========================================
+    // ADMIN: API Usage Report
+    // ========================================
+    if (url.pathname === '/api/admin/api-usage' && request.method === 'GET') {
+      try {
+        const adminPass = request.headers.get('X-Admin-Key');
+        if (!adminPass || adminPass !== env.ADMIN_PASSWORD) return jsonResponse({ error: 'Unauthorized' }, 401);
+        const summary = await env.DB.prepare(
+          'SELECT feature, COUNT(*) as calls, SUM(input_tokens) as total_input, SUM(output_tokens) as total_output, SUM(estimated_cost) as total_cost FROM api_usage GROUP BY feature ORDER BY total_cost DESC'
+        ).all();
+        const recent = await env.DB.prepare(
+          'SELECT feature, input_tokens, output_tokens, estimated_cost, created_at FROM api_usage ORDER BY created_at DESC LIMIT 50'
+        ).all();
+        const totalCost = await env.DB.prepare('SELECT SUM(estimated_cost) as total FROM api_usage').first();
+        return jsonResponse({ success: true, totalCost: totalCost ? totalCost.total : 0, byFeature: summary.results || [], recentCalls: recent.results || [] });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
     // ADMIN: Dashboard Stats
     // ========================================
     if (url.pathname === '/api/admin/stats' && request.method === 'GET') {
@@ -1580,6 +1620,16 @@ RULES:
         });
 
         const researchData = await researchResponse.json();
+        // Detect research feature from message content
+        var researchFeature = 'research';
+        if (message.indexOf('morning briefing') >= 0) researchFeature = 'morning_brief';
+        else if (message.indexOf('all candidates who have officially filed') >= 0) researchFeature = 'intel_candidates';
+        else if (message.indexOf('recent news, events, and issues') >= 0) researchFeature = 'intel_pulse';
+        else if (message.indexOf('voter data') >= 0 || message.indexOf('voter registration') >= 0) researchFeature = 'intel_outreach';
+        else if (message.indexOf('Analyze all candidates') >= 0 || message.indexOf('threat') >= 0) researchFeature = 'intel_threats';
+        else if (message.indexOf('Research the following candidate') >= 0 || message.indexOf('research candidates') >= 0) researchFeature = 'candidate_brief';
+        else if (message.indexOf('district pain points') >= 0 || message.indexOf('local news') >= 0) researchFeature = 'day1_brief';
+        await logApiUsage(researchFeature, researchData, rateLimitUserId);
         return new Response(JSON.stringify(researchData), {
           headers: { "Content-Type": "application/json", ...corsHeaders },
         });
@@ -2112,7 +2162,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             messages: msgs,
           }),
         });
-        return resp.json();
+        const data = await resp.json();
+        await logApiUsage('sam_chat', data, rateLimitUserId);
+        return data;
       }
 
       // Simple pass-through: one API call, return raw response
