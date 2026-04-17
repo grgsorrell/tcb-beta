@@ -114,5 +114,11 @@ client-side execution in app.html.
 - Budget progress bar shows AVAILABLE not spent
 - Days to election always calculated fresh — never cached
 - Budget key is `total` only — never use `totalBudget`
-- Run `npx playwright test sam-tests.spec.js` after changes
 - Always deploy BOTH backend AND frontend (see Deployment above)
+
+## Playwright Testing
+- NEVER run Playwright tests against the live production site
+- Tests must only run against local dev server or be skipped
+- To run locally: `wrangler dev` then `npx playwright test`
+- During active development: skip tests unless specifically asked
+- Manual testing by Greg is preferred over automated tests hitting live
