@@ -1596,7 +1596,8 @@ export default {
         try {
           // NOTE: Cloudflare Workers require HTTPS. VPS needs SSL or Cloudflare Tunnel.
           // Using env.VPS_SEARCH_URL to allow HTTPS upgrade without code change.
-          const vpsUrl = env.VPS_SEARCH_URL || 'https://search.thecandidatestoolbox.com/smart-search';
+          const vpsBase = env.VPS_SEARCH_URL || 'https://search.thecandidatestoolbox.com';
+          const vpsUrl = vpsBase.replace(/\/+$/, '') + '/smart-search';
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 15000);
           const resp = await fetch(vpsUrl, {
