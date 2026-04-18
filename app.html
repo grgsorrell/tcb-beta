@@ -3783,6 +3783,18 @@ function loadIntelTab(tabKey, forceRefresh) {
 
 function refreshActiveIntelTab() {
   var btn = document.getElementById('intel-refresh-btn');
+  // Enforce 24-hour cooldown on manual refresh
+  var cache = getIntelCache();
+  var tabData = cache[intelActiveTab];
+  if (tabData && tabData.fetchedAt) {
+    var hoursSince = (Date.now() - tabData.fetchedAt) / (1000 * 60 * 60);
+    if (hoursSince < 24) {
+      var hoursLeft = Math.ceil(24 - hoursSince);
+      if (btn) { btn.textContent = 'Next refresh in ' + hoursLeft + 'h'; btn.style.opacity = '.5'; btn.style.pointerEvents = 'none'; }
+      setTimeout(function(){ if (btn) { btn.textContent = '\ud83d\udd04 Refresh'; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; } }, 3000);
+      return;
+    }
+  }
   if (btn) { btn.textContent = 'Researching...'; btn.style.opacity = '.5'; btn.style.pointerEvents = 'none'; }
   loadIntelTab(intelActiveTab, true);
 }
