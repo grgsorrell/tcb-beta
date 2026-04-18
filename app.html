@@ -3853,18 +3853,38 @@ function fetchIntelData(tabKey) {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({message: prompt, mode: 'research', candidateName: name, specificOffice: office, location: loc, state: state, electionDate: campaignData.electionDate||'', party: party})
   }).then(function(r){return r.json();}).then(function(data) {
-    var rawText = '';
-    if (data.content && Array.isArray(data.content)) data.content.forEach(function(b){if(b.type==='text'&&b.text) rawText+=b.text;});
-    var jsonStr = rawText.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+    // Extract JSON from the LAST text block only — Anthropic puts final answer last
+    var textBlocks = [];
+    if (data.content && Array.isArray(data.content)) {
+      data.content.forEach(function(b){ if (b.type === 'text' && b.text) textBlocks.push(b.text); });
+    }
+    var lastBlock = textBlocks.length > 0 ? textBlocks[textBlocks.length - 1] : '';
+    console.log('[Intel ' + tabKey + '] ' + textBlocks.length + ' text blocks, last block: ' + lastBlock.length + ' chars');
+
     var obj = null;
-    try { obj = JSON.parse(jsonStr); } catch(e) { var m = jsonStr.match(/\{[\s\S]*\}/); if(m) try{obj=JSON.parse(m[0]);}catch(e2){} }
+    // Attempt 1: Parse last text block as pure JSON (strip code fences)
+    var jsonStr = lastBlock.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    try { obj = JSON.parse(jsonStr); } catch(e1) {
+      // Attempt 2: Extract last JSON object from last block
+      var matches = jsonStr.match(/\{[\s\S]*\}/g);
+      if (matches) { try { obj = JSON.parse(matches[matches.length - 1]); } catch(e2) {} }
+    }
+    // Attempt 3: If last block failed, try ALL text blocks concatenated (fallback)
+    if (!obj && textBlocks.length > 1) {
+      var allText = textBlocks.join('\n').replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+      var allMatches = allText.match(/\{[\s\S]*\}/g);
+      if (allMatches) { try { obj = JSON.parse(allMatches[allMatches.length - 1]); } catch(e3) {} }
+    }
+
     if (obj) {
+      console.log('[Intel ' + tabKey + '] Parsed OK:', Object.keys(obj).join(', '));
       var cache = getIntelCache();
       cache[tabKey] = { data: obj, fetchedAt: Date.now() };
       saveIntelCache(cache);
       if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
       renderIntelTabContent(tabKey, obj, Date.now());
     } else {
+      console.error('[Intel ' + tabKey + '] JSON parse FAILED. Raw last block:', lastBlock.substring(0, 500));
       if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
       showIntelError();
     }
