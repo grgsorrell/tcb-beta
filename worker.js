@@ -1621,7 +1621,34 @@ export default {
       }
 
       // ========================================
-      // RESEARCH MODE — VPS search first, Anthropic fallback
+      // HELPER: Multi-query VPS search (parallel, free)
+      // ========================================
+      async function multiSearch(queries, maxCharsPerQuery) {
+        const vpsBase = (env.VPS_SEARCH_URL || 'https://search.thecandidatestoolbox.com').replace(/\/+$/, '') + '/smart-search';
+        const promises = queries.map(q =>
+          fetch(vpsBase, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+            body: JSON.stringify({ query: q, max_results: 5, max_chars: maxCharsPerQuery || 5000 }),
+            signal: AbortSignal.timeout(15000)
+          }).then(r => r.json()).catch(() => null)
+        );
+        const responses = await Promise.all(promises);
+        let combined = '';
+        let ok = 0;
+        for (let i = 0; i < responses.length; i++) {
+          const r = responses[i];
+          if (r && r.content && r.content.length > 30) {
+            combined += '\n\n===== Search: ' + queries[i] + ' =====\n' + r.content;
+            ok++;
+          }
+        }
+        console.log('[Search] multiSearch:', ok + '/' + queries.length, 'succeeded,', combined.length, 'chars total');
+        return combined.length > 100 ? { content: combined, ok, total: queries.length } : null;
+      }
+
+      // ========================================
+      // RESEARCH MODE — multi-query VPS search, Anthropic fallback
       // ========================================
       if (mode === 'research') {
         // Detect feature for logging
@@ -1634,13 +1661,86 @@ export default {
         else if (message.indexOf('Research the following candidate') >= 0 || message.indexOf('research candidates') >= 0) researchFeature = 'candidate_brief';
         else if (message.indexOf('district pain points') >= 0 || message.indexOf('local news') >= 0) researchFeature = 'day1_brief';
 
-        // Try VPS search first — build search query from the message
-        const searchTerms = [candidateName, specificOffice, state, location].filter(Boolean).join(' ');
-        const vpsResult = await smartWebSearch(searchTerms + ' ' + new Date().getFullYear(), 12000);
+        // Build targeted multi-query search based on feature type
+        const yr = new Date().getFullYear();
+        const office = specificOffice || 'office';
+        const loc = location || '';
+        const st = state || '';
+        const cn = candidateName || '';
+        const district = loc + ' ' + st;
+        let searchQueries = [];
+
+        // Build natural district description for better search results
+        const fullDistrict = office + ' ' + (loc ? loc + ' ' : '') + st;
+
+        if (researchFeature === 'intel_candidates') {
+          searchQueries = [
+            fullDistrict + ' ' + yr + ' candidates filed',
+            fullDistrict + ' ' + yr + ' primary candidates',
+            'site:ballotpedia.org ' + fullDistrict + ' ' + yr,
+            cn + ' ' + fullDistrict + ' ' + yr + ' election opponents',
+            st + ' secretary of state ' + office + ' candidates ' + yr
+          ];
+        } else if (researchFeature === 'intel_pulse') {
+          searchQueries = [
+            cn + ' ' + st + ' news ' + yr,
+            fullDistrict + ' politics news ' + yr,
+            st + ' political news this week ' + yr,
+            loc + ' ' + st + ' election news ' + yr
+          ];
+        } else if (researchFeature === 'intel_outreach') {
+          searchQueries = [
+            fullDistrict + ' voter registration demographics',
+            fullDistrict + ' voter turnout history',
+            st + ' ' + loc + ' registered voters ' + yr + ' party breakdown'
+          ];
+        } else if (researchFeature === 'intel_threats') {
+          searchQueries = [
+            fullDistrict + ' ' + yr + ' primary candidates filed',
+            fullDistrict + ' ' + yr + ' election opponents challengers',
+            cn + ' opponent challenger ' + yr + ' ' + st,
+            'site:ballotpedia.org ' + fullDistrict + ' ' + yr,
+            fullDistrict + ' ' + yr + ' campaign fundraising FEC',
+            st + ' ' + office + ' ' + yr + ' race challenger Democratic Republican',
+            cn + ' versus ' + st + ' ' + yr + ' election',
+            fullDistrict + ' filed candidates ' + yr + ' secretary of state'
+          ];
+        } else if (researchFeature === 'morning_brief') {
+          searchQueries = [
+            cn + ' ' + st + ' news ' + yr,
+            st + ' ' + (body.party || '') + ' politics news today',
+            fullDistrict + ' ' + yr + ' campaign',
+            loc + ' ' + st + ' news this week'
+          ];
+        } else if (researchFeature === 'candidate_brief') {
+          searchQueries = [
+            cn + ' biography background ' + st,
+            cn + ' voting record political positions',
+            fullDistrict + ' ' + yr + ' election race',
+            cn + ' campaign ' + st + ' ' + yr,
+            cn + ' endorsements ' + st
+          ];
+        } else {
+          searchQueries = [
+            cn + ' ' + fullDistrict + ' ' + yr,
+            fullDistrict + ' politics ' + yr,
+            cn + ' ' + st + ' news ' + yr
+          ];
+        }
+
+        // Intel tabs (candidates, threats) need high precision — use Anthropic
+        // Morning brief, pulse, outreach use VPS (high frequency, $0/call)
+        const useAnthropicDirect = ['intel_candidates', 'intel_threats', 'candidate_brief'].indexOf(researchFeature) >= 0;
+        if (useAnthropicDirect) {
+          console.log('[Search] Using Anthropic direct for', researchFeature, '(precision required)');
+        }
+
+        // Run multi-query VPS search (skipped for precision features)
+        const vpsResult = useAnthropicDirect ? null : await multiSearch(searchQueries, 5000);
 
         if (vpsResult) {
           // VPS succeeded — call Haiku WITHOUT web_search tool (much cheaper)
-          const enrichedMessage = message + '\n\nHere is current research data you MUST use to answer. Do NOT search again — use this data:\n\n' + vpsResult.content;
+          const enrichedMessage = message + '\n\nHere is current research data you MUST use to answer. Do NOT search the web — use ONLY this data:\n\n' + vpsResult.content;
           const vpsResponse = await fetch("https://api.anthropic.com/v1/messages", {
             method: "POST",
             headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
@@ -1648,7 +1748,7 @@ export default {
               model: "claude-haiku-4-5-20251001",
               max_tokens: 8000,
               temperature: 0.2,
-              system: [{ type: "text", text: 'You are a political research analyst. Return ONLY valid JSON. No preamble, no explanation. Be specific with real names, dates, percentages. Current year is ' + new Date().getFullYear() + '. Use the provided research data to answer. Do not make up data.' }],
+              system: [{ type: "text", text: 'You are a political research analyst. ' + (researchFeature === 'morning_brief' || researchFeature === 'day1_brief' ? 'Write in plain text, no JSON. Be conversational and concise.' : 'Return ONLY valid JSON. No preamble, no explanation.') + ' Be specific with real names, dates, percentages. Current year is ' + new Date().getFullYear() + '. Use the provided research data to answer. Do not make up data.' }],
               messages: [{ role: "user", content: enrichedMessage }],
             }),
           });
