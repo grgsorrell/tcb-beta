@@ -1590,9 +1590,74 @@ export default {
       }
 
       // ========================================
-      // RESEARCH MODE — bypasses Sam persona
+      // HELPER: VPS Smart Search (free, self-hosted)
+      // ========================================
+      async function smartWebSearch(query, maxChars) {
+        try {
+          // NOTE: Cloudflare Workers require HTTPS. VPS needs SSL or Cloudflare Tunnel.
+          // Using env.VPS_SEARCH_URL to allow HTTPS upgrade without code change.
+          const vpsUrl = env.VPS_SEARCH_URL || 'https://search.thecandidatestoolbox.com/smart-search';
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 15000);
+          const resp = await fetch(vpsUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+            body: JSON.stringify({ query, max_results: 5, max_chars: maxChars || 12000 }),
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+          if (!resp.ok) throw new Error('VPS ' + resp.status);
+          const data = await resp.json();
+          if (data.success !== false && data.content && data.content.length > 50) {
+            console.log('[Search] VPS success:', (data.source || 'unknown'), data.content.length, 'chars');
+            return { source: 'vps', content: data.content };
+          }
+          throw new Error('VPS returned empty content');
+        } catch (e) {
+          console.warn('[Search] VPS failed:', e.message);
+          return null;
+        }
+      }
+
+      // ========================================
+      // RESEARCH MODE — VPS search first, Anthropic fallback
       // ========================================
       if (mode === 'research') {
+        // Detect feature for logging
+        var researchFeature = 'research';
+        if (message.indexOf('morning briefing') >= 0) researchFeature = 'morning_brief';
+        else if (message.indexOf('all candidates who have officially filed') >= 0) researchFeature = 'intel_candidates';
+        else if (message.indexOf('recent news, events, and issues') >= 0) researchFeature = 'intel_pulse';
+        else if (message.indexOf('voter data') >= 0 || message.indexOf('voter registration') >= 0) researchFeature = 'intel_outreach';
+        else if (message.indexOf('Analyze all candidates') >= 0 || message.indexOf('threat') >= 0) researchFeature = 'intel_threats';
+        else if (message.indexOf('Research the following candidate') >= 0 || message.indexOf('research candidates') >= 0) researchFeature = 'candidate_brief';
+        else if (message.indexOf('district pain points') >= 0 || message.indexOf('local news') >= 0) researchFeature = 'day1_brief';
+
+        // Try VPS search first — build search query from the message
+        const searchTerms = [candidateName, specificOffice, state, location].filter(Boolean).join(' ');
+        const vpsResult = await smartWebSearch(searchTerms + ' ' + new Date().getFullYear(), 12000);
+
+        if (vpsResult) {
+          // VPS succeeded — call Haiku WITHOUT web_search tool (much cheaper)
+          const enrichedMessage = message + '\n\nHere is current research data you MUST use to answer. Do NOT search again — use this data:\n\n' + vpsResult.content;
+          const vpsResponse = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
+            body: JSON.stringify({
+              model: "claude-haiku-4-5-20251001",
+              max_tokens: 8000,
+              temperature: 0.2,
+              system: [{ type: "text", text: 'You are a political research analyst. Return ONLY valid JSON. No preamble, no explanation. Be specific with real names, dates, percentages. Current year is ' + new Date().getFullYear() + '. Use the provided research data to answer. Do not make up data.' }],
+              messages: [{ role: "user", content: enrichedMessage }],
+            }),
+          });
+          const vpsData = await vpsResponse.json();
+          await logApiUsage(researchFeature + '_vps', vpsData, rateLimitUserId);
+          return new Response(JSON.stringify(vpsData), { headers: { "Content-Type": "application/json", ...corsHeaders } });
+        }
+
+        // VPS failed — fall back to Anthropic web_search (expensive but reliable)
+        console.log('[Search] Falling back to Anthropic web_search for', researchFeature);
         const researchSystemPrompt = `You are a political research analyst. Your job is to use web search to research candidates and races, then return structured data as JSON.
 
 RULES:
@@ -1604,11 +1669,7 @@ RULES:
 
         const researchResponse = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": env.ANTHROPIC_API_KEY,
-            "anthropic-version": "2023-06-01",
-          },
+          headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
           body: JSON.stringify({
             model: "claude-haiku-4-5-20251001",
             max_tokens: 8000,
@@ -1620,19 +1681,8 @@ RULES:
         });
 
         const researchData = await researchResponse.json();
-        // Detect research feature from message content
-        var researchFeature = 'research';
-        if (message.indexOf('morning briefing') >= 0) researchFeature = 'morning_brief';
-        else if (message.indexOf('all candidates who have officially filed') >= 0) researchFeature = 'intel_candidates';
-        else if (message.indexOf('recent news, events, and issues') >= 0) researchFeature = 'intel_pulse';
-        else if (message.indexOf('voter data') >= 0 || message.indexOf('voter registration') >= 0) researchFeature = 'intel_outreach';
-        else if (message.indexOf('Analyze all candidates') >= 0 || message.indexOf('threat') >= 0) researchFeature = 'intel_threats';
-        else if (message.indexOf('Research the following candidate') >= 0 || message.indexOf('research candidates') >= 0) researchFeature = 'candidate_brief';
-        else if (message.indexOf('district pain points') >= 0 || message.indexOf('local news') >= 0) researchFeature = 'day1_brief';
-        await logApiUsage(researchFeature, researchData, rateLimitUserId);
-        return new Response(JSON.stringify(researchData), {
-          headers: { "Content-Type": "application/json", ...corsHeaders },
-        });
+        await logApiUsage(researchFeature + '_anthropic', researchData, rateLimitUserId);
+        return new Response(JSON.stringify(researchData), { headers: { "Content-Type": "application/json", ...corsHeaders } });
       }
 
       // ========================================

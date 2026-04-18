@@ -116,6 +116,18 @@ client-side execution in app.html.
 - Budget key is `total` only — never use `totalBudget`
 - Always deploy BOTH backend AND frontend (see Deployment above)
 
+## Search Architecture
+Primary: VPS search (self-hosted, $0/call)
+  - SearXNG + Trafilatura on Hetzner VPS
+  - Auth: X-Search-Key: tcb-search-2026
+  - 15 second timeout
+  - REQUIRES HTTPS — set env.VPS_SEARCH_URL to HTTPS endpoint
+  - Setup: domain with SSL pointing to 178.104.115.66:8889
+    OR Cloudflare Tunnel to proxy the connection
+Fallback: Anthropic built-in web_search (~$0.14/call)
+All research calls try VPS first, Anthropic on failure.
+Feature logged as: feature_vps or feature_anthropic in api_usage.
+
 ## Playwright Testing
 - NEVER run Playwright tests against the live production site
 - Tests must only run against local dev server or be skipped
