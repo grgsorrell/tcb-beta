@@ -1592,6 +1592,88 @@ export default {
       // ========================================
       // HELPER: VPS Smart Search (free, self-hosted)
       // ========================================
+      // ========================================
+      // HELPER: FEC Research Service (free, federal races only)
+      // ========================================
+      function getFECOfficeCode(office) {
+        var o = (office || '').toLowerCase();
+        if (o.includes('house') || o.includes('congress') || o.includes('representative')) return 'H';
+        if (o.includes('senate') || o.includes('senator')) return 'S';
+        if (o.includes('president')) return 'P';
+        return null;
+      }
+      function extractDistrict(office, loc) {
+        var m = (office + ' ' + loc).match(/district\s*(\d+)/i) || (office + ' ' + loc).match(/(\d+)(?:th|st|nd|rd)/i);
+        return m ? m[1].padStart(2, '0') : '';
+      }
+      function fecFormatName(n) {
+        if (!n || !n.includes(',')) return n || '';
+        var parts = n.split(',').map(function(s){ return s.trim(); });
+        var last = parts[0], first = (parts[1] || '').split(' ')[0];
+        function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
+        return cap(first) + ' ' + cap(last);
+      }
+
+      async function fetchFECCandidates(officeCode, st, dist, year) {
+        try {
+          var resp = await fetch('https://research.thecandidatestoolbox.com/race/full', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+            body: JSON.stringify({ office: officeCode, state: st, district: dist, election_year: year }),
+            signal: AbortSignal.timeout(30000)
+          });
+          if (!resp.ok) throw new Error('FEC ' + resp.status);
+          var data = await resp.json();
+          if (!data.success) throw new Error('FEC returned failure');
+          console.log('[FEC] Got', data.total, 'candidates for', officeCode, st, dist);
+          return data;
+        } catch(e) { console.warn('[FEC] Failed:', e.message); return null; }
+      }
+
+      function buildFECCandidatesJSON(fecData, candidateName) {
+        var cn = (candidateName || '').toLowerCase();
+        var candidates = (fecData.candidates || []).map(function(c) {
+          var name = fecFormatName(c.name);
+          var nameLower = name.toLowerCase();
+          var isYou = cn.split(' ').filter(function(p){ return p.length > 1; }).every(function(p){ return nameLower.includes(p); });
+          var statusMap = { active: 'confirmed', inactive: 'withdrawn', possibly_active: 'rumored', unknown: 'rumored' };
+          var bgParts = [];
+          if ((c.incumbent_challenge||'').toLowerCase().indexOf('incumbent') >= 0) bgParts.push('Incumbent');
+          else if ((c.incumbent_challenge||'').toLowerCase().indexOf('challenger') >= 0) bgParts.push('Challenger');
+          else if ((c.incumbent_challenge||'').toLowerCase().indexOf('open') >= 0) bgParts.push('Open seat candidate');
+          if (c.finances && c.finances.total_raised > 0) bgParts.push('Raised $' + c.finances.total_raised.toLocaleString());
+          if (c.finances && c.finances.cash_on_hand > 0) bgParts.push('$' + c.finances.cash_on_hand.toLocaleString() + ' cash on hand');
+          return { name: name, party: c.party || c.party_short || '', isIncumbent: (c.incumbent_challenge||'').toLowerCase().indexOf('incumbent') >= 0, background: bgParts.join(' \u00b7 '), status: statusMap[c.activity_status] || 'confirmed', isCurrentCandidate: isYou, activity_status: c.activity_status, finances: c.finances };
+        });
+        return { candidates: candidates, totalFiled: fecData.total, raceNote: 'Source: FEC.gov. ' + fecData.active_count + ' active, ' + fecData.inactive_count + ' inactive candidates.', racePhase: 'general', source: 'fec_api' };
+      }
+
+      function buildFECThreatsJSON(fecData, candidateName) {
+        var cn = (candidateName || '').toLowerCase();
+        var userFinances = null;
+        var opponents = [];
+        (fecData.candidates || []).forEach(function(c) {
+          var name = fecFormatName(c.name);
+          if (cn.split(' ').filter(function(p){ return p.length > 1; }).every(function(p){ return name.toLowerCase().includes(p); })) {
+            userFinances = c.finances;
+          } else if (c.activity_status === 'active' || c.activity_status === 'possibly_active') {
+            var userCash = (userFinances || {}).cash_on_hand || 1;
+            var oppCash = (c.finances || {}).cash_on_hand || 0;
+            var ratio = oppCash / Math.max(userCash, 1);
+            var score = ratio > 2 ? 9 : ratio > 1 ? 7 : ratio > 0.5 ? 5 : ratio > 0.1 ? 3 : 1;
+            if ((c.finances || {}).pac_contributions > 100000) score = Math.min(10, score + 1);
+            var level = score >= 7 ? 'high' : score >= 4 ? 'medium' : 'low';
+            var bgParts = [];
+            if (c.party) bgParts.push(c.party);
+            if (c.finances && c.finances.total_raised > 0) bgParts.push('Raised $' + c.finances.total_raised.toLocaleString());
+            if (c.finances && c.finances.cash_on_hand > 0) bgParts.push('$' + c.finances.cash_on_hand.toLocaleString() + ' COH');
+            opponents.push({ name: name, party: c.party || '', overallScore: score, threatLevel: level, scores: { financial: Math.round(ratio * 5), nameRecognition: (c.incumbent_challenge||'').toLowerCase().indexOf('incumbent') >= 0 ? 8 : 3, momentum: c.finances && c.finances.total_raised > 50000 ? 6 : 2, directThreat: score }, summary: bgParts.join(' \u00b7 '), keyRisk: oppCash > 100000 ? 'Well-funded challenger' : 'Limited funding', trend: c.finances && c.finances.total_raised > 10000 ? 'stable' : 'fading' });
+          }
+        });
+        opponents.sort(function(a, b) { return b.overallScore - a.overallScore; });
+        return { opponents: opponents, strategicSummary: opponents.length === 0 ? 'No active opponents with significant financial activity found in FEC records.' : opponents.length + ' active opponent(s). Top threat: ' + (opponents[0] || {}).name + ' (' + (opponents[0] || {}).threatLevel + ', score ' + (opponents[0] || {}).overallScore + '/10). Source: FEC.gov financial data.', source: 'fec_api' };
+      }
+
       async function smartWebSearch(query, maxChars) {
         try {
           // NOTE: Cloudflare Workers require HTTPS. VPS needs SSL or Cloudflare Tunnel.
@@ -1728,14 +1810,30 @@ export default {
           ];
         }
 
-        // Intel tabs (candidates, threats) need high precision — use Anthropic
-        // Morning brief, pulse, outreach use VPS (high frequency, $0/call)
-        const useAnthropicDirect = ['intel_candidates', 'intel_threats', 'candidate_brief'].indexOf(researchFeature) >= 0;
-        if (useAnthropicDirect) {
-          console.log('[Search] Using Anthropic direct for', researchFeature, '(precision required)');
+        // For federal races: use FEC research service ($0) for candidates/threats
+        const fecCode = getFECOfficeCode(office);
+        const fecDistrict = fecCode === 'H' ? extractDistrict(office, loc) : '';
+        if (fecCode && (researchFeature === 'intel_candidates' || researchFeature === 'intel_threats')) {
+          const fecData = await fetchFECCandidates(fecCode, st, fecDistrict, yr);
+          if (fecData) {
+            var fecResult = researchFeature === 'intel_candidates'
+              ? buildFECCandidatesJSON(fecData, cn)
+              : buildFECThreatsJSON(fecData, cn);
+            await logApiUsage(researchFeature + '_fec', { usage: { input_tokens: 0, output_tokens: 0 } }, rateLimitUserId);
+            // Wrap in Anthropic-compatible response format
+            return new Response(JSON.stringify({
+              content: [{ type: 'text', text: JSON.stringify(fecResult) }],
+              usage: { input_tokens: 0, output_tokens: 0 },
+              stop_reason: 'end_turn'
+            }), { headers: { "Content-Type": "application/json", ...corsHeaders } });
+          }
+          console.log('[FEC] Failed, falling back to Anthropic for', researchFeature);
         }
 
-        // Run multi-query VPS search (skipped for precision features)
+        // Non-federal candidates/threats and candidate_brief: use Anthropic direct
+        const useAnthropicDirect = ['intel_candidates', 'intel_threats', 'candidate_brief'].indexOf(researchFeature) >= 0;
+
+        // Morning brief, pulse, outreach: use VPS (high frequency, $0/call)
         const vpsResult = useAnthropicDirect ? null : await multiSearch(searchQueries, 5000);
 
         if (vpsResult) {
