@@ -1316,6 +1316,9 @@ function loadFromD1() {
     // D1 WINS: Chat history
     if (data.chatHistory && data.chatHistory.length > 0) { chatHistory = data.chatHistory; saveState(storageKey('ctb_chatHistory'), chatHistory); }
 
+    // Preload opponents so Sam has intel ground truth before the Intel panel is opened
+    loadOpponentsFromD1();
+
     // Re-render if data changed
     if (needsRerender && isOnboarded()) {
       showOnboardedUI();
@@ -3723,8 +3726,10 @@ function createFolderPrompt() {
   renderFoldersOverlay();
 }
 
-var intelActiveTab = 'candidates';
-var intelLoadingMessages = ['Scanning local news sources...','Analyzing candidate filings...','Reviewing voter registration data...','Assessing threat levels...','Compiling district intelligence...'];
+var intelActiveTab = 'opponents';
+var intelLoadingMessages = ['Pulling FEC campaign finance data...','Scanning recent news coverage...','Analyzing opponent background...','Compiling threat assessment...','Synthesizing action items...'];
+var intelOpponents = [];
+var intelOpponentsLoaded = false;
 
 function getIntelCache() {
   try { return JSON.parse(localStorage.getItem(storageKey('ctb_intel_data'))) || {}; } catch(e) { return {}; }
@@ -3732,10 +3737,11 @@ function getIntelCache() {
 function saveIntelCache(cache) {
   localStorage.setItem(storageKey('ctb_intel_data'), JSON.stringify(cache));
 }
-function isIntelStale(tabKey) {
+function isIntelStale(tabKey, hours) {
   var cache = getIntelCache();
   if (!cache[tabKey] || !cache[tabKey].fetchedAt) return true;
-  return (Date.now() - cache[tabKey].fetchedAt) > 24*60*60*1000;
+  var h = hours != null ? hours : 72;
+  return (Date.now() - cache[tabKey].fetchedAt) > h*60*60*1000;
 }
 function timeAgo(ts) {
   if (!ts) return 'Never';
@@ -3752,7 +3758,7 @@ function renderIntelPanel() {
   var el = document.getElementById('intel-content');
   if (!el) return;
   var html = '<div class="intel-tabs">';
-  var tabs = [{key:'candidates',label:'Filed Candidates'},{key:'pulse',label:'District Pulse'},{key:'outreach',label:'Voter Outreach'},{key:'threats',label:'Threat Assessment'}];
+  var tabs = [{key:'opponents',label:'My Opponents'},{key:'pulse',label:'District Pulse'},{key:'actions',label:'Action Items'},{key:'threats',label:'Threat Assessment'}];
   tabs.forEach(function(t){ html += '<div class="intel-tab' + (intelActiveTab===t.key?' on':'') + '" onclick="switchIntelTab(\'' + t.key + '\')">' + t.label + '</div>'; });
   html += '</div><div id="intel-tab-content"></div>';
   el.innerHTML = html;
@@ -3763,33 +3769,77 @@ function switchIntelTab(tab) {
   intelActiveTab = tab;
   document.querySelectorAll('.intel-tab').forEach(function(t){ t.classList.remove('on'); });
   var tabs = document.querySelectorAll('.intel-tab');
-  var tabKeys = ['candidates','pulse','outreach','threats'];
+  var tabKeys = ['opponents','pulse','actions','threats'];
   var idx = tabKeys.indexOf(tab);
   if (idx >= 0 && tabs[idx]) tabs[idx].classList.add('on');
   loadIntelTab(tab, false);
 }
 
+function setIntelRefreshVisibility(tabKey) {
+  var btn = document.getElementById('intel-refresh-btn');
+  if (!btn) return;
+  // Opponents has per-card refresh. Threats auto-reflects opponents state. No global refresh on either.
+  if (tabKey === 'opponents' || tabKey === 'threats') {
+    btn.style.display = 'none';
+  } else {
+    btn.style.display = '';
+    btn.textContent = '\ud83d\udd04 Refresh';
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  }
+}
+
 function loadIntelTab(tabKey, forceRefresh) {
   var tc = document.getElementById('intel-tab-content');
   if (!tc) return;
-  var cache = getIntelCache();
-  if (!forceRefresh && cache[tabKey] && cache[tabKey].data && !isIntelStale(tabKey)) {
-    renderIntelTabContent(tabKey, cache[tabKey].data, cache[tabKey].fetchedAt);
+  setIntelRefreshVisibility(tabKey);
+
+  if (tabKey === 'opponents' || tabKey === 'threats') {
+    if (!intelOpponentsLoaded) {
+      showIntelLoading(tc);
+      loadOpponentsFromD1(function(){
+        if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
+        renderIntelTabContent(tabKey, intelOpponents, null);
+      });
+    } else {
+      renderIntelTabContent(tabKey, intelOpponents, null);
+    }
     return;
   }
-  showIntelLoading(tc);
-  fetchIntelData(tabKey);
+
+  if (tabKey === 'pulse') {
+    var cache = getIntelCache();
+    if (!forceRefresh && cache.pulse && cache.pulse.data && !isIntelStale('pulse', 72)) {
+      renderIntelTabContent('pulse', cache.pulse.data, cache.pulse.fetchedAt);
+      return;
+    }
+    showIntelLoading(tc);
+    fetchPulse();
+    return;
+  }
+
+  if (tabKey === 'actions') {
+    var cache = getIntelCache();
+    if (!forceRefresh && cache.actions && cache.actions.data && !isIntelStale('actions', 72)) {
+      renderIntelTabContent('actions', cache.actions.data, cache.actions.fetchedAt);
+      return;
+    }
+    showIntelLoading(tc);
+    fetchActionItems();
+    return;
+  }
 }
 
 function refreshActiveIntelTab() {
+  if (intelActiveTab === 'opponents' || intelActiveTab === 'threats') return;
   var btn = document.getElementById('intel-refresh-btn');
-  // Enforce 24-hour cooldown on manual refresh
+  // Enforce 72-hour cooldown on manual refresh
   var cache = getIntelCache();
   var tabData = cache[intelActiveTab];
   if (tabData && tabData.fetchedAt) {
     var hoursSince = (Date.now() - tabData.fetchedAt) / (1000 * 60 * 60);
-    if (hoursSince < 24) {
-      var hoursLeft = Math.ceil(24 - hoursSince);
+    if (hoursSince < 72) {
+      var hoursLeft = Math.ceil(72 - hoursSince);
       if (btn) { btn.textContent = 'Next refresh in ' + hoursLeft + 'h'; btn.style.opacity = '.5'; btn.style.pointerEvents = 'none'; }
       setTimeout(function(){ if (btn) { btn.textContent = '\ud83d\udd04 Refresh'; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; } }, 3000);
       return;
@@ -3831,7 +3881,26 @@ function getIntelScope() {
   return { scope: 'local', location: loc + ', ' + state, descriptor: loc + ', ' + state, voterNote: 'voters in ' + loc, label: (loc || state).toUpperCase(), isStatewide: false };
 }
 
-function fetchIntelData(tabKey) {
+function parseLastJsonBlock(data) {
+  var textBlocks = [];
+  if (data && data.content && Array.isArray(data.content)) {
+    data.content.forEach(function(b){ if (b.type === 'text' && b.text) textBlocks.push(b.text); });
+  }
+  var lastBlock = textBlocks.length > 0 ? textBlocks[textBlocks.length - 1] : '';
+  var jsonStr = lastBlock.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+  try { return JSON.parse(jsonStr); } catch(e1) {
+    var matches = jsonStr.match(/\{[\s\S]*\}/g);
+    if (matches) { try { return JSON.parse(matches[matches.length - 1]); } catch(e2) {} }
+  }
+  if (textBlocks.length > 1) {
+    var allText = textBlocks.join('\n').replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    var allMatches = allText.match(/\{[\s\S]*\}/g);
+    if (allMatches) { try { return JSON.parse(allMatches[allMatches.length - 1]); } catch(e3) {} }
+  }
+  return null;
+}
+
+function fetchPulse() {
   var office = campaignData.specificOffice || 'office';
   var state = campaignData.state || '';
   var loc = campaignData.location || campaignData.city || '';
@@ -3839,53 +3908,19 @@ function fetchIntelData(tabKey) {
   var party = campaignData.party || '';
   var name = campaignData.candidateName || '';
   var scope = getIntelScope();
-  var prompt = '';
-  if (tabKey === 'candidates') {
-    prompt = 'Search for all candidates who have officially filed to run for ' + office + ' ' + scope.descriptor + ' in ' + year + '. For each candidate found return: full name, party affiliation, whether they are the incumbent, a 1-2 sentence background, and filing status (confirmed/rumored/withdrawn). Also indicate which one is ' + name + ' by setting isCurrentCandidate:true ONLY for that exact person.\n\nAlso determine the current race phase:\n- "pre-primary" = primary hasn\'t happened yet\n- "post-primary" = primary occurred, general election candidates are now determined\n- "general" = general election is the active contest\n- "post-general" = election has passed\n\nIf the primary has occurred, list the candidates who advanced to the general election in generalCandidates array.\n\nReturn ONLY valid JSON: {"candidates":[{"name":"...","party":"...","isIncumbent":false,"background":"...","status":"confirmed","isCurrentCandidate":false}],"totalFiled":0,"raceNote":"...","racePhase":"pre-primary","primaryDate":null,"generalDate":null,"generalCandidates":[]}';
-  } else if (tabKey === 'pulse') {
-    prompt = 'Search for recent news, events, and issues affecting ' + scope.descriptor + ' related to the ' + office + ' race and politics. Find 5-8 recent news items or issues that a candidate for ' + office + ' should know about. Focus on political developments, voter concerns, controversies, and community issues. Return ONLY valid JSON: {"items":[{"headline":"...","summary":"...","relevance":"...","sentiment":"positive|negative|neutral","date":"...","category":"local-politics|issues|opponent|community|economy"}]}';
-  } else if (tabKey === 'outreach') {
-    prompt = 'Research voter data for the ' + office + ' race ' + scope.descriptor + '. Find voter registration breakdown by party (percentages) for ' + scope.voterNote + ', turnout history for similar races, most persuadable voter segments, top issues ranked by voter concern, geographic hotspots where persuadable voters are concentrated, and a recommendation on where the candidate should focus. Return ONLY valid JSON: {"registration":{"republican":0,"democrat":0,"independent":0,"other":0},"turnoutHistory":[{"year":0,"turnout":0,"raceType":"..."}],"persuadableSegments":[{"segment":"...","size":"...","description":"..."}],"topIssues":[{"issue":"...","concern":0,"trend":"rising|falling|stable"}],"hotspots":["..."],"recommendation":"..."}';
-  } else if (tabKey === 'threats') {
-    prompt = 'Analyze all candidates running for ' + office + ' ' + scope.descriptor + ' in ' + year + ' and assess each one as a threat to ' + name + ' who is a ' + party + ' candidate. For each opponent score them 1-10 on: Financial Strength, Name Recognition, Momentum, and Direct Threat. Calculate overall threat score (average). Classify: HIGH (7-10), MEDIUM (4-6.9), LOW (1-3.9). Return ONLY valid JSON: {"opponents":[{"name":"...","party":"...","overallScore":0,"threatLevel":"high|medium|low","scores":{"financial":0,"nameRecognition":0,"momentum":0,"directThreat":0},"summary":"...","keyRisk":"...","trend":"surging|stable|fading"}],"strategicSummary":"..."}';
-  }
+  var prompt = 'Search for recent news, events, and issues affecting ' + scope.descriptor + ' related to the ' + office + ' race and politics. Find 5-8 recent news items or issues that a candidate for ' + office + ' should know about. Focus on political developments, voter concerns, controversies, and community issues. Return ONLY valid JSON: {"items":[{"headline":"...","summary":"...","relevance":"...","sentiment":"positive|negative|neutral","date":"...","category":"local-politics|issues|opponent|community|economy"}]}';
   fetch(typeof WORKER_URL !== 'undefined' ? WORKER_URL : '', {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({message: prompt, mode: 'research', candidateName: name, specificOffice: office, location: loc, state: state, electionDate: campaignData.electionDate||'', party: party})
   }).then(function(r){return r.json();}).then(function(data) {
-    // Extract JSON from the LAST text block only — Anthropic puts final answer last
-    var textBlocks = [];
-    if (data.content && Array.isArray(data.content)) {
-      data.content.forEach(function(b){ if (b.type === 'text' && b.text) textBlocks.push(b.text); });
-    }
-    var lastBlock = textBlocks.length > 0 ? textBlocks[textBlocks.length - 1] : '';
-    console.log('[Intel ' + tabKey + '] ' + textBlocks.length + ' text blocks, last block: ' + lastBlock.length + ' chars');
-
-    var obj = null;
-    // Attempt 1: Parse last text block as pure JSON (strip code fences)
-    var jsonStr = lastBlock.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-    try { obj = JSON.parse(jsonStr); } catch(e1) {
-      // Attempt 2: Extract last JSON object from last block
-      var matches = jsonStr.match(/\{[\s\S]*\}/g);
-      if (matches) { try { obj = JSON.parse(matches[matches.length - 1]); } catch(e2) {} }
-    }
-    // Attempt 3: If last block failed, try ALL text blocks concatenated (fallback)
-    if (!obj && textBlocks.length > 1) {
-      var allText = textBlocks.join('\n').replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-      var allMatches = allText.match(/\{[\s\S]*\}/g);
-      if (allMatches) { try { obj = JSON.parse(allMatches[allMatches.length - 1]); } catch(e3) {} }
-    }
-
+    var obj = parseLastJsonBlock(data);
+    if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
     if (obj) {
-      console.log('[Intel ' + tabKey + '] Parsed OK:', Object.keys(obj).join(', '));
       var cache = getIntelCache();
-      cache[tabKey] = { data: obj, fetchedAt: Date.now() };
+      cache.pulse = { data: obj, fetchedAt: Date.now() };
       saveIntelCache(cache);
-      if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
-      renderIntelTabContent(tabKey, obj, Date.now());
+      renderIntelTabContent('pulse', obj, Date.now());
     } else {
-      console.error('[Intel ' + tabKey + '] JSON parse FAILED. Raw last block:', lastBlock.substring(0, 500));
-      if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
       showIntelError();
     }
   }).catch(function(){
@@ -3897,6 +3932,167 @@ function fetchIntelData(tabKey) {
   });
 }
 
+// OPPONENTS — D1-backed
+function loadOpponentsFromD1(cb) {
+  if (!d1Session) { intelOpponents = []; intelOpponentsLoaded = true; if (cb) cb(); return; }
+  fetch(D1_API + '/api/opponents/list', { headers: { 'Authorization': 'Bearer ' + d1Session } })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      intelOpponents = (data.opponents || []);
+      intelOpponentsLoaded = true;
+      if (cb) cb();
+    })
+    .catch(function(e){ console.log('[Opponents load]', e.message); intelOpponents = []; intelOpponentsLoaded = true; if (cb) cb(); });
+}
+
+function addOpponentFromInput() {
+  var input = document.getElementById('opponent-name-input');
+  if (!input) return;
+  var name = input.value.trim();
+  if (!name) return;
+  if (!d1Session) { alert('Please log in to add opponents.'); return; }
+  input.value = '';
+  var placeholder = { id: 'pending-' + Date.now(), name: name, data: {}, last_researched_at: null, created_at: new Date().toISOString(), _loading: true };
+  intelOpponents.push(placeholder);
+  renderIntelTabContent('opponents', intelOpponents, null);
+  fetch(D1_API + '/api/opponents/add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    body: JSON.stringify({
+      name: name,
+      office: campaignData.specificOffice || '',
+      state: campaignData.state || '',
+      location: campaignData.location || '',
+      year: getElectionYear(),
+      myCandidateName: campaignData.candidateName || '',
+      myParty: campaignData.party || '',
+      campaignId: campaignData.campaignId || null
+    })
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    intelOpponents = intelOpponents.filter(function(o){ return o.id !== placeholder.id; });
+    if (data && data.opponent) {
+      intelOpponents.push(data.opponent);
+    } else {
+      alert('Could not add opponent: ' + (data && data.error ? data.error : 'unknown error'));
+    }
+    renderIntelTabContent('opponents', intelOpponents, null);
+  }).catch(function(e){
+    intelOpponents = intelOpponents.filter(function(o){ return o.id !== placeholder.id; });
+    renderIntelTabContent('opponents', intelOpponents, null);
+    alert('Could not add opponent: ' + e.message);
+  });
+}
+
+function refreshOpponent(id) {
+  var opp = intelOpponents.find(function(o){ return o.id === id; });
+  if (!opp || opp._loading) return;
+  if (opp.last_researched_at) {
+    var hoursSince = (Date.now() - new Date(opp.last_researched_at).getTime()) / (1000*60*60);
+    if (hoursSince < 72) return;
+  }
+  opp._loading = true;
+  renderIntelTabContent('opponents', intelOpponents, null);
+  fetch(D1_API + '/api/opponents/refresh', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    body: JSON.stringify({
+      id: id,
+      office: campaignData.specificOffice || '',
+      state: campaignData.state || '',
+      location: campaignData.location || '',
+      year: getElectionYear(),
+      myCandidateName: campaignData.candidateName || '',
+      myParty: campaignData.party || ''
+    })
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    opp._loading = false;
+    if (data && data.opponent) Object.assign(opp, data.opponent);
+    renderIntelTabContent('opponents', intelOpponents, null);
+  }).catch(function(e){
+    opp._loading = false;
+    renderIntelTabContent('opponents', intelOpponents, null);
+    alert('Refresh failed: ' + e.message);
+  });
+}
+
+function removeOpponent(id) {
+  if (!confirm('Remove this opponent? They will also disappear from Threat Assessment.')) return;
+  intelOpponents = intelOpponents.filter(function(o){ return o.id !== id; });
+  renderIntelTabContent(intelActiveTab === 'threats' ? 'threats' : 'opponents', intelOpponents, null);
+  fetch(D1_API + '/api/opponents/remove', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    body: JSON.stringify({ id: id })
+  }).catch(function(e){ console.log('[Opponents remove]', e.message); });
+}
+
+// ACTION ITEMS — Haiku synthesis from pulse + opponents + tasks + events
+function getCampaignPhase() {
+  var days = typeof daysToElection !== 'undefined' ? daysToElection : null;
+  if (days == null) return 'planning';
+  if (days <= 7) return 'final-push';
+  if (days <= 14) return 'gotv';
+  if (days <= 30) return 'closing';
+  if (days <= 60) return 'peak-outreach';
+  if (days <= 120) return 'building-momentum';
+  return 'early-campaign';
+}
+
+function fetchActionItems() {
+  if (!d1Session) { showIntelError(); return; }
+  var cache = getIntelCache();
+  var pulseItems = (cache.pulse && cache.pulse.data && cache.pulse.data.items) || [];
+  var oppCtx = intelOpponents.map(function(o) { return { name: o.name, threatLevel: (o.data && o.data.threatLevel) || null, keyRisk: (o.data && o.data.keyRisk) || '' }; });
+  var openTasks = (typeof tasks !== 'undefined' ? tasks : []).filter(function(t){return !t.completed;});
+  fetch(D1_API + '/api/intel/action-items', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    body: JSON.stringify({
+      pulse: pulseItems,
+      opponents: oppCtx,
+      phase: getCampaignPhase(),
+      daysToElection: typeof daysToElection !== 'undefined' ? daysToElection : null,
+      tasks: openTasks,
+      events: typeof events !== 'undefined' ? events : [],
+      candidateName: campaignData.candidateName || '',
+      office: campaignData.specificOffice || ''
+    })
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
+    if (data && data.items) {
+      var obj = { items: data.items };
+      var cache2 = getIntelCache();
+      cache2.actions = { data: obj, fetchedAt: Date.now() };
+      saveIntelCache(cache2);
+      renderIntelTabContent('actions', obj, Date.now());
+    } else {
+      showIntelError();
+    }
+  }).catch(function(){
+    if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
+    showIntelError();
+  }).finally(function(){
+    var btn = document.getElementById('intel-refresh-btn');
+    if (btn) { btn.textContent = '\uD83D\uDD04 Refresh'; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+  });
+}
+
+function addActionToTasksByIndex(idx, btnEl) {
+  if (typeof tasks === 'undefined') return;
+  var cache = getIntelCache();
+  var item = cache.actions && cache.actions.data && cache.actions.data.items && cache.actions.data.items[idx];
+  if (!item || !item.action) return;
+  tasks.push({ id: Date.now() + Math.random(), name: item.action, date: getTodayStr(), category: 'other', completed: false, source: 'sam_action_item' });
+  saveTasks();
+  if (btnEl) {
+    btnEl.disabled = true;
+    btnEl.innerHTML = '\u2713';
+    btnEl.style.opacity = '.6';
+    btnEl.style.color = 'var(--green)';
+    btnEl.style.borderColor = 'rgba(130,179,134,.5)';
+  }
+}
+
 function showIntelError() {
   var tc = document.getElementById('intel-tab-content');
   if (tc) tc.innerHTML = '<div style="text-align:center;padding:32px 16px"><div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Limited Data Available</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;line-height:1.6">Sam couldn\'t find reliable data for this section. This is common for local races with limited media coverage. Try refreshing or check back as the race develops.</div></div>';
@@ -3905,121 +4101,90 @@ function showIntelError() {
 function renderIntelTabContent(tabKey, data, fetchedAt) {
   var tc = document.getElementById('intel-tab-content');
   if (!tc) return;
-  var timeLabel = '<div style="font-size:9px;color:rgba(255,255,255,.25);text-align:right;margin-bottom:8px">Last updated: ' + timeAgo(fetchedAt) + '</div>';
+  var timeLabel = fetchedAt ? '<div style="font-size:9px;color:rgba(255,255,255,.25);text-align:right;margin-bottom:8px">Last updated: ' + timeAgo(fetchedAt) + '</div>' : '';
   var html = timeLabel;
-  if (tabKey === 'candidates') html += renderCandidatesTab(data);
+  if (tabKey === 'opponents') html += renderMyOpponentsTab(data);
   else if (tabKey === 'pulse') html += renderPulseTab(data);
-  else if (tabKey === 'outreach') html += renderOutreachTab(data);
+  else if (tabKey === 'actions') html += renderActionItemsTab(data);
   else if (tabKey === 'threats') html += renderThreatsTab(data);
   tc.innerHTML = html;
 }
 
-// HELPER: Strict isCurrentCandidate check — must match both first AND last name
-function isActuallyCurrentCandidate(candidateName, myName) {
-  if (!candidateName || !myName) return false;
-  var cn = candidateName.toLowerCase().trim();
-  var mn = myName.toLowerCase().trim();
-  // Exact match
-  if (cn === mn) return true;
-  // Both first AND last name must be present in the candidate name
-  var parts = mn.split(/\s+/).filter(function(p){ return p.length > 1; });
-  if (parts.length < 2) return cn.indexOf(mn) >= 0;
-  // Must match both first and last name
-  return parts.every(function(part){ return cn.indexOf(part) >= 0; });
+// TAB 1 — MY OPPONENTS
+function renderMyOpponentsTab(opponents) {
+  var html = '';
+  html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">My Opponents</div>';
+  html += '<div style="font-size:9px;color:rgba(255,255,255,.2);font-style:italic;margin-bottom:12px">Research opponents in your race. Each card refreshes at most every 72 hours.</div>';
+  if (opponents && opponents.length > 0) {
+    opponents.forEach(function(opp){ html += renderOpponentCard(opp); });
+  }
+  var inputLabel = (opponents && opponents.length > 0) ? 'Add another opponent' : 'Enter opponent name';
+  html += '<div style="margin-top:16px;padding:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:6px">' +
+    '<div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px">' + inputLabel + '</div>' +
+    '<div style="display:flex;gap:8px">' +
+      '<input id="opponent-name-input" type="text" placeholder="Opponent full name" onkeydown="if(event.key===\'Enter\')addOpponentFromInput()" style="flex:1;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:8px 10px;color:var(--t1);font-size:12px;font-family:var(--font-b);outline:none">' +
+      '<button id="opponent-add-btn" onclick="addOpponentFromInput()" style="background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.4);color:var(--gold);padding:8px 14px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.05em;cursor:pointer">+ Add Opponent</button>' +
+    '</div>' +
+  '</div>';
+  return html;
 }
 
-// TAB 1 — FILED CANDIDATES (phase-aware)
-function renderCandidatesTab(data) {
-  var cands = data.candidates || [];
-  var myName = campaignData.candidateName || '';
-  var phase = (data.racePhase || 'pre-primary').toLowerCase();
-  var generalCandidateNames = (data.generalCandidates || []).map(function(n){ return n.toLowerCase().trim(); });
-  var isPostPrimary = phase === 'post-primary' || phase === 'general';
-  var html = '';
-
-  // Race phase header
-  if (isPostPrimary) {
-    html += '<div style="font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px">' +
-      '<span style="width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block"></span>' +
-      'GENERAL ELECTION' + (data.generalDate ? ' \u2014 ' + data.generalDate : '') +
-    '</div>';
-    if (data.primaryDate) {
-      html += '<div style="font-size:9px;color:var(--t3);margin-bottom:10px">Primary completed ' + data.primaryDate + '</div>';
-    }
-  } else if (phase === 'post-general') {
-    html += '<div style="font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">ELECTION COMPLETED</div>';
-  } else {
-    // pre-primary
-    html += '<div style="font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">' +
-      'PRIMARY ELECTION' + (data.primaryDate ? ' \u2014 ' + data.primaryDate : '') +
-    '</div>';
-  }
-
-  if (cands.length === 0) {
-    return html + '<div style="text-align:center;padding:32px 0"><div style="font-size:13px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase">No Candidates Found</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;margin-top:8px">Sam will monitor for filings and alert you when candidates enter the race.</div></div>';
-  }
-
-  // Separate candidates into general (active) vs eliminated if post-primary
-  var generalCands = [];
-  var eliminatedCands = [];
-  if (isPostPrimary && generalCandidateNames.length > 0) {
-    cands.forEach(function(c) {
-      var cLower = (c.name || '').toLowerCase().trim();
-      var isGeneral = generalCandidateNames.some(function(gn){ return cLower.indexOf(gn) >= 0 || gn.indexOf(cLower) >= 0; });
-      // Our candidate always goes to general section
-      if (isActuallyCurrentCandidate(c.name, myName)) isGeneral = true;
-      if (isGeneral) generalCands.push(c);
-      else eliminatedCands.push(c);
-    });
-  } else {
-    generalCands = cands;
-  }
-
-  // Render helper for a single candidate card
-  function renderCandCard(c, muted) {
-    var partyStyle = '';
-    if ((c.party||'').match(/rep/i)) partyStyle = 'background:rgba(232,112,112,.15);border:1px solid rgba(232,112,112,.3);color:var(--red)';
-    else if ((c.party||'').match(/dem/i)) partyStyle = 'background:rgba(107,156,216,.15);border:1px solid rgba(107,156,216,.3);color:var(--blue)';
-    else partyStyle = 'background:rgba(255,255,255,.08);color:var(--t2)';
-    // Client-side verification of isCurrentCandidate — fixes BUG 1
-    var isYou = isActuallyCurrentCandidate(c.name, myName);
-    var youTag = isYou ? '<span style="color:var(--gold);font-size:11px;margin-left:4px">(You)</span>' : '';
-    var incumbentBadge = c.isIncumbent ? '<span style="font-size:8px;font-weight:700;letter-spacing:.1em;padding:2px 6px;border-radius:3px;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.3);color:var(--gold);margin-left:6px">INCUMBENT</span>' : '';
-    var statusBadge = '';
-    if (muted) {
-      statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(232,112,112,.1);color:var(--red);font-weight:700;letter-spacing:.05em">ELIMINATED IN PRIMARY</span>';
-    } else if (c.status === 'confirmed') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(130,179,134,.12);color:var(--green);font-weight:700">FILED</span>';
-    else if (c.status === 'rumored') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(212,165,116,.12);color:var(--gold);font-weight:700">RUMORED</span>';
-    else if (c.status === 'withdrawn') statusBadge = '<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--t3);font-weight:700;text-decoration:line-through">WITHDRAWN</span>';
-    var cardStyle = muted ? 'background:rgba(255,255,255,.02);opacity:.6' : '';
-    var nameStyle = 'font-size:13px;font-weight:700;color:var(--t1)' + (muted || c.status==='withdrawn' ? ';opacity:.5' : '');
-    return '<div class="intel-card" style="' + cardStyle + '">' +
+function renderOpponentCard(opp) {
+  if (opp._loading) {
+    return '<div class="intel-card" style="padding:14px">' +
       '<div style="display:flex;justify-content:space-between;align-items:center">' +
-        '<div><span style="' + nameStyle + '">' + escapeHtml(c.name||'') + '</span>' + youTag + incumbentBadge + '</div>' +
-        '<div style="display:flex;gap:6px;align-items:center">' + statusBadge + '<span class="intel-party-pill" style="' + partyStyle + '">' + escapeHtml(c.party||'') + '</span></div>' +
+        '<div style="font-size:13px;font-weight:700;color:var(--t1)">' + escapeHtml(opp.name||'') + '</div>' +
+        '<div style="font-size:9px;color:var(--gold);letter-spacing:.1em">RESEARCHING...</div>' +
       '</div>' +
-      (c.background ? '<div style="font-size:11px;color:' + (muted ? 'var(--t3)' : 'var(--t2)') + ';line-height:1.5;margin-top:6px">' + escapeHtml(c.background) + '</div>' : '') +
-    '</div>';
+      '<div style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11px;color:rgba(255,255,255,.4);font-style:italic">' +
+        '<div class="intel-spinner" style="width:14px;height:14px;margin:0;border-width:2px"></div> Sam is pulling FEC data and recent news...' +
+      '</div></div>';
   }
+  var d = opp.data || {};
+  var partyStyle = '';
+  if ((d.party||'').match(/rep|^r$/i)) partyStyle = 'background:rgba(232,112,112,.15);border:1px solid rgba(232,112,112,.3);color:var(--red)';
+  else if ((d.party||'').match(/dem|^d$/i)) partyStyle = 'background:rgba(107,156,216,.15);border:1px solid rgba(107,156,216,.3);color:var(--blue)';
+  else partyStyle = 'background:rgba(255,255,255,.08);color:var(--t2)';
+  var threat = d.threatLevel || 0;
+  var threatCls = threat >= 7 ? 'intel-threat-high' : threat >= 4 ? 'intel-threat-med' : 'intel-threat-low';
+  var scoreColor = threat >= 7 ? 'background:rgba(232,112,112,.2);color:var(--red);border:1px solid rgba(232,112,112,.4)' : threat >= 4 ? 'background:rgba(212,165,116,.2);color:var(--gold)' : 'background:rgba(130,179,134,.2);color:var(--green)';
 
-  // Render general/active candidates
-  if (isPostPrimary && generalCandidateNames.length > 0) {
-    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--green);text-transform:uppercase;margin-bottom:8px">' + generalCands.length + ' General Election Candidates</div>';
+  var refreshBtn = '';
+  if (opp.last_researched_at) {
+    var hoursSince = (Date.now() - new Date(opp.last_researched_at).getTime()) / (1000*60*60);
+    if (hoursSince < 72) {
+      var hLeft = Math.ceil(72 - hoursSince);
+      refreshBtn = '<button disabled style="background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.25);padding:3px 8px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.05em;cursor:not-allowed">Refresh in ' + hLeft + 'h</button>';
+    } else {
+      refreshBtn = '<button onclick="refreshOpponent(\'' + opp.id + '\')" style="background:transparent;border:1px solid rgba(212,165,116,.3);color:var(--gold);padding:3px 8px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.05em;cursor:pointer">\ud83d\udd04 Refresh</button>';
+    }
   } else {
-    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:8px">' + (data.totalFiled||cands.length) + ' Candidates Filed</div>';
-  }
-  generalCands.forEach(function(c){ html += renderCandCard(c, false); });
-
-  // Render eliminated candidates (collapsed by default)
-  if (eliminatedCands.length > 0) {
-    html += '<details style="margin-top:12px"><summary style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;cursor:pointer;user-select:none;padding:6px 0">' +
-      'PRIMARY CANDIDATES (' + eliminatedCands.length + ' eliminated) \u25B6</summary>' +
-      '<div style="margin-top:6px">';
-    eliminatedCands.forEach(function(c){ html += renderCandCard(c, true); });
-    html += '</div></details>';
+    refreshBtn = '<button onclick="refreshOpponent(\'' + opp.id + '\')" style="background:transparent;border:1px solid rgba(212,165,116,.3);color:var(--gold);padding:3px 8px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.05em;cursor:pointer">\ud83d\udd04 Refresh</button>';
   }
 
-  if (data.raceNote) html += '<div style="font-size:10px;color:rgba(255,255,255,.35);font-style:italic;margin-top:8px">' + escapeHtml(data.raceNote) + '</div>';
+  var html = '<div class="intel-card ' + threatCls + '" style="padding:14px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">' +
+      '<div>' +
+        '<div style="font-size:13px;font-weight:700;color:var(--t1)">' + escapeHtml(opp.name||'') + '</div>' +
+        (d.office ? '<div style="font-size:10px;color:var(--t3);margin-top:2px">' + escapeHtml(d.office) + '</div>' : '') +
+      '</div>' +
+      '<div style="display:flex;gap:6px;align-items:center">' +
+        (d.party ? '<span class="intel-party-pill" style="' + partyStyle + '">' + escapeHtml(d.party) + '</span>' : '') +
+        (threat ? '<span class="intel-score" style="' + scoreColor + '">' + threat + '/10</span>' : '') +
+      '</div>' +
+    '</div>';
+  if (d.bio) html += '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin:6px 0">' + escapeHtml(d.bio) + '</div>';
+  if (d.background) html += '<div style="font-size:10px;color:var(--t3);line-height:1.5;margin:4px 0"><span style="color:rgba(212,165,116,.6);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:8px">Background:</span> ' + escapeHtml(d.background) + '</div>';
+  if (d.recentNews) html += '<div style="font-size:10px;color:var(--t3);line-height:1.5;margin:4px 0"><span style="color:rgba(107,156,216,.7);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:8px">Recent:</span> ' + escapeHtml(d.recentNews) + '</div>';
+  if (d.campaignFocus) html += '<div style="font-size:10px;color:var(--t3);line-height:1.5;margin:4px 0"><span style="color:rgba(130,179,134,.7);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:8px">Focus:</span> ' + escapeHtml(d.campaignFocus) + '</div>';
+  if (d.keyRisk) html += '<div class="intel-risk">\u26A0 KEY RISK: ' + escapeHtml(d.keyRisk) + '</div>';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05)">' +
+    '<span style="font-size:8px;color:rgba(255,255,255,.25);letter-spacing:.08em;text-transform:uppercase">Source: ' + (d.source === 'fec_vps' ? 'FEC + news search' : 'Web search') + '</span>' +
+    '<div style="display:flex;gap:6px">' + refreshBtn +
+      '<button onclick="removeOpponent(\'' + opp.id + '\')" style="background:transparent;border:1px solid rgba(232,112,112,.2);color:rgba(232,112,112,.7);padding:3px 8px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.05em;cursor:pointer">\u00d7 Remove</button>' +
+    '</div>' +
+  '</div>';
+  html += '</div>';
   return html;
 }
 
@@ -4048,96 +4213,71 @@ function renderPulseTab(data) {
   return html;
 }
 
-// TAB 3 — VOTER OUTREACH
-function renderOutreachTab(data) {
+// TAB 3 — ACTION ITEMS
+function renderActionItemsTab(data) {
+  var items = (data && data.items) || [];
   var html = '';
-  // Registration breakdown
-  if (data.registration) {
-    var r = data.registration;
-    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">Voter Registration</div>';
-    html += '<div class="reg-bar">';
-    if (r.republican) html += '<div style="width:' + r.republican + '%;background:var(--red);height:100%"></div>';
-    if (r.democrat) html += '<div style="width:' + r.democrat + '%;background:var(--blue);height:100%"></div>';
-    if (r.independent) html += '<div style="width:' + r.independent + '%;background:var(--gold);height:100%"></div>';
-    if (r.other) html += '<div style="width:' + r.other + '%;background:var(--t3);height:100%"></div>';
-    html += '</div>';
-    html += '<div style="display:flex;gap:12px;font-size:10px;margin-bottom:16px;flex-wrap:wrap">';
-    if (r.republican) html += '<span style="color:var(--red)">R: ' + r.republican + '%</span>';
-    if (r.democrat) html += '<span style="color:var(--blue)">D: ' + r.democrat + '%</span>';
-    if (r.independent) html += '<span style="color:var(--gold)">I: ' + r.independent + '%</span>';
-    if (r.other) html += '<span style="color:var(--t3)">Other: ' + r.other + '%</span>';
-    html += '</div>';
-  }
-  // Turnout history
-  if (data.turnoutHistory && data.turnoutHistory.length) {
-    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:8px">Turnout History</div>';
-    html += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">';
-    data.turnoutHistory.forEach(function(t) {
-      var tColor = t.turnout > 40 ? 'var(--green)' : t.turnout > 25 ? 'var(--gold)' : 'var(--red)';
-      html += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:4px;padding:8px 12px;text-align:center"><div style="font-size:10px;color:var(--t3)">' + (t.year||'') + '</div><div style="font-size:14px;font-weight:700;color:' + tColor + ';margin-top:2px">' + (t.turnout||0) + '%</div></div>';
-    });
-    html += '</div>';
-  }
-  // Persuadable segments
-  if (data.persuadableSegments && data.persuadableSegments.length) {
-    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:8px">Persuadable Segments</div>';
-    data.persuadableSegments.forEach(function(s) {
-      html += '<div class="intel-card"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--t1)">' + escapeHtml(s.segment||'') + '</span>' + (s.size ? '<span style="font-size:9px;padding:2px 6px;border-radius:10px;background:rgba(212,165,116,.12);color:var(--gold);font-weight:700">~' + escapeHtml(s.size) + '</span>' : '') + '</div>' +
-        (s.description ? '<div style="font-size:11px;color:var(--t2);margin-top:4px">' + escapeHtml(s.description) + '</div>' : '') + '</div>';
-    });
-  }
-  // Top issues
-  if (data.topIssues && data.topIssues.length) {
-    html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin:12px 0 8px">Top Issues</div>';
-    data.topIssues.forEach(function(iss) {
-      var trendIcon = iss.trend === 'rising' ? '<span style="color:var(--red)">\u2191</span>' : iss.trend === 'falling' ? '<span style="color:var(--t3)">\u2193</span>' : '<span style="color:var(--gold)">\u2192</span>';
-      var barColor = iss.trend === 'rising' ? 'var(--red)' : 'var(--blue)';
-      html += '<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:3px"><span>' + escapeHtml(iss.issue||'') + ' ' + trendIcon + '</span><span style="color:var(--t3)">' + (iss.concern||0) + '/10</span></div>' +
-        '<div style="height:4px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden"><div style="height:100%;width:' + ((iss.concern||0)*10) + '%;background:' + barColor + ';border-radius:2px"></div></div></div>';
-    });
-  }
-  // Recommendation
-  if (data.recommendation) {
-    html += '<div class="intel-rec"><div style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:8px">\uD83D\uDCA1 Sam\'s Outreach Recommendation</div>' +
-      '<div style="font-size:12px;color:var(--t1);line-height:1.6">' + escapeHtml(data.recommendation) + '</div></div>';
-  }
-  return html || '<div style="text-align:center;padding:24px;color:rgba(255,255,255,.3);font-size:11px">No voter data available yet.</div>';
+  html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">Action Items</div>';
+  html += '<div style="font-size:9px;color:rgba(255,255,255,.2);font-style:italic;margin-bottom:12px">Prioritized by Sam from your calendar, opponents, and district pulse. Click + to add as a task.</div>';
+  if (items.length === 0) return html + '<div style="text-align:center;padding:24px;font-size:11px;color:rgba(255,255,255,.3)">No action items yet. Add opponents and pulse data, then refresh.</div>';
+  items.forEach(function(item, idx) {
+    var pr = (item.priority || 'medium').toLowerCase();
+    var prColor = pr === 'high' ? 'var(--red)' : pr === 'low' ? 'var(--green)' : 'var(--gold)';
+    var prBg = pr === 'high' ? 'rgba(232,112,112,.12)' : pr === 'low' ? 'rgba(130,179,134,.12)' : 'rgba(212,165,116,.12)';
+    html += '<div class="intel-card" style="padding:12px">' +
+      '<div style="display:flex;gap:10px;align-items:flex-start">' +
+        '<button onclick="addActionToTasksByIndex(' + idx + ', this)" style="margin-top:2px;width:20px;height:20px;border-radius:3px;background:transparent;border:1.5px solid rgba(212,165,116,.5);color:var(--gold);cursor:pointer;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;flex-shrink:0" title="Add to tasks">+</button>' +
+        '<div style="flex:1">' +
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">' +
+            '<div style="font-size:12px;font-weight:700;color:var(--t1);line-height:1.4">' + escapeHtml(item.action||'') + '</div>' +
+            '<span style="font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;background:' + prBg + ';color:' + prColor + ';white-space:nowrap">' + escapeHtml(pr) + '</span>' +
+          '</div>' +
+          (item.why ? '<div style="font-size:10px;color:var(--t3);font-style:italic;margin-top:4px;line-height:1.5">' + escapeHtml(item.why) + '</div>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+  return html;
 }
 
-// TAB 4 — THREAT ASSESSMENT
-function renderThreatsTab(data) {
-  var opps = (data.opponents || []).sort(function(a,b){ return (b.overallScore||0)-(a.overallScore||0); });
-  var html = '';
-  if (opps.length === 0) return '<div style="text-align:center;padding:24px;color:rgba(255,255,255,.3);font-size:11px">No opponents identified for threat analysis yet.</div>';
-  opps.forEach(function(o) {
-    var lvl = o.threatLevel || 'low';
-    var threatCls = lvl === 'high' ? 'intel-threat-high' : lvl === 'medium' ? 'intel-threat-med' : 'intel-threat-low';
-    var scoreColor = (o.overallScore||0) >= 7 ? 'background:rgba(232,112,112,.2);color:var(--red);border:1px solid rgba(232,112,112,.4)' : (o.overallScore||0) >= 4 ? 'background:rgba(212,165,116,.2);color:var(--gold)' : 'background:rgba(130,179,134,.2);color:var(--green)';
-    var trendHtml = o.trend === 'surging' ? '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--red)">\u2191 SURGING</span>' : o.trend === 'fading' ? '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--green)">\u2193 FADING</span>' : '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--t3)">\u2192 STABLE</span>';
+// TAB 4 — THREAT ASSESSMENT (reads from intelOpponents)
+function renderThreatsTab(opponents) {
+  if (!opponents || opponents.length === 0) {
+    return '<div style="text-align:center;padding:32px 16px"><div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">No Opponents Added</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;line-height:1.6">Add opponents in the My Opponents tab to see threat assessment.</div></div>';
+  }
+  var sorted = opponents.slice().sort(function(a,b){
+    var ta = (a.data && a.data.threatLevel) || 0;
+    var tb = (b.data && b.data.threatLevel) || 0;
+    return tb - ta;
+  });
+  var html = '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:12px">Threat Assessment \u2014 ' + sorted.length + ' opponent' + (sorted.length === 1 ? '' : 's') + '</div>';
+  sorted.forEach(function(o) {
+    var d = o.data || {};
+    var score = d.threatLevel || 0;
+    var threatCls = score >= 7 ? 'intel-threat-high' : score >= 4 ? 'intel-threat-med' : 'intel-threat-low';
+    var scoreColor = score >= 7 ? 'background:rgba(232,112,112,.2);color:var(--red);border:1px solid rgba(232,112,112,.4)' : score >= 4 ? 'background:rgba(212,165,116,.2);color:var(--gold)' : 'background:rgba(130,179,134,.2);color:var(--green)';
+    var partyStyle = '';
+    if ((d.party||'').match(/rep|^r$/i)) partyStyle = 'background:rgba(232,112,112,.15);border:1px solid rgba(232,112,112,.3);color:var(--red)';
+    else if ((d.party||'').match(/dem|^d$/i)) partyStyle = 'background:rgba(107,156,216,.15);border:1px solid rgba(107,156,216,.3);color:var(--blue)';
+    else partyStyle = 'background:rgba(255,255,255,.08);color:var(--t2)';
+    var momentum = (d.subScores && d.subScores.momentum) || 0;
+    var trendHtml = momentum >= 7 ? '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--red)">\u2191 SURGING</span>' : momentum <= 3 ? '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--green)">\u2193 FADING</span>' : '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--t3)">\u2192 STABLE</span>';
     html += '<div class="intel-card ' + threatCls + '" style="padding:14px">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-        '<div style="font-size:13px;font-weight:700;color:var(--t1)">' + escapeHtml(o.name||'') + '</div>' +
-        '<div style="display:flex;gap:8px;align-items:center">' + trendHtml + '<span class="intel-score" style="' + scoreColor + '">' + (o.overallScore||0).toFixed(1) + '/10</span></div>' +
+        '<div style="font-size:13px;font-weight:700;color:var(--t1)">' + escapeHtml(o.name||'') + (d.party ? ' <span class="intel-party-pill" style="' + partyStyle + ';margin-left:4px">' + escapeHtml(d.party) + '</span>' : '') + '</div>' +
+        '<div style="display:flex;gap:8px;align-items:center">' + trendHtml + '<span class="intel-score" style="' + scoreColor + '">' + score + '/10</span></div>' +
       '</div>';
-    // Score breakdown
-    if (o.scores) {
-      var sc = o.scores;
-      var scoreItems = [{l:'Financial',v:sc.financial},{l:'Name ID',v:sc.nameRecognition},{l:'Momentum',v:sc.momentum},{l:'Direct Threat',v:sc.directThreat}];
-      html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px">';
-      scoreItems.forEach(function(s) {
-        var sColor = (s.v||0) >= 7 ? 'var(--red)' : (s.v||0) >= 4 ? 'var(--gold)' : 'var(--green)';
-        html += '<div style="text-align:center"><div style="font-size:8px;letter-spacing:.08em;color:rgba(255,255,255,.3);text-transform:uppercase">' + s.l + '</div><div style="font-size:16px;font-weight:800;color:' + sColor + '">' + (s.v||0) + '</div></div>';
-      });
-      html += '</div>';
-    }
-    if (o.summary) html += '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin:8px 0">' + escapeHtml(o.summary) + '</div>';
-    if (o.keyRisk) html += '<div class="intel-risk">\u26A0 KEY RISK: ' + escapeHtml(o.keyRisk) + '</div>';
+    var sc = d.subScores || {};
+    var scoreItems = [{l:'Financial',v:sc.financial||0},{l:'Name ID',v:sc.nameRecognition||0},{l:'Momentum',v:sc.momentum||0},{l:'Direct Threat',v:sc.directThreat||0}];
+    html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px">';
+    scoreItems.forEach(function(s) {
+      var sCol = s.v >= 7 ? 'var(--red)' : s.v >= 4 ? 'var(--gold)' : 'var(--green)';
+      html += '<div style="text-align:center"><div style="font-size:8px;letter-spacing:.08em;color:rgba(255,255,255,.3);text-transform:uppercase">' + s.l + '</div><div style="font-size:16px;font-weight:800;color:' + sCol + '">' + s.v + '</div></div>';
+    });
+    html += '</div>';
+    if (d.keyRisk) html += '<div class="intel-risk">\u26A0 KEY RISK: ' + escapeHtml(d.keyRisk) + '</div>';
     html += '</div>';
   });
-  if (data.strategicSummary) {
-    html += '<div class="intel-rec"><div style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:8px">\uD83D\uDCA1 Strategic Assessment</div>' +
-      '<div style="font-size:12px;color:var(--t1);line-height:1.6">' + escapeHtml(data.strategicSummary) + '</div></div>';
-  }
   return html;
 }
 
@@ -4535,12 +4675,8 @@ function completeOnboarding() {
   var raceProfile = getRaceTypeProfile(campaignData.specificOffice);
   localStorage.setItem(storageKey('ctb_race_profile'), JSON.stringify({ office: campaignData.specificOffice, profile: raceProfile, cachedAt: new Date().toISOString() }));
   fetchDay1Brief();
-  // Auto-run Intel panel research after a short delay to avoid rate limiting
-  setTimeout(function() {
-    ['candidates', 'pulse', 'outreach', 'threats'].forEach(function(tab, i) {
-      setTimeout(function() { fetchIntelData(tab); }, i * 3000);
-    });
-  }, 5000);
+  // Auto-run District Pulse research after a short delay. Opponents and Action Items are user-driven.
+  setTimeout(function() { fetchPulse(); }, 5000);
   setTimeout(function() { delete window._onboardingJustCompleted; }, 0);
 }
 
@@ -5911,22 +6047,21 @@ async function sendSamMessage() {
   var brief = null;
   try { brief = JSON.parse(localStorage.getItem(storageKey('ctb_candidate_brief'))); } catch(e) {}
 
-  // Load Intel context for Ground Truth layer
+  // Load Intel context for Ground Truth layer — opponents (in-memory from D1) + pulse (localStorage cache)
   var intelCtx = null;
   try {
     var intelCache = JSON.parse(localStorage.getItem(storageKey('ctb_intel_data'))) || {};
-    if (intelCache.candidates && intelCache.candidates.data) {
+    var hasOpponents = Array.isArray(intelOpponents) && intelOpponents.length > 0;
+    var hasPulse = intelCache.pulse && intelCache.pulse.data && intelCache.pulse.data.items && intelCache.pulse.data.items.length;
+    if (hasOpponents || hasPulse) {
       intelCtx = {};
-      var cd = intelCache.candidates.data;
-      intelCtx.candidates = cd.candidates || [];
-      intelCtx.raceNote = cd.raceNote || '';
-      if (intelCache.threats && intelCache.threats.data) {
-        intelCtx.threats = intelCache.threats.data.opponents || [];
+      if (hasOpponents) {
+        intelCtx.opponents = intelOpponents.map(function(o){
+          var d = o.data || {};
+          return { name: o.name, party: d.party||'', office: d.office||'', bio: d.bio||'', background: d.background||'', recentNews: d.recentNews||'', campaignFocus: d.campaignFocus||'', threatLevel: d.threatLevel||null, keyRisk: d.keyRisk||'' };
+        });
       }
-      if (intelCache.outreach && intelCache.outreach.data) {
-        intelCtx.topIssues = intelCache.outreach.data.topIssues || [];
-        intelCtx.outreachRecommendation = intelCache.outreach.data.recommendation || '';
-      }
+      if (hasPulse) intelCtx.pulseItems = intelCache.pulse.data.items;
     }
   } catch(e) {}
 
