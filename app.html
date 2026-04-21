@@ -4177,6 +4177,16 @@ function renderOpponentCard(opp) {
   if (d.background) html += '<div style="font-size:10px;color:var(--t3);line-height:1.5;margin:4px 0"><span style="color:rgba(212,165,116,.6);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:8px">Background:</span> ' + escapeHtml(d.background) + '</div>';
   if (d.recentNews) html += '<div style="font-size:10px;color:var(--t3);line-height:1.5;margin:4px 0"><span style="color:rgba(107,156,216,.7);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:8px">Recent:</span> ' + escapeHtml(d.recentNews) + '</div>';
   if (d.campaignFocus) html += '<div style="font-size:10px;color:var(--t3);line-height:1.5;margin:4px 0"><span style="color:rgba(130,179,134,.7);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:8px">Focus:</span> ' + escapeHtml(d.campaignFocus) + '</div>';
+  if (d.finances) {
+    var f = d.finances;
+    var fmt = function(n){ return (n == null ? '?' : '$' + Math.round(n).toLocaleString()); };
+    html += '<div style="font-size:10px;color:var(--t3);line-height:1.5;margin:6px 0;padding:6px 8px;background:rgba(212,165,116,.06);border-left:2px solid rgba(212,165,116,.3);border-radius:3px">' +
+      '<span style="color:rgba(212,165,116,.8);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:8px">FEC Finances:</span> ' +
+      'Cash ' + fmt(f.cash_on_hand) + ' \u00b7 Raised ' + fmt(f.total_raised) +
+      (f.debts ? ' \u00b7 Debts ' + fmt(f.debts) : '') +
+      (f.last_report ? ' \u00b7 ' + escapeHtml(String(f.last_report)) + ' ' + (f.last_report_year || '') : '') +
+    '</div>';
+  }
   if (d.keyRisk) html += '<div class="intel-risk">\u26A0 KEY RISK: ' + escapeHtml(d.keyRisk) + '</div>';
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05)">' +
     '<span style="font-size:8px;color:rgba(255,255,255,.25);letter-spacing:.08em;text-transform:uppercase">Source: ' + (d.source === 'fec_vps' ? 'FEC + news search' : 'Web search') + '</span>' +

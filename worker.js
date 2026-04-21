@@ -74,7 +74,9 @@ export default {
 
     // ========================================
     // HELPER: Research a single opponent
-    // Federal races: FEC finances + 1 VPS search + Haiku synthesis (~$0.005)
+    // Federal races: FEC race roster (resolve candidate_id) → FEC finances →
+    //   1 VPS news search → Haiku synthesis (~$0.005).
+    //   Falls back to VPS-news-only if no FEC match found.
     // Non-federal: Haiku + web_search with max_uses: 3 (~$0.05–0.07)
     // ========================================
     async function researchOpponent(params, userId) {
@@ -88,25 +90,78 @@ export default {
       const dm = fecCode === 'H' ? ((office + ' ' + loc).match(/district\s*(\d+)/i) || (office + ' ' + loc).match(/(\d+)(?:th|st|nd|rd)/i)) : null;
       const district = dm ? dm[1].padStart(2, '0') : '';
 
-      let fecData = null;
+      let fecMatch = null;      // the roster entry for this opponent (candidate_id, party, etc.)
+      let fecFinances = null;   // the /candidate/finances summary
       let newsContent = '';
 
+      // Fuzzy-match an input name against FEC "LAST, FIRST MIDDLE" names.
+      // Require every multi-char token of the input to appear in the FEC name.
+      function fuzzyMatchFEC(inputName, fecName) {
+        const input = (inputName || '').toLowerCase().trim();
+        const fec = (fecName || '').toLowerCase().trim();
+        if (!input || !fec) return false;
+        const tokens = input.split(/[\s,]+/).filter(t => t.length > 1);
+        if (tokens.length === 0) return false;
+        return tokens.every(t => fec.indexOf(t) >= 0);
+      }
+
       if (isFederal) {
-        // 1) FEC finances for this specific opponent
+        // 1) FEC race roster — get the candidate_id for this opponent.
+        // 25s timeout because the research service sometimes cold-starts slowly.
         try {
-          const fecResp = await fetch('https://research.thecandidatestoolbox.com/candidate/finances', {
+          const rosterResp = await fetch('https://research.thecandidatestoolbox.com/candidates/federal', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
-            body: JSON.stringify({ name, office: fecCode, state, district, election_year: year }),
-            signal: AbortSignal.timeout(15000)
+            body: JSON.stringify({ office: fecCode, state, district, election_year: year }),
+            signal: AbortSignal.timeout(25000)
           });
-          if (fecResp.ok) {
-            const j = await fecResp.json();
-            if (j && j.success !== false) { fecData = j; console.log('[Opponent FEC]', name, 'OK'); }
-          } else { console.warn('[Opponent FEC]', name, 'status', fecResp.status); }
-        } catch (e) { console.warn('[Opponent FEC] Failed:', e.message); }
+          if (rosterResp.ok) {
+            const r = await rosterResp.json();
+            if (r && r.success && Array.isArray(r.candidates)) {
+              fecMatch = r.candidates.find(c => fuzzyMatchFEC(name, c.name)) || null;
+              if (fecMatch) {
+                console.log('[Opponent FEC]', name, 'matched', fecMatch.name, fecMatch.candidate_id);
+              } else {
+                console.warn('[Opponent FEC]', name, 'no match among', r.candidates.length, 'candidates');
+              }
+            }
+          } else { console.warn('[Opponent FEC] roster status', rosterResp.status); }
+        } catch (e) { console.warn('[Opponent FEC] roster failed:', e.message); }
 
-        // 2) One VPS search for recent news
+        // 2) FEC finances — only if we resolved a candidate_id.
+        // Up to 2 attempts: the research service's upstream FEC connection
+        // is flaky and occasionally times out on first call but succeeds on retry.
+        if (fecMatch && fecMatch.candidate_id) {
+          for (let attempt = 1; attempt <= 2; attempt++) {
+            try {
+              const finResp = await fetch('https://research.thecandidatestoolbox.com/candidate/finances', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+                body: JSON.stringify({ candidate_id: fecMatch.candidate_id }),
+                signal: AbortSignal.timeout(25000)
+              });
+              if (finResp.ok) {
+                const f = await finResp.json();
+                if (f && f.success && f.has_data && f.summary) {
+                  fecFinances = f.summary;
+                  console.log('[Opponent FEC] finances', fecMatch.candidate_id, 'attempt', attempt, 'cash=$' + (f.summary.cash_on_hand||0), 'raised=$' + (f.summary.total_raised||0));
+                  break;
+                } else {
+                  console.log('[Opponent FEC] finances', fecMatch.candidate_id, 'no data yet');
+                  break;
+                }
+              } else {
+                console.warn('[Opponent FEC] finances status', finResp.status, 'attempt', attempt);
+                if (attempt < 2) await new Promise(r => setTimeout(r, 1500));
+              }
+            } catch (e) {
+              console.warn('[Opponent FEC] finances failed attempt', attempt + ':', e.message);
+              if (attempt < 2) await new Promise(r => setTimeout(r, 1500));
+            }
+          }
+        }
+
+        // 3) One VPS search for recent news
         try {
           const vpsBase = (env.VPS_SEARCH_URL || 'https://search.thecandidatestoolbox.com').replace(/\/+$/, '') + '/smart-search';
           const vpsResp = await fetch(vpsBase, {
@@ -124,20 +179,57 @@ export default {
 
       const jsonShape = '{"party":"R|D|I|other","office":"string","bio":"2-3 sentences","background":"1-2 sentences on career/background","recentNews":"1-2 sentences on recent activity","campaignFocus":"1-2 sentences on issues and messaging","threatLevel":1-10 integer,"keyRisk":"one specific risk this opponent poses","subScores":{"financial":1-10,"nameRecognition":1-10,"momentum":1-10,"directThreat":1-10}}';
 
-      const hasFederalData = isFederal && (fecData || newsContent);
+      const hasFederalData = isFederal && (fecMatch || newsContent);
       let apiBody, featureTag;
 
       if (hasFederalData) {
         featureTag = 'intel_opponent_fec';
-        let ctxParts = [];
-        if (fecData) ctxParts.push('FEC DATA for ' + name + ':\n' + JSON.stringify(fecData));
-        if (newsContent) ctxParts.push('RECENT NEWS:\n' + newsContent);
-        const userMsg = 'Analyze ' + name + ', an opponent of ' + (myCandidateName || 'my candidate') + ' (' + (myParty || 'unknown party') + ') running for ' + (office || 'unknown office') + ' in ' + (loc ? loc + ', ' : '') + (state || '') + ', ' + year + '.\n\nUse ONLY this research data — do not invent facts. If a field is unknown, write "unknown".\n\n' + ctxParts.join('\n\n') + '\n\nReturn ONLY JSON in this exact shape:\n' + jsonShape + '\n\nScoring guidance: threatLevel and subScores must reflect real threat. financial: compare opponent cash-on-hand to average race ($100k+ = 7+, $500k+ = 9). nameRecognition: incumbent=9, prominent=6, unknown=3. momentum: strong recent news + fundraising=8+, quiet=3. directThreat: strong same-lane opponent = high.';
+        const ctxParts = [];
+        if (fecMatch) {
+          ctxParts.push('FEC ROSTER (authoritative identity/party/incumbency):\n' + JSON.stringify({
+            name: fecMatch.name,
+            candidate_id: fecMatch.candidate_id,
+            party: fecMatch.party,
+            party_short: fecMatch.party_short,
+            incumbent_challenge: fecMatch.incumbent_challenge,
+            office: fecMatch.office,
+            state: fecMatch.state,
+            district: fecMatch.district,
+            activity_status: fecMatch.activity_status,
+            first_file_date: fecMatch.first_file_date,
+            committees: fecMatch.committees
+          }));
+        }
+        if (fecFinances) {
+          ctxParts.push('FEC FINANCES (authoritative — use exact numbers):\n' + JSON.stringify(fecFinances));
+        } else if (fecMatch) {
+          ctxParts.push('FEC FINANCES: no finance report filed yet (early-stage candidate). Set subScores.financial = 1-2.');
+        }
+        if (newsContent) ctxParts.push('RECENT NEWS (for bio/background/recentNews/campaignFocus):\n' + newsContent);
+
+        const userMsg =
+          'Analyze ' + name + ', an opponent of ' + (myCandidateName || 'my candidate') + ' (' + (myParty || 'unknown party') + ') running for ' + (office || 'unknown office') + ' in ' + (loc ? loc + ', ' : '') + (state || '') + ', ' + year + '.\n\n' +
+          'Use ONLY this research data — do not invent facts. If a field is unknown, write "unknown".\n\n' +
+          ctxParts.join('\n\n') + '\n\n' +
+          'Return ONLY JSON in this exact shape:\n' + jsonShape + '\n\n' +
+          'SCORING RULES (strict — use real FEC numbers if provided):\n' +
+          '- subScores.financial is based on FEC cash_on_hand AND total_raised:\n' +
+          '    $0-10k raised: 1-2\n' +
+          '    $10k-100k raised: 3-4\n' +
+          '    $100k-500k raised: 5-6\n' +
+          '    $500k-1M raised: 7-8\n' +
+          '    $1M+ raised: 9-10\n' +
+          '  Boost +1 if cash_on_hand > $250k. Subtract 1 if debts exceed cash_on_hand.\n' +
+          '- subScores.nameRecognition: incumbent_challenge="Incumbent"=9; prominent officeholder/celebrity=7; known local figure=5; first-time candidate=2-3.\n' +
+          '- subScores.momentum: based on recent news volume + fundraising trajectory. Quiet + low raise = 2-3; active news + raising = 6-8.\n' +
+          '- subScores.directThreat: same-party primary rival or strong general opponent in competitive district=high; wrong-party in safe district=low.\n' +
+          '- threatLevel: overall (roughly average of sub-scores, weighted by financial + directThreat).\n' +
+          '- party: use FEC party_short if present (REP=R, DEM=D, etc.). If roster says incumbent_challenge is "Incumbent" for someone other than the user\'s candidate, note it in keyRisk.';
         apiBody = {
           model: "claude-haiku-4-5-20251001",
           max_tokens: 2000,
           temperature: 0.2,
-          system: [{ type: "text", text: 'You are a political research analyst. Return ONLY valid JSON matching the shape requested — no preamble, no markdown fences. Use only the research data provided. Current year is ' + new Date().getFullYear() + '.' }],
+          system: [{ type: "text", text: 'You are a political research analyst. Return ONLY valid JSON matching the shape requested — no preamble, no markdown fences. Use only the research data provided — FEC data is authoritative. Current year is ' + new Date().getFullYear() + '.' }],
           messages: [{ role: "user", content: userMsg }]
         };
       } else {
@@ -176,7 +268,9 @@ export default {
       if (!card) { console.error('[Opponent]', name, 'JSON parse failed. Raw:', lastBlock.substring(0, 300)); throw new Error('Opponent research returned no parseable JSON'); }
 
       card.source = hasFederalData ? 'fec_vps' : 'anthropic';
-      if (fecData && fecData.finances) card.finances = fecData.finances;
+      // Stash FEC data alongside the card so the frontend can show exact numbers.
+      if (fecFinances) card.finances = fecFinances;
+      if (fecMatch && fecMatch.candidate_id) card.fecCandidateId = fecMatch.candidate_id;
       return card;
     }
 
