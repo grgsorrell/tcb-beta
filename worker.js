@@ -466,7 +466,7 @@ export default {
     }
 
     // ========================================
-    // API: Archive/restore campaign
+    // API: Archive/restore campaign (reversible — just flips status)
     // ========================================
     if (url.pathname === '/api/campaigns/archive' && request.method === 'POST') {
       try {
@@ -477,6 +477,50 @@ export default {
         await env.DB.prepare('UPDATE campaigns SET status = ? WHERE id = ? AND owner_id = ?').bind(newStatus, campaignId, userId).run();
         return jsonResponse({ success: true, status: newStatus });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // API: Delete campaign (HARD delete — cascades all related rows)
+    // Every user-scoped table with a campaign_id column is cleared in one batch.
+    // ========================================
+    if (url.pathname === '/api/campaigns/delete' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const { campaignId } = await request.json();
+        if (!campaignId) return jsonResponse({ error: 'campaignId required' }, 400);
+        // Verify ownership before cascading anything.
+        const campaign = await env.DB.prepare(
+          'SELECT id FROM campaigns WHERE id = ? AND owner_id = ?'
+        ).bind(campaignId, userId).first();
+        if (!campaign) return jsonResponse({ error: 'Campaign not found' }, 404);
+
+        // Cascade-delete every table that carries a campaign_id column.
+        // All scoped by user_id as well so a caller can't punch through ownership.
+        // chat_history and profiles have user_id primary keys (no per-campaign
+        // rows) and usage_logs has no campaign_id, so they're skipped.
+        const tables = [
+          'opponents', 'tasks', 'events', 'notes', 'folders',
+          'endorsements', 'contributions', 'budget', 'briefings'
+        ];
+        const ops = tables.map(t =>
+          env.DB.prepare('DELETE FROM ' + t + ' WHERE campaign_id = ? AND user_id = ?').bind(campaignId, userId)
+        );
+        // api_usage has campaign_id but user_id is nullable for unauthed calls
+        // and we do want to keep the billing record. Null the campaign_id instead.
+        ops.push(env.DB.prepare('UPDATE api_usage SET campaign_id = NULL WHERE campaign_id = ? AND user_id = ?').bind(campaignId, userId));
+        // Finally, the campaign row itself.
+        ops.push(env.DB.prepare('DELETE FROM campaigns WHERE id = ? AND owner_id = ?').bind(campaignId, userId));
+        const results = await env.DB.batch(ops);
+
+        const deletedCounts = {};
+        tables.forEach((t, i) => { deletedCounts[t] = results[i] && results[i].meta ? results[i].meta.changes : 0; });
+        console.log('[Campaign delete]', campaignId, 'user', userId, 'cascade:', JSON.stringify(deletedCounts));
+        return jsonResponse({ success: true, deletedCounts });
+      } catch (error) {
+        console.error('[Campaign delete] Error:', error.message);
+        return jsonResponse({ error: error.message }, 500);
+      }
     }
 
     // ========================================
@@ -1754,27 +1798,24 @@ export default {
     }
 
     // ========================================
-    // INTEL: List opponents (scoped to user + active campaign)
-    // GET /api/opponents/list?campaign_id=<id>   (pass empty string for "no campaign")
+    // INTEL: List opponents (STRICT scope — user_id + campaign_id only)
+    // GET /api/opponents/list?campaign_id=<id>
+    // No campaign_id → empty list. No fallback to NULL-campaign rows. No
+    // exceptions. This prevents opponents from bleeding into campaigns they
+    // don't belong to (including into brand-new campaigns that haven't saved
+    // any opponents yet).
     // ========================================
     if (url.pathname === '/api/opponents/list' && request.method === 'GET') {
       try {
         const userId = await getUserFromSession(request);
         if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
-        // Treat missing param as "no campaign set" — uses IS NULL. An explicit
-        // campaign_id value filters on that exact id. This keeps opponents
-        // from bleeding between campaigns.
         const campaignIdParam = url.searchParams.get('campaign_id');
-        let rows;
-        if (campaignIdParam && campaignIdParam.trim()) {
-          rows = await env.DB.prepare(
-            'SELECT id, name, data, last_researched_at, created_at FROM opponents WHERE user_id = ? AND campaign_id = ? ORDER BY created_at ASC'
-          ).bind(userId, campaignIdParam.trim()).all();
-        } else {
-          rows = await env.DB.prepare(
-            'SELECT id, name, data, last_researched_at, created_at FROM opponents WHERE user_id = ? AND campaign_id IS NULL ORDER BY created_at ASC'
-          ).bind(userId).all();
+        if (!campaignIdParam || !campaignIdParam.trim()) {
+          return jsonResponse({ success: true, opponents: [] });
         }
+        const rows = await env.DB.prepare(
+          'SELECT id, name, data, last_researched_at, created_at FROM opponents WHERE user_id = ? AND campaign_id = ? ORDER BY created_at ASC'
+        ).bind(userId, campaignIdParam.trim()).all();
         const opponents = (rows.results || []).map(r => ({
           id: r.id,
           name: r.name,
@@ -1799,16 +1840,22 @@ export default {
         const name = (body.name || '').trim();
         if (!name) return jsonResponse({ error: 'Name required' }, 400);
         const campaignId = body.campaignId && String(body.campaignId).trim() ? String(body.campaignId).trim() : null;
+        // Require a valid campaign_id. Prevents orphan rows that can't be
+        // surfaced by the strict list endpoint. Frontend must auto-provision
+        // a campaign row (via /api/campaigns/create) before adding opponents.
+        if (!campaignId) return jsonResponse({ error: 'campaign_id required' }, 400);
+        // Verify ownership so a caller can't attach opponents to someone
+        // else's campaign.
+        const ownsCampaign = await env.DB.prepare(
+          'SELECT id FROM campaigns WHERE id = ? AND owner_id = ?'
+        ).bind(campaignId, userId).first();
+        if (!ownsCampaign) return jsonResponse({ error: 'Campaign not found' }, 404);
 
-        // Dedup check — same user, same campaign (or both NULL), same
-        // case-insensitive trimmed name.
-        const dupCheck = campaignId
-          ? await env.DB.prepare(
-              "SELECT id, name FROM opponents WHERE user_id = ? AND campaign_id = ? AND LOWER(TRIM(name)) = LOWER(?) LIMIT 1"
-            ).bind(userId, campaignId, name).first()
-          : await env.DB.prepare(
-              "SELECT id, name FROM opponents WHERE user_id = ? AND campaign_id IS NULL AND LOWER(TRIM(name)) = LOWER(?) LIMIT 1"
-            ).bind(userId, name).first();
+        // Dedup check — same user, same campaign, same case-insensitive
+        // trimmed name.
+        const dupCheck = await env.DB.prepare(
+          "SELECT id, name FROM opponents WHERE user_id = ? AND campaign_id = ? AND LOWER(TRIM(name)) = LOWER(?) LIMIT 1"
+        ).bind(userId, campaignId, name).first();
         if (dupCheck) {
           return jsonResponse({
             error: 'duplicate',
