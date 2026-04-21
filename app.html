@@ -1012,6 +1012,24 @@ var d1Session = localStorage.getItem('tcb_d1_session') || null;
 var D1_API = WORKER_URL;
 var d1Online = true;
 
+// Always re-read from localStorage — the module-level d1Session can go stale if
+// login happened in another tab or if it was captured as null before login completed.
+function getD1Session() {
+  var fresh = localStorage.getItem('tcb_d1_session');
+  if (fresh && fresh !== d1Session) d1Session = fresh;
+  return d1Session || null;
+}
+
+// Standard handler for 401 responses from authed endpoints — means the server
+// rejected the token. Clear the stale session and send the user to log in.
+function handleUnauthenticated(msg) {
+  localStorage.removeItem('tcb_d1_session');
+  d1Session = null;
+  if (confirm((msg || 'Your session has expired.') + '\n\nLog in again?')) {
+    window.location.href = 'index.html';
+  }
+}
+
 // Write to D1 first, then cache in localStorage. If D1 fails, cache locally and queue for sync.
 function d1Write(endpoint, body, onFail) {
   if (!d1Session) { if (onFail) onFail(); return; }
@@ -3934,9 +3952,13 @@ function fetchPulse() {
 
 // OPPONENTS — D1-backed
 function loadOpponentsFromD1(cb) {
-  if (!d1Session) { intelOpponents = []; intelOpponentsLoaded = true; if (cb) cb(); return; }
-  fetch(D1_API + '/api/opponents/list', { headers: { 'Authorization': 'Bearer ' + d1Session } })
-    .then(function(r){ return r.json(); })
+  var sess = getD1Session();
+  if (!sess) { intelOpponents = []; intelOpponentsLoaded = true; if (cb) cb(); return; }
+  fetch(D1_API + '/api/opponents/list', { headers: { 'Authorization': 'Bearer ' + sess } })
+    .then(function(r){
+      if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
+      return r.json();
+    })
     .then(function(data) {
       intelOpponents = (data.opponents || []);
       intelOpponentsLoaded = true;
@@ -3950,14 +3972,15 @@ function addOpponentFromInput() {
   if (!input) return;
   var name = input.value.trim();
   if (!name) return;
-  if (!d1Session) { alert('Please log in to add opponents.'); return; }
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('You need to log in to add opponents.'); return; }
   input.value = '';
   var placeholder = { id: 'pending-' + Date.now(), name: name, data: {}, last_researched_at: null, created_at: new Date().toISOString(), _loading: true };
   intelOpponents.push(placeholder);
   renderIntelTabContent('opponents', intelOpponents, null);
   fetch(D1_API + '/api/opponents/add', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
     body: JSON.stringify({
       name: name,
       office: campaignData.specificOffice || '',
@@ -3968,7 +3991,10 @@ function addOpponentFromInput() {
       myParty: campaignData.party || '',
       campaignId: campaignData.campaignId || null
     })
-  }).then(function(r){ return r.json(); }).then(function(data) {
+  }).then(function(r){
+    if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
+    return r.json();
+  }).then(function(data) {
     intelOpponents = intelOpponents.filter(function(o){ return o.id !== placeholder.id; });
     if (data && data.opponent) {
       intelOpponents.push(data.opponent);
@@ -3979,7 +4005,7 @@ function addOpponentFromInput() {
   }).catch(function(e){
     intelOpponents = intelOpponents.filter(function(o){ return o.id !== placeholder.id; });
     renderIntelTabContent('opponents', intelOpponents, null);
-    alert('Could not add opponent: ' + e.message);
+    if (e.message !== 'unauthenticated') alert('Could not add opponent: ' + e.message);
   });
 }
 
@@ -3990,11 +4016,13 @@ function refreshOpponent(id) {
     var hoursSince = (Date.now() - new Date(opp.last_researched_at).getTime()) / (1000*60*60);
     if (hoursSince < 72) return;
   }
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
   opp._loading = true;
   renderIntelTabContent('opponents', intelOpponents, null);
   fetch(D1_API + '/api/opponents/refresh', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
     body: JSON.stringify({
       id: id,
       office: campaignData.specificOffice || '',
@@ -4004,24 +4032,29 @@ function refreshOpponent(id) {
       myCandidateName: campaignData.candidateName || '',
       myParty: campaignData.party || ''
     })
-  }).then(function(r){ return r.json(); }).then(function(data) {
+  }).then(function(r){
+    if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
+    return r.json();
+  }).then(function(data) {
     opp._loading = false;
     if (data && data.opponent) Object.assign(opp, data.opponent);
     renderIntelTabContent('opponents', intelOpponents, null);
   }).catch(function(e){
     opp._loading = false;
     renderIntelTabContent('opponents', intelOpponents, null);
-    alert('Refresh failed: ' + e.message);
+    if (e.message !== 'unauthenticated') alert('Refresh failed: ' + e.message);
   });
 }
 
 function removeOpponent(id) {
   if (!confirm('Remove this opponent? They will also disappear from Threat Assessment.')) return;
+  var sess = getD1Session();
   intelOpponents = intelOpponents.filter(function(o){ return o.id !== id; });
   renderIntelTabContent(intelActiveTab === 'threats' ? 'threats' : 'opponents', intelOpponents, null);
+  if (!sess) return;
   fetch(D1_API + '/api/opponents/remove', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
     body: JSON.stringify({ id: id })
   }).catch(function(e){ console.log('[Opponents remove]', e.message); });
 }
@@ -4039,14 +4072,15 @@ function getCampaignPhase() {
 }
 
 function fetchActionItems() {
-  if (!d1Session) { showIntelError(); return; }
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); showIntelError(); return; }
   var cache = getIntelCache();
   var pulseItems = (cache.pulse && cache.pulse.data && cache.pulse.data.items) || [];
   var oppCtx = intelOpponents.map(function(o) { return { name: o.name, threatLevel: (o.data && o.data.threatLevel) || null, keyRisk: (o.data && o.data.keyRisk) || '' }; });
   var openTasks = (typeof tasks !== 'undefined' ? tasks : []).filter(function(t){return !t.completed;});
   fetch(D1_API + '/api/intel/action-items', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
     body: JSON.stringify({
       pulse: pulseItems,
       opponents: oppCtx,
@@ -4057,7 +4091,10 @@ function fetchActionItems() {
       candidateName: campaignData.candidateName || '',
       office: campaignData.specificOffice || ''
     })
-  }).then(function(r){ return r.json(); }).then(function(data) {
+  }).then(function(r){
+    if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
+    return r.json();
+  }).then(function(data) {
     if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
     if (data && data.items) {
       var obj = { items: data.items };
