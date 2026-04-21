@@ -1240,6 +1240,19 @@ document.addEventListener('DOMContentLoaded', function() {
     var loginBtn = document.querySelector('.nav-login');
     if (loginBtn) { loginBtn.textContent = 'Go to My Campaign \u2192'; loginBtn.onclick = function() { window.location.href = 'app.html'; }; }
   }
+  // If the app redirected us here because the D1 session was bad, auto-open
+  // the login modal so the user can re-authenticate without hunting for it.
+  if (window.location.search.indexOf('relogin=1') >= 0) {
+    openLoginModal();
+    var lu = document.getElementById('login-username');
+    var lp = document.getElementById('login-password');
+    var err = document.getElementById('login-error');
+    if (err) { err.textContent = 'Your session expired. Please sign in again.'; err.style.display = 'block'; }
+    // Pre-fill username from last login so the user only retypes password.
+    var lastUser = localStorage.getItem('tcb_current_user');
+    if (lu && lastUser) lu.value = lastUser;
+    if (lp) lp.focus();
+  }
 });
 
 document.addEventListener('click', function(e) { if (e.target === document.getElementById('login-modal')) closeLoginModal(); });

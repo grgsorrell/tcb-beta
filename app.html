@@ -1021,12 +1021,17 @@ function getD1Session() {
 }
 
 // Standard handler for 401 responses from authed endpoints — means the server
-// rejected the token. Clear the stale session and send the user to log in.
+// rejected the token. Clear ALL auth-related localStorage so the user isn't
+// stuck in a loop where tcb_session is still valid (which makes index.html
+// show "Go to My Campaign" and skip the login modal). Redirect with a param
+// that forces the login modal open on the landing page.
 function handleUnauthenticated(msg) {
+  // Keep tcb_current_user so the login form can pre-fill the username.
   localStorage.removeItem('tcb_d1_session');
+  localStorage.removeItem('tcb_session');
   d1Session = null;
   if (confirm((msg || 'Your session has expired.') + '\n\nLog in again?')) {
-    window.location.href = 'index.html';
+    window.location.href = 'index.html?relogin=1';
   }
 }
 
@@ -1146,14 +1151,29 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function initApp() {
+  // Detect broken auth state: landing-page tcb_session exists, but the D1
+  // bearer token was cleared on a previous visit. In this state writes to D1
+  // silently fail and authed features like opponent research bounce the user.
+  // Force a proper re-login by clearing tcb_session and redirecting.
+  var _landingSess = null;
+  try { _landingSess = JSON.parse(localStorage.getItem('tcb_session') || 'null'); } catch(e) {}
+  if (_landingSess && _landingSess.expires > Date.now() && !d1Session) {
+    console.log('[Auth] tcb_session is valid but tcb_d1_session is missing — forcing re-login');
+    localStorage.removeItem('tcb_session');
+    window.location.href = 'index.html?relogin=1';
+    return;
+  }
+
   if (d1Session) {
     // Verify session is still valid, then load D1 data
     fetch(D1_API + '/api/auth/verify-session', { headers: { 'Authorization': 'Bearer ' + d1Session } })
     .then(function(r){ return r.json(); }).then(function(sessionData) {
       if (!sessionData.success) {
-        console.log('[D1] Session expired, clearing');
-        localStorage.removeItem('tcb_d1_session'); d1Session = null;
-        proceedWithLocalData();
+        console.log('[D1] Session expired, clearing and forcing re-login');
+        localStorage.removeItem('tcb_d1_session');
+        localStorage.removeItem('tcb_session');
+        d1Session = null;
+        window.location.href = 'index.html?relogin=1';
         return;
       }
       d1Online = true;
