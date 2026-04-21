@@ -1413,19 +1413,35 @@ export default {
         const userId = await getUserFromSession(request);
         if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
 
-        await Promise.all([
-          env.DB.prepare('DELETE FROM tasks WHERE user_id = ?').bind(userId).run(),
-          env.DB.prepare('DELETE FROM events WHERE user_id = ?').bind(userId).run(),
-          env.DB.prepare('DELETE FROM budget WHERE user_id = ?').bind(userId).run(),
-          env.DB.prepare('DELETE FROM notes WHERE user_id = ?').bind(userId).run(),
-          env.DB.prepare('DELETE FROM folders WHERE user_id = ?').bind(userId).run(),
-          env.DB.prepare('DELETE FROM briefings WHERE user_id = ?').bind(userId).run(),
-          env.DB.prepare('DELETE FROM chat_history WHERE user_id = ?').bind(userId).run(),
-          env.DB.prepare('DELETE FROM profiles WHERE user_id = ?').bind(userId).run()
+        // Full reset — every user-scoped table gets cleared. Keep this list
+        // in sync with the campaign-delete cascade and the schema audit:
+        // any new table that carries user_id (and optionally campaign_id)
+        // needs a line here.
+        const results = await env.DB.batch([
+          env.DB.prepare('DELETE FROM tasks WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM events WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM budget WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM notes WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM folders WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM briefings WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM chat_history WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM endorsements WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM contributions WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM opponents WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM campaigns WHERE owner_id = ?').bind(userId),
+          // Keep api_usage rows for billing history but null out campaign_id
+          // since those campaigns no longer exist.
+          env.DB.prepare('UPDATE api_usage SET campaign_id = NULL WHERE user_id = ?').bind(userId),
+          env.DB.prepare('DELETE FROM profiles WHERE user_id = ?').bind(userId)
         ]);
 
-        return jsonResponse({ success: true, message: 'All user data reset' });
+        const tables = ['tasks','events','budget','notes','folders','briefings','chat_history','endorsements','contributions','opponents','campaigns'];
+        const counts = {};
+        tables.forEach((t, i) => { counts[t] = results[i] && results[i].meta ? results[i].meta.changes : 0; });
+        console.log('[Data reset]', userId, 'cleared:', JSON.stringify(counts));
+        return jsonResponse({ success: true, message: 'All user data reset', deletedCounts: counts });
       } catch (error) {
+        console.error('[Data reset] Error:', error.message);
         return jsonResponse({ error: error.message }, 500);
       }
     }

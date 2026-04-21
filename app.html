@@ -3462,8 +3462,24 @@ function logoutUser() {
 function resetAllData() {
   if (!confirm('Are you sure? This will permanently delete all your campaign data.')) return;
   if (!confirm('This CANNOT be undone. Click OK to confirm reset.')) return;
-  localStorage.clear();
-  location.reload();
+  var sess = getD1Session();
+  // Always call the D1 reset before wiping localStorage. Skipping this step
+  // was the bug — localStorage cleared, then the next page load re-synced
+  // D1 back into localStorage and all the 'deleted' data reappeared.
+  var done = function() { localStorage.clear(); location.reload(); };
+  if (!sess) { done(); return; }
+  fetch(D1_API + '/api/data/reset', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess }
+  }).then(function(r){ return r.json(); }).then(function(data){
+    console.log('[Reset]', data && data.deletedCounts);
+    done();
+  }).catch(function(e){
+    console.warn('[Reset] D1 call failed:', e.message);
+    // Still clear localStorage so the user sees something happen. On next
+    // load the server data will re-sync, but at least they know it tried.
+    if (confirm('Server reset failed: ' + e.message + '\n\nClear local data anyway? (server data will re-sync on next login)')) done();
+  });
 }
 
 // ============================================
