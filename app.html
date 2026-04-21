@@ -1296,6 +1296,16 @@ function switchToCampaign(campaignId) {
   var msgs = document.getElementById('sam-messages');
   if (msgs) msgs.innerHTML = '';
   chatHistory = [];
+  // Invalidate Intel caches — opponents are scoped per campaign server-side,
+  // and pulse/actions are campaign-specific data (district, phase, etc).
+  intelOpponents = [];
+  intelOpponentsLoaded = false;
+  try {
+    var cache = getIntelCache();
+    delete cache.pulse;
+    delete cache.actions;
+    saveIntelCache(cache);
+  } catch(e) {}
 }
 
 function startNewCampaignFromApp() {
@@ -3970,11 +3980,18 @@ function fetchPulse() {
   });
 }
 
-// OPPONENTS — D1-backed
+// OPPONENTS — D1-backed, scoped to the active campaign
+function getActiveCampaignId() {
+  return localStorage.getItem('tcb_active_campaign') || '';
+}
+
 function loadOpponentsFromD1(cb) {
   var sess = getD1Session();
   if (!sess) { intelOpponents = []; intelOpponentsLoaded = true; if (cb) cb(); return; }
-  fetch(D1_API + '/api/opponents/list', { headers: { 'Authorization': 'Bearer ' + sess } })
+  var url = D1_API + '/api/opponents/list';
+  var campaignId = getActiveCampaignId();
+  if (campaignId) url += '?campaign_id=' + encodeURIComponent(campaignId);
+  fetch(url, { headers: { 'Authorization': 'Bearer ' + sess } })
     .then(function(r){
       if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
       return r.json();
@@ -3994,6 +4011,10 @@ function addOpponentFromInput() {
   if (!name) return;
   var sess = getD1Session();
   if (!sess) { handleUnauthenticated('You need to log in to add opponents.'); return; }
+  // Client-side dedup hint — server is authoritative via 409, but this avoids
+  // a pointless research call (and its cost) when the name already exists.
+  var dup = intelOpponents.find(function(o){ return (o.name||'').trim().toLowerCase() === name.toLowerCase(); });
+  if (dup) { alert(dup.name + ' is already in your opponents list.'); input.value = ''; return; }
   input.value = '';
   var placeholder = { id: 'pending-' + Date.now(), name: name, data: {}, last_researched_at: null, created_at: new Date().toISOString(), _loading: true };
   intelOpponents.push(placeholder);
@@ -4009,17 +4030,19 @@ function addOpponentFromInput() {
       year: getElectionYear(),
       myCandidateName: campaignData.candidateName || '',
       myParty: campaignData.party || '',
-      campaignId: campaignData.campaignId || null
+      campaignId: getActiveCampaignId()
     })
   }).then(function(r){
     if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
-    return r.json();
-  }).then(function(data) {
+    return r.json().then(function(body){ return { status: r.status, body: body }; });
+  }).then(function(res) {
     intelOpponents = intelOpponents.filter(function(o){ return o.id !== placeholder.id; });
-    if (data && data.opponent) {
-      intelOpponents.push(data.opponent);
+    if (res.status === 409 && res.body && res.body.error === 'duplicate') {
+      alert(res.body.message || (name + ' is already in your opponents list.'));
+    } else if (res.body && res.body.opponent) {
+      intelOpponents.push(res.body.opponent);
     } else {
-      alert('Could not add opponent: ' + (data && data.error ? data.error : 'unknown error'));
+      alert('Could not add opponent: ' + ((res.body && res.body.error) || 'unknown error'));
     }
     renderIntelTabContent('opponents', intelOpponents, null);
   }).catch(function(e){

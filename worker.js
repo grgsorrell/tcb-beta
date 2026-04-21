@@ -1754,15 +1754,27 @@ export default {
     }
 
     // ========================================
-    // INTEL: List opponents
+    // INTEL: List opponents (scoped to user + active campaign)
+    // GET /api/opponents/list?campaign_id=<id>   (pass empty string for "no campaign")
     // ========================================
     if (url.pathname === '/api/opponents/list' && request.method === 'GET') {
       try {
         const userId = await getUserFromSession(request);
         if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
-        const rows = await env.DB.prepare(
-          'SELECT id, name, data, last_researched_at, created_at FROM opponents WHERE user_id = ? ORDER BY created_at ASC'
-        ).bind(userId).all();
+        // Treat missing param as "no campaign set" — uses IS NULL. An explicit
+        // campaign_id value filters on that exact id. This keeps opponents
+        // from bleeding between campaigns.
+        const campaignIdParam = url.searchParams.get('campaign_id');
+        let rows;
+        if (campaignIdParam && campaignIdParam.trim()) {
+          rows = await env.DB.prepare(
+            'SELECT id, name, data, last_researched_at, created_at FROM opponents WHERE user_id = ? AND campaign_id = ? ORDER BY created_at ASC'
+          ).bind(userId, campaignIdParam.trim()).all();
+        } else {
+          rows = await env.DB.prepare(
+            'SELECT id, name, data, last_researched_at, created_at FROM opponents WHERE user_id = ? AND campaign_id IS NULL ORDER BY created_at ASC'
+          ).bind(userId).all();
+        }
         const opponents = (rows.results || []).map(r => ({
           id: r.id,
           name: r.name,
@@ -1776,6 +1788,8 @@ export default {
 
     // ========================================
     // INTEL: Add opponent (creates row + runs initial research)
+    // Scoped per user + campaign. Rejects duplicates (case-insensitive,
+    // trimmed name) within the same campaign.
     // ========================================
     if (url.pathname === '/api/opponents/add' && request.method === 'POST') {
       try {
@@ -1784,6 +1798,23 @@ export default {
         const body = await request.json();
         const name = (body.name || '').trim();
         if (!name) return jsonResponse({ error: 'Name required' }, 400);
+        const campaignId = body.campaignId && String(body.campaignId).trim() ? String(body.campaignId).trim() : null;
+
+        // Dedup check — same user, same campaign (or both NULL), same
+        // case-insensitive trimmed name.
+        const dupCheck = campaignId
+          ? await env.DB.prepare(
+              "SELECT id, name FROM opponents WHERE user_id = ? AND campaign_id = ? AND LOWER(TRIM(name)) = LOWER(?) LIMIT 1"
+            ).bind(userId, campaignId, name).first()
+          : await env.DB.prepare(
+              "SELECT id, name FROM opponents WHERE user_id = ? AND campaign_id IS NULL AND LOWER(TRIM(name)) = LOWER(?) LIMIT 1"
+            ).bind(userId, name).first();
+        if (dupCheck) {
+          return jsonResponse({
+            error: 'duplicate',
+            message: dupCheck.name + ' is already in your opponents list.'
+          }, 409);
+        }
 
         const card = await researchOpponent({
           name,
@@ -1799,7 +1830,7 @@ export default {
         const now = new Date().toISOString();
         await env.DB.prepare(
           'INSERT INTO opponents (id, user_id, campaign_id, name, data, last_researched_at, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
-        ).bind(id, userId, body.campaignId || null, name, JSON.stringify(card), now, now).run();
+        ).bind(id, userId, campaignId, name, JSON.stringify(card), now, now).run();
 
         return jsonResponse({ success: true, opponent: { id, name, data: card, last_researched_at: now, created_at: now } });
       } catch (error) {
