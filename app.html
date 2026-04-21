@@ -3778,6 +3778,7 @@ var intelActiveTab = 'opponents';
 var intelLoadingMessages = ['Pulling FEC campaign finance data...','Scanning recent news coverage...','Analyzing opponent background...','Compiling threat assessment...','Synthesizing action items...'];
 var intelOpponents = [];
 var intelOpponentsLoaded = false;
+var intelActiveCampaignMeta = null; // {id, candidate_name, specific_office} — the campaign the opponent list is scoped to
 
 function getIntelCache() {
   try { return JSON.parse(localStorage.getItem(storageKey('ctb_intel_data'))) || {}; } catch(e) { return {}; }
@@ -3989,6 +3990,23 @@ function getActiveCampaignId() {
 // go through onboarding without ever creating a campaigns row, so their
 // tcb_active_campaign is empty and opponents can't be scoped. This provisions
 // one from the profile on demand and caches its id in localStorage.
+// Invoked from the profile/campaign mismatch banner in Tab 1. Clears the
+// active-campaign pointer so the next opponent add auto-provisions a fresh
+// campaigns row from the current profile, and reloads the tab.
+function startFreshCampaignForProfile() {
+  localStorage.removeItem('tcb_active_campaign');
+  intelOpponents = [];
+  intelOpponentsLoaded = false;
+  intelActiveCampaignMeta = null;
+  try {
+    var cache = getIntelCache();
+    delete cache.pulse;
+    delete cache.actions;
+    saveIntelCache(cache);
+  } catch(e) {}
+  loadIntelTab('opponents', true);
+}
+
 function ensureActiveCampaign(cb) {
   var existing = getActiveCampaignId();
   if (existing) { cb(existing); return; }
@@ -4020,23 +4038,40 @@ function ensureActiveCampaign(cb) {
 
 function loadOpponentsFromD1(cb) {
   var sess = getD1Session();
-  if (!sess) { intelOpponents = []; intelOpponentsLoaded = true; if (cb) cb(); return; }
+  if (!sess) { intelOpponents = []; intelActiveCampaignMeta = null; intelOpponentsLoaded = true; if (cb) cb(); return; }
   var campaignId = getActiveCampaignId();
   // Strict scoping: no campaign → empty list (server will enforce this too).
-  if (!campaignId) { intelOpponents = []; intelOpponentsLoaded = true; if (cb) cb(); return; }
-  fetch(D1_API + '/api/opponents/list?campaign_id=' + encodeURIComponent(campaignId), {
-    headers: { 'Authorization': 'Bearer ' + sess }
-  })
-    .then(function(r){
-      if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
-      return r.json();
-    })
-    .then(function(data) {
-      intelOpponents = (data.opponents || []);
-      intelOpponentsLoaded = true;
-      if (cb) cb();
-    })
-    .catch(function(e){ console.log('[Opponents load]', e.message); intelOpponents = []; intelOpponentsLoaded = true; if (cb) cb(); });
+  if (!campaignId) { intelOpponents = []; intelActiveCampaignMeta = null; intelOpponentsLoaded = true; if (cb) cb(); return; }
+  // Fetch opponents and the active campaign's identity in parallel so the
+  // Intel panel can show which campaign its data is scoped to.
+  Promise.all([
+    fetch(D1_API + '/api/opponents/list?campaign_id=' + encodeURIComponent(campaignId), { headers: { 'Authorization': 'Bearer ' + sess } })
+      .then(function(r){
+        if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
+        return r.json();
+      }),
+    fetch(D1_API + '/api/campaigns/list', { headers: { 'Authorization': 'Bearer ' + sess } })
+      .then(function(r){ return r.json(); }).catch(function(){ return { campaigns: [] }; })
+  ]).then(function(results) {
+    var oppData = results[0];
+    var cmpData = results[1];
+    intelOpponents = (oppData.opponents || []);
+    var match = (cmpData.campaigns || []).find(function(c){ return c.id === campaignId; });
+    intelActiveCampaignMeta = match ? {
+      id: match.id,
+      candidate_name: match.candidate_name || '',
+      specific_office: match.specific_office || '',
+      state: match.state || ''
+    } : null;
+    intelOpponentsLoaded = true;
+    if (cb) cb();
+  }).catch(function(e){
+    console.log('[Opponents load]', e.message);
+    intelOpponents = [];
+    intelActiveCampaignMeta = null;
+    intelOpponentsLoaded = true;
+    if (cb) cb();
+  });
 }
 
 function addOpponentFromInput() {
@@ -4239,6 +4274,32 @@ function renderIntelTabContent(tabKey, data, fetchedAt) {
 function renderMyOpponentsTab(opponents) {
   var html = '';
   html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">My Opponents</div>';
+
+  // Scope context line: which campaign these opponents are actually tied to,
+  // with a warning when it doesn't match the profile on screen.
+  var meta = intelActiveCampaignMeta;
+  var profileName = (campaignData.candidateName || '').trim();
+  if (meta) {
+    var scopedName = (meta.candidate_name || '').trim();
+    var scopedOffice = meta.specific_office || '';
+    var mismatch = profileName && scopedName && profileName.toLowerCase() !== scopedName.toLowerCase();
+    if (mismatch) {
+      html += '<div style="font-size:10px;color:var(--gold);background:rgba(212,165,116,.08);border:1px solid rgba(212,165,116,.25);border-radius:4px;padding:10px 12px;margin-bottom:10px;line-height:1.5">' +
+        '\u26A0 Your profile shows <strong>' + escapeHtml(profileName) + '</strong> but this Intel panel is scoped to <strong>' + escapeHtml(scopedName) + (scopedOffice ? ' \u00b7 ' + escapeHtml(scopedOffice) : '') + '</strong>.' +
+        '<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">' +
+          '<button onclick="startFreshCampaignForProfile()" style="background:rgba(212,165,116,.2);border:1px solid rgba(212,165,116,.5);color:var(--gold);padding:5px 10px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.05em;cursor:pointer">Start fresh campaign for ' + escapeHtml(profileName) + '</button>' +
+          '<button onclick="toggleCampaignDropdown()" style="background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--t2);padding:5px 10px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.05em;cursor:pointer">Switch campaign</button>' +
+        '</div>' +
+      '</div>';
+    } else {
+      html += '<div style="font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.03em;margin-bottom:10px">Scope: ' + escapeHtml(scopedName) + (scopedOffice ? ' \u00b7 ' + escapeHtml(scopedOffice) : '') + '</div>';
+    }
+  } else {
+    html += '<div style="font-size:10px;color:var(--gold);background:rgba(212,165,116,.08);border:1px solid rgba(212,165,116,.25);border-radius:4px;padding:8px 10px;margin-bottom:10px;line-height:1.5">' +
+      'No active campaign record yet. Adding your first opponent will create one from your profile (' + escapeHtml(profileName || 'unnamed candidate') + ').' +
+    '</div>';
+  }
+
   html += '<div style="font-size:9px;color:rgba(255,255,255,.2);font-style:italic;margin-bottom:12px">Research opponents in your race. Each card refreshes at most every 72 hours.</div>';
   if (opponents && opponents.length > 0) {
     opponents.forEach(function(opp){ html += renderOpponentCard(opp); });
