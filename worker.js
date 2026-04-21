@@ -1870,119 +1870,6 @@ export default {
       }
 
       // ========================================
-      // HELPER: VPS Smart Search (free, self-hosted)
-      // ========================================
-      // ========================================
-      // HELPER: FEC Research Service (free, federal races only)
-      // ========================================
-      function getFECOfficeCode(office) {
-        var o = (office || '').toLowerCase();
-        if (o.includes('house') || o.includes('congress') || o.includes('representative')) return 'H';
-        if (o.includes('senate') || o.includes('senator')) return 'S';
-        if (o.includes('president')) return 'P';
-        return null;
-      }
-      function extractDistrict(office, loc) {
-        var m = (office + ' ' + loc).match(/district\s*(\d+)/i) || (office + ' ' + loc).match(/(\d+)(?:th|st|nd|rd)/i);
-        return m ? m[1].padStart(2, '0') : '';
-      }
-      function fecFormatName(n) {
-        if (!n || !n.includes(',')) return n || '';
-        var parts = n.split(',').map(function(s){ return s.trim(); });
-        var last = parts[0], first = (parts[1] || '').split(' ')[0];
-        function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
-        return cap(first) + ' ' + cap(last);
-      }
-
-      async function fetchFECCandidates(officeCode, st, dist, year) {
-        try {
-          var resp = await fetch('https://research.thecandidatestoolbox.com/race/full', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
-            body: JSON.stringify({ office: officeCode, state: st, district: dist, election_year: year }),
-            signal: AbortSignal.timeout(30000)
-          });
-          if (!resp.ok) throw new Error('FEC ' + resp.status);
-          var data = await resp.json();
-          if (!data.success) throw new Error('FEC returned failure');
-          console.log('[FEC] Got', data.total, 'candidates for', officeCode, st, dist);
-          return data;
-        } catch(e) { console.warn('[FEC] Failed:', e.message); return null; }
-      }
-
-      function buildFECCandidatesJSON(fecData, candidateName) {
-        var cn = (candidateName || '').toLowerCase();
-        var candidates = (fecData.candidates || []).map(function(c) {
-          var name = fecFormatName(c.name);
-          var nameLower = name.toLowerCase();
-          var isYou = cn.split(' ').filter(function(p){ return p.length > 1; }).every(function(p){ return nameLower.includes(p); });
-          var statusMap = { active: 'confirmed', inactive: 'withdrawn', possibly_active: 'rumored', unknown: 'rumored' };
-          var bgParts = [];
-          if ((c.incumbent_challenge||'').toLowerCase().indexOf('incumbent') >= 0) bgParts.push('Incumbent');
-          else if ((c.incumbent_challenge||'').toLowerCase().indexOf('challenger') >= 0) bgParts.push('Challenger');
-          else if ((c.incumbent_challenge||'').toLowerCase().indexOf('open') >= 0) bgParts.push('Open seat candidate');
-          if (c.finances && c.finances.total_raised > 0) bgParts.push('Raised $' + c.finances.total_raised.toLocaleString());
-          if (c.finances && c.finances.cash_on_hand > 0) bgParts.push('$' + c.finances.cash_on_hand.toLocaleString() + ' cash on hand');
-          return { name: name, party: c.party || c.party_short || '', isIncumbent: (c.incumbent_challenge||'').toLowerCase().indexOf('incumbent') >= 0, background: bgParts.join(' \u00b7 '), status: statusMap[c.activity_status] || 'confirmed', isCurrentCandidate: isYou, activity_status: c.activity_status, finances: c.finances };
-        });
-        return { candidates: candidates, totalFiled: fecData.total, raceNote: 'Source: FEC.gov. ' + fecData.active_count + ' active, ' + fecData.inactive_count + ' inactive candidates.', racePhase: 'general', source: 'fec_api' };
-      }
-
-      function buildFECThreatsJSON(fecData, candidateName) {
-        var cn = (candidateName || '').toLowerCase();
-        var userFinances = null;
-        var opponents = [];
-        (fecData.candidates || []).forEach(function(c) {
-          var name = fecFormatName(c.name);
-          if (cn.split(' ').filter(function(p){ return p.length > 1; }).every(function(p){ return name.toLowerCase().includes(p); })) {
-            userFinances = c.finances;
-          } else if (c.activity_status === 'active' || c.activity_status === 'possibly_active') {
-            var userCash = (userFinances || {}).cash_on_hand || 1;
-            var oppCash = (c.finances || {}).cash_on_hand || 0;
-            var ratio = oppCash / Math.max(userCash, 1);
-            var score = ratio > 2 ? 9 : ratio > 1 ? 7 : ratio > 0.5 ? 5 : ratio > 0.1 ? 3 : 1;
-            if ((c.finances || {}).pac_contributions > 100000) score = Math.min(10, score + 1);
-            var level = score >= 7 ? 'high' : score >= 4 ? 'medium' : 'low';
-            var bgParts = [];
-            if (c.party) bgParts.push(c.party);
-            if (c.finances && c.finances.total_raised > 0) bgParts.push('Raised $' + c.finances.total_raised.toLocaleString());
-            if (c.finances && c.finances.cash_on_hand > 0) bgParts.push('$' + c.finances.cash_on_hand.toLocaleString() + ' COH');
-            opponents.push({ name: name, party: c.party || '', overallScore: score, threatLevel: level, scores: { financial: Math.round(ratio * 5), nameRecognition: (c.incumbent_challenge||'').toLowerCase().indexOf('incumbent') >= 0 ? 8 : 3, momentum: c.finances && c.finances.total_raised > 50000 ? 6 : 2, directThreat: score }, summary: bgParts.join(' \u00b7 '), keyRisk: oppCash > 100000 ? 'Well-funded challenger' : 'Limited funding', trend: c.finances && c.finances.total_raised > 10000 ? 'stable' : 'fading' });
-          }
-        });
-        opponents.sort(function(a, b) { return b.overallScore - a.overallScore; });
-        return { opponents: opponents, strategicSummary: opponents.length === 0 ? 'No active opponents with significant financial activity found in FEC records.' : opponents.length + ' active opponent(s). Top threat: ' + (opponents[0] || {}).name + ' (' + (opponents[0] || {}).threatLevel + ', score ' + (opponents[0] || {}).overallScore + '/10). Source: FEC.gov financial data.', source: 'fec_api' };
-      }
-
-      async function smartWebSearch(query, maxChars) {
-        try {
-          // NOTE: Cloudflare Workers require HTTPS. VPS needs SSL or Cloudflare Tunnel.
-          // Using env.VPS_SEARCH_URL to allow HTTPS upgrade without code change.
-          const vpsBase = env.VPS_SEARCH_URL || 'https://search.thecandidatestoolbox.com';
-          const vpsUrl = vpsBase.replace(/\/+$/, '') + '/smart-search';
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000);
-          const resp = await fetch(vpsUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
-            body: JSON.stringify({ query, max_results: 5, max_chars: maxChars || 12000 }),
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
-          if (!resp.ok) throw new Error('VPS ' + resp.status);
-          const data = await resp.json();
-          if (data.success !== false && data.content && data.content.length > 50) {
-            console.log('[Search] VPS success:', (data.source || 'unknown'), data.content.length, 'chars');
-            return { source: 'vps', content: data.content };
-          }
-          throw new Error('VPS returned empty content');
-        } catch (e) {
-          console.warn('[Search] VPS failed:', e.message);
-          return null;
-        }
-      }
-
-      // ========================================
       // HELPER: Multi-query VPS search (parallel, free)
       // ========================================
       async function multiSearch(queries, maxCharsPerQuery) {
@@ -2013,13 +1900,11 @@ export default {
       // RESEARCH MODE — multi-query VPS search, Anthropic fallback
       // ========================================
       if (mode === 'research') {
-        // Detect feature for logging
+        // Detect feature for logging. Opponent research and action items have their
+        // own endpoints (/api/opponents/*, /api/intel/action-items) — not routed here.
         var researchFeature = 'research';
         if (message.indexOf('morning briefing') >= 0) researchFeature = 'morning_brief';
-        else if (message.indexOf('all candidates who have officially filed') >= 0) researchFeature = 'intel_candidates';
         else if (message.indexOf('recent news, events, and issues') >= 0) researchFeature = 'intel_pulse';
-        else if (message.indexOf('voter data') >= 0 || message.indexOf('voter registration') >= 0) researchFeature = 'intel_outreach';
-        else if (message.indexOf('Analyze all candidates') >= 0 || message.indexOf('threat') >= 0) researchFeature = 'intel_threats';
         else if (message.indexOf('Research the following candidate') >= 0 || message.indexOf('research candidates') >= 0) researchFeature = 'candidate_brief';
         else if (message.indexOf('district pain points') >= 0 || message.indexOf('local news') >= 0) researchFeature = 'day1_brief';
 
@@ -2029,43 +1914,17 @@ export default {
         const loc = location || '';
         const st = state || '';
         const cn = candidateName || '';
-        const district = loc + ' ' + st;
         let searchQueries = [];
 
         // Build natural district description for better search results
         const fullDistrict = office + ' ' + (loc ? loc + ' ' : '') + st;
 
-        if (researchFeature === 'intel_candidates') {
-          searchQueries = [
-            fullDistrict + ' ' + yr + ' candidates filed',
-            fullDistrict + ' ' + yr + ' primary candidates',
-            'site:ballotpedia.org ' + fullDistrict + ' ' + yr,
-            cn + ' ' + fullDistrict + ' ' + yr + ' election opponents',
-            st + ' secretary of state ' + office + ' candidates ' + yr
-          ];
-        } else if (researchFeature === 'intel_pulse') {
+        if (researchFeature === 'intel_pulse') {
           searchQueries = [
             cn + ' ' + st + ' news ' + yr,
             fullDistrict + ' politics news ' + yr,
             st + ' political news this week ' + yr,
             loc + ' ' + st + ' election news ' + yr
-          ];
-        } else if (researchFeature === 'intel_outreach') {
-          searchQueries = [
-            fullDistrict + ' voter registration demographics',
-            fullDistrict + ' voter turnout history',
-            st + ' ' + loc + ' registered voters ' + yr + ' party breakdown'
-          ];
-        } else if (researchFeature === 'intel_threats') {
-          searchQueries = [
-            fullDistrict + ' ' + yr + ' primary candidates filed',
-            fullDistrict + ' ' + yr + ' election opponents challengers',
-            cn + ' opponent challenger ' + yr + ' ' + st,
-            'site:ballotpedia.org ' + fullDistrict + ' ' + yr,
-            fullDistrict + ' ' + yr + ' campaign fundraising FEC',
-            st + ' ' + office + ' ' + yr + ' race challenger Democratic Republican',
-            cn + ' versus ' + st + ' ' + yr + ' election',
-            fullDistrict + ' filed candidates ' + yr + ' secretary of state'
           ];
         } else if (researchFeature === 'morning_brief') {
           searchQueries = [
@@ -2090,30 +1949,9 @@ export default {
           ];
         }
 
-        // For federal races: use FEC research service ($0) for candidates/threats
-        const fecCode = getFECOfficeCode(office);
-        const fecDistrict = fecCode === 'H' ? extractDistrict(office, loc) : '';
-        if (fecCode && (researchFeature === 'intel_candidates' || researchFeature === 'intel_threats')) {
-          const fecData = await fetchFECCandidates(fecCode, st, fecDistrict, yr);
-          if (fecData) {
-            var fecResult = researchFeature === 'intel_candidates'
-              ? buildFECCandidatesJSON(fecData, cn)
-              : buildFECThreatsJSON(fecData, cn);
-            await logApiUsage(researchFeature + '_fec', { usage: { input_tokens: 0, output_tokens: 0 } }, rateLimitUserId);
-            // Wrap in Anthropic-compatible response format
-            return new Response(JSON.stringify({
-              content: [{ type: 'text', text: JSON.stringify(fecResult) }],
-              usage: { input_tokens: 0, output_tokens: 0 },
-              stop_reason: 'end_turn'
-            }), { headers: { "Content-Type": "application/json", ...corsHeaders } });
-          }
-          console.log('[FEC] Failed, falling back to Anthropic for', researchFeature);
-        }
-
-        // Non-federal candidates/threats and candidate_brief: use Anthropic direct
-        const useAnthropicDirect = ['intel_candidates', 'intel_threats', 'candidate_brief'].indexOf(researchFeature) >= 0;
-
-        // Morning brief, pulse, outreach: use VPS (high frequency, $0/call)
+        // candidate_brief uses Anthropic web_search directly (deeper research).
+        // Pulse, morning_brief, day1_brief use multi-query VPS search (free, fast).
+        const useAnthropicDirect = researchFeature === 'candidate_brief';
         const vpsResult = useAnthropicDirect ? null : await multiSearch(searchQueries, 5000);
 
         if (vpsResult) {
@@ -2296,35 +2134,25 @@ RULES:
 
       // ========================================
       // HELPER: Build Intel Ground Truth
+      // Pulls from the user's opponents (D1) and district pulse (localStorage cache).
       // ========================================
       let intelGroundTruth = '';
-      if (intelContext && intelContext.candidates && intelContext.candidates.length > 0) {
-        const activeCandidates = intelContext.candidates.filter(c => c.status !== 'withdrawn');
-        intelGroundTruth = `
-AUTHORITATIVE RACE DATA — DO NOT CONTRADICT OR SEARCH FRESH:
-Source: Intel panel verified research.
-
-FILED CANDIDATES (${activeCandidates.length} active):
-${intelContext.candidates.map(c =>
-  `- ${c.name} (${c.party || 'unknown party'})${c.isIncumbent ? ' [INCUMBENT]' : ''}${c.status === 'withdrawn' ? ' [WITHDRAWN]' : ''}: ${c.background || 'no background available'}`
-).join('\n')}
-${intelContext.raceNote ? `Race note: ${intelContext.raceNote}` : ''}`;
-
-        if (intelContext.threats && intelContext.threats.length > 0) {
-          intelGroundTruth += `\n\nTHREAT ASSESSMENT:\n${intelContext.threats.map(o =>
-            `- ${o.name}: ${o.threatLevel} THREAT (${o.overallScore}/10) — ${o.summary}`
-          ).join('\n')}`;
+      const hasOpps = intelContext && Array.isArray(intelContext.opponents) && intelContext.opponents.length > 0;
+      const hasPulse = intelContext && Array.isArray(intelContext.pulseItems) && intelContext.pulseItems.length > 0;
+      if (hasOpps || hasPulse) {
+        intelGroundTruth = `\nAUTHORITATIVE INTEL — DO NOT CONTRADICT OR SEARCH FRESH:\nSource: user's Intel panel.`;
+        if (hasOpps) {
+          intelGroundTruth += `\n\nOPPONENTS (${intelContext.opponents.length}):\n` + intelContext.opponents.map(o =>
+            `- ${o.name} (${o.party || 'unknown'})${o.office ? ' [' + o.office + ']' : ''} — threat ${o.threatLevel != null ? o.threatLevel + '/10' : 'unknown'}${o.keyRisk ? ' | risk: ' + o.keyRisk : ''}${o.campaignFocus ? ' | focus: ' + o.campaignFocus : ''}`
+          ).join('\n');
         }
-        if (intelContext.topIssues && intelContext.topIssues.length > 0) {
-          intelGroundTruth += `\n\nTOP VOTER ISSUES:\n${intelContext.topIssues.map(i =>
-            `- ${i.issue}: ${i.concern}% concern (${i.trend})`
-          ).join('\n')}`;
-        }
-        if (intelContext.outreachRecommendation) {
-          intelGroundTruth += `\n\nOUTREACH STRATEGY: ${intelContext.outreachRecommendation}`;
+        if (hasPulse) {
+          intelGroundTruth += `\n\nDISTRICT PULSE (recent):\n` + intelContext.pulseItems.slice(0, 6).map(p =>
+            `- [${p.category || 'news'}] ${p.headline || ''}${p.summary ? ' — ' + p.summary : ''}`
+          ).join('\n');
         }
       } else {
-        intelGroundTruth = `\nRACE DATA: Intel panel not yet run. When asked about candidates or opponents, tell the candidate to open their Intel panel for verified research. Do not guess candidate names or counts.`;
+        intelGroundTruth = `\nRACE DATA: No opponents added and no pulse data yet. When asked about opponents, direct the candidate to the Intel panel's My Opponents tab to add and research them. Do not guess opponent names.`;
       }
 
       // ========================================
