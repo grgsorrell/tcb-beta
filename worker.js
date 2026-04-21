@@ -73,6 +73,114 @@ export default {
     }
 
     // ========================================
+    // HELPER: Research a single opponent
+    // Federal races: FEC finances + 1 VPS search + Haiku synthesis (~$0.005)
+    // Non-federal: Haiku + web_search with max_uses: 3 (~$0.05–0.07)
+    // ========================================
+    async function researchOpponent(params, userId) {
+      const { name, office, state, loc, year, myCandidateName, myParty } = params;
+      const officeLower = (office || '').toLowerCase();
+      let fecCode = null;
+      if (officeLower.includes('house') || officeLower.includes('congress') || officeLower.includes('representative')) fecCode = 'H';
+      else if (officeLower.includes('senate') || officeLower.includes('senator')) fecCode = 'S';
+      else if (officeLower.includes('president')) fecCode = 'P';
+      const isFederal = !!fecCode;
+      const dm = fecCode === 'H' ? ((office + ' ' + loc).match(/district\s*(\d+)/i) || (office + ' ' + loc).match(/(\d+)(?:th|st|nd|rd)/i)) : null;
+      const district = dm ? dm[1].padStart(2, '0') : '';
+
+      let fecData = null;
+      let newsContent = '';
+
+      if (isFederal) {
+        // 1) FEC finances for this specific opponent
+        try {
+          const fecResp = await fetch('https://research.thecandidatestoolbox.com/candidate/finances', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+            body: JSON.stringify({ name, office: fecCode, state, district, election_year: year }),
+            signal: AbortSignal.timeout(15000)
+          });
+          if (fecResp.ok) {
+            const j = await fecResp.json();
+            if (j && j.success !== false) { fecData = j; console.log('[Opponent FEC]', name, 'OK'); }
+          } else { console.warn('[Opponent FEC]', name, 'status', fecResp.status); }
+        } catch (e) { console.warn('[Opponent FEC] Failed:', e.message); }
+
+        // 2) One VPS search for recent news
+        try {
+          const vpsBase = (env.VPS_SEARCH_URL || 'https://search.thecandidatestoolbox.com').replace(/\/+$/, '') + '/smart-search';
+          const vpsResp = await fetch(vpsBase, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+            body: JSON.stringify({ query: name + ' ' + (office || '') + ' ' + (state || '') + ' campaign ' + year, max_results: 5, max_chars: 8000 }),
+            signal: AbortSignal.timeout(15000)
+          });
+          if (vpsResp.ok) {
+            const j = await vpsResp.json();
+            if (j && j.content && j.content.length > 50) { newsContent = j.content; console.log('[Opponent VPS]', name, 'OK', j.content.length, 'chars'); }
+          }
+        } catch (e) { console.warn('[Opponent VPS] Failed:', e.message); }
+      }
+
+      const jsonShape = '{"party":"R|D|I|other","office":"string","bio":"2-3 sentences","background":"1-2 sentences on career/background","recentNews":"1-2 sentences on recent activity","campaignFocus":"1-2 sentences on issues and messaging","threatLevel":1-10 integer,"keyRisk":"one specific risk this opponent poses","subScores":{"financial":1-10,"nameRecognition":1-10,"momentum":1-10,"directThreat":1-10}}';
+
+      const hasFederalData = isFederal && (fecData || newsContent);
+      let apiBody, featureTag;
+
+      if (hasFederalData) {
+        featureTag = 'intel_opponent_fec';
+        let ctxParts = [];
+        if (fecData) ctxParts.push('FEC DATA for ' + name + ':\n' + JSON.stringify(fecData));
+        if (newsContent) ctxParts.push('RECENT NEWS:\n' + newsContent);
+        const userMsg = 'Analyze ' + name + ', an opponent of ' + (myCandidateName || 'my candidate') + ' (' + (myParty || 'unknown party') + ') running for ' + (office || 'unknown office') + ' in ' + (loc ? loc + ', ' : '') + (state || '') + ', ' + year + '.\n\nUse ONLY this research data — do not invent facts. If a field is unknown, write "unknown".\n\n' + ctxParts.join('\n\n') + '\n\nReturn ONLY JSON in this exact shape:\n' + jsonShape + '\n\nScoring guidance: threatLevel and subScores must reflect real threat. financial: compare opponent cash-on-hand to average race ($100k+ = 7+, $500k+ = 9). nameRecognition: incumbent=9, prominent=6, unknown=3. momentum: strong recent news + fundraising=8+, quiet=3. directThreat: strong same-lane opponent = high.';
+        apiBody = {
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 2000,
+          temperature: 0.2,
+          system: [{ type: "text", text: 'You are a political research analyst. Return ONLY valid JSON matching the shape requested — no preamble, no markdown fences. Use only the research data provided. Current year is ' + new Date().getFullYear() + '.' }],
+          messages: [{ role: "user", content: userMsg }]
+        };
+      } else {
+        featureTag = 'intel_opponent_anthropic';
+        const userMsg = 'Research ' + name + ', an opponent of ' + (myCandidateName || 'my candidate') + ' (' + (myParty || 'unknown party') + ') running for ' + (office || 'unknown office') + ' in ' + (loc ? loc + ', ' : '') + (state || '') + ', ' + year + '. Perform at most 3 web searches. Focus on: (1) bio/background, (2) recent news/campaign activity, (3) campaign focus and issues. Do not do exhaustive research.\n\nReturn ONLY JSON in this exact shape:\n' + jsonShape + '\n\nScoring: nameRecognition (incumbent=9, prominent=6, unknown=3), momentum (recent news+fundraising=8+, quiet=3), directThreat (strong same-lane=high).';
+        apiBody = {
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 3000,
+          temperature: 0.2,
+          system: [{ type: "text", text: 'You are a political research analyst. Perform at most 3 web searches. Focus only on bio/background, recent news, and campaign focus — do not do exhaustive research. Return ONLY valid JSON — no preamble, no markdown fences. Current year is ' + new Date().getFullYear() + '.' }],
+          tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 3 }],
+          messages: [{ role: "user", content: userMsg }]
+        };
+      }
+
+      const apiResp = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
+        body: JSON.stringify(apiBody)
+      });
+      const apiData = await apiResp.json();
+      await logApiUsage(featureTag, apiData, userId);
+
+      // Parse JSON from last text block
+      const textBlocks = [];
+      if (apiData.content && Array.isArray(apiData.content)) {
+        apiData.content.forEach(b => { if (b.type === 'text' && b.text) textBlocks.push(b.text); });
+      }
+      const lastBlock = textBlocks[textBlocks.length - 1] || '';
+      const jsonStr = lastBlock.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+      let card = null;
+      try { card = JSON.parse(jsonStr); } catch (e) {
+        const matches = jsonStr.match(/\{[\s\S]*\}/g);
+        if (matches) { try { card = JSON.parse(matches[matches.length - 1]); } catch (e2) {} }
+      }
+      if (!card) { console.error('[Opponent]', name, 'JSON parse failed. Raw:', lastBlock.substring(0, 300)); throw new Error('Opponent research returned no parseable JSON'); }
+
+      card.source = hasFederalData ? 'fec_vps' : 'anthropic';
+      if (fecData && fecData.finances) card.finances = fecData.finances;
+      return card;
+    }
+
+    // ========================================
     // AUTH: Beta login (username/password)
     // ========================================
     if (url.pathname === '/auth/beta-login' && request.method === 'POST') {
@@ -1547,6 +1655,178 @@ export default {
 
         return jsonResponse({ success: true, users: users.results || [] });
       } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // INTEL: List opponents
+    // ========================================
+    if (url.pathname === '/api/opponents/list' && request.method === 'GET') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const rows = await env.DB.prepare(
+          'SELECT id, name, data, last_researched_at, created_at FROM opponents WHERE user_id = ? ORDER BY created_at ASC'
+        ).bind(userId).all();
+        const opponents = (rows.results || []).map(r => ({
+          id: r.id,
+          name: r.name,
+          data: r.data ? (function(){ try { return JSON.parse(r.data); } catch(e) { return {}; } })() : {},
+          last_researched_at: r.last_researched_at,
+          created_at: r.created_at
+        }));
+        return jsonResponse({ success: true, opponents });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // INTEL: Add opponent (creates row + runs initial research)
+    // ========================================
+    if (url.pathname === '/api/opponents/add' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const body = await request.json();
+        const name = (body.name || '').trim();
+        if (!name) return jsonResponse({ error: 'Name required' }, 400);
+
+        const card = await researchOpponent({
+          name,
+          office: body.office || '',
+          state: body.state || '',
+          loc: body.location || '',
+          year: body.year || new Date().getFullYear(),
+          myCandidateName: body.myCandidateName || '',
+          myParty: body.myParty || ''
+        }, userId);
+
+        const id = generateId(16);
+        const now = new Date().toISOString();
+        await env.DB.prepare(
+          'INSERT INTO opponents (id, user_id, campaign_id, name, data, last_researched_at, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+        ).bind(id, userId, body.campaignId || null, name, JSON.stringify(card), now, now).run();
+
+        return jsonResponse({ success: true, opponent: { id, name, data: card, last_researched_at: now, created_at: now } });
+      } catch (error) {
+        console.error('[Opponents add] Error:', error.message);
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // INTEL: Refresh opponent (72h cooldown enforced)
+    // ========================================
+    if (url.pathname === '/api/opponents/refresh' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const body = await request.json();
+        if (!body.id) return jsonResponse({ error: 'id required' }, 400);
+
+        const row = await env.DB.prepare(
+          'SELECT name, last_researched_at FROM opponents WHERE id = ? AND user_id = ?'
+        ).bind(body.id, userId).first();
+        if (!row) return jsonResponse({ error: 'Opponent not found' }, 404);
+
+        if (row.last_researched_at) {
+          const hoursSince = (Date.now() - new Date(row.last_researched_at).getTime()) / (1000 * 60 * 60);
+          if (hoursSince < 72) {
+            return jsonResponse({ error: 'cooldown', hoursLeft: Math.ceil(72 - hoursSince) }, 429);
+          }
+        }
+
+        const card = await researchOpponent({
+          name: row.name,
+          office: body.office || '',
+          state: body.state || '',
+          loc: body.location || '',
+          year: body.year || new Date().getFullYear(),
+          myCandidateName: body.myCandidateName || '',
+          myParty: body.myParty || ''
+        }, userId);
+        const now = new Date().toISOString();
+        await env.DB.prepare(
+          'UPDATE opponents SET data = ?, last_researched_at = ? WHERE id = ? AND user_id = ?'
+        ).bind(JSON.stringify(card), now, body.id, userId).run();
+
+        return jsonResponse({ success: true, opponent: { id: body.id, name: row.name, data: card, last_researched_at: now } });
+      } catch (error) {
+        console.error('[Opponents refresh] Error:', error.message);
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // INTEL: Remove opponent
+    // ========================================
+    if (url.pathname === '/api/opponents/remove' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const { id } = await request.json();
+        if (!id) return jsonResponse({ error: 'id required' }, 400);
+        await env.DB.prepare('DELETE FROM opponents WHERE id = ? AND user_id = ?').bind(id, userId).run();
+        return jsonResponse({ success: true });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // INTEL: Action Items (single Haiku call, no web search, ~$0.005)
+    // ========================================
+    if (url.pathname === '/api/intel/action-items' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const body = await request.json();
+
+        const pulseItems = Array.isArray(body.pulse) ? body.pulse.slice(0, 8) : [];
+        const oppItems = Array.isArray(body.opponents) ? body.opponents : [];
+        const tasksList = Array.isArray(body.tasks) ? body.tasks.slice(0, 12) : [];
+        const eventsList = Array.isArray(body.events) ? body.events.slice(0, 8) : [];
+
+        const ctx =
+          'Campaign context:\n' +
+          '- Candidate: ' + (body.candidateName || 'unknown') + '\n' +
+          '- Office: ' + (body.office || 'unknown') + '\n' +
+          '- Phase: ' + (body.phase || 'unknown') + '\n' +
+          '- Days to election: ' + (body.daysToElection != null ? body.daysToElection : 'unknown') + '\n' +
+          '- District pulse (recent news): ' + (pulseItems.length ? '\n  • ' + pulseItems.map(p => (p.headline || '') + ' — ' + (p.summary || '')).join('\n  • ') : 'none') + '\n' +
+          '- Opponents: ' + (oppItems.length ? oppItems.map(o => (o.name || '') + ' (threat ' + (o.threatLevel != null ? o.threatLevel : '?') + '/10, risk: ' + (o.keyRisk || '') + ')').join('; ') : 'none') + '\n' +
+          '- Open tasks (' + tasksList.length + '): ' + (tasksList.length ? tasksList.map(t => t.name || t.text || '').filter(Boolean).join('; ') : 'none') + '\n' +
+          '- Upcoming events: ' + (eventsList.length ? eventsList.map(e => (e.name || '') + ' (' + (e.date || '') + ')').join('; ') : 'none');
+
+        const userMsg = ctx + '\n\nProduce 3-5 prioritized action items this candidate should do in the next 7 days. Prefer actions that respond to pulse items, counter specific opponents, or fit the campaign phase. Each item should be concrete and schedulable (a single task).\n\nReturn ONLY JSON:\n{"items":[{"action":"imperative action phrase, <12 words","why":"one sentence on why this matters right now","priority":"high|medium|low"}]}';
+
+        const apiResp = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
+          body: JSON.stringify({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 1500,
+            temperature: 0.3,
+            system: [{ type: "text", text: "You are Sam, a political campaign strategist. Return ONLY valid JSON — no preamble, no markdown fences. Use only the provided context. Do not invent facts, opponents, or events not in the context." }],
+            messages: [{ role: "user", content: userMsg }]
+          })
+        });
+        const apiData = await apiResp.json();
+        await logApiUsage('intel_action_items', apiData, userId);
+
+        const textBlocks = [];
+        if (apiData.content && Array.isArray(apiData.content)) {
+          apiData.content.forEach(b => { if (b.type === 'text' && b.text) textBlocks.push(b.text); });
+        }
+        const lastBlock = textBlocks[textBlocks.length - 1] || '';
+        const jsonStr = lastBlock.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+        let parsed = null;
+        try { parsed = JSON.parse(jsonStr); } catch (e) {
+          const matches = jsonStr.match(/\{[\s\S]*\}/g);
+          if (matches) { try { parsed = JSON.parse(matches[matches.length - 1]); } catch (e2) {} }
+        }
+
+        return jsonResponse({ success: true, items: (parsed && parsed.items) || [] });
+      } catch (error) {
+        console.error('[Action Items] Error:', error.message);
         return jsonResponse({ error: error.message }, 500);
       }
     }
