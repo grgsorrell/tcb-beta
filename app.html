@@ -4034,7 +4034,7 @@ function renderPulseTab(data) {
   var catColors = {'local-politics':'var(--purple)','issues':'var(--blue)','opponent':'var(--red)','community':'var(--green)','economy':'var(--gold)'};
   items.forEach(function(item) {
     var catColor = catColors[item.category] || 'var(--t3)';
-    var sentIcon = item.sentiment === 'positive' ? '<span style="color:var(--green)">\u2191</span>' : item.sentiment === 'negative' ? '<span style="color:var(--red)">\u2193</span>' : '<span style="color:var(--t3)">\u2192</span>';
+    var sentIcon = item.sentiment === 'positive' ? '<span style="color:var(--green);font-size:9px;font-weight:700;letter-spacing:.08em">TRENDING \u2191</span>' : item.sentiment === 'negative' ? '<span style="color:var(--red);font-size:9px;font-weight:700;letter-spacing:.08em">TRENDING \u2193</span>' : '<span style="color:var(--t3);font-size:9px;font-weight:700;letter-spacing:.08em">TRENDING \u2192</span>';
     html += '<div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05)">' +
       '<div style="display:flex;justify-content:space-between;align-items:center">' +
         '<span style="font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' + catColor + '">' + escapeHtml(item.category||'') + '</span>' +
