@@ -229,17 +229,17 @@ export default {
           model: "claude-haiku-4-5-20251001",
           max_tokens: 2000,
           temperature: 0.2,
-          system: [{ type: "text", text: 'You are a political research analyst. Return ONLY valid JSON matching the shape requested — no preamble, no markdown fences. Use only the research data provided — FEC data is authoritative. Current year is ' + new Date().getFullYear() + '.' }],
+          system: [{ type: "text", text: 'You are a political research analyst. Return ONLY valid JSON matching the shape requested — no preamble, no markdown fences. Use only the research data provided — FEC data is authoritative. Do not include XML citation tags, <cite> tags, or any HTML/XML markup inside the JSON string values — return plain prose only. Current year is ' + new Date().getFullYear() + '.' }],
           messages: [{ role: "user", content: userMsg }]
         };
       } else {
         featureTag = 'intel_opponent_anthropic';
-        const userMsg = 'Research ' + name + ', an opponent of ' + (myCandidateName || 'my candidate') + ' (' + (myParty || 'unknown party') + ') running for ' + (office || 'unknown office') + ' in ' + (loc ? loc + ', ' : '') + (state || '') + ', ' + year + '. Perform at most 3 web searches. Focus on: (1) bio/background, (2) recent news/campaign activity, (3) campaign focus and issues. Do not do exhaustive research.\n\nReturn ONLY JSON in this exact shape:\n' + jsonShape + '\n\nScoring: nameRecognition (incumbent=9, prominent=6, unknown=3), momentum (recent news+fundraising=8+, quiet=3), directThreat (strong same-lane=high).';
+        const userMsg = 'Research ' + name + ', an opponent of ' + (myCandidateName || 'my candidate') + ' (' + (myParty || 'unknown party') + ') running for ' + (office || 'unknown office') + ' in ' + (loc ? loc + ', ' : '') + (state || '') + ', ' + year + '. Perform at most 3 web searches. Focus on: (1) bio/background, (2) recent news/campaign activity, (3) campaign focus and issues. Do not do exhaustive research.\n\nReturn ONLY JSON in this exact shape:\n' + jsonShape + '\n\nScoring: nameRecognition (incumbent=9, prominent=6, unknown=3), momentum (recent news+fundraising=8+, quiet=3), directThreat (strong same-lane=high).\n\nIMPORTANT: Do not wrap any text in <cite>, <cite index="...">, or any other XML/HTML tags. The JSON string values must be plain prose with no markup — just the sentences themselves.';
         apiBody = {
           model: "claude-haiku-4-5-20251001",
           max_tokens: 3000,
           temperature: 0.2,
-          system: [{ type: "text", text: 'You are a political research analyst. Perform at most 3 web searches. Focus only on bio/background, recent news, and campaign focus — do not do exhaustive research. Return ONLY valid JSON — no preamble, no markdown fences. Current year is ' + new Date().getFullYear() + '.' }],
+          system: [{ type: "text", text: 'You are a political research analyst. Perform at most 3 web searches. Focus only on bio/background, recent news, and campaign focus — do not do exhaustive research. Return ONLY valid JSON — no preamble, no markdown fences. Do not include XML citation tags, <cite> tags, or any HTML/XML markup inside the JSON string values — return plain prose only. Current year is ' + new Date().getFullYear() + '.' }],
           tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 3 }],
           messages: [{ role: "user", content: userMsg }]
         };
@@ -267,11 +267,30 @@ export default {
       }
       if (!card) { console.error('[Opponent]', name, 'JSON parse failed. Raw:', lastBlock.substring(0, 300)); throw new Error('Opponent research returned no parseable JSON'); }
 
+      // Haiku sometimes wraps quoted source text in <cite index="..."> tags
+      // (the web_search tool encourages citation markup). Strip them here so
+      // the UI never shows raw tags and the D1-stored card stays plain prose.
+      const stringFields = ['party', 'office', 'bio', 'background', 'recentNews', 'campaignFocus', 'keyRisk'];
+      stringFields.forEach(function(f) {
+        if (typeof card[f] === 'string') card[f] = stripCiteTags(card[f]);
+      });
+
       card.source = hasFederalData ? 'fec_vps' : 'anthropic';
       // Stash FEC data alongside the card so the frontend can show exact numbers.
       if (fecFinances) card.finances = fecFinances;
       if (fecMatch && fecMatch.candidate_id) card.fecCandidateId = fecMatch.candidate_id;
       return card;
+    }
+
+    // Strip <cite index="...">inner</cite> wrappers and any orphan <cite>/</cite>
+    // tags, preserving the inner text. Idempotent — safe to run over clean strings.
+    function stripCiteTags(s) {
+      if (typeof s !== 'string') return s;
+      return s
+        .replace(/<cite\b[^>]*>([\s\S]*?)<\/cite>/gi, '$1')
+        .replace(/<\/?cite\b[^>]*>/gi, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
     }
 
     // ========================================
