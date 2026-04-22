@@ -52,6 +52,53 @@ export default {
     }
 
     // ========================================
+    // HELPER: Resolve session → workspace context (C3, dormant until C4)
+    // ========================================
+    // Owner:    { userId, ownerId: userId, isSubUser: false, permissions: null }
+    // Sub-user: { userId, ownerId: <owner's users.id>, isSubUser: true, permissions: {...} }
+    // Revoked:  { userId, ownerId: null, isSubUser: true, revoked: true }
+    // No valid session: null
+    //
+    // Every data endpoint filter/write will route through ownerId starting in
+    // C4/C5. Until then this helper is declared but unused.
+    async function getSessionContext(req) {
+      const userId = await getUserFromSession(req);
+      if (!userId) return null;
+      const user = await env.DB.prepare(
+        'SELECT id, email FROM users WHERE id = ?'
+      ).bind(userId).first();
+      if (!user) return null;
+      if (user.email && user.email.endsWith('@sub.tcb')) {
+        const subUsername = user.email.replace(/@sub\.tcb$/, '');
+        const sub = await env.DB.prepare(
+          'SELECT owner_id, status, permissions_json FROM sub_users WHERE username = ?'
+        ).bind(subUsername).first();
+        if (!sub || sub.status === 'revoked') {
+          return { userId, ownerId: null, isSubUser: true, revoked: true };
+        }
+        let perms = {};
+        try { perms = JSON.parse(sub.permissions_json || '{}'); } catch (e) {}
+        return { userId, ownerId: sub.owner_id, isSubUser: true, permissions: perms };
+      }
+      return { userId, ownerId: userId, isSubUser: false, permissions: null };
+    }
+
+    // Returns true if ctx can perform an action gated by (tab, minLevel).
+    // Owners bypass all checks. Sub-users need the tab key present with a
+    // level >= requested minimum. 'read' allows read or full; 'full' requires
+    // full. Missing key or null ctx → denied.
+    function requirePermission(ctx, tab, minLevel) {
+      if (!ctx) return false;
+      if (ctx.revoked) return false;
+      if (!ctx.isSubUser) return true;
+      const level = (ctx.permissions || {})[tab];
+      if (!level) return false;
+      if (minLevel === 'read') return level === 'read' || level === 'full';
+      if (minLevel === 'full') return level === 'full';
+      return false;
+    }
+
+    // ========================================
     // HELPER: Log API usage to console and D1
     // ========================================
     async function logApiUsage(feature, data, userId) {
