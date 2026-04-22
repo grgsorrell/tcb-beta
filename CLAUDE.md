@@ -281,6 +281,46 @@ the billing workspace. `api_usage.user_id` records the actual caller
 (sub-user or owner) for audit. Rate limiting (`usage_logs`) stays
 per-`user_id` — each collaborator gets their own 100-message/day quota.
 
+### Unified login endpoint
+
+`POST /api/auth/login` handles both owners and sub-users in one
+handler. `/auth/subuser-login` is kept as a pathname alias for
+back-compat (old endpoint URL still works). Flow:
+
+1. Rate-limit gate: count `success=0` rows in `login_attempts` for
+   the lowercased+trimmed username in the last 15 minutes. If ≥5 →
+   `429 too_many_attempts` with `retryAfterMinutes`.
+2. Try `users` table (owners). If row exists with `password_hash` and
+   hash matches → owner success, 30-day session.
+3. If no owner match, try `sub_users` (without status filter — need
+   to distinguish revoked from not-found).
+4. Sub-user match + correct password + active → create/reuse
+   `@sub.tcb` anchor in `users`, 30-day session, return full response
+   including `isSubUser: true, permissions, ownerUserId,
+   mustChangePassword`.
+5. Sub-user match + correct password + revoked → `401 {error:
+   'revoked', message: '...'}`. Anchor not created, no session.
+6. No match anywhere → generic `401 invalid credentials`. Same error
+   for wrong password as unknown username (no info leak about which
+   usernames exist).
+
+**Response fields added for sub-users:** `isSubUser, name, role,
+permissions, ownerUserId, mustChangePassword`. Owner responses omit
+sub-user fields but include `isSubUser: false` for clarity.
+
+**Forced password-change takeover (`mustChangePassword: true`):**
+Sub-users created via `/api/users/create` get `must_change_password =
+1` by default. On login, the response flag is stored as
+`localStorage['tcb_must_change_password']`. `initApp()` in `app.html`
+checks this at the top and renders a full-screen takeover
+(`renderForcedPasswordChange`) that blocks all other UI until the
+user POSTs to `/api/auth/change-password`. Two-way sync via the 60s
+verify-session poll handles mid-session changes across devices.
+
+**Password rules (change-password endpoint):** ≥8 chars, must include
+one number or symbol (`/[0-9\W_]/`), must differ from current hash.
+Enforced both client-side (for UX) and server-side (authoritative).
+
 ### Future hardening
 
 These are known gaps / deferred work, not bugs. Capture them here so
@@ -321,6 +361,44 @@ they aren't rediscovered:
    reset data, all of which are owner-only). If a sub-user ever needs
    to do something self-service (change their own password, adjust
    notification prefs), that needs its own pared-down view.
+
+6. **Per-IP login rate limiting.** Today `/api/auth/login` gates on
+   per-username only (5 failures in 15 min → 15 min lockout, via the
+   `login_attempts` table). Per-username doesn't catch distributed
+   attackers trying many usernames from one IP. Add a second check
+   with a tighter per-IP threshold (e.g. 15 failed attempts from one
+   IP in an hour → IP block). Use `CF-Connecting-IP` from the request
+   headers. Per-username+IP combo is the strictest layer and can be
+   added if the other two aren't sufficient.
+
+7. **login_attempts cleanup cron.** Table grows unbounded (fine at
+   beta scale; plan for prod). Add a Cloudflare Cron Trigger running
+   `DELETE FROM login_attempts WHERE attempted_at < datetime('now',
+   '-30 days')` daily when Cron Triggers infra is set up.
+
+8. **Owner password-change flow.** The current
+   `/api/auth/change-password` is sub-user-only. Owners would need a
+   separate flow (probably requiring currentPassword and landing in
+   the Settings view, not a takeover). Out of scope until asked.
+
+9. **Weak-password denylist.** Current rule is 8+ chars + at least
+   one number or symbol. Add a denylist of top-1000 breached passwords
+   (or the full HIBP check via k-anonymity) before non-beta.
+
+10. **Server-side enforcement of mustChangePassword.** Today a
+    motivated sub-user could bypass the client-side takeover by
+    grabbing their session token from localStorage and hitting API
+    endpoints directly — their new password wouldn't be set yet but
+    they could still read/write workspace data. For stricter posture,
+    every authed endpoint could check the flag via getSessionContext
+    and 403 until it's cleared. Overkill for beta.
+
+11. **Session revocation on password change.** Current behavior: the
+    user's current session stays valid after they change password.
+    Other active sessions (e.g. another device) also stay valid.
+    Stricter posture: invalidate all sessions except the current one
+    when a password is changed. Appropriate for a post-compromise
+    change flow — not today.
 
 ## Anti-Bloat Rule (check before every deploy)
 - System prompt: MUST be under 800 words (currently 623)
