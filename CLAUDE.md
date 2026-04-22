@@ -90,6 +90,10 @@ client-side execution in app.html.
 - Login system working with session cookies
 - Per-user data namespacing working
 - Intel panel: 3 tabs (My Opponents, District Pulse, Threat Assessment)
+- About Sam modal: lightbulb pill in topbar (right of the phase pill). HTML
+  lives in app.html under the `<!-- ABOUT SAM MODAL -->` block. Open/close via
+  openAboutSam() / closeAboutSam(). Copy is the canonical source — update it
+  directly in the #about-overlay markup.
 - Morning brief: AI-generated daily, background gen on day 1
 - Sam 2.0: server-side tool loop, 16 consolidated tools
 - All Sam tools executing correctly (10/10 Playwright tests)
