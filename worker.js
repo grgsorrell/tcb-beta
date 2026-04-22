@@ -1383,38 +1383,92 @@ export default {
 
         const { folders } = await request.json();
 
-        // Full workspace replace. Attribution for notes/folders is "last
-        // editor" in this pattern — beta trade-off; nested folder+notes
-        // structure makes preservation-by-id awkward and notes traffic is
-        // low. Revisit if attribution matters.
-        await env.DB.prepare('DELETE FROM notes WHERE workspace_owner_id = ?').bind(ctx.ownerId).run();
-        await env.DB.prepare('DELETE FROM folders WHERE workspace_owner_id = ?').bind(ctx.ownerId).run();
+        // DELETE-NOT-IN + UPSERT pattern — matches /api/events/sync.
+        //
+        // The previous full-replace (DELETE FROM … WHERE workspace_owner_id = ?
+        // then INSERT every row) lost data when a stale client synced: if
+        // another tab had saved a new folder/note in the meantime, this
+        // client's stale payload (missing that row) would permanently wipe
+        // it. That caused a live data-loss incident — see conversation on
+        // 2026-04-22. We now preserve rows the payload doesn't mention, and
+        // keep user_id / created_at attribution on existing rows so a
+        // sub-user's edit doesn't rewrite the original author.
+        //
+        // Trade-off: deleting a folder or note now requires the client to
+        // omit it from the payload AND ensure no other tab is holding the
+        // stale version. This is the correct trade-off — losing an intended
+        // delete is recoverable (resave), losing an intended save is not.
 
-        if (folders && folders.length > 0) {
-          for (const folder of folders) {
-            const folderId = String(folder.id || generateId(16));
-            await env.DB.prepare(
-              'INSERT INTO folders (id, user_id, workspace_owner_id, name, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?)'
-            ).bind(folderId, ctx.userId, ctx.ownerId, folder.name || '', folder.campaign_id || null, folder.created_at || new Date().toISOString()).run();
-
-            if (folder.notes && folder.notes.length > 0) {
-              const stmt = env.DB.prepare(
-                'INSERT INTO notes (id, folder_id, user_id, workspace_owner_id, title, content, campaign_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-              );
-              const batch = folder.notes.map(n => stmt.bind(
-                String(n.id || generateId(16)),
-                folderId,
-                ctx.userId,
-                ctx.ownerId,
-                n.title || '',
-                n.content || '',
-                n.campaign_id || null,
-                n.created_at || new Date().toISOString(),
-                n.updated_at || new Date().toISOString()
-              ));
-              await env.DB.batch(batch);
+        const incomingFolders = (folders || []);
+        const incomingFolderIds = incomingFolders.map(f => String(f.id || ''));
+        const incomingNotes = [];
+        for (const folder of incomingFolders) {
+          const folderId = String(folder.id || '');
+          if (folder.notes && folder.notes.length > 0) {
+            for (const n of folder.notes) {
+              incomingNotes.push({ folderId, note: n });
             }
           }
+        }
+        const incomingNoteIds = incomingNotes.map(n => String(n.note.id || ''));
+
+        // Delete only rows the client explicitly dropped — preserves rows
+        // created by other tabs that this client never saw.
+        if (incomingNoteIds.length > 0) {
+          const placeholders = incomingNoteIds.map(() => '?').join(',');
+          await env.DB.prepare(
+            'DELETE FROM notes WHERE workspace_owner_id = ? AND id NOT IN (' + placeholders + ')'
+          ).bind(ctx.ownerId, ...incomingNoteIds).run();
+        } else {
+          // Empty payload: don't wipe. An empty notes array almost always
+          // means "nothing changed on the notes side" or a stale client
+          // with no notes loaded yet, not "delete everything." If the user
+          // genuinely wants to clear notes, they'd hit a per-row delete.
+          // This is the belt-and-suspenders guard against the original
+          // data-loss path.
+        }
+        if (incomingFolderIds.length > 0) {
+          const placeholders = incomingFolderIds.map(() => '?').join(',');
+          await env.DB.prepare(
+            'DELETE FROM folders WHERE workspace_owner_id = ? AND id NOT IN (' + placeholders + ')'
+          ).bind(ctx.ownerId, ...incomingFolderIds).run();
+        }
+
+        // UPSERT folders — preserve user_id and created_at on existing rows.
+        if (incomingFolders.length > 0) {
+          const folderStmt = env.DB.prepare(
+            'INSERT INTO folders (id, user_id, workspace_owner_id, name, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?) ' +
+            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, campaign_id = excluded.campaign_id'
+          );
+          const folderBatch = incomingFolders.map(f => folderStmt.bind(
+            String(f.id || generateId(16)),
+            ctx.userId,
+            ctx.ownerId,
+            f.name || '',
+            f.campaign_id || null,
+            f.created_at || new Date().toISOString()
+          ));
+          await env.DB.batch(folderBatch);
+        }
+
+        // UPSERT notes — preserve user_id and created_at on existing rows.
+        if (incomingNotes.length > 0) {
+          const noteStmt = env.DB.prepare(
+            'INSERT INTO notes (id, folder_id, user_id, workspace_owner_id, title, content, campaign_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+            'ON CONFLICT(id) DO UPDATE SET folder_id = excluded.folder_id, title = excluded.title, content = excluded.content, campaign_id = excluded.campaign_id, updated_at = excluded.updated_at'
+          );
+          const noteBatch = incomingNotes.map(({ folderId, note: n }) => noteStmt.bind(
+            String(n.id || generateId(16)),
+            folderId,
+            ctx.userId,
+            ctx.ownerId,
+            n.title || '',
+            n.content || '',
+            n.campaign_id || null,
+            n.created_at || new Date().toISOString(),
+            n.updated_at || new Date().toISOString()
+          ));
+          await env.DB.batch(noteBatch);
         }
 
         return jsonResponse({ success: true });
