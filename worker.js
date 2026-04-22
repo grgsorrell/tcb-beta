@@ -114,7 +114,7 @@ export default {
     // ========================================
     // HELPER: Log API usage to console and D1
     // ========================================
-    async function logApiUsage(feature, data, userId) {
+    async function logApiUsage(feature, data, userId, ownerId) {
       const usage = data && data.usage ? data.usage : {};
       const inputTokens = (usage.input_tokens || 0) + (usage.cache_creation_input_tokens || 0) + (usage.cache_read_input_tokens || 0);
       const outputTokens = usage.output_tokens || 0;
@@ -126,9 +126,11 @@ export default {
       const cost = (regularInput * 0.80 / 1000000) + (cacheCreate * 1.00 / 1000000) + (cacheRead * 0.08 / 1000000) + (outputTokens * 4.00 / 1000000);
       console.log(`[API] ${feature}: ${inputTokens} in / ${outputTokens} out = $${cost.toFixed(4)}`);
       try {
+        // workspace_owner_id attributes the cost to the billing workspace;
+        // user_id records the actual caller (sub-user or owner) for audit.
         await env.DB.prepare(
-          'INSERT INTO api_usage (id, user_id, feature, input_tokens, output_tokens, estimated_cost, model) VALUES (?, ?, ?, ?, ?, ?, ?)'
-        ).bind(generateId(16), userId || '', feature, inputTokens, outputTokens, cost, 'claude-haiku-4-5-20251001').run();
+          'INSERT INTO api_usage (id, user_id, workspace_owner_id, feature, input_tokens, output_tokens, estimated_cost, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(generateId(16), userId || '', ownerId || null, feature, inputTokens, outputTokens, cost, 'claude-haiku-4-5-20251001').run();
       } catch(e) { /* don't fail the request if logging fails */ }
     }
 
@@ -139,7 +141,7 @@ export default {
     //   Falls back to VPS-news-only if no FEC match found.
     // Non-federal: Haiku + web_search with max_uses: 3 (~$0.05–0.07)
     // ========================================
-    async function researchOpponent(params, userId) {
+    async function researchOpponent(params, userId, ownerId) {
       const { name, office, state, loc, year, myCandidateName, myParty } = params;
       const officeLower = (office || '').toLowerCase();
       let fecCode = null;
@@ -311,7 +313,7 @@ export default {
         body: JSON.stringify(apiBody)
       });
       const apiData = await apiResp.json();
-      await logApiUsage(featureTag, apiData, userId);
+      await logApiUsage(featureTag, apiData, userId, ownerId);
 
       // Parse JSON from last text block
       const textBlocks = [];
@@ -532,13 +534,16 @@ export default {
     // ========================================
     if (url.pathname === '/api/campaigns/create' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        // Campaigns belong to owners. Sub-users can't create them.
+        if (ctx.isSubUser) return denyOwnerOnly();
         const body = await request.json();
         const campaignId = generateId();
         await env.DB.prepare(
           'INSERT INTO campaigns (id, owner_id, candidate_name, party, specific_office, office_level, location, state, election_date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(campaignId, userId, body.candidateName || '', body.party || '', body.specificOffice || '', body.officeLevel || '', body.location || '', body.state || '', body.electionDate || '', 'active').run();
+        ).bind(campaignId, ctx.ownerId, body.candidateName || '', body.party || '', body.specificOffice || '', body.officeLevel || '', body.location || '', body.state || '', body.electionDate || '', 'active').run();
         return jsonResponse({ success: true, campaignId });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
@@ -548,11 +553,13 @@ export default {
     // ========================================
     if (url.pathname === '/api/campaigns/switch' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
         const { campaignId } = await request.json();
-        // Verify user owns this campaign
-        const campaign = await env.DB.prepare('SELECT * FROM campaigns WHERE id = ? AND owner_id = ?').bind(campaignId, userId).first();
+        // Verify the workspace owns this campaign (not the session user —
+        // sub-users can switch between the owner's campaigns).
+        const campaign = await env.DB.prepare('SELECT * FROM campaigns WHERE id = ? AND owner_id = ?').bind(campaignId, ctx.ownerId).first();
         if (!campaign) return jsonResponse({ error: 'Campaign not found' }, 404);
         // Update session
         const authHeader = request.headers.get('Authorization');
@@ -567,52 +574,55 @@ export default {
     // ========================================
     if (url.pathname === '/api/campaigns/archive' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
         const { campaignId, action } = await request.json();
         const newStatus = action === 'restore' ? 'active' : 'archived';
-        await env.DB.prepare('UPDATE campaigns SET status = ? WHERE id = ? AND owner_id = ?').bind(newStatus, campaignId, userId).run();
+        await env.DB.prepare('UPDATE campaigns SET status = ? WHERE id = ? AND owner_id = ?').bind(newStatus, campaignId, ctx.ownerId).run();
         return jsonResponse({ success: true, status: newStatus });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
 
     // ========================================
     // API: Delete campaign (HARD delete — cascades all related rows)
-    // Every user-scoped table with a campaign_id column is cleared in one batch.
+    // Every workspace-scoped table with a campaign_id column is cleared.
     // ========================================
     if (url.pathname === '/api/campaigns/delete' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
         const { campaignId } = await request.json();
         if (!campaignId) return jsonResponse({ error: 'campaignId required' }, 400);
         // Verify ownership before cascading anything.
         const campaign = await env.DB.prepare(
           'SELECT id FROM campaigns WHERE id = ? AND owner_id = ?'
-        ).bind(campaignId, userId).first();
+        ).bind(campaignId, ctx.ownerId).first();
         if (!campaign) return jsonResponse({ error: 'Campaign not found' }, 404);
 
         // Cascade-delete every table that carries a campaign_id column.
-        // All scoped by user_id as well so a caller can't punch through ownership.
-        // chat_history and profiles have user_id primary keys (no per-campaign
-        // rows) and usage_logs has no campaign_id, so they're skipped.
+        // Scoped by workspace_owner_id so sub-user-authored rows in this
+        // workspace also get wiped. chat_history and profiles have user_id
+        // PKs (no per-campaign rows) and usage_logs has no campaign_id.
         const tables = [
           'opponents', 'tasks', 'events', 'notes', 'folders',
           'endorsements', 'contributions', 'budget', 'briefings'
         ];
         const ops = tables.map(t =>
-          env.DB.prepare('DELETE FROM ' + t + ' WHERE campaign_id = ? AND user_id = ?').bind(campaignId, userId)
+          env.DB.prepare('DELETE FROM ' + t + ' WHERE campaign_id = ? AND workspace_owner_id = ?').bind(campaignId, ctx.ownerId)
         );
-        // api_usage has campaign_id but user_id is nullable for unauthed calls
-        // and we do want to keep the billing record. Null the campaign_id instead.
-        ops.push(env.DB.prepare('UPDATE api_usage SET campaign_id = NULL WHERE campaign_id = ? AND user_id = ?').bind(campaignId, userId));
+        // api_usage: preserve billing records but clear campaign_id.
+        ops.push(env.DB.prepare('UPDATE api_usage SET campaign_id = NULL WHERE campaign_id = ? AND workspace_owner_id = ?').bind(campaignId, ctx.ownerId));
         // Finally, the campaign row itself.
-        ops.push(env.DB.prepare('DELETE FROM campaigns WHERE id = ? AND owner_id = ?').bind(campaignId, userId));
+        ops.push(env.DB.prepare('DELETE FROM campaigns WHERE id = ? AND owner_id = ?').bind(campaignId, ctx.ownerId));
         const results = await env.DB.batch(ops);
 
         const deletedCounts = {};
         tables.forEach((t, i) => { deletedCounts[t] = results[i] && results[i].meta ? results[i].meta.changes : 0; });
-        console.log('[Campaign delete]', campaignId, 'user', userId, 'cascade:', JSON.stringify(deletedCounts));
+        console.log('[Campaign delete]', campaignId, 'workspace', ctx.ownerId, 'cascade:', JSON.stringify(deletedCounts));
         return jsonResponse({ success: true, deletedCounts });
       } catch (error) {
         console.error('[Campaign delete] Error:', error.message);
@@ -625,8 +635,10 @@ export default {
     // ========================================
     if (url.pathname === '/api/users/create' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
         const { name, role, username, password, permissions } = await request.json();
         if (!name || !role || !username || !password) return jsonResponse({ error: 'All fields required' }, 400);
         // Check username available
@@ -641,9 +653,9 @@ export default {
         const subUserId = generateId();
         await env.DB.prepare(
           'INSERT INTO sub_users (id, owner_id, username, password_hash, name, role, permissions_json, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(subUserId, userId, username, hashHex, name, role, JSON.stringify(permissions || {}), 'active').run();
+        ).bind(subUserId, ctx.ownerId, username, hashHex, name, role, JSON.stringify(permissions || {}), 'active').run();
         // Log activity
-        await env.DB.prepare('INSERT INTO activity_log (id, user_id, user_name, action, details) VALUES (?, ?, ?, ?, ?)').bind(generateId(16), userId, 'Owner', 'Created sub-user', name + ' (' + role + ')').run();
+        await env.DB.prepare('INSERT INTO activity_log (id, user_id, user_name, action, details) VALUES (?, ?, ?, ?, ?)').bind(generateId(16), ctx.ownerId, 'Owner', 'Created sub-user', name + ' (' + role + ')').run();
         return jsonResponse({ success: true, userId: subUserId, username });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
@@ -655,9 +667,11 @@ export default {
     // ========================================
     if (url.pathname === '/api/users/list' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
-        const result = await env.DB.prepare('SELECT id, username, name, role, permissions_json, status, created_at, last_login FROM sub_users WHERE owner_id = ? ORDER BY created_at DESC').bind(userId).all();
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
+        const result = await env.DB.prepare('SELECT id, username, name, role, permissions_json, status, created_at, last_login FROM sub_users WHERE owner_id = ? ORDER BY created_at DESC').bind(ctx.ownerId).all();
         const users = (result.results || []).map(u => ({
           id: u.id, username: u.username, name: u.name, role: u.role,
           permissions: JSON.parse(u.permissions_json || '{}'),
@@ -670,33 +684,39 @@ export default {
     }
 
     // ========================================
-    // API: Revoke sub-user
+    // API: Update sub-user permissions
     // ========================================
     if (url.pathname === '/api/users/update-permissions' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
         const { subUserId, permissions } = await request.json();
         if (!subUserId) return jsonResponse({ error: 'subUserId required' }, 400);
         if (!permissions || typeof permissions !== 'object') return jsonResponse({ error: 'permissions object required' }, 400);
-        // Ownership check — same pattern as /api/users/revoke.
         const owned = await env.DB.prepare(
           'SELECT id FROM sub_users WHERE id = ? AND owner_id = ?'
-        ).bind(subUserId, userId).first();
+        ).bind(subUserId, ctx.ownerId).first();
         if (!owned) return jsonResponse({ error: 'Team member not found' }, 404);
         await env.DB.prepare(
           'UPDATE sub_users SET permissions_json = ? WHERE id = ? AND owner_id = ?'
-        ).bind(JSON.stringify(permissions), subUserId, userId).run();
+        ).bind(JSON.stringify(permissions), subUserId, ctx.ownerId).run();
         return jsonResponse({ success: true });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
 
+    // ========================================
+    // API: Revoke sub-user
+    // ========================================
     if (url.pathname === '/api/users/revoke' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
         const { subUserId } = await request.json();
-        await env.DB.prepare('UPDATE sub_users SET status = ? WHERE id = ? AND owner_id = ?').bind('revoked', subUserId, userId).run();
+        await env.DB.prepare('UPDATE sub_users SET status = ? WHERE id = ? AND owner_id = ?').bind('revoked', subUserId, ctx.ownerId).run();
         // Delete their sessions
         const sub = await env.DB.prepare('SELECT username FROM sub_users WHERE id = ?').bind(subUserId).first();
         if (sub) {
@@ -895,8 +915,11 @@ export default {
     // ========================================
     if (url.pathname === '/api/profile/save' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        // Profile is the candidate/race identity. Owner-only.
+        if (ctx.isSubUser) return denyOwnerOnly();
 
         const data = await request.json();
 
@@ -917,7 +940,7 @@ export default {
             onboarding_complete = excluded.onboarding_complete,
             updated_at = datetime('now')
         `).bind(
-          userId,
+          ctx.ownerId,
           data.candidate_name || null,
           data.specific_office || null,
           data.office_level || null,
@@ -968,32 +991,47 @@ export default {
     // ========================================
     if (url.pathname === '/api/tasks/sync' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'calendar', 'full')) return denyPermission('calendar');
 
         const { tasks } = await request.json();
+        const list = tasks || [];
+        const incomingIds = list.map(t => String(t.id));
 
-        // Delete existing tasks for this user
-        await env.DB.prepare('DELETE FROM tasks WHERE user_id = ?').bind(userId).run();
+        // Delete workspace rows that are NOT in the incoming set (handles
+        // client-side deletions without wiping rows others created).
+        if (incomingIds.length > 0) {
+          const placeholders = incomingIds.map(() => '?').join(',');
+          await env.DB.prepare('DELETE FROM tasks WHERE workspace_owner_id = ? AND id NOT IN (' + placeholders + ')').bind(ctx.ownerId, ...incomingIds).run();
+        } else {
+          await env.DB.prepare('DELETE FROM tasks WHERE workspace_owner_id = ?').bind(ctx.ownerId).run();
+        }
 
-        // Insert all current tasks
-        if (tasks && tasks.length > 0) {
+        // Upsert each task. ON CONFLICT preserves the original user_id (the
+        // row's author), workspace_owner_id, and created_at — so a sub-user's
+        // sync doesn't rewrite attribution on rows they didn't create.
+        if (list.length > 0) {
           const stmt = env.DB.prepare(
-            'INSERT INTO tasks (id, user_id, name, date, category, completed, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO tasks (id, user_id, workspace_owner_id, name, date, category, completed, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, category = excluded.category, completed = excluded.completed, campaign_id = excluded.campaign_id'
           );
-          const batch = tasks.map(t => stmt.bind(
+          const batch = list.map(t => stmt.bind(
             String(t.id),
-            userId,
+            ctx.userId,
+            ctx.ownerId,
             t.name || t.text || '',
             t.date || null,
             t.category || 'other',
             t.completed ? 1 : 0,
+            t.campaign_id || null,
             t.created_at || new Date().toISOString()
           ));
           await env.DB.batch(batch);
         }
 
-        return jsonResponse({ success: true, count: tasks ? tasks.length : 0 });
+        return jsonResponse({ success: true, count: list.length });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -1035,33 +1073,43 @@ export default {
     // ========================================
     if (url.pathname === '/api/events/sync' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'calendar', 'full')) return denyPermission('calendar');
 
         const { events } = await request.json();
+        const list = events || [];
+        const incomingIds = list.map(e => String(e.id));
 
-        // Delete existing events for this user
-        await env.DB.prepare('DELETE FROM events WHERE user_id = ?').bind(userId).run();
+        if (incomingIds.length > 0) {
+          const placeholders = incomingIds.map(() => '?').join(',');
+          await env.DB.prepare('DELETE FROM events WHERE workspace_owner_id = ? AND id NOT IN (' + placeholders + ')').bind(ctx.ownerId, ...incomingIds).run();
+        } else {
+          await env.DB.prepare('DELETE FROM events WHERE workspace_owner_id = ?').bind(ctx.ownerId).run();
+        }
 
-        // Insert all current events
-        if (events && events.length > 0) {
+        if (list.length > 0) {
           const stmt = env.DB.prepare(
-            'INSERT INTO events (id, user_id, name, date, time, end_time, location, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO events (id, user_id, workspace_owner_id, name, date, time, end_time, location, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, time = excluded.time, end_time = excluded.end_time, location = excluded.location, campaign_id = excluded.campaign_id'
           );
-          const batch = events.map(e => stmt.bind(
+          const batch = list.map(e => stmt.bind(
             String(e.id),
-            userId,
+            ctx.userId,
+            ctx.ownerId,
             e.name || e.title || '',
             e.date || null,
             e.time || null,
             e.end_time || e.endTime || null,
             e.location || null,
+            e.campaign_id || null,
             e.created_at || new Date().toISOString()
           ));
           await env.DB.batch(batch);
         }
 
-        return jsonResponse({ success: true, count: events ? events.length : 0 });
+        return jsonResponse({ success: true, count: list.length });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -1104,20 +1152,26 @@ export default {
     // ========================================
     if (url.pathname === '/api/budget/save' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'budget', 'full')) return denyPermission('budget');
 
         const { budget } = await request.json();
 
+        // Budget is per-workspace. One row keyed to owner's users.id.
+        // workspace_owner_id == user_id == owner's id (redundant for
+        // consistency with other tables' scoping queries).
         await env.DB.prepare(`
-          INSERT INTO budget (user_id, total, categories, updated_at)
-          VALUES (?, ?, ?, datetime('now'))
+          INSERT INTO budget (user_id, workspace_owner_id, total, categories, updated_at)
+          VALUES (?, ?, ?, ?, datetime('now'))
           ON CONFLICT(user_id) DO UPDATE SET
             total = excluded.total,
             categories = excluded.categories,
             updated_at = datetime('now')
         `).bind(
-          userId,
+          ctx.ownerId,
+          ctx.ownerId,
           budget.total || 0,
           JSON.stringify(budget.categories || {})
         ).run();
@@ -1162,33 +1216,39 @@ export default {
     // ========================================
     if (url.pathname === '/api/notes/sync' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'notes', 'full')) return denyPermission('notes');
 
         const { folders } = await request.json();
 
-        // Delete existing notes and folders for this user
-        await env.DB.prepare('DELETE FROM notes WHERE user_id = ?').bind(userId).run();
-        await env.DB.prepare('DELETE FROM folders WHERE user_id = ?').bind(userId).run();
+        // Full workspace replace. Attribution for notes/folders is "last
+        // editor" in this pattern — beta trade-off; nested folder+notes
+        // structure makes preservation-by-id awkward and notes traffic is
+        // low. Revisit if attribution matters.
+        await env.DB.prepare('DELETE FROM notes WHERE workspace_owner_id = ?').bind(ctx.ownerId).run();
+        await env.DB.prepare('DELETE FROM folders WHERE workspace_owner_id = ?').bind(ctx.ownerId).run();
 
-        // Insert folders and their notes
         if (folders && folders.length > 0) {
           for (const folder of folders) {
             const folderId = String(folder.id || generateId(16));
             await env.DB.prepare(
-              'INSERT INTO folders (id, user_id, name, created_at) VALUES (?, ?, ?, ?)'
-            ).bind(folderId, userId, folder.name || '', folder.created_at || new Date().toISOString()).run();
+              'INSERT INTO folders (id, user_id, workspace_owner_id, name, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?)'
+            ).bind(folderId, ctx.userId, ctx.ownerId, folder.name || '', folder.campaign_id || null, folder.created_at || new Date().toISOString()).run();
 
             if (folder.notes && folder.notes.length > 0) {
               const stmt = env.DB.prepare(
-                'INSERT INTO notes (id, folder_id, user_id, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+                'INSERT INTO notes (id, folder_id, user_id, workspace_owner_id, title, content, campaign_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
               );
               const batch = folder.notes.map(n => stmt.bind(
                 String(n.id || generateId(16)),
                 folderId,
-                userId,
+                ctx.userId,
+                ctx.ownerId,
                 n.title || '',
                 n.content || '',
+                n.campaign_id || null,
                 n.created_at || new Date().toISOString(),
                 n.updated_at || new Date().toISOString()
               ));
@@ -1248,17 +1308,21 @@ export default {
     // ========================================
     if (url.pathname === '/api/briefing/save' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        // Morning brief is a workspace resource generated on behalf of the
+        // candidate. Owner-only write — sub-users only read it.
+        if (ctx.isSubUser) return denyOwnerOnly();
 
         const { date, text } = await request.json();
 
         await env.DB.prepare(`
-          INSERT INTO briefings (user_id, date, text)
-          VALUES (?, ?, ?)
+          INSERT INTO briefings (user_id, workspace_owner_id, date, text)
+          VALUES (?, ?, ?, ?)
           ON CONFLICT(user_id, date) DO UPDATE SET
             text = excluded.text
-        `).bind(userId, date, text).run();
+        `).bind(ctx.ownerId, ctx.ownerId, date, text).run();
 
         return jsonResponse({ success: true });
       } catch (error) {
@@ -1338,21 +1402,31 @@ export default {
     // ========================================
     if (url.pathname === '/api/endorsements/sync' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'endorsements', 'full')) return denyPermission('endorsements');
         const { endorsements } = await request.json();
-        await env.DB.prepare('DELETE FROM endorsements WHERE user_id = ?').bind(userId).run();
-        if (endorsements && endorsements.length > 0) {
+        const list = endorsements || [];
+        const incomingIds = list.map(e => String(e.id));
+        if (incomingIds.length > 0) {
+          const placeholders = incomingIds.map(() => '?').join(',');
+          await env.DB.prepare('DELETE FROM endorsements WHERE workspace_owner_id = ? AND id NOT IN (' + placeholders + ')').bind(ctx.ownerId, ...incomingIds).run();
+        } else {
+          await env.DB.prepare('DELETE FROM endorsements WHERE workspace_owner_id = ?').bind(ctx.ownerId).run();
+        }
+        if (list.length > 0) {
           const stmt = env.DB.prepare(
-            'INSERT INTO endorsements (id, user_id, name, title, status, notes, date, added_by_sam, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO endorsements (id, user_id, workspace_owner_id, name, title, status, notes, date, added_by_sam, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, title = excluded.title, status = excluded.status, notes = excluded.notes, date = excluded.date, added_by_sam = excluded.added_by_sam, campaign_id = excluded.campaign_id'
           );
-          const batch = endorsements.map(e => stmt.bind(
-            String(e.id), userId, e.name || '', e.title || '', e.status || 'Pursuing',
-            e.notes || '', e.date || null, e.addedBySam ? 1 : 0, e.created_at || new Date().toISOString()
+          const batch = list.map(e => stmt.bind(
+            String(e.id), ctx.userId, ctx.ownerId, e.name || '', e.title || '', e.status || 'Pursuing',
+            e.notes || '', e.date || null, e.addedBySam ? 1 : 0, e.campaign_id || null, e.created_at || new Date().toISOString()
           ));
           await env.DB.batch(batch);
         }
-        return jsonResponse({ success: true, count: endorsements ? endorsements.length : 0 });
+        return jsonResponse({ success: true, count: list.length });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -1386,22 +1460,32 @@ export default {
     // ========================================
     if (url.pathname === '/api/contributions/sync' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'budget', 'full')) return denyPermission('budget');
         const { contributions } = await request.json();
-        await env.DB.prepare('DELETE FROM contributions WHERE user_id = ?').bind(userId).run();
-        if (contributions && contributions.length > 0) {
+        const list = contributions || [];
+        const incomingIds = list.map(c => String(c.id));
+        if (incomingIds.length > 0) {
+          const placeholders = incomingIds.map(() => '?').join(',');
+          await env.DB.prepare('DELETE FROM contributions WHERE workspace_owner_id = ? AND id NOT IN (' + placeholders + ')').bind(ctx.ownerId, ...incomingIds).run();
+        } else {
+          await env.DB.prepare('DELETE FROM contributions WHERE workspace_owner_id = ?').bind(ctx.ownerId).run();
+        }
+        if (list.length > 0) {
           const stmt = env.DB.prepare(
-            'INSERT INTO contributions (id, user_id, donor_name, amount, source, date, employer, occupation, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO contributions (id, user_id, workspace_owner_id, donor_name, amount, source, date, employer, occupation, notes, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+            'ON CONFLICT(id) DO UPDATE SET donor_name = excluded.donor_name, amount = excluded.amount, source = excluded.source, date = excluded.date, employer = excluded.employer, occupation = excluded.occupation, notes = excluded.notes, campaign_id = excluded.campaign_id'
           );
-          const batch = contributions.map(c => stmt.bind(
-            String(c.id), userId, c.donorName || '', c.amount || 0, c.source || 'individual',
+          const batch = list.map(c => stmt.bind(
+            String(c.id), ctx.userId, ctx.ownerId, c.donorName || '', c.amount || 0, c.source || 'individual',
             c.date || null, c.employer || '', c.occupation || '', c.notes || '',
-            c.created_at || new Date().toISOString()
+            c.campaign_id || null, c.created_at || new Date().toISOString()
           ));
           await env.DB.batch(batch);
         }
-        return jsonResponse({ success: true, count: contributions ? contributions.length : 0 });
+        return jsonResponse({ success: true, count: list.length });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -1559,29 +1643,31 @@ export default {
     // ========================================
     if (url.pathname === '/api/data/reset' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
 
-        // Full reset — every user-scoped table gets cleared. Keep this list
-        // in sync with the campaign-delete cascade and the schema audit:
-        // any new table that carries user_id (and optionally campaign_id)
-        // needs a line here.
+        // Full workspace reset. Deletes every row in this workspace across
+        // every workspace-scoped table. api_usage rows are kept (billing
+        // history) but their campaign_id is nulled. chat_history is scoped
+        // by user_id (per-user) — only the owner's chat gets wiped here;
+        // sub-user chat history survives reset (intentional — their
+        // conversations with Sam are their own).
         const results = await env.DB.batch([
-          env.DB.prepare('DELETE FROM tasks WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM events WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM budget WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM notes WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM folders WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM briefings WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM chat_history WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM endorsements WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM contributions WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM opponents WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM campaigns WHERE owner_id = ?').bind(userId),
-          // Keep api_usage rows for billing history but null out campaign_id
-          // since those campaigns no longer exist.
-          env.DB.prepare('UPDATE api_usage SET campaign_id = NULL WHERE user_id = ?').bind(userId),
-          env.DB.prepare('DELETE FROM profiles WHERE user_id = ?').bind(userId)
+          env.DB.prepare('DELETE FROM tasks WHERE workspace_owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM events WHERE workspace_owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM budget WHERE user_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM notes WHERE workspace_owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM folders WHERE workspace_owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM briefings WHERE workspace_owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM chat_history WHERE user_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM endorsements WHERE workspace_owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM contributions WHERE workspace_owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM opponents WHERE workspace_owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM campaigns WHERE owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('UPDATE api_usage SET campaign_id = NULL WHERE workspace_owner_id = ?').bind(ctx.ownerId),
+          env.DB.prepare('DELETE FROM profiles WHERE user_id = ?').bind(ctx.ownerId)
         ]);
 
         const tables = ['tasks','events','budget','notes','folders','briefings','chat_history','endorsements','contributions','opponents','campaigns'];
@@ -2001,28 +2087,26 @@ export default {
     // ========================================
     if (url.pathname === '/api/opponents/add' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'intel', 'full')) return denyPermission('intel');
         const body = await request.json();
         const name = (body.name || '').trim();
         if (!name) return jsonResponse({ error: 'Name required' }, 400);
         const campaignId = body.campaignId && String(body.campaignId).trim() ? String(body.campaignId).trim() : null;
-        // Require a valid campaign_id. Prevents orphan rows that can't be
-        // surfaced by the strict list endpoint. Frontend must auto-provision
-        // a campaign row (via /api/campaigns/create) before adding opponents.
         if (!campaignId) return jsonResponse({ error: 'campaign_id required' }, 400);
-        // Verify ownership so a caller can't attach opponents to someone
-        // else's campaign.
+        // Verify the workspace owns this campaign (sub-users can attach
+        // opponents to any of the owner's campaigns, not someone else's).
         const ownsCampaign = await env.DB.prepare(
           'SELECT id FROM campaigns WHERE id = ? AND owner_id = ?'
-        ).bind(campaignId, userId).first();
+        ).bind(campaignId, ctx.ownerId).first();
         if (!ownsCampaign) return jsonResponse({ error: 'Campaign not found' }, 404);
 
-        // Dedup check — same user, same campaign, same case-insensitive
-        // trimmed name.
+        // Dedup check — workspace + campaign + case-insensitive trimmed name.
         const dupCheck = await env.DB.prepare(
-          "SELECT id, name FROM opponents WHERE user_id = ? AND campaign_id = ? AND LOWER(TRIM(name)) = LOWER(?) LIMIT 1"
-        ).bind(userId, campaignId, name).first();
+          "SELECT id, name FROM opponents WHERE workspace_owner_id = ? AND campaign_id = ? AND LOWER(TRIM(name)) = LOWER(?) LIMIT 1"
+        ).bind(ctx.ownerId, campaignId, name).first();
         if (dupCheck) {
           return jsonResponse({
             error: 'duplicate',
@@ -2038,13 +2122,13 @@ export default {
           year: body.year || new Date().getFullYear(),
           myCandidateName: body.myCandidateName || '',
           myParty: body.myParty || ''
-        }, userId);
+        }, ctx.userId, ctx.ownerId);
 
         const id = generateId(16);
         const now = new Date().toISOString();
         await env.DB.prepare(
-          'INSERT INTO opponents (id, user_id, campaign_id, name, data, last_researched_at, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
-        ).bind(id, userId, campaignId, name, JSON.stringify(card), now, now).run();
+          'INSERT INTO opponents (id, user_id, workspace_owner_id, campaign_id, name, data, last_researched_at, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(id, ctx.userId, ctx.ownerId, campaignId, name, JSON.stringify(card), now, now).run();
 
         return jsonResponse({ success: true, opponent: { id, name, data: card, last_researched_at: now, created_at: now } });
       } catch (error) {
@@ -2058,14 +2142,16 @@ export default {
     // ========================================
     if (url.pathname === '/api/opponents/refresh' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'intel', 'full')) return denyPermission('intel');
         const body = await request.json();
         if (!body.id) return jsonResponse({ error: 'id required' }, 400);
 
         const row = await env.DB.prepare(
-          'SELECT name, last_researched_at FROM opponents WHERE id = ? AND user_id = ?'
-        ).bind(body.id, userId).first();
+          'SELECT name, last_researched_at FROM opponents WHERE id = ? AND workspace_owner_id = ?'
+        ).bind(body.id, ctx.ownerId).first();
         if (!row) return jsonResponse({ error: 'Opponent not found' }, 404);
 
         if (row.last_researched_at) {
@@ -2083,11 +2169,11 @@ export default {
           year: body.year || new Date().getFullYear(),
           myCandidateName: body.myCandidateName || '',
           myParty: body.myParty || ''
-        }, userId);
+        }, ctx.userId, ctx.ownerId);
         const now = new Date().toISOString();
         await env.DB.prepare(
-          'UPDATE opponents SET data = ?, last_researched_at = ? WHERE id = ? AND user_id = ?'
-        ).bind(JSON.stringify(card), now, body.id, userId).run();
+          'UPDATE opponents SET data = ?, last_researched_at = ? WHERE id = ? AND workspace_owner_id = ?'
+        ).bind(JSON.stringify(card), now, body.id, ctx.ownerId).run();
 
         return jsonResponse({ success: true, opponent: { id: body.id, name: row.name, data: card, last_researched_at: now } });
       } catch (error) {
@@ -2101,11 +2187,13 @@ export default {
     // ========================================
     if (url.pathname === '/api/opponents/remove' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'intel', 'full')) return denyPermission('intel');
         const { id } = await request.json();
         if (!id) return jsonResponse({ error: 'id required' }, 400);
-        await env.DB.prepare('DELETE FROM opponents WHERE id = ? AND user_id = ?').bind(id, userId).run();
+        await env.DB.prepare('DELETE FROM opponents WHERE id = ? AND workspace_owner_id = ?').bind(id, ctx.ownerId).run();
         return jsonResponse({ success: true });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
@@ -2132,9 +2220,14 @@ export default {
       } = body;
 
       // ========================================
-      // RATE LIMITING: 100 messages per user per day
+      // RATE LIMITING: 100 messages per user per day.
+      // Rate limit is per-user (each collaborator has their own 100/day
+      // quota). Cost attribution (billing) goes to the workspace owner.
       // ========================================
-      const rateLimitUserId = await getUserFromSession(request);
+      const chatCtx = await getSessionContext(request);
+      if (chatCtx && chatCtx.revoked) return denyRevoked();
+      const rateLimitUserId = chatCtx ? chatCtx.userId : null;
+      const chatOwnerId = chatCtx ? chatCtx.ownerId : null;
       if (rateLimitUserId) {
         const rateLimitDate = new Date().toISOString().split('T')[0];
         const usage = await env.DB.prepare(
@@ -2248,7 +2341,7 @@ export default {
             }),
           });
           const vpsData = await vpsResponse.json();
-          await logApiUsage(researchFeature + '_vps', vpsData, rateLimitUserId);
+          await logApiUsage(researchFeature + '_vps', vpsData, rateLimitUserId, chatOwnerId);
           return new Response(JSON.stringify(vpsData), { headers: { "Content-Type": "application/json", ...corsHeaders } });
         }
 
@@ -2277,7 +2370,7 @@ RULES:
         });
 
         const researchData = await researchResponse.json();
-        await logApiUsage(researchFeature + '_anthropic', researchData, rateLimitUserId);
+        await logApiUsage(researchFeature + '_anthropic', researchData, rateLimitUserId, chatOwnerId);
         return new Response(JSON.stringify(researchData), { headers: { "Content-Type": "application/json", ...corsHeaders } });
       }
 
@@ -2815,7 +2908,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           }),
         });
         const data = await resp.json();
-        await logApiUsage('sam_chat', data, rateLimitUserId);
+        await logApiUsage('sam_chat', data, rateLimitUserId, chatOwnerId);
         return data;
       }
 
