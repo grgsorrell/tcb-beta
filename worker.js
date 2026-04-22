@@ -393,9 +393,12 @@ export default {
         const { username, email, password, fullName } = await request.json();
         if (!username || !email || !password || !fullName) return jsonResponse({ error: 'All fields required' }, 400);
         if (password.length < 8) return jsonResponse({ error: 'weak_password' }, 400);
-        // Check username
-        const existingUser = await env.DB.prepare('SELECT id FROM users WHERE username = ?').bind(username.toLowerCase()).first();
-        if (existingUser) {
+        // Check username — both users and sub_users (cross-table uniqueness).
+        // Same username can't exist in either table; collision is reported
+        // with the same generic 'username_taken' error in both cases.
+        const existingUser = await env.DB.prepare('SELECT id FROM users WHERE LOWER(username) = LOWER(?)').bind(username).first();
+        const existingSubUser = await env.DB.prepare('SELECT id FROM sub_users WHERE LOWER(username) = LOWER(?)').bind(username).first();
+        if (existingUser || existingSubUser) {
           const suggestions = [username + '2', username + '3', username.charAt(0) + fullName.split(' ').pop().toLowerCase() + '1'];
           return jsonResponse({ error: 'username_taken', suggestions }, 409);
         }
@@ -577,9 +580,19 @@ export default {
     if (url.pathname.startsWith('/api/auth/check-username/') && request.method === 'GET') {
       try {
         const checkUser = decodeURIComponent(url.pathname.split('/').pop()).toLowerCase();
-        const existing = await env.DB.prepare('SELECT id FROM users WHERE username = ?').bind(checkUser).first();
+        // Check both tables for cross-table uniqueness.
+        const existingUser = await env.DB.prepare('SELECT id FROM users WHERE LOWER(username) = ?').bind(checkUser).first();
+        const existingSub = await env.DB.prepare('SELECT id FROM sub_users WHERE LOWER(username) = ?').bind(checkUser).first();
+        const existing = !!(existingUser || existingSub);
         const suggestions = [];
-        if (existing) { for (let i = 2; i <= 4; i++) { const alt = checkUser + i; const e = await env.DB.prepare('SELECT id FROM users WHERE username = ?').bind(alt).first(); if (!e) suggestions.push(alt); } }
+        if (existing) {
+          for (let i = 2; i <= 4; i++) {
+            const alt = checkUser + i;
+            const eU = await env.DB.prepare('SELECT id FROM users WHERE LOWER(username) = ?').bind(alt).first();
+            const eS = await env.DB.prepare('SELECT id FROM sub_users WHERE LOWER(username) = ?').bind(alt).first();
+            if (!eU && !eS) suggestions.push(alt);
+          }
+        }
         return jsonResponse({ available: !existing, suggestions });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
@@ -615,6 +628,54 @@ export default {
         }
         return jsonResponse({ success: true, userId: user.id, username: user.username, fullName: user.full_name, plan: user.plan, trialDaysLeft, isSubUser, permissions, mustChangePassword });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // AUTH: Change password (sub-user only for now)
+    // Used by the forced-password-change takeover on first login.
+    // Authenticated via session; no currentPassword needed because the
+    // session itself proves identity — the user literally just typed the
+    // old password to get here.
+    // ========================================
+    if (url.pathname === '/api/auth/change-password' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!ctx.isSubUser) return denyOwnerOnly();
+        const { newPassword } = await request.json();
+        if (!newPassword || typeof newPassword !== 'string') {
+          return jsonResponse({ error: 'Password required' }, 400);
+        }
+        if (newPassword.length < 8) {
+          return jsonResponse({ error: 'weak_password', message: 'Password must be at least 8 characters.' }, 400);
+        }
+        // Require at least one number or symbol (beta-level complexity).
+        if (!/[0-9\W_]/.test(newPassword)) {
+          return jsonResponse({ error: 'weak_password', message: 'Password must include at least one number or symbol.' }, 400);
+        }
+        // Resolve the sub_users row via the anchor's email.
+        const anchor = await env.DB.prepare('SELECT email FROM users WHERE id = ?').bind(ctx.userId).first();
+        if (!anchor || !anchor.email || !anchor.email.endsWith('@sub.tcb')) {
+          return jsonResponse({ error: 'Sub-user record not found' }, 404);
+        }
+        const subUsername = anchor.email.replace(/@sub\.tcb$/, '');
+        const sub = await env.DB.prepare('SELECT id, password_hash FROM sub_users WHERE LOWER(username) = ?').bind(subUsername).first();
+        if (!sub) return jsonResponse({ error: 'Sub-user record not found' }, 404);
+        // Hash new password.
+        const encoder = new TextEncoder();
+        const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(newPassword + '_tcb_salt_2026'));
+        const newHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        if (newHash === sub.password_hash) {
+          return jsonResponse({ error: 'same_password', message: 'New password must be different from your current password.' }, 400);
+        }
+        await env.DB.prepare(
+          "UPDATE sub_users SET password_hash = ?, must_change_password = 0, last_password_change_at = datetime('now') WHERE id = ?"
+        ).bind(newHash, sub.id).run();
+        return jsonResponse({ success: true });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
     }
 
     // ========================================
@@ -743,9 +804,22 @@ export default {
         if (ctx.isSubUser) return denyOwnerOnly();
         const { name, role, username, password, permissions } = await request.json();
         if (!name || !role || !username || !password) return jsonResponse({ error: 'All fields required' }, 400);
-        // Check username available
-        const existing = await env.DB.prepare('SELECT id FROM sub_users WHERE username = ?').bind(username).first();
-        if (existing) return jsonResponse({ error: 'Username taken' }, 409);
+        // Check username available — both tables (cross-table uniqueness so
+        // a sub-user can't collide with an owner and break unified login).
+        const existingSub = await env.DB.prepare('SELECT id FROM sub_users WHERE LOWER(username) = LOWER(?)').bind(username).first();
+        const existingOwner = await env.DB.prepare('SELECT id FROM users WHERE LOWER(username) = LOWER(?)').bind(username).first();
+        if (existingSub || existingOwner) {
+          // Offer suggestions like the owner-create endpoint does.
+          const lowered = username.toLowerCase();
+          const suggestions = [];
+          for (let i = 2; i <= 4; i++) {
+            const alt = lowered + i;
+            const eU = await env.DB.prepare('SELECT id FROM users WHERE LOWER(username) = ?').bind(alt).first();
+            const eS = await env.DB.prepare('SELECT id FROM sub_users WHERE LOWER(username) = ?').bind(alt).first();
+            if (!eU && !eS) suggestions.push(alt);
+          }
+          return jsonResponse({ error: 'Username taken', suggestions }, 409);
+        }
         // Hash password (simple SHA-256 for beta — upgrade to bcrypt later)
         const encoder = new TextEncoder();
         const data = encoder.encode(password + '_tcb_salt_2026');
@@ -836,14 +910,18 @@ export default {
     // ========================================
     if (url.pathname.startsWith('/api/users/check-username/') && request.method === 'GET') {
       try {
-        const checkUsername = url.pathname.split('/').pop();
-        const existing = await env.DB.prepare('SELECT id FROM sub_users WHERE username = ?').bind(checkUsername).first();
+        const checkUsername = decodeURIComponent(url.pathname.split('/').pop()).toLowerCase();
+        // Check both tables — same cross-table rule as /api/users/create.
+        const existingSub = await env.DB.prepare('SELECT id FROM sub_users WHERE LOWER(username) = ?').bind(checkUsername).first();
+        const existingOwner = await env.DB.prepare('SELECT id FROM users WHERE LOWER(username) = ?').bind(checkUsername).first();
+        const existing = !!(existingSub || existingOwner);
         const suggestions = [];
         if (existing) {
           for (let i = 2; i <= 4; i++) {
             const alt = checkUsername.replace(/\d*$/, '') + i;
-            const altExists = await env.DB.prepare('SELECT id FROM sub_users WHERE username = ?').bind(alt).first();
-            if (!altExists) suggestions.push(alt);
+            const eS = await env.DB.prepare('SELECT id FROM sub_users WHERE LOWER(username) = ?').bind(alt).first();
+            const eU = await env.DB.prepare('SELECT id FROM users WHERE LOWER(username) = ?').bind(alt).first();
+            if (!eS && !eU) suggestions.push(alt);
           }
         }
         return jsonResponse({ available: !existing, suggestions }, 200, corsHeaders);
