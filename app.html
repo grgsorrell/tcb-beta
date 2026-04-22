@@ -1532,6 +1532,29 @@ function saveChatHistory() {
   saveState(storageKey('ctb_chatHistory'), chatHistory);
   d1Write('/api/chat-history/save', { messages: chatHistory });
 }
+// Per-row contribution + endorsement save/delete (item #5).
+function saveOneContribution(c) {
+  if (!c || !c.id) return;
+  saveState(storageKey('ctb_contributions'), contributions);
+  d1Write('/api/contributions/save', { contribution: c });
+}
+function deleteOneContribution(id) {
+  saveState(storageKey('ctb_contributions'), contributions);
+  d1Write('/api/contributions/delete', { id: id });
+}
+function saveOneEndorsement(e) {
+  if (!e || !e.id) return;
+  try {
+    var arr = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || [];
+    localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(arr));
+  } catch(_) {}
+  d1Write('/api/endorsements/save', { endorsement: e });
+}
+function deleteOneEndorsement(id) {
+  d1Write('/api/endorsements/delete', { id: id });
+}
+// @deprecated Use saveOneContribution / saveOneEndorsement and their
+// delete counterparts. Kept for one-release rollback fallback.
 function saveContributions() {
   saveState(storageKey('ctb_contributions'), contributions);
   d1Write('/api/contributions/sync', { contributions: contributions });
@@ -2894,7 +2917,12 @@ function renderCalDeadlines() {
 // ============================================
 var contributions = [];
 try { contributions = JSON.parse(localStorage.getItem(storageKey('ctb_contributions'))) || []; } catch(e) { contributions = []; }
-function saveContributions() { saveState(storageKey('ctb_contributions'), contributions); }
+// (Removed: a stub `function saveContributions() { saveState(...); }`
+// lived here and silently shadowed the real localStorage+D1 sync
+// function defined earlier — function declarations hoist and the later
+// one wins. Effect: contributions never reached D1 via the deprecated
+// sync path. Fixed implicitly by the per-row migration: every caller
+// now uses saveOneContribution, which has no shadow risk.)
 
 // Migrate old budget format
 var DEFAULT_CATEGORIES = {
@@ -3507,7 +3535,7 @@ function promptAddContribution() {
   var contrib = { id: Date.now(), donorName: donor, amount: amt, source: source, date: getTodayStr(), employer: '', occupation: '' };
   if (amt > 200) { contrib.employer = prompt('Employer (FEC required for >$200):', '') || ''; contrib.occupation = prompt('Occupation:', '') || ''; }
   contributions.push(contrib);
-  saveContributions(); renderBudgetView(); refreshDashboard();
+  saveOneContribution(contrib); renderBudgetView(); refreshDashboard();
 }
 
 // ============================================
@@ -4971,9 +4999,10 @@ function addEndorsement() {
   var status = prompt('Status (Announced/Pending/Pursuing):', 'Pursuing');
   var endorsements = [];
   try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
-  endorsements.push({ id: Date.now(), name: name, title: title||'', status: status||'Pursuing', notes: '' });
+  var newManualEndorsement = { id: Date.now(), name: name, title: title||'', status: status||'Pursuing', notes: '' };
+  endorsements.push(newManualEndorsement);
   localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
-  saveEndorsements();
+  saveOneEndorsement(newManualEndorsement);
   renderEndorsementsOverlay();
 }
 
@@ -4983,7 +5012,7 @@ function deleteEndorsement(id) {
   try { endorsements = JSON.parse(localStorage.getItem(storageKey('ctb_endorsements'))) || []; } catch(e) {}
   endorsements = endorsements.filter(function(e){ return e.id !== id; });
   localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
-  saveEndorsements();
+  deleteOneEndorsement(id);
   renderEndorsementsOverlay();
 }
 
@@ -6285,7 +6314,7 @@ function executeToolCall(block) {
     };
     endorsements.push(newEndorsement);
     localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(endorsements));
-    saveEndorsements();
+    saveOneEndorsement(newEndorsement);
     console.log('add_endorsement handler fired', newEndorsement);
     // Re-render endorsements panel if open
     if (currentOverlay === 'endorsements') renderEndorsementsOverlay();
@@ -6475,7 +6504,7 @@ function executeToolCall(block) {
   else if (name === 'log_contribution') {
     var c = { id: Date.now(), donorName: inp.donorName||'Donor', amount: parseFloat(inp.amount)||0, source: inp.source||'individual', date: inp.date||getTodayStr(), paymentMethod: inp.paymentMethod||'', employer: inp.employer||'', occupation: inp.occupation||'', notes: inp.notes||'' };
     contributions.push(c);
-    saveContributions();
+    saveOneContribution(c);
     var totRaised = contributions.reduce(function(s,x){return s+(x.amount||0);},0);
     var goalPct = campaignBudget.fundraisingGoal > 0 ? Math.round(totRaised/campaignBudget.fundraisingGoal*100) : 0;
     if (currentView === 'budget') renderBudgetView();
