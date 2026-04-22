@@ -1303,7 +1303,6 @@ function switchToCampaign(campaignId) {
   try {
     var cache = getIntelCache();
     delete cache.pulse;
-    delete cache.actions;
     saveIntelCache(cache);
   } catch(e) {}
 }
@@ -3823,7 +3822,7 @@ function renderIntelPanel() {
   var el = document.getElementById('intel-content');
   if (!el) return;
   var html = '<div class="intel-tabs">';
-  var tabs = [{key:'opponents',label:'My Opponents'},{key:'pulse',label:'District Pulse'},{key:'actions',label:'Action Items'},{key:'threats',label:'Threat Assessment'}];
+  var tabs = [{key:'opponents',label:'My Opponents'},{key:'pulse',label:'District Pulse'},{key:'threats',label:'Threat Assessment'}];
   tabs.forEach(function(t){ html += '<div class="intel-tab' + (intelActiveTab===t.key?' on':'') + '" onclick="switchIntelTab(\'' + t.key + '\')">' + t.label + '</div>'; });
   html += '</div><div id="intel-tab-content"></div>';
   el.innerHTML = html;
@@ -3834,7 +3833,7 @@ function switchIntelTab(tab) {
   intelActiveTab = tab;
   document.querySelectorAll('.intel-tab').forEach(function(t){ t.classList.remove('on'); });
   var tabs = document.querySelectorAll('.intel-tab');
-  var tabKeys = ['opponents','pulse','actions','threats'];
+  var tabKeys = ['opponents','pulse','threats'];
   var idx = tabKeys.indexOf(tab);
   if (idx >= 0 && tabs[idx]) tabs[idx].classList.add('on');
   loadIntelTab(tab, false);
@@ -3880,17 +3879,6 @@ function loadIntelTab(tabKey, forceRefresh) {
     }
     showIntelLoading(tc);
     fetchPulse();
-    return;
-  }
-
-  if (tabKey === 'actions') {
-    var cache = getIntelCache();
-    if (!forceRefresh && cache.actions && cache.actions.data && !isIntelStale('actions', 72)) {
-      renderIntelTabContent('actions', cache.actions.data, cache.actions.fetchedAt);
-      return;
-    }
-    showIntelLoading(tc);
-    fetchActionItems();
     return;
   }
 }
@@ -4017,7 +4005,6 @@ function startFreshCampaignForProfile() {
   try {
     var cache = getIntelCache();
     delete cache.pulse;
-    delete cache.actions;
     saveIntelCache(cache);
   } catch(e) {}
   loadIntelTab('opponents', true);
@@ -4198,77 +4185,6 @@ function removeOpponent(id) {
   }).catch(function(e){ console.log('[Opponents remove]', e.message); });
 }
 
-// ACTION ITEMS — Haiku synthesis from pulse + opponents + tasks + events
-function getCampaignPhase() {
-  var days = typeof daysToElection !== 'undefined' ? daysToElection : null;
-  if (days == null) return 'planning';
-  if (days <= 7) return 'final-push';
-  if (days <= 14) return 'gotv';
-  if (days <= 30) return 'closing';
-  if (days <= 60) return 'peak-outreach';
-  if (days <= 120) return 'building-momentum';
-  return 'early-campaign';
-}
-
-function fetchActionItems() {
-  var sess = getD1Session();
-  if (!sess) { handleUnauthenticated('Your session expired.'); showIntelError(); return; }
-  var cache = getIntelCache();
-  var pulseItems = (cache.pulse && cache.pulse.data && cache.pulse.data.items) || [];
-  var oppCtx = intelOpponents.map(function(o) { return { name: o.name, threatLevel: (o.data && o.data.threatLevel) || null, keyRisk: (o.data && o.data.keyRisk) || '' }; });
-  var openTasks = (typeof tasks !== 'undefined' ? tasks : []).filter(function(t){return !t.completed;});
-  fetch(D1_API + '/api/intel/action-items', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
-    body: JSON.stringify({
-      pulse: pulseItems,
-      opponents: oppCtx,
-      phase: getCampaignPhase(),
-      daysToElection: typeof daysToElection !== 'undefined' ? daysToElection : null,
-      tasks: openTasks,
-      events: typeof events !== 'undefined' ? events : [],
-      candidateName: campaignData.candidateName || '',
-      office: campaignData.specificOffice || ''
-    })
-  }).then(function(r){
-    if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
-    return r.json();
-  }).then(function(data) {
-    if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
-    if (data && data.items) {
-      var obj = { items: data.items };
-      var cache2 = getIntelCache();
-      cache2.actions = { data: obj, fetchedAt: Date.now() };
-      saveIntelCache(cache2);
-      renderIntelTabContent('actions', obj, Date.now());
-    } else {
-      showIntelError();
-    }
-  }).catch(function(){
-    if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
-    showIntelError();
-  }).finally(function(){
-    var btn = document.getElementById('intel-refresh-btn');
-    if (btn) { btn.textContent = '\uD83D\uDD04 Refresh'; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
-  });
-}
-
-function addActionToTasksByIndex(idx, btnEl) {
-  if (typeof tasks === 'undefined') return;
-  var cache = getIntelCache();
-  var item = cache.actions && cache.actions.data && cache.actions.data.items && cache.actions.data.items[idx];
-  if (!item || !item.action) return;
-  tasks.push({ id: Date.now() + Math.random(), name: item.action, date: getTodayStr(), category: 'other', completed: false, source: 'sam_action_item' });
-  saveTasks();
-  if (btnEl) {
-    btnEl.disabled = true;
-    btnEl.innerHTML = '\u2713';
-    btnEl.style.opacity = '.6';
-    btnEl.style.color = 'var(--green)';
-    btnEl.style.borderColor = 'rgba(130,179,134,.5)';
-  }
-}
-
 function showIntelError() {
   var tc = document.getElementById('intel-tab-content');
   if (tc) tc.innerHTML = '<div style="text-align:center;padding:32px 16px"><div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Limited Data Available</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;line-height:1.6">Sam couldn\'t find reliable data for this section. This is common for local races with limited media coverage. Try refreshing or check back as the race develops.</div></div>';
@@ -4281,7 +4197,6 @@ function renderIntelTabContent(tabKey, data, fetchedAt) {
   var html = timeLabel;
   if (tabKey === 'opponents') html += renderMyOpponentsTab(data);
   else if (tabKey === 'pulse') html += renderPulseTab(data);
-  else if (tabKey === 'actions') html += renderActionItemsTab(data);
   else if (tabKey === 'threats') html += renderThreatsTab(data);
   tc.innerHTML = html;
 }
@@ -4425,34 +4340,7 @@ function renderPulseTab(data) {
   return html;
 }
 
-// TAB 3 — ACTION ITEMS
-function renderActionItemsTab(data) {
-  var items = (data && data.items) || [];
-  var html = '';
-  html += '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">Action Items</div>';
-  html += '<div style="font-size:9px;color:rgba(255,255,255,.2);font-style:italic;margin-bottom:12px">Prioritized by Sam from your calendar, opponents, and district pulse. Click + to add as a task.</div>';
-  if (items.length === 0) return html + '<div style="text-align:center;padding:24px;font-size:11px;color:rgba(255,255,255,.3)">No action items yet. Add opponents and pulse data, then refresh.</div>';
-  items.forEach(function(item, idx) {
-    var pr = (item.priority || 'medium').toLowerCase();
-    var prColor = pr === 'high' ? 'var(--red)' : pr === 'low' ? 'var(--green)' : 'var(--gold)';
-    var prBg = pr === 'high' ? 'rgba(232,112,112,.12)' : pr === 'low' ? 'rgba(130,179,134,.12)' : 'rgba(212,165,116,.12)';
-    html += '<div class="intel-card" style="padding:12px">' +
-      '<div style="display:flex;gap:10px;align-items:flex-start">' +
-        '<button onclick="addActionToTasksByIndex(' + idx + ', this)" style="margin-top:2px;width:20px;height:20px;border-radius:3px;background:transparent;border:1.5px solid rgba(212,165,116,.5);color:var(--gold);cursor:pointer;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;flex-shrink:0" title="Add to tasks">+</button>' +
-        '<div style="flex:1">' +
-          '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">' +
-            '<div style="font-size:12px;font-weight:700;color:var(--t1);line-height:1.4">' + escapeHtml(item.action||'') + '</div>' +
-            '<span style="font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;background:' + prBg + ';color:' + prColor + ';white-space:nowrap">' + escapeHtml(pr) + '</span>' +
-          '</div>' +
-          (item.why ? '<div style="font-size:10px;color:var(--t3);font-style:italic;margin-top:4px;line-height:1.5">' + escapeHtml(item.why) + '</div>' : '') +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  });
-  return html;
-}
-
-// TAB 4 — THREAT ASSESSMENT (reads from intelOpponents)
+// TAB 3 — THREAT ASSESSMENT (reads from intelOpponents)
 function renderThreatsTab(opponents) {
   if (!opponents || opponents.length === 0) {
     return '<div style="text-align:center;padding:32px 16px"><div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">No Opponents Added</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;line-height:1.6">Add opponents in the My Opponents tab to see threat assessment.</div></div>';
@@ -4899,7 +4787,7 @@ function completeOnboarding() {
   var raceProfile = getRaceTypeProfile(campaignData.specificOffice);
   localStorage.setItem(storageKey('ctb_race_profile'), JSON.stringify({ office: campaignData.specificOffice, profile: raceProfile, cachedAt: new Date().toISOString() }));
   fetchDay1Brief();
-  // Auto-run District Pulse research after a short delay. Opponents and Action Items are user-driven.
+  // Auto-run District Pulse research after a short delay. Opponents are user-driven.
   setTimeout(function() { fetchPulse(); }, 5000);
   setTimeout(function() { delete window._onboardingJustCompleted; }, 0);
 }

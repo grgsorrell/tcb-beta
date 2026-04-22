@@ -89,7 +89,7 @@ client-side execution in app.html.
 ## Known Working State
 - Login system working with session cookies
 - Per-user data namespacing working
-- Intel panel: 4 tabs (My Opponents, District Pulse, Action Items, Threat Assessment)
+- Intel panel: 3 tabs (My Opponents, District Pulse, Threat Assessment)
 - Morning brief: AI-generated daily, background gen on day 1
 - Sam 2.0: server-side tool loop, 16 consolidated tools
 - All Sam tools executing correctly (10/10 Playwright tests)
@@ -107,22 +107,17 @@ Tab 1 — My Opponents: user-driven. Input + cards. Backed by D1
 Tab 2 — District Pulse: mode:'research' with 'intel_pulse'
   feature. Multi-query VPS search. 72h cache in localStorage
   (ctb_intel_data.pulse).
-Tab 3 — Action Items: /api/intel/action-items. Single Haiku
-  call synthesizes 3-5 checklist items from pulse + opponents
-  + tasks + events + phase. Click + adds as task (category
-  'other'). 72h cache.
-Tab 4 — Threat Assessment: reads opponents from in-memory
+Tab 3 — Threat Assessment: reads opponents from in-memory
   `intelOpponents`. Sorts by threatLevel desc. No refresh —
   auto-reflects Tab 1 state.
 
 Research cost targets:
 - Federal opponent: ~$0.005 (FEC finances + 1 VPS search + Haiku synthesis)
 - Non-federal opponent: $0.05-0.07 (Haiku with web_search, max_uses: 3)
-- Action items: ~$0.005 (Haiku, no web search)
 - Pulse: ~$0.005 (VPS search + Haiku synthesis)
 
 Feature tags in api_usage: intel_opponent_fec, intel_opponent_anthropic,
-intel_action_items, intel_pulse_vps, intel_pulse_anthropic.
+intel_pulse_vps, intel_pulse_anthropic.
 
 ## Anti-Bloat Rule (check before every deploy)
 - System prompt: MUST be under 800 words (currently 623)

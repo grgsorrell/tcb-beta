@@ -1978,66 +1978,6 @@ export default {
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
 
-    // ========================================
-    // INTEL: Action Items (single Haiku call, no web search, ~$0.005)
-    // ========================================
-    if (url.pathname === '/api/intel/action-items' && request.method === 'POST') {
-      try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
-        const body = await request.json();
-
-        const pulseItems = Array.isArray(body.pulse) ? body.pulse.slice(0, 8) : [];
-        const oppItems = Array.isArray(body.opponents) ? body.opponents : [];
-        const tasksList = Array.isArray(body.tasks) ? body.tasks.slice(0, 12) : [];
-        const eventsList = Array.isArray(body.events) ? body.events.slice(0, 8) : [];
-
-        const ctx =
-          'Campaign context:\n' +
-          '- Candidate: ' + (body.candidateName || 'unknown') + '\n' +
-          '- Office: ' + (body.office || 'unknown') + '\n' +
-          '- Phase: ' + (body.phase || 'unknown') + '\n' +
-          '- Days to election: ' + (body.daysToElection != null ? body.daysToElection : 'unknown') + '\n' +
-          '- District pulse (recent news): ' + (pulseItems.length ? '\n  • ' + pulseItems.map(p => (p.headline || '') + ' — ' + (p.summary || '')).join('\n  • ') : 'none') + '\n' +
-          '- Opponents: ' + (oppItems.length ? oppItems.map(o => (o.name || '') + ' (threat ' + (o.threatLevel != null ? o.threatLevel : '?') + '/10, risk: ' + (o.keyRisk || '') + ')').join('; ') : 'none') + '\n' +
-          '- Open tasks (' + tasksList.length + '): ' + (tasksList.length ? tasksList.map(t => t.name || t.text || '').filter(Boolean).join('; ') : 'none') + '\n' +
-          '- Upcoming events: ' + (eventsList.length ? eventsList.map(e => (e.name || '') + ' (' + (e.date || '') + ')').join('; ') : 'none');
-
-        const userMsg = ctx + '\n\nProduce 3-5 prioritized action items this candidate should do in the next 7 days. Prefer actions that respond to pulse items, counter specific opponents, or fit the campaign phase. Each item should be concrete and schedulable (a single task).\n\nReturn ONLY JSON:\n{"items":[{"action":"imperative action phrase, <12 words","why":"one sentence on why this matters right now","priority":"high|medium|low"}]}';
-
-        const apiResp = await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
-          body: JSON.stringify({
-            model: "claude-haiku-4-5-20251001",
-            max_tokens: 1500,
-            temperature: 0.3,
-            system: [{ type: "text", text: "You are Sam, a political campaign strategist. Return ONLY valid JSON — no preamble, no markdown fences. Use only the provided context. Do not invent facts, opponents, or events not in the context." }],
-            messages: [{ role: "user", content: userMsg }]
-          })
-        });
-        const apiData = await apiResp.json();
-        await logApiUsage('intel_action_items', apiData, userId);
-
-        const textBlocks = [];
-        if (apiData.content && Array.isArray(apiData.content)) {
-          apiData.content.forEach(b => { if (b.type === 'text' && b.text) textBlocks.push(b.text); });
-        }
-        const lastBlock = textBlocks[textBlocks.length - 1] || '';
-        const jsonStr = lastBlock.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-        let parsed = null;
-        try { parsed = JSON.parse(jsonStr); } catch (e) {
-          const matches = jsonStr.match(/\{[\s\S]*\}/g);
-          if (matches) { try { parsed = JSON.parse(matches[matches.length - 1]); } catch (e2) {} }
-        }
-
-        return jsonResponse({ success: true, items: (parsed && parsed.items) || [] });
-      } catch (error) {
-        console.error('[Action Items] Error:', error.message);
-        return jsonResponse({ error: error.message }, 500);
-      }
-    }
-
     // Only allow POST for the main chat endpoint
     if (request.method !== 'POST') {
       return new Response('Method not allowed', { status: 405, headers: corsHeaders });
@@ -2107,8 +2047,8 @@ export default {
       // RESEARCH MODE — multi-query VPS search, Anthropic fallback
       // ========================================
       if (mode === 'research') {
-        // Detect feature for logging. Opponent research and action items have their
-        // own endpoints (/api/opponents/*, /api/intel/action-items) — not routed here.
+        // Detect feature for logging. Opponent research has its own endpoint
+        // (/api/opponents/*) and is not routed here.
         var researchFeature = 'research';
         if (message.indexOf('morning briefing') >= 0) researchFeature = 'morning_brief';
         else if (message.indexOf('recent news, events, and issues') >= 0) researchFeature = 'intel_pulse';
