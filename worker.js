@@ -489,7 +489,11 @@ export default {
         // password_hash; @sub.tcb anchor rows do not (their hash field is
         // null), so a non-null password_hash guard keeps us on the owner
         // path without accidentally matching anchor rows.
-        const user = await env.DB.prepare('SELECT * FROM users WHERE username = ? OR email = ?').bind(clean, clean).first();
+        // LOWER() on both sides — owners are stored lowercased today
+        // (create-account normalizes), but if any future insert path
+        // skips normalization, case-sensitive match would silently
+        // lock the user out. Cheap defense.
+        const user = await env.DB.prepare('SELECT * FROM users WHERE LOWER(username) = ? OR LOWER(email) = ?').bind(clean, clean).first();
         if (user && user.password_hash) {
           if (user.status === 'deleted') {
             await logAttempt(false);
@@ -900,7 +904,13 @@ export default {
         // Delete their sessions
         const sub = await env.DB.prepare('SELECT username FROM sub_users WHERE id = ?').bind(subUserId).first();
         if (sub) {
-          const subUser = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(sub.username + '@sub.tcb').first();
+          // Anchor emails are always stored lowercased (login normalizes
+          // before insert), but sub_users.username preserves the as-typed
+          // casing. Lowercase the lookup value — otherwise revoking a
+          // mixed-case sub-user (e.g. "Kelly-mgr1") fails to find the
+          // anchor, their sessions aren't deleted, and they stay logged
+          // in until natural 30-day expiry.
+          const subUser = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(sub.username.toLowerCase() + '@sub.tcb').first();
           if (subUser) await env.DB.prepare('DELETE FROM sessions WHERE user_id = ?').bind(subUser.id).run();
         }
         return jsonResponse({ success: true });
@@ -1799,8 +1809,12 @@ export default {
         if (ownerInfo) {
           workspaceMembers[ownerInfo.id] = ownerInfo.candidate_name || ownerInfo.full_name || ownerInfo.username || 'Owner';
         }
+        // LOWER(s.username) in the JOIN — anchor emails are stored
+        // lowercased but sub_users.username preserves as-typed casing.
+        // Without LOWER(), mixed-case sub-users silently drop out of
+        // workspaceMembers and their attribution badges render blank.
         const subList = await env.DB.prepare(
-          'SELECT s.name, u.id FROM sub_users s JOIN users u ON u.email = s.username || \'@sub.tcb\' WHERE s.owner_id = ?'
+          'SELECT s.name, u.id FROM sub_users s JOIN users u ON u.email = LOWER(s.username) || \'@sub.tcb\' WHERE s.owner_id = ?'
         ).bind(ctx.ownerId).all();
         (subList.results || []).forEach(s => { workspaceMembers[s.id] = s.name; });
 
