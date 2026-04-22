@@ -44,6 +44,8 @@ select{-webkit-appearance:none;appearance:none;}
 .tb-brand{font-family:var(--font-d);font-size:15px;font-weight:700;color:var(--t1);white-space:nowrap;}
 .tb-brand span{color:var(--gold);}
 .cd-pill{background:rgba(232,112,112,.15);border:1px solid rgba(232,112,112,.4);border-radius:20px;padding:5px 13px;display:flex;align-items:center;gap:8px;}
+.ro-banner{background:rgba(212,165,116,.08);border:1px solid rgba(212,165,116,.25);border-radius:6px;color:var(--gold);padding:10px 14px;margin:0 0 14px 0;font-size:12px;font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:8px;}
+.attribution-tag{display:inline-block;font-size:9px;font-weight:600;letter-spacing:.03em;color:var(--t3);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:1px 6px;border-radius:10px;margin-left:6px;vertical-align:middle;}
 .cd-num{font-family:var(--font-d);font-size:18px;font-weight:800;color:var(--red);line-height:1;}
 .cd-sub{font-size:8px;color:var(--red);text-transform:uppercase;letter-spacing:.1em;font-weight:600;line-height:1.5;}
 .phase-pill{background:rgba(212,165,116,.12);border:1px solid rgba(212,165,116,.3);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--gold);white-space:nowrap;position:relative;cursor:default;}
@@ -1106,6 +1108,111 @@ function getD1Session() {
   return d1Session || null;
 }
 
+// --- Permission helpers (C6) ---
+// Owners return true for canSee/canEdit always. Sub-users check the cached
+// permissions map (refreshed on login + every 60s via the existing poll).
+// localStorage keys: 'tcb_is_sub_user' ('true'|null), 'tcb_permissions' (JSON).
+function isSubUser() {
+  return localStorage.getItem('tcb_is_sub_user') === 'true';
+}
+function currentPermissions() {
+  try { return JSON.parse(localStorage.getItem('tcb_permissions') || '{}'); } catch (e) { return {}; }
+}
+function canSee(tab) {
+  if (!isSubUser()) return true;
+  var level = currentPermissions()[tab];
+  return level === 'read' || level === 'full';
+}
+function canEdit(tab) {
+  if (!isSubUser()) return true;
+  return currentPermissions()[tab] === 'full';
+}
+// In-memory cache of {user_id → display name} for attribution rendering.
+// Populated from /api/data/load-all.workspaceMembers.
+var workspaceMembers = {};
+var workspaceOwnerUserId = null;  // Set from data/load-all.ownerUserId.
+// Returns the "added by X" pill HTML for a row's user_id, or '' if:
+//   - userId is the workspace owner (owner contributions aren't badged)
+//   - userId is unknown (not in the members map — fall back to silent)
+function attributionBadge(userId) {
+  if (!userId) return '';
+  if (userId === workspaceOwnerUserId) return '';
+  var name = workspaceMembers[userId];
+  if (!name) return '';
+  return '<span class="attribution-tag" title="Added by ' + escapeHtml(name) + '">by ' + escapeHtml(name) + '</span>';
+}
+// Called when permissions or sub-user flag change mid-session.
+function applyPermissionVisibility() {
+  var navMap = { calendar: 'calendar', budget: 'budget', notes: 'notes', toolbox: 'toolbox', folders: 'folders', intel: 'intel', endorsements: 'endorse' };
+  // Main tab nav — hide the button if canSee is false.
+  document.querySelectorAll('.lnav .nb[data-view]').forEach(function(btn) {
+    var view = btn.getAttribute('data-view');
+    if (view === 'dashboard') { btn.style.display = ''; return; }
+    if (view === 'settings') {
+      btn.style.display = isSubUser() ? 'none' : '';
+      return;
+    }
+    btn.style.display = canSee(view) ? '' : 'none';
+  });
+  // Overlay nav — folders/intel/endorsements.
+  var folderBtn = document.getElementById('nav-folders');
+  var intelBtn = document.getElementById('nav-intel');
+  var endorseBtn = document.getElementById('nav-endorse');
+  if (folderBtn) folderBtn.style.display = canSee('folders') ? '' : 'none';
+  if (intelBtn) intelBtn.style.display = canSee('intel') ? '' : 'none';
+  if (endorseBtn) endorseBtn.style.display = canSee('endorsements') ? '' : 'none';
+  // If the current view is one they lost access to, kick them home.
+  if (typeof currentView !== 'undefined' && currentView && currentView !== 'dashboard' && currentView !== 'settings' && !canSee(currentView)) {
+    showView('dashboard');
+  }
+  if (currentView === 'settings' && isSubUser()) {
+    showView('dashboard');
+  }
+  // Update the read-only banner on the active view.
+  renderReadOnlyBanner(typeof currentView !== 'undefined' ? currentView : 'dashboard');
+}
+
+// Renders a persistent "Read-only access" banner above the current view's
+// content when the sub-user can see but not edit the tab. Owners and full-
+// access sub-users see no banner.
+function renderReadOnlyBanner(viewName) {
+  // Remove any existing banner first
+  var existing = document.getElementById('ro-banner');
+  if (existing) existing.remove();
+  if (!viewName || viewName === 'dashboard' || viewName === 'settings') return;
+  if (canEdit(viewName)) return;
+  if (!canSee(viewName)) return; // shouldn't be on this view at all
+  var view = document.getElementById('view-' + viewName);
+  if (!view) return;
+  var banner = document.createElement('div');
+  banner.id = 'ro-banner';
+  banner.className = 'ro-banner';
+  banner.innerHTML = '<span style="font-size:14px">\uD83D\uDD12</span> Read-only access. Ask the campaign owner to request edit access.';
+  view.insertBefore(banner, view.firstChild);
+}
+
+// Centralized handler for 403 permission_denied responses. Any fetch that
+// hits a permission wall routes the user home with a toast.
+function handlePermissionDenied(body) {
+  var tab = body && body.tab ? body.tab : 'this section';
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--n3);border:1px solid rgba(232,112,112,.3);color:var(--red);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+  toast.textContent = "\u26A0 You don't have access to " + tab + ".";
+  document.body.appendChild(toast);
+  setTimeout(function(){ toast.style.transition = 'opacity .3s'; toast.style.opacity = '0'; setTimeout(function(){ toast.remove(); }, 300); }, 2800);
+  showView('dashboard');
+}
+
+// Toast shown when a read-only sub-user tries a write action. Softer than
+// a 403 redirect because they shouldn't have been able to trigger it anyway.
+function showReadOnlyToast(tab) {
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--n3);border:1px solid rgba(212,165,116,.3);color:var(--gold);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+  toast.textContent = "\uD83D\uDD12 Read-only access on " + (tab || 'this tab') + ".";
+  document.body.appendChild(toast);
+  setTimeout(function(){ toast.style.transition = 'opacity .3s'; toast.style.opacity = '0'; setTimeout(function(){ toast.remove(); }, 300); }, 2200);
+}
+
 // Standard handler for 401 responses from authed endpoints — means the server
 // rejected the token. Clear ALL auth-related localStorage so the user isn't
 // stuck in a loop where tcb_session is still valid (which makes index.html
@@ -1196,6 +1303,9 @@ function startSubUserPermissionsPoll() {
           if (prev !== next) {
             console.log('[Permissions] Updated from server');
             localStorage.setItem('tcb_permissions', next);
+            // Re-render the sidebar/nav + current view so sub-users see
+            // owner permission changes without a manual refresh.
+            applyPermissionVisibility();
           }
         }
       })
@@ -1488,6 +1598,22 @@ function loadFromD1() {
     // D1 WINS: Chat history
     if (data.chatHistory && data.chatHistory.length > 0) { chatHistory = data.chatHistory; saveState(storageKey('ctb_chatHistory'), chatHistory); }
 
+    // Workspace members map + owner id for attribution ("by [Name]" tags).
+    workspaceMembers = data.workspaceMembers || {};
+    workspaceOwnerUserId = data.ownerUserId || null;
+
+    // Refresh permission cache + sub-user flag every time we load data
+    // (covers the case where the owner changed permissions while this
+    // session was open, in addition to the 60s poll).
+    if (data.isSubUser) {
+      localStorage.setItem('tcb_is_sub_user', 'true');
+      localStorage.setItem('tcb_permissions', JSON.stringify(data.permissions || {}));
+    } else {
+      localStorage.removeItem('tcb_is_sub_user');
+      localStorage.removeItem('tcb_permissions');
+    }
+    applyPermissionVisibility();
+
     // Preload opponents so Sam has intel ground truth before the Intel panel is opened
     loadOpponentsFromD1();
 
@@ -1525,6 +1651,9 @@ function showOnboardedUI() {
   document.getElementById('nav-folders').style.display = '';
   document.getElementById('nav-intel').style.display = '';
   document.getElementById('nav-endorse').style.display = '';
+  // Sub-users: hide Settings and any tabs they can't see. Owner-only check
+  // happens here and again on permission poll refresh.
+  applyPermissionVisibility();
   updateTopbar();
   refreshDashboard();
   // Auto-fetch intelligence brief if not yet generated (only on cold load, not during onboarding)
@@ -1628,6 +1757,16 @@ function getPhase(days) {
 // VIEW NAVIGATION
 // ============================================
 function showView(viewName, navEl) {
+  // Permission gate: sub-users who somehow navigate to a tab they can't
+  // see (deep link, stale nav) get routed home. Settings always owner-only.
+  if (viewName === 'settings' && isSubUser()) {
+    viewName = 'dashboard';
+    navEl = null;
+  }
+  if (viewName !== 'dashboard' && viewName !== 'settings' && !canSee(viewName)) {
+    viewName = 'dashboard';
+    navEl = null;
+  }
   document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
   var view = document.getElementById('view-' + viewName);
   if (view) view.classList.add('active');
@@ -1654,6 +1793,9 @@ function showView(viewName, navEl) {
   else if (viewName === 'notes') renderNotesView();
   else if (viewName === 'toolbox') renderToolbox();
   else if (viewName === 'settings') renderSettings();
+
+  // Read-only banner goes at the top of the view after it renders.
+  renderReadOnlyBanner(viewName);
 }
 
 // ============================================
@@ -1756,6 +1898,7 @@ function toggleDashTaskInput() {
 }
 
 function addDashTask() {
+  if (!canEdit('calendar')) { showReadOnlyToast('calendar'); return; }
   var inp = document.getElementById('dash-task-input');
   if (!inp || !inp.value.trim()) return;
   tasks.push({ id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false });
@@ -1879,6 +2022,7 @@ function togglePopupTaskInput() {
 }
 
 function popupAddTask() {
+  if (!canEdit('calendar')) { showReadOnlyToast('calendar'); return; }
   var inp = document.getElementById('popup-task-input');
   if (!inp || !inp.value.trim()) return;
   tasks.push({ id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false });
@@ -2367,7 +2511,7 @@ function renderSidebarAgenda() {
     return '<div class="csb-agenda-item" onclick="openDayModal(\'' + today + '\')">' +
       '<div class="csb-agenda-bar" style="background:' + barColor + '"></div>' +
       '<div class="csb-agenda-time">' + (time || '\u2014') + '</div>' +
-      '<div class="csb-agenda-name">' + escapeHtml(item.name || item.text || 'Untitled') + '</div></div>';
+      '<div class="csb-agenda-name">' + escapeHtml(item.name || item.text || 'Untitled') + attributionBadge(item.user_id) + '</div></div>';
   }).join('');
 }
 
@@ -3152,6 +3296,7 @@ function renderNotesView() {
 }
 
 function createNewNote() {
+  if (!canEdit('notes')) { showReadOnlyToast('notes'); return; }
   document.getElementById('note-modal-title').textContent = 'New Note';
   document.getElementById('note-title-input').value = '';
   document.getElementById('note-content-input').value = '';
@@ -3913,6 +4058,8 @@ function openCalSyncHelp() {
 // OVERLAYS
 // ============================================
 function toggleOverlay(name) {
+  // Permission gate for overlay panels (Folders/Intel/Endorsements).
+  if (!canSee(name)) { showReadOnlyToast(name); return; }
   if (currentOverlay === name) { closeOverlay(); return; }
   closeOverlay();
   currentOverlay = name;
@@ -4281,6 +4428,7 @@ function loadOpponentsFromD1(cb) {
     fetch(D1_API + '/api/opponents/list?campaign_id=' + encodeURIComponent(campaignId), { headers: { 'Authorization': 'Bearer ' + sess } })
       .then(function(r){
         if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
+        if (r.status === 403) { return r.json().then(function(b){ handlePermissionDenied(b); throw new Error('permission_denied'); }); }
         return r.json();
       }),
     fetch(D1_API + '/api/campaigns/list', { headers: { 'Authorization': 'Bearer ' + sess } })
@@ -4308,6 +4456,7 @@ function loadOpponentsFromD1(cb) {
 }
 
 function addOpponentFromInput() {
+  if (!canEdit('intel')) { showReadOnlyToast('intel'); return; }
   var input = document.getElementById('opponent-name-input');
   if (!input) return;
   var name = input.value.trim();
@@ -4629,6 +4778,7 @@ function renderEndorsementsOverlay() {
 }
 
 function addEndorsement() {
+  if (!canEdit('endorsements')) { showReadOnlyToast('endorsements'); return; }
   var name = prompt('Endorser name:');
   if (!name) return;
   var title = prompt('Title/Organization:');
@@ -4676,6 +4826,7 @@ function autoCategorize(name) {
 }
 
 function openAddEventModal() {
+  if (!canEdit('calendar')) { showReadOnlyToast('calendar'); return; }
   document.getElementById('evt-name').value = '';
   document.getElementById('evt-date').value = '';
   document.getElementById('evt-time').value = '';
@@ -4704,6 +4855,7 @@ function closeEventModal() {
 }
 
 function saveEvent() {
+  if (!canEdit('calendar')) { showReadOnlyToast('calendar'); return; }
   var name = document.getElementById('evt-name').value.trim();
   var date = document.getElementById('evt-date').value;
   if (!name || !date) { alert('Please enter name and date'); return; }

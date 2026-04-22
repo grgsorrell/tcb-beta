@@ -1051,7 +1051,8 @@ export default {
           'SELECT * FROM tasks WHERE workspace_owner_id = ? ORDER BY date ASC'
         ).bind(ctx.ownerId).all();
 
-        // Convert D1 rows back to app format
+        // Convert D1 rows back to app format. user_id exposed for
+        // attribution ("Added by [Name]") rendering on the client.
         const tasks = (result.results || []).map(row => ({
           id: parseFloat(row.id) || row.id,
           name: row.name,
@@ -1059,7 +1060,8 @@ export default {
           date: row.date,
           category: row.category,
           completed: row.completed === 1,
-          created_at: row.created_at
+          created_at: row.created_at,
+          user_id: row.user_id
         }));
 
         return jsonResponse({ success: true, tasks });
@@ -1138,7 +1140,8 @@ export default {
           end_time: row.end_time,
           endTime: row.end_time,
           location: row.location,
-          created_at: row.created_at
+          created_at: row.created_at,
+          user_id: row.user_id
         }));
 
         return jsonResponse({ success: true, events });
@@ -1559,7 +1562,7 @@ export default {
           try { profile.win_number_data = JSON.parse(profile.win_number_data); } catch (e) { /* leave as string */ }
         }
 
-        // Format tasks
+        // Format tasks (user_id exposed for attribution rendering)
         const tasks = (tasksResult.results || []).map(row => ({
           id: parseFloat(row.id) || row.id,
           name: row.name,
@@ -1567,7 +1570,8 @@ export default {
           date: row.date,
           category: row.category,
           completed: row.completed === 1,
-          created_at: row.created_at
+          created_at: row.created_at,
+          user_id: row.user_id
         }));
 
         // Format events
@@ -1580,7 +1584,8 @@ export default {
           end_time: row.end_time,
           endTime: row.end_time,
           location: row.location,
-          created_at: row.created_at
+          created_at: row.created_at,
+          user_id: row.user_id
         }));
 
         // Format budget
@@ -1598,6 +1603,7 @@ export default {
           id: f.id,
           name: f.name,
           created_at: f.created_at,
+          user_id: f.user_id,
           notes: (notesResult.results || [])
             .filter(n => n.folder_id === f.id)
             .map(n => ({
@@ -1605,7 +1611,8 @@ export default {
               title: n.title,
               content: n.content,
               created_at: n.created_at,
-              updated_at: n.updated_at
+              updated_at: n.updated_at,
+              user_id: n.user_id
             }))
         }));
 
@@ -1622,17 +1629,35 @@ export default {
         const endorsements = (endorseResult.results || []).map(row => ({
           id: parseFloat(row.id) || row.id, name: row.name, title: row.title,
           status: row.status, notes: row.notes, date: row.date,
-          addedBySam: row.added_by_sam === 1, created_at: row.created_at
+          addedBySam: row.added_by_sam === 1, created_at: row.created_at,
+          user_id: row.user_id
         }));
 
         // Format contributions
         const contributions = (contribResult.results || []).map(row => ({
           id: parseFloat(row.id) || row.id, donorName: row.donor_name, amount: row.amount,
           source: row.source, date: row.date, employer: row.employer,
-          occupation: row.occupation, notes: row.notes, created_at: row.created_at
+          occupation: row.occupation, notes: row.notes, created_at: row.created_at,
+          user_id: row.user_id
         }));
 
-        return jsonResponse({ success: true, profile, tasks, events, budget, folders, briefing, chatHistory, endorsements, contributions });
+        // Build workspace members map {user_id → display name} so the
+        // client can render attribution without a second fetch. Includes
+        // the owner + every sub_user (active or revoked — revoked users'
+        // past contributions still need names).
+        const workspaceMembers = {};
+        const ownerInfo = await env.DB.prepare(
+          'SELECT u.id, u.full_name, u.username, p.candidate_name FROM users u LEFT JOIN profiles p ON p.user_id = u.id WHERE u.id = ?'
+        ).bind(ctx.ownerId).first();
+        if (ownerInfo) {
+          workspaceMembers[ownerInfo.id] = ownerInfo.candidate_name || ownerInfo.full_name || ownerInfo.username || 'Owner';
+        }
+        const subList = await env.DB.prepare(
+          'SELECT s.name, u.id FROM sub_users s JOIN users u ON u.email = s.username || \'@sub.tcb\' WHERE s.owner_id = ?'
+        ).bind(ctx.ownerId).all();
+        (subList.results || []).forEach(s => { workspaceMembers[s.id] = s.name; });
+
+        return jsonResponse({ success: true, profile, tasks, events, budget, folders, briefing, chatHistory, endorsements, contributions, workspaceMembers, ownerUserId: ctx.ownerId, isSubUser: ctx.isSubUser, permissions: ctx.permissions || null });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
