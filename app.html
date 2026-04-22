@@ -4880,7 +4880,19 @@ function completeOnboarding() {
   document.getElementById('onboarding-overlay').classList.remove('active');
   showOnboardedUI();
   openSam();
-  addSamMsg("Welcome, <strong>" + escapeHtml(onboardingData.firstName||'') + "!</strong> You've got <strong>" + (daysUntil(campaignData.electionDate)||'--') + " days</strong> to election day. Sam is researching your race now \u2014 your Intel Brief will be ready shortly.");
+  // Wipe the pre-onboarding "Hi! I'm Sam... Complete your setup" placeholder.
+  // renderSamMessages paints that directly into the DOM on first load when
+  // chatHistory is empty — without clearing it, the completion message just
+  // appends below and the user sees both.
+  chatHistory = [];
+  var msgsEl = document.getElementById('sam-messages');
+  if (msgsEl) msgsEl.innerHTML = '';
+  var firstName = (onboardingData.firstName || (campaignData.candidateName || '').split(' ')[0] || '').trim();
+  var daysLeft = daysUntil(campaignData.electionDate);
+  addSamMsg(
+    "Welcome, <strong>" + escapeHtml(firstName) + "!</strong> You've got <strong>" + (daysLeft != null ? daysLeft : '--') + " days</strong> to election day. Sam is researching your race now \u2014 your Intel Brief will be ready shortly.\n\n" +
+    "I build your calendar, write your speeches and press, research opponents, coach you on strategy, and keep you compliant with filing rules. What's on your mind today?"
+  );
   // Fire all research calls — candidate brief + day1 brief + all 4 Intel tabs
   fetchCandidateBrief();
   // Cache race type profile
@@ -5600,8 +5612,10 @@ function samSpeak(text) {
 function renderSamMessages() {
   var el = document.getElementById('sam-messages');
   if (chatHistory.length === 0) {
-    // Welcome message
-    if (isOnboarded()) {
+    // Gate on onboardingComplete specifically — not just the presence of
+    // candidate name / election date. A user mid-onboarding can have those
+    // partial fields saved without the flow being complete.
+    if (campaignData && campaignData.onboardingComplete === true) {
       var fn = campaignData.candidateName ? campaignData.candidateName.split(' ')[0] : '';
       el.innerHTML = '<div class="sam-msg"><p>Welcome back, <strong>' + escapeHtml(fn) + '!</strong> What are we working on today?</p></div>' +
         '<div class="sam-qrs"><div class="sam-qr" onclick="sendSamChip(\'What should I focus on today?\')">What should I focus on today?</div><div class="sam-qr" onclick="sendSamChip(\'Help me set up my campaign calendar\')">Help me set up my campaign calendar</div><div class="sam-qr" onclick="sendSamChip(\'What compliance deadlines do I have?\')">What compliance deadlines do I have?</div></div>';
