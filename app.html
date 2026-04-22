@@ -1537,12 +1537,36 @@ function initApp() {
         localStorage.setItem('tcb_permissions', JSON.stringify(sessionData.permissions));
         startSubUserPermissionsPoll();
       }
-      // Check for multiple campaigns
+      // Resolve the active campaign. Three cases:
+      //   1. Multiple campaigns + none active → show selector.
+      //   2. One or more campaigns + none active → auto-select the first
+      //      one the server returned. The server sorts by status ASC (so
+      //      'active' rows come before 'archived') then updated_at DESC,
+      //      so campaigns[0] is the most-recent active campaign when one
+      //      exists. Without this, sub-users (who never go through
+      //      onboarding and never see a single-campaign selector) end up
+      //      with no tcb_active_campaign set, which breaks the Intel
+      //      panel (and anything else that scopes by campaign_id).
+      //   3. Already have an active campaign in localStorage → proceed.
       return fetch(D1_API + '/api/campaigns/list', { headers: { 'Authorization': 'Bearer ' + d1Session } })
       .then(function(r){ return r.json(); }).then(function(data) {
-        if (data.success && data.campaigns && data.campaigns.length > 1) {
-          var activeCampaignId = localStorage.getItem('tcb_active_campaign');
-          if (!activeCampaignId) { showCampaignSelector(data.campaigns); return; }
+        var campaigns = (data && data.success && data.campaigns) ? data.campaigns : [];
+        var activeCampaignId = localStorage.getItem('tcb_active_campaign');
+        if (!activeCampaignId && campaigns.length > 1) {
+          showCampaignSelector(campaigns);
+          return;
+        }
+        if (!activeCampaignId && campaigns.length >= 1) {
+          var pick = campaigns[0].id;
+          localStorage.setItem('tcb_active_campaign', pick);
+          // Mirror the selectCampaign() behavior: sync the server's
+          // per-session active campaign so anything server-side that
+          // reads it stays consistent.
+          fetch(D1_API + '/api/campaigns/switch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+            body: JSON.stringify({ campaignId: pick })
+          }).catch(function(){});
         }
         proceedWithLocalData();
         loadFromD1();
