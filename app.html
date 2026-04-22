@@ -1490,6 +1490,39 @@ function saveBudget() {
   saveState(storageKey('ctb_budget'), campaignBudget);
   d1Write('/api/budget/save', { budget: { total: campaignBudget.total, categories: JSON.stringify(campaignBudget.categories || {}) } });
 }
+// Per-row folder/note save/delete (item #5).
+// saveOneFolder writes the folder metadata only (notes children are
+// handled separately via saveOneNote). deleteOneFolder cascades to
+// its notes server-side.
+// saveOneNote takes a folderId separately — the client's notes live
+// nested inside folder objects, but the server stores folder_id as
+// a first-class foreign key.
+function saveOneFolder(f) {
+  if (!f || !f.id) return;
+  saveState(storageKey('ctb_folders'), folders);
+  d1Write('/api/folders/save', { folder: f });
+}
+function deleteOneFolder(id) {
+  saveState(storageKey('ctb_folders'), folders);
+  d1Write('/api/folders/delete', { id: id });
+}
+function saveOneNote(n, folderId) {
+  if (!n || !n.id || !folderId) return;
+  saveState(storageKey('ctb_folders'), folders);
+  d1Write('/api/notes/save', {
+    note: {
+      id: n.id, folder_id: folderId,
+      title: n.title || '', content: n.content || '',
+      created_at: n.createdAt, updated_at: n.updatedAt
+    }
+  });
+}
+function deleteOneNote(id) {
+  saveState(storageKey('ctb_folders'), folders);
+  d1Write('/api/notes/delete', { id: id });
+}
+// @deprecated Use saveOneFolder / saveOneNote / deleteOneFolder /
+// deleteOneNote. Kept for one-release rollback fallback.
 function saveFolders() {
   saveState(storageKey('ctb_folders'), folders);
   d1Write('/api/notes/sync', { folders: folders });
@@ -3534,18 +3567,30 @@ function saveNoteFromModal() {
   var editId = document.getElementById('note-modal')._editId;
 
   if (editId) {
-    // Update existing
+    // Update existing — capture the enclosing folder so we can pass
+    // folder_id through to the per-row save.
+    var editedNote = null; var editedParentFolderId = null;
     folders.forEach(function(f) { (f.notes||[]).forEach(function(n) {
-      if (n.id === editId) { n.title = title || n.title; n.content = content; n.updatedAt = new Date().toISOString(); }
+      if (n.id === editId) {
+        n.title = title || n.title;
+        n.content = content;
+        n.updatedAt = new Date().toISOString();
+        editedNote = n; editedParentFolderId = f.id;
+      }
     }); });
+    if (editedNote) saveOneNote(editedNote, editedParentFolderId);
   } else {
     // Create new - put in first folder or create one
+    var firstFolderIsNew = false;
     if (folders.length === 0) {
       folders.push({ id: Date.now(), name: 'Campaign Notes', notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+      firstFolderIsNew = true;
     }
-    folders[0].notes.push({ id: Date.now(), title: title || 'Untitled', content: content, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+    var newNote = { id: Date.now(), title: title || 'Untitled', content: content, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+    folders[0].notes.push(newNote);
+    if (firstFolderIsNew) saveOneFolder(folders[0]);
+    saveOneNote(newNote, folders[0].id);
   }
-  saveFolders();
   closeNoteModal();
   renderNotesView();
 }
@@ -3586,7 +3631,7 @@ function executeDeleteNote(noteId) {
   folders.forEach(function(f) {
     if (f.notes) f.notes = f.notes.filter(function(n){ return n.id !== noteId; });
   });
-  saveFolders();
+  deleteOneNote(noteId);
   var dm = document.getElementById('delete-note-modal');
   if (dm) dm.remove();
   closeNoteModal();
@@ -4291,7 +4336,7 @@ function openFolderByName(name) {
   if (!f) {
     f = { id: Date.now(), name: name, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
     folders.push(f);
-    saveFolders();
+    saveOneFolder(f);
   }
   // Switch to notes view filtered by this folder
   showView('notes');
@@ -4301,8 +4346,9 @@ function openFolderByName(name) {
 function createFolderPrompt() {
   var name = prompt('Folder name:');
   if (!name || !name.trim()) return;
-  folders.push({ id: Date.now(), name: name.trim(), notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
-  saveFolders();
+  var newFolder = { id: Date.now(), name: name.trim(), notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+  folders.push(newFolder);
+  saveOneFolder(newFolder);
   renderFoldersOverlay();
 }
 
@@ -6187,9 +6233,11 @@ function executeToolCall(block) {
     var noteDocType = inp.doc_type || 'Other';
     // Find or create the target folder.
     var targetFolder = folders.find(function(f){ return f.name.toLowerCase() === folderName.toLowerCase(); });
+    var targetFolderIsNew = false;
     if (!targetFolder) {
       targetFolder = { id: Date.now(), name: folderName, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
       folders.push(targetFolder);
+      targetFolderIsNew = true;
     }
     if (!targetFolder.notes) targetFolder.notes = [];
     // Handle duplicate title: append " (2)", " (3)", etc. Sam reruns on
@@ -6201,7 +6249,7 @@ function executeToolCall(block) {
       finalTitle = noteTitle + ' (' + counter + ')';
       counter++;
     }
-    targetFolder.notes.push({
+    var newSamNote = {
       id: Date.now() + Math.random(),
       title: finalTitle,
       content: noteContent,
@@ -6209,9 +6257,11 @@ function executeToolCall(block) {
       doc_type: noteDocType,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
-    });
+    };
+    targetFolder.notes.push(newSamNote);
     targetFolder.updatedAt = new Date().toISOString();
-    saveFolders();
+    if (targetFolderIsNew) saveOneFolder(targetFolder);
+    saveOneNote(newSamNote, targetFolder.id);
     if (currentView === 'notes') renderNotesView();
     confirmMsg = '\u2705 Saved "' + finalTitle + '" to ' + folderName;
   }
