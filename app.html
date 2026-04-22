@@ -6575,9 +6575,12 @@ async function sendSamMessage() {
 
   try {
     var reqBody = buildRequestBody(message, chatHistory.slice(-40));
+    var _chatSess = getD1Session();
+    var _chatHdrs = { 'Content-Type': 'application/json' };
+    if (_chatSess) _chatHdrs['Authorization'] = 'Bearer ' + _chatSess;
     var response = await fetch(WORKER_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: _chatHdrs,
       body: JSON.stringify(reqBody)
     });
 
@@ -6648,8 +6651,11 @@ async function sendSamMessage() {
       msgsEl.scrollTop = msgsEl.scrollHeight;
 
       try {
+        var _followSess = getD1Session();
+        var _followHdrs = { 'Content-Type': 'application/json' };
+        if (_followSess) _followHdrs['Authorization'] = 'Bearer ' + _followSess;
         var followUp = await fetch(WORKER_URL, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: _followHdrs,
           body: JSON.stringify(buildRequestBody(message, apiHistory))
         });
         var followData = await followUp.json();

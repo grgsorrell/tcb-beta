@@ -2814,7 +2814,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "save_note",
-          description: "Save any content to the notes system — speeches, talking points, emails, press releases, scripts, plans, research. Choose folder based on content type: 'Speeches', 'Talking Points', 'Email Drafts', 'Press Releases', 'Campaign Plan', 'Voter Outreach', 'Fundraising Scripts', or create a new folder name.",
+          description: "Save any content to the notes system — speeches, talking points, emails, press releases, scripts, plans, research. Choose folder based on content type: 'Speeches', 'Talking Points', 'Email Drafts', 'Press Releases', 'Campaign Plan', 'Voter Outreach', 'Fundraising Scripts', or create a new folder name. CRITICAL: when the user confirms a save request (says 'yes', 'save it', 'save that', 'please save', or any affirmative to your save offer), you MUST call this tool in that same response. Do NOT reply with '✅ Saved' or similar in text alone — the text-only reply does nothing; only this tool persists the note. The tool is silent on success; the app shows its own confirmation.",
           input_schema: {
             type: "object",
             properties: {
