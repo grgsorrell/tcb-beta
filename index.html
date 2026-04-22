@@ -1160,7 +1160,15 @@ function attemptLogin() {
     // BETA: Trial expiry not enforced. Activate when Stripe is live.
     // if (data.error === 'trial_expired') { errorEl.textContent = 'Trial ended.'; errorEl.style.display = 'block'; return; }
     if (data.error) {
-      errorEl.textContent = data.error === 'Invalid credentials' ? 'Invalid username or password.' : data.error;
+      if (data.error === 'Invalid credentials') {
+        errorEl.textContent = 'Invalid username or password.';
+      } else if (data.error === 'revoked') {
+        errorEl.textContent = data.message || 'Your access has been revoked. Contact the campaign owner.';
+      } else if (data.error === 'too_many_attempts') {
+        errorEl.textContent = data.message || 'Too many failed attempts. Try again later.';
+      } else {
+        errorEl.textContent = data.message || data.error;
+      }
       errorEl.style.display = 'block'; document.getElementById('login-password').value = ''; return;
     }
     if (data.success) {
@@ -1169,6 +1177,9 @@ function attemptLogin() {
       localStorage.setItem('tcb_current_user', data.username || username);
       localStorage.setItem('tcb_d1_session', data.sessionId);
       if (data.isSubUser) { localStorage.setItem('tcb_is_sub_user', 'true'); localStorage.setItem('tcb_permissions', JSON.stringify(data.permissions || {})); }
+      else { localStorage.removeItem('tcb_is_sub_user'); localStorage.removeItem('tcb_permissions'); }
+      if (data.mustChangePassword) { localStorage.setItem('tcb_must_change_password', 'true'); }
+      else { localStorage.removeItem('tcb_must_change_password'); }
       if (data.plan) localStorage.setItem('tcb_plan', data.plan);
       if (data.trialDaysLeft != null) localStorage.setItem('tcb_trial_days', String(data.trialDaysLeft));
       window.location.href = 'app.html';

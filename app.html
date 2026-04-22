@@ -45,6 +45,23 @@ select{-webkit-appearance:none;appearance:none;}
 .tb-brand span{color:var(--gold);}
 .cd-pill{background:rgba(232,112,112,.15);border:1px solid rgba(232,112,112,.4);border-radius:20px;padding:5px 13px;display:flex;align-items:center;gap:8px;}
 .ro-banner{background:rgba(212,165,116,.08);border:1px solid rgba(212,165,116,.25);border-radius:6px;color:var(--gold);padding:10px 14px;margin:0 0 14px 0;font-size:12px;font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:8px;}
+/* Forced password-change takeover (CP-B). Full-screen, non-dismissable;
+   covers the entire app until the sub-user rotates their temporary
+   password. Z-index must stay above every other overlay and panel. */
+.pwd-takeover{position:fixed;inset:0;background:var(--n1);z-index:9000;display:flex;align-items:center;justify-content:center;padding:24px;}
+.pwd-takeover-box{width:460px;max-width:100%;background:var(--n2);border:1px solid var(--br2);border-radius:14px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.6);}
+.pwd-takeover-box h2{font-family:var(--font-d);font-size:22px;font-weight:700;color:var(--gold);margin:0 0 8px;}
+.pwd-takeover-box .ptk-sub{font-size:13px;color:var(--t2);line-height:1.5;margin:0 0 20px;}
+.pwd-takeover-box label{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin:14px 0 4px;}
+.pwd-takeover-box input{width:100%;padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:var(--t1);font-size:14px;font-family:var(--font-b);outline:none;box-sizing:border-box;}
+.pwd-takeover-box input:focus{border-color:rgba(42,82,152,.6);}
+.pwd-takeover-box .ptk-rule{font-size:11px;color:var(--t3);font-style:italic;margin-top:10px;line-height:1.5;}
+.pwd-takeover-box .ptk-err{font-size:12px;color:var(--red);background:rgba(232,112,112,.08);border:1px solid rgba(232,112,112,.2);border-radius:4px;padding:8px 10px;margin-top:12px;display:none;}
+.pwd-takeover-box .ptk-err.on{display:block;}
+.pwd-takeover-box .ptk-submit{width:100%;padding:12px;background:#2A5298;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;font-family:var(--font-b);cursor:pointer;margin-top:18px;}
+.pwd-takeover-box .ptk-submit:disabled{background:rgba(42,82,152,.3);color:rgba(255,255,255,.4);cursor:not-allowed;}
+.pwd-takeover-box .ptk-logout{display:block;text-align:center;font-size:11px;color:var(--t3);margin-top:14px;cursor:pointer;text-decoration:underline;}
+.pwd-takeover-box .ptk-logout:hover{color:var(--t2);}
 .attribution-tag{display:inline-block;font-size:9px;font-weight:600;letter-spacing:.03em;color:var(--t3);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:1px 6px;border-radius:10px;margin-left:6px;vertical-align:middle;}
 .cd-num{font-family:var(--font-d);font-size:18px;font-weight:800;color:var(--red);line-height:1;}
 .cd-sub{font-size:8px;color:var(--red);text-transform:uppercase;letter-spacing:.1em;font-weight:600;line-height:1.5;}
@@ -1218,6 +1235,92 @@ function showReadOnlyToast(tab) {
 // stuck in a loop where tcb_session is still valid (which makes index.html
 // show "Go to My Campaign" and skip the login modal). Redirect with a param
 // that forces the login modal open on the landing page.
+// Forced password-change takeover. Renders a full-screen overlay that
+// blocks the rest of the app until the sub-user rotates their temporary
+// password. Called from initApp() when tcb_must_change_password === 'true'.
+function renderForcedPasswordChange() {
+  var existing = document.getElementById('pwd-takeover');
+  if (existing) existing.remove();
+  var el = document.createElement('div');
+  el.id = 'pwd-takeover';
+  el.className = 'pwd-takeover';
+  el.innerHTML =
+    '<div class="pwd-takeover-box">' +
+      '<h2>Set your password</h2>' +
+      '<p class="ptk-sub">Your campaign owner set you up with a temporary password. Create a new one before you continue.</p>' +
+      '<label for="ptk-new">New password</label>' +
+      '<input id="ptk-new" type="password" autocomplete="new-password" oninput="validateForcedPwd()">' +
+      '<label for="ptk-confirm">Confirm new password</label>' +
+      '<input id="ptk-confirm" type="password" autocomplete="new-password" oninput="validateForcedPwd()" onkeydown="if(event.key===\'Enter\')submitForcedPwd()">' +
+      '<div class="ptk-rule">Minimum 8 characters. Include at least one number or symbol. Must differ from your temporary password.</div>' +
+      '<div id="ptk-err" class="ptk-err"></div>' +
+      '<button id="ptk-submit" class="ptk-submit" disabled onclick="submitForcedPwd()">Change password and continue</button>' +
+      '<div class="ptk-logout" onclick="forcedPwdLogout()">Not ready? Log out and come back later.</div>' +
+    '</div>';
+  document.body.appendChild(el);
+  setTimeout(function(){ var n = document.getElementById('ptk-new'); if (n) n.focus(); }, 50);
+}
+
+function validateForcedPwd() {
+  var n = (document.getElementById('ptk-new')||{}).value || '';
+  var c = (document.getElementById('ptk-confirm')||{}).value || '';
+  var btn = document.getElementById('ptk-submit');
+  var ok = n.length >= 8 && /[0-9\W_]/.test(n) && n === c;
+  if (btn) btn.disabled = !ok;
+}
+
+function submitForcedPwd() {
+  var n = (document.getElementById('ptk-new')||{}).value || '';
+  var c = (document.getElementById('ptk-confirm')||{}).value || '';
+  var errEl = document.getElementById('ptk-err');
+  var btn = document.getElementById('ptk-submit');
+  var showErr = function(msg) { if (errEl) { errEl.textContent = msg; errEl.classList.add('on'); } };
+  if (errEl) errEl.classList.remove('on');
+  if (n.length < 8) { showErr('Password must be at least 8 characters.'); return; }
+  if (!/[0-9\W_]/.test(n)) { showErr('Password must include at least one number or symbol.'); return; }
+  if (n !== c) { showErr('Passwords don\u2019t match.'); return; }
+  var sess = getD1Session();
+  if (!sess) { window.location.href = 'index.html?relogin=1'; return; }
+  if (btn) { btn.disabled = true; btn.textContent = 'Changing\u2026'; }
+  fetch(D1_API + '/api/auth/change-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({ newPassword: n })
+  }).then(function(r){ return r.json().then(function(body){ return { status: r.status, body: body }; }); })
+    .then(function(res) {
+      if (res.status === 200 && res.body && res.body.success) {
+        localStorage.removeItem('tcb_must_change_password');
+        var el = document.getElementById('pwd-takeover');
+        if (el) el.remove();
+        // Success toast then boot the normal app.
+        var toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--n3);border:1px solid rgba(130,179,134,.3);color:var(--green);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+        toast.textContent = '\u2705 Password changed. Welcome aboard.';
+        document.body.appendChild(toast);
+        setTimeout(function(){ toast.remove(); }, 3000);
+        // Re-run init so the normal app renders. initApp will no longer
+        // see the takeover flag and will proceed to showOnboardedUI / loadFromD1.
+        initApp();
+      } else {
+        if (btn) { btn.disabled = false; btn.textContent = 'Change password and continue'; }
+        var msg = (res.body && res.body.message) || (res.body && res.body.error) || 'Could not change password. Try again.';
+        showErr(msg);
+      }
+    })
+    .catch(function(e) {
+      if (btn) { btn.disabled = false; btn.textContent = 'Change password and continue'; }
+      showErr('Connection error: ' + e.message);
+    });
+}
+
+function forcedPwdLogout() {
+  // Clear all auth + the takeover flag; back to landing for a fresh login.
+  localStorage.removeItem('tcb_d1_session');
+  localStorage.removeItem('tcb_session');
+  localStorage.removeItem('tcb_must_change_password');
+  window.location.href = 'index.html?relogin=1';
+}
+
 function handleUnauthenticated(msg) {
   // Keep tcb_current_user so the login form can pre-fill the username.
   localStorage.removeItem('tcb_d1_session');
@@ -1307,6 +1410,19 @@ function startSubUserPermissionsPoll() {
             // owner permission changes without a manual refresh.
             applyPermissionVisibility();
           }
+          // Mid-session mustChangePassword flip (owner reset temp password,
+          // or user changed password on another device). Sync both directions:
+          // server true + local false → set and reload into takeover.
+          // server false + local true → clear stale flag + reload out of
+          // takeover (another device cleared it).
+          var currentLocal = localStorage.getItem('tcb_must_change_password') === 'true';
+          if (data.mustChangePassword && !currentLocal) {
+            localStorage.setItem('tcb_must_change_password', 'true');
+            window.location.reload();
+          } else if (!data.mustChangePassword && currentLocal) {
+            localStorage.removeItem('tcb_must_change_password');
+            window.location.reload();
+          }
         }
       })
       .catch(function(){});
@@ -1377,6 +1493,15 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function initApp() {
+  // Forced-change gate (CP-B). If the sub-user still has a temp password,
+  // we render the password-change takeover and halt normal init — no
+  // showOnboardedUI, no loadFromD1, no Sam panel. They can't do anything
+  // until they rotate the password.
+  if (localStorage.getItem('tcb_must_change_password') === 'true') {
+    renderForcedPasswordChange();
+    return;
+  }
+
   // Detect broken auth state: landing-page tcb_session exists, but the D1
   // bearer token was cleared on a previous visit. In this state writes to D1
   // silently fail and authed features like opponent research bounce the user.
