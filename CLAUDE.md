@@ -123,6 +123,205 @@ Research cost targets:
 Feature tags in api_usage: intel_opponent_fec, intel_opponent_anthropic,
 intel_pulse_vps, intel_pulse_anthropic.
 
+## Sub-User / Workspace Architecture
+
+TCB runs on a workspace model: an **owner** (the candidate) has a
+workspace. They can invite **sub-users** (team members) with their own
+credentials who collaborate inside that workspace. Sub-users do not
+have private workspaces — they see the owner's data, scoped by
+permissions.
+
+### Data model — `workspace_owner_id` vs `user_id`
+
+Every workspace-scoped table (`tasks`, `events`, `opponents`, `notes`,
+`folders`, `endorsements`, `contributions`, `briefings`, `api_usage`)
+carries two columns:
+
+- `user_id` — who created or last-touched the row. Used for **attribution
+  / audit only**. Points to the actual caller's `users.id`, whether
+  owner or sub-user.
+- `workspace_owner_id` — which owner's workspace the row belongs to.
+  Used as the **read and write filter column**. Every read query filters
+  on `workspace_owner_id = ctx.ownerId`; every write binds
+  `workspace_owner_id = ctx.ownerId`.
+
+Tables with PK `user_id` (`profiles`, `budget`) are keyed to the owner
+directly — one row per workspace. `chat_history` keeps `user_id` PK by
+design (per-user Sam conversations, not shared).
+
+Sub-user login creates a parallel `users` row with email
+`<username>@sub.tcb`. The `sub_users` table links that anchor row back
+to the owner via `sub_users.owner_id`. See `worker.js` around the
+`getSessionContext` helper.
+
+### Session resolution — `getSessionContext` + `requirePermission`
+
+Every data endpoint calls `getSessionContext(request)` instead of the
+older `getUserFromSession`. Returns:
+
+| Caller | Shape |
+|---|---|
+| Owner | `{ userId, ownerId: userId, isSubUser: false, permissions: null }` |
+| Sub-user | `{ userId, ownerId: <owner's users.id>, isSubUser: true, permissions: {...} }` |
+| Revoked sub-user | `{ userId, ownerId: null, isSubUser: true, revoked: true }` |
+| No valid session | `null` |
+
+`requirePermission(ctx, tab, minLevel)` gates per-tab access:
+- Owners always pass.
+- Sub-users need `permissions[tab] === 'read'` (or 'full') for `minLevel='read'`,
+  or `=== 'full'` for `minLevel='full'`.
+- Missing key or revoked ctx → denied.
+
+Standard denials (in `worker.js`):
+- `denyPermission(tab)` → 403 `{error:'permission_denied', tab, message}`
+- `denyOwnerOnly()` → 403 `{error:'owner_only', message}`
+- `denyRevoked()` → 401 `{error:'Access revoked'}`
+
+### Server-enforced permission gates (per endpoint)
+
+**Reads** (require `<tab>/read`):
+- `/api/tasks/load`, `/api/events/load` — calendar
+- `/api/budget/load`, `/api/contributions/load` — budget
+- `/api/notes/load` — notes
+- `/api/endorsements/load` — endorsements
+- `/api/opponents/list` — intel
+
+**Reads with NO gate** (available to all authed users):
+- `/api/profile/load`, `/api/campaigns/list`, `/api/briefing/load`,
+  `/api/chat-history/load`
+- `/api/data/load-all` — permission-filtered per sub-query. Hidden tabs
+  return empty arrays (never 403 on the composite response).
+
+**Writes** (require `<tab>/full`):
+- `/api/tasks/sync`, `/api/events/sync` — calendar
+- `/api/budget/save`, `/api/contributions/sync` — budget
+- `/api/notes/sync` — notes
+- `/api/endorsements/sync` — endorsements
+- `/api/opponents/add`, `/refresh`, `/remove` — intel
+
+**Owner-only (block sub-users with `denyOwnerOnly`):**
+- `/api/profile/save`, `/api/briefing/save`
+- `/api/campaigns/create`, `/archive`, `/delete`, `/api/data/reset`
+- All `/api/users/*` (create, list, revoke, update-permissions,
+  check-username)
+
+### Write attribution (sync endpoints)
+
+`tasks/sync`, `events/sync`, `endorsements/sync`, `contributions/sync`
+use an **upsert-preserving** pattern:
+1. `DELETE FROM <table> WHERE workspace_owner_id = ? AND id NOT IN (incoming ids)`
+   — removes rows the client dropped.
+2. `INSERT ... ON CONFLICT(id) DO UPDATE SET <mutable fields only>` —
+   preserves the original `user_id`, `workspace_owner_id`, and
+   `created_at` on existing rows so a sub-user's sync doesn't rewrite
+   attribution on rows they didn't create.
+
+`notes/sync` is a full DELETE+INSERT (nested folder/note structure makes
+preservation awkward and notes traffic is low — documented in code;
+attribution churn accepted for beta).
+
+### Client permission gating
+
+Three helpers in `app.html` (near `getD1Session`):
+- `isSubUser()` — reads `tcb_is_sub_user` localStorage flag
+- `canSee(tab)` — owner true; sub-user needs 'read' or 'full'
+- `canEdit(tab)` — owner true; sub-user needs 'full'
+
+`applyPermissionVisibility()`:
+- Hides Settings nav for sub-users (hardcoded, not permission-gated)
+- Hides tab nav buttons where `canSee(tab)` is false
+- Routes user to Home if their currently-displayed view becomes
+  inaccessible
+- Called from `showOnboardedUI`, `loadFromD1`, and the 60-second
+  permission poll
+
+Write-action functions (`addDashTask`, `popupAddTask`,
+`openAddEventModal`, `saveEvent`, `createNewNote`, `addEndorsement`,
+`addOpponentFromInput`) guard with `canEdit(tab)` and show a
+`showReadOnlyToast(tab)` if denied.
+
+Read-only banner (`.ro-banner`) renders at the top of any view where
+`canSee && !canEdit`. Injected by `renderReadOnlyBanner(viewName)` after
+every `showView`.
+
+### 403 handling
+
+`handlePermissionDenied(body)` shows a red toast with the tab name and
+routes the user to Home via `showView('dashboard')`.
+
+**Currently wired: only `/api/opponents/list`.** That's the only
+direct-fetch endpoint the frontend calls on a permission-gated tab.
+Every other gated endpoint is only reached via `/api/data/load-all`,
+which returns empty arrays for hidden tabs (no 403 to handle) — or via
+write actions that are blocked client-side by `canEdit`.
+
+See "Future hardening" below for when this needs extending.
+
+### Attribution display
+
+Server: `/api/data/load-all` returns `workspaceMembers: {user_id → name}`
+and `ownerUserId`. Row-level load responses (tasks, events,
+endorsements, contributions, notes, folders) include `user_id`.
+
+Client: `workspaceMembers` and `workspaceOwnerUserId` are cached in
+memory via `loadFromD1`. The `attributionBadge(userId)` helper returns
+`''` for owner-authored or unknown-user rows, or a small gold pill
+`<span class="attribution-tag">by Jane Smith</span>` for rows created
+by a sub-user.
+
+**Currently wired at one render site: `renderSidebarAgenda`** (the
+dashboard's "today" list). Other renderers can opt in by inserting
+`+ attributionBadge(item.user_id)` into their templates. No sub-user
+authored data exists yet, so nothing visible renders today.
+
+### Billing attribution
+
+`api_usage.workspace_owner_id` captures the owner so costs roll up to
+the billing workspace. `api_usage.user_id` records the actual caller
+(sub-user or owner) for audit. Rate limiting (`usage_logs`) stays
+per-`user_id` — each collaborator gets their own 100-message/day quota.
+
+### Future hardening
+
+These are known gaps / deferred work, not bugs. Capture them here so
+they aren't rediscovered:
+
+1. **403 handler coverage.** Only `/api/opponents/list` is wired
+   because it's the only direct-fetch gated path today. If the frontend
+   ever adds a direct refresh-from-server call on Calendar, Budget,
+   Notes, or Endorsements (separate from `data/load-all`), wrap the
+   response with the same `if (r.status === 403) { return
+   r.json().then(b => { handlePermissionDenied(b); throw … }); }`
+   pattern. Longer-term a centralized `apiFetch(url, opts)` wrapper
+   would be cleaner — not urgent.
+
+2. **Billing integration for sub-users.** Pricing is $19.99/month per
+   seat once Stripe goes active. The architecture is ready: seat count
+   = `SELECT COUNT(*) FROM sub_users WHERE owner_id = ? AND status =
+   'active'`. Wire into the Stripe subscription flow (quantity =
+   seats + 1 for the owner, or seats as add-on line items — TBD when
+   billing activates). **Do NOT surface pricing in the beta UI** —
+   sub-user creation must stay free-looking until billing lives.
+
+3. **"Usage by user" Settings view.** Data is already logged
+   (`api_usage.user_id` + `workspace_owner_id` populated on every
+   request). UI view deferred — when asked, build it as a Settings
+   subview that queries `SELECT user_id, SUM(estimated_cost) FROM
+   api_usage WHERE workspace_owner_id = ? GROUP BY user_id` and
+   joins the names from `workspaceMembers`. Maybe 30 minutes of work.
+
+4. **Attribution visibility.** Only the sidebar agenda renders the "by
+   [Name]" badge today. Extend to calendar day modal, task lists in
+   popups, note cards, endorsement cards as usage patterns demand.
+   Call site is trivial — `+ attributionBadge(item.user_id)` inside
+   each template's name line.
+
+5. **Sub-user Settings UX.** Sub-users can't reach Settings at all
+   right now (Settings is the only place to edit profile + team +
+   reset data, all of which are owner-only). If a sub-user ever needs
+   to do something self-service (change their own password, adjust
+   notification prefs), that needs its own pared-down view.
+
 ## Anti-Bloat Rule (check before every deploy)
 - System prompt: MUST be under 800 words (currently 623)
 - Rules: MUST be 15 or fewer (currently 15)
