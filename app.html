@@ -1378,6 +1378,18 @@ function saveCampaign() {
     onboarding_complete: campaignData.onboardingComplete ? 1 : 0
   });
 }
+// Per-row task save/delete (item #5). Same semantics as saveOneEvent.
+function saveOneTask(t) {
+  if (!t || !t.id) return;
+  saveState(storageKey('ctb_tasks'), tasks);
+  d1Write('/api/tasks/save', { task: t });
+}
+function deleteOneTask(id) {
+  saveState(storageKey('ctb_tasks'), tasks);
+  d1Write('/api/tasks/delete', { id: id });
+}
+// @deprecated Use saveOneTask / deleteOneTask. Kept for one-release
+// rollback fallback.
 function saveTasks() {
   saveState(storageKey('ctb_tasks'), tasks);
   d1Write('/api/tasks/sync', { tasks: tasks });
@@ -2093,8 +2105,9 @@ function addDashTask() {
   if (!canEdit('calendar')) { showReadOnlyToast('calendar'); return; }
   var inp = document.getElementById('dash-task-input');
   if (!inp || !inp.value.trim()) return;
-  tasks.push({ id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false });
-  saveTasks();
+  var newDashTask = { id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false };
+  tasks.push(newDashTask);
+  saveOneTask(newDashTask);
   inp.value = '';
   document.getElementById('dash-task-input-row').style.display = 'none';
   refreshDashboard();
@@ -2102,14 +2115,14 @@ function addDashTask() {
 
 function toggleDashTaskComplete(id) {
   var t = tasks.find(function(x){ return String(x.id) === String(id); });
-  if (t) { t.completed = !t.completed; t.completedAt = t.completed ? new Date().toISOString() : null; saveTasks(); }
+  if (t) { t.completed = !t.completed; t.completedAt = t.completed ? new Date().toISOString() : null; saveOneTask(t); }
   var card = document.getElementById('dash-tasks-card');
   if (card) card.innerHTML = renderDashTasksCard();
 }
 
 function deleteDashTask(id) {
   var idx = tasks.findIndex(function(x){ return String(x.id) === String(id); });
-  if (idx >= 0) { tasks.splice(idx, 1); saveTasks(); }
+  if (idx >= 0) { tasks.splice(idx, 1); deleteOneTask(id); }
   var card = document.getElementById('dash-tasks-card');
   if (card) card.innerHTML = renderDashTasksCard();
 }
@@ -2196,13 +2209,13 @@ function closeTasksPopup() {
 
 function popupToggleTask(id) {
   var t = tasks.find(function(x){ return String(x.id) === String(id); });
-  if (t) { t.completed = !t.completed; t.completedAt = t.completed ? new Date().toISOString() : null; saveTasks(); }
+  if (t) { t.completed = !t.completed; t.completedAt = t.completed ? new Date().toISOString() : null; saveOneTask(t); }
   openTasksPopup(); // re-render popup
 }
 
 function popupDeleteTask(id) {
   var idx = tasks.findIndex(function(x){ return String(x.id) === String(id); });
-  if (idx >= 0) { tasks.splice(idx, 1); saveTasks(); }
+  if (idx >= 0) { tasks.splice(idx, 1); deleteOneTask(id); }
   openTasksPopup();
 }
 
@@ -2217,8 +2230,9 @@ function popupAddTask() {
   if (!canEdit('calendar')) { showReadOnlyToast('calendar'); return; }
   var inp = document.getElementById('popup-task-input');
   if (!inp || !inp.value.trim()) return;
-  tasks.push({ id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false });
-  saveTasks();
+  var newPopupTask = { id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false };
+  tasks.push(newPopupTask);
+  saveOneTask(newPopupTask);
   inp.value = '';
   openTasksPopup();
 }
@@ -2520,7 +2534,7 @@ function deleteCalItem(id, isTask, dateStr) {
   if (!confirm('Delete this item?')) return;
   if (isTask) {
     tasks = tasks.filter(function(t){return String(t.id)!==String(id);});
-    saveTasks();
+    deleteOneTask(id);
   } else {
     events = events.filter(function(e){return String(e.id)!==String(id);});
     deleteOneEvent(id);
@@ -2531,7 +2545,7 @@ function deleteCalItem(id, isTask, dateStr) {
 
 function completeCalTask(id, dateStr) {
   var t = tasks.find(function(t){return String(t.id)===String(id);});
-  if (t) { t.completed = true; saveTasks(); }
+  if (t) { t.completed = true; saveOneTask(t); }
   renderCalendar();
   openDayModal(dateStr);
 }
@@ -2744,7 +2758,7 @@ function renderSidebarCompleted() {
 
 function restoreTask(id) {
   var t = tasks.find(function(x){ return String(x.id) === String(id); });
-  if (t) { t.completed = false; t.completedAt = null; saveTasks(); renderCalendar(); }
+  if (t) { t.completed = false; t.completedAt = null; saveOneTask(t); renderCalendar(); }
 }
 
 function showCalPopover(evt, dateStr) {
@@ -5003,7 +5017,7 @@ function saveEvent() {
     // Update existing item
     if (editIsTask) {
       var t = tasks.find(function(t){return String(t.id)===String(editId);});
-      if (t) { Object.assign(t, updatedData); saveTasks(); }
+      if (t) { Object.assign(t, updatedData); saveOneTask(t); }
     } else {
       var e = events.find(function(e){return String(e.id)===String(editId);});
       if (e) { Object.assign(e, updatedData); saveOneEvent(e); }
@@ -5769,8 +5783,9 @@ function addSuggestedTask(el, idx) {
   // Get task text from the element
   var text = el.textContent.replace(/^\+\s*/, '').trim();
   if (!text) return;
-  tasks.push({ id: Date.now() + Math.random(), name: text, date: getTodayStr(), category: 'other', completed: false, source: 'sam_suggested', fromBrief: true });
-  saveTasks();
+  var samSuggestedTask = { id: Date.now() + Math.random(), name: text, date: getTodayStr(), category: 'other', completed: false, source: 'sam_suggested', fromBrief: true };
+  tasks.push(samSuggestedTask);
+  saveOneTask(samSuggestedTask);
   // Update pill appearance
   el.style.background = 'rgba(130,179,134,.15)';
   el.style.borderColor = 'rgba(130,179,134,.3)';
@@ -6097,7 +6112,7 @@ function executeToolCall(block) {
         completed: false
       };
       tasks.push(task);
-      saveTasks();
+      saveOneTask(task);
       if (currentView === 'calendar') renderCalendar();
       if (currentView === 'dashboard') refreshDashboard();
       confirmMsg = '\u2705 Added task: ' + task.name + ' on ' + formatDate(task.date);
@@ -6130,7 +6145,7 @@ function executeToolCall(block) {
       completed: false
     };
     tasks.push(task);
-    saveTasks();
+    saveOneTask(task);
     if (currentView === 'calendar') renderCalendar();
     if (currentView === 'dashboard') refreshDashboard();
     confirmMsg = '\u2705 Added task: ' + task.name + ' on ' + formatDate(task.date);
@@ -6347,7 +6362,7 @@ function executeToolCall(block) {
       if (inp.new_name) found.name = inp.new_name;
       if (inp.new_date) found.date = inp.new_date;
       if (inp.new_category) found.category = inp.new_category;
-      saveTasks();
+      saveOneTask(found);
       if (currentView === 'calendar') renderCalendar();
       if (currentView === 'dashboard') refreshDashboard();
       confirmMsg = '\u2705 Updated task: ' + found.name;
@@ -6358,7 +6373,7 @@ function executeToolCall(block) {
     if (idx < 0) idx = tasks.findIndex(function(t) { return t.name && t.name.toLowerCase().indexOf((inp.task_name||'').toLowerCase()) >= 0; });
     if (idx >= 0) {
       var removed = tasks.splice(idx, 1)[0];
-      saveTasks();
+      deleteOneTask(removed.id);
       if (currentView === 'calendar') renderCalendar();
       if (currentView === 'dashboard') refreshDashboard();
       confirmMsg = '\u2705 Removed task: ' + removed.name;
@@ -6369,7 +6384,7 @@ function executeToolCall(block) {
     if (!ct) ct = tasks.find(function(t) { return !t.completed && t.name && t.name.toLowerCase().indexOf((inp.task_name||'').toLowerCase()) >= 0; });
     if (ct) {
       ct.completed = true;
-      saveTasks();
+      saveOneTask(ct);
       if (currentView === 'calendar') renderCalendar();
       if (currentView === 'dashboard') refreshDashboard();
       confirmMsg = '\u2705 Completed: ' + ct.name;
