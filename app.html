@@ -6486,6 +6486,47 @@ function downloadDocText(num, title) {
   URL.revokeObjectURL(url);
 }
 
+// Hallucination guard: Sam sometimes narrates a successful save in pure
+// text ("✅ Saved to your Voter Outreach folder…") without emitting the
+// corresponding tool_use block. When that happens the save DID NOT happen
+// — text has no side effects, and the client's tool executor never runs.
+// This caused a live data-loss incident (note never reached D1). Rather
+// than hide the failure, show the user a warning toast so they can retry.
+//
+// Signals we watch for: explicit success markers ("✅ Saved"/"✅ Added"/
+// "✅ Created") and first-person narrated saves ("I've saved"/"I've
+// added"/"I've created"). Only fires when the same response had ZERO
+// tool_use blocks — a genuine tool call would also produce a "Saved"
+// confirmMsg, but the toolCalls.length>0 branch suppresses the warning.
+function checkHallucinatedSave(text, hadToolCalls) {
+  if (hadToolCalls) return false;
+  if (!text) return false;
+  var patterns = [
+    /✅\s*saved/i,
+    /✅\s*added/i,
+    /✅\s*created/i,
+    /i['’]?ve\s+saved/i,
+    /i['’]?ve\s+added/i,
+    /i['’]?ve\s+created/i
+  ];
+  return patterns.some(function(re){ return re.test(text); });
+}
+
+function showHallucinationToast() {
+  var existing = document.getElementById('sam-hallucination-toast');
+  if (existing) existing.remove();
+  var toast = document.createElement('div');
+  toast.id = 'sam-hallucination-toast';
+  toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(212,165,116,.12);border:1px solid rgba(212,165,116,.5);color:var(--gold);padding:12px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);max-width:460px;text-align:center;line-height:1.45';
+  toast.textContent = '\u26a0 Sam said it saved but didn\u2019t actually save. Please try again or rephrase.';
+  document.body.appendChild(toast);
+  setTimeout(function(){
+    toast.style.transition = 'opacity .3s';
+    toast.style.opacity = '0';
+    setTimeout(function(){ toast.remove(); }, 300);
+  }, 8000);
+}
+
 // Detect if text looks like a long-form document (speech, email, talking points, etc.)
 function isDocumentContent(text) {
   if (!text || text.length < 400) return false;
@@ -6798,6 +6839,11 @@ async function sendSamMessage() {
       msgsEl.scrollTop = msgsEl.scrollHeight;
     }
 
+    if (checkHallucinatedSave(fullText, toolBlocks.length > 0)) {
+      console.warn('[Sam] Hallucinated save detected (first round): text claims a save but no tool_use block was emitted. Text:', fullText.slice(0, 300));
+      showHallucinationToast();
+    }
+
     // Execute all tool calls and show confirmations
     var confirmations = [];
     var toolResults = [];
@@ -6860,6 +6906,10 @@ async function sendSamMessage() {
         }
         followConfirms.forEach(function(msg) { msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>'; });
         msgsEl.scrollTop = msgsEl.scrollHeight;
+        if (checkHallucinatedSave(followText, followToolBlocks.length > 0)) {
+          console.warn('[Sam] Hallucinated save detected (follow-up): text claims a save but no tool_use block was emitted. Text:', followText.slice(0, 300));
+          showHallucinationToast();
+        }
         var followHistory = followText;
         if (followConfirms.length > 0) followHistory += (followHistory ? '\n' : '') + followConfirms.join('\n');
         if (followHistory) { chatHistory.push({ role: 'assistant', content: followHistory }); saveChatHistory(); }
