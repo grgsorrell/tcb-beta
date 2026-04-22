@@ -73,8 +73,33 @@ select{-webkit-appearance:none;appearance:none;}
 .phase-tip::after{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #111827;}
 .phase-tip.shift-left{left:auto;right:0;transform:none;}
 .phase-tip.shift-left::before,.phase-tip.shift-left::after{left:auto;right:16px;transform:none;}
-.av{width:34px;height:34px;border-radius:50%;background:var(--n5);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;border:2px solid rgba(107,156,216,.4);flex-shrink:0;}
-.cand-label{font-size:12px;color:var(--t2);white-space:nowrap;}
+.av{width:34px;height:34px;border-radius:50%;background:var(--n5);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;border:2px solid rgba(107,156,216,.4);flex-shrink:0;transition:border-color .15s,background .15s;}
+.av:hover{border-color:rgba(212,165,116,.6);background:#2d6aae;}
+/* Right-side identity block. Cap the text width so long candidate
+   names / office titles / sub-user names can't push the avatar off
+   screen or collide with the centered phase pill. Ellipsis truncates
+   with a title tooltip for the full text. */
+.tb-identity{display:flex;flex-direction:column;align-items:flex-end;max-width:260px;min-width:0;overflow:hidden;}
+.cand-label{font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.tb-username{font-size:10px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+/* Below ~760px the topbar gets crowded (logo + phase pill + identity
+   block all on one row). Hide the text identity and keep just the
+   avatar — full info remains available via the dropdown. */
+@media (max-width: 760px) {
+  .tb-identity{display:none;}
+}
+
+/* User dropdown (avatar click). Styled to mirror the campaign-dropdown
+   already in the app — consistent dark sci-fi aesthetic. */
+.user-dd{position:fixed;top:50px;right:16px;background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:4px 0;min-width:240px;max-width:320px;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.user-dd-header{padding:12px 14px 10px;}
+.user-dd-name{font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-dd-sub{font-size:10px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:monospace;}
+.user-dd-divider{border-top:1px solid rgba(255,255,255,.06);margin:2px 0;}
+.user-dd-action{padding:10px 14px;cursor:pointer;font-size:12px;color:var(--t2);display:flex;align-items:center;gap:8px;transition:background .12s,color .12s;}
+.user-dd-action:hover{background:rgba(255,255,255,.04);color:var(--t1);}
+.user-dd-action.danger{color:var(--red);}
+.user-dd-action.danger:hover{background:rgba(232,112,112,.08);color:var(--red);}
 .start-here-btn{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#d4a574,#c4924a);color:#0B1120;border:none;border-radius:24px;padding:9px 20px;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer;}
 .tb-center{display:flex;align-items:center;gap:10px;}
 .tb-right{display:flex;align-items:center;gap:10px;}
@@ -1752,6 +1777,87 @@ function startNewCampaign() {
   showNewUserUI();
 }
 
+// User dropdown — opened by clicking the avatar in the top-right.
+// Shows identity + Log Out. Click-outside closes.
+//
+// TODO (white-label / multi-campaign managers): when TCB supports
+// campaign managers handling multiple candidates, this dropdown is the
+// natural home for a "Switch candidate" submenu. Wire toggleCampaignDropdown
+// (still used by the Settings view) as a secondary list underneath the
+// identity header. Defer until multi-campaign is a real product surface.
+//
+// TODO (future): "Change Password" row. Owners reset via Settings today;
+// sub-users get the forced-change takeover. When self-service password
+// change lands for everyone, it goes here between the header and Log Out.
+function toggleUserDropdown() {
+  var existing = document.getElementById('user-dropdown');
+  if (existing) { existing.remove(); return; }
+  // Resolve the identity shown in the header. Owners are the candidate,
+  // so their display is candidate name + office. Sub-users have a
+  // personal name + role that was cached at login (see index.html).
+  var isSub = localStorage.getItem('tcb_is_sub_user') === 'true';
+  var primaryLine, secondaryLine;
+  if (isSub) {
+    var subName = localStorage.getItem('tcb_sub_user_name') || '';
+    var subRole = localStorage.getItem('tcb_sub_user_role') || '';
+    primaryLine = subName + (subRole ? ' \u2014 ' + subRole : '');
+    secondaryLine = window.TCB_USER || '';
+  } else {
+    var cn = campaignData.candidateName || '';
+    var so = campaignData.specificOffice || '';
+    primaryLine = cn + (so ? ' \u2014 ' + so : '');
+    secondaryLine = window.TCB_USER || '';
+  }
+  if (!primaryLine.trim()) primaryLine = window.TCB_USER || 'Account';
+  var dd = document.createElement('div');
+  dd.id = 'user-dropdown';
+  dd.className = 'user-dd';
+  dd.innerHTML =
+    '<div class="user-dd-header">' +
+      '<div class="user-dd-name" title="' + escapeHtml(primaryLine) + '">' + escapeHtml(primaryLine) + '</div>' +
+      '<div class="user-dd-sub" title="' + escapeHtml(secondaryLine) + '">' + escapeHtml(secondaryLine) + '</div>' +
+    '</div>' +
+    '<div class="user-dd-divider"></div>' +
+    '<div class="user-dd-action danger" onclick="confirmLogout()">\ud83d\udeaa Log Out</div>';
+  dd.addEventListener('click', function(e) { e.stopPropagation(); });
+  document.body.appendChild(dd);
+  // Next-tick global click handler so this click doesn't immediately
+  // close the dropdown we just opened.
+  setTimeout(function() {
+    document.addEventListener('click', function handler() {
+      var d = document.getElementById('user-dropdown');
+      if (d) d.remove();
+      document.removeEventListener('click', handler);
+    });
+  }, 10);
+}
+
+// Logout confirmation modal — replaces the native browser confirm().
+// Mirrors the .about-overlay / .about-box aesthetic: dimmed blur
+// backdrop, centered card, same radii and shadow. Click outside
+// cancels; explicit Log Out button commits.
+function confirmLogout() {
+  // Close the avatar dropdown if it's still open underneath.
+  var dd = document.getElementById('user-dropdown');
+  if (dd) dd.remove();
+  var existing = document.getElementById('logout-confirm-overlay');
+  if (existing) return;
+  var overlay = document.createElement('div');
+  overlay.id = 'logout-confirm-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(5,8,18,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;';
+  overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML =
+    '<div style="background:var(--n2);border:1px solid var(--br2);border-radius:14px;width:400px;max-width:100%;padding:24px 28px;box-shadow:0 20px 60px rgba(0,0,0,.6);">' +
+      '<div style="font-family:var(--font-d);font-size:18px;color:var(--t1);margin-bottom:8px">Log Out?</div>' +
+      '<div style="font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:20px">Are you sure you want to log out?</div>' +
+      '<div style="display:flex;gap:10px;justify-content:flex-end">' +
+        '<button onclick="document.getElementById(\'logout-confirm-overlay\').remove()" style="padding:9px 18px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer;font-weight:600">Cancel</button>' +
+        '<button onclick="logoutUser()" style="padding:9px 18px;font-size:12px;background:var(--red);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Log Out</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+}
+
 function toggleCampaignDropdown() {
   var existing = document.getElementById('campaign-dropdown');
   if (existing) { existing.remove(); return; }
@@ -1971,10 +2077,22 @@ function updateTopbar() {
   }
   var name = campaignData.candidateName || '';
   var office = campaignData.specificOffice || '';
-  var initials = name.split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);
+  // Avatar initials: for owners use the candidate name, for sub-users
+  // use their cached sub_user_name (falls back to username initial).
+  var subName = localStorage.getItem('tcb_sub_user_name') || '';
+  var isSub = localStorage.getItem('tcb_is_sub_user') === 'true';
+  var initialsSource = isSub ? (subName || window.TCB_USER || '') : name;
+  var initials = initialsSource.split(/[\s-]+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2) || (window.TCB_USER || '?').charAt(0).toUpperCase();
+  var identityLine = escapeHtml(name + (office ? ' \u00b7 ' + office : ''));
+  var usernameLine = escapeHtml(window.TCB_USER || '');
   document.getElementById('tb-right').innerHTML =
-    '<div onclick="toggleCampaignDropdown()" style="display:flex;align-items:center;gap:10px;cursor:pointer" title="Switch campaign"><div style="text-align:right"><div class="cand-label">' + escapeHtml(name + (office ? ' · ' + office : '')) + '</div><div style="font-size:10px;color:var(--t3)">' + escapeHtml(window.TCB_USER || '') + '</div></div>' +
-    '<div class="av">' + initials + '</div></div>';
+    '<div onclick="toggleUserDropdown()" style="display:flex;align-items:center;gap:10px;cursor:pointer" title="Account menu">' +
+      '<div class="tb-identity">' +
+        '<div class="cand-label" title="' + identityLine + '">' + identityLine + '</div>' +
+        '<div class="tb-username" title="' + usernameLine + '">' + usernameLine + '</div>' +
+      '</div>' +
+      '<div class="av">' + initials + '</div>' +
+    '</div>';
 }
 
 function calcDaysToElection() {
@@ -4015,7 +4133,7 @@ function renderSettings() {
     '</div>' +
     '<div class="settings-section"><div class="settings-lbl">Account</div>' +
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128100;</div><div><div class="sr-nm">Logged in as</div><div class="sr-desc">' + escapeHtml(window.TCB_USER || 'unknown') + ' (beta)</div></div></div><div class="sr-arrow"></div></div>' +
-      '<div class="settings-row" onclick="logoutUser()" style="cursor:pointer"><div class="sr-left"><div class="sr-icon">&#128682;</div><div><div class="sr-nm">Sign Out</div><div class="sr-desc">Sign out of The Candidate\'s Toolbox</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
+      '<div class="settings-row" onclick="confirmLogout()" style="cursor:pointer"><div class="sr-left"><div class="sr-icon">&#128682;</div><div><div class="sr-nm">Sign Out</div><div class="sr-desc">Sign out of The Candidate\'s Toolbox</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
     '</div>' +
     '<div class="settings-section"><div class="settings-lbl">Danger Zone</div>' +
       '<div class="settings-row danger" onclick="resetAllData()"><div class="sr-left"><div class="sr-icon">&#128260;</div><div><div class="sr-nm">Reset Campaign Data</div><div class="sr-desc">Clears all tasks, expenses, and notes. Cannot be undone.</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
@@ -4038,12 +4156,33 @@ function editDonationUrl() {
   if (val !== null) { campaignData.donationUrl = val.trim(); saveCampaign(); renderSettings(); if (currentView === 'budget') renderBudgetView(); }
 }
 
+// Clear every auth-related localStorage key + redirect to the login
+// page. The confirmation dialog is handled upstream (confirmLogout);
+// this function is the actual commit step.
+//
+// The previous version only cleared tcb_session and tcb_current_user,
+// which left tcb_d1_session (the bearer token), tcb_is_sub_user,
+// tcb_permissions, and tcb_must_change_password behind. That was a
+// session-hygiene bug: a "logged out" user's next visitor on the
+// same browser would inherit the still-valid D1 session via
+// verify-session round-trips.
 function logoutUser() {
-  if (confirm('Sign out of The Candidate\'s Toolbox?')) {
-    localStorage.removeItem('tcb_session');
-    localStorage.removeItem('tcb_current_user');
-    window.location.href = 'index.html';
-  }
+  // Auth / session state
+  localStorage.removeItem('tcb_session');
+  localStorage.removeItem('tcb_current_user');
+  localStorage.removeItem('tcb_d1_session');
+  // Sub-user state
+  localStorage.removeItem('tcb_is_sub_user');
+  localStorage.removeItem('tcb_permissions');
+  localStorage.removeItem('tcb_sub_user_name');
+  localStorage.removeItem('tcb_sub_user_role');
+  localStorage.removeItem('tcb_must_change_password');
+  // Plan / trial caches — stale after logout
+  localStorage.removeItem('tcb_plan');
+  localStorage.removeItem('tcb_trial_days');
+  // Campaign selection — clear so the next login starts fresh
+  localStorage.removeItem('tcb_active_campaign');
+  window.location.href = 'index.html';
 }
 
 function resetAllData() {
