@@ -433,7 +433,23 @@ export default {
         if (!user || user.status === 'deleted') return jsonResponse({ error: 'Account not found' }, 401);
         let trialDaysLeft = null;
         if (user.plan === 'trial' && user.trial_ends) { trialDaysLeft = Math.max(0, Math.ceil((new Date(user.trial_ends) - new Date()) / 86400000)); }
-        return jsonResponse({ success: true, userId: user.id, username: user.username, fullName: user.full_name, plan: user.plan, trialDaysLeft });
+        // If this is a sub-user (email ends with @sub.tcb), return their
+        // current permissions so the client can reflect updates without a
+        // logout/login cycle. Owner users get the same response as before.
+        let isSubUser = false;
+        let permissions = null;
+        if (user.email && user.email.endsWith('@sub.tcb')) {
+          const subUsername = user.email.replace(/@sub\.tcb$/, '');
+          const subRow = await env.DB.prepare(
+            'SELECT status, permissions_json FROM sub_users WHERE username = ?'
+          ).bind(subUsername).first();
+          if (subRow) {
+            if (subRow.status === 'revoked') return jsonResponse({ error: 'Access revoked' }, 401);
+            isSubUser = true;
+            try { permissions = JSON.parse(subRow.permissions_json || '{}'); } catch (e) { permissions = {}; }
+          }
+        }
+        return jsonResponse({ success: true, userId: user.id, username: user.username, fullName: user.full_name, plan: user.plan, trialDaysLeft, isSubUser, permissions });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
 
@@ -594,6 +610,25 @@ export default {
     // ========================================
     // API: Revoke sub-user
     // ========================================
+    if (url.pathname === '/api/users/update-permissions' && request.method === 'POST') {
+      try {
+        const userId = await getUserFromSession(request);
+        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const { subUserId, permissions } = await request.json();
+        if (!subUserId) return jsonResponse({ error: 'subUserId required' }, 400);
+        if (!permissions || typeof permissions !== 'object') return jsonResponse({ error: 'permissions object required' }, 400);
+        // Ownership check — same pattern as /api/users/revoke.
+        const owned = await env.DB.prepare(
+          'SELECT id FROM sub_users WHERE id = ? AND owner_id = ?'
+        ).bind(subUserId, userId).first();
+        if (!owned) return jsonResponse({ error: 'Team member not found' }, 404);
+        await env.DB.prepare(
+          'UPDATE sub_users SET permissions_json = ? WHERE id = ? AND owner_id = ?'
+        ).bind(JSON.stringify(permissions), subUserId, userId).run();
+        return jsonResponse({ success: true });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
     if (url.pathname === '/api/users/revoke' && request.method === 'POST') {
       try {
         const userId = await getUserFromSession(request);

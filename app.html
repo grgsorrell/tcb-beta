@@ -1172,6 +1172,36 @@ function saveTasks() {
   saveState(storageKey('ctb_tasks'), tasks);
   d1Write('/api/tasks/sync', { tasks: tasks });
 }
+
+// Poll the server every 60s for fresh sub-user permissions. Lets the owner's
+// permission edits propagate without requiring a logout/login. If the server
+// returns 401 the user is bounced through the standard re-login flow.
+// (NOTE: permission gating in the UI isn't wired yet — this keeps the cache
+// in sync for when it is.)
+var _subUserPollId = null;
+function startSubUserPermissionsPoll() {
+  if (_subUserPollId) return;
+  _subUserPollId = setInterval(function() {
+    var sess = localStorage.getItem('tcb_d1_session');
+    if (!sess) { clearInterval(_subUserPollId); _subUserPollId = null; return; }
+    fetch(D1_API + '/api/auth/verify-session', { headers: { 'Authorization': 'Bearer ' + sess } })
+      .then(function(r){
+        if (r.status === 401) { handleUnauthenticated('Your session was revoked.'); throw new Error('revoked'); }
+        return r.json();
+      })
+      .then(function(data) {
+        if (data && data.isSubUser && data.permissions) {
+          var prev = localStorage.getItem('tcb_permissions') || '{}';
+          var next = JSON.stringify(data.permissions);
+          if (prev !== next) {
+            console.log('[Permissions] Updated from server');
+            localStorage.setItem('tcb_permissions', next);
+          }
+        }
+      })
+      .catch(function(){});
+  }, 60000);
+}
 function saveEvents() {
   saveState(storageKey('ctb_events'), events);
   d1Write('/api/events/sync', { events: events });
@@ -1263,6 +1293,15 @@ function initApp() {
         return;
       }
       d1Online = true;
+      // If this session belongs to a sub-user, refresh the cached
+      // permissions from the server so later UI gating (when we wire it)
+      // reflects the current DB state — not whatever was stored at login.
+      // Also kick off a periodic poll while the tab is open.
+      if (sessionData.isSubUser && sessionData.permissions) {
+        localStorage.setItem('tcb_is_sub_user', 'true');
+        localStorage.setItem('tcb_permissions', JSON.stringify(sessionData.permissions));
+        startSubUserPermissionsPoll();
+      }
       // Check for multiple campaigns
       return fetch(D1_API + '/api/campaigns/list', { headers: { 'Authorization': 'Bearer ' + d1Session } })
       .then(function(r){ return r.json(); }).then(function(data) {
@@ -3272,8 +3311,11 @@ function executeDeleteNote(noteId) {
 // ============================================
 // USER ACCESS MANAGEMENT
 // ============================================
-function openAddUserModal() {
-  var ownerUser = window.TCB_USER || 'user';
+function openAddUserModal(editUser) {
+  // editUser (optional): { id, name, permissions } — when present, modal
+  // opens in edit mode: only permissions are editable, submit calls
+  // saveSubUserPermissions instead of createSubUser.
+  var isEdit = !!editUser;
   var existing = document.getElementById('add-user-modal-backdrop');
   if (existing) existing.remove();
   var backdrop = document.createElement('div');
@@ -3283,6 +3325,7 @@ function openAddUserModal() {
   var roleCodes = { 'Campaign Manager':'mgr', 'Field Director':'field', 'Finance Director':'finance', 'Communications Director':'comms', 'Volunteer Coordinator':'vol', 'Social Media Manager':'social', 'Scheduler':'sched', 'Other':'staff' };
   var roleOptions = Object.keys(roleCodes).map(function(r){ return '<option value="' + r + '">' + r + '</option>'; }).join('');
   var tabs = ['Calendar','Budget','Notes','Intel','Tasks','Endorsements','Toolbox','Folders'];
+  var currentPerms = (editUser && editUser.permissions) || {};
   // Column header row — explains the otherwise-unlabeled checkbox column.
   // "Show" toggles whether the tab appears in this user's UI at all; the
   // Read/Full radios set the access level once the tab is visible.
@@ -3291,18 +3334,46 @@ function openAddUserModal() {
     '<div style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--t3);text-transform:uppercase;width:100px">Tab</div>' +
     '<div style="font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--t3);text-transform:uppercase">Access Level</div>' +
   '</div>';
-  var permRows = tabs.map(function(t){ return '<div style="display:flex;align-items:center;gap:8px;padding:4px 0"><input type="checkbox" checked id="perm-' + t.toLowerCase() + '" title="Uncheck to hide this tab from this user"><label style="font-size:12px;color:var(--t1);width:100px">' + t + '</label><label style="font-size:10px;color:var(--t3)"><input type="radio" name="access-' + t.toLowerCase() + '" value="read" style="margin-right:2px">Read</label><label style="font-size:10px;color:var(--t3)"><input type="radio" name="access-' + t.toLowerCase() + '" value="full" checked style="margin-right:2px">Full</label></div>'; }).join('');
+  var permRows = tabs.map(function(t){
+    var key = t.toLowerCase();
+    // In edit mode: checkbox reflects whether the key exists in saved perms.
+    // In add mode: default checked on, full access.
+    var savedAccess = currentPerms[key];
+    var isChecked = isEdit ? (savedAccess === 'read' || savedAccess === 'full') : true;
+    var isRead = isEdit ? savedAccess === 'read' : false;
+    var isFull = isEdit ? savedAccess === 'full' : true;
+    return '<div style="display:flex;align-items:center;gap:8px;padding:4px 0">' +
+      '<input type="checkbox"' + (isChecked ? ' checked' : '') + ' id="perm-' + key + '" title="Uncheck to hide this tab from this user">' +
+      '<label style="font-size:12px;color:var(--t1);width:100px">' + t + '</label>' +
+      '<label style="font-size:10px;color:var(--t3)"><input type="radio" name="access-' + key + '" value="read"' + (isRead ? ' checked' : '') + ' style="margin-right:2px">Read</label>' +
+      '<label style="font-size:10px;color:var(--t3)"><input type="radio" name="access-' + key + '" value="full"' + (isFull ? ' checked' : '') + ' style="margin-right:2px">Full</label>' +
+    '</div>';
+  }).join('');
   var permHint = '<div style="font-size:10px;color:var(--t3);font-style:italic;margin-top:6px">Uncheck the <em>Show</em> box to hide a tab from this user entirely.</div>';
   var permHtml = permHeader + permRows + permHint;
-  backdrop.innerHTML = '<div style="width:480px;max-width:calc(100vw - 32px);max-height:80vh;overflow-y:auto;background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
-    '<div style="font-family:var(--font-d);font-size:20px;color:var(--t1);margin-bottom:4px">Add Team Member</div>' +
-    '<div style="font-size:11px;color:var(--t3);margin-bottom:16px">They will get their own login to access your campaign.</div>' +
+
+  // Fields that only show in add mode (not in edit mode)
+  var addOnlyFields = isEdit ? '' : (
     '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Full Name</label><input id="au-name" placeholder="John Smith" style="width:100%;margin-top:4px;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--t1);font-size:13px;font-family:var(--font-b);outline:none"></div>' +
-    '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Role</label><select id="au-role" onchange="updateAutoUsername()" style="width:100%;margin-top:4px;padding:8px 10px;background:var(--n3);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--t1);font-size:13px;font-family:var(--font-b)"><option value="">Select role...</option>' + roleOptions + '</select></div>' +
-    '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Tab Permissions</label><div style="margin-top:6px;padding:8px 12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:4px">' + permHtml + '</div></div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Role</label><select id="au-role" onchange="updateAutoUsername()" style="width:100%;margin-top:4px;padding:8px 10px;background:var(--n3);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--t1);font-size:13px;font-family:var(--font-b)"><option value="">Select role...</option>' + roleOptions + '</select></div>'
+  );
+  var credsFields = isEdit ? '' : (
     '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Username</label><input id="au-username" style="width:100%;margin-top:4px;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--t1);font-size:13px;font-family:monospace;outline:none" oninput="checkUsernameAvail()"><div id="au-username-status" style="font-size:10px;margin-top:4px"></div></div>' +
-    '<div style="margin-bottom:16px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Password</label><div style="display:flex;gap:6px;margin-top:4px"><input id="au-password" readonly value="' + generateUserPassword() + '" style="flex:1;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--gold);font-size:13px;font-family:monospace"><button onclick="document.getElementById(\'au-password\').value=generateUserPassword()" style="font-size:10px;color:var(--blue);background:none;border:1px solid rgba(107,156,216,.3);padding:4px 8px;border-radius:4px;cursor:pointer">\ud83d\udd04</button></div></div>' +
-    '<div style="display:flex;gap:8px;justify-content:flex-end"><button onclick="document.getElementById(\'add-user-modal-backdrop\').remove()" style="padding:9px 16px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">Cancel</button><button onclick="createSubUser()" style="padding:9px 16px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Create User</button></div></div>';
+    '<div style="margin-bottom:16px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Password</label><div style="display:flex;gap:6px;margin-top:4px"><input id="au-password" readonly value="' + generateUserPassword() + '" style="flex:1;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--gold);font-size:13px;font-family:monospace"><button onclick="document.getElementById(\'au-password\').value=generateUserPassword()" style="font-size:10px;color:var(--blue);background:none;border:1px solid rgba(107,156,216,.3);padding:4px 8px;border-radius:4px;cursor:pointer">\ud83d\udd04</button></div></div>'
+  );
+
+  var titleText = isEdit ? 'Edit Permissions \u2014 ' + escapeHtml(editUser.name || '') : 'Add Team Member';
+  var subtitleText = isEdit ? 'Adjust which tabs this team member can see and their access level. Name, role, and login are set during onboarding and not editable here.' : 'They will get their own login to access your campaign.';
+  var submitLabel = isEdit ? 'Save Changes' : 'Create User';
+  var submitHandler = isEdit ? ('saveSubUserPermissions(\'' + editUser.id + '\')') : 'createSubUser()';
+
+  backdrop.innerHTML = '<div style="width:480px;max-width:calc(100vw - 32px);max-height:80vh;overflow-y:auto;background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
+    '<div style="font-family:var(--font-d);font-size:20px;color:var(--t1);margin-bottom:4px">' + titleText + '</div>' +
+    '<div style="font-size:11px;color:var(--t3);margin-bottom:16px">' + subtitleText + '</div>' +
+    addOnlyFields +
+    '<div style="margin-bottom:12px"><label style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em">Tab Permissions</label><div style="margin-top:6px;padding:8px 12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:4px">' + permHtml + '</div></div>' +
+    credsFields +
+    '<div style="display:flex;gap:8px;justify-content:flex-end"><button onclick="document.getElementById(\'add-user-modal-backdrop\').remove()" style="padding:9px 16px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">Cancel</button><button onclick="' + submitHandler + '" style="padding:9px 16px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">' + submitLabel + '</button></div></div>';
   document.body.appendChild(backdrop);
 }
 
@@ -3403,13 +3474,75 @@ function loadSubUsers() {
       }).join(' ');
       var statusColor = u.status === 'active' ? 'var(--green)' : 'var(--red)';
       var lastLogin = u.last_login ? u.last_login.substring(0, 16).replace('T', ' ') : 'Never';
+      var safeName = escapeHtml(u.name).replace(/'/g,"\\'");
+      var editBtn = u.status === 'active'
+        ? '<button onclick="editSubUserPermissions(\'' + u.id + '\')" style="font-size:10px;color:var(--blue);background:none;border:none;cursor:pointer;margin-top:4px;margin-right:8px">Edit</button>'
+        : '';
+      var revokeBtn = u.status === 'active'
+        ? '<button onclick="revokeSubUser(\'' + u.id + '\',\'' + safeName + '\')" style="font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;margin-top:4px">Revoke</button>'
+        : '';
       return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)">' +
         '<div><div style="font-size:13px;font-weight:600;color:var(--t1)">' + escapeHtml(u.name) + ' <span style="font-size:10px;color:' + statusColor + '">\u2022 ' + u.status + '</span></div><div style="font-size:10px;color:var(--t3)">' + escapeHtml(u.role) + ' \u00b7 <span style="font-family:monospace">' + escapeHtml(u.username) + '</span></div><div style="margin-top:4px">' + permPills + '</div></div>' +
         '<div style="text-align:right"><div style="font-size:9px;color:var(--t3)">Last login: ' + lastLogin + '</div>' +
-        (u.status === 'active' ? '<button onclick="revokeSubUser(\'' + u.id + '\',\'' + escapeHtml(u.name).replace(/'/g,"\\'") + '\')" style="font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;margin-top:4px">Revoke</button>' : '') +
+        editBtn + revokeBtn +
         '</div></div>';
     }).join('');
   }).catch(function(){ el.innerHTML = ''; });
+}
+
+// Open the permissions modal in edit mode for an existing team member.
+// Re-fetches /api/users/list (cheap, one row per team member) to get the
+// current permissions snapshot — avoids stale state if the owner edits in
+// two tabs.
+function editSubUserPermissions(subUserId) {
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
+  fetch(D1_API + '/api/users/list', { headers: { 'Authorization': 'Bearer ' + sess } })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (!data.success || !data.users) { alert('Could not load team member data.'); return; }
+      var u = data.users.find(function(x){ return x.id === subUserId; });
+      if (!u) { alert('Team member not found.'); return; }
+      openAddUserModal({ id: u.id, name: u.name, permissions: u.permissions || {} });
+    })
+    .catch(function(e){ alert('Could not load team member data: ' + e.message); });
+}
+
+function saveSubUserPermissions(subUserId) {
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
+  var tabs = ['calendar','budget','notes','intel','tasks','endorsements','toolbox','folders'];
+  var permissions = {};
+  tabs.forEach(function(t) {
+    var cb = document.getElementById('perm-' + t);
+    if (cb && cb.checked) {
+      var radios = document.getElementsByName('access-' + t);
+      var access = 'full';
+      for (var i = 0; i < radios.length; i++) { if (radios[i].checked) access = radios[i].value; }
+      permissions[t] = access;
+    }
+  });
+  fetch(D1_API + '/api/users/update-permissions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({ subUserId: subUserId, permissions: permissions })
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    if (!data || !data.success) {
+      alert('Could not save permissions: ' + ((data && data.error) || 'unknown error'));
+      return;
+    }
+    var backdrop = document.getElementById('add-user-modal-backdrop');
+    if (backdrop) backdrop.remove();
+    loadSubUsers();
+    // Success toast — same pattern as the budget-allocations toast.
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--n3);border:1px solid rgba(130,179,134,.3);color:var(--green);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+    toast.textContent = '\u2705 Permissions updated';
+    document.body.appendChild(toast);
+    setTimeout(function(){ toast.style.transition = 'opacity .3s'; toast.style.opacity = '0'; setTimeout(function(){ toast.remove(); }, 300); }, 2200);
+  }).catch(function(e) {
+    alert('Could not save permissions: ' + e.message);
+  });
 }
 
 function revokeSubUser(id, name) {
