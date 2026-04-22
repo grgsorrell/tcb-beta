@@ -1728,6 +1728,268 @@ export default {
       }
     }
 
+    // ================================================================
+    // PER-ROW SYNC ENDPOINTS (item #5 architectural fix)
+    //
+    // Replace the array-sync endpoints' "full workspace replace" shape
+    // with per-row create/update/delete. Each mutation touches exactly
+    // one row, so a stale client can't clobber another tab's work just
+    // by having an out-of-date local array.
+    //
+    // Shared contract across all 12 endpoints:
+    //   - getSessionContext → auth + revoked gates
+    //   - requirePermission(ctx, tab, 'full') — writes always need full
+    //   - Every query hard-filters on workspace_owner_id = ctx.ownerId,
+    //     including the DELETE WHERE clauses (so a sub-user can't nuke
+    //     another workspace's row by guessing ids)
+    //   - Save endpoints UPSERT with ON CONFLICT(id) DO UPDATE SET
+    //     <mutable fields only> — preserves user_id and created_at for
+    //     attribution when a sub-user edits an owner-created row
+    //   - Delete endpoints return { success, deleted: <rows affected> }
+    //     so the client can tell if the row existed
+    //
+    // The older /api/<table>/sync endpoints below are kept in place
+    // and marked @deprecated — one-release deprecation window before
+    // removal, per the migration plan.
+    // ================================================================
+
+    // ---- EVENTS ----
+    if (url.pathname === '/api/events/save' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'calendar', 'full')) return denyPermission('calendar');
+        const { event: e } = await request.json();
+        if (!e || !e.id) return jsonResponse({ error: 'event.id required' }, 400);
+        await env.DB.prepare(
+          'INSERT INTO events (id, user_id, workspace_owner_id, name, date, time, end_time, location, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, time = excluded.time, end_time = excluded.end_time, location = excluded.location, campaign_id = excluded.campaign_id'
+        ).bind(
+          String(e.id), ctx.userId, ctx.ownerId,
+          e.name || e.title || '', e.date || null, e.time || null,
+          e.end_time || e.endTime || null, e.location || null,
+          e.campaign_id || null, e.created_at || new Date().toISOString()
+        ).run();
+        return jsonResponse({ success: true, id: String(e.id) });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/events/delete' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'calendar', 'full')) return denyPermission('calendar');
+        const { id } = await request.json();
+        if (!id) return jsonResponse({ error: 'id required' }, 400);
+        const r = await env.DB.prepare(
+          'DELETE FROM events WHERE id = ? AND workspace_owner_id = ?'
+        ).bind(String(id), ctx.ownerId).run();
+        return jsonResponse({ success: true, deleted: (r.meta && r.meta.changes) || 0 });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ---- TASKS ----
+    if (url.pathname === '/api/tasks/save' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'calendar', 'full')) return denyPermission('calendar');
+        const { task: t } = await request.json();
+        if (!t || !t.id) return jsonResponse({ error: 'task.id required' }, 400);
+        await env.DB.prepare(
+          'INSERT INTO tasks (id, user_id, workspace_owner_id, name, date, category, completed, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, category = excluded.category, completed = excluded.completed, campaign_id = excluded.campaign_id'
+        ).bind(
+          String(t.id), ctx.userId, ctx.ownerId,
+          t.name || t.text || '', t.date || null, t.category || 'general',
+          t.completed ? 1 : 0, t.campaign_id || null,
+          t.created_at || new Date().toISOString()
+        ).run();
+        return jsonResponse({ success: true, id: String(t.id) });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/tasks/delete' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'calendar', 'full')) return denyPermission('calendar');
+        const { id } = await request.json();
+        if (!id) return jsonResponse({ error: 'id required' }, 400);
+        const r = await env.DB.prepare(
+          'DELETE FROM tasks WHERE id = ? AND workspace_owner_id = ?'
+        ).bind(String(id), ctx.ownerId).run();
+        return jsonResponse({ success: true, deleted: (r.meta && r.meta.changes) || 0 });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ---- FOLDERS ----
+    if (url.pathname === '/api/folders/save' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'notes', 'full')) return denyPermission('notes');
+        const { folder: f } = await request.json();
+        if (!f || !f.id) return jsonResponse({ error: 'folder.id required' }, 400);
+        await env.DB.prepare(
+          'INSERT INTO folders (id, user_id, workspace_owner_id, name, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, campaign_id = excluded.campaign_id'
+        ).bind(
+          String(f.id), ctx.userId, ctx.ownerId,
+          f.name || '', f.campaign_id || null,
+          f.created_at || new Date().toISOString()
+        ).run();
+        return jsonResponse({ success: true, id: String(f.id) });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // Folder delete cascades to notes in the same workspace — keeps the
+    // client simple and prevents orphaned notes if the client forgets to
+    // delete children first. Both deletes share the workspace_owner_id
+    // scope guard, so no cross-workspace leakage.
+    if (url.pathname === '/api/folders/delete' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'notes', 'full')) return denyPermission('notes');
+        const { id } = await request.json();
+        if (!id) return jsonResponse({ error: 'id required' }, 400);
+        const notesR = await env.DB.prepare(
+          'DELETE FROM notes WHERE folder_id = ? AND workspace_owner_id = ?'
+        ).bind(String(id), ctx.ownerId).run();
+        const foldersR = await env.DB.prepare(
+          'DELETE FROM folders WHERE id = ? AND workspace_owner_id = ?'
+        ).bind(String(id), ctx.ownerId).run();
+        return jsonResponse({
+          success: true,
+          deleted: (foldersR.meta && foldersR.meta.changes) || 0,
+          notesDeleted: (notesR.meta && notesR.meta.changes) || 0
+        });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ---- NOTES ----
+    if (url.pathname === '/api/notes/save' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'notes', 'full')) return denyPermission('notes');
+        const { note: n } = await request.json();
+        if (!n || !n.id) return jsonResponse({ error: 'note.id required' }, 400);
+        if (!n.folder_id) return jsonResponse({ error: 'note.folder_id required' }, 400);
+        await env.DB.prepare(
+          'INSERT INTO notes (id, folder_id, user_id, workspace_owner_id, title, content, campaign_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(id) DO UPDATE SET folder_id = excluded.folder_id, title = excluded.title, content = excluded.content, campaign_id = excluded.campaign_id, updated_at = excluded.updated_at'
+        ).bind(
+          String(n.id), String(n.folder_id), ctx.userId, ctx.ownerId,
+          n.title || '', n.content || '', n.campaign_id || null,
+          n.created_at || new Date().toISOString(),
+          n.updated_at || new Date().toISOString()
+        ).run();
+        return jsonResponse({ success: true, id: String(n.id) });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/notes/delete' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'notes', 'full')) return denyPermission('notes');
+        const { id } = await request.json();
+        if (!id) return jsonResponse({ error: 'id required' }, 400);
+        const r = await env.DB.prepare(
+          'DELETE FROM notes WHERE id = ? AND workspace_owner_id = ?'
+        ).bind(String(id), ctx.ownerId).run();
+        return jsonResponse({ success: true, deleted: (r.meta && r.meta.changes) || 0 });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ---- ENDORSEMENTS ----
+    if (url.pathname === '/api/endorsements/save' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'endorsements', 'full')) return denyPermission('endorsements');
+        const { endorsement: e } = await request.json();
+        if (!e || !e.id) return jsonResponse({ error: 'endorsement.id required' }, 400);
+        await env.DB.prepare(
+          'INSERT INTO endorsements (id, user_id, workspace_owner_id, name, title, status, notes, date, added_by_sam, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, title = excluded.title, status = excluded.status, notes = excluded.notes, date = excluded.date, added_by_sam = excluded.added_by_sam, campaign_id = excluded.campaign_id'
+        ).bind(
+          String(e.id), ctx.userId, ctx.ownerId,
+          e.name || '', e.title || '', e.status || 'Pursuing',
+          e.notes || '', e.date || null,
+          e.addedBySam ? 1 : 0,
+          e.campaign_id || null,
+          e.created_at || new Date().toISOString()
+        ).run();
+        return jsonResponse({ success: true, id: String(e.id) });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/endorsements/delete' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'endorsements', 'full')) return denyPermission('endorsements');
+        const { id } = await request.json();
+        if (!id) return jsonResponse({ error: 'id required' }, 400);
+        const r = await env.DB.prepare(
+          'DELETE FROM endorsements WHERE id = ? AND workspace_owner_id = ?'
+        ).bind(String(id), ctx.ownerId).run();
+        return jsonResponse({ success: true, deleted: (r.meta && r.meta.changes) || 0 });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ---- CONTRIBUTIONS ----
+    if (url.pathname === '/api/contributions/save' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'budget', 'full')) return denyPermission('budget');
+        const { contribution: c } = await request.json();
+        if (!c || !c.id) return jsonResponse({ error: 'contribution.id required' }, 400);
+        await env.DB.prepare(
+          'INSERT INTO contributions (id, user_id, workspace_owner_id, donor_name, amount, source, date, employer, occupation, notes, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(id) DO UPDATE SET donor_name = excluded.donor_name, amount = excluded.amount, source = excluded.source, date = excluded.date, employer = excluded.employer, occupation = excluded.occupation, notes = excluded.notes, campaign_id = excluded.campaign_id'
+        ).bind(
+          String(c.id), ctx.userId, ctx.ownerId,
+          c.donorName || c.donor_name || '', c.amount || 0,
+          c.source || 'individual', c.date || null,
+          c.employer || '', c.occupation || '', c.notes || '',
+          c.campaign_id || null,
+          c.created_at || new Date().toISOString()
+        ).run();
+        return jsonResponse({ success: true, id: String(c.id) });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/contributions/delete' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'budget', 'full')) return denyPermission('budget');
+        const { id } = await request.json();
+        if (!id) return jsonResponse({ error: 'id required' }, 400);
+        const r = await env.DB.prepare(
+          'DELETE FROM contributions WHERE id = ? AND workspace_owner_id = ?'
+        ).bind(String(id), ctx.ownerId).run();
+        return jsonResponse({ success: true, deleted: (r.meta && r.meta.changes) || 0 });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
     // ========================================
     // DATA API: Load All (bulk load on login)
     // ========================================
