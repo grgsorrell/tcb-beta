@@ -193,11 +193,24 @@ Standard denials (in `worker.js`):
   return empty arrays (never 403 on the composite response).
 
 **Writes** (require `<tab>/full`):
-- `/api/tasks/sync`, `/api/events/sync` — calendar
-- `/api/budget/save`, `/api/contributions/sync` — budget
-- `/api/notes/sync` — notes
-- `/api/endorsements/sync` — endorsements
+
+Per-row endpoints (current, use these):
+- `/api/tasks/save`, `/api/tasks/delete` — calendar
+- `/api/events/save`, `/api/events/delete` — calendar
+- `/api/budget/save` — budget
+- `/api/contributions/save`, `/api/contributions/delete` — budget
+- `/api/folders/save`, `/api/folders/delete` — notes (folder delete
+  cascades to child notes server-side)
+- `/api/notes/save`, `/api/notes/delete` — notes
+- `/api/endorsements/save`, `/api/endorsements/delete` — endorsements
 - `/api/opponents/add`, `/refresh`, `/remove` — intel
+
+Deprecated (still live for rollback, remove after a week):
+- `/api/tasks/sync`, `/api/events/sync`, `/api/notes/sync`,
+  `/api/endorsements/sync`, `/api/contributions/sync` — the original
+  full-array-replace shape. Vulnerable to stale-client write races
+  (caused the 2026-04-22 note-loss incident); replaced by the per-row
+  endpoints above. Frontend no longer calls these.
 
 **Owner-only (block sub-users with `denyOwnerOnly`):**
 - `/api/profile/save`, `/api/briefing/save`
@@ -205,10 +218,25 @@ Standard denials (in `worker.js`):
 - All `/api/users/*` (create, list, revoke, update-permissions,
   check-username)
 
-### Write attribution (sync endpoints)
+### Write attribution (per-row endpoints)
 
-`tasks/sync`, `events/sync`, `endorsements/sync`, `contributions/sync`
-use an **upsert-preserving** pattern:
+Every per-row save endpoint uses the same upsert-preserving pattern:
+1. `INSERT ... ON CONFLICT(id) DO UPDATE SET <mutable fields only>` —
+   `user_id`, `workspace_owner_id`, and `created_at` are omitted from
+   the SET clause so existing rows keep their original author on edit.
+2. Every DELETE scopes on both the row id AND `workspace_owner_id`:
+   `WHERE id = ? AND workspace_owner_id = ?`. A sub-user can't nuke
+   rows in another workspace by id-guessing.
+
+Folder delete is atomic cascade:
+`DELETE FROM notes WHERE folder_id = ? AND workspace_owner_id = ?`
+runs first, then the folder delete with the same workspace guard. No
+orphans possible; no cross-workspace leakage.
+
+### Write attribution (deprecated sync endpoints)
+
+The now-deprecated `tasks/sync`, `events/sync`, `endorsements/sync`,
+`contributions/sync` used an **upsert-preserving** pattern:
 1. `DELETE FROM <table> WHERE workspace_owner_id = ? AND id NOT IN (incoming ids)`
    — removes rows the client dropped.
 2. `INSERT ... ON CONFLICT(id) DO UPDATE SET <mutable fields only>` —
@@ -216,7 +244,7 @@ use an **upsert-preserving** pattern:
    `created_at` on existing rows so a sub-user's sync doesn't rewrite
    attribution on rows they didn't create.
 
-`notes/sync` is a full DELETE+INSERT (nested folder/note structure makes
+`notes/sync` was a full DELETE+INSERT (nested folder/note structure made
 preservation awkward and notes traffic is low — documented in code;
 attribution churn accepted for beta).
 

@@ -1145,6 +1145,9 @@ export default {
 
     // ========================================
     // DATA API: Sync Tasks (full replace)
+    // @deprecated 2026-04-22 — use /api/tasks/save + /api/tasks/delete.
+    // The per-row endpoints fix the stale-client write race. Remove this
+    // sync endpoint after a week of clean traffic against the per-row path.
     // ========================================
     if (url.pathname === '/api/tasks/sync' && request.method === 'POST') {
       try {
@@ -1229,6 +1232,7 @@ export default {
 
     // ========================================
     // DATA API: Sync Events (full replace)
+    // @deprecated 2026-04-22 — use /api/events/save + /api/events/delete.
     // ========================================
     if (url.pathname === '/api/events/sync' && request.method === 'POST') {
       try {
@@ -1372,7 +1376,11 @@ export default {
     }
 
     // ========================================
-    // DATA API: Sync Folders & Notes (full replace)
+    // DATA API: Sync Folders & Notes (DELETE-NOT-IN + UPSERT)
+    // @deprecated 2026-04-22 — use /api/folders/save + /delete and
+    // /api/notes/save + /delete. The folder-delete endpoint cascades
+    // to notes. DELETE-NOT-IN mitigation here is a band-aid; the per-row
+    // endpoints close the race completely.
     // ========================================
     if (url.pathname === '/api/notes/sync' && request.method === 'POST') {
       try {
@@ -1613,6 +1621,7 @@ export default {
 
     // ========================================
     // DATA API: Sync Endorsements (full replace)
+    // @deprecated 2026-04-22 — use /api/endorsements/save + /delete.
     // ========================================
     if (url.pathname === '/api/endorsements/sync' && request.method === 'POST') {
       try {
@@ -1671,6 +1680,7 @@ export default {
 
     // ========================================
     // DATA API: Sync Contributions (full replace)
+    // @deprecated 2026-04-22 — use /api/contributions/save + /delete.
     // ========================================
     if (url.pathname === '/api/contributions/sync' && request.method === 'POST') {
       try {
