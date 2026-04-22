@@ -920,6 +920,95 @@ export default {
     }
 
     // ========================================
+    // API: Reset sub-user password
+    // Owner-only. Generates a new temp password, hashes + stores it, forces
+    // change-on-next-login, deletes all sessions for that sub-user, audits.
+    // The plaintext password is returned in the response exactly once —
+    // never logged, never stored.
+    // ========================================
+    if (url.pathname === '/api/users/reset-password' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
+        const { subUserId } = await request.json();
+        if (!subUserId) return jsonResponse({ error: 'subUserId required' }, 400);
+
+        // Ownership + status gate. Only active sub-users belonging to the
+        // caller's workspace can have their password reset. Revoked
+        // accounts have to be re-activated first (separate flow).
+        const sub = await env.DB.prepare(
+          'SELECT id, owner_id, username, name, status FROM sub_users WHERE id = ? AND owner_id = ?'
+        ).bind(subUserId, ctx.ownerId).first();
+        if (!sub) return jsonResponse({ error: 'Team member not found' }, 404);
+        if (sub.status !== 'active') {
+          return jsonResponse({ error: 'Sub-user is not active. Re-activate before resetting.' }, 400);
+        }
+
+        // Rate limit: max 3 resets per sub-user per hour. Queries
+        // activity_log which is already where we audit this action — no
+        // separate table needed. We store subUserId inside details so this
+        // LIKE query can find it back.
+        const recent = await env.DB.prepare(
+          "SELECT COUNT(*) as n FROM activity_log WHERE action = 'Reset sub-user password' AND details LIKE ? AND created_at > datetime('now', '-1 hour')"
+        ).bind('%' + subUserId + '%').first();
+        if (recent && recent.n >= 3) {
+          return jsonResponse({ error: 'rate_limited', message: 'Too many resets for this user in the last hour. Try again later.' }, 429);
+        }
+
+        // Generate the temp password. 7 alphanumeric + 1 symbol (same shape
+        // as the create-user flow). Uses crypto.getRandomValues for proper
+        // CSPRNG output — Math.random() is not adequate here even though
+        // the client-side create flow uses it (known gap, tracked for
+        // later; server-side reset goes through this path so at least the
+        // reset-generated passwords are cryptographically random).
+        const charset = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+        const symbols = '#@!$';
+        const randBytes = new Uint8Array(8);
+        crypto.getRandomValues(randBytes);
+        let newPassword = '';
+        for (let i = 0; i < 7; i++) newPassword += charset[randBytes[i] % charset.length];
+        newPassword += symbols[randBytes[7] % symbols.length];
+
+        // Hash with the same salt/algorithm used by login + change-password.
+        const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(newPassword + '_tcb_salt_2026'));
+        const newHash = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+        // Update sub_users: new hash, flip must_change_password back on so
+        // the forced-takeover fires on next login, stamp last_password_change_at.
+        await env.DB.prepare(
+          "UPDATE sub_users SET password_hash = ?, must_change_password = 1, last_password_change_at = datetime('now') WHERE id = ? AND owner_id = ?"
+        ).bind(newHash, subUserId, ctx.ownerId).run();
+
+        // Kill all active sessions for this sub-user's anchor so any
+        // already-open tabs / devices get bounced to login on their next
+        // authed call. Anchor email is LOWER(username) || '@sub.tcb' — same
+        // pattern the revoke endpoint uses after the case-sensitivity fix.
+        const anchor = await env.DB.prepare(
+          'SELECT id FROM users WHERE email = ?'
+        ).bind(sub.username.toLowerCase() + '@sub.tcb').first();
+        if (anchor) {
+          await env.DB.prepare('DELETE FROM sessions WHERE user_id = ?').bind(anchor.id).run();
+        }
+
+        // Audit. Details includes subUserId so the rate-limit query above
+        // can find it via LIKE. Deliberately does NOT record the plaintext
+        // password anywhere — the response is the only place it appears.
+        await env.DB.prepare(
+          'INSERT INTO activity_log (id, user_id, user_name, action, details) VALUES (?, ?, ?, ?, ?)'
+        ).bind(
+          generateId(16), ctx.ownerId, 'Owner',
+          'Reset sub-user password', sub.name + ' (' + subUserId + ')'
+        ).run();
+
+        return jsonResponse({ success: true, newPassword });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
     // API: Check username availability
     // ========================================
     if (url.pathname.startsWith('/api/users/check-username/') && request.method === 'GET') {

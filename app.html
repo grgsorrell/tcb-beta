@@ -4054,13 +4054,19 @@ function loadSubUsers() {
       var editBtn = u.status === 'active'
         ? '<button onclick="editSubUserPermissions(\'' + u.id + '\')" style="font-size:10px;color:var(--blue);background:none;border:none;cursor:pointer;margin-top:4px;margin-right:8px">Edit</button>'
         : '';
+      // Reset Password: neutral gray between Edit (blue) and Revoke (red).
+      // Not destructive — regenerates the temp password and forces the
+      // sub-user through the first-login change flow on next sign-in.
+      var resetBtn = u.status === 'active'
+        ? '<button onclick="confirmResetSubUserPassword(\'' + u.id + '\',\'' + safeName + '\')" style="font-size:10px;color:var(--t2);background:none;border:none;cursor:pointer;margin-top:4px;margin-right:8px">Reset Password</button>'
+        : '';
       var revokeBtn = u.status === 'active'
         ? '<button onclick="revokeSubUser(\'' + u.id + '\',\'' + safeName + '\')" style="font-size:10px;color:var(--red);background:none;border:none;cursor:pointer;margin-top:4px">Revoke</button>'
         : '';
       return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)">' +
         '<div><div style="font-size:13px;font-weight:600;color:var(--t1)">' + escapeHtml(u.name) + ' <span style="font-size:10px;color:' + statusColor + '">\u2022 ' + u.status + '</span></div><div style="font-size:10px;color:var(--t3)">' + escapeHtml(u.role) + ' \u00b7 <span style="font-family:monospace">' + escapeHtml(u.username) + '</span></div><div style="margin-top:4px">' + permPills + '</div></div>' +
         '<div style="text-align:right"><div style="font-size:9px;color:var(--t3)">Last login: ' + lastLogin + '</div>' +
-        editBtn + revokeBtn +
+        editBtn + resetBtn + revokeBtn +
         '</div></div>';
     }).join('');
   }).catch(function(){ el.innerHTML = ''; });
@@ -4127,6 +4133,85 @@ function revokeSubUser(id, name) {
     method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
     body: JSON.stringify({ subUserId: id })
   }).then(function(r){ return r.json(); }).then(function() { loadSubUsers(); });
+}
+
+// Reset Password flow — styled confirm (matches confirmLogout pattern)
+// then POST /api/users/reset-password, then show the one-time-reveal modal
+// with the new temp password and a copy button.
+function confirmResetSubUserPassword(id, name) {
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
+  var existing = document.getElementById('reset-pwd-confirm-overlay');
+  if (existing) existing.remove();
+  var overlay = document.createElement('div');
+  overlay.id = 'reset-pwd-confirm-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(5,8,18,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;';
+  overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML =
+    '<div style="background:var(--n2);border:1px solid var(--br2);border-radius:14px;width:440px;max-width:100%;padding:24px 28px;box-shadow:0 20px 60px rgba(0,0,0,.6);">' +
+      '<div style="font-family:var(--font-d);font-size:18px;color:var(--t1);margin-bottom:8px">Reset Password?</div>' +
+      '<div style="font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:22px">Reset password for <strong style="color:var(--t1)">' + name + '</strong>? This will generate a new temporary password and log them out of any active sessions.</div>' +
+      '<div style="display:flex;gap:10px;justify-content:flex-end">' +
+        '<button onclick="document.getElementById(\'reset-pwd-confirm-overlay\').remove()" style="padding:9px 18px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer;font-weight:600">Cancel</button>' +
+        '<button id="reset-pwd-confirm-btn" onclick="executeResetSubUserPassword(\'' + id + '\',\'' + name + '\')" style="padding:9px 18px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Reset Password</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+}
+
+function executeResetSubUserPassword(id, name) {
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
+  var btn = document.getElementById('reset-pwd-confirm-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Resetting\u2026'; btn.style.opacity = '.6'; }
+  fetch(D1_API + '/api/users/reset-password', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({ subUserId: id })
+  }).then(function(r) { return r.json().then(function(b){ return { status: r.status, body: b }; }); })
+    .then(function(res) {
+      var confirmOv = document.getElementById('reset-pwd-confirm-overlay');
+      if (confirmOv) confirmOv.remove();
+      if (res.status !== 200 || !res.body || !res.body.success) {
+        var msg = (res.body && res.body.message) ? res.body.message : (res.body && res.body.error) ? res.body.error : 'Reset failed.';
+        alert(msg);
+        return;
+      }
+      showResetPasswordResult(name, res.body.newPassword);
+      loadSubUsers();
+    })
+    .catch(function(e) {
+      var confirmOv = document.getElementById('reset-pwd-confirm-overlay');
+      if (confirmOv) confirmOv.remove();
+      alert('Could not reset password: ' + e.message);
+    });
+}
+
+function showResetPasswordResult(name, password) {
+  var existing = document.getElementById('reset-pwd-result-overlay');
+  if (existing) existing.remove();
+  var overlay = document.createElement('div');
+  overlay.id = 'reset-pwd-result-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(5,8,18,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;';
+  // Don't close on backdrop click — the user needs to actively acknowledge
+  // that this password is visible once only. Force them through the Close
+  // button so they don't dismiss it by accident and lose the password.
+  var safeName = escapeHtml(name);
+  var safePassword = escapeHtml(password);
+  // Escape for JS string context in the inline copy handler.
+  var jsSafePassword = password.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  overlay.innerHTML =
+    '<div style="background:var(--n2);border:1px solid var(--br2);border-radius:14px;width:440px;max-width:100%;padding:24px 28px;box-shadow:0 20px 60px rgba(0,0,0,.6);">' +
+      '<div style="font-size:16px;color:var(--green);font-weight:700;margin-bottom:6px">\u2705 Password reset</div>' +
+      '<div style="font-size:12px;color:var(--t2);margin-bottom:14px">New temporary password for <strong style="color:var(--t1)">' + safeName + '</strong>.</div>' +
+      '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:14px;font-family:monospace;font-size:15px;color:var(--gold);margin-bottom:10px;text-align:center;letter-spacing:.04em" id="reset-pwd-pw-display">' + safePassword + '</div>' +
+      '<div style="font-size:11px;color:var(--red);margin-bottom:14px">\u26a0\ufe0f Password shown once. Copy it now \u2014 we don\'t store it in plaintext and it will not be recoverable once you close this.</div>' +
+      '<div style="font-size:11px;color:var(--t3);line-height:1.55;margin-bottom:18px">' + safeName + ' will be forced to change this password on next login. They have been logged out of all active sessions.</div>' +
+      '<div style="display:flex;gap:8px;justify-content:flex-end">' +
+        '<button id="reset-pwd-copy-btn" onclick="(function(btn){navigator.clipboard.writeText(\'' + jsSafePassword + '\').then(function(){btn.textContent=\'\u2713 Copied\';btn.style.color=\'var(--green)\';}).catch(function(){btn.textContent=\'Copy failed\';});})(this)" style="padding:8px 14px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">\ud83d\udccb Copy Password</button>' +
+        '<button onclick="document.getElementById(\'reset-pwd-result-overlay\').remove()" style="padding:8px 14px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Close</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
 }
 
 // ============================================
