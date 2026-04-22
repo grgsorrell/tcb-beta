@@ -424,48 +424,148 @@ export default {
     }
 
     // ========================================
-    // AUTH: Login (proper auth replacing beta)
+    // AUTH: Unified login — handles owners AND sub-users in one endpoint.
+    // /auth/subuser-login is kept as an alias of this route for back-compat.
+    // See CLAUDE.md "Unified Login" section for design notes.
     // ========================================
-    if (url.pathname === '/api/auth/login' && request.method === 'POST') {
+    if ((url.pathname === '/api/auth/login' || url.pathname === '/auth/subuser-login')
+        && request.method === 'POST') {
       try {
         const { username, password } = await request.json();
         if (!username || !password) return jsonResponse({ error: 'Username and password required' }, 400);
-        const clean = username.toLowerCase().trim();
-        // Find user by username or email
-        const user = await env.DB.prepare('SELECT * FROM users WHERE username = ? OR email = ?').bind(clean, clean).first();
-        if (!user || !user.password_hash) return jsonResponse({ error: 'Invalid credentials' }, 401);
-        if (user.status === 'deleted') return jsonResponse({ error: 'Account has been deleted' }, 401);
-        // Check password
+        const clean = (username || '').toLowerCase().trim();
+
+        // ---- Rate-limit gate (CP-C) ----
+        // Count success=0 attempts for this username in the last 15 min.
+        // If >= 5, compute retry-after from the oldest failure in the
+        // window and return 429 without running any further logic.
+        const failStats = await env.DB.prepare(
+          "SELECT COUNT(*) as n, MIN(attempted_at) as oldest FROM login_attempts WHERE username = ? AND success = 0 AND attempted_at > datetime('now', '-15 minutes')"
+        ).bind(clean).first();
+        if (failStats && failStats.n >= 5) {
+          const oldestMs = Date.parse(failStats.oldest.replace(' ', 'T') + 'Z');
+          const unlockMs = oldestMs + 15 * 60 * 1000;
+          const retryAfterMinutes = Math.max(1, Math.ceil((unlockMs - Date.now()) / 60000));
+          return new Response(JSON.stringify({
+            error: 'too_many_attempts',
+            message: 'Too many failed attempts. Try again in ' + retryAfterMinutes + ' minute' + (retryAfterMinutes === 1 ? '' : 's') + '.',
+            retryAfterMinutes: retryAfterMinutes
+          }), {
+            status: 429,
+            headers: {
+              'Content-Type': 'application/json',
+              'Retry-After': String(retryAfterMinutes * 60),
+              ...corsHeaders
+            }
+          });
+        }
+
+        // Shared helpers for logging attempts + clearing failures on success.
+        const logAttempt = async (ok) => {
+          try {
+            await env.DB.prepare('INSERT INTO login_attempts (id, username, success) VALUES (?, ?, ?)').bind(generateId(16), clean, ok ? 1 : 0).run();
+          } catch (e) { /* logging failure should not block auth */ }
+        };
+        const clearFailures = async () => {
+          try {
+            await env.DB.prepare('DELETE FROM login_attempts WHERE username = ? AND success = 0').bind(clean).run();
+          } catch (e) {}
+        };
+
+        // Hash once — used by both owner and sub-user comparisons.
         const encoder = new TextEncoder();
         const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(password + '_tcb_salt_2026'));
         const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-        if (hashHex !== user.password_hash) {
-          // Try sub-user login as fallback
-          const sub = await env.DB.prepare('SELECT * FROM sub_users WHERE username = ? AND status = ?').bind(clean, 'active').first();
-          if (sub && sub.password_hash === hashHex) {
-            let subDbUser = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(clean + '@sub.tcb').first();
-            if (!subDbUser) { const uid = generateId(); await env.DB.prepare('INSERT INTO users (id, email) VALUES (?, ?)').bind(uid, clean + '@sub.tcb').run(); subDbUser = { id: uid }; }
-            const sid = generateId(48); const exp = new Date(Date.now() + 24*60*60*1000).toISOString();
-            await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sid, subDbUser.id, exp).run();
-            await env.DB.prepare('UPDATE sub_users SET last_login = datetime(\'now\') WHERE id = ?').bind(sub.id).run();
-            return jsonResponse({ success: true, sessionId: sid, userId: subDbUser.id, username: clean, isSubUser: true, name: sub.name, role: sub.role, permissions: JSON.parse(sub.permissions_json || '{}') });
+
+        // ---- Try owner row first ----
+        // Match on users.username OR users.email. Owner rows have a
+        // password_hash; @sub.tcb anchor rows do not (their hash field is
+        // null), so a non-null password_hash guard keeps us on the owner
+        // path without accidentally matching anchor rows.
+        const user = await env.DB.prepare('SELECT * FROM users WHERE username = ? OR email = ?').bind(clean, clean).first();
+        if (user && user.password_hash) {
+          if (user.status === 'deleted') {
+            await logAttempt(false);
+            return jsonResponse({ error: 'Account has been deleted' }, 401);
           }
-          return jsonResponse({ error: 'Invalid credentials' }, 401);
+          if (hashHex === user.password_hash) {
+            // Owner login success.
+            await logAttempt(true);
+            await clearFailures();
+            const sessionId = generateId(48);
+            const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+            await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, user.id, expiresAt).run();
+            let trialDaysLeft = null;
+            if (user.plan === 'trial' && user.trial_ends) {
+              trialDaysLeft = Math.max(0, Math.ceil((new Date(user.trial_ends) - new Date()) / 86400000));
+            }
+            return jsonResponse({
+              success: true,
+              sessionId,
+              userId: user.id,
+              username: user.username || clean,
+              fullName: user.full_name,
+              plan: user.plan,
+              trialDaysLeft,
+              isSubUser: false
+            });
+          }
+          // Wrong owner password — fall through to sub-user try in case
+          // this username also exists in sub_users (rare but possible).
         }
-        // BETA: Trial expiry not enforced. Activate when Stripe is live.
-        // if (user.plan === 'trial' && user.trial_ends && new Date(user.trial_ends) < new Date()) {
-        //   return jsonResponse({ error: 'trial_expired', trialEnds: user.trial_ends }, 403);
-        // }
-        // Create session
-        const sessionId = generateId(48);
-        const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-        await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, user.id, expiresAt).run();
-        // Calculate trial days remaining
-        let trialDaysLeft = null;
-        if (user.plan === 'trial' && user.trial_ends) {
-          trialDaysLeft = Math.max(0, Math.ceil((new Date(user.trial_ends) - new Date()) / 86400000));
+
+        // ---- Try sub_users ----
+        // Query WITHOUT the status filter so we can distinguish revoked
+        // from not-found/invalid in the response.
+        const sub = await env.DB.prepare(
+          'SELECT * FROM sub_users WHERE LOWER(username) = ?'
+        ).bind(clean).first();
+
+        if (sub && sub.password_hash === hashHex) {
+          // Password matched. Check status.
+          if (sub.status === 'revoked') {
+            // Correct password, but account is disabled. Not the user's
+            // fault — log as success so the lockout doesn't punish them
+            // for a valid credential.
+            await logAttempt(true);
+            return jsonResponse({
+              error: 'revoked',
+              message: 'Your access has been revoked. Contact the campaign owner.'
+            }, 401);
+          }
+          // Active sub-user login success.
+          await logAttempt(true);
+          await clearFailures();
+          // Ensure the @sub.tcb anchor row exists (first-login bootstrap).
+          let anchor = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(clean + '@sub.tcb').first();
+          if (!anchor) {
+            const uid = generateId();
+            await env.DB.prepare('INSERT INTO users (id, email) VALUES (?, ?)').bind(uid, clean + '@sub.tcb').run();
+            anchor = { id: uid };
+          }
+          const sessionId = generateId(48);
+          const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+          await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, anchor.id, expiresAt).run();
+          await env.DB.prepare('UPDATE sub_users SET last_login = datetime(\'now\') WHERE id = ?').bind(sub.id).run();
+          let perms = {};
+          try { perms = JSON.parse(sub.permissions_json || '{}'); } catch (e) {}
+          return jsonResponse({
+            success: true,
+            sessionId,
+            userId: anchor.id,
+            username: sub.username,
+            isSubUser: true,
+            name: sub.name,
+            role: sub.role,
+            permissions: perms,
+            ownerUserId: sub.owner_id,
+            mustChangePassword: sub.must_change_password === 1
+          });
         }
-        return jsonResponse({ success: true, sessionId, userId: user.id, username: user.username || clean, fullName: user.full_name, plan: user.plan, trialDaysLeft });
+
+        // Neither owner nor sub-user matched. Generic invalid.
+        await logAttempt(false);
+        return jsonResponse({ error: 'Invalid credentials' }, 401);
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -500,18 +600,20 @@ export default {
         // logout/login cycle. Owner users get the same response as before.
         let isSubUser = false;
         let permissions = null;
+        let mustChangePassword = false;
         if (user.email && user.email.endsWith('@sub.tcb')) {
           const subUsername = user.email.replace(/@sub\.tcb$/, '');
           const subRow = await env.DB.prepare(
-            'SELECT status, permissions_json FROM sub_users WHERE username = ?'
+            'SELECT status, permissions_json, must_change_password FROM sub_users WHERE username = ?'
           ).bind(subUsername).first();
           if (subRow) {
             if (subRow.status === 'revoked') return jsonResponse({ error: 'Access revoked' }, 401);
             isSubUser = true;
             try { permissions = JSON.parse(subRow.permissions_json || '{}'); } catch (e) { permissions = {}; }
+            mustChangePassword = subRow.must_change_password === 1;
           }
         }
-        return jsonResponse({ success: true, userId: user.id, username: user.username, fullName: user.full_name, plan: user.plan, trialDaysLeft, isSubUser, permissions });
+        return jsonResponse({ success: true, userId: user.id, username: user.username, fullName: user.full_name, plan: user.plan, trialDaysLeft, isSubUser, permissions, mustChangePassword });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
 
@@ -750,45 +852,8 @@ export default {
       }
     }
 
-    // ========================================
-    // AUTH: Sub-user login
-    // ========================================
-    if (url.pathname === '/auth/subuser-login' && request.method === 'POST') {
-      try {
-        const { username, password } = await request.json();
-        const sub = await env.DB.prepare('SELECT * FROM sub_users WHERE username = ? AND status = ?').bind(username, 'active').first();
-        if (!sub) return jsonResponse({ error: 'Invalid credentials or account revoked' }, 401);
-        // Hash and compare
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password + '_tcb_salt_2026');
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        if (hashHex !== sub.password_hash) return jsonResponse({ error: 'Invalid credentials' }, 401);
-        // Create session user entry if needed
-        let user = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(username + '@sub.tcb').first();
-        if (!user) {
-          const uid = generateId();
-          await env.DB.prepare('INSERT INTO users (id, email) VALUES (?, ?)').bind(uid, username + '@sub.tcb').run();
-          user = { id: uid };
-        }
-        // Create session
-        const sessionId = generateId(48);
-        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-        await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, user.id, expiresAt).run();
-        // Update last login
-        await env.DB.prepare('UPDATE sub_users SET last_login = datetime(\'now\') WHERE id = ?').bind(sub.id).run();
-        return jsonResponse({
-          success: true, sessionId, userId: user.id, username: sub.username,
-          isSubUser: true, name: sub.name, role: sub.role,
-          permissions: JSON.parse(sub.permissions_json || '{}'),
-          mustChangePassword: sub.must_change_password === 1,
-          ownerUsername: sub.owner_id
-        });
-      } catch (error) {
-        return jsonResponse({ error: error.message }, 500);
-      }
-    }
+    // NOTE: /auth/subuser-login is handled by the unified /api/auth/login
+    // route above via the pathname alias. Old standalone handler removed.
 
     // ========================================
     // AUTH: Send magic link
