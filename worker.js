@@ -70,8 +70,12 @@ export default {
       if (!user) return null;
       if (user.email && user.email.endsWith('@sub.tcb')) {
         const subUsername = user.email.replace(/@sub\.tcb$/, '');
+        // LOWER() match — anchor emails are stored lowercased (login
+        // normalizes before insert), but sub_users.username is stored
+        // as-typed by the owner. Without LOWER(), mixed-case usernames
+        // like "Kelly-mgr1" silently miss and we report revoked.
         const sub = await env.DB.prepare(
-          'SELECT owner_id, status, permissions_json FROM sub_users WHERE username = ?'
+          'SELECT owner_id, status, permissions_json FROM sub_users WHERE LOWER(username) = ?'
         ).bind(subUsername).first();
         if (!sub || sub.status === 'revoked') {
           return { userId, ownerId: null, isSubUser: true, revoked: true };
@@ -617,7 +621,7 @@ export default {
         if (user.email && user.email.endsWith('@sub.tcb')) {
           const subUsername = user.email.replace(/@sub\.tcb$/, '');
           const subRow = await env.DB.prepare(
-            'SELECT status, permissions_json, must_change_password FROM sub_users WHERE username = ?'
+            'SELECT status, permissions_json, must_change_password FROM sub_users WHERE LOWER(username) = ?'
           ).bind(subUsername).first();
           if (subRow) {
             if (subRow.status === 'revoked') return jsonResponse({ error: 'Access revoked' }, 401);
