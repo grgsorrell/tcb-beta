@@ -98,6 +98,19 @@ export default {
       return false;
     }
 
+    // Standard denial responses consumed by the frontend. Shape is stable
+    // across endpoints so handleUnauthenticated / permission-aware UI can
+    // branch on .error.
+    function denyPermission(tab) {
+      return jsonResponse({ error: 'permission_denied', tab: tab, message: "You don't have access to this tab" }, 403);
+    }
+    function denyOwnerOnly() {
+      return jsonResponse({ error: 'owner_only', message: 'This action is only available to the workspace owner' }, 403);
+    }
+    function denyRevoked() {
+      return jsonResponse({ error: 'Access revoked' }, 401);
+    }
+
     // ========================================
     // HELPER: Log API usage to console and D1
     // ========================================
@@ -505,9 +518,11 @@ export default {
     // ========================================
     if (url.pathname === '/api/campaigns/list' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
-        const result = await env.DB.prepare('SELECT * FROM campaigns WHERE owner_id = ? ORDER BY status ASC, updated_at DESC').bind(userId).all();
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        // Sub-users see the OWNER's campaign list — their workspace is the owner's.
+        const result = await env.DB.prepare('SELECT * FROM campaigns WHERE owner_id = ? ORDER BY status ASC, updated_at DESC').bind(ctx.ownerId).all();
         return jsonResponse({ success: true, campaigns: result.results || [] });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
@@ -927,12 +942,13 @@ export default {
     // ========================================
     if (url.pathname === '/api/profile/load' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
 
         const profile = await env.DB.prepare(
           'SELECT * FROM profiles WHERE user_id = ?'
-        ).bind(userId).first();
+        ).bind(ctx.ownerId).first();
 
         if (!profile) return jsonResponse({ success: true, profile: null });
 
@@ -988,12 +1004,14 @@ export default {
     // ========================================
     if (url.pathname === '/api/tasks/load' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'calendar', 'read')) return denyPermission('calendar');
 
         const result = await env.DB.prepare(
-          'SELECT * FROM tasks WHERE user_id = ? ORDER BY date ASC'
-        ).bind(userId).all();
+          'SELECT * FROM tasks WHERE workspace_owner_id = ? ORDER BY date ASC'
+        ).bind(ctx.ownerId).all();
 
         // Convert D1 rows back to app format
         const tasks = (result.results || []).map(row => ({
@@ -1054,12 +1072,14 @@ export default {
     // ========================================
     if (url.pathname === '/api/events/load' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'calendar', 'read')) return denyPermission('calendar');
 
         const result = await env.DB.prepare(
-          'SELECT * FROM events WHERE user_id = ? ORDER BY date ASC'
-        ).bind(userId).all();
+          'SELECT * FROM events WHERE workspace_owner_id = ? ORDER BY date ASC'
+        ).bind(ctx.ownerId).all();
 
         const events = (result.results || []).map(row => ({
           id: parseFloat(row.id) || row.id,
@@ -1113,12 +1133,15 @@ export default {
     // ========================================
     if (url.pathname === '/api/budget/load' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'budget', 'read')) return denyPermission('budget');
 
+        // Budget is per-workspace — one row keyed to the owner's users.id.
         const row = await env.DB.prepare(
           'SELECT * FROM budget WHERE user_id = ?'
-        ).bind(userId).first();
+        ).bind(ctx.ownerId).first();
 
         if (!row) return jsonResponse({ success: true, budget: null });
 
@@ -1185,16 +1208,18 @@ export default {
     // ========================================
     if (url.pathname === '/api/notes/load' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'notes', 'read')) return denyPermission('notes');
 
         const foldersResult = await env.DB.prepare(
-          'SELECT * FROM folders WHERE user_id = ? ORDER BY created_at ASC'
-        ).bind(userId).all();
+          'SELECT * FROM folders WHERE workspace_owner_id = ? ORDER BY created_at ASC'
+        ).bind(ctx.ownerId).all();
 
         const notesResult = await env.DB.prepare(
-          'SELECT * FROM notes WHERE user_id = ? ORDER BY created_at ASC'
-        ).bind(userId).all();
+          'SELECT * FROM notes WHERE workspace_owner_id = ? ORDER BY created_at ASC'
+        ).bind(ctx.ownerId).all();
 
         // Assemble folders with their notes
         const folders = (foldersResult.results || []).map(f => ({
@@ -1246,12 +1271,14 @@ export default {
     // ========================================
     if (url.pathname === '/api/briefing/load' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        // No permission gate: morning brief is a shared workspace resource.
 
         const row = await env.DB.prepare(
-          'SELECT * FROM briefings WHERE user_id = ? ORDER BY date DESC LIMIT 1'
-        ).bind(userId).first();
+          'SELECT * FROM briefings WHERE workspace_owner_id = ? ORDER BY date DESC LIMIT 1'
+        ).bind(ctx.ownerId).first();
 
         return jsonResponse({ success: true, briefing: row || null });
       } catch (error) {
@@ -1336,11 +1363,13 @@ export default {
     // ========================================
     if (url.pathname === '/api/endorsements/load' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'endorsements', 'read')) return denyPermission('endorsements');
         const result = await env.DB.prepare(
-          'SELECT * FROM endorsements WHERE user_id = ? ORDER BY created_at DESC'
-        ).bind(userId).all();
+          'SELECT * FROM endorsements WHERE workspace_owner_id = ? ORDER BY created_at DESC'
+        ).bind(ctx.ownerId).all();
         const endorsements = (result.results || []).map(row => ({
           id: parseFloat(row.id) || row.id, name: row.name, title: row.title,
           status: row.status, notes: row.notes, date: row.date,
@@ -1383,11 +1412,13 @@ export default {
     // ========================================
     if (url.pathname === '/api/contributions/load' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'budget', 'read')) return denyPermission('budget');
         const result = await env.DB.prepare(
-          'SELECT * FROM contributions WHERE user_id = ? ORDER BY date DESC'
-        ).bind(userId).all();
+          'SELECT * FROM contributions WHERE workspace_owner_id = ? ORDER BY date DESC'
+        ).bind(ctx.ownerId).all();
         const contributions = (result.results || []).map(row => ({
           id: parseFloat(row.id) || row.id, donorName: row.donor_name, amount: row.amount,
           source: row.source, date: row.date, employer: row.employer,
@@ -1404,21 +1435,38 @@ export default {
     // ========================================
     if (url.pathname === '/api/data/load-all' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
 
-        // Run all queries in parallel
+        // Profile, tasks, events, budget, notes/folders, briefings,
+        // endorsements, contributions are workspace-scoped (filter on
+        // workspace_owner_id = ctx.ownerId). chat_history stays per-user
+        // (each collaborator has their own Sam conversation).
+        //
+        // Per-tab permission is enforced here by returning empty arrays for
+        // tabs the sub-user can't see, rather than 403-ing the whole bundle
+        // (sub-users still need the profile + campaign context to render
+        // anything at all).
+        const canCalendar     = requirePermission(ctx, 'calendar', 'read');
+        const canBudget       = requirePermission(ctx, 'budget', 'read');
+        const canNotes        = requirePermission(ctx, 'notes', 'read');
+        const canEndorsements = requirePermission(ctx, 'endorsements', 'read');
+
+        const empty = Promise.resolve({ results: [] });
+        const emptyFirst = Promise.resolve(null);
+
         const [profileRow, tasksResult, eventsResult, budgetRow, foldersResult, notesResult, briefingRow, chatRow, endorseResult, contribResult] = await Promise.all([
-          env.DB.prepare('SELECT * FROM profiles WHERE user_id = ?').bind(userId).first(),
-          env.DB.prepare('SELECT * FROM tasks WHERE user_id = ? ORDER BY date ASC').bind(userId).all(),
-          env.DB.prepare('SELECT * FROM events WHERE user_id = ? ORDER BY date ASC').bind(userId).all(),
-          env.DB.prepare('SELECT * FROM budget WHERE user_id = ?').bind(userId).first(),
-          env.DB.prepare('SELECT * FROM folders WHERE user_id = ? ORDER BY created_at ASC').bind(userId).all(),
-          env.DB.prepare('SELECT * FROM notes WHERE user_id = ? ORDER BY created_at ASC').bind(userId).all(),
-          env.DB.prepare('SELECT * FROM briefings WHERE user_id = ? ORDER BY date DESC LIMIT 1').bind(userId).first(),
-          env.DB.prepare('SELECT messages FROM chat_history WHERE user_id = ?').bind(userId).first(),
-          env.DB.prepare('SELECT * FROM endorsements WHERE user_id = ? ORDER BY created_at DESC').bind(userId).all().catch(() => ({ results: [] })),
-          env.DB.prepare('SELECT * FROM contributions WHERE user_id = ? ORDER BY date DESC').bind(userId).all().catch(() => ({ results: [] }))
+          env.DB.prepare('SELECT * FROM profiles WHERE user_id = ?').bind(ctx.ownerId).first(),
+          canCalendar ? env.DB.prepare('SELECT * FROM tasks WHERE workspace_owner_id = ? ORDER BY date ASC').bind(ctx.ownerId).all() : empty,
+          canCalendar ? env.DB.prepare('SELECT * FROM events WHERE workspace_owner_id = ? ORDER BY date ASC').bind(ctx.ownerId).all() : empty,
+          canBudget ? env.DB.prepare('SELECT * FROM budget WHERE user_id = ?').bind(ctx.ownerId).first() : emptyFirst,
+          canNotes ? env.DB.prepare('SELECT * FROM folders WHERE workspace_owner_id = ? ORDER BY created_at ASC').bind(ctx.ownerId).all() : empty,
+          canNotes ? env.DB.prepare('SELECT * FROM notes WHERE workspace_owner_id = ? ORDER BY created_at ASC').bind(ctx.ownerId).all() : empty,
+          env.DB.prepare('SELECT * FROM briefings WHERE workspace_owner_id = ? ORDER BY date DESC LIMIT 1').bind(ctx.ownerId).first(),
+          env.DB.prepare('SELECT messages FROM chat_history WHERE user_id = ?').bind(ctx.userId).first(),
+          canEndorsements ? env.DB.prepare('SELECT * FROM endorsements WHERE workspace_owner_id = ? ORDER BY created_at DESC').bind(ctx.ownerId).all().catch(() => ({ results: [] })) : empty,
+          canBudget ? env.DB.prepare('SELECT * FROM contributions WHERE workspace_owner_id = ? ORDER BY date DESC').bind(ctx.ownerId).all().catch(() => ({ results: [] })) : empty
         ]);
 
         // Format profile
@@ -1924,15 +1972,17 @@ export default {
     // ========================================
     if (url.pathname === '/api/opponents/list' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'intel', 'read')) return denyPermission('intel');
         const campaignIdParam = url.searchParams.get('campaign_id');
         if (!campaignIdParam || !campaignIdParam.trim()) {
           return jsonResponse({ success: true, opponents: [] });
         }
         const rows = await env.DB.prepare(
-          'SELECT id, name, data, last_researched_at, created_at FROM opponents WHERE user_id = ? AND campaign_id = ? ORDER BY created_at ASC'
-        ).bind(userId, campaignIdParam.trim()).all();
+          'SELECT id, name, data, last_researched_at, created_at FROM opponents WHERE workspace_owner_id = ? AND campaign_id = ? ORDER BY created_at ASC'
+        ).bind(ctx.ownerId, campaignIdParam.trim()).all();
         const opponents = (rows.results || []).map(r => ({
           id: r.id,
           name: r.name,
