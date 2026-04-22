@@ -1388,6 +1388,31 @@ function saveTasks() {
 // returns 401 the user is bounced through the standard re-login flow.
 // (NOTE: permission gating in the UI isn't wired yet — this keeps the cache
 // in sync for when it is.)
+// 60-second loadFromD1 refresh so workspace mates see each other's edits
+// without a manual page reload. Gated on three conditions:
+//   1. Tab must be visible — backgrounded tabs waste bandwidth and can't
+//      show the user the refreshed state anyway.
+//   2. Must have a D1 session — unauthenticated state has nothing to poll.
+//   3. No input/textarea/contenteditable currently focused — loadFromD1
+//      overwrites the in-memory `folders`/`events`/`tasks` arrays from D1,
+//      which would clobber a user's in-progress typing. Skip and catch up
+//      on the next tick.
+// Does NOT fix the underlying stale-client race (that's the per-row-sync
+// redesign) — it just shrinks the window where two workspace mates can see
+// divergent state. Worst case, an edit that flashes back in and out gets
+// reconciled on the next poll.
+var _dataRefreshPollId = null;
+function startDataRefreshPoll() {
+  if (_dataRefreshPollId) return;
+  _dataRefreshPollId = setInterval(function() {
+    if (document.hidden) return;
+    if (!d1Session) { clearInterval(_dataRefreshPollId); _dataRefreshPollId = null; return; }
+    var el = document.activeElement;
+    if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return;
+    loadFromD1();
+  }, 60000);
+}
+
 var _subUserPollId = null;
 function startSubUserPermissionsPoll() {
   if (_subUserPollId) return;
@@ -1570,6 +1595,7 @@ function initApp() {
         }
         proceedWithLocalData();
         loadFromD1();
+        startDataRefreshPoll();
       });
     }).catch(function() {
       d1Online = false; showD1Status('offline');
