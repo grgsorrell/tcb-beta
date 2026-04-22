@@ -75,19 +75,13 @@ select{-webkit-appearance:none;appearance:none;}
 .phase-tip.shift-left::before,.phase-tip.shift-left::after{left:auto;right:16px;transform:none;}
 .av{width:34px;height:34px;border-radius:50%;background:var(--n5);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;border:2px solid rgba(107,156,216,.4);flex-shrink:0;transition:border-color .15s,background .15s;}
 .av:hover{border-color:rgba(212,165,116,.6);background:#2d6aae;}
-/* Right-side identity block. Cap the text width so long candidate
-   names / office titles / sub-user names can't push the avatar off
-   screen or collide with the centered phase pill. Ellipsis truncates
-   with a title tooltip for the full text. */
-.tb-identity{display:flex;flex-direction:column;align-items:flex-end;max-width:260px;min-width:0;overflow:hidden;}
-.cand-label{font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
-.tb-username{font-size:10px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
-/* Below ~760px the topbar gets crowded (logo + phase pill + identity
-   block all on one row). Hide the text identity and keep just the
-   avatar — full info remains available via the dropdown. */
-@media (max-width: 760px) {
-  .tb-identity{display:none;}
-}
+/* Right-side identity block. Keep minimal — the previous overlap
+   Greg reported was the D1 status pill (see renderD1StatusPill)
+   bleeding into this area from outside the topbar flex layout, not
+   a width/overflow issue with the identity itself. */
+.tb-identity{display:flex;flex-direction:column;align-items:flex-end;}
+.cand-label{font-size:12px;color:var(--t2);white-space:nowrap;}
+.tb-username{font-size:10px;color:var(--t3);white-space:nowrap;}
 
 /* User dropdown (avatar click). Styled to mirror the campaign-dropdown
    already in the app — consistent dark sci-fi aesthetic. */
@@ -1365,29 +1359,133 @@ function d1Write(endpoint, body, onFail) {
     body: JSON.stringify(body)
   }).then(function(r) {
     if (!r.ok) throw new Error('D1 ' + r.status);
-    if (!d1Online) { d1Online = true; showD1Status('synced'); }
+    d1Online = true;
+    d1SyncNotify('success');
   }).catch(function(e) {
     console.log('[D1] Write error:', e.message);
     d1Online = false;
-    showD1Status('offline');
+    d1SyncNotify('failure');
     if (onFail) onFail();
   });
 }
 
-function showD1Status(status) {
+// D1 connectivity indicator state machine.
+//
+// Replaces the old showD1Status(status) which:
+//  1. Positioned the pill at top:8px;right:80px — directly on top of
+//     the topbar identity block. On Greg's screen the red "Offline
+//     Mode" text overlapped "Stephanie Murphy · Mayor" / username,
+//     looking like duplicate distorted identity text.
+//  2. Flipped to offline on the first network blip — false positives
+//     whenever a worker cold-started or a request stalled briefly.
+//  3. Had no recovery path. Once offline, the banner stayed red until
+//     the next successful write happened to notice.
+//
+// New behavior:
+//  - Banner renders below the topbar (top:62px;right:16px) with higher-
+//    contrast styling than before. NOT a flex child of the topbar, so
+//    it can't push or overlap any header content.
+//  - Requires 2 consecutive failures before surfacing the banner. A
+//    single failure increments the counter but shows nothing.
+//  - Once surfaced, auto-retries on backoff: 5s, 10s, 20s, 30s cap.
+//    Each retry silently probes /api/auth/verify-session.
+//  - Any successful request (d1Write or loadFromD1) clears the state
+//    and, if the banner is up, flashes "Reconnected" (3s fade).
+//  - After 3 retries without recovery, escalates to a "persistent
+//    offline" banner — stronger visual treatment so the user knows
+//    it's not transient.
+var _d1Sync = { failures: 0, retryAttempt: 0, retryTimer: null, mode: 'synced' };
+
+function d1SyncNotify(outcome) {
+  if (outcome === 'success') {
+    _d1Sync.failures = 0;
+    _d1Sync.retryAttempt = 0;
+    if (_d1Sync.retryTimer) { clearTimeout(_d1Sync.retryTimer); _d1Sync.retryTimer = null; }
+    if (_d1Sync.mode !== 'synced') {
+      _d1Sync.mode = 'synced';
+      renderD1StatusPill('synced');
+    }
+    return;
+  }
+  // outcome === 'failure'
+  _d1Sync.failures++;
+  // Sensitivity gate: only flip to offline after 2 consecutive fails.
+  if (_d1Sync.mode === 'synced' && _d1Sync.failures >= 2) {
+    _d1Sync.mode = 'offline';
+    _d1Sync.retryAttempt = 0;
+    renderD1StatusPill('offline');
+    scheduleD1Retry();
+  }
+  // If we're already offline/persistent, the retry timer drives recovery;
+  // additional failures here don't change UI state, they just keep the
+  // banner up. The retry cadence already backs off.
+}
+
+function scheduleD1Retry() {
+  if (_d1Sync.retryTimer) clearTimeout(_d1Sync.retryTimer);
+  var delays = [5000, 10000, 20000]; // 5s, 10s, 20s
+  var delay = _d1Sync.retryAttempt < delays.length ? delays[_d1Sync.retryAttempt] : 30000;
+  _d1Sync.retryTimer = setTimeout(function() {
+    _d1Sync.retryAttempt++;
+    silentD1Probe();
+  }, delay);
+}
+
+function silentD1Probe() {
+  if (!d1Session) {
+    // No session to probe against — give up silently, let the regular
+    // auth flow re-establish a session if the user does anything.
+    if (_d1Sync.retryTimer) { clearTimeout(_d1Sync.retryTimer); _d1Sync.retryTimer = null; }
+    return;
+  }
+  fetch(D1_API + '/api/auth/verify-session', { headers: { 'Authorization': 'Bearer ' + d1Session } })
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      if (data && data.success) {
+        // Recovered. d1SyncNotify clears state + flashes Reconnected.
+        d1Online = true;
+        d1SyncNotify('success');
+      } else {
+        throw new Error('verify-session returned !success');
+      }
+    })
+    .catch(function() {
+      // Probe failed. Escalate to persistent after 3 retries still down.
+      if (_d1Sync.retryAttempt >= 3 && _d1Sync.mode !== 'persistent') {
+        _d1Sync.mode = 'persistent';
+        renderD1StatusPill('persistent');
+      }
+      scheduleD1Retry();
+    });
+}
+
+function renderD1StatusPill(mode) {
   var el = document.getElementById('d1-status-pill');
   if (!el) {
     el = document.createElement('div');
     el.id = 'd1-status-pill';
-    el.style.cssText = 'position:fixed;top:8px;right:80px;font-size:9px;font-weight:700;letter-spacing:.08em;padding:3px 8px;border-radius:10px;z-index:200;transition:opacity .3s';
     document.body.appendChild(el);
   }
-  if (status === 'offline') {
-    el.style.background = 'rgba(232,112,112,.15)'; el.style.border = '1px solid rgba(232,112,112,.3)'; el.style.color = 'var(--red)';
-    el.textContent = '\ud83d\udce1 Offline Mode'; el.style.opacity = '1';
-  } else if (status === 'synced') {
-    el.style.background = 'rgba(130,179,134,.15)'; el.style.border = '1px solid rgba(130,179,134,.3)'; el.style.color = 'var(--green)';
-    el.textContent = '\u2713 Synced'; el.style.opacity = '1';
+  // Positioned below the topbar (54px tall) with an 8px gap, flush
+  // right. z-index stays below overlays/modals (which use 180-500) and
+  // below the avatar dropdown (200), but above normal body content.
+  var base = 'position:fixed;top:62px;right:16px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:6px 12px;border-radius:6px;z-index:90;transition:opacity .3s;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(0,0,0,.3);';
+  if (mode === 'offline') {
+    el.style.cssText = base + 'background:rgba(232,112,112,.12);border:1px solid rgba(232,112,112,.35);color:var(--red);';
+    el.textContent = '\ud83d\udce1 Reconnecting\u2026';
+    el.style.opacity = '1';
+  } else if (mode === 'persistent') {
+    // Stronger treatment so the user reads "this is not a blip".
+    el.style.cssText = base + 'background:rgba(232,112,112,.22);border:1px solid rgba(232,112,112,.6);color:var(--red);font-weight:700;';
+    el.textContent = '\u26a0 Offline \u2014 check your connection';
+    el.style.opacity = '1';
+  } else if (mode === 'synced') {
+    el.style.cssText = base + 'background:rgba(130,179,134,.15);border:1px solid rgba(130,179,134,.3);color:var(--green);';
+    el.textContent = '\u2713 Reconnected';
+    el.style.opacity = '1';
     setTimeout(function() { el.style.opacity = '0'; }, 3000);
   }
 }
@@ -1663,6 +1761,7 @@ function initApp() {
         return;
       }
       d1Online = true;
+      d1SyncNotify('success');
       // If this session belongs to a sub-user, refresh the cached
       // permissions from the server so later UI gating (when we wire it)
       // reflects the current DB state — not whatever was stored at login.
@@ -1708,7 +1807,7 @@ function initApp() {
         startDataRefreshPoll();
       });
     }).catch(function() {
-      d1Online = false; showD1Status('offline');
+      d1Online = false; d1SyncNotify('failure');
       proceedWithLocalData();
     });
   } else {
@@ -1922,6 +2021,7 @@ function loadFromD1() {
   }).then(function(r){ return r.json(); }).then(function(data) {
     if (!data.success) return;
     d1Online = true;
+    d1SyncNotify('success');
     console.log('[D1] Source of truth loaded');
     var needsRerender = false;
 
@@ -1992,7 +2092,7 @@ function loadFromD1() {
   }).catch(function(e) {
     console.log('[D1] Load failed, using localStorage:', e.message);
     d1Online = false;
-    showD1Status('offline');
+    d1SyncNotify('failure');
   });
 }
 
@@ -2088,8 +2188,8 @@ function updateTopbar() {
   document.getElementById('tb-right').innerHTML =
     '<div onclick="toggleUserDropdown()" style="display:flex;align-items:center;gap:10px;cursor:pointer" title="Account menu">' +
       '<div class="tb-identity">' +
-        '<div class="cand-label" title="' + identityLine + '">' + identityLine + '</div>' +
-        '<div class="tb-username" title="' + usernameLine + '">' + usernameLine + '</div>' +
+        '<div class="cand-label">' + identityLine + '</div>' +
+        '<div class="tb-username">' + usernameLine + '</div>' +
       '</div>' +
       '<div class="av">' + initials + '</div>' +
     '</div>';
