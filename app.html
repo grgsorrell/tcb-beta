@@ -3344,72 +3344,6 @@ function saveNoteFromModal() {
   renderNotesView();
 }
 
-// Sam note preview modal
-function showSamNotePreview(title, content, folderName, status, docType) {
-  var existing = document.getElementById('sam-note-preview');
-  if (existing) existing.remove();
-  var preview = content.length > 200 ? content.substring(0, 200) + '...' : content;
-  // Check for duplicate
-  var isDupe = false;
-  folders.forEach(function(f) {
-    if (f.name.toLowerCase() === folderName.toLowerCase()) {
-      (f.notes||[]).forEach(function(n) { if ((n.title||'').toLowerCase() === title.toLowerCase()) isDupe = true; });
-    }
-  });
-  var dupeWarning = isDupe ? '<div style="font-size:11px;color:var(--gold);margin-top:8px;padding:6px 10px;background:rgba(212,165,116,.08);border:1px solid rgba(212,165,116,.2);border-radius:4px">\u26a0\ufe0f A note titled "' + escapeHtml(title) + '" already exists in this folder.</div>' : '';
-  var backdrop = document.createElement('div');
-  backdrop.id = 'sam-note-preview';
-  backdrop.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.6);z-index:999;display:flex;align-items:center;justify-content:center';
-  backdrop.onclick = function(e) { if (e.target === backdrop) backdrop.remove(); };
-  backdrop.innerHTML = '<div style="width:480px;max-width:calc(100vw - 32px);max-height:75vh;overflow-y:auto;background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
-    '<div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Sam created a draft</div>' +
-    '<div style="font-family:var(--font-d);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:12px">' + escapeHtml(title) + '</div>' +
-    '<div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:12px;max-height:200px;overflow-y:auto;white-space:pre-wrap">' + escapeHtml(preview) + '</div>' +
-    '<div style="font-size:11px;color:var(--t3);margin-bottom:8px">Will be saved to: <span style="color:var(--t1)">' + escapeHtml(folderName) + '</span></div>' +
-    dupeWarning +
-    (isDupe ? '<div style="display:flex;gap:8px;margin-top:14px"><button onclick="document.getElementById(\'sam-note-preview\').remove()" style="flex:1;padding:9px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">Discard</button><button onclick="confirmSaveNote(\'' + escapeHtml(title).replace(/'/g,"\\'") + '\',true)" style="flex:1;padding:9px;font-size:12px;background:var(--gold);color:#0B1120;border:none;border-radius:6px;cursor:pointer;font-weight:700">Replace Existing</button><button onclick="confirmSaveNote(\'' + escapeHtml(title).replace(/'/g,"\\'") + '\',false)" style="flex:1;padding:9px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Save as New</button></div>' :
-    '<div style="display:flex;gap:8px;margin-top:14px"><button onclick="editSamNote()" style="flex:1;padding:9px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer">Edit First</button><button onclick="confirmSaveNote(\'' + escapeHtml(title).replace(/'/g,"\\'") + '\',false)" style="flex:1;padding:9px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">\u2713 Save Note</button></div>') +
-  '</div>';
-  // Store data for confirm/edit
-  backdrop._noteData = { title: title, content: content, folder: folderName, status: status, docType: docType };
-  document.body.appendChild(backdrop);
-}
-
-function confirmSaveNote(title, replace) {
-  var modal = document.getElementById('sam-note-preview');
-  if (!modal || !modal._noteData) return;
-  var d = modal._noteData;
-  var folder = folders.find(function(f){return f.name.toLowerCase()===d.folder.toLowerCase();});
-  if (!folder) { folder = { id: Date.now(), name: d.folder, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }; folders.push(folder); }
-  if (!folder.notes) folder.notes = [];
-  if (replace) {
-    var idx = folder.notes.findIndex(function(n){ return (n.title||'').toLowerCase() === d.title.toLowerCase(); });
-    if (idx >= 0) { folder.notes[idx].content = d.content; folder.notes[idx].updatedAt = new Date().toISOString(); }
-    else { folder.notes.push({ id: Date.now() + Math.random(), title: d.title, content: d.content, status: d.status, doc_type: d.docType, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }); }
-  } else {
-    folder.notes.push({ id: Date.now() + Math.random(), title: d.title, content: d.content, status: d.status, doc_type: d.docType, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
-  }
-  folder.updatedAt = new Date().toISOString();
-  saveFolders();
-  modal.remove();
-  if (currentView === 'notes') renderNotesView();
-}
-
-function editSamNote() {
-  var modal = document.getElementById('sam-note-preview');
-  if (!modal || !modal._noteData) return;
-  var d = modal._noteData;
-  modal.remove();
-  document.getElementById('note-modal-title').textContent = 'Edit Draft';
-  document.getElementById('note-title-input').value = d.title;
-  document.getElementById('note-content-input').value = d.content;
-  document.getElementById('note-modal').classList.add('active');
-  document.getElementById('note-modal')._editId = null;
-  document.getElementById('note-modal')._samFolder = d.folder;
-  document.getElementById('note-modal')._samStatus = d.status;
-  document.getElementById('note-modal')._samDocType = d.docType;
-}
-
 // Print note
 function printNote(noteId) {
   var found = null, folderName = '';
@@ -6033,16 +5967,46 @@ function executeToolCall(block) {
     if (currentView === 'dashboard') refreshDashboard();
     confirmMsg = '\u2705 Logged $' + expense.amount.toLocaleString() + ' for ' + expense.description + ' under ' + expense.categoryLabel + '.' + (catAllocated > 0 ? ' Category: $' + catSpent.toLocaleString() + ' of $' + catAllocated.toLocaleString() + ' used.' : '') + ' Budget remaining: $' + remaining.toLocaleString();
   }
-  // Sam 2.0 unified save_note — show preview modal for confirmation
+  // Sam 2.0 unified save_note — save immediately to match what Sam tells
+  // the user. Previous version opened a preview modal that could be missed
+  // or closed, causing the note to silently not persist while Sam reported
+  // "Saved" in chat. If the user needs to edit, they can do so from the
+  // Notes view after save.
   else if (name === 'save_note' || name === 'add_note' || name === 'save_document' || name === 'save_to_notes') {
     var folderName = inp.folder || inp.folder_name || 'Campaign Notes';
     var noteTitle = inp.title || inp.note_title || 'Untitled';
     var noteContent = inp.content || '';
     var noteStatus = inp.status || 'Ready';
     var noteDocType = inp.doc_type || 'Other';
-    // Show confirmation modal instead of saving immediately
-    showSamNotePreview(noteTitle, noteContent, folderName, noteStatus, noteDocType);
-    confirmMsg = "\ud83d\udcdd Sam drafted '" + noteTitle + "' \u2014 review and confirm to save.";
+    // Find or create the target folder.
+    var targetFolder = folders.find(function(f){ return f.name.toLowerCase() === folderName.toLowerCase(); });
+    if (!targetFolder) {
+      targetFolder = { id: Date.now(), name: folderName, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+      folders.push(targetFolder);
+    }
+    if (!targetFolder.notes) targetFolder.notes = [];
+    // Handle duplicate title: append " (2)", " (3)", etc. Sam reruns on
+    // the same topic shouldn't silently clobber or bounce.
+    var finalTitle = noteTitle;
+    var existingTitles = targetFolder.notes.map(function(n){ return (n.title||'').toLowerCase(); });
+    var counter = 2;
+    while (existingTitles.indexOf(finalTitle.toLowerCase()) >= 0) {
+      finalTitle = noteTitle + ' (' + counter + ')';
+      counter++;
+    }
+    targetFolder.notes.push({
+      id: Date.now() + Math.random(),
+      title: finalTitle,
+      content: noteContent,
+      status: noteStatus,
+      doc_type: noteDocType,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    targetFolder.updatedAt = new Date().toISOString();
+    saveFolders();
+    if (currentView === 'notes') renderNotesView();
+    confirmMsg = '\u2705 Saved "' + finalTitle + '" to ' + folderName;
   }
   else if (name === 'add_endorsement') {
     var endorsements = [];
