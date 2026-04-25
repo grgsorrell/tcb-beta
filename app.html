@@ -1443,10 +1443,13 @@ function submitForcedPwd() {
 }
 
 function forcedPwdLogout() {
-  // Clear all auth + the takeover flag; back to landing for a fresh login.
-  localStorage.removeItem('tcb_d1_session');
-  localStorage.removeItem('tcb_session');
-  localStorage.removeItem('tcb_must_change_password');
+  // Same full-cleanup as logoutUser — every key the app stores about
+  // the current session. Earlier version of this function only cleared
+  // 3 of the 11 session keys; the rest leaked to whoever signed in
+  // next on the same browser. Same bug class we already fixed once
+  // for logoutUser; centralized via clearAllAuthState() so both paths
+  // can't drift apart again.
+  clearAllAuthState();
   window.location.href = 'index.html?relogin=1';
 }
 
@@ -3408,9 +3411,26 @@ function showBudgetMigrationToast(stats) {
         ? { label: DEFAULT_CATEGORIES[k].label, allocated: prev.allocated || 0 }
         : { label: DEFAULT_CATEGORIES[k].label, allocated: 0 };
     });
-    if (campaignBudget.categories && campaignBudget.categories._uncategorized) {
-      fresh._uncategorized = campaignBudget.categories._uncategorized;
-    }
+    // Preserve user-defined custom categories AND the _uncategorized
+    // parking bucket. This branch was originally written in CP2
+    // (before custom categories existed in CP3.5a) and was dropping
+    // every isCustom row on every page reload. In normal flow
+    // loadFromD1 restored them ~1s later, but the brief window where
+    // memory state was canonical-only was a foot-gun: any saveBudget
+    // call in that window would have pushed the canonical-only state
+    // to D1 and permanently lost the custom rows. Offline users would
+    // also lose custom rows from in-memory + localStorage until they
+    // reconnect.
+    var srcCats = campaignBudget.categories || {};
+    Object.keys(srcCats).forEach(function(k) {
+      var c = srcCats[k];
+      if (!c) return;
+      if (c.isCustom === true) {
+        fresh[k] = c; // preserve full row: displayName, createdAt, allocated
+      } else if (k === '_uncategorized') {
+        fresh[k] = c;
+      }
+    });
     campaignBudget.categories = fresh;
     return;
   }
@@ -5487,18 +5507,22 @@ function editDonationUrl() {
   if (val !== null) { campaignData.donationUrl = val.trim(); saveCampaign(); renderSettings(); if (currentView === 'budget') renderBudgetView(); }
 }
 
-// Clear every auth-related localStorage key + redirect to the login
-// page. The confirmation dialog is handled upstream (confirmLogout);
-// this function is the actual commit step.
+// Centralized auth-state cleanup used by every full-logout path.
+// Clears every key the app stores about the current session so a
+// different user signing in on the same browser doesn't inherit
+// stale identity, permissions, plan info, or campaign selection.
 //
-// The previous version only cleared tcb_session and tcb_current_user,
-// which left tcb_d1_session (the bearer token), tcb_is_sub_user,
-// tcb_permissions, and tcb_must_change_password behind. That was a
-// session-hygiene bug: a "logged out" user's next visitor on the
-// same browser would inherit the still-valid D1 session via
-// verify-session round-trips.
-function logoutUser() {
-  // Auth / session state
+// NOTE: handleUnauthenticated() deliberately does NOT use this —
+// session-expiry is different from intentional logout and we keep
+// tcb_current_user to pre-fill the login form for the same user.
+//
+// History: this consolidates fixes from f162b16 (logoutUser
+// originally cleared only 2 of the keys) and a follow-up (the
+// forcedPwdLogout takeover-escape path was leaking 8 keys with
+// the same bug class). Centralized so the two paths can't drift
+// apart in the future.
+function clearAllAuthState() {
+  // Auth / session
   localStorage.removeItem('tcb_session');
   localStorage.removeItem('tcb_current_user');
   localStorage.removeItem('tcb_d1_session');
@@ -5513,6 +5537,10 @@ function logoutUser() {
   localStorage.removeItem('tcb_trial_days');
   // Campaign selection — clear so the next login starts fresh
   localStorage.removeItem('tcb_active_campaign');
+}
+
+function logoutUser() {
+  clearAllAuthState();
   window.location.href = 'index.html';
 }
 
