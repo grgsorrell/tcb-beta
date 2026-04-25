@@ -1647,6 +1647,13 @@ export default {
           '  5. END WITH ONE CONCRETE NEXT ACTION the candidate can take. No vague "consider reviewing your spend"; ' +
           'something specific like "redirect $X from Reserve into Direct Mail" or "set an allocation for Polling, ' +
           'currently at $0".\n' +
+          '  5a. DAYS-TO-ELECTION PLACEHOLDER. When you reference the days-until-election count anywhere in your ' +
+          'output, write the literal token [DAYS] instead of the actual number. Example: write "you have [DAYS] days ' +
+          'until election day" — NOT "you have ' + daysLine + ' until election day". The app substitutes the live ' +
+          'count at render time so your coaching stays accurate as time passes (the cache is 24h, but the day count ' +
+          'changes every 24h). Use the actual number from the data block above for your own reasoning about ' +
+          'urgency / phase / pacing — just never write it as a digit in the output. The "[DAYS]" string must appear ' +
+          'literally in your text wherever you would otherwise have written a day count.\n' +
           '  6. CUSTOM CATEGORIES are user-defined (tagged "(custom)" in the data above) and may not match standard ' +
           'campaign categories. Don\'t make assumptions about what they should be funded at — there is no peer ' +
           'benchmark for items like "Religious Outreach" or "Video Production". Reference them by their exact name ' +

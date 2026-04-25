@@ -3896,12 +3896,25 @@ function renderSamsTakePanel(state) {
   var btn = canRefresh
     ? '<button class="bud-samstake-refresh" onclick="loadSamsTake(true)">\u21BB Refresh</button>'
     : '<button class="bud-samstake-refresh" disabled title="Refreshes once per day to keep coaching focused">\u21BB Refresh available tomorrow</button>';
+  // Token substitution: Sam's prompt instructs her to write [DAYS]
+  // wherever she'd reference the days-to-election count, so the cached
+  // narrative stays accurate as time passes. The header counter and
+  // this substitution both source from calcDaysToElection() so they
+  // can't drift. If Sam ignored the instruction and wrote a literal
+  // number, the renderer leaves it alone (no regex hunt for digits —
+  // would be brittle). Either way, no degradation vs. pre-token state.
+  var rawContent = state.content || '';
+  if (rawContent.indexOf('[DAYS]') >= 0) {
+    var liveDays = (typeof calcDaysToElection === 'function') ? calcDaysToElection() : null;
+    var dayStr = (liveDays != null && !isNaN(liveDays)) ? String(liveDays) : 'unknown';
+    rawContent = rawContent.replace(/\[DAYS\]/g, dayStr);
+  }
   return '<div class="bud-samstake">' +
     '<div class="bud-samstake-head">' +
       '<div class="bud-samstake-title"><span style="font-style:normal">\uD83D\uDCA1</span>Sam\u2019s Take Today</div>' +
       '<div class="bud-samstake-stamp">' + escapeHtml(stamp) + '</div>' +
     '</div>' +
-    '<div class="bud-samstake-body">' + escapeHtml(state.content || '').replace(/\n/g, '<br>') + '</div>' +
+    '<div class="bud-samstake-body">' + escapeHtml(rawContent).replace(/\n/g, '<br>') + '</div>' +
     btn +
   '</div>';
 }

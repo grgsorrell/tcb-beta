@@ -663,11 +663,40 @@ System prompt rules (factual discipline):
 3. Acknowledge what's working before pointing at problems.
 4. Cite at least one specific category by name.
 5. End with one concrete next action.
+5a. **`[DAYS]` placeholder for days-to-election.** Sam writes
+   the literal token `[DAYS]` instead of the actual day count
+   anywhere it appears in the output. The client renderer
+   substitutes the live `calcDaysToElection()` result at render
+   time, so the cached narrative stays accurate as time passes
+   (cached content is up to 24h old; the day count changes
+   every 24h). If Sam ignores the instruction and writes a
+   literal number, the renderer leaves it alone — no regex hunt
+   for digits. Fallback is no worse than pre-token behavior.
 6. **Custom categories** are tagged "(custom)" in the data
    block; Sam references them by displayName, treats them with
    equal commentary weight as canonical, but DOES NOT cite
    planning-range percentages for them (no peer benchmark
    exists for user-defined buckets).
+
+### Token-substitution pattern (extension point)
+
+The `[DAYS]` token is the first instance of "cache the
+narrative, render the live value." Same pattern can extend to
+other dynamic values that age inside cached coaching:
+
+| Possible future token | Live source | Why it'd drift |
+|---|---|---|
+| `[DAYS]` (in use) | `calcDaysToElection()` | day count changes every 24h |
+| `[CASH_ON_HAND]` | `campaignBudget.startingAmount + totalRaised - totalSpent` | every contribution + expense |
+| `[DAYS_SINCE_LAST_CONTRIBUTION]` | `getTodayStr() - max(contributions[*].date)` | every day; resets on new contribution |
+| `[REMAINING_RESERVE]` | `total - totalSpent` | every expense |
+
+When adding a new token: extend the system prompt with the
+same "write [TOKEN] not the literal number" instruction;
+extend the client-side substitution loop in
+`renderSamsTakePanel`. Keep the fallback semantics — if Sam
+emits a literal value, render unchanged. No regex hunt for
+heuristic numeric replacement.
 
 ### Apply Recommended Allocation contract (fill-empties-only)
 
@@ -806,3 +835,27 @@ Feature logged as: feature_vps or feature_anthropic in api_usage.
 - To run locally: `wrangler dev` then `npx playwright test`
 - During active development: skip tests unless specifically asked
 - Manual testing by Greg is preferred over automated tests hitting live
+
+## Testing notes for caching endpoints
+
+When testing endpoints that write to a shared cache table (e.g.
+`/api/budget/sams-take` writing to `budget_sams_take`, or any
+future Anthropic-backed cache keyed by `workspace_owner_id`):
+
+- **Don't run cache-warming tests against a real user's
+  workspace.** Hardcoded snapshot values in curl payloads
+  persist for the full TTL and the user inherits them on the
+  next page load. We hit this once with greg's Sam's Take
+  during the budget redesign — my CP4/CP6 curl tests with
+  hardcoded `daysToElection:189` got cached for 24 hours and
+  Greg saw "189 days" in the panel while the header counter
+  said "192" the next day.
+- Either: (a) test against a throwaway workspace_owner_id, or
+  (b) `DELETE FROM <cache_table> WHERE workspace_owner_id =
+  '<id>'` immediately after the test, or (c) use values that
+  match what the live client would actually compute.
+- Bonus: when feeding time-sensitive numbers into a cache,
+  consider the token-substitution pattern (see "Token-
+  substitution pattern" in Budget Architecture V2). Bakes
+  drift-resistance into the design rather than relying on
+  test discipline.
