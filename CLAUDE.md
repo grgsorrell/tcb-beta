@@ -428,6 +428,26 @@ they aren't rediscovered:
     when a password is changed. Appropriate for a post-compromise
     change flow — not today.
 
+12. **Expense rows need their own D1 table.** Expenses currently live
+    in `campaignBudget.expenses` (localStorage only) — `saveBudget`
+    only persists `total` and `categories` to D1. Consequences:
+      - A user clearing browser cache loses all expense history.
+      - Expenses don't sync across devices for the same user.
+      - Sub-users can't see expenses logged by the owner (or vice
+        versa) on a different device — the per-user permission model
+        breaks down because the data never reaches the workspace.
+      - No FEC-grade audit trail; no aggregate "spent by category"
+        query is possible server-side, blocking analytics, exports,
+        and Sam's Take spent-figures being server-authoritative.
+      - Donations tab integration (matching contributions to
+        expenditures, computing burn rate, etc.) is gated on this.
+    Solution sketch: new `expenses` table with workspace_owner_id
+    scoping + per-row save/delete endpoints (mirroring the pattern
+    item 5 of the redesign already uses for events/tasks/notes/etc).
+    Migrate existing localStorage entries to D1 on first load,
+    flagged via a `tcb_expenses_migrated` localStorage marker.
+    Larger than a checkpoint — separate effort.
+
 ## Anti-Bloat Rule (check before every deploy)
 - System prompt: MUST be under 800 words (currently 623)
 - Rules: MUST be 15 or fewer (currently 15)

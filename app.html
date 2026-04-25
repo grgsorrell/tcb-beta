@@ -1611,7 +1611,10 @@ function saveEvents() {
 }
 function saveBudget() {
   saveState(storageKey('ctb_budget'), campaignBudget);
-  d1Write('/api/budget/save', { budget: { total: campaignBudget.total, categories: JSON.stringify(campaignBudget.categories || {}) } });
+  // Send categories as an object — the worker handles serialization.
+  // Pre-stringifying here was the source of the double-encoded
+  // categories blob in D1; both sides cleaned up in the same commit.
+  d1Write('/api/budget/save', { budget: { total: campaignBudget.total, categories: campaignBudget.categories || {} } });
 }
 // Per-row folder/note save/delete (item #5).
 // saveOneFolder writes the folder metadata only (notes children are

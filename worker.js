@@ -1415,18 +1415,39 @@ export default {
         // Budget is per-workspace. One row keyed to owner's users.id.
         // workspace_owner_id == user_id == owner's id (redundant for
         // consistency with other tables' scoping queries).
+        //
+        // Categories serialization: the client historically pre-stringified
+        // categories before sending, then this endpoint stringified again,
+        // resulting in a double-encoded JSON-string-of-a-string in D1.
+        // Both halves of that bug are being fixed in the same commit:
+        //   - Client now sends the categories OBJECT directly.
+        //   - Worker normalizes: if input is a string (in-flight requests
+        //     from cached old client code), parse it and re-stringify
+        //     cleanly; if object, stringify once. Result is always a
+        //     single-encoded JSON string in the column.
+        let catsRaw = budget.categories;
+        if (typeof catsRaw === 'string') {
+          try { catsRaw = JSON.parse(catsRaw); } catch (e) { catsRaw = {}; }
+        }
+        const categoriesJson = JSON.stringify(catsRaw || {});
+        // NOTE: budget table is keyed on user_id (one row per workspace
+        // owner) and does NOT have a separate workspace_owner_id column.
+        // Earlier code referenced workspace_owner_id in the INSERT — that
+        // was a bug left over from the C5 write refactor and caused
+        // every budget save to fail silently (d1Write is fire-and-forget,
+        // so the SQLITE_ERROR was swallowed). Schema confirmed via PRAGMA:
+        // budget has user_id, total, categories, updated_at, campaign_id.
         await env.DB.prepare(`
-          INSERT INTO budget (user_id, workspace_owner_id, total, categories, updated_at)
-          VALUES (?, ?, ?, ?, datetime('now'))
+          INSERT INTO budget (user_id, total, categories, updated_at)
+          VALUES (?, ?, ?, datetime('now'))
           ON CONFLICT(user_id) DO UPDATE SET
             total = excluded.total,
             categories = excluded.categories,
             updated_at = datetime('now')
         `).bind(
           ctx.ownerId,
-          ctx.ownerId,
           budget.total || 0,
-          JSON.stringify(budget.categories || {})
+          categoriesJson
         ).run();
 
         return jsonResponse({ success: true });
@@ -1452,9 +1473,18 @@ export default {
 
         if (!row) return jsonResponse({ success: true, budget: null });
 
+        // Defensive parse: legacy rows are double-encoded (a JSON string
+        // wrapping another JSON string) due to the old client/worker
+        // both stringifying. Single parse leaves a string; check and
+        // parse again if so. New writes (post-fix) are single-encoded
+        // and the second parse is skipped.
+        let cats = JSON.parse(row.categories || '{}');
+        if (typeof cats === 'string') {
+          try { cats = JSON.parse(cats); } catch (e) { cats = {}; }
+        }
         const budget = {
           total: row.total,
-          categories: JSON.parse(row.categories || '{}'),
+          categories: cats,
           updated_at: row.updated_at
         };
 
@@ -2362,9 +2392,15 @@ export default {
         // Format budget
         let budget = null;
         if (budgetRow) {
+          // Same defensive double-parse as /api/budget/load — handles
+          // legacy double-encoded rows transparently.
+          let cats = JSON.parse(budgetRow.categories || '{}');
+          if (typeof cats === 'string') {
+            try { cats = JSON.parse(cats); } catch (e) { cats = {}; }
+          }
           budget = {
             total: budgetRow.total,
-            categories: JSON.parse(budgetRow.categories || '{}'),
+            categories: cats,
             updated_at: budgetRow.updated_at
           };
         }
