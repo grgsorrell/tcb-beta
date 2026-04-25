@@ -448,6 +448,328 @@ they aren't rediscovered:
     flagged via a `tcb_expenses_migrated` localStorage marker.
     Larger than a checkpoint — separate effort.
 
+## Budget Architecture V2
+
+The Budget tab was rebuilt 2026-04-25 (six-checkpoint sequence
+CP1–CP6, plus CP3.5 for custom-category support). This section
+documents the post-rebuild architecture.
+
+### Tab structure
+
+Three tabs: **Overview** / **Donations** / **Compliance** (down
+from four; the legacy Finance Setup tab was folded into Overview's
+right-column accordion).
+
+### Unified Overview tab — two-column layout
+
+`.bud-grid` is a `1.4fr / 1fr` CSS grid that collapses to a single
+column under 980px. Implemented in `renderTabBudget(t)` which
+composes the layout from per-section helpers; no monolithic render.
+
+**Left column (1.4fr):**
+1. `renderBudgetMetricCards(t)` — three compact cards: Total
+   Reserve, Spent to Date, Available Balance.
+2. `renderBudgetActionRow(t)` — Audit Status badge (PASS / OVER
+   BUDGET) + Adjust Budget + + Expense + + Contribution buttons.
+   Write buttons gated behind `canEdit('budget')`; sub-users with
+   `budget=read` see only the Audit badge.
+3. `renderAllocationsPanelV2(t)` — scrollable allocations list
+   (max-height 380px, internal `overflow-y`). Per-row three-state
+   progress bar:
+   - Under budget: single gold fill at `(spent/allocated)*100%`.
+   - At budget: same, capped at 100%.
+   - **Over budget:** two-segment bar — gold at
+     `(allocated/spent)*100%`, red at
+     `((spent-allocated)/spent)*100%`. Header right reads "⚠ OVER
+     BUDGET" red; footer "$X over" red.
+   - Unbudgeted-spent (legacy edge): full-red bar.
+   Row order: canonical 9 (DEFAULT_CATEGORIES order) → custom
+   (alpha by displayName) → `_uncategorized` last → stray legacy
+   keys appended (defensive). Bottom totals row: Budgeted / Spent
+   / Available.
+4. `renderRecentDisbursementsPanel()` — existing transaction list,
+   uses `getCategoryLabel` for badge text.
+
+**Right column (1fr):**
+1. `renderSamsTakePanel(state)` — coaching paragraph backed by
+   `/api/budget/sams-take`. Three render states: `loading`
+   (mb-shimmer skeleton), `content` (paragraph + relative
+   timestamp + refresh button), `error` (friendly retry).
+   Refresh button enabled iff `Date.now() >=
+   nextRefreshAvailableAt`; otherwise disabled with copy
+   "↻ Refresh available tomorrow".
+2. `renderReferenceAccordion(financeData)` — three native
+   `<details>`/`<summary>` sections (collapsed by default,
+   multi-open allowed):
+   - 📊 Recommended allocation logic
+   - 📈 Fundraising timeline
+   - ⚠ Common mistakes to avoid
+   Content sourced from `ctb_finance_setup` localStorage cache via
+   `populateBudgetReference` → `fetchBudgetReferenceData` (same
+   prompt the deprecated Finance Setup tab used; cache key
+   matches, so transition didn't burn extra Anthropic spend).
+3. `renderQuickActions()` — two buttons (gated: returns `''` if
+   `!canEdit('budget')`, hiding the panel entirely for read-only
+   sub-users):
+   - "Apply recommended allocation →" → fill-empties-only flow
+     (see contract below).
+   - "Ask Sam about my budget →" → opens Sam panel + focuses
+     empty input.
+
+### Canonical 9 categories
+
+Stable keys + labels in `DEFAULT_CATEGORIES`:
+
+| key | label |
+|---|---|
+| `digital` | Digital Advertising |
+| `mail` | Direct Mail |
+| `fieldOps` | Field Operations & Canvassing |
+| `staff` | Campaign Staff & Operations |
+| `mediaEarned` | Media & Earned Coverage |
+| `events` | Events & Community Engagement |
+| `polling` | Polling & Research |
+| `compliance` | Compliance & Legal |
+| `reserve` | Reserve Fund |
+
+Plus `_uncategorized` as a parking bucket for ambiguous legacy
+entries (see V2 migration below). Labels are pulled from
+`DEFAULT_CATEGORIES` directly — never overridden by per-row
+`label` fields, so a Sam-emitted variant can't overwrite the
+canonical name.
+
+### Custom category extension
+
+Candidates can create their own categories beyond the canonical
+9 (e.g., "Religious Outreach", "Video Production"). Stored
+inline in the same `categories` object with three optional
+fields:
+
+```js
+custom_religious_outreach: {
+  isCustom: true,
+  displayName: "Religious Outreach",
+  allocated: 0,
+  createdAt: "2026-04-25T..."
+}
+```
+
+- Internal key prefixed `custom_` — distinguishes structurally
+  and prevents collision with canonical adds.
+- Key generation (`generateCustomCategoryKey`): slug input,
+  `custom_` prefix, `_2/_3/…` suffix on collision.
+- Validation (`validateCustomCategoryName`): 2–40 chars,
+  case-insensitive uniqueness against canonical labels AND
+  existing custom displayNames. `excludingKey` parameter enables
+  no-op rename.
+- Label resolution: `getCategoryLabel(key, c)` is the single
+  source of truth — canonical → `DEFAULT_CATEGORIES[k].label`;
+  custom → `c.displayName`; `_uncategorized` → `"Uncategorized"`;
+  fallback → key.
+- Add Expense modal: `renderCategoryDropdownOptions` builds
+  optgroup'd `<option>` HTML (Recommended / Custom / "+ Add new
+  category" sentinel `__add_new__`). Sentinel only renders when
+  `canEdit('budget')`.
+- Inline create form: triggered by selecting `__add_new__`,
+  swaps the dropdown row for a name input; cancels via
+  `closeInlineCategoryForm(null)` reverts dropdown to last
+  legitimate selection.
+- Edit (rename): pencil icon on custom rows; replaces row's
+  `.bud-cat-name` span with input + Save/Cancel; internal key
+  stable, only `displayName` changes (so existing expenses keep
+  their `.category` reference).
+- Delete: X icon on custom rows. Branches:
+  - Clean (alloc=0, spent=0, no expenses): simple confirm modal.
+  - Blocked (any non-zero): blocking modal listing the issues.
+    "Reassign expenses" button only when expenses > 0; allocation
+    must be cleared via Adjust Budget separately.
+- Reassignment flow (`openReassignExpensesModal`): per-expense
+  destination dropdowns + bulk "Reassign all to..." control.
+  Destination options exclude the source key. Source category
+  is NOT auto-deleted after reassignment — user retries delete.
+- Visual indicator: muted-gray lowercase `custom` pill in the
+  row header (`.bud-cat-pill-custom`). Distinct from gold
+  uppercase `NEEDS RECATEGORIZATION` — informational, not
+  warning.
+- Edit/delete icon visibility: always-visible at 0.4 opacity,
+  boosted to 0.85 on row hover, 1.0 on icon hover. Hover-only
+  felt undiscoverable.
+
+### Sam's Take cache (workspace-scoped, 24h TTL)
+
+D1 schema: `budget_sams_take` table.
+
+```sql
+CREATE TABLE budget_sams_take (
+  workspace_owner_id TEXT PRIMARY KEY,
+  campaign_id        TEXT,
+  content            TEXT NOT NULL,
+  generated_at       TEXT NOT NULL,
+  budget_snapshot    TEXT
+);
+```
+
+PK on `workspace_owner_id` — one row per workspace, shared by
+owner and all sub-users. Cache TTL enforced server-side: 24h
+since `generated_at`. `budget_snapshot` is the audit trail of
+inputs that produced each generation (not used for serving;
+useful for debugging "did Sam see the right numbers?").
+
+### `/api/budget/sams-take` endpoint contract
+
+`POST /api/budget/sams-take`
+
+Request body:
+```js
+{
+  campaign_id?: string,
+  forceRefresh?: boolean,
+  budgetSnapshot: {
+    total: number,
+    raisedSoFar: number,
+    daysToElection: number | null,
+    categories: { [key]: {
+      label: string,
+      allocated: number,
+      spent: number,
+      isCustom?: boolean,        // tagged in prompt for rule 6
+      displayName?: string       // used as the name Sam references
+    }}
+  }
+}
+```
+
+Response shape:
+```js
+{
+  success: true,
+  content: string,                    // 3–4 sentence paragraph
+  generatedAt: string (ISO),
+  fromCache: boolean,
+  nextRefreshAvailableAt: string (ISO)
+}
+```
+
+Auth gate: `budget/read` (sub-users with read can view; refresh
+button is rate-limited by the 24h cache regardless of caller).
+Costs are tagged `feature='sams_take_anthropic'` with
+`workspace_owner_id` for billing attribution. Logged via the
+shared `logApiUsage` helper.
+
+System prompt rules (factual discipline):
+1. Every dollar amount must come from input data; no fabricated
+   peer benchmarks or competitor figures.
+2. No alarmism — calm, professional tone.
+3. Acknowledge what's working before pointing at problems.
+4. Cite at least one specific category by name.
+5. End with one concrete next action.
+6. **Custom categories** are tagged "(custom)" in the data
+   block; Sam references them by displayName, treats them with
+   equal commentary weight as canonical, but DOES NOT cite
+   planning-range percentages for them (no peer benchmark
+   exists for user-defined buckets).
+
+### Apply Recommended Allocation contract (fill-empties-only)
+
+`applyRecommendedAllocationConfirm` → confirm modal →
+`applyRecommendedAllocationConfirmed`. Three layers of
+defense against contract drift:
+
+1. Skip if `key` is unmapped (don't write into `_uncategorized`
+   from this flow).
+2. Skip if `key.indexOf('custom_') === 0` — never touch user-
+   defined categories.
+3. Skip if `!DEFAULT_CATEGORIES[key]` — canonical-only.
+
+Within the canonical 9: skip if `allocated > 0` (fill empties
+only, never overwrite a manual allocation). Sets `allocated =
+round(total × pct / 100)`, pins `label` to
+`DEFAULT_CATEGORIES[key].label`. Sam's Take is NOT
+auto-refreshed on apply — daily cache stays in effect.
+
+### Permission gating
+
+| Tab/action | `budget=read` (sub-user) | `budget=full` |
+|---|---|---|
+| View Overview tab + bars | yes | yes |
+| Sam's Take panel (read content) | yes | yes |
+| Reference accordion | yes | yes |
+| Adjust Budget / + Expense / + Contribution | hidden | yes |
+| + Add new category | hidden | yes |
+| Edit / Delete custom row | icons hidden | yes |
+| Quick Actions panel | entirely hidden | yes |
+
+`canEdit('budget')` is checked at every render site AND at the
+top of every write handler (defense in depth — gates can't be
+bypassed via stale state).
+
+### V2 category remap table
+
+Migration runs once per browser, gated on
+`tcb_budget_migrated_v2` localStorage flag. Three pre-V2
+schemas existed in the wild:
+
+| Schema | Where | Keys |
+|---|---|---|
+| A | old `DEFAULT_CATEGORIES` constant | digital, mail, broadcast, polling, fieldOps, fundraisingCompliance, consulting, reserveFund, signs, events, staffing, compliance, misc (13) |
+| B | live D1 budget JSON | mail, signs, digital, field, compliance, reserve (6, with emoji labels) |
+| C | Sam's Finance Setup output | variable per race |
+
+Remap in `CATEGORY_KEY_MAP`:
+
+| Old key/label | New key | Rule |
+|---|---|---|
+| digital, "Digital Advertising", "Digital Ads", "📱 Digital Ads" | `digital` | clean |
+| mail, "Direct Mail", "📬 Direct Mail" | `mail` | clean |
+| fieldOps, field, "Field Operations & Grassroots", "Field/Canvassing", "🚪 Field/Canvassing" | `fieldOps` | clean |
+| broadcast, "Broadcast Television" | `mediaEarned` | promotion |
+| polling, "Polling & Research" | `polling` | clean |
+| staffing, "Staffing", "Campaign Staff" | `staff` | clean |
+| events, "Events" | `events` | clean |
+| compliance, "Compliance/Legal", "Compliance/Admin", "📋 Compliance/Admin" | `compliance` | clean |
+| reserveFund, reserve, "Reserve Fund", "💼 Reserve Fund" | `reserve` | clean |
+| **signs, "Signs & Materials", "🪧 Yard Signs"** | `fieldOps` | **auto-map (signs roll into field operations)** |
+| **consulting, "Consulting & Production"** | `staff` | **auto-map (consulting + in-house roll to staff)** |
+| **fundraisingCompliance, "Fundraising & Compliance"** | `compliance` | **auto-map (compliance bucket absorbs both)** |
+| misc, "Miscellaneous", "Other" | (parked) | drops to `_uncategorized`; user prompted to recategorize |
+
+Migration surfaces a one-time toast naming the largest move
+and any parked-dollar amount. Subsequent loads hit a defensive
+branch that just ensures all 9 canonical keys exist (covers
+localStorage wipe + D1 resync).
+
+### Bugs fixed during the V2 refactor (don't reintroduce)
+
+1. **Double-stringified `categories` blob in D1.** Client was
+   `JSON.stringify`'ing categories before sending; worker
+   `JSON.stringify`'d again. D1 stored a string-of-a-string;
+   single read parse left a string. **Fix:** client sends the
+   object directly; worker normalizes (parses if string,
+   stringifies once). Defensive double-parse on read paths
+   handles legacy rows.
+
+2. **`/api/budget/save` INSERT referenced nonexistent column
+   `workspace_owner_id`.** The C5 write refactor (commit
+   `76ade47`) added it to the column list, but the budget
+   table schema only has `user_id` (one row per workspace
+   owner — by design). Every save since C5 had been throwing
+   SQLITE_ERROR silently because `d1Write` is fire-and-forget.
+   **Fix:** dropped the column from the INSERT. Schema unchanged;
+   PK stays `user_id`.
+
+3. **`confirmApplyAllocations` reset all categories to 0,
+   including custom.** Pre-CP3.5 behavior. **Fix (locked
+   defensively in 3.5c before CP5 wired it up):** skip rows
+   with `cat.isCustom === true` and `_uncategorized`. Apply
+   Recommended is canonical-only.
+
+4. **`uncategorized` (no underscore) and `_uncategorized` (with
+   underscore) coexisted as parking buckets.** Pre-V2
+   inconsistency. **Fix:** migration normalizes everything to
+   `_uncategorized`; the new Add Expense dropdown removed the
+   "Uncategorized" option entirely (parking bucket only,
+   not a destination for new expenses).
+
 ## Anti-Bloat Rule (check before every deploy)
 - System prompt: MUST be under 800 words (currently 623)
 - Rules: MUST be 15 or fewer (currently 15)
