@@ -3143,56 +3143,242 @@ try { contributions = JSON.parse(localStorage.getItem(storageKey('ctb_contributi
 // now uses saveOneContribution, which has no shadow risk.)
 
 // Migrate old budget format
+// ============================================================
+// CANONICAL BUDGET CATEGORY SCHEMA (Budget Redesign V2)
+// ============================================================
+// Nine fixed category keys + labels matching the V2 mockup.
+// Race-tailored allocations (from Sam's race profile output) layer
+// recommended PERCENTAGES on top of these stable keys; the keys
+// themselves don't vary by race type.
+//
+// Tenth bucket _uncategorized is reserved for migration parking —
+// allocations or expenses we couldn't confidently remap from the
+// legacy schemas (mostly old "Miscellaneous" entries). Surfaced in
+// the UI with a "needs categorization" flag.
+//
+// Three legacy schemas existed before V2:
+//   A — DEFAULT_CATEGORIES code constant: 13 keys (digital, mail,
+//       broadcast, polling, fieldOps, fundraisingCompliance,
+//       consulting, reserveFund, signs, events, staffing,
+//       compliance, misc)
+//   B — Live D1 budget data: 6 short keys (mail, signs, digital,
+//       field, compliance, reserve) with emoji labels
+//   C — Sam's Finance Setup race-tailored output: variable per race
+// CATEGORY_KEY_MAP below catches all of them.
 var DEFAULT_CATEGORIES = {
-  digital:{label:'Digital Advertising',allocated:0}, mail:{label:'Direct Mail',allocated:0},
-  broadcast:{label:'Broadcast Television',allocated:0}, polling:{label:'Polling & Research',allocated:0},
-  fieldOps:{label:'Field Operations & Grassroots',allocated:0}, fundraisingCompliance:{label:'Fundraising & Compliance',allocated:0},
-  consulting:{label:'Consulting & Production',allocated:0}, reserveFund:{label:'Reserve Fund',allocated:0},
-  signs:{label:'Signs & Materials',allocated:0}, events:{label:'Events',allocated:0},
-  staffing:{label:'Staffing',allocated:0}, compliance:{label:'Compliance/Legal',allocated:0}, misc:{label:'Miscellaneous',allocated:0}
+  digital:     { label: 'Digital Advertising',           allocated: 0 },
+  mail:        { label: 'Direct Mail',                   allocated: 0 },
+  fieldOps:    { label: 'Field Operations & Canvassing', allocated: 0 },
+  staff:       { label: 'Campaign Staff & Operations',   allocated: 0 },
+  mediaEarned: { label: 'Media & Earned Coverage',       allocated: 0 },
+  events:      { label: 'Events & Community Engagement', allocated: 0 },
+  polling:     { label: 'Polling & Research',            allocated: 0 },
+  compliance:  { label: 'Compliance & Legal',            allocated: 0 },
+  reserve:     { label: 'Reserve Fund',                  allocated: 0 }
 };
+// Map of every legacy key/label seen in the wild → canonical key.
+// Anything not listed here parks as _uncategorized during migration.
+//
+// Auto-map decisions confirmed 2026-04-25:
+//   signs / "Signs & Materials" / "Yard Signs"     → fieldOps   (with toast)
+//   consulting / "Consulting & Production"         → staff      (with toast)
+//   fundraisingCompliance / "Fundraising & ..."    → compliance (with toast)
+//   misc / "Miscellaneous" / "Other"               → _uncategorized (parked, toast asks user to recategorize)
 var CATEGORY_KEY_MAP = {
-  'Digital Advertising':'digital','Digital Ads':'digital','Direct Mail':'mail',
-  'Broadcast Television':'broadcast','Polling & Research':'polling','Polling':'polling',
-  'Field Operations & Grassroots':'fieldOps','Field Operations':'fieldOps',
-  'Fundraising & Compliance':'fundraisingCompliance','Fundraising':'fundraisingCompliance',
-  'Consulting & Production':'consulting','Consulting':'consulting',
-  'Reserve Fund':'reserveFund','Reserve':'reserveFund',
-  'Signs & Materials':'signs','Signs':'signs','Events':'events','Staffing':'staffing',
-  'Compliance/Legal':'compliance','Compliance':'compliance','Miscellaneous':'misc','Other':'misc'
+  // Canonical labels (what Sam's race-tailored output uses)
+  'Digital Advertising':'digital', 'Direct Mail':'mail',
+  'Field Operations & Canvassing':'fieldOps',
+  'Campaign Staff & Operations':'staff',
+  'Media & Earned Coverage':'mediaEarned',
+  'Events & Community Engagement':'events',
+  'Polling & Research':'polling',
+  'Compliance & Legal':'compliance',
+  'Reserve Fund':'reserve',
+  // Schema A keys (DEFAULT_CATEGORIES from before V2)
+  digital:'digital', mail:'mail',
+  broadcast:'mediaEarned',
+  polling:'polling',
+  fieldOps:'fieldOps',
+  fundraisingCompliance:'compliance', // auto-map: compliance bucket absorbs both fundraising+compliance
+  consulting:'staff',                 // auto-map: in-house & consulting both roll to staff bucket
+  reserveFund:'reserve',
+  signs:'fieldOps',                   // auto-map: signs & materials roll into field
+  events:'events',
+  staffing:'staff',
+  compliance:'compliance',
+  // misc: deliberately NOT mapped — falls through to _uncategorized parking
+  // Schema B keys (live D1 short keys)
+  field:'fieldOps',
+  reserve:'reserve',
+  // Schema A labels (long-form names)
+  'Digital Ads':'digital',
+  'Broadcast Television':'mediaEarned',
+  'Polling':'polling',
+  'Field Operations':'fieldOps',
+  'Field Operations & Grassroots':'fieldOps',
+  'Field/Canvassing':'fieldOps',
+  '🚪 Field/Canvassing':'fieldOps',
+  'Fundraising & Compliance':'compliance',
+  'Fundraising':'compliance',
+  'Consulting & Production':'staff',
+  'Consulting':'staff',
+  'Reserve':'reserve',
+  '💼 Reserve Fund':'reserve',
+  'Signs & Materials':'fieldOps',
+  'Signs':'fieldOps',
+  'Yard Signs':'fieldOps',
+  '🪧 Yard Signs':'fieldOps',
+  'Events':'events',
+  'Staffing':'staff',
+  'Campaign Staff':'staff',
+  'Compliance/Legal':'compliance',
+  'Compliance':'compliance',
+  'Compliance/Admin':'compliance',
+  '📋 Compliance/Admin':'compliance',
+  '📬 Direct Mail':'mail',
+  '📱 Digital Ads':'digital'
+  // 'Miscellaneous' / 'Other' / 'misc' deliberately omitted — park
 };
-(function migrateBudget() {
+
+// One-time toast helper — fires after migrateBudgetV2 if anything
+// material moved buckets. Stays visible long enough to read; only
+// runs the first time a user loads the V2 schema (gated by the
+// tcb_budget_migrated_v2 localStorage flag in the migration IIFE).
+function showBudgetMigrationToast(stats) {
+  var movedLine = '';
+  if (stats.autoMapped > 0) {
+    var ex = stats.examples.find(function(x){ return x.to !== 'Uncategorized'; });
+    movedLine = stats.autoMapped + ' allocation' + (stats.autoMapped===1?'':'s') + ' remapped' +
+      (ex ? ' (e.g., "'+ex.from+'" → "'+ex.to+'")' : '') + '.';
+  }
+  var parkedLine = '';
+  if (stats.parked > 0 || stats.expenseParked > 0) {
+    var dollars = stats.parkedDollars || 0;
+    var n = (stats.parked||0) + (stats.expenseParked||0);
+    parkedLine = n + ' item' + (n===1?'':'s') +
+      (dollars > 0 ? ' ($' + dollars.toLocaleString() + ')' : '') +
+      ' parked as "Uncategorized" — please recategorize from the Budget tab.';
+  }
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:rgba(212,165,116,.14);border:1px solid rgba(212,165,116,.45);color:var(--gold);padding:13px 20px;border-radius:8px;font-size:12px;line-height:1.55;font-weight:500;z-index:9000;box-shadow:0 4px 16px rgba(0,0,0,.4);max-width:520px;';
+  var html = '<div style="font-weight:700;margin-bottom:4px">📊 Budget categories updated</div>' +
+    '<div style="color:var(--t2)">Your budget moved to a new 9-category structure.</div>';
+  if (movedLine) html += '<div style="color:var(--t2);margin-top:4px">' + movedLine + '</div>';
+  if (parkedLine) html += '<div style="color:var(--t2);margin-top:4px">' + parkedLine + '</div>';
+  toast.innerHTML = html;
+  document.body.appendChild(toast);
+  setTimeout(function(){
+    toast.style.transition = 'opacity .4s';
+    toast.style.opacity = '0';
+    setTimeout(function(){ toast.remove(); }, 400);
+  }, 14000);
+}
+
+(function migrateBudgetV2() {
+  // Initialize startingAmount/fundraisingGoal if missing (legacy guard).
   if (campaignBudget.total > 0 && !campaignBudget.startingAmount && campaignBudget.startingAmount !== 0) {
     campaignBudget.startingAmount = 0;
     campaignBudget.fundraisingGoal = 0;
   }
-  // Migrate old keys (full names or old short keys) into normalized keys
-  var oldCats = campaignBudget.categories || {};
-  var merged = {};
-  // Start with defaults
-  Object.keys(DEFAULT_CATEGORIES).forEach(function(k) { merged[k] = { label: DEFAULT_CATEGORIES[k].label, allocated: 0 }; });
-  // Merge saved allocations
-  Object.keys(oldCats).forEach(function(k) {
-    var c = oldCats[k];
-    var normalKey = CATEGORY_KEY_MAP[k] || CATEGORY_KEY_MAP[c.label] || k;
-    if (merged[normalKey]) {
-      merged[normalKey].allocated = Math.max(merged[normalKey].allocated, c.allocated || 0);
-    } else if (DEFAULT_CATEGORIES[k]) {
-      merged[k] = { label: DEFAULT_CATEGORIES[k].label, allocated: c.allocated || 0 };
-    } else {
-      merged[normalKey] = { label: c.label || k, allocated: c.allocated || 0 };
+
+  var alreadyMigrated = localStorage.getItem('tcb_budget_migrated_v2') === '1';
+
+  // Already migrated: defensively ensure all canonical keys exist
+  // (covers the case where a user's localStorage was wiped + re-synced
+  // from D1 after migration ran on this device previously). No remap,
+  // no toast, no flag mutation.
+  if (alreadyMigrated) {
+    var fresh = {};
+    Object.keys(DEFAULT_CATEGORIES).forEach(function(k) {
+      var prev = (campaignBudget.categories || {})[k];
+      fresh[k] = prev && typeof prev === 'object'
+        ? { label: DEFAULT_CATEGORIES[k].label, allocated: prev.allocated || 0 }
+        : { label: DEFAULT_CATEGORIES[k].label, allocated: 0 };
+    });
+    if (campaignBudget.categories && campaignBudget.categories._uncategorized) {
+      fresh._uncategorized = campaignBudget.categories._uncategorized;
     }
+    campaignBudget.categories = fresh;
+    return;
+  }
+
+  // First-time migration. Build new categories object from old.
+  var oldCats = campaignBudget.categories || {};
+  var newCats = {};
+  Object.keys(DEFAULT_CATEGORIES).forEach(function(k) {
+    newCats[k] = { label: DEFAULT_CATEGORIES[k].label, allocated: 0 };
   });
-  campaignBudget.categories = merged;
-  // Migrate expenses missing category
-  if (campaignBudget.expenses) {
+
+  var stats = {
+    autoMapped: 0, parked: 0,
+    movedDollars: 0, parkedDollars: 0,
+    expenseRemapped: 0, expenseParked: 0,
+    expenseByTarget: {},
+    examples: []
+  };
+
+  Object.keys(oldCats).forEach(function(oldKey) {
+    var oldEntry = oldCats[oldKey] || {};
+    var oldLabel = oldEntry.label || oldKey;
+    var oldAllocated = oldEntry.allocated || 0;
+    var targetKey = CATEGORY_KEY_MAP[oldKey] || CATEGORY_KEY_MAP[oldLabel] || null;
+
+    if (targetKey && DEFAULT_CATEGORIES[targetKey]) {
+      newCats[targetKey].allocated += oldAllocated;
+      if (targetKey !== oldKey && oldAllocated > 0) {
+        stats.autoMapped++;
+        stats.movedDollars += oldAllocated;
+        if (stats.examples.length < 5) {
+          stats.examples.push({ from: oldLabel, to: DEFAULT_CATEGORIES[targetKey].label, amount: oldAllocated });
+        }
+      }
+    } else if (oldAllocated > 0) {
+      // Park as uncategorized — only when there's something to park, so
+      // legacy $0 entries (e.g. greg's empty 'misc') just drop quietly
+      // instead of leaving a stub _uncategorized=$0 row in the data.
+      if (!newCats._uncategorized) newCats._uncategorized = { label: 'Uncategorized', allocated: 0 };
+      newCats._uncategorized.allocated += oldAllocated;
+      stats.parked++;
+      stats.parkedDollars += oldAllocated;
+      if (stats.examples.length < 5) {
+        stats.examples.push({ from: oldLabel, to: 'Uncategorized', amount: oldAllocated });
+      }
+    }
+    // else: legacy key with $0 — drop, nothing to migrate.
+  });
+
+  campaignBudget.categories = newCats;
+
+  // Remap expenses with the same rules. Expenses live in
+  // campaignBudget.expenses (localStorage only — no D1 sync today).
+  if (campaignBudget.expenses && Array.isArray(campaignBudget.expenses)) {
     campaignBudget.expenses.forEach(function(e) {
-      if (!e.category) e.category = 'misc';
-      // Normalize old category names to keys
-      if (CATEGORY_KEY_MAP[e.category]) e.category = CATEGORY_KEY_MAP[e.category];
+      var oldCat = e.category || 'misc';
+      var oldLabel = e.categoryLabel || oldCat;
+      var targetKey = CATEGORY_KEY_MAP[oldCat] || CATEGORY_KEY_MAP[oldLabel] || null;
+      if (targetKey && DEFAULT_CATEGORIES[targetKey]) {
+        if (targetKey !== oldCat) stats.expenseRemapped++;
+        e.category = targetKey;
+        e.categoryLabel = DEFAULT_CATEGORIES[targetKey].label;
+      } else {
+        e.category = '_uncategorized';
+        e.categoryLabel = 'Uncategorized';
+        stats.expenseParked++;
+      }
+      stats.expenseByTarget[e.category] = (stats.expenseByTarget[e.category] || 0) + 1;
     });
   }
+
   saveBudget();
+  localStorage.setItem('tcb_budget_migrated_v2', '1');
+
+  console.log('[Budget v2] Migration complete', stats);
+
+  var changed = stats.autoMapped > 0 || stats.parked > 0 ||
+                stats.expenseRemapped > 0 || stats.expenseParked > 0;
+  if (changed) {
+    setTimeout(function(){ showBudgetMigrationToast(stats); }, 800);
+  }
 })();
 
 function getBudgetTotals() {
@@ -3550,10 +3736,14 @@ function confirmApplyAllocations() {
       var pct = parseFloat(inp.value) || 0;
       var a = sourceAllocs[i];
       if (!a) return;
-      var key = CATEGORY_KEY_MAP[a.category] || 'misc';
-      if (!campaignBudget.categories[key]) campaignBudget.categories[key] = { allocated:0, label: a.category };
+      // Allocations from a Sam-generated label that doesn't match the
+      // canonical 9 fall into _uncategorized so the user can review.
+      var key = CATEGORY_KEY_MAP[a.category] || '_uncategorized';
+      if (!campaignBudget.categories[key]) campaignBudget.categories[key] = { allocated:0, label: (key === '_uncategorized' ? 'Uncategorized' : a.category) };
       campaignBudget.categories[key].allocated = Math.round(total * pct / 100);
-      campaignBudget.categories[key].label = a.category;
+      // Preserve canonical label — don't let an unfamiliar Sam label
+      // overwrite "Field Operations & Canvassing" etc.
+      if (DEFAULT_CATEGORIES[key]) campaignBudget.categories[key].label = DEFAULT_CATEGORIES[key].label;
     });
     saveBudget();
     var overlay = document.getElementById('alloc-modal-overlay');
