@@ -3544,8 +3544,12 @@ function renderBudgetView() {
   var tc = document.getElementById('budget-tab-content');
   if (budgetTab === 'budget') {
     tc.innerHTML = renderTabBudget(t);
-    // Kick off the race-tailored content fetch (used by the right-column
-    // reference accordion). Re-renders accordion when data lands.
+    // Kick off async fetches for the two right-column panels:
+    //   - Sam's Take (24h-cached coaching paragraph)
+    //   - Reference accordion (race-tailored allocation guide)
+    // Both render their own loading states; the panels above on
+    // the left don't wait on either.
+    setTimeout(function() { loadSamsTake(false); }, 0);
     setTimeout(populateBudgetReference, 0);
   }
   else if (budgetTab === 'donations') tc.innerHTML = renderTabDonations(t);
@@ -3680,7 +3684,7 @@ function renderTabBudget(t) {
              renderRecentDisbursementsPanel() +
            '</div>' +
            '<div>' +
-             '<div id="bud-samstake-mount">' + renderSamsTakePanelStub() + '</div>' +
+             '<div id="bud-samstake-mount">' + renderSamsTakePanel({ mode: 'loading' }) + '</div>' +
              '<div id="bud-reference-mount" style="margin-top:14px">' + renderReferenceAccordion(null) + '</div>' +
              '<div style="margin-top:14px">' + renderQuickActionsStub() + '</div>' +
            '</div>' +
@@ -3894,18 +3898,167 @@ function renderRecentDisbursementsPanel() {
     '<div style="background:linear-gradient(180deg,rgba(36,42,58,.3),rgba(21,27,43,.4));border-radius:6px;padding:4px 14px;box-shadow:inset 0 1px 1px rgba(255,255,255,.03)">' + txnHtml + '</div>';
 }
 
-// Sam's Take Today — placeholder, wired to /api/budget/sams-take in
-// checkpoint 4. Renders a static loading state so the right column
-// has visual presence without a real fetch yet.
-function renderSamsTakePanelStub() {
+// ----- Sam's Take Today panel -----
+//
+// Renders the right-column coaching paragraph backed by
+// /api/budget/sams-take. The panel has three render states
+// driven by a {mode, ...} state object:
+//   - 'loading'  : shimmer skeleton + "Sam is reading your budget…"
+//   - 'content'  : paragraph + timestamp + refresh button
+//                  (button enabled iff cached generation is 24h+ old)
+//   - 'error'    : friendly fallback + retry button
+//
+// loadSamsTake(forceRefresh) drives the lifecycle: render loading,
+// fetch, render content/error. Called on initial Overview render
+// and on refresh-button click. The 24h cache lives server-side, so
+// repeat reloads within the window cost nothing (verified in CP1).
+
+function renderSamsTakePanel(state) {
+  state = state || {};
+  if (state.mode === 'loading') {
+    return '<div class="bud-samstake">' +
+      '<div class="bud-samstake-head">' +
+        '<div class="bud-samstake-title"><span style="font-style:normal">\uD83D\uDCA1</span>Sam\u2019s Take Today</div>' +
+        '<div class="bud-samstake-stamp">reading\u2026</div>' +
+      '</div>' +
+      '<div class="bud-samstake-body placeholder" style="font-style:normal">' +
+        '<div class="mb-shimmer" style="width:92%;margin-bottom:6px"></div>' +
+        '<div class="mb-shimmer" style="width:100%;margin-bottom:6px"></div>' +
+        '<div class="mb-shimmer" style="width:78%;margin-bottom:6px"></div>' +
+        '<div class="mb-shimmer" style="width:64%"></div>' +
+      '</div>' +
+      '<button class="bud-samstake-refresh" disabled>\u21BB Sam is reading your budget\u2026</button>' +
+    '</div>';
+  }
+  if (state.mode === 'error') {
+    return '<div class="bud-samstake">' +
+      '<div class="bud-samstake-head">' +
+        '<div class="bud-samstake-title"><span style="font-style:normal">\uD83D\uDCA1</span>Sam\u2019s Take Today</div>' +
+        '<div class="bud-samstake-stamp" style="color:var(--red)">unavailable</div>' +
+      '</div>' +
+      '<div class="bud-samstake-body" style="color:var(--t2)">Sam\u2019s Take is taking a moment \u2014 try refreshing in a bit.</div>' +
+      '<button class="bud-samstake-refresh" onclick="loadSamsTake(false)">\u21BB Try again</button>' +
+    '</div>';
+  }
+  // mode === 'content'
+  var stamp = formatSamsTakeStamp(state.generatedAt);
+  var canRefresh = canRefreshSamsTake(state.nextRefreshAvailableAt);
+  var btn = canRefresh
+    ? '<button class="bud-samstake-refresh" onclick="loadSamsTake(true)">\u21BB Refresh</button>'
+    : '<button class="bud-samstake-refresh" disabled title="Refreshes once per day to keep coaching focused">\u21BB Refresh available tomorrow</button>';
   return '<div class="bud-samstake">' +
     '<div class="bud-samstake-head">' +
       '<div class="bud-samstake-title"><span style="font-style:normal">\uD83D\uDCA1</span>Sam\u2019s Take Today</div>' +
-      '<div class="bud-samstake-stamp">loading\u2026</div>' +
+      '<div class="bud-samstake-stamp">' + escapeHtml(stamp) + '</div>' +
     '</div>' +
-    '<div class="bud-samstake-body placeholder">Sam\u2019s budget coaching will appear here. (Wiring lands in the next checkpoint — for now this panel is a placeholder.)</div>' +
-    '<button class="bud-samstake-refresh" disabled>\u21BB Refresh</button>' +
+    '<div class="bud-samstake-body">' + escapeHtml(state.content || '').replace(/\n/g, '<br>') + '</div>' +
+    btn +
   '</div>';
+}
+
+function formatSamsTakeStamp(iso) {
+  if (!iso) return 'just now';
+  var t = Date.parse(iso);
+  if (isNaN(t)) return '';
+  var ageMs = Date.now() - t;
+  var minutes = Math.floor(ageMs / 60000);
+  var hours = Math.floor(ageMs / 3600000);
+  if (minutes < 5) return 'refreshed just now';
+  if (hours < 1) return 'refreshed ' + minutes + ' min ago';
+  if (hours < 24) return 'refreshed ' + hours + 'h ago';
+  var days = Math.floor(hours / 24);
+  return 'refreshed ' + days + ' day' + (days === 1 ? '' : 's') + ' ago';
+}
+
+function canRefreshSamsTake(nextIso) {
+  if (!nextIso) return false;
+  var t = Date.parse(nextIso);
+  return !isNaN(t) && Date.now() >= t;
+}
+
+// Build the snapshot the worker prompt is fed. Categories include
+// allocated + spent + isCustom + displayName so the system prompt's
+// "(custom)" inline tag and rule 6 can work correctly. Spent is
+// computed client-side from campaignBudget.expenses (still
+// localStorage-only — see CLAUDE.md hardening item 12).
+function buildSamsTakeSnapshot() {
+  var cats = campaignBudget.categories || {};
+  var snapCats = {};
+  Object.keys(cats).forEach(function(k) {
+    var c = cats[k];
+    if (!c) return;
+    snapCats[k] = {
+      label: getCategoryLabel(k, c),
+      allocated: c.allocated || 0,
+      spent: getSpentByCategory(k)
+    };
+    if (c.isCustom === true) {
+      snapCats[k].isCustom = true;
+      snapCats[k].displayName = c.displayName || k;
+    }
+  });
+  var raised = (typeof contributions !== 'undefined' && contributions)
+    ? contributions.reduce(function(s, c){ return s + (c.amount || 0); }, 0)
+    : 0;
+  var days = (typeof calcDaysToElection === 'function') ? calcDaysToElection() : null;
+  return {
+    total: campaignBudget.total || 0,
+    raisedSoFar: raised,
+    daysToElection: days,
+    categories: snapCats
+  };
+}
+
+function loadSamsTake(forceRefresh) {
+  var mount = document.getElementById('bud-samstake-mount');
+  if (!mount) return;
+  // Don't burn a fetch if there's no session yet (early page bootstrap).
+  if (!d1Session) {
+    mount.innerHTML = renderSamsTakePanel({ mode: 'error' });
+    return;
+  }
+  // Render loading immediately so the user sees motion even on a
+  // cache hit (the response usually returns within ~80ms but there's
+  // network jitter on cold-starts).
+  mount.innerHTML = renderSamsTakePanel({ mode: 'loading' });
+
+  var body = {
+    campaign_id: getActiveCampaignId(),
+    forceRefresh: !!forceRefresh,
+    budgetSnapshot: buildSamsTakeSnapshot()
+  };
+  fetch(D1_API + '/api/budget/sams-take', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
+    body: JSON.stringify(body)
+  })
+    .then(function(r) {
+      if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
+      if (r.status === 403) { return r.json().then(function(b){ handlePermissionDenied(b); throw new Error('permission_denied'); }); }
+      return r.json();
+    })
+    .then(function(data) {
+      if (!data || data.error || !data.success) {
+        var msg = (data && (data.message || data.error)) || 'unknown error';
+        console.warn('[Sams Take] non-success:', msg);
+        mount.innerHTML = renderSamsTakePanel({ mode: 'error' });
+        return;
+      }
+      mount.innerHTML = renderSamsTakePanel({
+        mode: 'content',
+        content: data.content,
+        generatedAt: data.generatedAt,
+        nextRefreshAvailableAt: data.nextRefreshAvailableAt,
+        fromCache: data.fromCache
+      });
+    })
+    .catch(function(e) {
+      // Squelch the auth/permission rethrows we threw on purpose;
+      // those flows already redirected/toasted the user.
+      if (e && (e.message === 'unauthenticated' || e.message === 'permission_denied')) return;
+      console.warn('[Sams Take] fetch failed:', e && e.message);
+      if (mount) mount.innerHTML = renderSamsTakePanel({ mode: 'error' });
+    });
 }
 
 // Reference accordion — three sections: Recommended allocation logic,
