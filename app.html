@@ -285,6 +285,79 @@ select{-webkit-appearance:none;appearance:none;}
 .bud-setup{background:linear-gradient(135deg,#1a2a1a,var(--n3));border:1px solid rgba(130,179,134,.25);border-radius:14px;padding:32px;text-align:center;}
 .bud-setup-ttl{font-family:var(--font-d);font-size:20px;font-weight:700;color:var(--t1);margin-bottom:8px;}
 .bud-setup-sub{font-size:13px;color:var(--t3);margin-bottom:24px;line-height:1.6;}
+
+/* ===== Budget V2 — unified two-column Overview ===== */
+.bud-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start;}
+@media (max-width: 980px){
+  /* Below ~980px the right column collapses underneath the left
+     so the dashboard stays usable at narrow widths. */
+  .bud-grid{grid-template-columns:1fr;}
+}
+
+/* Action row — audit badge + buttons in one line */
+.bud-action-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.bud-audit-badge{font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:3px;}
+.bud-audit-badge.pass{background:rgba(130,179,134,.12);border:1px solid rgba(130,179,134,.3);color:var(--green);}
+.bud-audit-badge.fail{background:rgba(232,112,112,.12);border:1px solid rgba(232,112,112,.35);color:var(--red);}
+
+/* Allocations panel — scrollable container so a long category list
+   doesn't push everything else off the page. Right padding clears
+   the scrollbar so per-row content doesn't jump when the bar appears. */
+.bud-alloc-panel{background:linear-gradient(180deg,rgba(36,42,58,.3),rgba(21,27,43,.4));border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:14px 6px 14px 16px;}
+.bud-alloc-list{max-height:380px;overflow-y:auto;padding-right:10px;}
+.bud-alloc-list::-webkit-scrollbar{width:6px;}
+.bud-alloc-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px;}
+.bud-alloc-list::-webkit-scrollbar-track{background:transparent;}
+.bud-alloc-row{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.bud-alloc-row:last-child{border-bottom:none;}
+.bud-alloc-row.uncat{background:rgba(212,165,116,.04);border-radius:6px;padding-left:8px;padding-right:8px;}
+
+/* Three-state progress bar.
+   - Under budget: single .bud-bar-fill-budget at width = (spent/allocated)*100%
+   - At budget: same, capped at 100%
+   - Over budget: TWO segments —
+       .bud-bar-fill-budget at width = (allocated/spent)*100%
+       .bud-bar-fill-over   at width = ((spent-allocated)/spent)*100% */
+.bud-bar{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;display:flex;}
+.bud-bar-fill-budget{height:100%;background:var(--gold);transition:width .3s;}
+.bud-bar-fill-over{height:100%;background:var(--red);transition:width .3s;}
+
+/* Row totals bar at the bottom of the allocations panel */
+.bud-alloc-totals{display:flex;justify-content:space-between;align-items:center;padding:12px 4px 4px;margin-top:6px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:700;}
+
+/* Right column — Sam's Take Today panel */
+.bud-samstake{background:linear-gradient(180deg,rgba(212,165,116,.06),rgba(212,165,116,.02));border:1px solid rgba(212,165,116,.2);border-radius:10px;padding:16px 18px;}
+.bud-samstake-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.bud-samstake-title{font-family:var(--font-d);font-style:italic;font-size:15px;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:8px;}
+.bud-samstake-stamp{font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--t3);text-transform:uppercase;}
+.bud-samstake-body{font-size:12.5px;color:var(--t1);line-height:1.65;margin-bottom:14px;}
+.bud-samstake-body.placeholder{color:var(--t3);font-style:italic;}
+.bud-samstake-refresh{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.3);color:var(--gold);padding:6px 12px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+.bud-samstake-refresh:hover:not(:disabled){background:rgba(212,165,116,.25);}
+.bud-samstake-refresh:disabled{opacity:.45;cursor:not-allowed;}
+
+/* Reference accordion — uses native <details>/<summary> for a11y +
+   no JS state. Custom marker via ::marker reset + manual chevron. */
+.bud-acc{border:1px solid rgba(255,255,255,.06);border-radius:8px;overflow:hidden;}
+.bud-acc-row{border-bottom:1px solid rgba(255,255,255,.04);}
+.bud-acc-row:last-child{border-bottom:none;}
+.bud-acc-row[open]{background:rgba(255,255,255,.02);}
+.bud-acc-row > summary{list-style:none;padding:11px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;font-weight:700;color:var(--t1);letter-spacing:.02em;}
+.bud-acc-row > summary::-webkit-details-marker{display:none;}
+.bud-acc-row > summary:hover{background:rgba(255,255,255,.03);}
+.bud-acc-row > summary .chev{font-size:10px;color:var(--t3);transition:transform .15s;}
+.bud-acc-row[open] > summary .chev{transform:rotate(90deg);color:var(--gold);}
+.bud-acc-body{padding:4px 14px 14px;font-size:11.5px;color:var(--t2);line-height:1.6;}
+.bud-acc-body ul{margin:6px 0 0 0;padding-left:18px;}
+.bud-acc-body li{margin-bottom:4px;}
+
+/* Quick Actions stack */
+.bud-quick{display:flex;flex-direction:column;gap:8px;}
+.bud-quick-btn{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:11px 14px;font-size:12px;color:var(--t1);font-weight:600;cursor:pointer;text-align:left;width:100%;transition:background .15s,border-color .15s;}
+.bud-quick-btn:hover:not(:disabled){background:rgba(212,165,116,.08);border-color:rgba(212,165,116,.25);}
+.bud-quick-btn:disabled{opacity:.55;cursor:not-allowed;}
+.bud-quick-btn .arr{color:var(--t3);font-size:13px;}
+.bud-quick-btn:hover:not(:disabled) .arr{color:var(--gold);}
 .qp-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:14px;}
 .qp{font-size:12px;background:rgba(255,255,255,.07);border:1px solid var(--br2);border-radius:20px;padding:5px 13px;color:var(--t2);cursor:pointer;}
 .qp:hover{background:rgba(255,255,255,.15);}
@@ -3412,9 +3485,13 @@ function renderBudgetView() {
     return;
   }
 
+  // Finance Setup tab dropped in budget redesign V2 — its content is
+  // now folded into the Overview's right-column accordion. Map any
+  // legacy 'finance' setting back to 'budget' so users who had that
+  // tab selected don't land on a missing tab.
+  if (budgetTab === 'finance') budgetTab = 'budget';
   var budgetAskQ = 'Help me understand how to manage my campaign finances effectively. What should I be tracking and watching closely?';
-  if (budgetTab === 'finance') budgetAskQ = 'Based on my race, how should I structure my campaign budget? What are the most important spending priorities?';
-  else if (budgetTab === 'compliance') budgetAskQ = 'What compliance and filing requirements should I be prioritizing right now for my race?';
+  if (budgetTab === 'compliance') budgetAskQ = 'What compliance and filing requirements should I be prioritizing right now for my race?';
   el.innerHTML =
     '<div style="margin-bottom:16px">' +
       '<span class="mb-classified">CLASSIFIED // FINANCIAL EYES ONLY</span>' +
@@ -3422,15 +3499,18 @@ function renderBudgetView() {
     '</div>' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0"><div class="bud-tabs">' +
       '<button class="bud-tab' + (budgetTab==='budget'?' on':'') + '" onclick="budgetTab=\'budget\';renderBudgetView()">Overview</button>' +
-      '<button class="bud-tab' + (budgetTab==='finance'?' on':'') + '" onclick="budgetTab=\'finance\';renderBudgetView()">Finance Setup</button>' +
       '<button class="bud-tab' + (budgetTab==='donations'?' on':'') + '" onclick="budgetTab=\'donations\';renderBudgetView()">Donations</button>' +
       '<button class="bud-tab' + (budgetTab==='compliance'?' on':'') + '" onclick="budgetTab=\'compliance\';renderBudgetView()">Compliance</button>' +
     '</div>' + askSamBtnHTML(budgetAskQ) + '</div>' +
     '<div id="budget-tab-content"></div>';
 
   var tc = document.getElementById('budget-tab-content');
-  if (budgetTab === 'budget') tc.innerHTML = renderTabBudget(t);
-  else if (budgetTab === 'finance') { tc.innerHTML = '<div id="finance-setup-content"></div>'; renderFinanceSetupTab(); }
+  if (budgetTab === 'budget') {
+    tc.innerHTML = renderTabBudget(t);
+    // Kick off the race-tailored content fetch (used by the right-column
+    // reference accordion). Re-renders accordion when data lands.
+    setTimeout(populateBudgetReference, 0);
+  }
   else if (budgetTab === 'donations') tc.innerHTML = renderTabDonations(t);
   else if (budgetTab === 'compliance') tc.innerHTML = renderTabCompliance(t);
 }
@@ -3548,11 +3628,163 @@ function renderBudgetAllocations(t) {
   return html;
 }
 
+// ============================================
+// V2 Overview tab — unified two-column layout. Replaces the previous
+// stack of statsHtml + auditHtml + renderBudgetAllocations + Recent
+// Disbursements with a 1.4fr / 1fr grid: data + actions on the left,
+// coaching + reference on the right.
+// ============================================
 function renderTabBudget(t) {
-  var availColor = t.available >= 0 ? 'var(--gold)' : 'var(--red)';
-  var availPct = t.totalBudget > 0 ? Math.round((t.totalBudget - t.totalSpent) / t.totalBudget * 100) : 100;
+  return renderBudgetMetricCards(t) +
+         renderBudgetActionRow(t) +
+         '<div class="bud-grid">' +
+           '<div>' +
+             renderAllocationsPanelV2(t) +
+             renderRecentDisbursementsPanel() +
+           '</div>' +
+           '<div>' +
+             '<div id="bud-samstake-mount">' + renderSamsTakePanelStub() + '</div>' +
+             '<div id="bud-reference-mount" style="margin-top:14px">' + renderReferenceAccordion(null) + '</div>' +
+             '<div style="margin-top:14px">' + renderQuickActionsStub() + '</div>' +
+           '</div>' +
+         '</div>';
+}
 
-  // All transactions mixed
+function renderBudgetMetricCards(t) {
+  var spent = t.totalSpent || 0;
+  var totalBudget = t.totalBudget || 0;
+  var available = totalBudget - spent;
+  return '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">' +
+    '<div class="bud-mini"><div class="bud-mini-lbl">Total Reserve</div><div class="bud-mini-val" style="color:var(--t1);margin-top:6px">$' + totalBudget.toLocaleString() + '</div></div>' +
+    '<div class="bud-mini"><div class="bud-mini-lbl">Spent to Date</div><div class="bud-mini-val" style="color:var(--red);margin-top:6px">$' + spent.toLocaleString() + '</div></div>' +
+    '<div class="bud-mini"><div class="bud-mini-lbl">Available Balance</div><div class="bud-mini-val" style="color:' + (available >= 0 ? 'var(--green)' : 'var(--red)') + ';margin-top:6px">$' + available.toLocaleString() + '</div></div>' +
+  '</div>';
+}
+
+function renderBudgetActionRow(t) {
+  var pass = (t.totalSpent || 0) <= (t.totalBudget || 0);
+  var auditClass = pass ? 'pass' : 'fail';
+  var auditLabel = pass ? 'AUDIT STATUS: PASS' : 'AUDIT STATUS: OVER BUDGET';
+  return '<div class="bud-action-row">' +
+    '<span class="bud-audit-badge ' + auditClass + '">' + auditLabel + '</span>' +
+    '<button class="edit-bud-btn" onclick="promptEditBudget()">Adjust Budget</button>' +
+    '<button class="edit-bud-btn" onclick="promptAddExpense()">+ Expense</button>' +
+    '<button class="edit-bud-btn" style="background:rgba(130,179,134,.1);border-color:rgba(130,179,134,.25);color:var(--green)" onclick="promptAddContribution()">+ Contribution</button>' +
+  '</div>';
+}
+
+// New allocations panel — scrollable, with the three-state progress
+// bar (under / at / over budget). The over-budget bar splits into a
+// gold "budgeted portion" and a red "overage portion" using the math
+// gold% = allocated/spent, red% = (spent-allocated)/spent.
+function renderAllocationsPanelV2(t) {
+  var cats = campaignBudget.categories || {};
+  var totalBudget = t.totalBudget || 0;
+  var totalAllocated = 0, totalSpentAll = 0;
+  // Stable order: canonical 9 first, then _uncategorized last.
+  var orderedKeys = Object.keys(DEFAULT_CATEGORIES).filter(function(k){ return cats[k]; });
+  Object.keys(cats).forEach(function(k){
+    if (k === '_uncategorized' || !DEFAULT_CATEGORIES[k]) {
+      if (orderedKeys.indexOf(k) < 0) orderedKeys.push(k);
+    }
+  });
+
+  var rows = orderedKeys.map(function(k) {
+    var c = cats[k];
+    if (!c) return '';
+    var allocated = c.allocated || 0;
+    var spent = getSpentByCategory(k);
+    var label = c.label || k;
+    totalAllocated += allocated;
+    totalSpentAll += spent;
+    var isUncat = (k === '_uncategorized');
+    return renderAllocationRow(label, allocated, spent, isUncat);
+  }).filter(Boolean).join('');
+
+  var totalAvailable = totalBudget - totalSpentAll;
+  return '<div class="bud-alloc-panel">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-right:10px">' +
+      '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4)">Budget Allocations</div>' +
+    '</div>' +
+    '<div class="bud-alloc-list">' + (rows || '<div style="padding:24px;text-align:center;color:var(--t3);font-size:12px">No categories set up yet.</div>') + '</div>' +
+    '<div class="bud-alloc-totals">' +
+      '<span style="color:var(--t2)">Budgeted: $' + totalAllocated.toLocaleString() + '</span>' +
+      '<span style="color:' + (totalSpentAll > 0 ? 'var(--red)' : 'var(--t3)') + '">Spent: $' + totalSpentAll.toLocaleString() + '</span>' +
+      '<span style="color:' + (totalAvailable >= 0 ? 'var(--green)' : 'var(--red)') + '">Available: $' + totalAvailable.toLocaleString() + '</span>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderAllocationRow(label, allocated, spent, isUncat) {
+  var hasAllocated = allocated > 0;
+  var hasSpent = spent > 0;
+  var overBudget = spent > allocated && allocated > 0;
+  var fullySpent = hasAllocated && spent === allocated;
+  var unbudgetedSpent = !hasAllocated && hasSpent;
+  var pctOfPlan = hasAllocated ? (spent / allocated) * 100 : 0;
+  var remaining = allocated - spent;
+
+  // Header right-side text + color
+  var headerRightHtml;
+  if (overBudget) {
+    headerRightHtml = '<span style="color:var(--red);font-weight:700">\u26A0 OVER BUDGET</span>';
+  } else if (unbudgetedSpent) {
+    headerRightHtml = '<span style="color:var(--red);font-weight:700">\u26A0 NO BUDGET SET</span>';
+  } else if (hasAllocated) {
+    headerRightHtml = '<span style="color:var(--t2);font-weight:600">' + Math.round(pctOfPlan) + '% of plan</span>';
+  } else {
+    headerRightHtml = '<span style="color:var(--t3);font-style:italic">not budgeted yet</span>';
+  }
+
+  // Progress bar
+  var barHtml;
+  if (overBudget) {
+    // Two-segment bar: gold = (allocated/spent)*100%, red = ((spent-allocated)/spent)*100%
+    var goldPct = (allocated / spent) * 100;
+    var redPct = 100 - goldPct;
+    barHtml = '<div class="bud-bar">' +
+      '<div class="bud-bar-fill-budget" style="width:' + goldPct + '%"></div>' +
+      '<div class="bud-bar-fill-over" style="width:' + redPct + '%"></div>' +
+    '</div>';
+  } else if (unbudgetedSpent) {
+    barHtml = '<div class="bud-bar"><div class="bud-bar-fill-over" style="width:100%"></div></div>';
+  } else if (hasAllocated) {
+    var fillPct = Math.min(pctOfPlan, 100);
+    barHtml = '<div class="bud-bar"><div class="bud-bar-fill-budget" style="width:' + fillPct + '%"></div></div>';
+  } else {
+    barHtml = '<div class="bud-bar"></div>';
+  }
+
+  // Footer text
+  var footerHtml;
+  if (overBudget) {
+    var overAmt = spent - allocated;
+    footerHtml = '<span style="color:var(--t3)">Spent $' + spent.toLocaleString() + ' of $' + allocated.toLocaleString() + ' budgeted</span> &middot; <span style="color:var(--red);font-weight:700">$' + overAmt.toLocaleString() + ' over</span>';
+  } else if (unbudgetedSpent) {
+    footerHtml = '<span style="color:var(--red)">$' + spent.toLocaleString() + ' spent · no budget allocated</span>';
+  } else if (fullySpent) {
+    footerHtml = '<span style="color:var(--t3)">Spent $' + spent.toLocaleString() + ' of $' + allocated.toLocaleString() + ' budgeted</span> &middot; <span style="color:var(--gold)">fully spent</span>';
+  } else if (hasAllocated && hasSpent) {
+    footerHtml = '<span style="color:var(--t3)">Spent $' + spent.toLocaleString() + ' of $' + allocated.toLocaleString() + ' budgeted</span> &middot; <span style="color:var(--green)">$' + remaining.toLocaleString() + ' remaining</span>';
+  } else if (hasAllocated) {
+    footerHtml = '<span style="color:var(--t3);font-style:italic">$' + allocated.toLocaleString() + ' budgeted &middot; nothing spent yet</span>';
+  } else {
+    footerHtml = '<span style="color:var(--t3);font-style:italic">No allocation, no spending</span>';
+  }
+
+  var uncatTag = isUncat ? '<span style="font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--gold);background:rgba(212,165,116,.12);padding:2px 6px;border-radius:3px;margin-left:8px">NEEDS RECATEGORIZATION</span>' : '';
+
+  return '<div class="bud-alloc-row' + (isUncat ? ' uncat' : '') + '">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+      '<div style="font-size:13px;color:var(--t1);font-weight:600">' + escapeHtml(label) + uncatTag + '</div>' +
+      '<div style="font-size:11px">' + headerRightHtml + '</div>' +
+    '</div>' +
+    barHtml +
+    '<div style="font-size:10.5px;margin-top:5px">' + footerHtml + '</div>' +
+  '</div>';
+}
+
+function renderRecentDisbursementsPanel() {
   var txns = (campaignBudget.expenses||[]).map(function(e){return {type:'expense',name:e.description||e.name||'Expense',amount:e.amount,date:e.date,category:e.category,categoryLabel:e.categoryLabel,addedBySam:e.addedBySam};})
     .concat(contributions.map(function(c){return {type:'contribution',name:c.donorName||'Contribution',amount:c.amount,date:c.date,source:c.source};}))
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
@@ -3565,7 +3797,7 @@ function renderTabBudget(t) {
       var catKey = a.category || 'misc';
       var cats = campaignBudget.categories || {};
       var catLabel = (a.categoryLabel || (cats[catKey] && cats[catKey].label) || catKey).toUpperCase();
-      if (catLabel === 'MISC' || catLabel === 'OTHER' || catLabel === 'UNCATEGORIZED') catLabel = 'UNCATEGORIZED';
+      if (catLabel === 'MISC' || catLabel === 'OTHER' || catLabel === '_UNCATEGORIZED') catLabel = 'UNCATEGORIZED';
       var catColor = getAllocBarColor(a.categoryLabel || (cats[catKey] && cats[catKey].label) || '');
       badge = '<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:' + catColor + ';font-weight:700;letter-spacing:.05em;text-transform:uppercase">' + escapeHtml(catLabel) + '</span>';
     } else {
@@ -3576,26 +3808,122 @@ function renderTabBudget(t) {
     return '<div class="exp-row"><div style="flex:1;min-width:0"><div class="exp-nm">' + escapeHtml(a.name) + samTag + '</div><div class="exp-meta">' + datePill + badge + '</div></div><div class="exp-amt" style="color:' + amtColor + '">' + sign + '$' + (a.amount||0).toLocaleString() + '.00</div></div>';
   }).join('') : '<div style="padding:16px;color:var(--t3);font-size:13px;text-align:center">No transactions yet. Add an expense or log a contribution to get started.</div>';
 
-  // Stat boxes row
-  var statsHtml = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">' +
-    '<div class="bud-mini"><div class="bud-mini-lbl">Total Reserve</div><div class="bud-mini-val" style="color:var(--t1);margin-top:6px">$' + t.totalBudget.toLocaleString() + '</div></div>' +
-    '<div class="bud-mini"><div class="bud-mini-lbl">Spent to Date</div><div class="bud-mini-val" style="color:var(--red);margin-top:6px">$' + t.totalSpent.toLocaleString() + '</div></div>' +
-    '<div class="bud-mini"><div class="bud-mini-lbl">Available Balance</div><div class="bud-mini-val" style="color:var(--green);margin-top:6px">$' + (t.totalBudget - t.totalSpent).toLocaleString() + '</div></div>' +
-  '</div>';
-  // Audit badge
-  var auditColor = t.totalSpent <= t.totalBudget ? 'var(--green)' : 'var(--red)';
-  var auditLabel = t.totalSpent <= t.totalBudget ? 'AUDIT STATUS: PASS' : 'AUDIT STATUS: OVER BUDGET';
-  var auditHtml = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">' +
-    '<span style="font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:3px;background:rgba(130,179,134,.12);border:1px solid rgba(130,179,134,.25);color:' + auditColor + '">' + auditLabel + '</span>' +
-    '<button class="edit-bud-btn" onclick="promptEditBudget()">Adjust Budget</button></div>';
+  return '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;margin-bottom:10px">' +
+      '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:15px">\uD83D\uDCCB</span><span style="font-family:var(--font-d);font-size:15px;font-weight:700;font-style:italic;color:var(--t1)">Recent Disbursements</span></div>' +
+    '</div>' +
+    '<div style="background:linear-gradient(180deg,rgba(36,42,58,.3),rgba(21,27,43,.4));border-radius:6px;padding:4px 14px;box-shadow:inset 0 1px 1px rgba(255,255,255,.03)">' + txnHtml + '</div>';
+}
 
-  return statsHtml + auditHtml +
-  renderBudgetAllocations(t) +
-  '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;margin-bottom:12px">' +
-    '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">\uD83D\uDCCB</span><span style="font-family:var(--font-d);font-size:17px;font-weight:700;font-style:italic;color:var(--t1)">Recent Disbursements</span></div>' +
-    '<button class="edit-bud-btn" style="background:rgba(130,179,134,.1);border-color:rgba(130,179,134,.25);color:var(--green)" onclick="promptAddContribution()">+ Contribution</button>' +
-  '</div>' +
-  '<div style="background:linear-gradient(180deg,rgba(36,42,58,.3),rgba(21,27,43,.4));border-radius:6px;padding:4px 14px;box-shadow:inset 0 1px 1px rgba(255,255,255,.03)">' + txnHtml + '</div>';
+// Sam's Take Today — placeholder, wired to /api/budget/sams-take in
+// checkpoint 4. Renders a static loading state so the right column
+// has visual presence without a real fetch yet.
+function renderSamsTakePanelStub() {
+  return '<div class="bud-samstake">' +
+    '<div class="bud-samstake-head">' +
+      '<div class="bud-samstake-title"><span style="font-style:normal">\uD83D\uDCA1</span>Sam\u2019s Take Today</div>' +
+      '<div class="bud-samstake-stamp">loading\u2026</div>' +
+    '</div>' +
+    '<div class="bud-samstake-body placeholder">Sam\u2019s budget coaching will appear here. (Wiring lands in the next checkpoint — for now this panel is a placeholder.)</div>' +
+    '<button class="bud-samstake-refresh" disabled>\u21BB Refresh</button>' +
+  '</div>';
+}
+
+// Reference accordion — three sections: Recommended allocation logic,
+// Fundraising timeline, Common mistakes. Content is sourced from the
+// race-tailored ctb_finance_setup cache (same data the old Finance
+// Setup tab rendered). Sections collapsed by default, multi-open
+// allowed via native <details>/<summary>.
+function renderReferenceAccordion(financeData) {
+  function listFromArray(arr) {
+    if (!arr || !arr.length) return '<div style="color:var(--t3);font-style:italic">Sam is generating this section...</div>';
+    return '<ul>' + arr.map(function(x){ return '<li>' + escapeHtml(x) + '</li>'; }).join('') + '</ul>';
+  }
+  var allocBody;
+  if (financeData && financeData.budgetAllocation && financeData.budgetAllocation.length) {
+    allocBody = '<div style="color:var(--t2);margin-bottom:8px">Recommended allocation for your race profile:</div>' +
+      '<ul>' +
+      financeData.budgetAllocation.map(function(a){
+        var pct = (a.percentage || 0);
+        return '<li><strong style="color:var(--t1)">' + escapeHtml(a.category||'') + '</strong> &mdash; ' + pct + '%' +
+          (a.reasoning ? '<div style="font-size:10.5px;color:var(--t3);margin-top:2px">' + escapeHtml(a.reasoning) + '</div>' : '') + '</li>';
+      }).join('') +
+      '</ul>';
+  } else {
+    allocBody = '<div style="color:var(--t3);font-style:italic">Sam is generating recommended allocations for your race...</div>';
+  }
+  var timelineBody = listFromArray(financeData && financeData.fundraisingTimeline);
+  var mistakesBody = listFromArray(financeData && financeData.commonMistakes);
+
+  return '<div class="bud-acc">' +
+    '<details class="bud-acc-row">' +
+      '<summary>\uD83D\uDCCA  Recommended allocation logic<span class="chev">\u203A</span></summary>' +
+      '<div class="bud-acc-body">' + allocBody + '</div>' +
+    '</details>' +
+    '<details class="bud-acc-row">' +
+      '<summary>\uD83D\uDCC8  Fundraising timeline<span class="chev">\u203A</span></summary>' +
+      '<div class="bud-acc-body">' + timelineBody + '</div>' +
+    '</details>' +
+    '<details class="bud-acc-row">' +
+      '<summary>\u26A0  Common mistakes to avoid<span class="chev">\u203A</span></summary>' +
+      '<div class="bud-acc-body">' + mistakesBody + '</div>' +
+    '</details>' +
+  '</div>';
+}
+
+// Quick Actions — placeholder buttons. Click handlers wired in cp5.
+function renderQuickActionsStub() {
+  return '<div class="bud-quick">' +
+    '<button class="bud-quick-btn" disabled title="Wiring lands in the next checkpoint"><span>Apply recommended allocation</span><span class="arr">\u2192</span></button>' +
+    '<button class="bud-quick-btn" disabled title="Wiring lands in the next checkpoint"><span>Ask Sam about my budget</span><span class="arr">\u2192</span></button>' +
+  '</div>';
+}
+
+// Loads the race-tailored Sam content (used by the right-column
+// reference accordion) and re-renders the accordion when it lands.
+// Reuses the existing prompt + cache key from the deprecated Finance
+// Setup tab — no new API spend; cached by office+state.
+function populateBudgetReference() {
+  var mount = document.getElementById('bud-reference-mount');
+  if (!mount) return;
+  var cached = null;
+  try { cached = JSON.parse(localStorage.getItem(storageKey('ctb_finance_setup'))); } catch(e) {}
+  var key = (campaignData.specificOffice||'') + '_' + (campaignData.state||'');
+  if (cached && cached._key === key && !cached._failed) {
+    mount.innerHTML = renderReferenceAccordion(cached);
+    return;
+  }
+  // Cache miss — kick off a background fetch using the same prompt the
+  // old Finance Setup tab used. Caches under ctb_finance_setup.
+  fetchBudgetReferenceData(function(data) {
+    if (data && document.getElementById('bud-reference-mount')) {
+      document.getElementById('bud-reference-mount').innerHTML = renderReferenceAccordion(data);
+    }
+  });
+}
+
+function fetchBudgetReferenceData(cb) {
+  var prompt = 'You are a campaign finance expert. Generate a practical finance setup guide for a ' + (campaignData.party||'') + ' candidate running for ' + (campaignData.specificOffice||'office') + ' in ' + (campaignData.state||'their state') + '. Election date: ' + (campaignData.electionDate||'TBD') + '.\n\nAlso recommend a Reserve Fund percentage (typically 2-5%) to hold for unexpected campaign needs, emergencies, or opportunities that arise during the campaign. Include it as the last item in budgetAllocation.\n\nReturn ONLY JSON:\n{"budgetAllocation":[{"category":"Direct Mail","percentage":35,"reasoning":"..."},{"category":"Digital Ads","percentage":22,"reasoning":"..."},{"category":"Reserve Fund","percentage":3,"reasoning":"Emergency reserves for unexpected needs"}],"filingRequirements":["requirement 1","requirement 2"],"fundraisingTimeline":["Month 1: ...","Month 2: ..."],"commonMistakes":["mistake 1","mistake 2","mistake 3"]}';
+  fetch(WORKER_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:prompt,mode:'research',candidateName:campaignData.candidateName||'',specificOffice:campaignData.specificOffice||'',state:campaignData.state||'',party:campaignData.party||''}) })
+    .then(function(r){return r.json();}).then(function(data) {
+      var rawText = '';
+      if (data && data.content && Array.isArray(data.content)) {
+        for (var i = 0; i < data.content.length; i++) {
+          var b = data.content[i];
+          if (b && b.type === 'text' && b.text) rawText += b.text;
+        }
+      }
+      if (!rawText) { cb(null); return; }
+      var jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) { cb(null); return; }
+      try {
+        var obj = JSON.parse(jsonMatch[0]);
+        var key = (campaignData.specificOffice||'') + '_' + (campaignData.state||'');
+        obj._key = key;
+        obj._generatedDate = getTodayStr();
+        localStorage.setItem(storageKey('ctb_finance_setup'), JSON.stringify(obj));
+        cb(obj);
+      } catch (e) { cb(null); }
+    }).catch(function(){ cb(null); });
 }
 
 // ============================================
