@@ -1465,6 +1465,205 @@ export default {
     }
 
     // ========================================
+    // DATA API: Sam's Take Today (budget coaching)
+    //
+    // Generates or returns a cached 3-4 sentence coaching paragraph for
+    // the candidate's current budget state. Cached for 24 hours per
+    // workspace in budget_sams_take. Refresh button on the client is
+    // disabled until the cache is older than 24h; the server enforces
+    // the same TTL so manual API hits can't burn quota.
+    //
+    // Request body shape (client supplies the snapshot — expenses live
+    // in client localStorage today, so the spent figures are NOT
+    // server-authoritative; we accept what the client sends, persist it
+    // into budget_snapshot for audit, and feed it to the prompt):
+    //   {
+    //     campaign_id?: string,
+    //     forceRefresh?: boolean,
+    //     budgetSnapshot: {
+    //       total: number,
+    //       categories: { [key]: { label, allocated, spent } },
+    //       daysToElection: number | null,
+    //       raisedSoFar: number
+    //     }
+    //   }
+    //
+    // Response:
+    //   {
+    //     success: true,
+    //     content: string,
+    //     generatedAt: string (ISO),
+    //     fromCache: boolean,
+    //     nextRefreshAvailableAt: string (ISO)
+    //   }
+    // ========================================
+    if (url.pathname === '/api/budget/sams-take' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'budget', 'read')) return denyPermission('budget');
+
+        const body = await request.json().catch(() => ({}));
+        const forceRefresh = !!body.forceRefresh;
+        const campaignId = body.campaign_id || null;
+        const snap = body.budgetSnapshot || {};
+
+        // Read cached row.
+        const cached = await env.DB.prepare(
+          'SELECT content, generated_at, campaign_id FROM budget_sams_take WHERE workspace_owner_id = ?'
+        ).bind(ctx.ownerId).first();
+
+        const isFresh = (gen) => {
+          if (!gen) return false;
+          // generated_at stored as 'YYYY-MM-DD HH:MM:SS' (datetime('now') format)
+          // or ISO. Parse robustly.
+          const t = Date.parse(gen.replace(' ', 'T') + (gen.indexOf('Z') >= 0 ? '' : 'Z'));
+          if (isNaN(t)) return false;
+          return (Date.now() - t) < 24 * 60 * 60 * 1000;
+        };
+
+        if (cached && isFresh(cached.generated_at) && !forceRefresh) {
+          const genIso = cached.generated_at.replace(' ', 'T') + (cached.generated_at.indexOf('Z') >= 0 ? '' : 'Z');
+          const next = new Date(Date.parse(genIso) + 24 * 60 * 60 * 1000).toISOString();
+          return jsonResponse({
+            success: true,
+            content: cached.content,
+            generatedAt: new Date(Date.parse(genIso)).toISOString(),
+            fromCache: true,
+            nextRefreshAvailableAt: next
+          });
+        }
+
+        // Force-refresh-while-fresh is rejected unless 24h elapsed. Belt
+        // and suspenders for the client's button-disable: a malicious or
+        // buggy client can't bypass quota by just sending forceRefresh.
+        if (cached && isFresh(cached.generated_at) && forceRefresh) {
+          const genIso = cached.generated_at.replace(' ', 'T') + (cached.generated_at.indexOf('Z') >= 0 ? '' : 'Z');
+          const next = new Date(Date.parse(genIso) + 24 * 60 * 60 * 1000).toISOString();
+          return jsonResponse({
+            success: true,
+            content: cached.content,
+            generatedAt: new Date(Date.parse(genIso)).toISOString(),
+            fromCache: true,
+            nextRefreshAvailableAt: next,
+            note: 'Refresh not yet available; returning cached.'
+          });
+        }
+
+        // Cache miss or expired — generate. Pull race profile from D1
+        // for context the client doesn't need to send.
+        const profile = await env.DB.prepare(
+          'SELECT candidate_name, specific_office, office_level, party, location, state, election_date FROM profiles WHERE user_id = ?'
+        ).bind(ctx.ownerId).first();
+
+        // Build the budget data block for the prompt. Numbers come from
+        // the client snapshot; if categories[key] is missing fields, fall
+        // back to 0. We deliberately do NOT enrich with anything Sam
+        // could mistake for an external benchmark.
+        const cats = snap.categories || {};
+        const lines = [];
+        for (const k of Object.keys(cats)) {
+          const c = cats[k] || {};
+          const label = c.label || k;
+          const allocated = Number(c.allocated || 0);
+          const spent = Number(c.spent || 0);
+          lines.push('  - ' + label + ': $' + allocated.toLocaleString('en-US') + ' allocated / $' + spent.toLocaleString('en-US') + ' spent');
+        }
+        const total = Number(snap.total || 0);
+        const raised = Number(snap.raisedSoFar || 0);
+        const days = snap.daysToElection;
+        const daysLine = (days != null && !isNaN(days)) ? (days + ' days') : 'unknown';
+
+        const candidateName = (profile && profile.candidate_name) || 'the candidate';
+        const office = (profile && profile.specific_office) || 'office';
+        const officeLevel = (profile && profile.office_level) || '';
+        const party = (profile && profile.party) || '';
+        const loc = [profile && profile.location, profile && profile.state].filter(Boolean).join(', ');
+
+        const systemPrompt =
+          'You are Sam, a campaign budget coach speaking to ' + candidateName + '. ' +
+          'Generate exactly 3-4 sentences of coaching about their current budget state. ' +
+          'Plain text, no markdown, no bullet points, no headings.\n\n' +
+          'CONTEXT (the only data you may reference for specific numbers):\n' +
+          '  Race: ' + (party ? party + ' ' : '') + (officeLevel ? officeLevel + ' ' : '') + office + (loc ? ' in ' + loc : '') + '\n' +
+          '  Days to election: ' + daysLine + '\n' +
+          '  Total budget reserve: $' + total.toLocaleString('en-US') + '\n' +
+          '  Total raised so far: $' + raised.toLocaleString('en-US') + '\n' +
+          '  Categories (allocated / spent):\n' +
+          (lines.length > 0 ? lines.join('\n') : '  - (no categories set yet)') +
+          '\n\n' +
+          'RULES (strict):\n' +
+          '  1. FACTUAL DISCIPLINE. Every dollar amount or percentage in your output must come from the data above. ' +
+          'Never invent specific competitor figures, peer benchmarks, or external statistics. If you reference an ' +
+          'allocation guideline, frame it as a planning range ("a common planning range is 20-25%") rather than as ' +
+          'an asserted fact about other candidates.\n' +
+          '  2. AVOID ALARMISM. No urgency theatrics. No "you must act now or you will lose." Calm, professional, ' +
+          'factual tone — like a trusted advisor reviewing a balance sheet, not a direct-mail fundraiser.\n' +
+          '  3. ACKNOWLEDGE WHAT IS WORKING. If categories are on track, lead with that before pointing at problems. ' +
+          'If everything is on track, say so plainly. Pure criticism is not the deliverable.\n' +
+          '  4. CITE AT LEAST ONE SPECIFIC CATEGORY by name (over-allocated, under-allocated, or on track), using ' +
+          'the labels exactly as written above.\n' +
+          '  5. END WITH ONE CONCRETE NEXT ACTION the candidate can take. No vague "consider reviewing your spend"; ' +
+          'something specific like "redirect $X from Reserve into Direct Mail" or "set an allocation for Polling, ' +
+          'currently at $0".';
+
+        const apiResp = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': env.ANTHROPIC_API_KEY,
+            'anthropic-version': '2023-06-01'
+          },
+          body: JSON.stringify({
+            model: 'claude-haiku-4-5-20251001',
+            max_tokens: 400,
+            temperature: 0.4,
+            system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
+            messages: [{ role: 'user', content: 'Generate the coaching paragraph now.' }]
+          })
+        });
+        const apiData = await apiResp.json();
+        await logApiUsage('sams_take_anthropic', apiData, ctx.userId, ctx.ownerId);
+
+        let content = '';
+        if (apiData && apiData.content && Array.isArray(apiData.content)) {
+          for (const block of apiData.content) {
+            if (block.type === 'text' && block.text) content += block.text;
+          }
+        }
+        content = (content || '').trim();
+        if (!content) {
+          return jsonResponse({ error: 'generation_failed', message: 'Sam could not generate a take right now. Try again in a moment.' }, 502);
+        }
+
+        // Persist (UPSERT — one row per workspace).
+        const nowIso = new Date().toISOString();
+        await env.DB.prepare(
+          'INSERT INTO budget_sams_take (workspace_owner_id, campaign_id, content, generated_at, budget_snapshot) VALUES (?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(workspace_owner_id) DO UPDATE SET campaign_id = excluded.campaign_id, content = excluded.content, generated_at = excluded.generated_at, budget_snapshot = excluded.budget_snapshot'
+        ).bind(
+          ctx.ownerId,
+          campaignId,
+          content,
+          nowIso,
+          JSON.stringify(snap)
+        ).run();
+
+        const next = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+        return jsonResponse({
+          success: true,
+          content,
+          generatedAt: nowIso,
+          fromCache: false,
+          nextRefreshAvailableAt: next
+        });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
     // DATA API: Sync Folders & Notes (DELETE-NOT-IN + UPSERT)
     // @deprecated 2026-04-22 — use /api/folders/save + /delete and
     // /api/notes/save + /delete. The folder-delete endpoint cascades
