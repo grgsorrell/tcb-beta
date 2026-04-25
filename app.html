@@ -351,6 +351,22 @@ select{-webkit-appearance:none;appearance:none;}
 .bud-acc-body ul{margin:6px 0 0 0;padding-left:18px;}
 .bud-acc-body li{margin-bottom:4px;}
 
+/* Custom-category indicator pill — neutral gray, lowercase. CUSTOM
+   is informational metadata, not a warning state, so visual weight
+   stays muted (compare with .bud-cat-pill-uncat / NEEDS
+   RECATEGORIZATION which uses gold to demand action). */
+.bud-cat-pill-custom{font-size:9px;font-weight:600;letter-spacing:.04em;color:var(--t3);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:1px 6px;border-radius:3px;margin-left:8px;}
+
+/* Inline "create category" form inside the Add Expense modal —
+   styled with the gold-tinted card pattern used elsewhere for
+   "this is the active focus" surfaces. */
+.bud-create-cat-form{background:rgba(212,165,116,.05);border:1px solid rgba(212,165,116,.22);border-radius:6px;padding:12px 14px;margin-top:6px;}
+.bud-create-cat-form .bud-create-cat-label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:6px;}
+.bud-create-cat-form input{width:100%;font-size:13px;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--t1);box-sizing:border-box;}
+.bud-create-cat-form input:focus{border-color:rgba(212,165,116,.5);outline:none;}
+.bud-create-cat-err{font-size:11px;color:var(--red);margin-top:6px;min-height:14px;}
+.bud-create-cat-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;}
+
 /* Quick Actions stack */
 .bud-quick{display:flex;flex-direction:column;gap:8px;}
 .bud-quick-btn{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:11px 14px;font-size:12px;color:var(--t1);font-weight:600;cursor:pointer;text-align:left;width:100%;transition:background .15s,border-color .15s;}
@@ -3665,11 +3681,19 @@ function renderBudgetActionRow(t) {
   var pass = (t.totalSpent || 0) <= (t.totalBudget || 0);
   var auditClass = pass ? 'pass' : 'fail';
   var auditLabel = pass ? 'AUDIT STATUS: PASS' : 'AUDIT STATUS: OVER BUDGET';
+  // Write buttons gated on canEdit('budget'). Sub-users with budget=read
+  // see the audit badge but no mutation affordances. Existing pattern
+  // matches the other tab gates (calendar, notes, endorsements).
+  var writeButtons = '';
+  if (canEdit('budget')) {
+    writeButtons =
+      '<button class="edit-bud-btn" onclick="promptEditBudget()">Adjust Budget</button>' +
+      '<button class="edit-bud-btn" onclick="promptAddExpense()">+ Expense</button>' +
+      '<button class="edit-bud-btn" style="background:rgba(130,179,134,.1);border-color:rgba(130,179,134,.25);color:var(--green)" onclick="promptAddContribution()">+ Contribution</button>';
+  }
   return '<div class="bud-action-row">' +
     '<span class="bud-audit-badge ' + auditClass + '">' + auditLabel + '</span>' +
-    '<button class="edit-bud-btn" onclick="promptEditBudget()">Adjust Budget</button>' +
-    '<button class="edit-bud-btn" onclick="promptAddExpense()">+ Expense</button>' +
-    '<button class="edit-bud-btn" style="background:rgba(130,179,134,.1);border-color:rgba(130,179,134,.25);color:var(--green)" onclick="promptAddContribution()">+ Contribution</button>' +
+    writeButtons +
   '</div>';
 }
 
@@ -3681,12 +3705,25 @@ function renderAllocationsPanelV2(t) {
   var cats = campaignBudget.categories || {};
   var totalBudget = t.totalBudget || 0;
   var totalAllocated = 0, totalSpentAll = 0;
-  // Stable order: canonical 9 first, then _uncategorized last.
-  var orderedKeys = Object.keys(DEFAULT_CATEGORIES).filter(function(k){ return cats[k]; });
+  // Stable order:
+  //   1. Canonical 9 in DEFAULT_CATEGORIES declaration order
+  //   2. Custom (alpha by displayName)
+  //   3. _uncategorized last (parking bucket flagged for review)
+  var canonicalKeys = Object.keys(DEFAULT_CATEGORIES).filter(function(k){ return cats[k]; });
+  var customKeys = Object.keys(cats).filter(function(k){ return cats[k] && cats[k].isCustom; })
+    .sort(function(a, b) {
+      var an = (cats[a].displayName || a).toLowerCase();
+      var bn = (cats[b].displayName || b).toLowerCase();
+      return an < bn ? -1 : an > bn ? 1 : 0;
+    });
+  var orderedKeys = canonicalKeys.concat(customKeys);
+  if (cats._uncategorized && orderedKeys.indexOf('_uncategorized') < 0) {
+    orderedKeys.push('_uncategorized');
+  }
+  // Pick up any other stray keys (legacy data we haven't classified)
+  // and append them at the end so nothing silently disappears.
   Object.keys(cats).forEach(function(k){
-    if (k === '_uncategorized' || !DEFAULT_CATEGORIES[k]) {
-      if (orderedKeys.indexOf(k) < 0) orderedKeys.push(k);
-    }
+    if (orderedKeys.indexOf(k) < 0) orderedKeys.push(k);
   });
 
   var rows = orderedKeys.map(function(k) {
@@ -3694,11 +3731,13 @@ function renderAllocationsPanelV2(t) {
     if (!c) return '';
     var allocated = c.allocated || 0;
     var spent = getSpentByCategory(k);
-    var label = c.label || k;
+    var label = getCategoryLabel(k, c);
     totalAllocated += allocated;
     totalSpentAll += spent;
-    var isUncat = (k === '_uncategorized');
-    return renderAllocationRow(label, allocated, spent, isUncat);
+    return renderAllocationRow(k, label, allocated, spent, {
+      isUncat: (k === '_uncategorized'),
+      isCustom: c.isCustom === true
+    });
   }).filter(Boolean).join('');
 
   var totalAvailable = totalBudget - totalSpentAll;
@@ -3715,7 +3754,10 @@ function renderAllocationsPanelV2(t) {
   '</div>';
 }
 
-function renderAllocationRow(label, allocated, spent, isUncat) {
+function renderAllocationRow(key, label, allocated, spent, meta) {
+  meta = meta || {};
+  var isUncat = !!meta.isUncat;
+  var isCustom = !!meta.isCustom;
   var hasAllocated = allocated > 0;
   var hasSpent = spent > 0;
   var overBudget = spent > allocated && allocated > 0;
@@ -3773,10 +3815,13 @@ function renderAllocationRow(label, allocated, spent, isUncat) {
   }
 
   var uncatTag = isUncat ? '<span style="font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--gold);background:rgba(212,165,116,.12);padding:2px 6px;border-radius:3px;margin-left:8px">NEEDS RECATEGORIZATION</span>' : '';
+  // Muted-gray "custom" pill — informational metadata, not a warning.
+  // (Edit / Delete affordances ship in 3.5b.)
+  var customTag = isCustom ? '<span class="bud-cat-pill-custom">custom</span>' : '';
 
-  return '<div class="bud-alloc-row' + (isUncat ? ' uncat' : '') + '">' +
+  return '<div class="bud-alloc-row' + (isUncat ? ' uncat' : '') + '" data-cat-key="' + escapeHtml(key) + '">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
-      '<div style="font-size:13px;color:var(--t1);font-weight:600">' + escapeHtml(label) + uncatTag + '</div>' +
+      '<div style="font-size:13px;color:var(--t1);font-weight:600">' + escapeHtml(label) + customTag + uncatTag + '</div>' +
       '<div style="font-size:11px">' + headerRightHtml + '</div>' +
     '</div>' +
     barHtml +
@@ -3796,9 +3841,11 @@ function renderRecentDisbursementsPanel() {
     if (a.type === 'expense') {
       var catKey = a.category || 'misc';
       var cats = campaignBudget.categories || {};
-      var catLabel = (a.categoryLabel || (cats[catKey] && cats[catKey].label) || catKey).toUpperCase();
+      // Resolve via the central helper so canonical, custom, and
+      // _uncategorized rows all show the right human label.
+      var catLabel = getCategoryLabel(catKey, cats[catKey]).toUpperCase();
       if (catLabel === 'MISC' || catLabel === 'OTHER' || catLabel === '_UNCATEGORIZED') catLabel = 'UNCATEGORIZED';
-      var catColor = getAllocBarColor(a.categoryLabel || (cats[catKey] && cats[catKey].label) || '');
+      var catColor = getAllocBarColor(getCategoryLabel(catKey, cats[catKey]) || '');
       badge = '<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:' + catColor + ';font-weight:700;letter-spacing:.05em;text-transform:uppercase">' + escapeHtml(catLabel) + '</span>';
     } else {
       badge = '<span style="font-size:9px;padding:2px 6px;border-radius:3px;background:rgba(130,179,134,.12);border:1px solid rgba(130,179,134,.25);color:var(--green);font-weight:700;letter-spacing:.05em;text-transform:uppercase">' + escapeHtml(a.source||'donation') + '</span>';
@@ -4221,31 +4268,227 @@ function promptEditGoal() {
   if (val !== null) { campaignBudget.fundraisingGoal = parseFloat(val) || 0; saveBudget(); renderBudgetView(); }
 }
 
-function promptAddExpense() {
+// ==========================================================
+// Custom budget categories (3.5a)
+// ==========================================================
+//
+// Single source of truth for "what label do we render for this key"?
+// Canonical keys → DEFAULT_CATEGORIES[k].label (locked, never overridden
+//   by per-row data). Custom keys → categories[k].displayName.
+//   _uncategorized → 'Uncategorized'. Fallback → the key itself.
+function getCategoryLabel(key, c) {
+  if (DEFAULT_CATEGORIES[key]) return DEFAULT_CATEGORIES[key].label;
+  if (c && c.displayName) return c.displayName;
+  if (c && c.label) return c.label;
+  if (key === '_uncategorized') return 'Uncategorized';
+  return key;
+}
+
+// Validate a proposed custom category name. Returns { ok, error }.
+// Excluding row is the key being edited (skip self in uniqueness check)
+// — used by the rename flow in 3.5b; null/undefined for create.
+function validateCustomCategoryName(rawName, excludingKey) {
+  var name = (rawName || '').trim();
+  if (name.length < 2) return { ok: false, error: 'Name must be at least 2 characters.' };
+  if (name.length > 40) return { ok: false, error: 'Name must be 40 characters or fewer.' };
+  var lower = name.toLowerCase();
+  // Collide with any canonical label
+  var canonicalLabels = Object.keys(DEFAULT_CATEGORIES).map(function(k){ return DEFAULT_CATEGORIES[k].label.toLowerCase(); });
+  if (canonicalLabels.indexOf(lower) >= 0) {
+    return { ok: false, error: 'That matches a built-in category. Pick a different name.' };
+  }
+  // Collide with another custom displayName in this workspace
   var cats = campaignBudget.categories || {};
-  var catKeys = Object.keys(DEFAULT_CATEGORIES);
-  var opts = catKeys.map(function(k) {
-    var label = (cats[k] && cats[k].label) || DEFAULT_CATEGORIES[k].label;
-    return '<option value="' + k + '">' + escapeHtml(label) + '</option>';
-  }).join('');
+  for (var k in cats) {
+    if (k === excludingKey) continue;
+    if (cats[k] && cats[k].isCustom && cats[k].displayName && cats[k].displayName.toLowerCase() === lower) {
+      return { ok: false, error: 'You already have a custom category with that name.' };
+    }
+  }
+  return { ok: true };
+}
+
+// Generate a stable, collision-free internal key for a custom category.
+// "Religious Outreach" → "custom_religious_outreach"
+// "Religious Outreach" again → "custom_religious_outreach_2"
+function generateCustomCategoryKey(displayName) {
+  var slug = (displayName || '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+  if (!slug) slug = 'category';
+  var base = 'custom_' + slug;
+  var cats = campaignBudget.categories || {};
+  if (!cats[base]) return base;
+  var n = 2;
+  while (cats[base + '_' + n]) n++;
+  return base + '_' + n;
+}
+
+// Create a custom category, persist, return result.
+function createCustomCategory(rawName) {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return { ok: false, error: 'Read-only access' }; }
+  var v = validateCustomCategoryName(rawName, null);
+  if (!v.ok) return v;
+  var displayName = rawName.trim();
+  var key = generateCustomCategoryKey(displayName);
+  if (!campaignBudget.categories) campaignBudget.categories = {};
+  campaignBudget.categories[key] = {
+    isCustom: true,
+    displayName: displayName,
+    allocated: 0,
+    createdAt: new Date().toISOString()
+  };
+  saveBudget();
+  return { ok: true, key: key, displayName: displayName };
+}
+
+// Build the <option> HTML for the Add Expense category dropdown.
+// Order: canonical 9 (declaration order) → custom (alpha by displayName)
+// → "+ Add new category" sentinel (only when canEdit('budget')).
+// `selectedKey` controls which <option> is pre-selected.
+function renderCategoryDropdownOptions(selectedKey) {
+  var cats = campaignBudget.categories || {};
+  var html = '';
+  if (!selectedKey) {
+    html += '<option value="" disabled selected>Select a category...</option>';
+  }
+  // Canonical group
+  html += '<optgroup label="Recommended">';
+  Object.keys(DEFAULT_CATEGORIES).forEach(function(k) {
+    var label = DEFAULT_CATEGORIES[k].label;
+    var sel = (k === selectedKey) ? ' selected' : '';
+    html += '<option value="' + k + '"' + sel + '>' + escapeHtml(label) + '</option>';
+  });
+  html += '</optgroup>';
+  // Custom group (alpha by displayName)
+  var customKeys = Object.keys(cats).filter(function(k){ return cats[k] && cats[k].isCustom; })
+    .sort(function(a, b) {
+      var an = (cats[a].displayName || a).toLowerCase();
+      var bn = (cats[b].displayName || b).toLowerCase();
+      return an < bn ? -1 : an > bn ? 1 : 0;
+    });
+  if (customKeys.length > 0) {
+    html += '<optgroup label="Custom">';
+    customKeys.forEach(function(k) {
+      var label = cats[k].displayName || k;
+      var sel = (k === selectedKey) ? ' selected' : '';
+      html += '<option value="' + k + '"' + sel + '>' + escapeHtml(label) + '</option>';
+    });
+    html += '</optgroup>';
+  }
+  // "+ Add new category" sentinel — gated on permission so read-only
+  // sub-users don't see it (defense in depth; the Add Expense button
+  // itself is also hidden for them).
+  if (canEdit('budget')) {
+    html += '<option value="__add_new__">+ Add new category</option>';
+  }
+  return html;
+}
+
+function promptAddExpense() {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
   var overlay = document.createElement('div');
   overlay.id = 'expense-modal-overlay';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;';
   var modal = document.createElement('div');
-  modal.style.cssText = 'background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;width:360px;max-width:90vw;';
+  modal.style.cssText = 'background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;width:380px;max-width:90vw;';
   modal.innerHTML =
     '<div style="font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--t1);margin-bottom:16px">Add Expense</div>' +
     '<div style="margin-bottom:12px"><label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;display:block;margin-bottom:4px">Description</label><input id="exp-modal-desc" placeholder="What was it for?" style="font-size:13px"></div>' +
     '<div style="margin-bottom:12px"><label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;display:block;margin-bottom:4px">Amount ($)</label><input id="exp-modal-amt" type="number" placeholder="0.00" style="font-size:13px"></div>' +
-    '<div style="margin-bottom:12px"><label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;display:block;margin-bottom:4px">Budget Category</label><select id="exp-modal-cat" style="font-size:13px"><option value="" disabled selected>Select a category...</option>' + opts + '<option value="uncategorized">Uncategorized</option></select></div>' +
+    '<div id="exp-modal-cat-wrap" style="margin-bottom:12px"><label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;display:block;margin-bottom:4px">Budget Category</label><select id="exp-modal-cat" style="font-size:13px;width:100%">' + renderCategoryDropdownOptions(null) + '</select></div>' +
+    '<div id="exp-modal-create-cat" style="display:none"></div>' +
     '<div id="exp-modal-err" style="font-size:11px;color:var(--red);margin-bottom:8px;display:none"></div>' +
-    '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">' +
+    '<div id="exp-modal-actions" style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">' +
     '<button onclick="document.getElementById(\'expense-modal-overlay\').remove()" style="font-size:12px;background:transparent;border:1px solid var(--br);color:var(--t2);padding:8px 16px;border-radius:6px;cursor:pointer">Cancel</button>' +
     '<button onclick="submitExpenseModal()" style="font-size:12px;background:var(--red);border:none;color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:700">Add Expense</button></div>';
   overlay.appendChild(modal);
   overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.remove(); });
   document.body.appendChild(overlay);
+
+  // Wire the "+ Add new category" sentinel: if selected, immediately
+  // revert the select to its previous value and open the inline form.
+  // Tracking lastValid keeps the select stable if the user cancels.
+  var select = document.getElementById('exp-modal-cat');
+  var lastValid = '';
+  select.addEventListener('change', function() {
+    if (this.value === '__add_new__') {
+      this.value = lastValid;
+      openInlineCategoryForm();
+      return;
+    }
+    lastValid = this.value;
+  });
+
   document.getElementById('exp-modal-desc').focus();
+}
+
+// Swap the dropdown row for an inline create form. The dropdown
+// element stays in the DOM (hidden) so we can repopulate + reselect
+// it after the user finishes creating.
+function openInlineCategoryForm() {
+  var wrap = document.getElementById('exp-modal-cat-wrap');
+  var formMount = document.getElementById('exp-modal-create-cat');
+  var actions = document.getElementById('exp-modal-actions');
+  if (!wrap || !formMount) return;
+  wrap.style.display = 'none';
+  if (actions) actions.style.display = 'none';
+  formMount.style.display = '';
+  formMount.innerHTML =
+    '<div class="bud-create-cat-form">' +
+      '<div class="bud-create-cat-label">New Category Name</div>' +
+      '<input id="exp-modal-new-cat" type="text" placeholder="e.g., Religious Outreach" maxlength="40" autocomplete="off">' +
+      '<div class="bud-create-cat-err" id="exp-modal-new-cat-err"></div>' +
+      '<div class="bud-create-cat-actions">' +
+        '<button onclick="closeInlineCategoryForm(null)" style="font-size:12px;background:transparent;border:1px solid var(--br);color:var(--t2);padding:7px 14px;border-radius:6px;cursor:pointer">Cancel</button>' +
+        '<button onclick="submitInlineCategoryForm()" style="font-size:12px;background:var(--gold);border:none;color:var(--n1);padding:7px 14px;border-radius:6px;cursor:pointer;font-weight:700">Create category</button>' +
+      '</div>' +
+    '</div>';
+  var input = document.getElementById('exp-modal-new-cat');
+  if (input) {
+    input.focus();
+    // Enter submits, Esc cancels — keyboard-friendly.
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); submitInlineCategoryForm(); }
+      else if (e.key === 'Escape') { e.preventDefault(); closeInlineCategoryForm(null); }
+    });
+  }
+}
+
+function submitInlineCategoryForm() {
+  var input = document.getElementById('exp-modal-new-cat');
+  var errEl = document.getElementById('exp-modal-new-cat-err');
+  if (!input) return;
+  var name = input.value.trim();
+  var v = validateCustomCategoryName(name, null);
+  if (!v.ok) {
+    if (errEl) errEl.textContent = v.error;
+    input.focus();
+    return;
+  }
+  var res = createCustomCategory(name);
+  if (!res.ok) {
+    if (errEl) errEl.textContent = res.error || 'Could not create category.';
+    input.focus();
+    return;
+  }
+  closeInlineCategoryForm(res.key);
+}
+
+function closeInlineCategoryForm(newKey) {
+  var wrap = document.getElementById('exp-modal-cat-wrap');
+  var formMount = document.getElementById('exp-modal-create-cat');
+  var actions = document.getElementById('exp-modal-actions');
+  if (formMount) { formMount.style.display = 'none'; formMount.innerHTML = ''; }
+  if (wrap) wrap.style.display = '';
+  if (actions) actions.style.display = '';
+  // Repopulate the select so a freshly created category appears in
+  // the Custom optgroup with the new row pre-selected.
+  var select = document.getElementById('exp-modal-cat');
+  if (select) {
+    select.innerHTML = renderCategoryDropdownOptions(newKey || null);
+    if (newKey) select.value = newKey;
+  }
 }
 
 function submitExpenseModal() {
@@ -4255,10 +4498,10 @@ function submitExpenseModal() {
   var err = document.getElementById('exp-modal-err');
   if (!desc) { err.textContent = 'Please enter a description'; err.style.display = ''; return; }
   if (!amt || amt <= 0) { err.textContent = 'Please enter a valid amount'; err.style.display = ''; return; }
-  if (!cat) { err.textContent = 'Please select a budget category'; err.style.display = ''; return; }
+  if (!cat || cat === '__add_new__') { err.textContent = 'Please select a budget category'; err.style.display = ''; return; }
   if (!campaignBudget.expenses) campaignBudget.expenses = [];
   var cats = campaignBudget.categories || {};
-  var catLabel = (cats[cat] && cats[cat].label) || cat;
+  var catLabel = getCategoryLabel(cat, cats[cat]);
   campaignBudget.expenses.push({ id: Date.now(), description: desc, name: desc, vendor: '', amount: amt, category: cat, categoryLabel: catLabel, date: getTodayStr() });
   saveBudget();
   document.getElementById('expense-modal-overlay').remove();
