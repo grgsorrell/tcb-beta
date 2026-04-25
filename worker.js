@@ -1591,14 +1591,24 @@ export default {
         // the client snapshot; if categories[key] is missing fields, fall
         // back to 0. We deliberately do NOT enrich with anything Sam
         // could mistake for an external benchmark.
+        //
+        // Custom categories — those with isCustom: true on the snapshot —
+        // are inline-tagged "(custom)" so Sam can see at a glance which
+        // names are user-defined and apply rule 6 (no fabricated planning
+        // ranges for them). The label used is displayName for custom
+        // rows, falling through to label / key for canonical.
         const cats = snap.categories || {};
         const lines = [];
         for (const k of Object.keys(cats)) {
           const c = cats[k] || {};
-          const label = c.label || k;
+          const isCustom = c.isCustom === true;
+          const label = isCustom
+            ? (c.displayName || c.label || k)
+            : (c.label || k);
           const allocated = Number(c.allocated || 0);
           const spent = Number(c.spent || 0);
-          lines.push('  - ' + label + ': $' + allocated.toLocaleString('en-US') + ' allocated / $' + spent.toLocaleString('en-US') + ' spent');
+          const tag = isCustom ? ' (custom)' : '';
+          lines.push('  - ' + label + tag + ': $' + allocated.toLocaleString('en-US') + ' allocated / $' + spent.toLocaleString('en-US') + ' spent');
         }
         const total = Number(snap.total || 0);
         const raised = Number(snap.raisedSoFar || 0);
@@ -1636,7 +1646,13 @@ export default {
           'the labels exactly as written above.\n' +
           '  5. END WITH ONE CONCRETE NEXT ACTION the candidate can take. No vague "consider reviewing your spend"; ' +
           'something specific like "redirect $X from Reserve into Direct Mail" or "set an allocation for Polling, ' +
-          'currently at $0".';
+          'currently at $0".\n' +
+          '  6. CUSTOM CATEGORIES are user-defined (tagged "(custom)" in the data above) and may not match standard ' +
+          'campaign categories. Don\'t make assumptions about what they should be funded at — there is no peer ' +
+          'benchmark for items like "Religious Outreach" or "Video Production". Reference them by their exact name ' +
+          'when commenting on over- or under-budget situations, but DO NOT cite planning-range percentages for them ' +
+          '(no "a typical 5–10% planning range" — that\'s only valid for canonical categories you have benchmarks for). ' +
+          'Treat them the same as canonical categories for over/under-budget commentary; just skip the benchmark.';
 
         const apiResp = await fetch('https://api.anthropic.com/v1/messages', {
           method: 'POST',

@@ -4139,8 +4139,18 @@ function confirmApplyAllocations() {
     var defaultAllocs = Object.keys(DEFAULT_CATEGORIES).map(function(k){ return {category: DEFAULT_CATEGORIES[k].label}; });
     var sourceAllocs = (setup && setup.budgetAllocation && setup.budgetAllocation.length) ? setup.budgetAllocation : defaultAllocs;
     var total = campaignBudget.total || 0;
-    // Reset all categories to 0 first
-    Object.keys(campaignBudget.categories).forEach(function(k){ campaignBudget.categories[k].allocated = 0; });
+    // Reset only canonical category allocations to 0. Custom categories
+    // (isCustom: true) are completely untouched — Apply Recommended is
+    // about applying race-tailored guidance to the standard 9 buckets;
+    // user-defined categories are off-limits to this flow per the
+    // 3.5 spec. _uncategorized is also preserved.
+    Object.keys(campaignBudget.categories).forEach(function(k){
+      var cat = campaignBudget.categories[k];
+      if (!cat) return;
+      if (cat.isCustom === true) return;
+      if (k === '_uncategorized') return;
+      cat.allocated = 0;
+    });
     var inputs = document.querySelectorAll('[data-alloc-idx]');
     inputs.forEach(function(inp) {
       var i = parseInt(inp.getAttribute('data-alloc-idx'));
@@ -4149,7 +4159,11 @@ function confirmApplyAllocations() {
       if (!a) return;
       // Allocations from a Sam-generated label that doesn't match the
       // canonical 9 fall into _uncategorized so the user can review.
+      // We never write into a custom_* key from this flow even if a
+      // race profile happens to suggest one — apply-recommended is
+      // canonical-only.
       var key = CATEGORY_KEY_MAP[a.category] || '_uncategorized';
+      if (key.indexOf('custom_') === 0) return; // belt and suspenders
       if (!campaignBudget.categories[key]) campaignBudget.categories[key] = { allocated:0, label: (key === '_uncategorized' ? 'Uncategorized' : a.category) };
       campaignBudget.categories[key].allocated = Math.round(total * pct / 100);
       // Preserve canonical label — don't let an unfamiliar Sam label
