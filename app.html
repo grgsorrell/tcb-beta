@@ -357,6 +357,27 @@ select{-webkit-appearance:none;appearance:none;}
    RECATEGORIZATION which uses gold to demand action). */
 .bud-cat-pill-custom{font-size:9px;font-weight:600;letter-spacing:.04em;color:var(--t3);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:1px 6px;border-radius:3px;margin-left:8px;}
 
+/* Edit / delete affordances on custom category rows. Always
+   visible but at low opacity so the row reads cleanly on first
+   glance; full opacity on row hover for discovery. Tested
+   hover-only — felt invisible to new users. */
+.bud-cat-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:4px;border:none;background:transparent;color:var(--t3);font-size:11px;cursor:pointer;border-radius:3px;opacity:.4;transition:opacity .15s,color .15s,background .15s;vertical-align:middle;}
+.bud-alloc-row:hover .bud-cat-icon{opacity:.85;}
+.bud-cat-icon:hover{opacity:1 !important;background:rgba(255,255,255,.06);}
+.bud-cat-icon-edit:hover{color:var(--blue);}
+.bud-cat-icon-delete:hover{color:var(--red);}
+
+/* Inline rename input that replaces the displayName span when
+   the user clicks the pencil. Sized to fit naturally in the row. */
+.bud-cat-rename-input{font-size:13px;font-weight:600;color:var(--t1);background:rgba(212,165,116,.05);border:1px solid rgba(212,165,116,.4);border-radius:4px;padding:3px 8px;outline:none;width:200px;max-width:100%;}
+.bud-cat-rename-input:focus{border-color:rgba(212,165,116,.7);}
+.bud-cat-rename-actions{display:inline-flex;align-items:center;gap:4px;margin-left:6px;}
+.bud-cat-rename-btn{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;border-radius:3px;border:none;cursor:pointer;}
+.bud-cat-rename-save{background:var(--gold);color:var(--n1);}
+.bud-cat-rename-save:disabled{opacity:.4;cursor:not-allowed;}
+.bud-cat-rename-cancel{background:transparent;color:var(--t3);border:1px solid var(--br);}
+.bud-cat-rename-err{display:block;font-size:10px;color:var(--red);margin-top:4px;}
+
 /* Inline "create category" form inside the Add Expense modal —
    styled with the gold-tinted card pattern used elsewhere for
    "this is the active focus" surfaces. */
@@ -3816,13 +3837,25 @@ function renderAllocationRow(key, label, allocated, spent, meta) {
 
   var uncatTag = isUncat ? '<span style="font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--gold);background:rgba(212,165,116,.12);padding:2px 6px;border-radius:3px;margin-left:8px">NEEDS RECATEGORIZATION</span>' : '';
   // Muted-gray "custom" pill — informational metadata, not a warning.
-  // (Edit / Delete affordances ship in 3.5b.)
   var customTag = isCustom ? '<span class="bud-cat-pill-custom">custom</span>' : '';
+  // Edit + delete affordances on custom rows only, gated on canEdit
+  // so read-only sub-users see clean rows. The data-cat-key on the
+  // outer .bud-alloc-row gives the handler what it needs.
+  var customActions = '';
+  if (isCustom && canEdit('budget')) {
+    var safeKey = key.replace(/'/g, "\\'");
+    customActions =
+      '<button class="bud-cat-icon bud-cat-icon-edit" title="Rename" onclick="editCustomCategoryName(\'' + safeKey + '\')">\u270E</button>' +
+      '<button class="bud-cat-icon bud-cat-icon-delete" title="Delete" onclick="deleteCustomCategoryConfirm(\'' + safeKey + '\')">\u2715</button>';
+  }
+  // Wrap the label so the inline rename can replace JUST that
+  // span without rebuilding the rest of the row.
+  var nameSpan = '<span class="bud-cat-name">' + escapeHtml(label) + customTag + uncatTag + customActions + '</span>';
 
   return '<div class="bud-alloc-row' + (isUncat ? ' uncat' : '') + '" data-cat-key="' + escapeHtml(key) + '">' +
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
-      '<div style="font-size:13px;color:var(--t1);font-weight:600">' + escapeHtml(label) + customTag + uncatTag + '</div>' +
-      '<div style="font-size:11px">' + headerRightHtml + '</div>' +
+    '<div class="bud-alloc-row-head" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+      '<div style="font-size:13px;color:var(--t1);font-weight:600;min-width:0;display:flex;align-items:center;flex-wrap:wrap">' + nameSpan + '</div>' +
+      '<div style="font-size:11px;flex-shrink:0">' + headerRightHtml + '</div>' +
     '</div>' +
     barHtml +
     '<div style="font-size:10.5px;margin-top:5px">' + footerHtml + '</div>' +
@@ -4383,6 +4416,282 @@ function renderCategoryDropdownOptions(selectedKey) {
     html += '<option value="__add_new__">+ Add new category</option>';
   }
   return html;
+}
+
+// ----- Edit (rename) custom category -----
+// Inline-replace the row's name span with a rename input; Save
+// validates uniqueness via validateCustomCategoryName(name, key).
+// Cancel/Esc restore the row by triggering a panel re-render.
+function editCustomCategoryName(key) {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
+  var c = (campaignBudget.categories || {})[key];
+  if (!c || !c.isCustom) return;
+  var row = document.querySelector('.bud-alloc-row[data-cat-key="' + (CSS && CSS.escape ? CSS.escape(key) : key) + '"]');
+  if (!row) return;
+  var nameSpan = row.querySelector('.bud-cat-name');
+  if (!nameSpan) return;
+  var current = c.displayName || '';
+  var safeKey = key.replace(/'/g, "\\'");
+  nameSpan.innerHTML =
+    '<input class="bud-cat-rename-input" id="bud-cat-rename-input" type="text" maxlength="40" autocomplete="off" value="' + escapeHtml(current) + '">' +
+    '<span class="bud-cat-rename-actions">' +
+      '<button class="bud-cat-rename-btn bud-cat-rename-save" id="bud-cat-rename-save" onclick="saveEditedCategoryName(\'' + safeKey + '\')">Save</button>' +
+      '<button class="bud-cat-rename-btn bud-cat-rename-cancel" onclick="renderBudgetView()">Cancel</button>' +
+    '</span>' +
+    '<span class="bud-cat-rename-err" id="bud-cat-rename-err"></span>';
+  var input = document.getElementById('bud-cat-rename-input');
+  if (input) {
+    input.focus();
+    input.select();
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); saveEditedCategoryName(key); }
+      else if (e.key === 'Escape') { e.preventDefault(); renderBudgetView(); }
+    });
+  }
+}
+
+function saveEditedCategoryName(key) {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
+  var c = (campaignBudget.categories || {})[key];
+  if (!c || !c.isCustom) return;
+  var input = document.getElementById('bud-cat-rename-input');
+  var errEl = document.getElementById('bud-cat-rename-err');
+  if (!input) return;
+  var name = input.value.trim();
+  // No-op rename (same name as current) — just close the editor.
+  if (name.toLowerCase() === (c.displayName || '').toLowerCase()) {
+    renderBudgetView();
+    return;
+  }
+  var v = validateCustomCategoryName(name, key);
+  if (!v.ok) {
+    if (errEl) errEl.textContent = v.error;
+    input.focus();
+    return;
+  }
+  c.displayName = name;
+  saveBudget();
+  renderBudgetView();
+}
+
+// ----- Delete custom category -----
+// Branches on emptiness:
+//  - clean: $0 allocated, $0 spent, no expense rows referencing this
+//    key → simple confirm modal
+//  - blocked: any of the three is non-zero → blocking modal listing
+//    the issues, with a "Reassign expenses" button (only if expenses
+//    exist; allocation must be cleared via Adjust Budget separately).
+// After expense reassignment + zero allocation, the user clicks the
+// X again and hits the clean path.
+function deleteCustomCategoryConfirm(key) {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
+  var c = (campaignBudget.categories || {})[key];
+  if (!c || !c.isCustom) return;
+  var allocated = c.allocated || 0;
+  var spent = getSpentByCategory(key);
+  var expenses = (campaignBudget.expenses || []).filter(function(e){ return e.category === key; });
+  var displayName = c.displayName || key;
+
+  var clean = (allocated === 0 && spent === 0 && expenses.length === 0);
+
+  var overlay = document.createElement('div');
+  overlay.id = 'bud-cat-delete-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(5,8,18,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;';
+  overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+  var safeKey = key.replace(/'/g, "\\'");
+  if (clean) {
+    overlay.innerHTML =
+      '<div style="background:var(--n2);border:1px solid var(--br2);border-radius:14px;width:420px;max-width:100%;padding:24px 28px;box-shadow:0 20px 60px rgba(0,0,0,.6);">' +
+        '<div style="font-family:var(--font-d);font-size:18px;color:var(--t1);margin-bottom:8px">Delete category?</div>' +
+        '<div style="font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:22px">Delete <strong style="color:var(--t1)">' + escapeHtml(displayName) + '</strong>? This category has no allocation, no spending, and no expenses tied to it, so removal is clean.</div>' +
+        '<div style="display:flex;gap:10px;justify-content:flex-end">' +
+          '<button onclick="document.getElementById(\'bud-cat-delete-overlay\').remove()" style="padding:9px 18px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer;font-weight:600">Cancel</button>' +
+          '<button onclick="executeDeleteCustomCategory(\'' + safeKey + '\')" style="padding:9px 18px;font-size:12px;background:var(--red);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Delete</button>' +
+        '</div>' +
+      '</div>';
+  } else {
+    // Blocking modal. Build copy + buttons based on what's actually non-zero.
+    var lines = [];
+    if (allocated > 0) {
+      lines.push('It has <strong style="color:var(--t1)">$' + allocated.toLocaleString() + '</strong> allocated. Use <em>Adjust Budget</em> to clear the allocation before deleting.');
+    }
+    if (expenses.length > 0) {
+      lines.push('It has <strong style="color:var(--t1)">' + expenses.length + ' expense' + (expenses.length === 1 ? '' : 's') + '</strong> totaling <strong style="color:var(--t1)">$' + spent.toLocaleString() + '</strong>. Reassign these to another category before deleting.');
+    } else if (spent > 0) {
+      lines.push('It shows <strong style="color:var(--t1)">$' + spent.toLocaleString() + '</strong> spent (legacy data). Refresh and try again.');
+    }
+    var reassignBtn = expenses.length > 0
+      ? '<button onclick="document.getElementById(\'bud-cat-delete-overlay\').remove();openReassignExpensesModal(\'' + safeKey + '\')" style="padding:9px 18px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Reassign expenses</button>'
+      : '';
+    overlay.innerHTML =
+      '<div style="background:var(--n2);border:1px solid var(--br2);border-radius:14px;width:480px;max-width:100%;padding:24px 28px;box-shadow:0 20px 60px rgba(0,0,0,.6);">' +
+        '<div style="font-family:var(--font-d);font-size:18px;color:var(--t1);margin-bottom:8px">Can\u2019t delete \u201C' + escapeHtml(displayName) + '\u201D yet</div>' +
+        '<div style="font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:18px">' +
+          lines.map(function(l){ return '<div style="margin-bottom:8px">' + l + '</div>'; }).join('') +
+        '</div>' +
+        '<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">' +
+          '<button onclick="document.getElementById(\'bud-cat-delete-overlay\').remove()" style="padding:9px 18px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer;font-weight:600">Close</button>' +
+          reassignBtn +
+        '</div>' +
+      '</div>';
+  }
+  document.body.appendChild(overlay);
+}
+
+function executeDeleteCustomCategory(key) {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
+  var cats = campaignBudget.categories || {};
+  var c = cats[key];
+  if (!c || !c.isCustom) return;
+  // Last-line check: confirm it's still clean. Defends against race
+  // conditions where someone added an expense in another tab between
+  // the modal opening and the user clicking Delete.
+  var allocated = c.allocated || 0;
+  var spent = getSpentByCategory(key);
+  var expenses = (campaignBudget.expenses || []).filter(function(e){ return e.category === key; });
+  if (allocated > 0 || spent > 0 || expenses.length > 0) {
+    var ov = document.getElementById('bud-cat-delete-overlay');
+    if (ov) ov.remove();
+    deleteCustomCategoryConfirm(key); // re-open with the now-blocking state
+    return;
+  }
+  delete cats[key];
+  saveBudget();
+  var ov2 = document.getElementById('bud-cat-delete-overlay');
+  if (ov2) ov2.remove();
+  renderBudgetView();
+  refreshDashboard();
+}
+
+// ----- Reassignment flow -----
+// Modal lists every expense tied to sourceKey, each with a destination
+// dropdown. A "Reassign all to..." bulk dropdown propagates a single
+// choice to every per-expense select. Submit moves every expense in
+// one shot, saves, and closes. The category itself is NOT deleted —
+// the user clicks the X again after returning to retry deletion.
+function openReassignExpensesModal(sourceKey) {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
+  var cats = campaignBudget.categories || {};
+  var sourceCat = cats[sourceKey];
+  if (!sourceCat) return;
+  var sourceLabel = getCategoryLabel(sourceKey, sourceCat);
+  var expenses = (campaignBudget.expenses || []).filter(function(e){ return e.category === sourceKey; });
+  if (expenses.length === 0) return;
+
+  // Build destination options: canonical 9 + custom (alpha) +
+  // _uncategorized (if it exists) — EXCLUDING the source key.
+  function destOptionsHtml(selectedValue) {
+    var html = '<option value="" disabled' + (selectedValue ? '' : ' selected') + '>Choose category\u2026</option>';
+    html += '<optgroup label="Recommended">';
+    Object.keys(DEFAULT_CATEGORIES).forEach(function(k) {
+      if (k === sourceKey) return;
+      var sel = (k === selectedValue) ? ' selected' : '';
+      html += '<option value="' + k + '"' + sel + '>' + escapeHtml(DEFAULT_CATEGORIES[k].label) + '</option>';
+    });
+    html += '</optgroup>';
+    var customKeys = Object.keys(cats).filter(function(k){ return k !== sourceKey && cats[k] && cats[k].isCustom; })
+      .sort(function(a,b){ var an=(cats[a].displayName||a).toLowerCase(); var bn=(cats[b].displayName||b).toLowerCase(); return an<bn?-1:an>bn?1:0; });
+    if (customKeys.length) {
+      html += '<optgroup label="Custom">';
+      customKeys.forEach(function(k){
+        var sel = (k === selectedValue) ? ' selected' : '';
+        html += '<option value="' + k + '"' + sel + '>' + escapeHtml(cats[k].displayName || k) + '</option>';
+      });
+      html += '</optgroup>';
+    }
+    if (cats._uncategorized && sourceKey !== '_uncategorized') {
+      var sel = ('_uncategorized' === selectedValue) ? ' selected' : '';
+      html += '<option value="_uncategorized"' + sel + '>Uncategorized</option>';
+    }
+    return html;
+  }
+
+  var rowsHtml = expenses.map(function(e) {
+    var safeId = String(e.id);
+    return '<div style="display:grid;grid-template-columns:1fr 80px 92px 200px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px">' +
+      '<div style="color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + escapeHtml(e.description || e.name || '') + '">' + escapeHtml(e.description || e.name || 'Expense') + '</div>' +
+      '<div style="color:var(--red);font-weight:700;text-align:right">$' + (e.amount || 0).toLocaleString() + '</div>' +
+      '<div style="color:var(--t3);font-size:11px">' + escapeHtml(e.date || '') + '</div>' +
+      '<select class="bud-reassign-row" data-expense-id="' + escapeHtml(safeId) + '" style="font-size:12px;width:100%">' + destOptionsHtml(null) + '</select>' +
+    '</div>';
+  }).join('');
+
+  var totalSpent = expenses.reduce(function(s,e){ return s + (e.amount || 0); }, 0);
+
+  var safeSourceKey = sourceKey.replace(/'/g, "\\'");
+  var overlay = document.createElement('div');
+  overlay.id = 'bud-reassign-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(5,8,18,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;';
+  overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML =
+    '<div style="background:var(--n2);border:1px solid var(--br2);border-radius:14px;width:760px;max-width:100%;max-height:85vh;display:flex;flex-direction:column;padding:24px 28px;box-shadow:0 20px 60px rgba(0,0,0,.6);">' +
+      '<div style="font-family:var(--font-d);font-size:18px;color:var(--t1);margin-bottom:6px">Reassign expenses tied to \u201C' + escapeHtml(sourceLabel) + '\u201D</div>' +
+      '<div style="font-size:12px;color:var(--t3);margin-bottom:14px">' + expenses.length + ' expense' + (expenses.length === 1 ? '' : 's') + ' &middot; $' + totalSpent.toLocaleString() + ' total. Pick a destination for each, or use the bulk control to apply one choice to all.</div>' +
+      '<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">' +
+        '<span style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:700">Reassign all to:</span>' +
+        '<select id="bud-reassign-bulk" style="font-size:12px;flex:1;min-width:180px">' + destOptionsHtml(null) + '</select>' +
+        '<button onclick="applyReassignBulk()" style="font-size:11px;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.3);color:var(--gold);padding:6px 12px;border-radius:4px;cursor:pointer;font-weight:700;letter-spacing:.06em">Apply to all</button>' +
+      '</div>' +
+      '<div style="overflow-y:auto;flex:1;min-height:0;padding-right:6px">' +
+        '<div style="display:grid;grid-template-columns:1fr 80px 92px 200px;gap:10px;align-items:center;padding:0 0 6px;font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--t3);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.08)">' +
+          '<div>Expense</div><div style="text-align:right">Amount</div><div>Date</div><div>New category</div>' +
+        '</div>' +
+        rowsHtml +
+      '</div>' +
+      '<div id="bud-reassign-err" style="font-size:11px;color:var(--red);margin-top:10px;min-height:14px"></div>' +
+      '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">' +
+        '<button onclick="document.getElementById(\'bud-reassign-overlay\').remove()" style="padding:9px 18px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer;font-weight:600">Cancel</button>' +
+        '<button onclick="submitExpenseReassignment(\'' + safeSourceKey + '\')" style="padding:9px 18px;font-size:12px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:700">Reassign ' + expenses.length + ' expense' + (expenses.length === 1 ? '' : 's') + '</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+}
+
+// "Reassign all to..." bulk control — propagates the bulk select's
+// value to every per-row select. Per-row dropdowns can still be
+// individually overridden after this fires.
+function applyReassignBulk() {
+  var bulk = document.getElementById('bud-reassign-bulk');
+  if (!bulk || !bulk.value) return;
+  var rows = document.querySelectorAll('select.bud-reassign-row');
+  rows.forEach(function(s){ s.value = bulk.value; });
+}
+
+function submitExpenseReassignment(sourceKey) {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
+  var cats = campaignBudget.categories || {};
+  var rows = document.querySelectorAll('select.bud-reassign-row');
+  var errEl = document.getElementById('bud-reassign-err');
+  if (errEl) errEl.textContent = '';
+  // Collect mappings; reject submit if any row left unset.
+  var mappings = {};
+  var unset = 0;
+  rows.forEach(function(s) {
+    var id = s.getAttribute('data-expense-id');
+    var dest = s.value;
+    if (!dest) { unset++; return; }
+    mappings[id] = dest;
+  });
+  if (unset > 0) {
+    if (errEl) errEl.textContent = 'Pick a destination for every expense (' + unset + ' still unset). Use the bulk control if they all go to the same place.';
+    return;
+  }
+  // Apply.
+  var expenses = campaignBudget.expenses || [];
+  var changed = 0;
+  expenses.forEach(function(e) {
+    if (e.category !== sourceKey) return;
+    var dest = mappings[String(e.id)];
+    if (!dest) return;
+    e.category = dest;
+    e.categoryLabel = getCategoryLabel(dest, cats[dest]);
+    changed++;
+  });
+  saveBudget();
+  var ov = document.getElementById('bud-reassign-overlay');
+  if (ov) ov.remove();
+  renderBudgetView();
+  refreshDashboard();
 }
 
 function promptAddExpense() {
