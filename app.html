@@ -3686,7 +3686,7 @@ function renderTabBudget(t) {
            '<div>' +
              '<div id="bud-samstake-mount">' + renderSamsTakePanel({ mode: 'loading' }) + '</div>' +
              '<div id="bud-reference-mount" style="margin-top:14px">' + renderReferenceAccordion(null) + '</div>' +
-             '<div style="margin-top:14px">' + renderQuickActionsStub() + '</div>' +
+             '<div style="margin-top:14px">' + renderQuickActions() + '</div>' +
            '</div>' +
          '</div>';
 }
@@ -4103,12 +4103,166 @@ function renderReferenceAccordion(financeData) {
   '</div>';
 }
 
-// Quick Actions — placeholder buttons. Click handlers wired in cp5.
-function renderQuickActionsStub() {
+// ----- Quick Actions (CP5) -----
+//
+// Two right-column buttons in the unified Overview tab:
+//   - Apply recommended allocation: fill-empties-only — for each
+//     canonical category where allocated === 0, sets allocated to
+//     (recommendedPercent × totalReserve). Categories the user has
+//     already manually allocated are left untouched. Custom
+//     categories are NEVER touched (contract locked in 3.5c's
+//     defensive fix to confirmApplyAllocations + extra guards
+//     here too).
+//   - Ask Sam about my budget: opens the Sam chat panel with an
+//     empty input focused; no pre-filled prompt.
+//
+// Both gated on canEdit('budget'). Read-only sub-users see no
+// Quick Actions panel at all (the bottom of the right column
+// stops at the Reference accordion).
+function renderQuickActions() {
+  if (!canEdit('budget')) return '';
   return '<div class="bud-quick">' +
-    '<button class="bud-quick-btn" disabled title="Wiring lands in the next checkpoint"><span>Apply recommended allocation</span><span class="arr">\u2192</span></button>' +
-    '<button class="bud-quick-btn" disabled title="Wiring lands in the next checkpoint"><span>Ask Sam about my budget</span><span class="arr">\u2192</span></button>' +
+    '<button class="bud-quick-btn" onclick="applyRecommendedAllocationConfirm()"><span>Apply recommended allocation</span><span class="arr">\u2192</span></button>' +
+    '<button class="bud-quick-btn" onclick="askSamAboutBudget()"><span>Ask Sam about my budget</span><span class="arr">\u2192</span></button>' +
   '</div>';
+}
+
+// Open the confirmation modal. If no race-tailored allocations are
+// cached, kick a background fetch so the user isn't blocked — call
+// applyRecommendedAllocationConfirm again once data lands.
+function applyRecommendedAllocationConfirm() {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
+
+  if (!campaignBudget.total || campaignBudget.total <= 0) {
+    alert('Set a total budget first via Adjust Budget.');
+    return;
+  }
+
+  var setup = null;
+  try { setup = JSON.parse(localStorage.getItem(storageKey('ctb_finance_setup'))); } catch(e) {}
+  var hasAllocs = setup && setup.budgetAllocation && setup.budgetAllocation.length && !setup._failed;
+
+  if (!hasAllocs) {
+    // Show a brief loading toast, fetch, retry. Avoid a blocking
+    // modal — user might wander away from the tab.
+    showSimpleToast('Loading recommended allocations\u2026', 'info');
+    fetchBudgetReferenceData(function(data) {
+      if (data && data.budgetAllocation && data.budgetAllocation.length) {
+        applyRecommendedAllocationConfirm();
+      } else {
+        showSimpleToast('Could not load recommended allocations. Try again later.', 'error');
+      }
+    });
+    return;
+  }
+
+  // Compute what would be filled vs skipped (purely for the modal
+  // copy — the actual write logic re-checks at confirm time).
+  var cats = campaignBudget.categories || {};
+  var willFill = 0, skipsManual = 0;
+  setup.budgetAllocation.forEach(function(a) {
+    var key = CATEGORY_KEY_MAP[a.category];
+    if (!key || !DEFAULT_CATEGORIES[key]) return;
+    if (cats[key] && (cats[key].allocated || 0) > 0) { skipsManual++; return; }
+    willFill++;
+  });
+
+  if (willFill === 0) {
+    showSimpleToast('All canonical categories already have allocations \u2014 nothing to fill.', 'info');
+    return;
+  }
+
+  var detail = 'This will fill in budget amounts for ' + willFill + ' empty canonical categor' + (willFill === 1 ? 'y' : 'ies') +
+    '. Custom categories you\u2019ve created won\u2019t be touched' +
+    (skipsManual > 0 ? ', and your existing manual allocation' + (skipsManual === 1 ? '' : 's') + ' will stay as-is' : '') + '.';
+
+  var overlay = document.createElement('div');
+  overlay.id = 'apply-rec-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(5,8,18,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;';
+  overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML =
+    '<div style="background:var(--n2);border:1px solid var(--br2);border-radius:14px;width:460px;max-width:100%;padding:24px 28px;box-shadow:0 20px 60px rgba(0,0,0,.6);">' +
+      '<div style="font-family:var(--font-d);font-size:18px;color:var(--t1);margin-bottom:8px">Apply recommended allocations?</div>' +
+      '<div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:22px">' + escapeHtml(detail) + '</div>' +
+      '<div style="display:flex;gap:10px;justify-content:flex-end">' +
+        '<button onclick="document.getElementById(\'apply-rec-overlay\').remove()" style="padding:9px 18px;font-size:12px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--t2);border-radius:6px;cursor:pointer;font-weight:600">Cancel</button>' +
+        '<button onclick="applyRecommendedAllocationConfirmed()" style="padding:9px 18px;font-size:12px;background:var(--gold);color:var(--n1);border:none;border-radius:6px;cursor:pointer;font-weight:700">Apply</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+}
+
+function applyRecommendedAllocationConfirmed() {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
+  var setup = null;
+  try { setup = JSON.parse(localStorage.getItem(storageKey('ctb_finance_setup'))); } catch(e) {}
+  if (!setup || !setup.budgetAllocation || !setup.budgetAllocation.length) return;
+  var total = campaignBudget.total || 0;
+  if (total <= 0) return;
+  var cats = campaignBudget.categories || {};
+  var filled = 0;
+  setup.budgetAllocation.forEach(function(a) {
+    var key = CATEGORY_KEY_MAP[a.category];
+    // Hard guards (multiple lines of defense; the contract is:
+    // never touch custom_*, never touch non-canonical, never overwrite
+    // a manual allocation):
+    if (!key) return;
+    if (key.indexOf('custom_') === 0) return;
+    if (!DEFAULT_CATEGORIES[key]) return;
+    if (!cats[key]) cats[key] = { label: DEFAULT_CATEGORIES[key].label, allocated: 0 };
+    if ((cats[key].allocated || 0) > 0) return; // fill empties only
+    var pct = parseFloat(a.percentage) || 0;
+    cats[key].allocated = Math.round(total * pct / 100);
+    cats[key].label = DEFAULT_CATEGORIES[key].label;
+    filled++;
+  });
+  campaignBudget.categories = cats;
+  saveBudget();
+
+  var ov = document.getElementById('apply-rec-overlay');
+  if (ov) ov.remove();
+
+  showSimpleToast('Applied recommended allocations to ' + filled + ' categor' + (filled === 1 ? 'y' : 'ies'), 'success');
+
+  // Per CP5 spec: do NOT auto-refresh Sam's Take. The 24h cache
+  // stays in effect; the next day's cycle picks up the new state
+  // naturally.
+  renderBudgetView();
+  refreshDashboard();
+}
+
+// Open the chat panel with an empty input focused. No pre-filled
+// prompt — the candidate types their own question.
+function askSamAboutBudget() {
+  if (!canEdit('budget')) { showReadOnlyToast('budget'); return; }
+  if (typeof openSam === 'function') openSam();
+  // openSam() scrolls chat history to bottom internally; we just
+  // need to clear and focus the input. Small timeout so the panel's
+  // open animation finishes and focus takes effect on a visible elem.
+  setTimeout(function() {
+    var input = document.getElementById('sam-input');
+    if (input) { input.value = ''; input.focus(); }
+  }, 120);
+}
+
+// Reusable inline toast — green (success), red (error), gold (info).
+// Mirrors the toast styles already used elsewhere in the budget UI.
+function showSimpleToast(message, kind) {
+  kind = kind || 'success';
+  var bg, border, color;
+  if (kind === 'error') { bg = 'rgba(232,112,112,.15)'; border = 'rgba(232,112,112,.3)'; color = 'var(--red)'; }
+  else if (kind === 'info') { bg = 'rgba(212,165,116,.15)'; border = 'rgba(212,165,116,.3)'; color = 'var(--gold)'; }
+  else { bg = 'rgba(130,179,134,.15)'; border = 'rgba(130,179,134,.3)'; color = 'var(--green)'; }
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--n3);border:1px solid ' + border + ';color:' + color + ';padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);max-width:480px;text-align:center;';
+  toast.style.background = bg;
+  toast.textContent = (kind === 'success' ? '\u2705 ' : kind === 'error' ? '\u26A0 ' : '') + message;
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.transition = 'opacity .3s';
+    toast.style.opacity = '0';
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 3500);
 }
 
 // Loads the race-tailored Sam content (used by the right-column
