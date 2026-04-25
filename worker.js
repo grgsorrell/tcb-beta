@@ -116,6 +116,113 @@ export default {
     }
 
     // ========================================
+    // HELPER: Jurisdiction lookup (backs the lookup_jurisdiction Sam tool)
+    // ========================================
+
+    // Two-letter postal code → full state name. Used for building
+    // Wikipedia article + category titles. Accepts already-full names
+    // pass-through.
+    function expandStateName(s) {
+      const map = {
+        AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',
+        CO:'Colorado',CT:'Connecticut',DE:'Delaware',FL:'Florida',GA:'Georgia',
+        HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',IA:'Iowa',
+        KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',
+        MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',
+        MO:'Missouri',MT:'Montana',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',
+        NJ:'New Jersey',NM:'New Mexico',NY:'New York',NC:'North Carolina',
+        ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',
+        RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',
+        TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',WA:'Washington',
+        WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming',DC:'District of Columbia'
+      };
+      const trimmed = (s || '').trim();
+      if (trimmed.length === 2) return map[trimmed.toUpperCase()] || trimmed;
+      return trimmed;
+    }
+
+    // Detect jurisdiction type from the office + jurisdiction strings.
+    // Returns one of: 'county', 'city', 'us_house_district',
+    // 'state_legislative_district', or 'unknown'.
+    function detectJurisdictionType(office, jurisdictionName) {
+      const o = (office || '').toLowerCase();
+      const j = (jurisdictionName || '').toLowerCase();
+      if (j.includes('county')) return 'county';
+      if (o.includes('us house') || o.includes('us congress') || o.includes('congressional district') || /^[a-z]{2}-?\d+$/i.test(j.replace(/\s+/g,''))) {
+        return 'us_house_district';
+      }
+      if (o.includes('state house') || o.includes('state senate') || o.includes('state assembly') || o.includes('state legislator') || o.includes('state representative')) {
+        return 'state_legislative_district';
+      }
+      // Default to city/municipal — covers Mayor, City Council, etc.
+      return 'city';
+    }
+
+    // Wikipedia category-members API path for county lookups.
+    // Counties have well-curated category trees:
+    //   Cities_in_X_County,_State
+    //   Towns_in_X_County,_State
+    //   Villages_in_X_County,_State (some states)
+    //   Census-designated_places_in_X_County,_State
+    //   Unincorporated_communities_in_X_County,_State
+    // We hit each, dedupe titles, strip the disambiguating ", State"
+    // suffix from each entry's title.
+    async function resolveCountyViaWikipedia(jurisdictionName, state) {
+      const stateFull = expandStateName(state);
+      const cleanCounty = jurisdictionName.replace(/\s+county\s*$/i, '').trim();
+      const wikiCounty = (cleanCounty + '_County,_' + stateFull).replace(/\s+/g, '_');
+
+      const incorporatedCats = [
+        'Cities_in_' + wikiCounty,
+        'Towns_in_' + wikiCounty,
+        'Villages_in_' + wikiCounty
+      ];
+      const unincorporatedCats = [
+        'Unincorporated_communities_in_' + wikiCounty,
+        'Census-designated_places_in_' + wikiCounty
+      ];
+
+      async function fetchCategory(catTitle) {
+        const url = 'https://en.wikipedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:' +
+          encodeURIComponent(catTitle) + '&cmlimit=500&cmtype=page&format=json&origin=*';
+        try {
+          const r = await fetch(url, {
+            headers: { 'User-Agent': 'TheCandidatesToolbox/1.0 (https://thecandidatestoolbox.com; ops@thecandidatestoolbox.com)' }
+          });
+          if (!r.ok) return [];
+          const data = await r.json();
+          const members = (data && data.query && data.query.categorymembers) || [];
+          return members.map(m => {
+            // Strip ", State" suffix (e.g. "Orlando, Florida" → "Orlando")
+            // and parenthetical disambiguators (e.g. "Apopka (city)" → "Apopka").
+            // State names don't contain regex special chars, so no escape needed.
+            let title = m.title || '';
+            title = title.replace(new RegExp(',?\\s*' + stateFull + '\\s*$', 'i'), '');
+            title = title.replace(/\s*\([^)]*\)\s*$/, '');
+            return title.trim();
+          }).filter(Boolean);
+        } catch (e) {
+          return [];
+        }
+      }
+
+      const incResults = await Promise.all(incorporatedCats.map(fetchCategory));
+      const uninResults = await Promise.all(unincorporatedCats.map(fetchCategory));
+
+      const incorporated = [...new Set(incResults.flat())].sort();
+      const unincorporated = [...new Set(uninResults.flat())].sort();
+
+      return {
+        jurisdiction_type: 'county',
+        official_name: cleanCounty + ' County, ' + stateFull,
+        incorporated_municipalities: incorporated,
+        major_unincorporated_areas: unincorporated,
+        source: 'Wikipedia',
+        last_updated: new Date().toISOString().split('T')[0]
+      };
+    }
+
+    // ========================================
     // HELPER: Log API usage to console and D1
     // ========================================
     async function logApiUsage(feature, data, userId, ownerId) {
@@ -1711,6 +1818,123 @@ export default {
           fromCache: false,
           nextRefreshAvailableAt: next
         });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: lookup_jurisdiction
+    //
+    // Returns the verified list of incorporated municipalities and
+    // unincorporated areas inside a candidate's race jurisdiction.
+    // Backs the lookup_jurisdiction Sam tool — gives her a real source
+    // of geographic truth so she stops hallucinating adjacent-county
+    // cities (the bug that prompted this: she suggested Altamonte
+    // Springs / Sanford for an Orange County FL race; both are in
+    // Seminole County).
+    //
+    // Cache: 90 days, keyed on (office, state, jurisdiction_name) via
+    // a UNIQUE index. Jurisdiction containment is stable data;
+    // refresh-by-deletion if the user reports a stale entry post-
+    // redistricting.
+    //
+    // Source cascade per the spec: Census → OpenStates → Wikipedia.
+    // In practice each source covers different jurisdiction types:
+    //   - county / city  → Wikipedia category-members API (structured,
+    //                      no scraping; returns clean municipality
+    //                      lists for any US county)
+    //   - us_house_district / state_legislative_district → not yet
+    //                      implemented; returns a "source: unsupported"
+    //                      result so Sam can fall back gracefully
+    //                      (Census Tigerweb + OpenStates are the
+    //                      planned paths; out of scope today)
+    //   - city           → identity (the city IS the jurisdiction; no
+    //                      sub-jurisdictions to enumerate)
+    // ========================================
+    if (url.pathname === '/api/jurisdiction/lookup' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        const body = await request.json().catch(() => ({}));
+        const office = (body.office || '').trim();
+        const state = (body.state || '').trim();
+        const jurisdictionName = (body.jurisdiction_name || '').trim();
+        if (!office || !state || !jurisdictionName) {
+          return jsonResponse({ error: 'office, state, jurisdiction_name required' }, 400);
+        }
+
+        // Cache check (90-day TTL).
+        const cached = await env.DB.prepare(
+          "SELECT jurisdiction_type, official_name, incorporated_municipalities, major_unincorporated_areas, source, last_updated FROM jurisdiction_lookups WHERE office = ? AND state = ? AND jurisdiction_name = ? AND created_at > datetime('now', '-90 days')"
+        ).bind(office, state, jurisdictionName).first();
+
+        if (cached) {
+          return jsonResponse({
+            jurisdiction_type: cached.jurisdiction_type,
+            official_name: cached.official_name,
+            incorporated_municipalities: JSON.parse(cached.incorporated_municipalities || '[]'),
+            major_unincorporated_areas: JSON.parse(cached.major_unincorporated_areas || '[]'),
+            source: cached.source,
+            last_updated: cached.last_updated,
+            cached: true
+          });
+        }
+
+        // Cache miss — resolve via the appropriate source for this
+        // jurisdiction type.
+        const type = detectJurisdictionType(office, jurisdictionName);
+        let result;
+        if (type === 'county') {
+          result = await resolveCountyViaWikipedia(jurisdictionName, state);
+        } else if (type === 'city') {
+          // Identity: the city IS the jurisdiction. No external lookup.
+          result = {
+            jurisdiction_type: 'city',
+            official_name: jurisdictionName + ', ' + expandStateName(state),
+            incorporated_municipalities: [jurisdictionName],
+            major_unincorporated_areas: [],
+            source: 'identity',
+            last_updated: new Date().toISOString().split('T')[0]
+          };
+        } else {
+          // us_house_district / state_legislative_district / unknown.
+          // Census Tigerweb (US House) + OpenStates (state) are planned
+          // here. For now return an explicit "unsupported" so Sam can
+          // fall back to broad guidance and flag the gap.
+          result = {
+            jurisdiction_type: type,
+            official_name: jurisdictionName,
+            incorporated_municipalities: [],
+            major_unincorporated_areas: [],
+            source: 'unsupported',
+            last_updated: new Date().toISOString().split('T')[0],
+            note: 'District-level lookup not implemented yet. Sam should tell the user she does not have verified geographic data for this jurisdiction type.'
+          };
+        }
+
+        // Persist (UPSERT via UNIQUE index).
+        await env.DB.prepare(
+          'INSERT INTO jurisdiction_lookups (id, office, state, jurisdiction_name, jurisdiction_type, official_name, incorporated_municipalities, major_unincorporated_areas, source, last_updated) ' +
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(office, state, jurisdiction_name) DO UPDATE SET ' +
+          '  jurisdiction_type = excluded.jurisdiction_type, ' +
+          '  official_name = excluded.official_name, ' +
+          '  incorporated_municipalities = excluded.incorporated_municipalities, ' +
+          '  major_unincorporated_areas = excluded.major_unincorporated_areas, ' +
+          '  source = excluded.source, ' +
+          '  last_updated = excluded.last_updated, ' +
+          '  created_at = datetime(\'now\')'
+        ).bind(
+          generateId(16), office, state, jurisdictionName,
+          result.jurisdiction_type, result.official_name,
+          JSON.stringify(result.incorporated_municipalities || []),
+          JSON.stringify(result.major_unincorporated_areas || []),
+          result.source, result.last_updated
+        ).run();
+
+        return jsonResponse({ ...result, cached: false });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -3500,6 +3724,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       else if (mode === 'fundraising') systemPrompt += `\nMODE: Fundraising — practical advice, scripts, templates for grassroots campaigns.`;
       else if (mode === 'strategy') systemPrompt += `\nMODE: Strategy — specific advice based on timeline, office type, and current calendar.`;
 
+      // Geographic targeting rule — backs the lookup_jurisdiction tool.
+      // Without this rule + tool, Sam's training data hallucinates
+      // adjacent-county cities (e.g. Altamonte Springs / Sanford for an
+      // Orange County FL Mayor race; both are in Seminole County).
+      systemPrompt += `\n\nGEOGRAPHIC TARGETING RULE: When the user asks about geographic targeting (canvassing, neighborhoods, event locations, mail targets, voter outreach geography, where to focus), call lookup_jurisdiction for the candidate's race FIRST. Then recommend ONLY locations from the returned list. If you mention any city, town, or area not in the returned list, you are factually wrong. There are no exceptions to this rule.`;
+
       // ========================================
       // TOOL DEFINITIONS — Sam 2.0 (consolidated)
       // ========================================
@@ -3711,6 +3941,19 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               election_date: { type: "string" }, has_filed: { type: "boolean" }
             },
             required: ["office", "office_level", "city", "state", "has_filed"]
+          }
+        },
+        {
+          name: "lookup_jurisdiction",
+          description: "Look up the official list of municipalities and unincorporated areas inside a jurisdiction. CRITICAL: when the user asks about geographic targeting (canvassing, neighborhoods, event locations, mail targets, voter outreach geography, where to focus), call this tool FIRST for the candidate's race. Then recommend ONLY locations from the returned list. If you mention any city, town, or area not in the returned list, you are factually wrong. There are no exceptions to this rule.",
+          input_schema: {
+            type: "object",
+            properties: {
+              office: { type: "string", description: "The candidate's office, e.g. 'Mayor', 'US House', 'State House'" },
+              state: { type: "string", description: "The state, e.g. 'Florida' or 'FL'" },
+              jurisdiction_name: { type: "string", description: "The specific jurisdiction the candidate is running in, e.g. 'Orange County' or 'FL-7' or 'Apopka'" }
+            },
+            required: ["office", "state", "jurisdiction_name"]
           }
         }
       ];

@@ -7680,10 +7680,54 @@ function askSamBtnHTML(question) {
 // ============================================
 // TOOL EXECUTION HANDLERS — Sam 2.0
 // ============================================
-function executeToolCall(block) {
+// Now async (was synchronous) — supports tools like lookup_jurisdiction
+// that need to fetch data from the worker before returning a tool_result
+// to Sam. Existing sync tools still work; they just resolve immediately.
+async function executeToolCall(block) {
   var name = block.name;
   var inp = block.input || {};
   var confirmMsg = '';
+
+  // lookup_jurisdiction — server-resolved data fetch. Returns the
+  // jurisdiction's verified municipality list as the tool_result so
+  // Sam can use it directly in her follow-up generation. Cached
+  // server-side for 90 days; second call is instant.
+  if (name === 'lookup_jurisdiction') {
+    try {
+      var sess = getD1Session();
+      if (!sess) {
+        return { confirmMsg: '', toolResultContent: JSON.stringify({ error: 'not_authenticated' }), toolId: block.id, toolName: name, input: inp };
+      }
+      var resp = await fetch(D1_API + '/api/jurisdiction/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+        body: JSON.stringify({
+          office: inp.office || '',
+          state: inp.state || '',
+          jurisdiction_name: inp.jurisdiction_name || ''
+        })
+      });
+      var data = await resp.json();
+      // Silent — no user-facing confirmation chip; the result feeds
+      // back into Sam's next response and the user sees the
+      // grounded reply, not the lookup itself.
+      return {
+        confirmMsg: '',
+        toolResultContent: JSON.stringify(data),
+        toolId: block.id,
+        toolName: name,
+        input: inp
+      };
+    } catch (e) {
+      return {
+        confirmMsg: '',
+        toolResultContent: JSON.stringify({ error: 'lookup_failed', message: e.message }),
+        toolId: block.id,
+        toolName: name,
+        input: inp
+      };
+    }
+  }
 
   // Sam 2.0 unified add_calendar_event handles both tasks and events
   if (name === 'add_calendar_event' || name === 'add_event') {
@@ -8466,14 +8510,25 @@ async function sendSamMessage() {
       showHallucinationToast();
     }
 
-    // Execute all tool calls and show confirmations
+    // Execute all tool calls and show confirmations.
+    // executeToolCall is async (some tools like lookup_jurisdiction
+    // do server-side fetches), so iterate with for-of + await rather
+    // than forEach. Tool results that include toolResultContent
+    // (server-resolved data) feed that back to Sam as the
+    // tool_result content; otherwise the existing pattern of
+    // confirmMsg-as-content is used.
     var confirmations = [];
     var toolResults = [];
-    toolBlocks.forEach(function(block) {
-      var result = executeToolCall(block);
+    for (var ti = 0; ti < toolBlocks.length; ti++) {
+      var block = toolBlocks[ti];
+      var result = await executeToolCall(block);
       if (result.confirmMsg) confirmations.push(result.confirmMsg);
-      toolResults.push({ type: 'tool_result', tool_use_id: block.id, content: result.confirmMsg || 'Done' });
-    });
+      toolResults.push({
+        type: 'tool_result',
+        tool_use_id: block.id,
+        content: (result.toolResultContent != null) ? result.toolResultContent : (result.confirmMsg || 'Done')
+      });
+    }
     confirmations.forEach(function(msg) {
       msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>';
     });
@@ -8514,10 +8569,16 @@ async function sendSamMessage() {
           });
         }
         var followConfirms = [];
-        followToolBlocks.forEach(function(block) {
-          var result = executeToolCall(block);
-          if (result.confirmMsg) followConfirms.push(result.confirmMsg);
-        });
+        // Same async pattern as the first round — for-of + await.
+        // Note: this round currently doesn't propagate tool results
+        // for further multi-round chaining; if Sam emits another
+        // tool_use here it terminates the loop. That's pre-existing
+        // behavior, not introduced by the lookup_jurisdiction wiring.
+        for (var fi = 0; fi < followToolBlocks.length; fi++) {
+          var fblock = followToolBlocks[fi];
+          var fresult = await executeToolCall(fblock);
+          if (fresult.confirmMsg) followConfirms.push(fresult.confirmMsg);
+        }
         if (followText.trim()) {
           if (isDocumentContent(followText)) {
             msgsEl.innerHTML += renderDocumentBubble(extractDocTitle(followText), followText);
