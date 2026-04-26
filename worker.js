@@ -4078,9 +4078,58 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // fallback). One retry max — no infinite loops.
       // ============================================================
 
+      // Cached-jurisdiction lookup keyed on the candidate's stable race
+      // profile (office + state + location). Independent of conversation
+      // history — works on every turn, including turns where Sam did
+      // NOT call lookup_jurisdiction this turn but called it on a
+      // previous turn (or in a previous conversation entirely; rows
+      // live for 90 days).
+      //
+      // Why this exists: client-side chatHistory persists only plain
+      // text. tool_use / tool_result blocks evaporate after the
+      // multi-round loop. So walking `messages` for a tool_result
+      // works ONLY for the same turn the tool fired. Turn 2 of any
+      // conversation would skip validation entirely without this
+      // path. (The cache table is the candidate's authoritative
+      // jurisdiction record — fed by Sam's lookup_jurisdiction calls
+      // and stable for the campaign.)
+      //
+      // Tolerant of state-format drift: Sam has historically called
+      // the tool with both "FL" and "Florida", so we match either.
+      async function lookupCachedJurisdictionForRace(office, stateCode, jurisdictionName) {
+        if (!office || !stateCode || !jurisdictionName) return null;
+        const stateExpanded = expandStateName(stateCode);
+        try {
+          const row = await env.DB.prepare(
+            "SELECT jurisdiction_type, official_name, incorporated_municipalities, major_unincorporated_areas, source " +
+            "FROM jurisdiction_lookups " +
+            "WHERE LOWER(office) = LOWER(?) " +
+            "  AND LOWER(jurisdiction_name) = LOWER(?) " +
+            "  AND (LOWER(state) = LOWER(?) OR LOWER(state) = LOWER(?)) " +
+            "  AND created_at > datetime('now', '-90 days') " +
+            "ORDER BY created_at DESC LIMIT 1"
+          ).bind(office, jurisdictionName, stateCode, stateExpanded).first();
+          if (!row) return null;
+          return {
+            jurisdiction_type: row.jurisdiction_type,
+            official_name: row.official_name,
+            incorporated_municipalities: JSON.parse(row.incorporated_municipalities || '[]'),
+            major_unincorporated_areas: JSON.parse(row.major_unincorporated_areas || '[]'),
+            source: row.source
+          };
+        } catch (e) {
+          console.warn('[validator] cache lookup failed:', e.message);
+          return null;
+        }
+      }
+
       // Walk history backwards for the most recent lookup_jurisdiction
       // tool_result. Identified by the parsed JSON having
       // incorporated_municipalities (the shape of our lookup endpoint).
+      // Used as a fallback when the candidate-profile cache lookup
+      // misses (e.g., race profile not yet populated; jurisdiction
+      // tool was called this turn with a name that doesn't match the
+      // profile's `location` field exactly).
       function findMostRecentJurisdictionLookup(msgs) {
         for (let i = msgs.length - 1; i >= 0; i--) {
           const m = msgs[i];
@@ -4216,11 +4265,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       const messages = (history && history.length > 0) ? [...history] : [{ role: "user", content: message }];
       const data = await callClaude(messages);
 
-      // Validator runs only when the conversation contains a
-      // lookup_jurisdiction tool_result with a real authorized list.
+      // Validator authorized-list resolution. Two paths, in order:
+      //   1) Candidate-profile cache lookup — works on EVERY turn,
+      //      including follow-ups in multi-turn conversations where
+      //      Sam doesn't re-call lookup_jurisdiction.
+      //   2) Fallback: walk message history for an in-flight
+      //      tool_result (covers same-turn cases where the candidate
+      //      profile is incomplete or the tool was called with a
+      //      jurisdiction_name that doesn't match `location`).
       // Federal districts / unsupported jurisdictions skip validation
       // (no list to validate against).
-      const lookupResult = findMostRecentJurisdictionLookup(messages);
+      let lookupResult = await lookupCachedJurisdictionForRace(specificOffice, state, location);
+      if (!lookupResult) {
+        lookupResult = findMostRecentJurisdictionLookup(messages);
+      }
       const hasUsableList = lookupResult &&
         lookupResult.source !== 'unsupported' &&
         Array.isArray(lookupResult.incorporated_municipalities);
