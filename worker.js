@@ -1848,11 +1848,12 @@ export default {
           return str.length > n ? str.slice(0, n) + '…' : str;
         };
         await env.DB.prepare(
-          'INSERT INTO sam_turn_logs (id, user_id, workspace_owner_id, user_message, tool_calls, response_excerpt) VALUES (?, ?, ?, ?, ?, ?)'
+          'INSERT INTO sam_turn_logs (id, user_id, workspace_owner_id, conversation_id, user_message, tool_calls, response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?)'
         ).bind(
           generateId(16),
           ctx.userId,
           ctx.ownerId,
+          body.conversation_id || null,
           trunc(body.user_message, 500),
           JSON.stringify(body.tool_calls || []),
           trunc(body.response_excerpt, 800)
@@ -1861,6 +1862,38 @@ export default {
       } catch (error) {
         // Swallow errors — logging must not break chat.
         return jsonResponse({ success: true, error: error.message });
+      }
+    }
+
+    // ========================================
+    // SAM CONVERSATION RESET
+    //
+    // Purges sam_tool_memory rows for a conversation_id. Called by
+    // the client when the user fires /new chat — the client rotates
+    // to a fresh conversation_id and asks the server to drop the
+    // old conversation's tool memory so it can't bleed into the
+    // next conversation. (Orphan rows from conversations that ended
+    // without an explicit reset will sit until a sweep cron is
+    // built; harmless, just space.)
+    //
+    // Auth: requires a session. Scoped to the caller's
+    // workspace_owner_id so a sub-user can only purge memory in
+    // their own workspace, not someone else's.
+    // ========================================
+    if (url.pathname === '/api/sam/conversation/reset' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ success: false, error: 'unauthenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        const body = await request.json().catch(() => ({}));
+        const conversationId = body.conversation_id;
+        if (!conversationId) return jsonResponse({ success: false, error: 'conversation_id required' }, 400);
+        const result = await env.DB.prepare(
+          'DELETE FROM sam_tool_memory WHERE conversation_id = ? AND (workspace_owner_id = ? OR workspace_owner_id IS NULL)'
+        ).bind(conversationId, ctx.ownerId || '').run();
+        return jsonResponse({ success: true, purged: result.meta ? result.meta.changes : 0 });
+      } catch (error) {
+        return jsonResponse({ success: false, error: error.message }, 500);
       }
     }
 
@@ -3340,7 +3373,8 @@ export default {
         additionalContext, budget, winNumber,
         daysToElection, govLevel, candidateBrief,
         startingAmount, fundraisingGoal, totalRaised,
-        donorCount, intelContext, raceProfile
+        donorCount, intelContext, raceProfile,
+        conversation_id
       } = body;
 
       // ========================================
@@ -3657,6 +3691,123 @@ RULES:
       const isNewUser = needsOnboarding === true;
       const isReturningUser = !isNewUser && officeType && officeType !== 'unknown';
 
+      // ========================================
+      // TOOL MEMORY — write + read for this turn
+      //
+      // Generalized fix for the multi-turn tool-result-evaporation
+      // problem (yesterday's jurisdiction validator only addressed
+      // the geographic case via a bespoke cache table). Walks
+      // incoming `messages` for tool_use/tool_result pairs from the
+      // current multi-round loop, persists them to sam_tool_memory
+      // keyed on conversation_id (deduped on tool_use_id), then
+      // loads the 5 most recent rows for this conversation and
+      // formats them into a RECENT TOOL RESULTS block injected
+      // into the system prompt below.
+      //
+      // Token budget: per-result capped at 2000 tokens (~8000
+      // chars); total block capped at 8000 tokens (~32000 chars).
+      // Truncation drops the oldest row(s) until the total fits.
+      //
+      // No conversation_id → no-op (back-compat with old clients).
+      // ========================================
+      const TM_CHARS_PER_TOKEN = 4;
+      const TM_PER_RESULT_CHARS = 2000 * TM_CHARS_PER_TOKEN;
+      const TM_TOTAL_CHARS = 8000 * TM_CHARS_PER_TOKEN;
+
+      function extractToolPairs(msgs) {
+        if (!Array.isArray(msgs)) return [];
+        const usesByID = new Map();
+        const pairs = [];
+        for (const m of msgs) {
+          if (!m || !Array.isArray(m.content)) continue;
+          if (m.role === 'assistant') {
+            for (const blk of m.content) {
+              if (blk && blk.type === 'tool_use' && blk.id) {
+                usesByID.set(blk.id, { tool_use_id: blk.id, name: blk.name, input: blk.input });
+              }
+            }
+          } else if (m.role === 'user') {
+            for (const blk of m.content) {
+              if (blk && blk.type === 'tool_result' && blk.tool_use_id && usesByID.has(blk.tool_use_id)) {
+                const use = usesByID.get(blk.tool_use_id);
+                let resultStr;
+                if (typeof blk.content === 'string') resultStr = blk.content;
+                else { try { resultStr = JSON.stringify(blk.content); } catch (e) { resultStr = String(blk.content); } }
+                pairs.push({
+                  tool_use_id: use.tool_use_id,
+                  name: use.name,
+                  input: use.input,
+                  result: resultStr
+                });
+              }
+            }
+          }
+        }
+        return pairs;
+      }
+
+      async function persistToolMemory(pairs, convId, ownerId) {
+        if (!convId || !pairs || pairs.length === 0) return;
+        for (const p of pairs) {
+          try {
+            await env.DB.prepare(
+              'INSERT OR IGNORE INTO sam_tool_memory (id, conversation_id, workspace_owner_id, tool_name, tool_use_id, parameters, result) VALUES (?, ?, ?, ?, ?, ?, ?)'
+            ).bind(
+              generateId(16),
+              convId,
+              ownerId || null,
+              p.name || 'unknown',
+              p.tool_use_id || null,
+              JSON.stringify(p.input || {}),
+              (p.result || '').slice(0, 50000)
+            ).run();
+          } catch (e) {
+            console.warn('[tool_memory] write failed for', p.tool_use_id, e.message);
+          }
+        }
+      }
+
+      async function loadRecentToolMemory(convId) {
+        if (!convId) return [];
+        try {
+          const r = await env.DB.prepare(
+            'SELECT tool_name, parameters, result, created_at FROM sam_tool_memory WHERE conversation_id = ? ORDER BY created_at DESC LIMIT 5'
+          ).bind(convId).all();
+          return (r && r.results) ? r.results : [];
+        } catch (e) {
+          console.warn('[tool_memory] load failed:', e.message);
+          return [];
+        }
+      }
+
+      function formatToolMemoryBlock(rows) {
+        if (!rows || rows.length === 0) return '';
+        const entries = rows.map(r => {
+          let resultStr = r.result || '';
+          if (resultStr.length > TM_PER_RESULT_CHARS) {
+            resultStr = resultStr.slice(0, TM_PER_RESULT_CHARS) + '\n... [truncated; full result preserved server-side]';
+          }
+          const ts = (r.created_at || '').replace(' ', 'T') + 'Z';
+          return `[Tool: ${r.tool_name} at ${ts}]\nParameters: ${r.parameters || '{}'}\nResult: ${resultStr}`;
+        });
+        // Drop oldest rows (entries.pop() — list is newest-first) until total fits.
+        const sep = '\n\n';
+        while (entries.join(sep).length > TM_TOTAL_CHARS && entries.length > 1) {
+          entries.pop();
+        }
+        return '\n================================================================\nRECENT TOOL RESULTS (within this conversation; authoritative — use instead of memory)\n================================================================\n' + entries.join(sep) + '\n';
+      }
+
+      // Run write before read so this turn's just-completed tool
+      // calls (multi-round follow-up) are visible to the read query.
+      const _incomingMsgs = (history && history.length > 0) ? history : [];
+      const _toolPairs = extractToolPairs(_incomingMsgs);
+      if (conversation_id && _toolPairs.length > 0) {
+        await persistToolMemory(_toolPairs, conversation_id, chatOwnerId);
+      }
+      const _toolMemoryRows = conversation_id ? await loadRecentToolMemory(conversation_id) : [];
+      const toolMemoryBlock = formatToolMemoryBlock(_toolMemoryRows);
+
       let systemPrompt = `================================================================
 STOP — FACTUAL DISCIPLINE (read before every response)
 ================================================================
@@ -3715,7 +3866,7 @@ RESEARCH SCOPE: ${geo.scope} race. Always research ${geo.researchArea}. Never li
 
 CURRENT CAMPAIGN STATUS:
 ${additionalContext || 'No additional context.'}
-
+${toolMemoryBlock}
 ================================================================
 RULES (mandatory, ranked by priority)
 ================================================================

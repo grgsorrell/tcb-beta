@@ -1224,6 +1224,24 @@ if (campaignBudget.totalBudget) { campaignBudget.total = campaignBudget.totalBud
 try { folders = JSON.parse(localStorage.getItem(storageKey('ctb_folders'))) || []; } catch(e) { folders = []; }
 try { chatHistory = JSON.parse(localStorage.getItem(storageKey('ctb_chatHistory'))) || []; } catch(e) { chatHistory = []; }
 
+// Conversation id — keys server-side sam_tool_memory rows so tool
+// results from earlier turns are visible to Sam on later turns.
+// Lives until the user fires /new chat (then a fresh id is minted
+// and the old conversation's memory is purged server-side). See
+// CP_SAM_TOOL_MEMORY.sql for the storage contract.
+var samConversationId = '';
+try {
+  samConversationId = localStorage.getItem(storageKey('ctb_sam_conversation_id')) || '';
+} catch(e) {}
+function ensureSamConversationId() {
+  if (!samConversationId) {
+    samConversationId = 'conv_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
+    try { localStorage.setItem(storageKey('ctb_sam_conversation_id'), samConversationId); } catch(e) {}
+  }
+  return samConversationId;
+}
+ensureSamConversationId();
+
 function saveState(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
 
 // Cache management — localStorage is a speed cache for D1
@@ -8292,12 +8310,48 @@ function formatSamText(text) {
 // ============================================
 // SEND MESSAGE TO SAM (with full tool handling)
 // ============================================
+// /new chat reset — purge server-side tool memory for the current
+// conversation_id, rotate to a fresh id, clear local chatHistory.
+// Short-circuits the Sam call entirely (no Anthropic spend on a
+// reset). See worker.js /api/sam/conversation/reset.
+async function resetSamConversation() {
+  var oldConvId = samConversationId;
+  if (oldConvId) {
+    try {
+      var sess = getD1Session();
+      var hdrs = { 'Content-Type': 'application/json' };
+      if (sess) hdrs['Authorization'] = 'Bearer ' + sess;
+      await fetch(D1_API + '/api/sam/conversation/reset', {
+        method: 'POST', headers: hdrs,
+        body: JSON.stringify({ conversation_id: oldConvId })
+      });
+    } catch(e) {}
+  }
+  samConversationId = '';
+  try { localStorage.removeItem(storageKey('ctb_sam_conversation_id')); } catch(e) {}
+  ensureSamConversationId();
+  chatHistory = [];
+  saveChatHistory();
+  var msgsEl = document.getElementById('sam-messages');
+  if (msgsEl) msgsEl.innerHTML = '';
+}
+
 async function sendSamMessage() {
   if (samProcessing) return;
   if (samIsListening) samStopListening();
   var input = document.getElementById('sam-input');
   var message = input.value.trim();
   if (!message) return;
+
+  // /new chat — client-side command, short-circuit Sam call.
+  if (message.toLowerCase() === '/new chat' || message.toLowerCase() === '/newchat') {
+    input.value = '';
+    await resetSamConversation();
+    var msgsElReset = document.getElementById('sam-messages');
+    if (msgsElReset) msgsElReset.innerHTML += '<div class="sam-msg">Got it — starting fresh. What do you need?</div>';
+    return;
+  }
+
   samProcessing = true;
   input.value = '';
   input.placeholder = 'Ask Sam anything...';
@@ -8439,6 +8493,7 @@ async function sendSamMessage() {
       location: campaignData.location || '',
       history: hist,
       mode: samMode,
+      conversation_id: ensureSamConversationId(),
       budget: campaignBudget.total || null,
       startingAmount: campaignBudget.startingAmount || 0,
       fundraisingGoal: campaignBudget.fundraisingGoal || 0,
@@ -8644,6 +8699,7 @@ async function sendSamMessage() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _logSess },
           body: JSON.stringify({
+            conversation_id: ensureSamConversationId(),
             user_message: message,
             tool_calls: turnToolCalls,
             response_excerpt: _combinedResponse
