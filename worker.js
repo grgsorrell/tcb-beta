@@ -3596,6 +3596,113 @@ RULES:
       const isoDay = localParts.find(p => p.type === 'day').value;
       const isoToday = `${isoYear}-${isoMonth}-${isoDay}`;
 
+      // ========================================
+      // HELPER: Build CALENDAR REFERENCE block
+      //
+      // Turns a math/recall problem into retrieval. Haiku has been
+      // making date arithmetic mistakes ("next Saturday is May 3rd"
+      // when today is Sunday April 26 and next Saturday is May 2nd)
+      // because it tries to compute the answer in its head. This
+      // block hands it the full day-by-day mapping so it just looks
+      // up the answer.
+      //
+      // All dates are anchored to UTC noon of the candidate-local
+      // calendar date (isoToday is already TZ-corrected). Adding
+      // days via 86_400_000 ms preserves the calendar offset across
+      // DST transitions because the noon anchor is far from the
+      // 2am-3am switch.
+      //
+      // Week semantics: Monday-Sunday week containing today (per
+      // checkpoint spec). When today is Sunday, "this week's Sat"
+      // is yesterday and "next week's Sat" is six days from today.
+      //
+      // Generated fresh every turn. ~250 tokens, ~$0.0003/turn.
+      // ========================================
+      function buildCalendarReference(isoTodayStr, electionDateRaw) {
+        const SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        const FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const [y, m, d] = isoTodayStr.split('-').map(Number);
+        const todayUTC = new Date(Date.UTC(y, m - 1, d, 12));
+        const ymd = (dt) => `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, '0')}-${String(dt.getUTCDate()).padStart(2, '0')}`;
+        const addDays = (dt, n) => new Date(dt.getTime() + n * 86400000);
+        const dow = (dt) => dt.getUTCDay();
+        const sh = (dt) => SHORT[dow(dt)];
+        const fl = (dt) => FULL[dow(dt)];
+
+        const yesterday = addDays(todayUTC, -1);
+        const tomorrow = addDays(todayUTC, 1);
+
+        // Last 7 days, oldest -> newest (yesterday is the 7th entry)
+        const last7 = [];
+        for (let i = 7; i >= 1; i--) last7.push(addDays(todayUTC, -i));
+
+        // This week: Monday-Sunday containing today.
+        // dow: 0=Sun, 1=Mon ... 6=Sat. daysFromMonday: Mon=0...Sun=6.
+        const daysFromMonday = (dow(todayUTC) + 6) % 7;
+        const thisMon = addDays(todayUTC, -daysFromMonday);
+        const thisWeek = [];
+        const nextWeek = [];
+        const twoWeeks = [];
+        for (let i = 0; i < 7; i++) {
+          thisWeek.push(addDays(thisMon, i));
+          nextWeek.push(addDays(thisMon, 7 + i));
+          twoWeeks.push(addDays(thisMon, 14 + i));
+        }
+
+        // End of this/next month. Date.UTC handles year rollover via
+        // month overflow (m=12 -> month index 12 = Jan next year, day 0
+        // = last day of Dec).
+        const eom = new Date(Date.UTC(y, m, 0, 12));
+        const eonm = new Date(Date.UTC(y, m + 1, 0, 12));
+
+        // Election day line — only when set + parseable.
+        let electionLine = '';
+        if (electionDateRaw && /^\d{4}-\d{2}-\d{2}$/.test(String(electionDateRaw).trim())) {
+          const [ey, em, ed] = String(electionDateRaw).trim().split('-').map(Number);
+          const electUTC = new Date(Date.UTC(ey, em - 1, ed, 12));
+          const daysAway = Math.round((electUTC.getTime() - todayUTC.getTime()) / 86400000);
+          if (daysAway > 0) {
+            electionLine = `\n\nElection day: ${ymd(electUTC)} (${fl(electUTC)}) — ${daysAway} day${daysAway === 1 ? '' : 's'} away`;
+          } else if (daysAway === 0) {
+            electionLine = `\n\nElection day: ${ymd(electUTC)} (${fl(electUTC)}) — TODAY`;
+          } else {
+            const ago = -daysAway;
+            electionLine = `\n\nElection was ${ymd(electUTC)} (${fl(electUTC)}) — ${ago} day${ago === 1 ? '' : 's'} ago`;
+          }
+        }
+
+        const fmtRow = (arr) => arr.map(dt => `${sh(dt)} ${ymd(dt)}`).join(' | ');
+
+        return `
+================================================================
+CALENDAR REFERENCE (use these mappings — do not calculate dates in your head)
+================================================================
+Today: ${fl(todayUTC)}, ${ymd(todayUTC)}
+Yesterday: ${fl(yesterday)}, ${ymd(yesterday)}
+Tomorrow: ${fl(tomorrow)}, ${ymd(tomorrow)}
+
+Last 7 days:
+${fmtRow(last7)}
+
+This week (Monday-Sunday containing today):
+${fmtRow(thisWeek)}
+
+Next week (Monday-Sunday after current week):
+${fmtRow(nextWeek)}
+
+Two weeks out (Monday-Sunday):
+${fmtRow(twoWeeks)}
+
+This weekend: Sat ${ymd(thisWeek[5])} / Sun ${ymd(thisWeek[6])}
+Next weekend: Sat ${ymd(nextWeek[5])} / Sun ${ymd(nextWeek[6])}
+
+End of this month: ${fl(eom)}, ${ymd(eom)}
+End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
+================================================================
+`;
+      }
+      const calendarReference = buildCalendarReference(isoToday, electionDate);
+
       // Campaign phase
       const effectiveDays = daysToElection != null ? daysToElection : null;
       let campaignPhase = 'planning';
@@ -3866,7 +3973,7 @@ RESEARCH SCOPE: ${geo.scope} race. Always research ${geo.researchArea}. Never li
 
 CURRENT CAMPAIGN STATUS:
 ${additionalContext || 'No additional context.'}
-${toolMemoryBlock}
+${calendarReference}${toolMemoryBlock}
 ================================================================
 RULES (mandatory, ranked by priority)
 ================================================================
