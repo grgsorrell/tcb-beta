@@ -4064,10 +4064,205 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return data;
       }
 
-      // Simple pass-through: one API call, return raw response
-      // Client handles tool execution and follow-up calls
+      // ============================================================
+      // GEOGRAPHIC HALLUCINATION VALIDATOR
+      //
+      // Three prompt-rule iterations failed to stop Haiku 4.5 from
+      // recommending adjacent-county cities (Altamonte Springs in
+      // Seminole Co. for an Orange Co. FL race) even when the
+      // lookup_jurisdiction tool returned the correct exclusion list.
+      // Architectural fix: post-process Sam's response server-side
+      // BEFORE delivery. If she names a place not in the tool result,
+      // regenerate with explicit feedback (Option B); if regeneration
+      // also fails, strip the offending sentences (Option A
+      // fallback). One retry max — no infinite loops.
+      // ============================================================
+
+      // Walk history backwards for the most recent lookup_jurisdiction
+      // tool_result. Identified by the parsed JSON having
+      // incorporated_municipalities (the shape of our lookup endpoint).
+      function findMostRecentJurisdictionLookup(msgs) {
+        for (let i = msgs.length - 1; i >= 0; i--) {
+          const m = msgs[i];
+          if (!m || m.role !== 'user' || !Array.isArray(m.content)) continue;
+          for (const blk of m.content) {
+            if (!blk || blk.type !== 'tool_result' || typeof blk.content !== 'string') continue;
+            try {
+              const parsed = JSON.parse(blk.content);
+              if (parsed && Array.isArray(parsed.incorporated_municipalities)) {
+                return parsed;
+              }
+            } catch (e) {}
+          }
+        }
+        return null;
+      }
+
+      function extractTextFromContent(content) {
+        if (!Array.isArray(content)) return '';
+        let s = '';
+        for (const b of content) {
+          if (b && b.type === 'text' && typeof b.text === 'string') s += b.text;
+        }
+        return s.trim();
+      }
+
+      // Cheap Haiku call (~$0.001) to extract place names from Sam's
+      // text and flag any not in the authorized list. Tagged
+      // 'sam_validator' in api_usage so the cost is auditable.
+      async function extractUnauthorizedPlaces(samText, authorizedList) {
+        const prompt = 'You are a place-name auditor. Given a campaign coaching response and an authorized list of US places, return JSON.\n\n' +
+          'RESPONSE:\n' + samText + '\n\n' +
+          'AUTHORIZED LIST (case-insensitive — these are the only US cities, towns, neighborhoods, or unincorporated communities the response is allowed to mention):\n' +
+          authorizedList.join(', ') + '\n\n' +
+          'TASK: Extract every US city, town, neighborhood, or unincorporated community name mentioned in RESPONSE. For each, decide whether it appears (case-insensitive substring match) in AUTHORIZED LIST. Return JSON only — no preamble, no markdown:\n' +
+          '{"mentioned": ["Place A", "Place B"], "unauthorized": ["Place B"]}\n\n' +
+          'RULES:\n' +
+          '- "mentioned" includes ALL specific places (cities, towns, neighborhoods, communities). Exclude state names, country names, county names, region words ("Florida", "the South", "Orange County"), and generic words ("downtown", "the city").\n' +
+          '- "unauthorized" is the subset of mentioned that does NOT appear in AUTHORIZED LIST. Use case-insensitive substring; be lenient on suffixes (Apopka matches "South Apopka" as authorized via "Apopka").\n' +
+          '- If no places mentioned: {"mentioned": [], "unauthorized": []}\n' +
+          '- DO NOT add commentary. JSON only.';
+        try {
+          const resp = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': env.ANTHROPIC_API_KEY,
+              'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+              model: 'claude-haiku-4-5-20251001',
+              max_tokens: 600,
+              temperature: 0,
+              messages: [{ role: 'user', content: prompt }]
+            })
+          });
+          const data = await resp.json();
+          await logApiUsage('sam_validator', data, rateLimitUserId, chatOwnerId);
+          let text = '';
+          if (data && data.content && Array.isArray(data.content)) {
+            for (const b of data.content) if (b && b.type === 'text' && b.text) text += b.text;
+          }
+          const m = text.match(/\{[\s\S]*\}/);
+          if (!m) return { mentioned: [], unauthorized: [] };
+          const parsed = JSON.parse(m[0]);
+          return {
+            mentioned: Array.isArray(parsed.mentioned) ? parsed.mentioned : [],
+            unauthorized: Array.isArray(parsed.unauthorized) ? parsed.unauthorized : []
+          };
+        } catch (e) {
+          // Validator failure → return empty (don't block delivery on auditor error)
+          console.warn('[validator] extract failed:', e.message);
+          return { mentioned: [], unauthorized: [] };
+        }
+      }
+
+      // Option B: regenerate Sam's response with explicit feedback.
+      // Append the bad response + correction to the history and re-call.
+      async function regenerateWithFeedback(originalMsgs, badContent, unauthorized, authorized) {
+        const retryMsgs = [
+          ...originalMsgs,
+          { role: 'assistant', content: badContent },
+          { role: 'user', content:
+            'STOP. Your previous response mentioned ' + unauthorized.join(', ') +
+            ' — these are NOT in this race\'s jurisdiction and are forbidden. ' +
+            'Regenerate the recommendation using ONLY these authorized places: ' +
+            authorized.join(', ') +
+            '. Reply with only the regenerated answer — no preamble, no acknowledgment of this correction.'
+          }
+        ];
+        return await callClaude(retryMsgs);
+      }
+
+      // Option A fallback: drop any sentence/bullet that mentions an
+      // unauthorized place. Threshold-checks the result so a near-empty
+      // response gets a graceful generic instead.
+      function stripUnauthorizedSentences(samText, unauthorized) {
+        const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+        const cleaned = sentences.filter(s => {
+          const sLower = s.toLowerCase();
+          return !unauthorized.some(u => u && sLower.includes(u.toLowerCase()));
+        });
+        let joined = cleaned.join(' ').replace(/\s+/g, ' ').trim();
+        if (joined.length < 60) {
+          return "I want to make sure I'm grounded in your specific jurisdiction before giving you a recommendation. Could you share a particular area or angle (high-density precincts, donor-rich neighborhoods, areas with low past turnout) and I'll work from there?";
+        }
+        return joined + '\n\n*(Note: removed recommendations that were outside your race\'s jurisdiction.)*';
+      }
+
+      async function logValidationEvent(jurisdictionName, authorizedList, mentioned, unauthorized, action, originalText, finalText) {
+        try {
+          await env.DB.prepare(
+            'INSERT INTO sam_validation_events (id, workspace_owner_id, user_id, jurisdiction_name, authorized_count, sam_mentioned_locations, unauthorized_locations, action_taken, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+          ).bind(
+            generateId(16), chatOwnerId || null, rateLimitUserId || null,
+            jurisdictionName || 'unknown',
+            (authorizedList || []).length,
+            JSON.stringify(mentioned || []),
+            JSON.stringify(unauthorized || []),
+            action,
+            (originalText || '').slice(0, 600),
+            (finalText || '').slice(0, 600)
+          ).run();
+        } catch (e) {
+          console.warn('[validator] log failed:', e.message);
+        }
+      }
+
+      // ============================================================
+
+      // Simple pass-through: one API call, return raw response.
+      // Client handles tool execution and follow-up calls.
       const messages = (history && history.length > 0) ? [...history] : [{ role: "user", content: message }];
       const data = await callClaude(messages);
+
+      // Validator runs only when the conversation contains a
+      // lookup_jurisdiction tool_result with a real authorized list.
+      // Federal districts / unsupported jurisdictions skip validation
+      // (no list to validate against).
+      const lookupResult = findMostRecentJurisdictionLookup(messages);
+      const hasUsableList = lookupResult &&
+        lookupResult.source !== 'unsupported' &&
+        Array.isArray(lookupResult.incorporated_municipalities);
+
+      if (hasUsableList) {
+        const samText = extractTextFromContent(data.content);
+        const authorized = [
+          ...(lookupResult.incorporated_municipalities || []),
+          ...(lookupResult.major_unincorporated_areas || [])
+        ];
+        const jurisdictionName = lookupResult.official_name || 'unknown';
+
+        // Skip auditing trivially short responses (Sam's "Let me pull..."
+        // text in Round 1 has no recommendations to validate).
+        if (samText.length > 60 && authorized.length > 0) {
+          const audit = await extractUnauthorizedPlaces(samText, authorized);
+          if (audit.unauthorized && audit.unauthorized.length > 0) {
+            // Option B: regenerate with feedback. One retry max.
+            const retry = await regenerateWithFeedback(messages, data.content, audit.unauthorized, authorized);
+            const retryText = extractTextFromContent(retry.content);
+            const retryAudit = await extractUnauthorizedPlaces(retryText, authorized);
+
+            if (retryAudit.unauthorized.length === 0) {
+              await logValidationEvent(jurisdictionName, authorized, audit.mentioned, audit.unauthorized, 'regenerated', samText, retryText);
+              return new Response(JSON.stringify(retry), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+              });
+            }
+
+            // Option A fallback: strip the offending sentences.
+            const stripped = stripUnauthorizedSentences(retryText, retryAudit.unauthorized);
+            const strippedResponse = { ...retry, content: [{ type: 'text', text: stripped }] };
+            await logValidationEvent(jurisdictionName, authorized, retryAudit.mentioned, retryAudit.unauthorized, 'stripped', samText, stripped);
+            return new Response(JSON.stringify(strippedResponse), {
+              headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+          }
+
+          // Passed first check.
+          await logValidationEvent(jurisdictionName, authorized, audit.mentioned, [], 'passed', samText, samText);
+        }
+      }
 
       return new Response(JSON.stringify(data), {
         headers: { "Content-Type": "application/json", ...corsHeaders },
