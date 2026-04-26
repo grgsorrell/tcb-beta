@@ -8517,16 +8517,29 @@ async function sendSamMessage() {
     // (server-resolved data) feed that back to Sam as the
     // tool_result content; otherwise the existing pattern of
     // confirmMsg-as-content is used.
+    //
+    // turnToolCalls accumulates a structured log of every tool fire
+    // this turn (across both rounds) for the forensic POST at the
+    // end of the function. Output summary is truncated to keep the
+    // log row small.
     var confirmations = [];
     var toolResults = [];
+    var turnToolCalls = [];
     for (var ti = 0; ti < toolBlocks.length; ti++) {
       var block = toolBlocks[ti];
       var result = await executeToolCall(block);
       if (result.confirmMsg) confirmations.push(result.confirmMsg);
+      var contentForSam = (result.toolResultContent != null) ? result.toolResultContent : (result.confirmMsg || 'Done');
       toolResults.push({
         type: 'tool_result',
         tool_use_id: block.id,
-        content: (result.toolResultContent != null) ? result.toolResultContent : (result.confirmMsg || 'Done')
+        content: contentForSam
+      });
+      turnToolCalls.push({
+        round: 1,
+        name: block.name,
+        input: block.input,
+        output_summary: String(contentForSam).slice(0, 400)
       });
     }
     confirmations.forEach(function(msg) {
@@ -8578,6 +8591,13 @@ async function sendSamMessage() {
           var fblock = followToolBlocks[fi];
           var fresult = await executeToolCall(fblock);
           if (fresult.confirmMsg) followConfirms.push(fresult.confirmMsg);
+          var fcontent = (fresult.toolResultContent != null) ? fresult.toolResultContent : (fresult.confirmMsg || 'Done');
+          turnToolCalls.push({
+            round: 2,
+            name: fblock.name,
+            input: fblock.input,
+            output_summary: String(fcontent).slice(0, 400)
+          });
         }
         if (followText.trim()) {
           if (isDocumentContent(followText)) {
@@ -8609,6 +8629,28 @@ async function sendSamMessage() {
       saveChatHistory();
       msgsEl.scrollTop = msgsEl.scrollHeight;
     }
+
+    // Forensic per-turn log — fire-and-forget. Captures user message,
+    // every tool fired (across both rounds) with input + truncated
+    // output, and Sam's final text response. Logging failure must
+    // never block the chat. See sam_turn_logs table for query
+    // patterns (built after the lookup_jurisdiction-was-ignored bug
+    // on 2026-04-25 to catch this class of failure automatically).
+    try {
+      var _logSess = getD1Session();
+      if (_logSess) {
+        var _combinedResponse = (fullText || '') + ((typeof followText !== 'undefined' && followText) ? '\n[round 2]\n' + followText : '');
+        fetch(D1_API + '/api/sam/turn-log', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _logSess },
+          body: JSON.stringify({
+            user_message: message,
+            tool_calls: turnToolCalls,
+            response_excerpt: _combinedResponse
+          })
+        }).catch(function(){});
+      }
+    } catch(_) {}
 
   } catch (err) {
     var typingEl2 = document.getElementById('sam-typing');

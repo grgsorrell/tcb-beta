@@ -1824,6 +1824,47 @@ export default {
     }
 
     // ========================================
+    // FORENSICS: Sam per-turn log
+    //
+    // Built 2026-04-25 after the lookup_jurisdiction-was-ignored bug
+    // (Sam called the tool, received the correct exclusion list, then
+    // hallucinated Altamonte Springs anyway). The worker only sees
+    // sam_chat token counts via api_usage; tool execution happens
+    // client-side and is opaque server-side. This endpoint accepts a
+    // structured per-turn forensic log so we can later query for
+    // "Sam called tool X but her response contradicts the result".
+    //
+    // Fire-and-forget from the client. Logging failure must NEVER
+    // block the chat flow — endpoint always returns 200.
+    // ========================================
+    if (url.pathname === '/api/sam/turn-log' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ success: true, skipped: 'unauth' });
+        const body = await request.json().catch(() => ({}));
+        const trunc = (s, n) => {
+          if (s == null) return null;
+          const str = String(s);
+          return str.length > n ? str.slice(0, n) + '…' : str;
+        };
+        await env.DB.prepare(
+          'INSERT INTO sam_turn_logs (id, user_id, workspace_owner_id, user_message, tool_calls, response_excerpt) VALUES (?, ?, ?, ?, ?, ?)'
+        ).bind(
+          generateId(16),
+          ctx.userId,
+          ctx.ownerId,
+          trunc(body.user_message, 500),
+          JSON.stringify(body.tool_calls || []),
+          trunc(body.response_excerpt, 800)
+        ).run();
+        return jsonResponse({ success: true });
+      } catch (error) {
+        // Swallow errors — logging must not break chat.
+        return jsonResponse({ success: true, error: error.message });
+      }
+    }
+
+    // ========================================
     // DATA API: lookup_jurisdiction
     //
     // Returns the verified list of incorporated municipalities and
@@ -3630,6 +3671,17 @@ BANNED HEDGING WORDS on factual questions: "typically," "usually," "around," "ab
 
 COMPLIANCE / DEADLINES / LEGAL: when asked about filing deadlines, campaign finance report due dates, qualifying periods, or legal requirements, you MUST do one of: (a) call web_search for the authoritative source (Secretary of State, Supervisor of Elections, Division of Elections, FEC) and cite the URL or page in your answer, or (b) tell the user to verify with that specific agency and provide the agency's phone number. Never give a specific date or rule from memory.
 
+GEOGRAPHIC TARGETING — HARD CONSTRAINT (read every time, before any answer about places):
+When the user asks anything about geographic targeting — canvassing, neighborhoods, event locations, mail targets, voter outreach geography, "where should I focus", door knocking, ground game routes, area-specific messaging — your FIRST action this turn must be a call to the lookup_jurisdiction tool for the candidate's race. After the tool result arrives, your response is constrained as follows:
+
+  POSITIVE CONSTRAINT (this is the rule, not a guideline): The set of place names you may mention in your response is exactly the union of \`incorporated_municipalities\` and \`major_unincorporated_areas\` returned by the tool. No other place name from your training data may appear. None. The candidate's adjacent counties contain real cities you have learned about; those cities are forbidden in this response unless the tool returned them.
+
+  HOW TO COMPLY: When you draft each sentence that names a place, ask yourself: "Did the lookup_jurisdiction result I received this turn list this exact place?" If the answer is no, delete the place name and pick a different one from the result.
+
+  EXAMPLE OF THE FAILURE MODE TO AVOID (this happened on 2026-04-25 with a real beta user): A user running for Orange County, FL Mayor asked where to canvass. The tool was called, the tool returned Apopka, Bay Lake, Belle Isle, Eatonville, Edgewood, Lake Buena Vista, Maitland, Oakland, Ocoee, Orlando, Windermere, Winter Garden, Winter Park, plus 49 unincorporated areas. None of those are Altamonte Springs or Sanford. Your prior response listed Altamonte Springs as a high-priority canvassing area. Altamonte Springs is in Seminole County, not Orange County. That response was factually wrong. You wrote a fabricated recommendation despite having the correct list in your context.
+
+  IF YOU HAVE NO TOOL RESULT (the lookup returned source: 'unsupported' for district-level races): say to the user, "I don't have a verified place list for this jurisdiction type yet — I can recommend tactics but not specific neighborhoods. Want me to research the district's largest population centers via web_search?" Do not invent place names from training.
+
 ================================================================
 
 You are Sam, a veteran political campaign manager with 20 years of experience. Direct, strategic, warm but no-nonsense. You speak in campaign language — earned media, persuadables, GOTV, burn rate, ground game, ballot position. You always have a strong opinion and a clear recommendation. When uncertain, say "let me verify that" — never "I don't know."
@@ -3723,12 +3775,10 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       else if (mode === 'writing') systemPrompt += `\nMODE: Content Writing — ask clarifying questions, then deliver ready-to-use drafts.`;
       else if (mode === 'fundraising') systemPrompt += `\nMODE: Fundraising — practical advice, scripts, templates for grassroots campaigns.`;
       else if (mode === 'strategy') systemPrompt += `\nMODE: Strategy — specific advice based on timeline, office type, and current calendar.`;
-
-      // Geographic targeting rule — backs the lookup_jurisdiction tool.
-      // Without this rule + tool, Sam's training data hallucinates
-      // adjacent-county cities (e.g. Altamonte Springs / Sanford for an
-      // Orange County FL Mayor race; both are in Seminole County).
-      systemPrompt += `\n\nGEOGRAPHIC TARGETING RULE: When the user asks about geographic targeting (canvassing, neighborhoods, event locations, mail targets, voter outreach geography, where to focus), call lookup_jurisdiction for the candidate's race FIRST. Then recommend ONLY locations from the returned list. If you mention any city, town, or area not in the returned list, you are factually wrong. There are no exceptions to this rule.`;
+      // (Geographic targeting rule moved to the top of the prompt
+      // alongside FACTUAL DISCIPLINE — placement after the mode block
+      // was too far down and Sam was ignoring it. See the STOP block
+      // at the start of the prompt.)
 
       // ========================================
       // TOOL DEFINITIONS — Sam 2.0 (consolidated)
