@@ -77,26 +77,28 @@ def d1_query(sql):
 
 UNIT_TESTS = [
     # (label, input, expected_rewritten OR None for "no rewrite")
+    # Day-of-week now included in single-date and week-of parentheticals
+    # (weekend / month-only stay unchanged because they're already explicit).
     ("1",  "What about for next Saturday?",
-           "What about for next Saturday (2026-05-02)?"),
+           "What about for next Saturday (Saturday, 2026-05-02)?"),
     ("2",  "Schedule a town hall next Tuesday",
-           "Schedule a town hall next Tuesday (2026-04-28)"),
+           "Schedule a town hall next Tuesday (Tuesday, 2026-04-28)"),
     ("3",  "Add a deadline for the end of the month",
-           "Add a deadline for the end of the month (2026-04-30, last day)"),
+           "Add a deadline for the end of the month (Thursday, 2026-04-30, last day)"),
     ("4",  "What's on tap for this weekend?",
            "What's on tap for this weekend (Sat 2026-05-02 / Sun 2026-05-03)?"),
     ("5",  "Block off something two weeks from now",
-           "Block off something two weeks from now (2026-05-10)"),
+           "Block off something two weeks from now (Sunday, 2026-05-10)"),
     ("6",  "Did I do anything yesterday?",
-           "Did I do anything yesterday (2026-04-25)?"),
+           "Did I do anything yesterday (Saturday, 2026-04-25)?"),
     ("7",  "tomorrow",
-           "tomorrow (2026-04-27)"),
+           "tomorrow (Monday, 2026-04-27)"),
     ("8",  "What about Saturdays plans?",
            None),  # word boundary — no rewrite
     ("9",  "I said next Saturday (2026-05-02) earlier",
            None),  # already annotated — no double-rewrite
     ("10", "Schedule for next Tuesday and add tasks for the week after",
-           "Schedule for next Tuesday (2026-04-28) and add tasks for the week after (week of 2026-05-04)"),
+           "Schedule for next Tuesday (Tuesday, 2026-04-28) and add tasks for the week after (week of Monday, 2026-05-04)"),
 ]
 
 LIVE_TESTS = [

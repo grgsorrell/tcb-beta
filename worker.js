@@ -3602,7 +3602,14 @@ RULES:
         }
         const [yy, mm, dd] = isoTodayStr.split('-').map(Number);
         const todayUTC = new Date(Date.UTC(yy, mm - 1, dd, 12));
+        const FULL_DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
         const ymd = (dt) => `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, '0')}-${String(dt.getUTCDate()).padStart(2, '0')}`;
+        const dayName = (dt) => FULL_DAY_NAMES[dt.getUTCDay()];
+        // Single-date parenthetical: includes day-of-week so Haiku doesn't
+        // re-derive it (we caught Sam saying "Saturday, May 10" when 2026-05-10
+        // is a Sunday — preprocessor inlined the date but Haiku still computed
+        // the wrong weekday).
+        const dymd = (dt) => `${dayName(dt)}, ${ymd(dt)}`;
         const ymOnly = (dt) => `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, '0')}`;
         const addDays = (dt, n) => new Date(dt.getTime() + n * 86400000);
         const dow = (dt) => dt.getUTCDay();
@@ -3680,66 +3687,68 @@ RULES:
           });
         }
 
-        addLiteral('the day after tomorrow', `(${ymd(dayAfterTmrw)})`);
-        addLiteral('the week after next', `(week of ${ymd(twoWeeksMon)})`);
-        addLiteral('the week after', `(week of ${ymd(twoWeeksMon)})`);
+        addLiteral('the day after tomorrow', `(${dymd(dayAfterTmrw)})`);
+        addLiteral('the week after next', `(week of ${dymd(twoWeeksMon)})`);
+        addLiteral('the week after', `(week of ${dymd(twoWeeksMon)})`);
 
-        addLiteral('two weeks from now', `(${ymd(addDays(todayUTC, 14))})`);
-        addLiteral('in two weeks', `(${ymd(addDays(todayUTC, 14))})`);
-        addLiteral('two weeks ago', `(${ymd(addDays(todayUTC, -14))})`);
+        addLiteral('two weeks from now', `(${dymd(addDays(todayUTC, 14))})`);
+        addLiteral('in two weeks', `(${dymd(addDays(todayUTC, 14))})`);
+        addLiteral('two weeks ago', `(${dymd(addDays(todayUTC, -14))})`);
 
         addRegex('in (\\d{1,2}) days?', (m) => {
           const n = parseInt(m[1], 10); if (n < 1 || n > 12) return null;
-          return `(${ymd(addDays(todayUTC, n))})`;
+          return `(${dymd(addDays(todayUTC, n))})`;
         });
         addRegex('(\\d{1,2}) days? from now', (m) => {
           const n = parseInt(m[1], 10); if (n < 1 || n > 12) return null;
-          return `(${ymd(addDays(todayUTC, n))})`;
+          return `(${dymd(addDays(todayUTC, n))})`;
         });
         addRegex('(\\d{1,2}) days? ago', (m) => {
           const n = parseInt(m[1], 10); if (n < 1 || n > 12) return null;
-          return `(${ymd(addDays(todayUTC, -n))})`;
+          return `(${dymd(addDays(todayUTC, -n))})`;
         });
         addRegex('in (\\d) weeks?', (m) => {
           const n = parseInt(m[1], 10); if (n < 1 || n > 8) return null;
-          return `(${ymd(addDays(todayUTC, n * 7))})`;
+          return `(${dymd(addDays(todayUTC, n * 7))})`;
         });
         addRegex('(\\d) weeks? from now', (m) => {
           const n = parseInt(m[1], 10); if (n < 1 || n > 8) return null;
-          return `(${ymd(addDays(todayUTC, n * 7))})`;
+          return `(${dymd(addDays(todayUTC, n * 7))})`;
         });
         addRegex('(\\d) weeks? ago', (m) => {
           const n = parseInt(m[1], 10); if (n < 1 || n > 8) return null;
-          return `(${ymd(addDays(todayUTC, -n * 7))})`;
+          return `(${dymd(addDays(todayUTC, -n * 7))})`;
         });
 
-        addLiteral('end of next month', `(${ymd(endNextMonth)}, last day)`);
-        addLiteral('end of the month', `(${ymd(endThisMonth)}, last day)`);
-        addLiteral('end of month', `(${ymd(endThisMonth)}, last day)`);
-        addLiteral("this month's end", `(${ymd(endThisMonth)}, last day)`);
-        addLiteral('start of next month', `(${ymd(startNextMonth)})`);
-        addLiteral('beginning of next month', `(${ymd(startNextMonth)})`);
+        addLiteral('end of next month', `(${dymd(endNextMonth)}, last day)`);
+        addLiteral('end of the month', `(${dymd(endThisMonth)}, last day)`);
+        addLiteral('end of month', `(${dymd(endThisMonth)}, last day)`);
+        addLiteral("this month's end", `(${dymd(endThisMonth)}, last day)`);
+        addLiteral('start of next month', `(${dymd(startNextMonth)})`);
+        addLiteral('beginning of next month', `(${dymd(startNextMonth)})`);
+        // Month-only references stay as YYYY-MM (no single day to label).
         addLiteral('next month', `(${ymOnly(startNextMonth)})`);
         addLiteral('this month', `(${ymOnly(startThisMonth)})`);
         addLiteral('last month', `(${ymOnly(startLastMonth)})`);
 
+        // Weekend references already explicit about which day is which — no day-name prefix needed.
         addLiteral('next weekend', `(Sat ${ymd(nwkSat)} / Sun ${ymd(nwkSun)})`);
         addLiteral('this weekend', `(Sat ${ymd(twkSat)} / Sun ${ymd(twkSun)})`);
         addLiteral('last weekend', `(Sat ${ymd(lwkSat)} / Sun ${ymd(lwkSun)})`);
 
-        addLiteral('next week', `(week of ${ymd(nextMon)})`);
-        addLiteral('this week', `(week of ${ymd(thisMon)})`);
-        addLiteral('last week', `(week of ${ymd(lastMon)})`);
+        addLiteral('next week', `(week of ${dymd(nextMon)})`);
+        addLiteral('this week', `(week of ${dymd(thisMon)})`);
+        addLiteral('last week', `(week of ${dymd(lastMon)})`);
 
         for (const mod of ['next', 'this', 'last']) {
           for (const day of ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']) {
             const dt = resolveDow(mod, day);
-            if (dt) addLiteral(`${mod} ${day}`, `(${ymd(dt)})`);
+            if (dt) addLiteral(`${mod} ${day}`, `(${dymd(dt)})`);
           }
         }
 
-        addLiteral('tomorrow', `(${ymd(tomorrowDt)})`);
-        addLiteral('yesterday', `(${ymd(yesterdayDt)})`);
+        addLiteral('tomorrow', `(${dymd(tomorrowDt)})`);
+        addLiteral('yesterday', `(${dymd(yesterdayDt)})`);
         // "today" intentionally omitted — already explicit, would be noise.
 
         // Mask quoted strings so internal phrases stay untouched.
