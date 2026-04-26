@@ -3596,6 +3596,183 @@ RULES:
       const isoDay = localParts.find(p => p.type === 'day').value;
       const isoToday = `${isoYear}-${isoMonth}-${isoDay}`;
 
+      function preprocessRelativeDates(rawMessage, isoTodayStr) {
+        if (!rawMessage || typeof rawMessage !== 'string' || !isoTodayStr) {
+          return { rewritten: rawMessage || '', patterns: [] };
+        }
+        const [yy, mm, dd] = isoTodayStr.split('-').map(Number);
+        const todayUTC = new Date(Date.UTC(yy, mm - 1, dd, 12));
+        const ymd = (dt) => `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, '0')}-${String(dt.getUTCDate()).padStart(2, '0')}`;
+        const ymOnly = (dt) => `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, '0')}`;
+        const addDays = (dt, n) => new Date(dt.getTime() + n * 86400000);
+        const dow = (dt) => dt.getUTCDay();
+
+        const todayDow = dow(todayUTC);
+        const daysFromMonday = (todayDow + 6) % 7;
+        const thisMon = addDays(todayUTC, -daysFromMonday);
+        const nextMon = addDays(thisMon, 7);
+        const twoWeeksMon = addDays(thisMon, 14);
+        const lastMon = addDays(thisMon, -7);
+
+        const tomorrowDt = addDays(todayUTC, 1);
+        const yesterdayDt = addDays(todayUTC, -1);
+        const dayAfterTmrw = addDays(todayUTC, 2);
+
+        const thisSat = addDays(thisMon, 5);
+        const thisSun = addDays(thisMon, 6);
+        const nextSat = addDays(nextMon, 5);
+        const nextSun = addDays(nextMon, 6);
+        const lastSat = addDays(lastMon, 5);
+        const lastSun = addDays(lastMon, 6);
+        const twoWkSat = addDays(twoWeeksMon, 5);
+        const twoWkSun = addDays(twoWeeksMon, 6);
+
+        // Weekend semantics (matches checkpoint test expectations):
+        //   today is Sunday → "this weekend" = upcoming (next week's Sat/Sun);
+        //                     "last weekend" = the just-completed pair
+        //                     (this week's Sat/Sun including today)
+        //   today is Saturday → "this weekend" = today + tomorrow
+        //   today is Mon-Fri → "this weekend" = upcoming (this week's Sat/Sun)
+        let twkSat, twkSun, nwkSat, nwkSun, lwkSat, lwkSun;
+        if (todayDow === 0) {
+          twkSat = nextSat; twkSun = nextSun;
+          nwkSat = twoWkSat; nwkSun = twoWkSun;
+          lwkSat = thisSat; lwkSun = thisSun;
+        } else {
+          twkSat = thisSat; twkSun = thisSun;
+          nwkSat = nextSat; nwkSun = nextSun;
+          lwkSat = lastSat; lwkSun = lastSun;
+        }
+
+        const startThisMonth = new Date(Date.UTC(yy, mm - 1, 1, 12));
+        const endThisMonth = new Date(Date.UTC(yy, mm, 0, 12));
+        const startNextMonth = new Date(Date.UTC(yy, mm, 1, 12));
+        const endNextMonth = new Date(Date.UTC(yy, mm + 1, 0, 12));
+        const startLastMonth = new Date(Date.UTC(yy, mm - 2, 1, 12));
+
+        const dayMap = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
+        function resolveDow(modifier, dayName) {
+          const target = dayMap[dayName.toLowerCase()];
+          if (target === undefined) return null;
+          let anchor;
+          if (modifier === 'next') anchor = nextMon;
+          else if (modifier === 'this') anchor = thisMon;
+          else if (modifier === 'last') anchor = lastMon;
+          else return null;
+          const offset = target === 0 ? 6 : target - 1;
+          return addDays(anchor, offset);
+        }
+
+        // Build pattern list: each entry { rx, fn } applied in array order.
+        // Longer phrases register first so they win at any given position.
+        const patterns = [];
+        const escapeForRx = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        function addLiteral(phrase, parens) {
+          patterns.push({
+            rx: new RegExp(`\\b(${escapeForRx(phrase)})\\b(?!\\s*\\()`, 'gi'),
+            fn: () => parens
+          });
+        }
+        function addRegex(rxSrc, fn) {
+          patterns.push({
+            rx: new RegExp(`\\b(?:${rxSrc})\\b(?!\\s*\\()`, 'gi'),
+            fn: fn
+          });
+        }
+
+        addLiteral('the day after tomorrow', `(${ymd(dayAfterTmrw)})`);
+        addLiteral('the week after next', `(week of ${ymd(twoWeeksMon)})`);
+        addLiteral('the week after', `(week of ${ymd(twoWeeksMon)})`);
+
+        addLiteral('two weeks from now', `(${ymd(addDays(todayUTC, 14))})`);
+        addLiteral('in two weeks', `(${ymd(addDays(todayUTC, 14))})`);
+        addLiteral('two weeks ago', `(${ymd(addDays(todayUTC, -14))})`);
+
+        addRegex('in (\\d{1,2}) days?', (m) => {
+          const n = parseInt(m[1], 10); if (n < 1 || n > 12) return null;
+          return `(${ymd(addDays(todayUTC, n))})`;
+        });
+        addRegex('(\\d{1,2}) days? from now', (m) => {
+          const n = parseInt(m[1], 10); if (n < 1 || n > 12) return null;
+          return `(${ymd(addDays(todayUTC, n))})`;
+        });
+        addRegex('(\\d{1,2}) days? ago', (m) => {
+          const n = parseInt(m[1], 10); if (n < 1 || n > 12) return null;
+          return `(${ymd(addDays(todayUTC, -n))})`;
+        });
+        addRegex('in (\\d) weeks?', (m) => {
+          const n = parseInt(m[1], 10); if (n < 1 || n > 8) return null;
+          return `(${ymd(addDays(todayUTC, n * 7))})`;
+        });
+        addRegex('(\\d) weeks? from now', (m) => {
+          const n = parseInt(m[1], 10); if (n < 1 || n > 8) return null;
+          return `(${ymd(addDays(todayUTC, n * 7))})`;
+        });
+        addRegex('(\\d) weeks? ago', (m) => {
+          const n = parseInt(m[1], 10); if (n < 1 || n > 8) return null;
+          return `(${ymd(addDays(todayUTC, -n * 7))})`;
+        });
+
+        addLiteral('end of next month', `(${ymd(endNextMonth)}, last day)`);
+        addLiteral('end of the month', `(${ymd(endThisMonth)}, last day)`);
+        addLiteral('end of month', `(${ymd(endThisMonth)}, last day)`);
+        addLiteral("this month's end", `(${ymd(endThisMonth)}, last day)`);
+        addLiteral('start of next month', `(${ymd(startNextMonth)})`);
+        addLiteral('beginning of next month', `(${ymd(startNextMonth)})`);
+        addLiteral('next month', `(${ymOnly(startNextMonth)})`);
+        addLiteral('this month', `(${ymOnly(startThisMonth)})`);
+        addLiteral('last month', `(${ymOnly(startLastMonth)})`);
+
+        addLiteral('next weekend', `(Sat ${ymd(nwkSat)} / Sun ${ymd(nwkSun)})`);
+        addLiteral('this weekend', `(Sat ${ymd(twkSat)} / Sun ${ymd(twkSun)})`);
+        addLiteral('last weekend', `(Sat ${ymd(lwkSat)} / Sun ${ymd(lwkSun)})`);
+
+        addLiteral('next week', `(week of ${ymd(nextMon)})`);
+        addLiteral('this week', `(week of ${ymd(thisMon)})`);
+        addLiteral('last week', `(week of ${ymd(lastMon)})`);
+
+        for (const mod of ['next', 'this', 'last']) {
+          for (const day of ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']) {
+            const dt = resolveDow(mod, day);
+            if (dt) addLiteral(`${mod} ${day}`, `(${ymd(dt)})`);
+          }
+        }
+
+        addLiteral('tomorrow', `(${ymd(tomorrowDt)})`);
+        addLiteral('yesterday', `(${ymd(yesterdayDt)})`);
+        // "today" intentionally omitted — already explicit, would be noise.
+
+        // Mask quoted strings so internal phrases stay untouched.
+        const quotedSpans = [];
+        let work = rawMessage.replace(/"[^"]*"/g, (match) => {
+          const idx = quotedSpans.length;
+          quotedSpans.push(match);
+          return `\u0001QSPAN${idx}\u0001`;
+        });
+
+        const matchedPhrases = [];
+        for (const { rx, fn } of patterns) {
+          work = work.replace(rx, (...args) => {
+            const offset = args[args.length - 2];
+            // For literal-phrase patterns built via addLiteral the call
+            // shape is (match, group1, offset, full). For addRegex it
+            // could include extra captures. The full match is always
+            // args[0].
+            const full = args[0];
+            const captures = args.slice(0, args.length - 2);
+            const parens = fn(captures);
+            if (parens === null || parens === undefined) return full;
+            matchedPhrases.push(full);
+            return `${full} ${parens}`;
+          });
+        }
+
+        for (let i = 0; i < quotedSpans.length; i++) {
+          work = work.replace(`\u0001QSPAN${i}\u0001`, quotedSpans[i]);
+        }
+        return { rewritten: work, patterns: matchedPhrases };
+      }
+
       // ========================================
       // HELPER: Build CALENDAR REFERENCE block
       //
@@ -4521,6 +4698,39 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // Simple pass-through: one API call, return raw response.
       // Client handles tool execution and follow-up calls.
       const messages = (history && history.length > 0) ? [...history] : [{ role: "user", content: message }];
+
+      // Relative-date preprocessor: rewrite the latest user-text message
+      // (skip tool_result blocks) so Haiku sees absolute dates inline.
+      // Original message stays in client localStorage + D1 chat_history
+      // (already persisted by the client before this fetch). The rewrite
+      // is in-memory only and never written back to chat_history.
+      let _dateRewriteEvent = null;
+      for (let _i = messages.length - 1; _i >= 0; _i--) {
+        const _m = messages[_i];
+        if (_m && _m.role === 'user' && typeof _m.content === 'string') {
+          const _pp = preprocessRelativeDates(_m.content, isoToday);
+          if (_pp.patterns.length > 0) {
+            messages[_i] = { ..._m, content: _pp.rewritten };
+            _dateRewriteEvent = { original: _m.content, rewritten: _pp.rewritten, patterns: _pp.patterns };
+          }
+          break;
+        }
+      }
+      if (_dateRewriteEvent) {
+        // Fire-and-forget telemetry — failure must not block chat.
+        env.DB.prepare(
+          'INSERT INTO sam_date_rewrites (id, conversation_id, workspace_owner_id, user_id, original_message, rewritten_message, patterns_matched) VALUES (?, ?, ?, ?, ?, ?, ?)'
+        ).bind(
+          generateId(16),
+          conversation_id || null,
+          chatOwnerId || null,
+          rateLimitUserId || null,
+          _dateRewriteEvent.original.slice(0, 2000),
+          _dateRewriteEvent.rewritten.slice(0, 2000),
+          JSON.stringify(_dateRewriteEvent.patterns)
+        ).run().catch((e) => { console.warn('[date_rewrite] log failed:', e.message); });
+      }
+
       const data = await callClaude(messages);
 
       // Validator authorized-list resolution. Two paths, in order:
