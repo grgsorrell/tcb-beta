@@ -141,6 +141,71 @@ export default {
       return trimmed;
     }
 
+    // Normalize a state input (full name or 2-letter code) to canonical
+    // 2-letter postal code. Returns null when unknown.
+    function normalizeStateCode(s) {
+      const reverse = {
+        'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA',
+        'colorado':'CO','connecticut':'CT','delaware':'DE','florida':'FL','georgia':'GA',
+        'hawaii':'HI','idaho':'ID','illinois':'IL','indiana':'IN','iowa':'IA',
+        'kansas':'KS','kentucky':'KY','louisiana':'LA','maine':'ME','maryland':'MD',
+        'massachusetts':'MA','michigan':'MI','minnesota':'MN','mississippi':'MS',
+        'missouri':'MO','montana':'MT','nebraska':'NE','nevada':'NV','new hampshire':'NH',
+        'new jersey':'NJ','new mexico':'NM','new york':'NY','north carolina':'NC',
+        'north dakota':'ND','ohio':'OH','oklahoma':'OK','oregon':'OR','pennsylvania':'PA',
+        'rhode island':'RI','south carolina':'SC','south dakota':'SD','tennessee':'TN',
+        'texas':'TX','utah':'UT','vermont':'VT','virginia':'VA','washington':'WA',
+        'west virginia':'WV','wisconsin':'WI','wyoming':'WY','district of columbia':'DC'
+      };
+      const t = (s || '').trim();
+      if (!t) return null;
+      if (t.length === 2 && /^[A-Za-z]{2}$/.test(t)) return t.toUpperCase();
+      const code = reverse[t.toLowerCase()];
+      return code || null;
+    }
+
+    // Look up authority contact for a race. Falls back through:
+    //   1. State-level row for the candidate's state
+    //   2. default_unknown row
+    //   3. Hardcoded last-resort placeholder (no DB row found)
+    //
+    // jurisdiction_specific is a soft hint to direct the candidate to
+    // their county/city elections office; this checkpoint doesn't have
+    // county-level data so the message is generic.
+    async function fetchAuthorityForRace(stateCode, jurisdictionName) {
+      let row = null;
+      if (stateCode) {
+        row = await env.DB.prepare(
+          "SELECT authority_name, authority_phone, authority_url, notes " +
+          "FROM compliance_authorities " +
+          "WHERE state_code = ? AND jurisdiction_type = 'state' LIMIT 1"
+        ).bind(stateCode).first();
+      }
+      if (!row) {
+        row = await env.DB.prepare(
+          "SELECT authority_name, authority_phone, authority_url, notes " +
+          "FROM compliance_authorities " +
+          "WHERE jurisdiction_type = 'default_unknown' LIMIT 1"
+        ).first();
+      }
+      const fallback = {
+        name: 'state elections office',
+        phone: '(search "<state> secretary of state elections" online for current contact info)',
+        url: null,
+        notes: 'No verified contact data — search the state government website for the elections division.'
+      };
+      const authority = row ? {
+        name: row.authority_name,
+        phone: row.authority_phone,
+        url: row.authority_url,
+        notes: row.notes
+      } : fallback;
+      authority.jurisdiction_specific = jurisdictionName
+        ? `For ${jurisdictionName} races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.`
+        : null;
+      return authority;
+    }
+
     // Detect jurisdiction type from the office + jurisdiction strings.
     // Returns one of: 'county', 'city', 'us_house_district',
     // 'state_legislative_district', or 'unknown'.
@@ -1945,7 +2010,7 @@ export default {
         ).bind(office, state, jurisdictionName).first();
 
         if (cached) {
-          return jsonResponse({
+          const cachedResp = {
             jurisdiction_type: cached.jurisdiction_type,
             official_name: cached.official_name,
             incorporated_municipalities: JSON.parse(cached.incorporated_municipalities || '[]'),
@@ -1953,7 +2018,14 @@ export default {
             source: cached.source,
             last_updated: cached.last_updated,
             cached: true
-          });
+          };
+          // Retrofit: cached 'unsupported' rows predate the authority field;
+          // enrich them at read time so Sam always has a contact to defer to.
+          if (cachedResp.source === 'unsupported') {
+            const stateCodeForAuth = normalizeStateCode(state);
+            cachedResp.authority = await fetchAuthorityForRace(stateCodeForAuth, jurisdictionName);
+          }
+          return jsonResponse(cachedResp);
         }
 
         // Cache miss — resolve via the appropriate source for this
@@ -1977,6 +2049,12 @@ export default {
           // Census Tigerweb (US House) + OpenStates (state) are planned
           // here. For now return an explicit "unsupported" so Sam can
           // fall back to broad guidance and flag the gap.
+          //
+          // Retrofit (compliance checkpoint): include authority contact
+          // info so Sam can defer concretely instead of vaguely. Same
+          // deferral-as-feature principle as lookup_compliance_deadlines.
+          const stateCodeForAuth = normalizeStateCode(state);
+          const authority = await fetchAuthorityForRace(stateCodeForAuth, jurisdictionName);
           result = {
             jurisdiction_type: type,
             official_name: jurisdictionName,
@@ -1984,7 +2062,8 @@ export default {
             major_unincorporated_areas: [],
             source: 'unsupported',
             last_updated: new Date().toISOString().split('T')[0],
-            note: 'District-level lookup not implemented yet. Sam should tell the user she does not have verified geographic data for this jurisdiction type.'
+            authority: authority,
+            note: 'District-level lookup not implemented yet. Sam should defer to the authority contact above instead of inventing geographic data.'
           };
         }
 
@@ -2012,6 +2091,147 @@ export default {
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
+    }
+
+    // ========================================
+    // DATA API: lookup_compliance_deadlines
+    //
+    // Backs the lookup_compliance_deadlines Sam tool — verified filing
+    // and qualifying deadline data for the candidate's race. Same
+    // architecture as lookup_jurisdiction:
+    //   1. Cache check (90-day TTL on stable deadline data)
+    //   2. Source cascade: Ballotpedia → state SOS → unsupported
+    //   3. Authority contact ALWAYS returned (deferral-as-feature)
+    //   4. Cache the result
+    //
+    // This checkpoint stubs the Ballotpedia and SOS paths — every
+    // lookup falls through to status='unsupported' with authority data
+    // from compliance_authorities. The architecture is in place; real
+    // source integration is future work.
+    //
+    // Authority data is itself stub-only this checkpoint. Phone numbers
+    // are placeholders ("(verify on state government website)") so Sam
+    // never reads fake digits to a user.
+    // ========================================
+    if (url.pathname === '/api/compliance/lookup' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        const body = await request.json().catch(() => ({}));
+
+        const stateRaw = (body.state || '').trim();
+        const office = (body.office || '').trim();
+        const raceYear = parseInt(body.race_year, 10);
+        const jurisdictionName = (body.jurisdiction_name || '').trim() || null;
+
+        if (!stateRaw || !office || !Number.isFinite(raceYear)) {
+          return jsonResponse({ error: 'state, office, race_year required' }, 400);
+        }
+
+        const stateCode = normalizeStateCode(stateRaw);
+        const officeNormalized = office.toLowerCase().trim();
+
+        // Cache check (state_code may be null for unknown states; that
+        // still keys uniquely with the office + year). We treat NULL
+        // jurisdiction_name as an empty string for index lookup.
+        const cacheJurKey = jurisdictionName || '';
+        const cached = await env.DB.prepare(
+          "SELECT * FROM compliance_deadlines_cache " +
+          "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
+          "AND created_at > datetime('now', '-90 days') LIMIT 1"
+        ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
+
+        if (cached) {
+          return jsonResponse(formatComplianceCacheRow(cached, true));
+        }
+
+        // Source cascade — Ballotpedia and SOS scrapers are future work.
+        // All paths currently fall through to authority-only stub.
+        let result = null;
+        // result = await tryBallotpedia(stateCode, office, raceYear, jurisdictionName);
+        // if (!result) result = await trySosScrape(stateCode, office, raceYear, jurisdictionName);
+
+        if (!result) {
+          const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
+          result = {
+            status: 'unsupported',
+            deadlines: {
+              qualifying_period_start: null,
+              qualifying_period_end: null,
+              qualifying_period_end_time: null,
+              petition_deadline: null,
+              filing_fee: null
+            },
+            authority: authority,
+            source: 'stub_authority_only',
+            last_updated: new Date().toISOString()
+          };
+        }
+
+        // Persist to cache (UPSERT on the unique index).
+        await env.DB.prepare(
+          'INSERT INTO compliance_deadlines_cache (id, state_code, office_normalized, race_year, jurisdiction_name, status, qualifying_period_start, qualifying_period_end, qualifying_period_end_time, petition_deadline, filing_fee, authority_name, authority_phone, authority_url, authority_notes, authority_jurisdiction_specific, source, last_updated) ' +
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(state_code, office_normalized, race_year, jurisdiction_name) DO UPDATE SET ' +
+          '  status = excluded.status, ' +
+          '  qualifying_period_start = excluded.qualifying_period_start, ' +
+          '  qualifying_period_end = excluded.qualifying_period_end, ' +
+          '  qualifying_period_end_time = excluded.qualifying_period_end_time, ' +
+          '  petition_deadline = excluded.petition_deadline, ' +
+          '  filing_fee = excluded.filing_fee, ' +
+          '  authority_name = excluded.authority_name, ' +
+          '  authority_phone = excluded.authority_phone, ' +
+          '  authority_url = excluded.authority_url, ' +
+          '  authority_notes = excluded.authority_notes, ' +
+          '  authority_jurisdiction_specific = excluded.authority_jurisdiction_specific, ' +
+          '  source = excluded.source, ' +
+          '  last_updated = excluded.last_updated, ' +
+          '  created_at = datetime(\'now\')'
+        ).bind(
+          generateId(16), stateCode || '', officeNormalized, raceYear, jurisdictionName,
+          result.status,
+          result.deadlines.qualifying_period_start,
+          result.deadlines.qualifying_period_end,
+          result.deadlines.qualifying_period_end_time,
+          result.deadlines.petition_deadline,
+          result.deadlines.filing_fee,
+          result.authority.name,
+          result.authority.phone,
+          result.authority.url,
+          result.authority.notes,
+          result.authority.jurisdiction_specific,
+          result.source,
+          result.last_updated
+        ).run().catch((e) => { console.warn('[compliance] cache write failed:', e.message); });
+
+        return jsonResponse({ ...result, cached: false });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    function formatComplianceCacheRow(row, isCached) {
+      return {
+        status: row.status,
+        deadlines: {
+          qualifying_period_start: row.qualifying_period_start,
+          qualifying_period_end: row.qualifying_period_end,
+          qualifying_period_end_time: row.qualifying_period_end_time,
+          petition_deadline: row.petition_deadline,
+          filing_fee: row.filing_fee
+        },
+        authority: {
+          name: row.authority_name,
+          phone: row.authority_phone,
+          url: row.authority_url,
+          notes: row.authority_notes,
+          jurisdiction_specific: row.authority_jurisdiction_specific
+        },
+        source: row.source,
+        last_updated: row.last_updated,
+        cached: !!isCached
+      };
     }
 
     // ========================================
@@ -4124,7 +4344,20 @@ When the user asks anything about geographic targeting — canvassing, neighborh
 
   EXAMPLE OF THE FAILURE MODE TO AVOID (this happened on 2026-04-25 with a real beta user): A user running for Orange County, FL Mayor asked where to canvass. The tool was called, the tool returned Apopka, Bay Lake, Belle Isle, Eatonville, Edgewood, Lake Buena Vista, Maitland, Oakland, Ocoee, Orlando, Windermere, Winter Garden, Winter Park, plus 49 unincorporated areas. None of those are Altamonte Springs or Sanford. Your prior response listed Altamonte Springs as a high-priority canvassing area. Altamonte Springs is in Seminole County, not Orange County. That response was factually wrong. You wrote a fabricated recommendation despite having the correct list in your context.
 
-  IF YOU HAVE NO TOOL RESULT (the lookup returned source: 'unsupported' for district-level races): say to the user, "I don't have a verified place list for this jurisdiction type yet — I can recommend tactics but not specific neighborhoods. Want me to research the district's largest population centers via web_search?" Do not invent place names from training.
+  IF YOU HAVE NO TOOL RESULT (the lookup returned source: 'unsupported' for district-level races): the tool result includes an \`authority\` field with the state elections office contact info. Use it. Sample phrasing: "I don't have a verified place list for [jurisdiction]. For verified district boundaries, contact [authority.name] — phone: [authority.phone]. Want me to set a reminder to follow up?" Do NOT invent place names from training.
+
+COMPLIANCE / FILING / QUALIFYING — HARD CONSTRAINT (read every time, before any answer about deadlines):
+When the user asks about filing deadlines, qualifying periods, ballot access dates, petition deadlines, filing fees, or any "must do X by date Y to be on the ballot" question — your FIRST action this turn must be a call to lookup_compliance_deadlines for the candidate's race. After the tool result arrives, your response is constrained as follows:
+
+  POSITIVE CONSTRAINT: The only deadline dates, times, or fees you may state are values returned by the tool with status "found" or "partial". You may NOT state a deadline date from your training data, even if you remember one. You may NOT use web_search to substitute for the tool — web_search results are unverified for this fact class and the validator catches them the same as training-data drift.
+
+  WHEN STATUS IS "unsupported" OR THE SPECIFIC DATE FIELD IS NULL: deferral with the authority contact is the CORRECT response, not a failure. The tool result includes an \`authority\` object with name, phone, url, notes, and jurisdiction_specific. Use them. Sample phrasing:
+    GOOD: "I don't have verified qualifying dates for [office] in [state]. For your race, contact [authority.name] — phone: [authority.phone]. [Per authority.jurisdiction_specific if present]. Want me to draft a checklist of what to ask, or set a calendar reminder to verify N weeks before filing usually closes?"
+    BAD: "I'm sorry, I don't have access to that information." / "Please consult the appropriate authority." / "I cannot provide specific dates." (These sound like a chatbot. The good phrasing names the authority, gives the contact info, offers a concrete next step.)
+
+  PHONE NUMBER PLACEHOLDERS: when authority.phone reads "(verify on state government website)" or similar, paraphrase honestly — say "you can find their current phone number on the state's elections website" rather than reading the placeholder string verbatim.
+
+  WHY: Confidently wrong deadline = candidate disqualified. An honest deferral with a real authority contact preserves trust and prevents catastrophic errors. There is no penalty for saying "I don't have that — call this number."
 
 ================================================================
 
@@ -4448,6 +4681,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               jurisdiction_name: { type: "string", description: "The specific jurisdiction the candidate is running in, e.g. 'Orange County' or 'FL-7' or 'Apopka'" }
             },
             required: ["office", "state", "jurisdiction_name"]
+          }
+        },
+        {
+          name: "lookup_compliance_deadlines",
+          description: "Look up verified filing/qualifying deadlines for the candidate's race. CRITICAL: when the user asks about filing deadlines, qualifying periods, ballot access, petition deadlines, filing fees, or any 'must do X by date Y to be on the ballot' question, call this FIRST. The tool returns either verified dates with citation OR an authority contact for honest deferral (never invented dates). The authority field is ALWAYS populated — use it. Do NOT use web_search as a substitute for this tool; web_search results are unverified for this fact class and a wrong deadline can disqualify a candidate.",
+          input_schema: {
+            type: "object",
+            properties: {
+              state: { type: "string", description: "The state, e.g. 'Florida' or 'FL'" },
+              office: { type: "string", description: "The candidate's office, e.g. 'Mayor', 'US House', 'State House'" },
+              race_year: { type: "integer", description: "The race year, e.g. 2026" },
+              jurisdiction_name: { type: "string", description: "Optional jurisdiction for local races, e.g. 'Orange County' or 'Apopka'" }
+            },
+            required: ["state", "office", "race_year"]
           }
         }
       ];
@@ -4796,6 +5043,211 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
           // Passed first check.
           await logValidationEvent(jurisdictionName, authorized, audit.mentioned, [], 'passed', samText, samText);
+        }
+      }
+
+      // ============================================================
+      // COMPLIANCE-DATE VALIDATOR (Class A: filing/qualifying)
+      //
+      // Same architectural shape as the geographic validator above.
+      // Detects compliance signals in Sam's response, finds the
+      // authoritative lookup_compliance_deadlines result for this
+      // conversation/race, audits Sam's claimed dates, regenerates
+      // with deferral feedback if she stated unverified dates.
+      //
+      // Class A scope only: filing deadlines, qualifying periods,
+      // petition deadlines, ballot access, filing fees. Other
+      // compliance classes (finance reports, ethics, election
+      // milestones) are out of scope — no signals match for them.
+      // ============================================================
+      function detectComplianceSignals(text) {
+        const signals = [
+          'filing deadline', 'filing date', 'filing period', 'filing fee',
+          'qualifying period', 'qualifying deadline', 'qualifying date',
+          'qualifying open', 'qualifying close', 'qualifying fee',
+          'qualify by', 'file by',
+          'petition deadline', 'petition signatures', 'ballot access'
+        ];
+        const lower = (text || '').toLowerCase();
+        return signals.some(s => lower.includes(s));
+      }
+
+      async function findMostRecentComplianceLookup(msgs, stateCode, officeNorm, raceYear, jurisdictionName) {
+        // Path 1: walk message history for an in-flight tool_result.
+        for (let i = msgs.length - 1; i >= 0; i--) {
+          const m = msgs[i];
+          if (!m || m.role !== 'user' || !Array.isArray(m.content)) continue;
+          for (const blk of m.content) {
+            if (!blk || blk.type !== 'tool_result' || typeof blk.content !== 'string') continue;
+            try {
+              const parsed = JSON.parse(blk.content);
+              if (parsed && parsed.deadlines && parsed.authority) return parsed;
+            } catch (e) {}
+          }
+        }
+        // Path 2: candidate-profile cache lookup (same shape as
+        // jurisdiction validator's cache fallback — survives the
+        // chatHistory tool-result evaporation problem).
+        if (stateCode && officeNorm && raceYear) {
+          try {
+            const row = await env.DB.prepare(
+              "SELECT * FROM compliance_deadlines_cache " +
+              "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
+              "AND created_at > datetime('now', '-90 days') ORDER BY created_at DESC LIMIT 1"
+            ).bind(stateCode, officeNorm, raceYear, jurisdictionName || '').first();
+            if (row) return formatComplianceCacheRow(row, true);
+          } catch (e) {
+            console.warn('[compliance_validator] cache lookup failed:', e.message);
+          }
+        }
+        return null;
+      }
+
+      async function extractClaimedComplianceDates(samText) {
+        const prompt = `You are a compliance-date auditor. Extract every specific calendar date or specific deadline mentioned in this campaign coaching response. Return JSON only.\n\nRESPONSE:\n${samText}\n\nTASK: Identify any specific dates (like "June 8, 2026", "May 12", "the 15th of May", "noon Eastern on June 12") presented as filing/qualifying/petition/ballot deadlines. EXCLUDE:\n- Today's date used as a reference point\n- Vague references ("early June", "this summer") unless presented as a deadline\n- Election day itself\n- Calendar items unrelated to compliance\n\nReturn JSON: {"dates": ["June 8, 2026", "noon Eastern June 12, 2026"]}\nIf no compliance dates: {"dates": []}\nJSON ONLY — no preamble, no markdown.`;
+        try {
+          const resp = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': env.ANTHROPIC_API_KEY,
+              'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+              model: 'claude-haiku-4-5-20251001',
+              max_tokens: 400,
+              temperature: 0,
+              messages: [{ role: 'user', content: prompt }]
+            })
+          });
+          const auditData = await resp.json();
+          await logApiUsage('sam_compliance_validator', auditData, rateLimitUserId, chatOwnerId);
+          let txt = '';
+          if (auditData && auditData.content && Array.isArray(auditData.content)) {
+            for (const b of auditData.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          }
+          const mm = txt.match(/\{[\s\S]*\}/);
+          if (!mm) return [];
+          const parsed = JSON.parse(mm[0]);
+          return Array.isArray(parsed.dates) ? parsed.dates : [];
+        } catch (e) {
+          console.warn('[compliance_validator] extract failed:', e.message);
+          return [];
+        }
+      }
+
+      function dateClaimedMatchesAuthoritative(claimedDate, authoritativeDates) {
+        if (!claimedDate) return true;
+        const cl = String(claimedDate).toLowerCase();
+        for (const a of authoritativeDates) {
+          if (!a) continue;
+          const al = String(a).toLowerCase();
+          if (cl.includes(al) || al.includes(cl)) return true;
+        }
+        return false;
+      }
+
+      async function regenerateWithComplianceFeedback(originalMsgs, badContent, claimedDates, lookupResult) {
+        const auth = lookupResult.authority || {};
+        const authPhone = auth.phone || '(search the state government website for the current phone number)';
+        const authName = auth.name || 'state elections office';
+        const authJurisdictionSpecific = auth.jurisdiction_specific || '';
+        const retryMsgs = [
+          ...originalMsgs,
+          { role: 'assistant', content: badContent },
+          { role: 'user', content:
+            `STOP. Your previous response stated specific deadline dates that are NOT verified. ` +
+            `The authoritative lookup_compliance_deadlines tool returned status='${lookupResult.status}'` +
+            (Object.values(lookupResult.deadlines || {}).every(v => !v) ? ' with NO verified dates for this race' : '') +
+            `. You stated: ${JSON.stringify(claimedDates)}. None of those came from the tool result.\n\n` +
+            `Rewrite your response. RULES:\n` +
+            `- Acknowledge honestly that you don't have verified deadline data for this specific race.\n` +
+            `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
+            `- If the phone reads as a placeholder (e.g., "(verify on state government website)"), paraphrase honestly: say "find their current phone number on the state's elections website" rather than reading the placeholder verbatim.\n` +
+            `- Offer ONE concrete next step (draft a checklist of what to ask, or set a calendar reminder).\n` +
+            `- DO NOT state any specific deadline dates.\n` +
+            `- DO NOT formally apologize. Sound like a campaign manager — direct, useful.\n` +
+            `Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.`
+          }
+        ];
+        return await callClaude(retryMsgs);
+      }
+
+      function stripUnauthorizedComplianceDates(samText, unauthorizedDates) {
+        if (!unauthorizedDates || unauthorizedDates.length === 0) return samText;
+        const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+        const cleaned = sentences.filter(s => {
+          const sLower = s.toLowerCase();
+          return !unauthorizedDates.some(d => d && sLower.includes(String(d).toLowerCase()));
+        });
+        const joined = cleaned.join(' ').replace(/\s+/g, ' ').trim();
+        if (joined.length < 60) {
+          return "I don't have verified deadline data for your race. Contact your state's elections office directly to confirm — verified authoritative dates are the only safe source for filing-related decisions.";
+        }
+        return joined + '\n\n*(Note: removed deadline dates that could not be verified against the authoritative lookup.)*';
+      }
+
+      async function logComplianceValidationEvent(action, claimed, authoritative, unauthorized, original, final) {
+        try {
+          await env.DB.prepare(
+            'INSERT INTO sam_compliance_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, sam_claimed_dates, authoritative_dates, unauthorized_dates, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+          ).bind(
+            generateId(16),
+            conversation_id || null,
+            chatOwnerId || null,
+            rateLimitUserId || null,
+            action,
+            JSON.stringify(claimed || []),
+            JSON.stringify(authoritative || {}),
+            JSON.stringify(unauthorized || []),
+            (original || '').slice(0, 600),
+            (final || '').slice(0, 600)
+          ).run();
+        } catch (e) {
+          console.warn('[compliance_validator] log failed:', e.message);
+        }
+      }
+
+      const complianceText = extractTextFromContent(data.content);
+      if (complianceText.length > 60 && detectComplianceSignals(complianceText)) {
+        const stateCodeForCompliance = normalizeStateCode(state);
+        const officeNorm = (specificOffice || '').toLowerCase().trim();
+        const raceYear = electionDate ? parseInt(String(electionDate).slice(0, 4), 10) : null;
+        const complianceLookup = await findMostRecentComplianceLookup(
+          messages, stateCodeForCompliance, officeNorm, raceYear, location || null
+        );
+
+        if (complianceLookup) {
+          const auth = complianceLookup.deadlines || {};
+          const authoritativeDates = Object.entries(auth)
+            .filter(([k, v]) => v != null && v !== '')
+            .map(([k, v]) => v);
+
+          const claimed = await extractClaimedComplianceDates(complianceText);
+          const unauthorized = claimed.filter(d => !dateClaimedMatchesAuthoritative(d, authoritativeDates));
+
+          if (unauthorized.length > 0) {
+            const retry = await regenerateWithComplianceFeedback(messages, data.content, unauthorized, complianceLookup);
+            const retryText = extractTextFromContent(retry.content);
+            const retryClaimed = await extractClaimedComplianceDates(retryText);
+            const retryUnauthorized = retryClaimed.filter(d => !dateClaimedMatchesAuthoritative(d, authoritativeDates));
+
+            if (retryUnauthorized.length === 0) {
+              await logComplianceValidationEvent('regenerated', claimed, auth, unauthorized, complianceText, retryText);
+              return new Response(JSON.stringify(retry), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+              });
+            }
+
+            const stripped = stripUnauthorizedComplianceDates(retryText, retryUnauthorized);
+            const strippedResponse = { ...retry, content: [{ type: 'text', text: stripped }] };
+            await logComplianceValidationEvent('stripped', claimed, auth, retryUnauthorized, complianceText, stripped);
+            return new Response(JSON.stringify(strippedResponse), {
+              headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+          }
+
+          await logComplianceValidationEvent('passed', claimed, auth, [], complianceText, complianceText);
         }
       }
 

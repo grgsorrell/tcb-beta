@@ -7747,6 +7747,45 @@ async function executeToolCall(block) {
     }
   }
 
+  // lookup_compliance_deadlines — server-resolved compliance lookup.
+  // Same shape as lookup_jurisdiction: silent UI, tool_result feeds
+  // back into Sam's response, cached server-side. Returns either
+  // verified deadlines or an authority contact for honest deferral.
+  if (name === 'lookup_compliance_deadlines') {
+    try {
+      var sess2 = getD1Session();
+      if (!sess2) {
+        return { confirmMsg: '', toolResultContent: JSON.stringify({ error: 'not_authenticated' }), toolId: block.id, toolName: name, input: inp };
+      }
+      var resp2 = await fetch(D1_API + '/api/compliance/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess2 },
+        body: JSON.stringify({
+          state: inp.state || '',
+          office: inp.office || '',
+          race_year: inp.race_year || null,
+          jurisdiction_name: inp.jurisdiction_name || ''
+        })
+      });
+      var data2 = await resp2.json();
+      return {
+        confirmMsg: '',
+        toolResultContent: JSON.stringify(data2),
+        toolId: block.id,
+        toolName: name,
+        input: inp
+      };
+    } catch (e) {
+      return {
+        confirmMsg: '',
+        toolResultContent: JSON.stringify({ error: 'compliance_lookup_failed', message: e.message }),
+        toolId: block.id,
+        toolName: name,
+        input: inp
+      };
+    }
+  }
+
   // Sam 2.0 unified add_calendar_event handles both tasks and events
   if (name === 'add_calendar_event' || name === 'add_event') {
     // If type='task' or this was the old add_to_calendar, create a task
