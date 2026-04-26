@@ -4357,7 +4357,9 @@ When the user asks about filing deadlines, qualifying periods, ballot access dat
 
   PHONE NUMBER PLACEHOLDERS: when authority.phone reads "(verify on state government website)" or similar, paraphrase honestly — say "you can find their current phone number on the state's elections website" rather than reading the placeholder string verbatim.
 
-  WHY: Confidently wrong deadline = candidate disqualified. An honest deferral with a real authority contact preserves trust and prevents catastrophic errors. There is no penalty for saying "I don't have that — call this number."
+  URL HANDLING — HARD CONSTRAINT: When the authority object's \`url\` field is null, do NOT mention any URL or domain in your response. Do NOT invent or guess a URL based on the state name (e.g., do NOT write "floridados.gov" or "txelections.org" or any similar guess). Instead, tell the user generically to "search for [State Name] Secretary of State elections" or "find the elections office on the state government website". Mentioning a fabricated URL — even one that sounds plausible — is the same class of error as inventing a deadline date, and the validator will catch it the same way. When authority.url is non-null, you may quote that exact URL verbatim — but only that one.
+
+  WHY: Confidently wrong deadline or fabricated authority URL = candidate disqualified or misdirected. An honest deferral with a real authority contact preserves trust and prevents catastrophic errors. There is no penalty for saying "I don't have that — call this number / search the state's elections website."
 
 ================================================================
 
@@ -5147,23 +5149,81 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return false;
       }
 
-      async function regenerateWithComplianceFeedback(originalMsgs, badContent, claimedDates, lookupResult) {
+      // URL extraction — matches domain-like tokens (one or more
+      // segments + TLD). Captures the longest match at each position.
+      // Word-bounded so "U.S." doesn't match. Greedy across segments
+      // so "dos.fl.gov" captures the full domain, not just "fl.gov".
+      function extractUrlTokens(text) {
+        if (!text || typeof text !== 'string') return [];
+        const re = /\b([a-z0-9][a-z0-9-]*(?:\.[a-z0-9][a-z0-9-]+)*\.(?:gov|com|org|net|us|edu))\b/gi;
+        const found = new Set();
+        let mm;
+        while ((mm = re.exec(text)) !== null) found.add(mm[1].toLowerCase());
+        return Array.from(found);
+      }
+
+      // Build the authoritative URL set from a lookup result. Pulls
+      // any URLs the tool actually returned — explicit authority.url
+      // plus any domains mentioned in notes / jurisdiction_specific
+      // (since Sam might quote those legitimately).
+      function extractAuthoritativeUrls(lookupResult) {
+        if (!lookupResult || !lookupResult.authority) return [];
+        const auth = lookupResult.authority;
+        const found = new Set();
+        const sources = [auth.url, auth.notes, auth.jurisdiction_specific, auth.name];
+        for (const v of sources) {
+          if (typeof v !== 'string' || !v) continue;
+          extractUrlTokens(v).forEach(u => found.add(u));
+        }
+        return Array.from(found);
+      }
+
+      function urlMatchesAuthoritative(claimedUrl, authoritativeUrls) {
+        if (!claimedUrl) return true;
+        const cl = String(claimedUrl).toLowerCase();
+        for (const a of authoritativeUrls) {
+          if (!a) continue;
+          const al = String(a).toLowerCase();
+          if (cl === al) return true;
+          // Substring match in either direction handles
+          // "dos.fl.gov" vs "https://dos.fl.gov/elections" —
+          // but is intentionally strict on rearrangements:
+          // "fl.gov/dos" does NOT match "dos.fl.gov" because
+          // neither is a substring of the other.
+          if (cl.includes(al) || al.includes(cl)) return true;
+        }
+        return false;
+      }
+
+      async function regenerateWithComplianceFeedback(originalMsgs, badContent, claimedDates, claimedUrls, lookupResult) {
         const auth = lookupResult.authority || {};
         const authPhone = auth.phone || '(search the state government website for the current phone number)';
         const authName = auth.name || 'state elections office';
+        const authUrl = auth.url || null;
         const authJurisdictionSpecific = auth.jurisdiction_specific || '';
+        const datesNote = (claimedDates && claimedDates.length > 0)
+          ? `You stated unverified dates: ${JSON.stringify(claimedDates)}. None of those came from the tool result.`
+          : '';
+        const urlsNote = (claimedUrls && claimedUrls.length > 0)
+          ? `You mentioned unverified URL(s): ${JSON.stringify(claimedUrls)}. ` +
+            (authUrl
+              ? `The only URL the tool returned is "${authUrl}". Use that exact URL or none at all.`
+              : 'The tool returned NO URL for this authority. You may not invent or guess a URL based on the state name. Tell the user to search for the elections office on the state government website instead of naming a specific domain.')
+          : '';
+        const allNotes = [datesNote, urlsNote].filter(Boolean).join(' ');
         const retryMsgs = [
           ...originalMsgs,
           { role: 'assistant', content: badContent },
           { role: 'user', content:
-            `STOP. Your previous response stated specific deadline dates that are NOT verified. ` +
+            `STOP. Your previous response contained unverified content the validator caught. ` +
             `The authoritative lookup_compliance_deadlines tool returned status='${lookupResult.status}'` +
             (Object.values(lookupResult.deadlines || {}).every(v => !v) ? ' with NO verified dates for this race' : '') +
-            `. You stated: ${JSON.stringify(claimedDates)}. None of those came from the tool result.\n\n` +
+            `.\n\n${allNotes}\n\n` +
             `Rewrite your response. RULES:\n` +
             `- Acknowledge honestly that you don't have verified deadline data for this specific race.\n` +
             `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
             `- If the phone reads as a placeholder (e.g., "(verify on state government website)"), paraphrase honestly: say "find their current phone number on the state's elections website" rather than reading the placeholder verbatim.\n` +
+            `- ${authUrl ? `If you mention a URL at all, use ONLY this exact URL: "${authUrl}"` : "Do NOT mention any URL or domain. Tell the user to search for the state's elections office on the state government website generically."}\n` +
             `- Offer ONE concrete next step (draft a checklist of what to ask, or set a calendar reminder).\n` +
             `- DO NOT state any specific deadline dates.\n` +
             `- DO NOT formally apologize. Sound like a campaign manager — direct, useful.\n` +
@@ -5173,33 +5233,51 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return await callClaude(retryMsgs);
       }
 
-      function stripUnauthorizedComplianceDates(samText, unauthorizedDates) {
-        if (!unauthorizedDates || unauthorizedDates.length === 0) return samText;
+      function stripUnauthorizedComplianceArtifacts(samText, unauthorizedDates, unauthorizedUrls) {
+        const offenders = [
+          ...(unauthorizedDates || []),
+          ...(unauthorizedUrls || [])
+        ].filter(x => x);
+        if (offenders.length === 0) return samText;
         const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
         const cleaned = sentences.filter(s => {
           const sLower = s.toLowerCase();
-          return !unauthorizedDates.some(d => d && sLower.includes(String(d).toLowerCase()));
+          return !offenders.some(o => o && sLower.includes(String(o).toLowerCase()));
         });
         const joined = cleaned.join(' ').replace(/\s+/g, ' ').trim();
         if (joined.length < 60) {
           return "I don't have verified deadline data for your race. Contact your state's elections office directly to confirm — verified authoritative dates are the only safe source for filing-related decisions.";
         }
-        return joined + '\n\n*(Note: removed deadline dates that could not be verified against the authoritative lookup.)*';
+        const noteParts = [];
+        if (unauthorizedDates && unauthorizedDates.length > 0) noteParts.push('deadline dates');
+        if (unauthorizedUrls && unauthorizedUrls.length > 0) noteParts.push('URLs');
+        return joined + `\n\n*(Note: removed ${noteParts.join(' and ')} that could not be verified against the authoritative lookup.)*`;
       }
 
-      async function logComplianceValidationEvent(action, claimed, authoritative, unauthorized, original, final) {
+      async function logComplianceValidationEvent(action, claimedDates, authoritative, unauthorizedDates, claimedUrls, unauthorizedUrls, original, final) {
+        const fabType = (() => {
+          const dateBad = (unauthorizedDates && unauthorizedDates.length > 0);
+          const urlBad = (unauthorizedUrls && unauthorizedUrls.length > 0);
+          if (dateBad && urlBad) return 'both';
+          if (dateBad) return 'date';
+          if (urlBad) return 'url';
+          return 'none';
+        })();
         try {
           await env.DB.prepare(
-            'INSERT INTO sam_compliance_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, sam_claimed_dates, authoritative_dates, unauthorized_dates, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO sam_compliance_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, sam_claimed_dates, authoritative_dates, unauthorized_dates, sam_claimed_urls, unauthorized_urls, fabrication_type, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
           ).bind(
             generateId(16),
             conversation_id || null,
             chatOwnerId || null,
             rateLimitUserId || null,
             action,
-            JSON.stringify(claimed || []),
+            JSON.stringify(claimedDates || []),
             JSON.stringify(authoritative || {}),
-            JSON.stringify(unauthorized || []),
+            JSON.stringify(unauthorizedDates || []),
+            JSON.stringify(claimedUrls || []),
+            JSON.stringify(unauthorizedUrls || []),
+            fabType,
             (original || '').slice(0, 600),
             (final || '').slice(0, 600)
           ).run();
@@ -5222,32 +5300,47 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           const authoritativeDates = Object.entries(auth)
             .filter(([k, v]) => v != null && v !== '')
             .map(([k, v]) => v);
+          const authoritativeUrls = extractAuthoritativeUrls(complianceLookup);
 
-          const claimed = await extractClaimedComplianceDates(complianceText);
-          const unauthorized = claimed.filter(d => !dateClaimedMatchesAuthoritative(d, authoritativeDates));
+          const claimedDates = await extractClaimedComplianceDates(complianceText);
+          const unauthorizedDates = claimedDates.filter(d => !dateClaimedMatchesAuthoritative(d, authoritativeDates));
+          const claimedUrls = extractUrlTokens(complianceText);
+          const unauthorizedUrls = claimedUrls.filter(u => !urlMatchesAuthoritative(u, authoritativeUrls));
 
-          if (unauthorized.length > 0) {
-            const retry = await regenerateWithComplianceFeedback(messages, data.content, unauthorized, complianceLookup);
+          if (unauthorizedDates.length > 0 || unauthorizedUrls.length > 0) {
+            const retry = await regenerateWithComplianceFeedback(
+              messages, data.content, unauthorizedDates, unauthorizedUrls, complianceLookup
+            );
             const retryText = extractTextFromContent(retry.content);
-            const retryClaimed = await extractClaimedComplianceDates(retryText);
-            const retryUnauthorized = retryClaimed.filter(d => !dateClaimedMatchesAuthoritative(d, authoritativeDates));
+            const retryClaimedDates = await extractClaimedComplianceDates(retryText);
+            const retryUnauthorizedDates = retryClaimedDates.filter(d => !dateClaimedMatchesAuthoritative(d, authoritativeDates));
+            const retryClaimedUrls = extractUrlTokens(retryText);
+            const retryUnauthorizedUrls = retryClaimedUrls.filter(u => !urlMatchesAuthoritative(u, authoritativeUrls));
 
-            if (retryUnauthorized.length === 0) {
-              await logComplianceValidationEvent('regenerated', claimed, auth, unauthorized, complianceText, retryText);
+            if (retryUnauthorizedDates.length === 0 && retryUnauthorizedUrls.length === 0) {
+              await logComplianceValidationEvent(
+                'regenerated', claimedDates, auth, unauthorizedDates,
+                claimedUrls, unauthorizedUrls, complianceText, retryText
+              );
               return new Response(JSON.stringify(retry), {
                 headers: { "Content-Type": "application/json", ...corsHeaders }
               });
             }
 
-            const stripped = stripUnauthorizedComplianceDates(retryText, retryUnauthorized);
+            const stripped = stripUnauthorizedComplianceArtifacts(retryText, retryUnauthorizedDates, retryUnauthorizedUrls);
             const strippedResponse = { ...retry, content: [{ type: 'text', text: stripped }] };
-            await logComplianceValidationEvent('stripped', claimed, auth, retryUnauthorized, complianceText, stripped);
+            await logComplianceValidationEvent(
+              'stripped', claimedDates, auth, retryUnauthorizedDates,
+              claimedUrls, retryUnauthorizedUrls, complianceText, stripped
+            );
             return new Response(JSON.stringify(strippedResponse), {
               headers: { "Content-Type": "application/json", ...corsHeaders }
             });
           }
 
-          await logComplianceValidationEvent('passed', claimed, auth, [], complianceText, complianceText);
+          await logComplianceValidationEvent(
+            'passed', claimedDates, auth, [], claimedUrls, [], complianceText, complianceText
+          );
         }
       }
 
