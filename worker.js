@@ -2632,6 +2632,122 @@ export default {
     }
 
     // ========================================
+    // DATA API: lookup_donation_limits (Compliance Class B donation variant)
+    //
+    // Backs the lookup_donation_limits Sam tool — verified individual
+    // contribution limits for the candidate's race (per-election and
+    // per-cycle, plus whether primary and general count separately).
+    // Same architecture as lookup_compliance_deadlines (Class A) and
+    // lookup_finance_reports (Class B finance reports): cache check,
+    // source cascade, authority always populated, 90-day TTL.
+    //
+    // Source cascade (this checkpoint stubs all paths):
+    //   1. FEC for federal races (deferred — FEC has /v1/contribution-
+    //      limits/ but it's a separate integration not yet wired)
+    //   2. State election commission for state-level (stubbed)
+    //   3. Local races fall through to authority-only stub
+    //
+    // Scope explicitly excludes PAC limits, party committee limits,
+    // self-fund rules, and aggregate limits. Those are separate fact
+    // classes for future checkpoints.
+    // ========================================
+    if (url.pathname === '/api/donation/lookup' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        const body = await request.json().catch(() => ({}));
+
+        const stateRaw = (body.state || '').trim();
+        const office = (body.office || '').trim();
+        const raceYear = parseInt(body.race_year, 10);
+        const jurisdictionName = (body.jurisdiction_name || '').trim() || null;
+
+        if (!stateRaw || !office || !Number.isFinite(raceYear)) {
+          return jsonResponse({ error: 'state, office, race_year required' }, 400);
+        }
+
+        const stateCode = normalizeStateCode(stateRaw);
+        const officeNormalized = office.toLowerCase().trim();
+        const cacheJurKey = jurisdictionName || '';
+
+        const cached = await env.DB.prepare(
+          "SELECT * FROM donation_limits_cache " +
+          "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
+          "AND created_at > datetime('now', '-90 days') LIMIT 1"
+        ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
+
+        if (cached) {
+          return jsonResponse(formatDonationCacheRow(cached, true));
+        }
+
+        // Source cascade — FEC + state stubbed.
+        let result = null;
+        // result = await tryFecContributionLimits(stateCode, office, raceYear);
+        // if (!result) result = await tryStateContributionLimits(stateCode, office, raceYear);
+
+        if (!result) {
+          const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
+          result = {
+            status: 'unsupported',
+            limits: {
+              individual_per_election: null,
+              individual_per_cycle: null,
+              counts_primary_and_general_separately: null,
+              notes: null
+            },
+            authority: authority,
+            source: 'stub_authority_only',
+            last_updated: new Date().toISOString()
+          };
+        }
+
+        await env.DB.prepare(
+          'INSERT INTO donation_limits_cache (id, state_code, office_normalized, race_year, jurisdiction_name, status, limits_json, authority_json, source, last_updated) ' +
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(state_code, office_normalized, race_year, COALESCE(jurisdiction_name,\'\')) DO UPDATE SET ' +
+          '  status = excluded.status, ' +
+          '  limits_json = excluded.limits_json, ' +
+          '  authority_json = excluded.authority_json, ' +
+          '  source = excluded.source, ' +
+          '  last_updated = excluded.last_updated, ' +
+          '  created_at = datetime(\'now\')'
+        ).bind(
+          generateId(16), stateCode || '', officeNormalized, raceYear, jurisdictionName,
+          result.status,
+          JSON.stringify(result.limits || {}),
+          JSON.stringify(result.authority || {}),
+          result.source,
+          result.last_updated
+        ).run().catch((e) => { console.warn('[donation] cache write failed:', e.message); });
+
+        return jsonResponse({ ...result, cached: false });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    function formatDonationCacheRow(row, isCached) {
+      let limits = {};
+      let authority = {};
+      try { limits = JSON.parse(row.limits_json || '{}'); } catch (_) {}
+      try { authority = JSON.parse(row.authority_json || '{}'); } catch (_) {}
+      return {
+        status: row.status,
+        limits: {
+          individual_per_election: limits.individual_per_election == null ? null : limits.individual_per_election,
+          individual_per_cycle: limits.individual_per_cycle == null ? null : limits.individual_per_cycle,
+          counts_primary_and_general_separately: limits.counts_primary_and_general_separately == null ? null : limits.counts_primary_and_general_separately,
+          notes: limits.notes == null ? null : limits.notes
+        },
+        authority: authority,
+        source: row.source,
+        last_updated: row.last_updated,
+        cached: !!isCached
+      };
+    }
+
+    // ========================================
     // DATA API: Sync Folders & Notes (DELETE-NOT-IN + UPSERT)
     // @deprecated 2026-04-22 — use /api/folders/save + /delete and
     // /api/notes/save + /delete. The folder-delete endpoint cascades
@@ -4848,6 +4964,20 @@ When the user asks about quarterly reports, pre-primary / pre-general filings, p
 
   WHY: Missing a campaign finance report = fines and bad press at minimum, criminal liability in severe cases. Confidently wrong report dates can cost a candidate their reputation and their cash on hand to fight fines. There is no penalty for saying "I don't have that — call this number."
 
+DONATION LIMITS — HARD CONSTRAINT (read every time, before any answer about contribution limits):
+
+When the user asks about individual contribution limits, donation caps, max donations, "how much can a donor give", per-election or per-cycle limits — your FIRST action this turn must be a call to lookup_donation_limits for the candidate's race. After the tool result arrives, your response is constrained as follows:
+
+  POSITIVE CONSTRAINT: The only contribution limit amounts you may state are values returned by the tool with status "found" or "partial". You may NOT state contribution limits from your training data, even if you remember them. Federal limits ($3,300, etc.), state limits, and local limits all change between cycles — your training data may be stale even when accurate at training time. You may NOT use web_search to substitute for the tool.
+
+  WHEN STATUS IS "unsupported" OR THE SPECIFIC FIELD IS NULL: deferral with the authority contact is the CORRECT response. Sample phrasing: "I don't have verified contribution limits for [office] in [state]. Limits vary by race level and can change between cycles. Contact [authority.name] — phone: [authority.phone] — for the current limits applicable to your race. Want me to set a calendar reminder so we capture the limits before you start your fundraising push?"
+
+  PHONE NUMBER PLACEHOLDERS: paraphrase placeholders honestly, don't read them verbatim.
+
+  URL HANDLING: when authority.url is null, do NOT mention any URL or domain. Don't invent URLs (no "florida-elections.gov" or "fec-limits.gov" guesses).
+
+  WHY: Contribution limit violations result in refunds at minimum, fines and bad press at worst, criminal liability in severe cases. The candidate's donors trust the campaign to know the rules. Confidently wrong limit guidance = a donor writes a check that has to be returned, sometimes publicly. There is no penalty for saying "I don't have that — call this number for current limits."
+
 OPPONENT FACTS — HARD CONSTRAINT (read every time, before any answer about opponents):
 
 When the user asks about an opponent's fundraising, donor base, voting record, biography, prior campaigns, controversies, endorsements, or any specific fact about an opponent — your authoritative sources are EXACTLY THESE THREE, in priority order:
@@ -5253,6 +5383,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         {
           name: "lookup_finance_reports",
           description: "Look up the verified campaign finance report schedule for the candidate's race — quarterly reports, pre-primary / pre-general special filings, post-election reports. CRITICAL: when the user asks about quarterly reports, FEC filings, pre-primary / pre-general filings, post-election reports, or any 'when is my finance report due' question, call this FIRST. The tool returns either verified report dates OR an authority contact for honest deferral. The authority field is ALWAYS populated — use it. Do NOT use web_search as a substitute; wrong report dates can mean missed filings, fines, and bad press.",
+          input_schema: {
+            type: "object",
+            properties: {
+              state: { type: "string", description: "The state, e.g. 'Florida' or 'FL'" },
+              office: { type: "string", description: "The candidate's office, e.g. 'Mayor', 'US House', 'State Senate'" },
+              race_year: { type: "integer", description: "The race year, e.g. 2026" },
+              jurisdiction_name: { type: "string", description: "Optional jurisdiction for local races, e.g. 'Orange County' or 'Apopka'" }
+            },
+            required: ["state", "office", "race_year"]
+          }
+        },
+        {
+          name: "lookup_donation_limits",
+          description: "Look up the verified individual contribution limits for the candidate's race — per-election and per-cycle limits, plus whether primary and general count separately. CRITICAL: when the user asks about contribution limits, donation caps, max donations, 'how much can a donor give', or any 'what's the limit' question, call this FIRST. The tool returns either verified limits OR an authority contact for honest deferral. NEVER state donation limit amounts from training data — federal limits change every cycle and state/local limits vary widely. Do NOT use web_search as a substitute; wrong limit guidance triggers refunded contributions and compliance fines.",
           input_schema: {
             type: "object",
             properties: {
@@ -6182,6 +6326,295 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           await logFinanceValidationEvent(
             'passed', claimedDates, financeLookup.reports || {}, [],
             claimedUrls, [], financeText, financeText
+          );
+        }
+      }
+
+      // ============================================================
+      // DONATION-LIMITS VALIDATOR (Compliance Class B donation variant /
+      // Phase 2b)
+      //
+      // Same architectural shape as the Class A and Class B finance
+      // validators. Detects contribution-limit-claim signals in
+      // Sam's response, finds the authoritative lookup_donation_limits
+      // result, audits Sam's claimed dollar amounts (carefully
+      // disambiguated from budget/fundraising amounts via prompt
+      // scoping), regenerates with deferral feedback if drift.
+      //
+      // Audit prompt is the trickiest piece — Sam's responses can
+      // contain dollar amounts in many contexts (donation limits,
+      // budget allocations, fundraising totals, expense logs). The
+      // audit Haiku is scoped explicitly to dollar amounts presented
+      // as contribution limits or maximum donations and instructed
+      // to ignore budget / fundraising / expense figures.
+      // ============================================================
+      function detectDonationLimitSignals(text) {
+        const signals = [
+          'donation limit', 'donation limits', 'contribution limit', 'contribution limits',
+          'max donation', 'max donations', 'maximum donation', 'maximum donations',
+          'maximum contribution', 'maximum contributions',
+          'individual limit', 'individual limits',
+          'per donor', 'donor cap', 'donor caps',
+          'how much can ', 'how much may ',
+          'per-election limit', 'per-cycle limit',
+          'per election limit', 'per cycle limit',
+          'donation cap', 'donation caps'
+        ];
+        const lower = (text || '').toLowerCase();
+        return signals.some(s => lower.includes(s));
+      }
+
+      async function findMostRecentDonationLookup(msgs, stateCode, officeNorm, raceYear, jurisdictionName) {
+        // Path 1: in-flight tool_result with limits + authority shape.
+        // Distinguishes from compliance (deadlines), finance (reports),
+        // and opponent (no shape match).
+        for (let i = msgs.length - 1; i >= 0; i--) {
+          const m = msgs[i];
+          if (!m || m.role !== 'user' || !Array.isArray(m.content)) continue;
+          for (const blk of m.content) {
+            if (!blk || blk.type !== 'tool_result' || typeof blk.content !== 'string') continue;
+            try {
+              const parsed = JSON.parse(blk.content);
+              if (parsed && parsed.limits && parsed.authority &&
+                  ('individual_per_election' in parsed.limits ||
+                   'individual_per_cycle' in parsed.limits ||
+                   'counts_primary_and_general_separately' in parsed.limits)) {
+                return parsed;
+              }
+            } catch (e) {}
+          }
+        }
+        // Path 2: candidate-profile cache lookup.
+        if (stateCode && officeNorm && raceYear) {
+          try {
+            const row = await env.DB.prepare(
+              "SELECT * FROM donation_limits_cache " +
+              "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
+              "AND created_at > datetime('now', '-90 days') ORDER BY created_at DESC LIMIT 1"
+            ).bind(stateCode, officeNorm, raceYear, jurisdictionName || '').first();
+            if (row) return formatDonationCacheRow(row, true);
+          } catch (e) {
+            console.warn('[donation_validator] cache lookup failed:', e.message);
+          }
+        }
+        return null;
+      }
+
+      async function extractClaimedDonationAmounts(samText) {
+        // The audit prompt is carefully scoped. Sam's responses often
+        // contain dollar amounts in many contexts — budget allocations,
+        // fundraising totals, expense logs, peer benchmarks. We only
+        // care about amounts presented as donation/contribution
+        // LIMITS or maximum allowable donations.
+        const prompt =
+          'You are a donation-limit auditor. Extract every dollar amount mentioned in this campaign coaching response that is presented as a CONTRIBUTION LIMIT or MAXIMUM DONATION cap. Return JSON only.\n\n' +
+          'RESPONSE:\n' + samText + '\n\n' +
+          'TASK: Identify dollar amounts (e.g., "$3,300", "$1,000 per election", "$5,000 per cycle") presented as:\n' +
+          '- Individual contribution limits\n' +
+          '- Maximum donation caps\n' +
+          '- Per-election or per-cycle donation ceilings\n' +
+          '- "How much a donor can give" answers\n\n' +
+          'EXCLUDE — do NOT flag dollar amounts in any of these contexts:\n' +
+          '- Campaign budget figures ("$50K total budget")\n' +
+          '- Fundraising totals raised by candidate or opponent\n' +
+          '- Expense log entries / spending\n' +
+          '- Win number / vote-count math\n' +
+          '- Filing fees (those are Class A compliance, not donation limits)\n' +
+          '- Peer benchmarks for fundraising goals\n' +
+          '- Specific donor checks the user mentioned (those are user-provided, valid)\n\n' +
+          'Return JSON: {"amounts": ["$3,300", "$1,000 per election"]}\n' +
+          'If no donation-limit amounts: {"amounts": []}\n' +
+          'JSON ONLY — no preamble, no markdown.';
+        try {
+          const resp = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+            body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, temperature: 0, messages: [{ role: 'user', content: prompt }] })
+          });
+          const auditData = await resp.json();
+          await logApiUsage('sam_donation_validator', auditData, rateLimitUserId, chatOwnerId);
+          let txt = '';
+          if (auditData && auditData.content && Array.isArray(auditData.content)) {
+            for (const b of auditData.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          }
+          const mm = txt.match(/\{[\s\S]*\}/);
+          if (!mm) return [];
+          const parsed = JSON.parse(mm[0]);
+          return Array.isArray(parsed.amounts) ? parsed.amounts : [];
+        } catch (e) {
+          console.warn('[donation_validator] extract failed:', e.message);
+          return [];
+        }
+      }
+
+      function flattenDonationAuthoritativeAmounts(donationLookup) {
+        const out = [];
+        const l = donationLookup && donationLookup.limits;
+        if (!l) return out;
+        if (l.individual_per_election) out.push(String(l.individual_per_election));
+        if (l.individual_per_cycle) out.push(String(l.individual_per_cycle));
+        return out;
+      }
+
+      // Loose match for dollar amounts. "$1,000" matches "$1000",
+      // "1,000 dollars", "1000". Strip non-digit chars and compare.
+      function amountClaimedMatchesAuthoritative(claimedAmount, authoritativeAmounts) {
+        if (!claimedAmount) return true;
+        const claimedDigits = String(claimedAmount).replace(/[^0-9]/g, '');
+        if (!claimedDigits) return false;
+        for (const a of authoritativeAmounts) {
+          if (!a) continue;
+          const authDigits = String(a).replace(/[^0-9]/g, '');
+          if (!authDigits) continue;
+          if (claimedDigits === authDigits) return true;
+          if (claimedDigits.includes(authDigits) || authDigits.includes(claimedDigits)) return true;
+        }
+        return false;
+      }
+
+      async function regenerateWithDonationFeedback(originalMsgs, badContent, claimedAmounts, claimedUrls, lookupResult) {
+        const auth = lookupResult.authority || {};
+        const authPhone = auth.phone || '(search the state government website for the current phone number)';
+        const authName = auth.name || 'state elections office';
+        const authUrl = auth.url || null;
+        const authJurisdictionSpecific = auth.jurisdiction_specific || '';
+        const amountsNote = (claimedAmounts && claimedAmounts.length > 0)
+          ? `You stated unverified contribution limit amount(s): ${JSON.stringify(claimedAmounts)}. None of those came from the tool result.`
+          : '';
+        const urlsNote = (claimedUrls && claimedUrls.length > 0)
+          ? `You mentioned unverified URL(s): ${JSON.stringify(claimedUrls)}. ` +
+            (authUrl
+              ? `The only URL the tool returned is "${authUrl}". Use that exact URL or none at all.`
+              : 'The tool returned NO URL for this authority. You may not invent or guess a URL.')
+          : '';
+        const allNotes = [amountsNote, urlsNote].filter(Boolean).join(' ');
+        const retryMsgs = [
+          ...originalMsgs,
+          { role: 'assistant', content: badContent },
+          { role: 'user', content:
+            `STOP. Your previous response contained unverified contribution-limit content the validator caught. ` +
+            `lookup_donation_limits returned status='${lookupResult.status}' with no verified limits for this race.\n\n${allNotes}\n\n` +
+            `Rewrite your response. RULES:\n` +
+            `- Acknowledge honestly that you don't have verified contribution limits for this specific race.\n` +
+            `- Note that limits vary by race level (federal/state/local) and can change between cycles.\n` +
+            `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
+            `- If the phone reads as a placeholder, paraphrase: "find their current phone number on the state's elections website".\n` +
+            `- ${authUrl ? `If you mention a URL, use ONLY this exact URL: "${authUrl}"` : "Do NOT mention any URL or domain. Tell the user to search the state's elections website generically."}\n` +
+            `- Offer ONE concrete next step (set a calendar reminder, draft questions to ask the elections office).\n` +
+            `- DO NOT state any specific contribution limit dollar amounts.\n` +
+            `- DO NOT formally apologize. Sound like a campaign manager.\n` +
+            `Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.`
+          }
+        ];
+        const regenResult = await callClaude(retryMsgs);
+        if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
+          regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
+        }
+        return regenResult;
+      }
+
+      function stripUnauthorizedDonationArtifacts(samText, unauthorizedAmounts, unauthorizedUrls) {
+        const offenders = [
+          ...(unauthorizedAmounts || []),
+          ...(unauthorizedUrls || [])
+        ].filter(x => x);
+        if (offenders.length === 0) return samText;
+        const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+        const cleaned = sentences.filter(s => {
+          const sLower = s.toLowerCase();
+          return !offenders.some(o => o && sLower.includes(String(o).toLowerCase()));
+        });
+        const joined = cleaned.join(' ').replace(/\s+/g, ' ').trim();
+        if (joined.length < 60) {
+          return "I don't have verified contribution limits for your race. Limits vary by race level and can change between cycles — contact your state's elections office for the current authoritative limits before you start your fundraising push.";
+        }
+        const noteParts = [];
+        if (unauthorizedAmounts && unauthorizedAmounts.length > 0) noteParts.push('contribution-limit amounts');
+        if (unauthorizedUrls && unauthorizedUrls.length > 0) noteParts.push('URLs');
+        return joined + `\n\n*(Note: removed ${noteParts.join(' and ')} that could not be verified against the authoritative lookup.)*`;
+      }
+
+      async function logDonationValidationEvent(action, claimedAmounts, authoritative, unauthorizedAmounts, claimedUrls, unauthorizedUrls, original, final) {
+        const fabType = (() => {
+          const amountBad = (unauthorizedAmounts && unauthorizedAmounts.length > 0);
+          const urlBad = (unauthorizedUrls && unauthorizedUrls.length > 0);
+          if (amountBad && urlBad) return 'both';
+          if (amountBad) return 'amount';
+          if (urlBad) return 'url';
+          return 'none';
+        })();
+        try {
+          await env.DB.prepare(
+            'INSERT INTO sam_donation_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, sam_claimed_amounts, authoritative_amounts, unauthorized_amounts, sam_claimed_urls, unauthorized_urls, fabrication_type, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+          ).bind(
+            generateId(16), conversation_id || null, chatOwnerId || null, rateLimitUserId || null,
+            action,
+            JSON.stringify(claimedAmounts || []),
+            JSON.stringify(authoritative || {}),
+            JSON.stringify(unauthorizedAmounts || []),
+            JSON.stringify(claimedUrls || []),
+            JSON.stringify(unauthorizedUrls || []),
+            fabType,
+            (original || '').slice(0, 600),
+            (final || '').slice(0, 600)
+          ).run();
+        } catch (e) {
+          console.warn('[donation_validator] log failed:', e.message);
+        }
+      }
+
+      const donationText = extractTextFromContent(data.content);
+      if (donationText.length > 60 && detectDonationLimitSignals(donationText)) {
+        const stateCodeForDonation = normalizeStateCode(state);
+        const officeNorm = (specificOffice || '').toLowerCase().trim();
+        const raceYear = electionDate ? parseInt(String(electionDate).slice(0, 4), 10) : null;
+        const donationLookup = await findMostRecentDonationLookup(
+          messages, stateCodeForDonation, officeNorm, raceYear, location || null
+        );
+
+        if (donationLookup) {
+          const authoritativeAmounts = flattenDonationAuthoritativeAmounts(donationLookup);
+          const authoritativeUrls = extractAuthoritativeUrls(donationLookup);
+
+          const claimedAmounts = await extractClaimedDonationAmounts(donationText);
+          const unauthorizedAmounts = claimedAmounts.filter(a => !amountClaimedMatchesAuthoritative(a, authoritativeAmounts));
+          const claimedUrls = extractUrlTokens(donationText);
+          const unauthorizedUrls = claimedUrls.filter(u => !urlMatchesAuthoritative(u, authoritativeUrls));
+
+          if (unauthorizedAmounts.length > 0 || unauthorizedUrls.length > 0) {
+            const retry = await regenerateWithDonationFeedback(
+              messages, data.content, unauthorizedAmounts, unauthorizedUrls, donationLookup
+            );
+            const retryText = extractTextFromContent(retry.content);
+            const retryClaimedAmounts = await extractClaimedDonationAmounts(retryText);
+            const retryUnauthorizedAmounts = retryClaimedAmounts.filter(a => !amountClaimedMatchesAuthoritative(a, authoritativeAmounts));
+            const retryClaimedUrls = extractUrlTokens(retryText);
+            const retryUnauthorizedUrls = retryClaimedUrls.filter(u => !urlMatchesAuthoritative(u, authoritativeUrls));
+
+            if (retryUnauthorizedAmounts.length === 0 && retryUnauthorizedUrls.length === 0) {
+              await logDonationValidationEvent(
+                'regenerated', claimedAmounts, donationLookup.limits || {}, unauthorizedAmounts,
+                claimedUrls, unauthorizedUrls, donationText, retryText
+              );
+              return new Response(JSON.stringify(retry), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+              });
+            }
+
+            const stripped = stripUnauthorizedDonationArtifacts(retryText, retryUnauthorizedAmounts, retryUnauthorizedUrls);
+            const strippedResponse = { ...retry, content: [{ type: 'text', text: stripped }] };
+            await logDonationValidationEvent(
+              'stripped', claimedAmounts, donationLookup.limits || {}, retryUnauthorizedAmounts,
+              claimedUrls, retryUnauthorizedUrls, donationText, stripped
+            );
+            return new Response(JSON.stringify(strippedResponse), {
+              headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+          }
+
+          await logDonationValidationEvent(
+            'passed', claimedAmounts, donationLookup.limits || {}, [],
+            claimedUrls, [], donationText, donationText
           );
         }
       }

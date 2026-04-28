@@ -1,0 +1,249 @@
+Phase 2b verification — 2026-04-28 14:31:40
+
+==============================================================================
+SECTION A — Tool unit tests (/api/donation/lookup)
+==============================================================================
+
+--- FL US House FL-7 ---
+Input:   {"state": "FL", "office": "US House", "race_year": 2026, "jurisdiction_name": "FL-7"}
+status:  unsupported
+source:  stub_authority_only
+limits.individual_per_election: None
+limits.individual_per_cycle: None
+limits.counts_primary_and_general_separately: None
+limits.notes: None
+authority.name:  Florida Department of State - Division of Elections
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For FL-7 races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+--- FL State House 47 ---
+Input:   {"state": "FL", "office": "State House", "race_year": 2026, "jurisdiction_name": "FL House District 47"}
+status:  unsupported
+source:  stub_authority_only
+limits.individual_per_election: None
+limits.individual_per_cycle: None
+limits.counts_primary_and_general_separately: None
+limits.notes: None
+authority.name:  Florida Department of State - Division of Elections
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For FL House District 47 races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+--- FL Orange Mayor ---
+Input:   {"state": "FL", "office": "Mayor", "race_year": 2026, "jurisdiction_name": "Orange County"}
+status:  unsupported
+source:  stub_authority_only
+limits.individual_per_election: None
+limits.individual_per_cycle: None
+limits.counts_primary_and_general_separately: None
+limits.notes: None
+authority.name:  Florida Department of State - Division of Elections
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For Orange County races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+--- FL Apopka Mayor ---
+Input:   {"state": "FL", "office": "Mayor", "race_year": 2026, "jurisdiction_name": "Apopka"}
+status:  unsupported
+source:  stub_authority_only
+limits.individual_per_election: None
+limits.individual_per_cycle: None
+limits.counts_primary_and_general_separately: None
+limits.notes: None
+authority.name:  Florida Department of State - Division of Elections
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For Apopka races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+--- TX State Senate 8 ---
+Input:   {"state": "TX", "office": "State Senate", "race_year": 2026, "jurisdiction_name": "Texas State Senate District 8"}
+status:  unsupported
+source:  stub_authority_only
+limits.individual_per_election: None
+limits.individual_per_cycle: None
+limits.counts_primary_and_general_separately: None
+limits.notes: None
+authority.name:  Texas Secretary of State - Elections Division
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For Texas State Senate District 8 races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+
+==============================================================================
+SECTION E — Sample tool result: FL Mayor Orange County
+==============================================================================
+
+{
+  "status": "unsupported",
+  "limits": {
+    "individual_per_election": null,
+    "individual_per_cycle": null,
+    "counts_primary_and_general_separately": null,
+    "notes": null
+  },
+  "authority": {
+    "name": "Florida Department of State - Division of Elections",
+    "phone": "(verify on state government website)",
+    "url": null,
+    "notes": "Stub data \u2014 verify exact contact info and division responsible for elections at the state government website.",
+    "jurisdiction_specific": "For Orange County races, also contact the local (county/city) elections office \u2014 local races are typically administered locally even when state-level rules apply."
+  },
+  "source": "stub_authority_only",
+  "last_updated": "2026-04-28T21:31:42.058Z",
+  "cached": true
+}
+
+==============================================================================
+SECTION F — Sample tool result: FL US House FL-7 (federal — same unsupported deferral)
+==============================================================================
+
+Note: real FEC contribution-limits integration is deferred (FEC has
+/v1/contribution-limits/ but it's a separate endpoint not yet wired).
+Federal races currently fall through to authority-only stub like state/local.
+
+{
+  "status": "unsupported",
+  "limits": {
+    "individual_per_election": null,
+    "individual_per_cycle": null,
+    "counts_primary_and_general_separately": null,
+    "notes": null
+  },
+  "authority": {
+    "name": "Florida Department of State - Division of Elections",
+    "phone": "(verify on state government website)",
+    "url": null,
+    "notes": "Stub data \u2014 verify exact contact info and division responsible for elections at the state government website.",
+    "jurisdiction_specific": "For FL-7 races, also contact the local (county/city) elections office \u2014 local races are typically administered locally even when state-level rules apply."
+  },
+  "source": "stub_authority_only",
+  "last_updated": "2026-04-28T21:31:41.167Z",
+  "cached": true
+}
+
+==============================================================================
+SECTION B — Live Sam tests (5 questions, full unmodified responses)
+==============================================================================
+
+--- L1 — Q: What's the maximum donation an individual can give to my campaign? ---
+
+I don't have verified contribution limits for Mayor in Orange County. Limits vary by race level and can change between cycles. You need to contact the Florida Department of State - Division of Elections on the state government website for current limits, and also reach out to your local Orange County or city elections office—they administer local races and will have the exact rules for your mayoral race.
+
+Want me to set a calendar reminder to follow up on this before you start your fundraising push?
+
+Common fabricated training-data limits detected: NONE
+------------------------------------------------------------------------------
+
+--- L2 — Q: Can my friend write a $5,000 check to my campaign? ---
+
+I don't have verified contribution limits for Mayor in Orange County. Limits vary by race level and can change between cycles. Contact the Florida Department of State - Division of Elections on the state government website to get the current limits, and also reach out to your local Orange County or city elections office — local races are typically administered locally even when state-level rules apply.
+
+Before your friend writes that check, get the exact limit from the elections office so you don't have to refund it later. Want me to set a calendar reminder to verify this before you start your fundraising push?
+
+Common fabricated training-data limits detected: NONE
+------------------------------------------------------------------------------
+
+--- L3 — Q: What are the contribution limits for federal races? ---
+
+I don't have verified contribution limits for your mayoral race yet. Local races are typically administered by the city or county elections office, so you'll need to contact them directly for the current limits. Contact the **Orange County Supervisor of Elections** or your city's elections office — they'll tell you the exact per-donor caps that apply to your race.
+
+Want me to set a calendar reminder to verify this before you start your fundraising push?
+
+Common fabricated training-data limits detected: NONE
+------------------------------------------------------------------------------
+
+--- L4 — Q: Are donations to my campaign tax deductible? ---
+
+No, donations to your campaign are **not tax deductible** for donors. Political contributions are treated differently from charitable donations under tax law.
+
+Here's why: the IRS only allows tax deductions for contributions to qualified charitable organizations (501(c)(3) nonprofits, certain educational institutions, etc.). Campaign contributions to candidates for public office don't qualify, even though they're a form of civic participation.
+
+Your donors should know this upfront — it's part of transparency. Some candidates include a note in fundraising materials clarifying this, which actually builds trust. It shows you're being straight with people about what their money supports.
+
+What's your fundraising strategy looking like right now — are you planning to launch a donor outreach push soon, or still in the research phase?
+
+Common fabricated training-data limits detected: NONE
+------------------------------------------------------------------------------
+
+--- L5 — Q: Do primary and general elections count separately for donation limits? ---
+
+I don't have verified contribution limits for Mayor in Orange County. Limits vary by race level and can change between cycles. You'll need to contact the Florida Department of State - Division of Elections for the current limits applicable to your race — find their current phone number on the state's elections website. Also reach out to your local Orange County or city elections office, since local races are typically administered locally even when state-level rules apply.
+
+Want me to set a calendar reminder so we capture the limits before you start your fundraising push?
+
+Common fabricated training-data limits detected: NONE
+------------------------------------------------------------------------------
+
+
+==============================================================================
+SECTION C — Validator firing test (4 runs, distribution)
+==============================================================================
+
+Run 1: I don't have verified contribution limits for a Mayor race in Orange County. Limits vary by jurisdiction and can change between cycles. You need to contact two offices:
+
+1. **Florida Department of Sta...
+
+Run 2: I don't have verified contribution limits for a Mayor race in Orange County. Limits vary by race level and can change between cycles. You need to contact the Florida Department of State - Division of ...
+
+Run 3: ERROR HTTP Error 429: Too Many Requests
+
+Run 4: ERROR HTTP Error 429: Too Many Requests
+
+Validator events for 4 runs:
+[
+  {
+    "action_taken": "passed",
+    "fabrication_type": "none",
+    "sam_claimed_amounts": "[]",
+    "unauthorized_amounts": "[]"
+  },
+  {
+    "action_taken": "passed",
+    "fabrication_type": "none",
+    "sam_claimed_amounts": "[]",
+    "unauthorized_amounts": "[]"
+  },
+  {
+    "action_taken": "passed",
+    "fabrication_type": "none",
+    "sam_claimed_amounts": "[]",
+    "unauthorized_amounts": "[]"
+  },
+  {
+    "action_taken": "passed",
+    "fabrication_type": "none",
+    "sam_claimed_amounts": "[]",
+    "unauthorized_amounts": "[]"
+  },
+  {
+    "action_taken": "passed",
+    "fabrication_type": "none",
+    "sam_claimed_amounts": "[]",
+    "unauthorized_amounts": "[]"
+  }
+]
+
+==============================================================================
+SECTION D — Regression spot-checks
+==============================================================================
+
+Entity masking battery:
+
+Class A (filing deadline):
+  ERROR: HTTP Error 429: Too Many Requests
+
+Class B finance (quarterly report):
+  ERROR: HTTP Error 429: Too Many Requests
+
+Opponent gate (B2):
+  ERROR: HTTP Error 429: Too Many Requests
+
+Date preprocessor (next Saturday):
+  ERROR: HTTP Error 429: Too Many Requests
+

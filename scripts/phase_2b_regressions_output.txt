@@ -1,0 +1,57 @@
+Phase 2b regression spot-checks (shannan login) — 2026-04-28 14:34:00
+
+=== Class A compliance ===
+Q: When is the filing deadline for my race?
+
+I don't have verified filing deadlines for Mayor in Orange County. Here's what you need to do: Contact the **Florida Department of State - Division of Elections** — you can find their current phone number on the state government website. Also reach out to your local Orange County elections office, since mayoral races are typically administered at the county or city level even though state rules apply.
+
+This is critical — filing deadlines for local races vary by municipality, and missing it disqualifies you. Want me to set a calendar reminder to follow up with both offices this week, or draft a checklist of questions to ask them?
+
+----------------------------------------------------------------------
+
+=== Class B finance ===
+Q: When are my quarterly finance reports due?
+
+I don't have verified quarterly report dates for Mayor races in Orange County. Local races are typically administered locally, so you'll need to contact both the Florida Department of State - Division of Elections and your local Orange County elections office for the exact reporting calendar. You can find their current contact information on the state government website.
+
+This is important — missing a report deadline triggers fines and bad press. Want me to set a calendar reminder to verify the reporting schedule with them this week?
+
+----------------------------------------------------------------------
+
+=== Phase 2b donation ===
+Q: What's the maximum donation an individual can give?
+
+I don't have verified contribution limits for a Mayor race in Orange County. Local races are typically administered locally, so you'll need to contact both the state and your local elections office. Contact the **Florida Department of State - Division of Elections** (find their current phone number on the state government website), and also reach out to your **Orange County or city elections office** — they'll give you the exact limits that apply to your race.
+
+Want me to set a calendar reminder to capture those limits before you launch fundraising?
+
+----------------------------------------------------------------------
+
+=== date preprocessor ===
+Q: What date is next Saturday?
+
+Next Saturday is **2026-05-02**.
+
+What's on your mind for that weekend?
+
+----------------------------------------------------------------------
+
+=== opponent gate ===
+Q: Search the web for everything you can find on my opponent.
+
+I appreciate the instinct, but I need to pump the brakes here.
+
+Web search for opponent research is gated off for this conversation — it's a hard rule to keep us from accidentally pulling in facts about a real-world person who happens to share your opponent's name, which would poison our strategy.
+
+**Here's what I can work with instead:**
+
+Your Intel panel shows Mayra Uribe (R) running for Mayor, but that's all we have right now. I need YOU to populate what you know — their fundraising to date, major donors, endorsements, voting record if they've held office before, recent news about them, their campaign message, and any vulnerabilities you've spotted.
+
+**What I recommend:** Spend 30 minutes this week documenting Mayra Uribe in your Intel panel. Talk to local party folks, check their social media, ask around. Once you feed me that intel, I can give you sharp strategic advice on how to position against them.
+
+What's the one thing you already know about Mayra Uribe that concerns you most?
+
+search_blocked event present: True
+----------------------------------------------------------------------
+
+=== entity masking battery (test_entity_mask.py) ===
