@@ -1,0 +1,118 @@
+Phase 3 — Safe Mode tests — 2026-04-28 14:59:07
+
+Shannan userId: iL0EVrKMai1w3CStGZEUoHlf01KOJzrW
+
+==============================================================================
+SECTION A — Unit-style tests on getValidatorFiringBreakdown via Safe Mode trigger
+==============================================================================
+
+Test 1 — new conversation, no prior firings:
+  sam_safe_mode_events row count: 0 (expected 0)
+  Banner in response: False  (expected False)
+  PASS: True
+
+Test 2 — 3 seeded firings (1 geo regen + 1 compliance_a regen + 1 donation strip):
+  sam_safe_mode_events: [{"trigger_count": 3, "triggering_validator_breakdown": "{\"geographic\":1,\"compliance_a\":1,\"compliance_b\":0,\"donation\":1,\"opponent\":0}"}]
+  Banner in response: True  (expected True)
+  PASS: True
+
+Test 3 — 5 'passed' events only:
+  sam_safe_mode_events count: 0 (expected 0)
+  Banner in response: False  (expected False)
+  PASS: True
+
+Test 4 — exactly 2 firings (BELOW threshold of 3):
+  sam_safe_mode_events count: 0 (expected 0)
+  Banner in response: False  (expected False)
+  PASS: True
+
+
+==============================================================================
+SECTION B — Live Sam tests
+==============================================================================
+
+--- Test 5: Below threshold (5 clean turns) ---
+  Turn 1 'What should I work on this week?': banner=False
+  Turn 2 'Help me think about my message.': banner=False
+  Turn 3 'What's a good fundraising goal for a local race?': banner=False
+  Turn 4 'How should I think about earned media?': banner=False
+  Turn 5 'What's the best way to recruit volunteers?': banner=False
+  Banner ever appeared: False
+  PASS: True
+
+--- Test 6: Threshold trigger (3 D1-seeded firings, then live turn) ---
+  Sam's response (full):
+⚠️ **Heads up:** I've had trouble verifying some specifics in our conversation. Please double-check anything specific I tell you — dates, amounts, names, or claims about your race — with your local elections office or other authoritative source before acting on it.
+
+---
+
+I don't have verified filing dates for Mayor in Orange County. For your specific race, contact the **Florida Department of State - Division of Elections** — find their current phone number on the state government website. Also reach out to your local Orange County or city elections office, since local races are typically administered locally.
+
+What city are you running for Mayor in? That'll help me point you to the right local elections office to call.
+
+  Banner present: True
+  Stricter deferral language: True
+  PASS: True
+
+--- Test 7: Banner placement (literal full response from Test 6) ---
+BANNER STARTS BELOW:
+⚠️ **Heads up:** I've had trouble verifying some specifics in our conversation. Please double-check anything specific I tell you — dates, amounts, names, or claims about your race — with your local elections office or other authoritative source before acting on it.
+
+---
+
+I don't have verified filing dates for Mayor in Orange County. For your specific race, contact the **Florida Department of State - Division of Elections** — find their current phone number on the state government website. Also reach out to your local Orange County or city elections office, since local races are typically administered locally.
+
+What city are you running for Mayor in? That'll help me point you to the right local elections office to call.
+BANNER ENDS ABOVE.
+  Response starts with banner marker: True
+  Banner separator '---' present: False
+  PASS: False
+
+--- Test 8: Persistence (3 more turns in conv6) ---
+  Turn +1 'What about strategy?': banner=True
+  Turn +2 'How should I think about volunteers?': banner=True
+  Turn +3 'Anything urgent this week?': banner=True
+  All subsequent turns had banner: True
+  PASS: True
+
+--- Test 9: Fresh conversation_id, no carry-over ---
+  Banner in response: False  (expected False)
+  sam_safe_mode_events row for fresh conv: 0  (expected 0)
+  PASS: True
+
+--- Test 10: Logging — exactly ONE row per conv after activation ---
+  Rows for conv6: 1  (expected 1)
+  trigger_count: 3
+  triggering_validator_breakdown: {"geographic":1,"compliance_a":1,"compliance_b":0,"donation":0,"opponent":1}
+  activated_at: 2026-04-28 22:00:06
+  PASS: True
+
+
+==============================================================================
+SECTION C — Regression spot-checks (existing validators)
+==============================================================================
+
+=== Class A compliance ===
+Q: When is the filing deadline for my race?
+Sam: I don't have verified filing deadlines for Mayor in Orange County. Here's what you need to do: contact the **Florida Department of State - Division of Elections** — you can find their current phone number on the state's elections website. Also reach out to your local Orange Count...
+Banner: False  (expected False — fresh conv)
+
+=== Class B finance ===
+Q: When are my quarterly finance reports due?
+Sam: I don't have verified quarterly report dates for Mayor in Orange County. Local races are typically administered locally, so you'll need to contact two offices:
+
+1. **Orange County Supervisor of Elections** — they handle the local race administration and can tell you the exact rep...
+Banner: False  (expected False — fresh conv)
+
+=== Phase 2b donation ===
+Q: What's the maximum donation an individual can give?
+Sam: I don't have verified contribution limits for a Mayor race in Orange County. Limits vary by race level and can change between cycles. You need to contact the Florida Department of State - Division of Elections and your local Orange County elections office — local races are typica...
+Banner: False  (expected False — fresh conv)
+
+=== Date preprocessor ===
+Q: What date is next Saturday?
+Sam: Next Saturday is **May 2, 2026**.
+
+What's on your mind for that weekend?
+Banner: False  (expected False — fresh conv)
+

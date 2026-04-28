@@ -331,6 +331,45 @@ export default {
     }
 
     // ========================================
+    // SAFE MODE — validator firing counter (Phase 3)
+    //
+    // Counts regenerated + stripped events across all 5 per-fact-class
+    // validator tables for a given conversation_id. When the total
+    // crosses the threshold (3+), Safe Mode activates for subsequent
+    // turns in this conversation: stricter deferral prompt + visible
+    // banner above Sam's responses. Cumulative count, session-only
+    // (new conversation_id = fresh count).
+    //
+    // Returns { total, breakdown } so the activation log can record
+    // which fact classes contributed.
+    // ========================================
+    async function getValidatorFiringBreakdown(conversationId) {
+      if (!conversationId) return { total: 0, breakdown: {} };
+      const tables = [
+        { key: 'geographic',   table: 'sam_validation_events' },
+        { key: 'compliance_a', table: 'sam_compliance_validation_events' },
+        { key: 'compliance_b', table: 'sam_finance_validation_events' },
+        { key: 'donation',     table: 'sam_donation_validation_events' },
+        { key: 'opponent',     table: 'sam_opponent_validation_events' }
+      ];
+      const breakdown = {};
+      let total = 0;
+      for (const t of tables) {
+        try {
+          const r = await env.DB.prepare(
+            `SELECT COUNT(*) AS n FROM ${t.table} WHERE conversation_id = ? AND action_taken IN ('regenerated', 'stripped')`
+          ).bind(conversationId).first();
+          const n = (r && typeof r.n === 'number') ? r.n : 0;
+          breakdown[t.key] = n;
+          total += n;
+        } catch (e) {
+          breakdown[t.key] = 0;
+        }
+      }
+      return { total, breakdown };
+    }
+
+    // ========================================
     // OPPONENT-RESEARCH QUERY DETECTOR (Phase 1.5)
     //
     // Scans a string for signals that it's a query about a specific
@@ -4143,6 +4182,60 @@ export default {
       const workspaceEntities = await getAllWorkspaceEntities(chatOwnerId);
 
       // ========================================
+      // SAFE MODE — session-level reliability heuristic (Phase 3)
+      // Query validator firings for this conversation BEFORE assembling
+      // the system prompt. If the count crossed the threshold on a
+      // prior turn, this turn is in Safe Mode (stricter prompt + banner
+      // prepended to delivered response). The current turn's validator
+      // firings (if any) won't count until the next turn — that's
+      // intentional, matches the "trigger on prior demonstrated drift"
+      // semantic.
+      // ========================================
+      const SAFE_MODE_THRESHOLD = 3;
+      const safeModeFirings = conversation_id
+        ? await getValidatorFiringBreakdown(conversation_id)
+        : { total: 0, breakdown: {} };
+      const safeModeActive = safeModeFirings.total >= SAFE_MODE_THRESHOLD;
+      // Idempotent activation log — INSERT OR IGNORE on the unique
+      // conversation_id index ensures exactly one row per conversation.
+      if (safeModeActive && conversation_id) {
+        env.DB.prepare(
+          'INSERT OR IGNORE INTO sam_safe_mode_events (id, conversation_id, workspace_owner_id, user_id, trigger_count, triggering_validator_breakdown) VALUES (?, ?, ?, ?, ?, ?)'
+        ).bind(
+          generateId(16), conversation_id, chatOwnerId || null, rateLimitUserId || null,
+          safeModeFirings.total, JSON.stringify(safeModeFirings.breakdown)
+        ).run().catch((e) => { console.warn('[safe_mode] log failed:', e.message); });
+      }
+
+      // Banner prepended to Sam's text on delivery when Safe Mode is
+      // active. Applied to whatever response object is being returned —
+      // normal data, regen retry, or stripped response — at every
+      // return-Response site in this handler.
+      const SAFE_MODE_BANNER =
+        '\u26A0\uFE0F **Heads up:** I\'ve had trouble verifying some specifics in our conversation. Please double-check anything specific I tell you \u2014 dates, amounts, names, or claims about your race \u2014 with your local elections office or other authoritative source before acting on it.\n\n---\n\n';
+
+      function applySafeModeBanner(respObj) {
+        if (!safeModeActive || !respObj || !Array.isArray(respObj.content)) return respObj;
+        const firstTextIdx = respObj.content.findIndex(b => b && b.type === 'text');
+        if (firstTextIdx >= 0) {
+          respObj.content[firstTextIdx] = {
+            ...respObj.content[firstTextIdx],
+            text: SAFE_MODE_BANNER + (respObj.content[firstTextIdx].text || '')
+          };
+        } else {
+          respObj.content = [{ type: 'text', text: SAFE_MODE_BANNER }, ...respObj.content];
+        }
+        return respObj;
+      }
+
+      function buildSafeResponse(respObj) {
+        applySafeModeBanner(respObj);
+        return new Response(JSON.stringify(respObj), {
+          headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+      }
+
+      // ========================================
       // HELPER: Multi-query VPS search (parallel, free)
       // ========================================
       async function multiSearch(queries, maxCharsPerQuery) {
@@ -5093,6 +5186,17 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // at the start of the prompt.)
 
       // ========================================
+      // SAFE MODE — stricter deferral prompt block (Phase 3)
+      // Appended only when safeModeActive (validator firings >= threshold
+      // earlier in this conversation). Adds an instruction layer telling
+      // Sam to default to deferral, skip proactive web_search, and
+      // acknowledge the reliability degradation when relevant.
+      // ========================================
+      if (safeModeActive) {
+        systemPrompt += '\n\n================================================================\nSAFE MODE ACTIVE — RELIABILITY HEURISTIC\n================================================================\nEarlier in this conversation, your responses contained claims that needed correction by validators. The system has degraded your default behavior to favor honest deferral over attempted answers.\n\nWhile Safe Mode is active:\n\n1. Default to deferral. When uncertain about ANY specific fact (date, dollar amount, name, organization, statistic), do NOT attempt to recall it. Tell the user "I don\'t have verified [X] — please confirm with [appropriate authority]."\n\n2. Do NOT use web_search proactively. Wait for the user to explicitly request a search.\n\n3. Acknowledge the situation when relevant. If the user asks a factual question and you defer, you may briefly note: "I want to be careful here — I\'ve had some accuracy issues in our conversation, so I\'d rather have you verify than guess."\n\n4. Strategic guidance is still your job. You can still give campaign strategy advice, frame options, ask good questions, and structure thinking. Safe Mode targets specific factual claims, not strategic reasoning.\n\nWHY: When your validator firings exceed a threshold in a single conversation, the system signals that something is producing repeated drift. The right response is increased honesty about uncertainty, not increased confidence to compensate.';
+      }
+
+      // ========================================
       // ENTITY MASKING (final step of system prompt assembly)
       // Replace every real-name occurrence with the placeholder token.
       // All sources contributing to systemPrompt (Ground Truth slots,
@@ -5659,9 +5763,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       async function logValidationEvent(jurisdictionName, authorizedList, mentioned, unauthorized, action, originalText, finalText) {
         try {
           await env.DB.prepare(
-            'INSERT INTO sam_validation_events (id, workspace_owner_id, user_id, jurisdiction_name, authorized_count, sam_mentioned_locations, unauthorized_locations, action_taken, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO sam_validation_events (id, conversation_id, workspace_owner_id, user_id, jurisdiction_name, authorized_count, sam_mentioned_locations, unauthorized_locations, action_taken, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
           ).bind(
-            generateId(16), chatOwnerId || null, rateLimitUserId || null,
+            generateId(16), conversation_id || null, chatOwnerId || null, rateLimitUserId || null,
             jurisdictionName || 'unknown',
             (authorizedList || []).length,
             JSON.stringify(mentioned || []),
@@ -5765,18 +5869,14 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
             if (retryAudit.unauthorized.length === 0) {
               await logValidationEvent(jurisdictionName, authorized, audit.mentioned, audit.unauthorized, 'regenerated', samText, retryText);
-              return new Response(JSON.stringify(retry), {
-                headers: { "Content-Type": "application/json", ...corsHeaders }
-              });
+              return buildSafeResponse(retry);
             }
 
             // Option A fallback: strip the offending sentences.
             const stripped = stripUnauthorizedSentences(retryText, retryAudit.unauthorized);
             const strippedResponse = { ...retry, content: [{ type: 'text', text: stripped }] };
             await logValidationEvent(jurisdictionName, authorized, retryAudit.mentioned, retryAudit.unauthorized, 'stripped', samText, stripped);
-            return new Response(JSON.stringify(strippedResponse), {
-              headers: { "Content-Type": "application/json", ...corsHeaders }
-            });
+            return buildSafeResponse(strippedResponse);
           }
 
           // Passed first check.
@@ -6062,9 +6162,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
                 'regenerated', claimedDates, auth, unauthorizedDates,
                 claimedUrls, unauthorizedUrls, complianceText, retryText
               );
-              return new Response(JSON.stringify(retry), {
-                headers: { "Content-Type": "application/json", ...corsHeaders }
-              });
+              return buildSafeResponse(retry);
             }
 
             const stripped = stripUnauthorizedComplianceArtifacts(retryText, retryUnauthorizedDates, retryUnauthorizedUrls);
@@ -6073,9 +6171,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               'stripped', claimedDates, auth, retryUnauthorizedDates,
               claimedUrls, retryUnauthorizedUrls, complianceText, stripped
             );
-            return new Response(JSON.stringify(strippedResponse), {
-              headers: { "Content-Type": "application/json", ...corsHeaders }
-            });
+            return buildSafeResponse(strippedResponse);
           }
 
           await logComplianceValidationEvent(
@@ -6307,9 +6403,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
                 'regenerated', claimedDates, financeLookup.reports || {}, unauthorizedDates,
                 claimedUrls, unauthorizedUrls, financeText, retryText
               );
-              return new Response(JSON.stringify(retry), {
-                headers: { "Content-Type": "application/json", ...corsHeaders }
-              });
+              return buildSafeResponse(retry);
             }
 
             const stripped = stripUnauthorizedFinanceArtifacts(retryText, retryUnauthorizedDates, retryUnauthorizedUrls);
@@ -6318,9 +6412,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               'stripped', claimedDates, financeLookup.reports || {}, retryUnauthorizedDates,
               claimedUrls, retryUnauthorizedUrls, financeText, stripped
             );
-            return new Response(JSON.stringify(strippedResponse), {
-              headers: { "Content-Type": "application/json", ...corsHeaders }
-            });
+            return buildSafeResponse(strippedResponse);
           }
 
           await logFinanceValidationEvent(
@@ -6596,9 +6688,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
                 'regenerated', claimedAmounts, donationLookup.limits || {}, unauthorizedAmounts,
                 claimedUrls, unauthorizedUrls, donationText, retryText
               );
-              return new Response(JSON.stringify(retry), {
-                headers: { "Content-Type": "application/json", ...corsHeaders }
-              });
+              return buildSafeResponse(retry);
             }
 
             const stripped = stripUnauthorizedDonationArtifacts(retryText, retryUnauthorizedAmounts, retryUnauthorizedUrls);
@@ -6607,9 +6697,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               'stripped', claimedAmounts, donationLookup.limits || {}, retryUnauthorizedAmounts,
               claimedUrls, retryUnauthorizedUrls, donationText, stripped
             );
-            return new Response(JSON.stringify(strippedResponse), {
-              headers: { "Content-Type": "application/json", ...corsHeaders }
-            });
+            return buildSafeResponse(strippedResponse);
           }
 
           await logDonationValidationEvent(
@@ -6759,24 +6847,18 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             const retryUnauthorized = await extractUnauthorizedOpponentClaims(retryText, intelSummary, userClaimsBlob);
             if (retryUnauthorized.length === 0) {
               await logOpponentValidationEvent('regenerated', unauthorized, unauthorized, opponentSamText, retryText);
-              return new Response(JSON.stringify(retry), {
-                headers: { "Content-Type": "application/json", ...corsHeaders }
-              });
+              return buildSafeResponse(retry);
             }
             const stripped = stripOpponentClaims(retryText, retryUnauthorized);
             const strippedResp = { ...retry, content: [{ type: 'text', text: stripped }] };
             await logOpponentValidationEvent('stripped', unauthorized, retryUnauthorized, opponentSamText, stripped);
-            return new Response(JSON.stringify(strippedResp), {
-              headers: { "Content-Type": "application/json", ...corsHeaders }
-            });
+            return buildSafeResponse(strippedResp);
           }
           await logOpponentValidationEvent('passed', [], [], opponentSamText, opponentSamText);
         }
       }
 
-      return new Response(JSON.stringify(data), {
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
+      return buildSafeResponse(data);
 
     } catch (error) {
       return new Response(JSON.stringify({ error: error.message }), {
