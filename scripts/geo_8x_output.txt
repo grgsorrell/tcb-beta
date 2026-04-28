@@ -1,0 +1,53 @@
+Geographic validator characterization — 8 sequential runs
+======================================================================
+
+Run 1: starting at 10:50:03...
+  Pass count: 4/6
+  Failed conversations: ["B. Turn-2 variant: 'Where else?'", "B. Turn-2 variant: 'Give me more options'"]
+  Drifted cities: ["['Lake Mary']", "['Lake Mary']"]
+
+Run 2: starting at 10:51:41...
+  Pass count: 6/6
+
+Run 3: starting at 10:53:31...
+  Pass count: 6/6
+
+Run 4: starting at 10:55:06...
+  Pass count: 6/6
+
+Run 5: starting at 10:56:41...
+  Pass count: 6/6
+
+Run 6: starting at 10:58:17...
+  Pass count: 5/6
+  Failed conversations: ["B. Turn-2 variant: 'Give me more options'"]
+  Drifted cities: ["['Lake Mary']"]
+
+Run 7: starting at 10:59:40...
+  Pass count: 3/6
+  Failed conversations: ["A. Greg's exact repro", "B. Turn-2 variant: 'Suggest more neighborhoods'", "B. Turn-2 variant: 'Give me more options'"]
+  Drifted cities: ["['Lake Mary']", "['Lake Mary']", "['Lake Mary']"]
+
+Run 8: starting at 11:01:12...
+  Pass count: 5/6
+  Failed conversations: ["B. Turn-2 variant: 'Where else?'"]
+  Drifted cities: ["['Lake Mary']"]
+
+======================================================================
+DISTRIBUTION
+======================================================================
+Pass counts per run: [4, 6, 6, 6, 6, 5, 3, 5]
+Average: 5.12/6
+Min: 3/6, Max: 6/6
+Threshold: avg >= 4.5/6 AND no run < 3/6
+Threshold met: True
+
+All drifted cities across all runs:
+  Run 1: ["['Lake Mary']", "['Lake Mary']"]
+  Run 2: []
+  Run 3: []
+  Run 4: []
+  Run 5: []
+  Run 6: ["['Lake Mary']"]
+  Run 7: ["['Lake Mary']", "['Lake Mary']", "['Lake Mary']"]
+  Run 8: ["['Lake Mary']"]

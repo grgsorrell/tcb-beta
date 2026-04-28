@@ -1,0 +1,161 @@
+Greg userId: XQCxgGyUVCPc3M1z2tFHKZ7kVDieGfO7
+Shannan userId: iL0EVrKMai1w3CStGZEUoHlf01KOJzrW
+
+Cleaned entity_mask rows for both test workspaces.
+
+
+==============================================================================
+TEST 5 — Stephanie Murphy repro (must NOT fabricate filing date)
+==============================================================================
+
+Q: When did I file my candidacy?
+
+Sam:
+I don't have that information in your campaign record yet — it shows "unknown" for filing status. 
+
+Have you filed your candidacy paperwork with the Orange County Supervisor of Elections, or are you still in the planning phase?
+
+Forbidden specific date tokens detected: NONE
+PASS: True
+
+==============================================================================
+TEST 6 — First-name 'Stephanie' (must defer)
+==============================================================================
+
+Q: When did Stephanie file?
+
+Sam:
+I don't have that information in your campaign record yet — it shows "unknown" for filing status. 
+
+Have you filed your candidacy paperwork with the Orange County Supervisor of Elections, or are you still in the planning phase? That'll help me set up your compliance calendar and deadlines.
+
+Forbidden specific date tokens detected: NONE
+PASS: True
+
+==============================================================================
+TEST 7 — Possessive 'Stephanie\'s strategy' (demask preserves apostrophe)
+==============================================================================
+
+Q: What's Stephanie's strategy this week?
+
+Sam:
+I don't have a campaign strategy documented yet for this week or any week. We're in early planning mode—189 days out from election day—so this is the time to build one.
+
+Here's what I'd recommend we lock in **this week**:
+
+1. **Opponent research** — Add your likely opponents to the Intel panel and start building opposition profiles. Who are you running against?
+2. **Message development** — What's your core case for why you should be mayor? (fiscal responsibility, public safety, development, etc.)
+3. **Initial fundraising** — You've got a $50K budget and zero dollars raised. We need to identify your first 10–15 donors and get commitments locked.
+
+Which of these three should we tackle first?
+
+Placeholder leak in output: False
+'Stephanie' present in response: False
+PASS: True
+
+==============================================================================
+TEST 8 — Real opponent 'Mayra Uribe' (no fabricated fundraising)
+==============================================================================
+
+Q: Tell me about my opponent's fundraising history.
+
+Sam:
+I don't have Mayra Uribe's fundraising history in my system — that's not data I track for opponents. What I can do is help you research their recent campaign activity, donor patterns, or public filings if they've run before.
+
+A few questions to point the research:
+
+1. **Has Mayra Uribe run for office before**, or is this their first campaign?
+2. **Do you want me to look up their official campaign finance reports** (if they've filed), or are you more interested in understanding their donor base and funding strategy?
+
+For a local race like this, opponent research is gold — it tells you where they're vulnerable and where they're strong. What's your priority?
+
+Placeholder leak in output: False
+PASS: True
+
+==============================================================================
+TEST 9 — Endorser 'Ron DeSantis'
+==============================================================================
+
+Q: Has anyone endorsed me yet?
+
+Sam:
+Yes — Ron DeSantis, the Governor of Florida, has announced their endorsement of your campaign. That's a strong early signal, especially at this stage.
+
+Now that you've got that anchor, let's build on it. Have you reached out to other local leaders — city council members, business leaders, community organizations — to line up additional endorsements before you file?
+
+Placeholder leak in output: False
+'DeSantis' or 'Ron' present in response: True
+PASS: True
+
+==============================================================================
+TEST 10 — Cross-workspace isolation (greg vs shannan)
+==============================================================================
+
+Greg's workspace candidate rows: [{"entity_type": "CANDIDATE", "real_name": "Stephanie Murphy", "placeholder": "{{CANDIDATE}}"}, {"entity_type": "CANDIDATE_FIRST", "real_name": "Stephanie", "placeholder": "{{CANDIDATE_FIRST}}"}, {"entity_type": "CANDIDATE_LAST", "real_name": "Murphy", "placeholder": "{{CANDIDATE_LAST}}"}]
+Shannan's workspace candidate rows: [{"entity_type": "CANDIDATE", "real_name": "Sarah Chen", "placeholder": "{{CANDIDATE}}"}, {"entity_type": "CANDIDATE_FIRST", "real_name": "Sarah", "placeholder": "{{CANDIDATE_FIRST}}"}, {"entity_type": "CANDIDATE_LAST", "real_name": "Chen", "placeholder": "{{CANDIDATE_LAST}}"}]
+Greg has Stephanie: True, Greg has Sarah: False
+Shannan has Sarah: True, Shannan has Stephanie: False
+PASS (isolation correct): True
+
+==============================================================================
+TEST 12 — Quoted-text exemption (long quoted span passes through unmasked)
+==============================================================================
+
+Original message:
+Here's my draft speech: "This is a long quoted speech draft from Stephanie Murphy that exceeds fifty characters and should remain entirely unmasked when sent to Sam — Stephanie Murphy can read her own speech intact." What do you think?
+
+After py_mask (mirror of worker's maskText):
+Here's my draft speech: "This is a long quoted speech draft from Stephanie Murphy that exceeds fifty characters and should remain entirely unmasked when sent to Sam — Stephanie Murphy can read her own speech intact." What do you think?
+
+Quoted span passed through unmasked: True
+PASS: True
+
+==============================================================================
+TEST 13 — Backfill correctness
+==============================================================================
+
+All entity_mask rows for greg's workspace:
+  - CANDIDATE: 'Stephanie Murphy' → {{CANDIDATE}}
+  - CANDIDATE_FIRST: 'Stephanie' → {{CANDIDATE_FIRST}}
+  - CANDIDATE_LAST: 'Murphy' → {{CANDIDATE_LAST}}
+  - ENDORSER: 'Ron DeSantis' → {{ENDORSER_1}}
+  - OPPONENT: 'Mayra Uribe' → {{OPPONENT_1}}
+
+Entity types present: ['CANDIDATE', 'CANDIDATE_FIRST', 'CANDIDATE_LAST', 'ENDORSER', 'OPPONENT']
+PASS (CANDIDATE+FIRST+LAST+OPPONENT all populated): True
+
+==============================================================================
+TEST 14 — Demask round-trip fixture
+==============================================================================
+
+  Input:        'Stephanie Murphy is running for Mayor.'
+  Masked:       '{{CANDIDATE}} is running for Mayor.'
+  Round-tripped: 'Stephanie Murphy is running for Mayor.'
+  PASS
+
+  Input:        "Stephanie's strategy this week"
+  Masked:       "{{CANDIDATE_FIRST}}'s strategy this week"
+  Round-tripped: "Stephanie's strategy this week"
+  PASS
+
+  Input:        'What did Murphy say about education?'
+  Masked:       'What did {{CANDIDATE_LAST}} say about education?'
+  Round-tripped: 'What did Murphy say about education?'
+  PASS
+
+  Input:        "Stephanie Murphy's opponent Mayra Uribe filed last week"
+  Masked:       "{{CANDIDATE}}'s opponent {{OPPONENT_1}} filed last week"
+  Round-tripped: "Stephanie Murphy's opponent Mayra Uribe filed last week"
+  PASS
+
+  Input:        "Tell me about Mayra Uribe's recent statements"
+  Masked:       "Tell me about {{OPPONENT_1}}'s recent statements"
+  Round-tripped: "Tell me about Mayra Uribe's recent statements"
+  PASS
+
+  Input:        'no entity here, just text'
+  Masked:       'no entity here, just text'
+  Round-tripped: 'no entity here, just text'
+  PASS
+
+PASS (all round-trips lossless): True

@@ -164,6 +164,236 @@ export default {
       return code || null;
     }
 
+    // ========================================
+    // ENTITY MASKING (Phase 1 anti-hallucination)
+    //
+    // Replaces real-world entity names (candidate, opponents, endorsers,
+    // donors) with placeholder tokens before any Anthropic API call.
+    // The model never sees real names → can't pull training-data facts
+    // about a real public figure who happens to share a candidate's
+    // name (the Stephanie Murphy bug class). See CP_ENTITY_MASK.sql.
+    // ========================================
+    function levenshtein(a, b, maxDist) {
+      if (a === b) return 0;
+      if (Math.abs(a.length - b.length) > maxDist) return maxDist + 1;
+      const m = a.length, n = b.length;
+      let prev = new Array(n + 1);
+      let curr = new Array(n + 1);
+      for (let j = 0; j <= n; j++) prev[j] = j;
+      for (let i = 1; i <= m; i++) {
+        curr[0] = i;
+        let rowMin = curr[0];
+        for (let j = 1; j <= n; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + cost);
+          if (curr[j] < rowMin) rowMin = curr[j];
+        }
+        if (rowMin > maxDist) return maxDist + 1;
+        const tmp = prev; prev = curr; curr = tmp;
+      }
+      return prev[n];
+    }
+
+    function escapeForRegex(s) {
+      return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    async function getOrCreateMask(workspaceOwnerId, entityType, realName) {
+      if (!workspaceOwnerId || !entityType || !realName) return null;
+      const cleanName = String(realName).trim();
+      if (!cleanName) return null;
+      try {
+        const existing = await env.DB.prepare(
+          'SELECT placeholder FROM entity_mask WHERE workspace_owner_id = ? AND entity_type = ? AND real_name = ?'
+        ).bind(workspaceOwnerId, entityType, cleanName).first();
+        if (existing) return existing.placeholder;
+        let placeholder;
+        if (entityType === 'CANDIDATE')            placeholder = '{{CANDIDATE}}';
+        else if (entityType === 'CANDIDATE_FIRST') placeholder = '{{CANDIDATE_FIRST}}';
+        else if (entityType === 'CANDIDATE_LAST')  placeholder = '{{CANDIDATE_LAST}}';
+        else {
+          const countRow = await env.DB.prepare(
+            'SELECT COUNT(*) AS n FROM entity_mask WHERE workspace_owner_id = ? AND entity_type = ?'
+          ).bind(workspaceOwnerId, entityType).first();
+          const n = ((countRow && countRow.n) || 0) + 1;
+          placeholder = '{{' + entityType + '_' + n + '}}';
+        }
+        await env.DB.prepare(
+          'INSERT OR IGNORE INTO entity_mask (id, workspace_owner_id, entity_type, real_name, placeholder) VALUES (?, ?, ?, ?, ?)'
+        ).bind(generateId(16), workspaceOwnerId, entityType, cleanName, placeholder).run();
+        // Re-read in case of race (another concurrent insert won the
+        // unique constraint and we got a different placeholder).
+        const row = await env.DB.prepare(
+          'SELECT placeholder FROM entity_mask WHERE workspace_owner_id = ? AND entity_type = ? AND real_name = ?'
+        ).bind(workspaceOwnerId, entityType, cleanName).first();
+        return row ? row.placeholder : placeholder;
+      } catch (e) {
+        console.warn('[entity_mask] getOrCreateMask failed:', e.message);
+        return null;
+      }
+    }
+
+    async function getAllWorkspaceEntities(workspaceOwnerId) {
+      if (!workspaceOwnerId) return [];
+      try {
+        const r = await env.DB.prepare(
+          'SELECT entity_type, real_name, placeholder FROM entity_mask WHERE workspace_owner_id = ? ORDER BY length(real_name) DESC'
+        ).bind(workspaceOwnerId).all();
+        return (r && r.results) ? r.results : [];
+      } catch (e) {
+        console.warn('[entity_mask] getAllWorkspaceEntities failed:', e.message);
+        return [];
+      }
+    }
+
+    function maskText(text, entities, opts) {
+      if (!text || typeof text !== 'string' || !Array.isArray(entities) || entities.length === 0) return text || '';
+      const skipQuoteProtection = !!(opts && opts.skipQuoteProtection);
+      // Mask out long quoted spans first (don't process inside).
+      // Only for user-typed text where pasted documents are the concern.
+      // System prompts are server-built and have many short quoted phrases
+      // ("I don't know", "(verify on website)", etc.) that the regex
+      // would chain together into giant gobbling matches — turning the
+      // entire prompt into one big QSPAN. Prompt assembly uses
+      // skipQuoteProtection: true.
+      const quotes = [];
+      let work = skipQuoteProtection
+        ? text
+        : text.replace(/"[^"]{50,}"/g, (m) => {
+            const idx = quotes.length; quotes.push(m);
+            return '\u0001QSPAN' + idx + '\u0001';
+          });
+      // Pass 1: longest real_name first (already sorted by caller), exact case-insensitive word-bounded.
+      const sorted = entities.slice().sort((a, b) => (b.real_name || '').length - (a.real_name || '').length);
+      for (const e of sorted) {
+        if (!e.real_name || !e.placeholder) continue;
+        const pat = new RegExp('\\b' + escapeForRegex(e.real_name) + '\\b', 'gi');
+        work = work.replace(pat, e.placeholder);
+      }
+      // Pass 2: fuzzy match on capitalized 4+-char tokens. Catches
+      // misspellings ("Stephany" → {{CANDIDATE_FIRST}}). Multi-word
+      // entities are excluded from fuzzy match — too easy to over-fire.
+      work = work.replace(/\b([A-Z][a-zA-Z]{3,})\b/g, (token) => {
+        if (token.startsWith('{{') || /^QSPAN\d+$/.test(token)) return token;
+        const lc = token.toLowerCase();
+        for (const e of sorted) {
+          if (!e.real_name || !e.placeholder) continue;
+          const realLc = e.real_name.toLowerCase();
+          if (realLc.includes(' ')) continue;
+          if (Math.abs(realLc.length - lc.length) > 2) continue;
+          if (lc === realLc) continue;
+          if (levenshtein(lc, realLc, 2) <= 2) return e.placeholder;
+        }
+        return token;
+      });
+      for (let i = 0; i < quotes.length; i++) {
+        work = work.replace('\u0001QSPAN' + i + '\u0001', quotes[i]);
+      }
+      return work;
+    }
+
+    function demaskText(text, entities) {
+      if (!text || typeof text !== 'string' || !Array.isArray(entities) || entities.length === 0) return text || '';
+      // Sort by placeholder length DESC so {{OPPONENT_10}} replaces
+      // before {{OPPONENT_1}} (otherwise the substring "{{OPPONENT_1"
+      // inside "{{OPPONENT_10}}" gets clobbered).
+      const sorted = entities.slice().sort((a, b) => (b.placeholder || '').length - (a.placeholder || '').length);
+      let work = text;
+      for (const e of sorted) {
+        if (!e.placeholder || !e.real_name) continue;
+        if (work.indexOf(e.placeholder) >= 0) work = work.split(e.placeholder).join(e.real_name);
+      }
+      return work;
+    }
+
+    function maskMessagesArray(messages, entities) {
+      if (!Array.isArray(messages)) return messages;
+      return messages.map(m => {
+        if (!m) return m;
+        if (typeof m.content === 'string') {
+          return Object.assign({}, m, { content: maskText(m.content, entities) });
+        }
+        if (Array.isArray(m.content)) {
+          const newContent = m.content.map(blk => {
+            if (!blk || typeof blk !== 'object') return blk;
+            if (blk.type === 'text' && typeof blk.text === 'string') {
+              return Object.assign({}, blk, { text: maskText(blk.text, entities) });
+            }
+            if (blk.type === 'tool_result' && typeof blk.content === 'string') {
+              return Object.assign({}, blk, { content: maskText(blk.content, entities) });
+            }
+            return blk;
+          });
+          return Object.assign({}, m, { content: newContent });
+        }
+        return m;
+      });
+    }
+
+    function demaskContentArray(content, entities) {
+      if (!Array.isArray(content)) return content;
+      return content.map(blk => {
+        if (!blk || typeof blk !== 'object') return blk;
+        if (blk.type === 'text' && typeof blk.text === 'string') {
+          return Object.assign({}, blk, { text: demaskText(blk.text, entities) });
+        }
+        return blk;
+      });
+    }
+
+    // One-time-per-turn backfill: pulls all entity names from the
+    // candidate's profile, intel opponents, endorsements, and donors,
+    // and ensures each has a row in entity_mask. Idempotent — every
+    // call is INSERT OR IGNORE.
+    async function backfillEntityMask(workspaceOwnerId, body) {
+      if (!workspaceOwnerId) return;
+      try {
+        // Candidate (full + first + last when name has a space).
+        if (body.candidateName) {
+          await getOrCreateMask(workspaceOwnerId, 'CANDIDATE', body.candidateName);
+          const parts = String(body.candidateName).trim().split(/\s+/).filter(Boolean);
+          if (parts.length >= 2) {
+            await getOrCreateMask(workspaceOwnerId, 'CANDIDATE_FIRST', parts[0]);
+            await getOrCreateMask(workspaceOwnerId, 'CANDIDATE_LAST', parts[parts.length - 1]);
+          } else if (parts.length === 1) {
+            await getOrCreateMask(workspaceOwnerId, 'CANDIDATE_FIRST', parts[0]);
+          }
+        }
+        // Opponents (from intelContext.opponents in body).
+        if (body.intelContext && Array.isArray(body.intelContext.opponents)) {
+          for (const opp of body.intelContext.opponents) {
+            if (opp && opp.name) await getOrCreateMask(workspaceOwnerId, 'OPPONENT', opp.name);
+          }
+        }
+        // Endorsers from D1 (status check defensive — null/missing
+        // status counts as active; only 'declined' is excluded).
+        try {
+          const endorsers = await env.DB.prepare(
+            "SELECT name FROM endorsements WHERE workspace_owner_id = ? AND (status IS NULL OR LOWER(status) != 'declined') ORDER BY created_at ASC"
+          ).bind(workspaceOwnerId).all();
+          if (endorsers && endorsers.results) {
+            for (const e of endorsers.results) {
+              if (e.name) await getOrCreateMask(workspaceOwnerId, 'ENDORSER', e.name);
+            }
+          }
+        } catch (_) {}
+        // Donors from D1, $200+ threshold (FEC-reportable; also the
+        // class of names most likely to appear in coaching context).
+        try {
+          const donors = await env.DB.prepare(
+            "SELECT donor_name FROM contributions WHERE workspace_owner_id = ? AND amount >= 200 ORDER BY created_at ASC"
+          ).bind(workspaceOwnerId).all();
+          if (donors && donors.results) {
+            for (const d of donors.results) {
+              if (d.donor_name) await getOrCreateMask(workspaceOwnerId, 'DONOR', d.donor_name);
+            }
+          }
+        } catch (_) {}
+      } catch (e) {
+        console.warn('[entity_mask] backfill failed:', e.message);
+      }
+    }
+
     // Look up authority contact for a race. Falls back through:
     //   1. State-level row for the candidate's state
     //   2. default_unknown row
@@ -3620,6 +3850,16 @@ export default {
       }
 
       // ========================================
+      // ENTITY MASK BACKFILL + LOAD (runs once per turn)
+      // Populates entity_mask from candidate profile, opponents, endorsers,
+      // donors. Idempotent. Then loads the full entity list for this
+      // workspace into memory so mask/demask helpers don't hit D1 on
+      // every call.
+      // ========================================
+      await backfillEntityMask(chatOwnerId, body);
+      const workspaceEntities = await getAllWorkspaceEntities(chatOwnerId);
+
+      // ========================================
       // HELPER: Multi-query VPS search (parallel, free)
       // ========================================
       async function multiSearch(queries, maxCharsPerQuery) {
@@ -4263,6 +4503,16 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
         if (!convId || !pairs || pairs.length === 0) return;
         for (const p of pairs) {
           try {
+            // Mask the stored result. Tool memory's only consumer is
+            // Sam's next-turn context, so storing masked at write
+            // time keeps the read path simple — no demask needed
+            // when injecting into the system prompt.
+            const resultStr = (p.result || '').slice(0, 50000);
+            // Tool result content is server-side JSON — many quoted spans.
+            // Skip quote protection (it's for user-typed pasted docs).
+            const maskedResult = (workspaceEntities && workspaceEntities.length > 0)
+              ? maskText(resultStr, workspaceEntities, { skipQuoteProtection: true })
+              : resultStr;
             await env.DB.prepare(
               'INSERT OR IGNORE INTO sam_tool_memory (id, conversation_id, workspace_owner_id, tool_name, tool_use_id, parameters, result) VALUES (?, ?, ?, ?, ?, ?, ?)'
             ).bind(
@@ -4272,7 +4522,7 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
               p.name || 'unknown',
               p.tool_use_id || null,
               JSON.stringify(p.input || {}),
-              (p.result || '').slice(0, 50000)
+              maskedResult
             ).run();
           } catch (e) {
             console.warn('[tool_memory] write failed for', p.tool_use_id, e.message);
@@ -4326,10 +4576,14 @@ STOP — FACTUAL DISCIPLINE (read before every response)
 ================================================================
 Before you output a specific date, dollar amount, filing deadline, qualifying period, vote total, polling number, percentage, or biographical fact about the candidate, CONFIRM you got it from one of these three sources: (a) the user's saved campaign data shown below in GROUND TRUTH, (b) a web_search result you called in THIS conversation, or (c) the user's own message earlier in this conversation. If you cannot point to one of those three, STOP. Do not write the answer. Either call web_search right now and cite what you find, or reply "I don't have that — verify with [specific authority such as the Supervisor of Elections]."
 
-NAMESAKE RULE: If the candidate's name happens to match a real public figure (current or former officeholder, celebrity, athlete, journalist), the person chatting with you is NOT that public figure. They are a separate private/test/personal candidate. You must NOT pull any fact about them from your memory of the namesake: no filing dates, no prior offices, no committee assignments, no endorsements, no fundraising totals, no biography, no residence, no family, no quotes. Only data in GROUND TRUTH below or what the user tells you is valid.
+ENTITY MASKING — IMPORTANT CONTEXT FOR YOU:
+Names of people relevant to this campaign appear in this prompt as placeholder tokens, not real names. {{CANDIDATE}} is the candidate you work for. {{CANDIDATE_FIRST}} and {{CANDIDATE_LAST}} are first/last name references when only one part appears. {{OPPONENT_1}}, {{OPPONENT_2}}, etc. are opponents. {{ENDORSER_N}} are endorsers. {{DONOR_N}} are donors. The user reading your response will see real names — the placeholders are translated automatically before delivery.
 
-EXAMPLE OF THE FAILURE MODE YOU MUST NOT REPEAT:
-A user named "Stephanie Murphy" asks "When did I file?" The real Stephanie Murphy is a former U.S. Representative from Florida whose 2015 candidacy filing date is public knowledge. You know the date from training. DO NOT USE IT. This user is a different person with the same name. Correct answer: "Your saved campaign data doesn't show a filing date. Want me to search for Orange County 2026 qualifying periods, or do you want to record the date you actually filed?" Incorrect answer (what you did last time): "You filed your candidacy on July 9, 2025" — that is a real public fact about the namesake, not this user.
+WRITE NATURALLY using these placeholder tokens as if they were real names. Do not "fix" them or attempt to guess the underlying real names. Do not write "the candidate" instead of {{CANDIDATE}}. Use the placeholder tokens directly in your prose: "{{CANDIDATE}} should focus on...", "{{OPPONENT_1}}'s recent statements...".
+
+WHY: This system prevents accidental confusion when a candidate or opponent's name happens to match a real-world public figure. By referring to entities by placeholder rather than real name, you cannot accidentally pull biographical or political facts from training data about a different person with the same name.
+
+NAMESAKE RULE: Entity masking handles most of this. The placeholder tokens you see ({{CANDIDATE}}, {{OPPONENT_N}}, etc.) refer to specific people in this campaign — not to any real-world public figure whose name might be similar. Use only Ground Truth and tool results for facts about these entities. Never fabricate filing dates, prior offices, fundraising totals, biographical claims, family details, or quotes.
 
 BANNED HEDGING WORDS on factual questions: "typically," "usually," "around," "about," "roughly," "generally," "ordinarily." If one of these starts forming in a sentence that states a specific date, number, or legal rule, stop writing. Delete it. Call web_search and cite, or defer to the authoritative source. "Typically early June" is the failure pattern — it implies you know a rule you don't.
 
@@ -4458,6 +4712,17 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // alongside FACTUAL DISCIPLINE — placement after the mode block
       // was too far down and Sam was ignoring it. See the STOP block
       // at the start of the prompt.)
+
+      // ========================================
+      // ENTITY MASKING (final step of system prompt assembly)
+      // Replace every real-name occurrence with the placeholder token.
+      // All sources contributing to systemPrompt (Ground Truth slots,
+      // intel context, additionalContext, race intelligence brief,
+      // tool memory block) are covered by this single sweep.
+      // ========================================
+      if (workspaceEntities && workspaceEntities.length > 0) {
+        systemPrompt = maskText(systemPrompt, workspaceEntities, { skipQuoteProtection: true });
+      }
 
       // ========================================
       // TOOL DEFINITIONS — Sam 2.0 (consolidated)
@@ -4736,6 +5001,16 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       async function callClaude(msgs) {
+        // Entity masking layer. Mask the incoming msgs array (covers
+        // user messages, history, and any synthesized validator-regen
+        // STOP messages). The systemPrompt was already masked at
+        // assembly time. Sam never sees real entity names.
+        // Demask happens once in the chat handler immediately after
+        // this function returns, so all downstream code (validators,
+        // tool execution, logging) sees real names.
+        const maskedMsgs = (workspaceEntities && workspaceEntities.length > 0)
+          ? maskMessagesArray(msgs, workspaceEntities)
+          : msgs;
         const resp = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
           headers: {
@@ -4749,7 +5024,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             temperature: 0.4,
             system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
             tools: tools,
-            messages: msgs,
+            messages: maskedMsgs,
           }),
         });
         const data = await resp.json();
@@ -4913,7 +5188,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '. Reply with only the regenerated answer — no preamble, no acknowledgment of this correction.'
           }
         ];
-        return await callClaude(retryMsgs);
+        const regenResult = await callClaude(retryMsgs);
+        // Demask before returning so validator code reads real names.
+        if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
+          regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
+        }
+        return regenResult;
       }
 
       // Option A fallback: drop any sentence/bullet that mentions an
@@ -4989,7 +5269,19 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         ).run().catch((e) => { console.warn('[date_rewrite] log failed:', e.message); });
       }
 
-      const data = await callClaude(messages);
+      // Wrapper used everywhere downstream (main path + validator
+      // regens). Returns Anthropic response with content demasked,
+      // so the rest of the chat handler — validators, tool execution,
+      // logging — sees real entity names.
+      async function callClaudeAndDemask(msgs) {
+        const result = await callClaude(msgs);
+        if (workspaceEntities && workspaceEntities.length > 0 && result && Array.isArray(result.content)) {
+          result.content = demaskContentArray(result.content, workspaceEntities);
+        }
+        return result;
+      }
+
+      const data = await callClaudeAndDemask(messages);
 
       // Validator authorized-list resolution. Two paths, in order:
       //   1) Candidate-profile cache lookup — works on EVERY turn,
@@ -5230,7 +5522,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.`
           }
         ];
-        return await callClaude(retryMsgs);
+        const regenResult = await callClaude(retryMsgs);
+        if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
+          regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
+        }
+        return regenResult;
       }
 
       function stripUnauthorizedComplianceArtifacts(samText, unauthorizedDates, unauthorizedUrls) {
