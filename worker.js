@@ -4118,16 +4118,26 @@ RULES:
         const startLastMonth = new Date(Date.UTC(yy, mm - 2, 1, 12));
 
         const dayMap = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
+        // Day-of-week resolution — forward-from-today (colloquial American
+        // English) semantics. "Next/this Saturday" said on Tuesday means
+        // the upcoming Saturday (4 days away), NOT next-Mon-Sun-week's
+        // Saturday (11 days away). Edge case: if today IS the named day,
+        // resolve to ±7 days away (a week out / a week ago) rather than
+        // returning today's date — that's confusing.
         function resolveDow(modifier, dayName) {
           const target = dayMap[dayName.toLowerCase()];
           if (target === undefined) return null;
-          let anchor;
-          if (modifier === 'next') anchor = nextMon;
-          else if (modifier === 'this') anchor = thisMon;
-          else if (modifier === 'last') anchor = lastMon;
-          else return null;
-          const offset = target === 0 ? 6 : target - 1;
-          return addDays(anchor, offset);
+          const todayDowVal = dow(todayUTC);
+          if (modifier === 'next' || modifier === 'this') {
+            let diff = (target - todayDowVal + 7) % 7;
+            if (diff === 0) diff = 7;  // today IS the named day → a week from today
+            return addDays(todayUTC, diff);
+          } else if (modifier === 'last') {
+            let diff = (todayDowVal - target + 7) % 7;
+            if (diff === 0) diff = 7;  // today IS the named day → a week ago
+            return addDays(todayUTC, -diff);
+          }
+          return null;
         }
 
         // Build pattern list: each entry { rx, fn } applied in array order.
@@ -4295,6 +4305,39 @@ RULES:
           twoWeeks.push(addDays(thisMon, 14 + i));
         }
 
+        // Day-of-week colloquial lookups: forward-from-today (and backward
+        // for "last"). Today=that-day → ±7 days, never returns today's date.
+        // Matches the preprocessor's resolveDow semantics so Sam never
+        // sees a contradiction between "next Saturday" inlined in the
+        // user message and the calendar reference.
+        const todayDowVal = dow(todayUTC);
+        function nextOrThisDow(targetDow) {
+          let diff = (targetDow - todayDowVal + 7) % 7;
+          if (diff === 0) diff = 7;
+          return addDays(todayUTC, diff);
+        }
+        function lastDow(targetDow) {
+          let diff = (todayDowVal - targetDow + 7) % 7;
+          if (diff === 0) diff = 7;
+          return addDays(todayUTC, -diff);
+        }
+        const dayOrder = [1, 2, 3, 4, 5, 6, 0]; // Mon..Sun (display order)
+        const nextOrThis = dayOrder.map(d => nextOrThisDow(d));
+        const lastOcc = dayOrder.map(d => lastDow(d));
+
+        // Weekend lookup uses upcoming-or-today semantics so that on
+        // Saturday "this weekend" = today + tomorrow (NOT a week away).
+        // diff=0 here means "today is the Sat" — return today.
+        function upcomingDowOrToday(targetDow) {
+          const diff = (targetDow - todayDowVal + 7) % 7;
+          return addDays(todayUTC, diff);
+        }
+        const thisWeekendSat = upcomingDowOrToday(6);
+        // This weekend's Sun is always the day after this weekend's Sat.
+        const thisWeekendSun = addDays(thisWeekendSat, 1);
+        const nextWeekendSat = addDays(thisWeekendSat, 7);
+        const nextWeekendSun = addDays(thisWeekendSun, 7);
+
         // End of this/next month. Date.UTC handles year rollover via
         // month overflow (m=12 -> month index 12 = Jan next year, day 0
         // = last day of Dec).
@@ -4330,17 +4373,26 @@ Tomorrow: ${fl(tomorrow)}, ${ymd(tomorrow)}
 Last 7 days:
 ${fmtRow(last7)}
 
-This week (Monday-Sunday containing today):
+DAY-OF-WEEK LOOKUPS — for "next/this/last [day]" phrases (forward-from-today, colloquial American English):
+Next/this Mon: ${fl(nextOrThis[0])}, ${ymd(nextOrThis[0])}
+Next/this Tue: ${fl(nextOrThis[1])}, ${ymd(nextOrThis[1])}
+Next/this Wed: ${fl(nextOrThis[2])}, ${ymd(nextOrThis[2])}
+Next/this Thu: ${fl(nextOrThis[3])}, ${ymd(nextOrThis[3])}
+Next/this Fri: ${fl(nextOrThis[4])}, ${ymd(nextOrThis[4])}
+Next/this Sat: ${fl(nextOrThis[5])}, ${ymd(nextOrThis[5])}
+Next/this Sun: ${fl(nextOrThis[6])}, ${ymd(nextOrThis[6])}
+Last Mon: ${ymd(lastOcc[0])} | Last Tue: ${ymd(lastOcc[1])} | Last Wed: ${ymd(lastOcc[2])} | Last Thu: ${ymd(lastOcc[3])} | Last Fri: ${ymd(lastOcc[4])} | Last Sat: ${ymd(lastOcc[5])} | Last Sun: ${ymd(lastOcc[6])}
+
+CALENDAR-WEEK GRIDS (informational only — for week-level reasoning, NOT for "next [day]" lookups; use DAY-OF-WEEK LOOKUPS above for those):
+Current week (Mon-Sun containing today):
 ${fmtRow(thisWeek)}
-
-Next week (Monday-Sunday after current week):
+Following week (Mon-Sun after current):
 ${fmtRow(nextWeek)}
-
-Two weeks out (Monday-Sunday):
+Two weeks out (Mon-Sun):
 ${fmtRow(twoWeeks)}
 
-This weekend: Sat ${ymd(thisWeek[5])} / Sun ${ymd(thisWeek[6])}
-Next weekend: Sat ${ymd(nextWeek[5])} / Sun ${ymd(nextWeek[6])}
+This weekend: Sat ${ymd(thisWeekendSat)} / Sun ${ymd(thisWeekendSun)}
+Next weekend (the one after this weekend): Sat ${ymd(nextWeekendSat)} / Sun ${ymd(nextWeekendSun)}
 
 End of this month: ${fl(eom)}, ${ymd(eom)}
 End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}

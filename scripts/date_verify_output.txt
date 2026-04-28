@@ -1,0 +1,97 @@
+Date semantics verification — 2026-04-28 11:11:35
+Today: Tuesday 2026-04-28
+
+======================================================================
+Phase A — preprocessor unit tests (byte-exact via D1 row)
+======================================================================
+
+--- U1 ---
+  Input:    'What about for next Saturday?'
+  Expected: 'What about for next Saturday (Saturday, 2026-05-02)?'
+  Actual:   'What about for next Saturday (Saturday, 2026-05-02)?'
+  RESULT: PASS
+
+--- U2 ---
+  Input:    "What's planned for this Saturday?"
+  Expected: "What's planned for this Saturday (Saturday, 2026-05-02)?"
+  Actual:   "What's planned for this Saturday (Saturday, 2026-05-02)?"
+  RESULT: PASS
+
+--- U3 ---
+  Input:    'Schedule for next Tuesday'
+  Expected: 'Schedule for next Tuesday (Tuesday, 2026-05-05)'
+  Actual:   'Schedule for next Tuesday (Tuesday, 2026-05-05)'
+  RESULT: PASS
+
+--- U4 ---
+  Input:    "What's this Tuesday?"
+  Expected: "What's this Tuesday (Tuesday, 2026-05-05)?"
+  Actual:   "What's this Tuesday (Tuesday, 2026-05-05)?"
+  RESULT: PASS
+
+--- U5 ---
+  Input:    'What was last Saturday?'
+  Expected: 'What was last Saturday (Saturday, 2026-04-25)?'
+  Actual:   'What was last Saturday (Saturday, 2026-04-25)?'
+  RESULT: PASS
+
+--- U6 ---
+  Input:    "What's next Friday?"
+  Expected: "What's next Friday (Friday, 2026-05-01)?"
+  Actual:   "What's next Friday (Friday, 2026-05-01)?"
+  RESULT: PASS
+
+--- U7 ---
+  Input:    "What's this Friday?"
+  Expected: "What's this Friday (Friday, 2026-05-01)?"
+  Actual:   "What's this Friday (Friday, 2026-05-01)?"
+  RESULT: PASS
+
+
+Phase A summary: ALL PASS
+
+======================================================================
+Phase B — live Sam responses (full unmodified)
+======================================================================
+
+--- L1 — Q: What about for next Saturday? ---
+Expected: Sam should state May 2 with day-of-week
+
+Sam:
+I don't have context for what you're asking about next Saturday. Are you looking to schedule an event, add a task, plan canvassing, or something else? Give me the details and I'll get it on the calendar.
+
+----------------------------------------------------------------------
+
+--- L2 — Q: What's planned for this Saturday? ---
+Expected: Sam should state May 2
+
+Sam:
+I don't see anything on your calendar for Saturday, 2026-05-02 yet. You're 189 days out from the general election — this is prime time to lock in early visibility and start building your ground game.
+
+What are you thinking for this weekend? A community event, door knocking, or something else?
+
+----------------------------------------------------------------------
+
+--- L3 — Q: Schedule for next Tuesday ---
+Expected: Sam should state May 5 (a week from today, NOT today)
+
+Sam:
+I'd be happy to help you schedule for next Tuesday, May 5th. What do you want to add to the calendar that day? 
+
+A few quick questions:
+- Is this a **task** (deadline/to-do to complete) or an **event** (activity at a specific time and place)?
+- What's the name/description?
+- If it's an event, what time and location?
+
+----------------------------------------------------------------------
+
+--- L4 — Q: What's next Friday? ---
+Expected: Sam should state May 1
+
+Sam:
+Next Friday is May 1st — you've got 189 days until election day on November 3rd, so you're in prime early-campaign mode. 
+
+What do you want to tackle that day? Are you thinking about scheduling a fundraiser, planning canvassing, or something else?
+
+----------------------------------------------------------------------
+

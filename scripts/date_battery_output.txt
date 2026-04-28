@@ -1,0 +1,33 @@
+Date battery — running on 2026-04-28 10:50:44
+Today (FL eastern): Tuesday 2026-04-28
+
+======================================================================
+D1 — Q: What about for next Saturday?
+Spec expectation: spec expects Saturday May 2; per Mon-Sun convention with today=Tue Apr 28, preprocessor will resolve 'next Saturday' to next-week's Sat = May 9
+----------------------------------------------------------------------
+I don't have context for what you're asking about next Saturday. Are you looking to schedule an event, add a task, or check what's already on the calendar for that day?
+
+What would you like to do on Saturday, 2026-05-09?
+
+======================================================================
+D2 — Q: What's two weeks from now?
+Spec expectation: spec expects Tuesday May 12 (today + 14 days)
+----------------------------------------------------------------------
+Two weeks from now is **Tuesday, 2026-05-12**.
+
+What are you thinking about scheduling for that date?
+
+======================================================================
+D3 — Q: When is the election?
+Spec expectation: spec expects Tuesday November 3, 2026 — 189 days away
+----------------------------------------------------------------------
+Election day is Tuesday, November 3, 2026 — 189 days away. You've got time to build this right, but not to waste it. What's your first priority: getting your core team locked in, or starting to map out your message?
+
+======================================================================
+D4 — Q: What's the date next Tuesday?
+Spec expectation: spec expects Tuesday May 5
+----------------------------------------------------------------------
+Next Tuesday is **2026-05-05**.
+
+What are you planning for that day?
+
