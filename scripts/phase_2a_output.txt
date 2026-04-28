@@ -1,0 +1,250 @@
+Phase 2a verification — 2026-04-28 14:15:22
+
+==============================================================================
+SECTION A — Tool unit tests (/api/finance/lookup)
+==============================================================================
+
+--- FL US House FL-7 ---
+Input:   {"state": "FL", "office": "US House", "race_year": 2026, "jurisdiction_name": "FL-7"}
+status:  unsupported
+source:  stub_authority_only
+reports.quarterly_schedule: None
+reports.pre_election_special: None
+reports.post_election: None
+authority.name:  Florida Department of State - Division of Elections
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For FL-7 races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+--- FL State House 47 ---
+Input:   {"state": "FL", "office": "State House", "race_year": 2026, "jurisdiction_name": "FL House District 47"}
+status:  unsupported
+source:  stub_authority_only
+reports.quarterly_schedule: None
+reports.pre_election_special: None
+reports.post_election: None
+authority.name:  Florida Department of State - Division of Elections
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For FL House District 47 races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+--- FL Orange Mayor ---
+Input:   {"state": "FL", "office": "Mayor", "race_year": 2026, "jurisdiction_name": "Orange County"}
+status:  unsupported
+source:  stub_authority_only
+reports.quarterly_schedule: None
+reports.pre_election_special: None
+reports.post_election: None
+authority.name:  Florida Department of State - Division of Elections
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For Orange County races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+--- FL Apopka Mayor ---
+Input:   {"state": "FL", "office": "Mayor", "race_year": 2026, "jurisdiction_name": "Apopka"}
+status:  unsupported
+source:  stub_authority_only
+reports.quarterly_schedule: None
+reports.pre_election_special: None
+reports.post_election: None
+authority.name:  Florida Department of State - Division of Elections
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For Apopka races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+--- TX State Senate 8 ---
+Input:   {"state": "TX", "office": "State Senate", "race_year": 2026, "jurisdiction_name": "Texas State Senate District 8"}
+status:  unsupported
+source:  stub_authority_only
+reports.quarterly_schedule: None
+reports.pre_election_special: None
+reports.post_election: None
+authority.name:  Texas Secretary of State - Elections Division
+authority.phone: (verify on state government website)
+authority.url:   None
+authority.jurisdiction_specific: For Texas State Senate District 8 races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.
+cached: False
+
+
+==============================================================================
+SECTION E — Sample tool result: FL Mayor Orange County (local race, stub authority)
+==============================================================================
+
+{
+  "status": "unsupported",
+  "reports": {
+    "quarterly_schedule": null,
+    "pre_election_special": null,
+    "post_election": null
+  },
+  "authority": {
+    "name": "Florida Department of State - Division of Elections",
+    "phone": "(verify on state government website)",
+    "url": null,
+    "notes": "Stub data \u2014 verify exact contact info and division responsible for elections at the state government website.",
+    "jurisdiction_specific": "For Orange County races, also contact the local (county/city) elections office \u2014 local races are typically administered locally even when state-level rules apply."
+  },
+  "source": "stub_authority_only",
+  "last_updated": "2026-04-28T21:15:24.029Z",
+  "cached": true
+}
+
+==============================================================================
+SECTION F — Sample tool result: FL US House FL-7 (federal — FEC integration not yet wired)
+==============================================================================
+
+Note: FEC reporting-calendar integration is deferred (existing TCB research service exposes
+candidate finance totals, not the FEC reporting calendar). Federal races currently fall
+through to the same authority-only stub as state/local. Architecture is ready when a
+real FEC reporting-calendar source is added.
+
+{
+  "status": "unsupported",
+  "reports": {
+    "quarterly_schedule": null,
+    "pre_election_special": null,
+    "post_election": null
+  },
+  "authority": {
+    "name": "Florida Department of State - Division of Elections",
+    "phone": "(verify on state government website)",
+    "url": null,
+    "notes": "Stub data \u2014 verify exact contact info and division responsible for elections at the state government website.",
+    "jurisdiction_specific": "For FL-7 races, also contact the local (county/city) elections office \u2014 local races are typically administered locally even when state-level rules apply."
+  },
+  "source": "stub_authority_only",
+  "last_updated": "2026-04-28T21:15:23.149Z",
+  "cached": true
+}
+
+==============================================================================
+SECTION B — Live Sam tests (5 questions, full unmodified responses)
+==============================================================================
+
+--- L1 — Q: When is my next campaign finance report due? ---
+
+I don't have verified campaign finance report dates for Mayor races in Orange County. For your race, contact the Florida Department of State - Division of Elections, and also reach out to your local Orange County elections office — local races are typically administered locally even when state-level rules apply. You can find their current phone numbers on the state government website.
+
+This is critical to get right early, so I'd recommend calling both offices this week to get your full reporting calendar. Want me to set a reminder to follow up on that?
+
+Common FEC dates Sam might fabricate: NONE
+------------------------------------------------------------------------------
+
+--- L2 — Q: When are my quarterly FEC filings due? ---
+
+I don't have verified quarterly report dates for Mayor races in Orange County. Here's what you need to do: contact the **Florida Department of State - Division of Elections** and also reach out to your local Orange County elections office — local races are typically administered locally even when state-level rules apply. You can find their current contact information on the state government website.
+
+This is a critical piece to nail down early. Want me to set a calendar reminder to follow up with both offices this week, or draft a checklist of questions to ask them?
+
+Common FEC dates Sam might fabricate: NONE
+------------------------------------------------------------------------------
+
+--- L3 — Q: What's the pre-primary filing deadline? ---
+
+I don't have verified qualifying dates for Mayor in Orange County, FL. For your race, contact the Florida Department of State - Division of Elections and your local Orange County elections office — they administer city races locally even though state rules apply. You can find their current phone numbers on the state's elections website.
+
+This is critical to lock down early. Want me to set a calendar reminder to call them this week and document the exact deadlines?
+
+Common FEC dates Sam might fabricate: NONE
+------------------------------------------------------------------------------
+
+--- L4 — Q: I need to file my Q2 report. When? ---
+
+I don't have verified Q2 report dates for Mayor races in Orange County. For your race, contact the **Florida Department of State - Division of Elections** — you can find their current phone number on the state's elections website. Also reach out to your local **Orange County elections office**, since local races are typically administered locally even when state-level rules apply.
+
+Want me to set a calendar reminder to follow up with them this week, or draft a checklist of what to ask when you call?
+
+Common FEC dates Sam might fabricate: NONE
+------------------------------------------------------------------------------
+
+--- L5 — Q: Do I need to file anything before the August 18th primary? ---
+
+I don't have verified qualifying and filing deadlines for Mayor races in Orange County. For your race, you need to contact two offices:
+
+1. **Florida Department of State - Division of Elections** — search for their current phone number on the state government website, or contact them through the state's elections office.
+2. **Orange County (or your city's) local elections office** — they administer city mayoral races and will have the exact qualifying period dates, filing fees, and any petition requirements.
+
+They'll tell you the qualifying period window, whether you need to file a Statement of Candidacy, and any filing fees. Since you're running for Mayor in a specific Orange County city, the local elections office is your primary source.
+
+Want me to set a calendar reminder to verify these deadlines this week, or draft a checklist of questions to ask when you call?
+
+Common FEC dates Sam might fabricate: NONE
+------------------------------------------------------------------------------
+
+
+==============================================================================
+SECTION C — Validator firing test (force fabricated date scenario)
+==============================================================================
+
+Setup: ask the same finance question 4x with fresh conversations.
+Watch sam_finance_validation_events for action distribution.
+
+Run 1: I don't have verified quarterly report dates for Mayor in Orange County, FL. For your race, contact the Florida Department of State - Division of Elections, or search for their current phone number on...
+
+Run 2: I don't have verified quarterly report dates for Mayor in Orange County. For your race, contact the Florida Department of State - Division of Elections, or reach out to your local Orange County electi...
+
+Run 3: I don't have verified quarterly report dates for Mayor races in Orange County. For your race, contact the Florida Department of State - Division of Elections, and also reach out to your local Orange C...
+
+Run 4: I don't have verified quarterly report dates for Mayor in Orange County. For your race, contact the Florida Department of State - Division of Elections, and also reach out to your local Orange County ...
+
+Validator events for runs:
+[
+  {
+    "action_taken": "passed",
+    "fabrication_type": "none",
+    "unauthorized_dates": "[]"
+  },
+  {
+    "action_taken": "passed",
+    "fabrication_type": "none",
+    "unauthorized_dates": "[]"
+  },
+  {
+    "action_taken": "passed",
+    "fabrication_type": "none",
+    "unauthorized_dates": "[]"
+  },
+  {
+    "action_taken": "passed",
+    "fabrication_type": "none",
+    "unauthorized_dates": "[]"
+  }
+]
+
+==============================================================================
+SECTION D — Regression spot-checks
+==============================================================================
+
+Entity masking (test_entity_mask.py): see scripts/entity_mask_output.txt — running fresh now.
+PASS: True
+PASS: True
+PASS: True
+PASS: True
+PASS: True
+PASS (isolation correct): True
+PASS: True
+PASS (CANDIDATE+FIRST+LAST+OPPONENT all populated): True
+PASS (all round-trips lossless): True
+
+Compliance Class A spot-check (Greg's race):
+Sam: I don't have verified filing deadlines for Mayor in Orange County. Here's what you need to do: Contact the **Florida Department of State - Division of Elections** — you can find their current phone number on the state's elections website. Also reach out to your local Orange County elections office, since city races are typically administered locally.
+
+This is critical — a missed filing deadline di...
+Looks like clean deferral: True
+
+Opponent gate (B2 from Phase 1.5):
+Sam: I appreciate the instinct, Greg, but I need to pump the brakes here.
+
+Web search for opponent research is gated off on my end for this race — it's a system constraint that keeps us from accidentally pulling in facts about someone with a similar name and contaminating our intel. That's actually a feature, not a bug.
+
+Here's what I *can* do: I have your Intel panel open right now. It shows Mayra Uri...
+search_blocked logged: True
+
+Date preprocessor (next Saturday should resolve forward-from-today):
+Sam: Next Saturday is **2026-05-02**.
+
+What are you planning for that day?

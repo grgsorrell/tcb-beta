@@ -2516,6 +2516,122 @@ export default {
     }
 
     // ========================================
+    // DATA API: lookup_finance_reports (Compliance Class B)
+    //
+    // Backs the lookup_finance_reports Sam tool — verified campaign
+    // finance report schedules (quarterly + pre-election + post-
+    // election). Same architecture as lookup_compliance_deadlines
+    // (Class A): cache check, source cascade, authority always
+    // populated, 90-day TTL.
+    //
+    // Source cascade (this checkpoint stubs all three; everything
+    // returns status='unsupported' with authority data):
+    //   1. FEC reporting calendar for federal races (deferred —
+    //      existing TCB research service exposes candidate finances,
+    //      not the reporting calendar; would need new endpoint)
+    //   2. State SOS for state-level (stubbed)
+    //   3. Local races fall through to authority-only stub
+    //
+    // Authority data is reused from compliance_authorities (the same
+    // state office handles both filing deadlines and report schedules
+    // for most jurisdictions). If a state actually has a separate
+    // campaign-finance authority, that's future-checkpoint data work.
+    // ========================================
+    if (url.pathname === '/api/finance/lookup' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        const body = await request.json().catch(() => ({}));
+
+        const stateRaw = (body.state || '').trim();
+        const office = (body.office || '').trim();
+        const raceYear = parseInt(body.race_year, 10);
+        const jurisdictionName = (body.jurisdiction_name || '').trim() || null;
+
+        if (!stateRaw || !office || !Number.isFinite(raceYear)) {
+          return jsonResponse({ error: 'state, office, race_year required' }, 400);
+        }
+
+        const stateCode = normalizeStateCode(stateRaw);
+        const officeNormalized = office.toLowerCase().trim();
+        const cacheJurKey = jurisdictionName || '';
+
+        const cached = await env.DB.prepare(
+          "SELECT * FROM finance_reports_cache " +
+          "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
+          "AND created_at > datetime('now', '-90 days') LIMIT 1"
+        ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
+
+        if (cached) {
+          return jsonResponse(formatFinanceCacheRow(cached, true));
+        }
+
+        // Source cascade — FEC reporting calendar + state SOS deferred.
+        let result = null;
+        // result = await tryFecReportingCalendar(stateCode, office, raceYear);
+        // if (!result) result = await trySosFinanceCalendar(stateCode, office, raceYear);
+
+        if (!result) {
+          const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
+          result = {
+            status: 'unsupported',
+            reports: {
+              quarterly_schedule: null,
+              pre_election_special: null,
+              post_election: null
+            },
+            authority: authority,
+            source: 'stub_authority_only',
+            last_updated: new Date().toISOString()
+          };
+        }
+
+        await env.DB.prepare(
+          'INSERT INTO finance_reports_cache (id, state_code, office_normalized, race_year, jurisdiction_name, status, reports_json, authority_json, source, last_updated) ' +
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(state_code, office_normalized, race_year, COALESCE(jurisdiction_name,\'\')) DO UPDATE SET ' +
+          '  status = excluded.status, ' +
+          '  reports_json = excluded.reports_json, ' +
+          '  authority_json = excluded.authority_json, ' +
+          '  source = excluded.source, ' +
+          '  last_updated = excluded.last_updated, ' +
+          '  created_at = datetime(\'now\')'
+        ).bind(
+          generateId(16), stateCode || '', officeNormalized, raceYear, jurisdictionName,
+          result.status,
+          JSON.stringify(result.reports || {}),
+          JSON.stringify(result.authority || {}),
+          result.source,
+          result.last_updated
+        ).run().catch((e) => { console.warn('[finance] cache write failed:', e.message); });
+
+        return jsonResponse({ ...result, cached: false });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    function formatFinanceCacheRow(row, isCached) {
+      let reports = {};
+      let authority = {};
+      try { reports = JSON.parse(row.reports_json || '{}'); } catch (_) {}
+      try { authority = JSON.parse(row.authority_json || '{}'); } catch (_) {}
+      return {
+        status: row.status,
+        reports: {
+          quarterly_schedule: reports.quarterly_schedule || null,
+          pre_election_special: reports.pre_election_special || null,
+          post_election: reports.post_election || null
+        },
+        authority: authority,
+        source: row.source,
+        last_updated: row.last_updated,
+        cached: !!isCached
+      };
+    }
+
+    // ========================================
     // DATA API: Sync Folders & Notes (DELETE-NOT-IN + UPSERT)
     // @deprecated 2026-04-22 — use /api/folders/save + /delete and
     // /api/notes/save + /delete. The folder-delete endpoint cascades
@@ -4718,6 +4834,20 @@ When the user asks about filing deadlines, qualifying periods, ballot access dat
 
   WHY: Confidently wrong deadline or fabricated authority URL = candidate disqualified or misdirected. An honest deferral with a real authority contact preserves trust and prevents catastrophic errors. There is no penalty for saying "I don't have that — call this number / search the state's elections website."
 
+CAMPAIGN FINANCE REPORTS — HARD CONSTRAINT (read every time, before any answer about reports):
+
+When the user asks about quarterly reports, pre-primary / pre-general filings, post-election reports, FEC filing dates, or any "when is my campaign finance report due" question — your FIRST action this turn must be a call to lookup_finance_reports for the candidate's race. After the tool result arrives, your response is constrained as follows:
+
+  POSITIVE CONSTRAINT: The only report dates, deadlines, or coverage periods you may state are values returned by the tool with status "found" or "partial". You may NOT state report due dates from your training data, even if you remember one. You may NOT use web_search to substitute for the tool — same rule as compliance.
+
+  WHEN STATUS IS "unsupported" OR THE SPECIFIC FIELD IS NULL: deferral with the authority contact is the CORRECT response. Use authority.name, authority.phone, authority.url, authority.notes, authority.jurisdiction_specific from the tool result. Sample phrasing: "I don't have verified [Q2 / pre-primary / etc.] report dates for [office] in [state]. For your race, contact [authority.name] — phone: [authority.phone]. They'll give you the exact reporting calendar. Want me to set a calendar reminder to follow up?"
+
+  PHONE NUMBER PLACEHOLDERS: when authority.phone reads as a placeholder, paraphrase honestly — say "find their current phone number on the state's elections website" rather than reading the placeholder string verbatim.
+
+  URL HANDLING: when authority.url is null, do NOT mention any URL or domain. Do NOT invent or guess URLs (no "florida-finance.gov" or "txfec.org" guesses). When authority.url is non-null, you may quote that exact URL verbatim.
+
+  WHY: Missing a campaign finance report = fines and bad press at minimum, criminal liability in severe cases. Confidently wrong report dates can cost a candidate their reputation and their cash on hand to fight fines. There is no penalty for saying "I don't have that — call this number."
+
 OPPONENT FACTS — HARD CONSTRAINT (read every time, before any answer about opponents):
 
 When the user asks about an opponent's fundraising, donor base, voting record, biography, prior campaigns, controversies, endorsements, or any specific fact about an opponent — your authoritative sources are EXACTLY THESE THREE, in priority order:
@@ -5114,6 +5244,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             properties: {
               state: { type: "string", description: "The state, e.g. 'Florida' or 'FL'" },
               office: { type: "string", description: "The candidate's office, e.g. 'Mayor', 'US House', 'State House'" },
+              race_year: { type: "integer", description: "The race year, e.g. 2026" },
+              jurisdiction_name: { type: "string", description: "Optional jurisdiction for local races, e.g. 'Orange County' or 'Apopka'" }
+            },
+            required: ["state", "office", "race_year"]
+          }
+        },
+        {
+          name: "lookup_finance_reports",
+          description: "Look up the verified campaign finance report schedule for the candidate's race — quarterly reports, pre-primary / pre-general special filings, post-election reports. CRITICAL: when the user asks about quarterly reports, FEC filings, pre-primary / pre-general filings, post-election reports, or any 'when is my finance report due' question, call this FIRST. The tool returns either verified report dates OR an authority contact for honest deferral. The authority field is ALWAYS populated — use it. Do NOT use web_search as a substitute; wrong report dates can mean missed filings, fines, and bad press.",
+          input_schema: {
+            type: "object",
+            properties: {
+              state: { type: "string", description: "The state, e.g. 'Florida' or 'FL'" },
+              office: { type: "string", description: "The candidate's office, e.g. 'Mayor', 'US House', 'State Senate'" },
               race_year: { type: "integer", description: "The race year, e.g. 2026" },
               jurisdiction_name: { type: "string", description: "Optional jurisdiction for local races, e.g. 'Orange County' or 'Apopka'" }
             },
@@ -5792,6 +5936,252 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
           await logComplianceValidationEvent(
             'passed', claimedDates, auth, [], claimedUrls, [], complianceText, complianceText
+          );
+        }
+      }
+
+      // ============================================================
+      // FINANCE-REPORT VALIDATOR (Compliance Class B / Phase 2a)
+      //
+      // Same architectural shape as the compliance Class A validator.
+      // Detects finance-report-claim signals in Sam's response, finds
+      // the authoritative lookup_finance_reports result for this
+      // conversation/race, audits Sam's claimed dates + URLs,
+      // regenerates with deferral feedback if she stated unverified
+      // values. Reuses the URL helpers (extractUrlTokens etc.) from
+      // the compliance Class A patch.
+      // ============================================================
+      function detectFinanceReportSignals(text) {
+        const signals = [
+          'finance report', 'campaign finance filing',
+          'quarterly report', 'quarterly filing',
+          'pre-primary report', 'pre-primary filing',
+          'pre-general report', 'pre-general filing',
+          'post-election report', 'post-election filing',
+          'fec filing', 'fec report',
+          ' q1 report', ' q2 report', ' q3 report', ' q4 report',
+          'q1 filing', 'q2 filing', 'q3 filing', 'q4 filing',
+          'report due', 'filing due', 'reporting period'
+        ];
+        const lower = (text || '').toLowerCase();
+        return signals.some(s => lower.includes(s));
+      }
+
+      async function findMostRecentFinanceLookup(msgs, stateCode, officeNorm, raceYear, jurisdictionName) {
+        // Path 1: in-flight tool_result with reports+authority shape
+        for (let i = msgs.length - 1; i >= 0; i--) {
+          const m = msgs[i];
+          if (!m || m.role !== 'user' || !Array.isArray(m.content)) continue;
+          for (const blk of m.content) {
+            if (!blk || blk.type !== 'tool_result' || typeof blk.content !== 'string') continue;
+            try {
+              const parsed = JSON.parse(blk.content);
+              // Distinguish from compliance lookup: finance has `reports`, compliance has `deadlines`.
+              if (parsed && parsed.reports && parsed.authority) return parsed;
+            } catch (e) {}
+          }
+        }
+        // Path 2: candidate-profile cache lookup
+        if (stateCode && officeNorm && raceYear) {
+          try {
+            const row = await env.DB.prepare(
+              "SELECT * FROM finance_reports_cache " +
+              "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
+              "AND created_at > datetime('now', '-90 days') ORDER BY created_at DESC LIMIT 1"
+            ).bind(stateCode, officeNorm, raceYear, jurisdictionName || '').first();
+            if (row) return formatFinanceCacheRow(row, true);
+          } catch (e) {
+            console.warn('[finance_validator] cache lookup failed:', e.message);
+          }
+        }
+        return null;
+      }
+
+      async function extractClaimedFinanceDates(samText) {
+        const prompt = `You are a campaign-finance-report-date auditor. Extract every specific calendar date or deadline mentioned in this campaign coaching response that pertains to FINANCE REPORTS (quarterly reports, pre-primary / pre-general / post-election filings, FEC filing dates, coverage periods). Return JSON only.\n\nRESPONSE:\n${samText}\n\nTASK: Identify any specific dates (like "April 15, 2026", "July 31", "the 15th") presented as finance-report due dates, filing windows, or coverage periods. EXCLUDE:\n- Today's date or generic time references\n- Election day itself (unless specifically tied to a post-election report)\n- Filing/qualifying deadlines (those are Class A compliance, not finance reports)\n- Vague references unless presented as a deadline\n\nReturn JSON: {"dates": ["April 15, 2026", "Q2 2026 due July 31"]}\nIf no finance dates: {"dates": []}\nJSON ONLY — no preamble, no markdown.`;
+        try {
+          const resp = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+            body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, temperature: 0, messages: [{ role: 'user', content: prompt }] })
+          });
+          const auditData = await resp.json();
+          await logApiUsage('sam_finance_validator', auditData, rateLimitUserId, chatOwnerId);
+          let txt = '';
+          if (auditData && auditData.content && Array.isArray(auditData.content)) {
+            for (const b of auditData.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          }
+          const mm = txt.match(/\{[\s\S]*\}/);
+          if (!mm) return [];
+          const parsed = JSON.parse(mm[0]);
+          return Array.isArray(parsed.dates) ? parsed.dates : [];
+        } catch (e) {
+          console.warn('[finance_validator] extract failed:', e.message);
+          return [];
+        }
+      }
+
+      function flattenFinanceAuthoritativeDates(financeLookup) {
+        // Walk the reports object and collect every non-null date string
+        // so the validator can cross-check Sam's claims against them.
+        const out = [];
+        const r = financeLookup && financeLookup.reports;
+        if (!r) return out;
+        const visit = (entry) => {
+          if (!entry || typeof entry !== 'object') return;
+          for (const k of Object.keys(entry)) {
+            const v = entry[k];
+            if (typeof v === 'string' && v) out.push(v);
+          }
+        };
+        if (Array.isArray(r.quarterly_schedule)) r.quarterly_schedule.forEach(visit);
+        if (Array.isArray(r.pre_election_special)) r.pre_election_special.forEach(visit);
+        if (r.post_election) visit(r.post_election);
+        return out;
+      }
+
+      async function regenerateWithFinanceFeedback(originalMsgs, badContent, claimedDates, claimedUrls, lookupResult) {
+        const auth = lookupResult.authority || {};
+        const authPhone = auth.phone || '(search the state government website for the current phone number)';
+        const authName = auth.name || 'state elections office';
+        const authUrl = auth.url || null;
+        const authJurisdictionSpecific = auth.jurisdiction_specific || '';
+        const datesNote = (claimedDates && claimedDates.length > 0)
+          ? `You stated unverified finance-report dates: ${JSON.stringify(claimedDates)}. None of those came from the tool result.`
+          : '';
+        const urlsNote = (claimedUrls && claimedUrls.length > 0)
+          ? `You mentioned unverified URL(s): ${JSON.stringify(claimedUrls)}. ` +
+            (authUrl
+              ? `The only URL the tool returned is "${authUrl}". Use that exact URL or none at all.`
+              : 'The tool returned NO URL for this authority. You may not invent or guess a URL based on the state name.')
+          : '';
+        const allNotes = [datesNote, urlsNote].filter(Boolean).join(' ');
+        const retryMsgs = [
+          ...originalMsgs,
+          { role: 'assistant', content: badContent },
+          { role: 'user', content:
+            `STOP. Your previous response contained unverified finance-report content the validator caught. ` +
+            `lookup_finance_reports returned status='${lookupResult.status}' with no verified report schedule for this race.\n\n${allNotes}\n\n` +
+            `Rewrite your response. RULES:\n` +
+            `- Acknowledge honestly that you don't have a verified finance-report schedule for this specific race.\n` +
+            `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
+            `- If the phone reads as a placeholder, paraphrase: "find their current phone number on the state's elections website".\n` +
+            `- ${authUrl ? `If you mention a URL, use ONLY this exact URL: "${authUrl}"` : "Do NOT mention any URL or domain. Tell the user to search for the state's elections website generically."}\n` +
+            `- Offer ONE concrete next step (set a calendar reminder, draft questions to ask the elections office).\n` +
+            `- DO NOT state any specific report dates.\n` +
+            `- DO NOT formally apologize. Sound like a campaign manager.\n` +
+            `Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.`
+          }
+        ];
+        const regenResult = await callClaude(retryMsgs);
+        if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
+          regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
+        }
+        return regenResult;
+      }
+
+      function stripUnauthorizedFinanceArtifacts(samText, unauthorizedDates, unauthorizedUrls) {
+        const offenders = [
+          ...(unauthorizedDates || []),
+          ...(unauthorizedUrls || [])
+        ].filter(x => x);
+        if (offenders.length === 0) return samText;
+        const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+        const cleaned = sentences.filter(s => {
+          const sLower = s.toLowerCase();
+          return !offenders.some(o => o && sLower.includes(String(o).toLowerCase()));
+        });
+        const joined = cleaned.join(' ').replace(/\s+/g, ' ').trim();
+        if (joined.length < 60) {
+          return "I don't have a verified finance-report schedule for your race. Contact your state's elections office directly to confirm exact report dates — verified authoritative dates are the only safe source for filing-related decisions.";
+        }
+        const noteParts = [];
+        if (unauthorizedDates && unauthorizedDates.length > 0) noteParts.push('finance-report dates');
+        if (unauthorizedUrls && unauthorizedUrls.length > 0) noteParts.push('URLs');
+        return joined + `\n\n*(Note: removed ${noteParts.join(' and ')} that could not be verified against the authoritative lookup.)*`;
+      }
+
+      async function logFinanceValidationEvent(action, claimedDates, authoritative, unauthorizedDates, claimedUrls, unauthorizedUrls, original, final) {
+        const fabType = (() => {
+          const dateBad = (unauthorizedDates && unauthorizedDates.length > 0);
+          const urlBad = (unauthorizedUrls && unauthorizedUrls.length > 0);
+          if (dateBad && urlBad) return 'both';
+          if (dateBad) return 'date';
+          if (urlBad) return 'url';
+          return 'none';
+        })();
+        try {
+          await env.DB.prepare(
+            'INSERT INTO sam_finance_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, sam_claimed_dates, authoritative_dates, unauthorized_dates, sam_claimed_urls, unauthorized_urls, fabrication_type, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+          ).bind(
+            generateId(16), conversation_id || null, chatOwnerId || null, rateLimitUserId || null,
+            action,
+            JSON.stringify(claimedDates || []),
+            JSON.stringify(authoritative || {}),
+            JSON.stringify(unauthorizedDates || []),
+            JSON.stringify(claimedUrls || []),
+            JSON.stringify(unauthorizedUrls || []),
+            fabType,
+            (original || '').slice(0, 600),
+            (final || '').slice(0, 600)
+          ).run();
+        } catch (e) {
+          console.warn('[finance_validator] log failed:', e.message);
+        }
+      }
+
+      const financeText = extractTextFromContent(data.content);
+      if (financeText.length > 60 && detectFinanceReportSignals(financeText)) {
+        const stateCodeForFinance = normalizeStateCode(state);
+        const officeNorm = (specificOffice || '').toLowerCase().trim();
+        const raceYear = electionDate ? parseInt(String(electionDate).slice(0, 4), 10) : null;
+        const financeLookup = await findMostRecentFinanceLookup(
+          messages, stateCodeForFinance, officeNorm, raceYear, location || null
+        );
+
+        if (financeLookup) {
+          const authoritativeDates = flattenFinanceAuthoritativeDates(financeLookup);
+          const authoritativeUrls = extractAuthoritativeUrls(financeLookup);
+
+          const claimedDates = await extractClaimedFinanceDates(financeText);
+          const unauthorizedDates = claimedDates.filter(d => !dateClaimedMatchesAuthoritative(d, authoritativeDates));
+          const claimedUrls = extractUrlTokens(financeText);
+          const unauthorizedUrls = claimedUrls.filter(u => !urlMatchesAuthoritative(u, authoritativeUrls));
+
+          if (unauthorizedDates.length > 0 || unauthorizedUrls.length > 0) {
+            const retry = await regenerateWithFinanceFeedback(
+              messages, data.content, unauthorizedDates, unauthorizedUrls, financeLookup
+            );
+            const retryText = extractTextFromContent(retry.content);
+            const retryClaimedDates = await extractClaimedFinanceDates(retryText);
+            const retryUnauthorizedDates = retryClaimedDates.filter(d => !dateClaimedMatchesAuthoritative(d, authoritativeDates));
+            const retryClaimedUrls = extractUrlTokens(retryText);
+            const retryUnauthorizedUrls = retryClaimedUrls.filter(u => !urlMatchesAuthoritative(u, authoritativeUrls));
+
+            if (retryUnauthorizedDates.length === 0 && retryUnauthorizedUrls.length === 0) {
+              await logFinanceValidationEvent(
+                'regenerated', claimedDates, financeLookup.reports || {}, unauthorizedDates,
+                claimedUrls, unauthorizedUrls, financeText, retryText
+              );
+              return new Response(JSON.stringify(retry), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+              });
+            }
+
+            const stripped = stripUnauthorizedFinanceArtifacts(retryText, retryUnauthorizedDates, retryUnauthorizedUrls);
+            const strippedResponse = { ...retry, content: [{ type: 'text', text: stripped }] };
+            await logFinanceValidationEvent(
+              'stripped', claimedDates, financeLookup.reports || {}, retryUnauthorizedDates,
+              claimedUrls, retryUnauthorizedUrls, financeText, stripped
+            );
+            return new Response(JSON.stringify(strippedResponse), {
+              headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+          }
+
+          await logFinanceValidationEvent(
+            'passed', claimedDates, financeLookup.reports || {}, [],
+            claimedUrls, [], financeText, financeText
           );
         }
       }
