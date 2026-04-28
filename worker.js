@@ -330,6 +330,57 @@ export default {
       });
     }
 
+    // ========================================
+    // OPPONENT-RESEARCH QUERY DETECTOR (Phase 1.5)
+    //
+    // Scans a string for signals that it's a query about a specific
+    // opponent's biographical / fundraising / strategic information.
+    // When detected, the chat handler omits web_search from this
+    // turn's tools[] so Sam can't reconstruct the masked entity by
+    // searching for race-identifying context.
+    //
+    // Conservative — only fires when there's a clear opponent signal.
+    // Generic political research (jurisdiction analysis, compliance
+    // dates, election turnout) passes through unblocked.
+    // ========================================
+    function isOpponentResearchQuery(query, workspaceEntities) {
+      if (!query || typeof query !== 'string') return false;
+      const lc = query.toLowerCase();
+      // 1. Direct opponent name or placeholder.
+      const opponents = (workspaceEntities || []).filter(e => e.entity_type === 'OPPONENT');
+      for (const o of opponents) {
+        if (o.real_name && lc.includes(o.real_name.toLowerCase())) return true;
+        if (o.placeholder && lc.includes(o.placeholder.toLowerCase())) return true;
+      }
+      // 2. Explicit opponent phrases.
+      const explicitOpponentSignals = [
+        "my opponent", "the opponent", "opponent's", "opponents'",
+        "opponent ", " opponent",
+        "running against", "running opposite",
+        "challenger ", "incumbent's "
+      ];
+      for (const p of explicitOpponentSignals) {
+        if (lc.includes(p)) return true;
+      }
+      // 3. Biographical / fundraising / strategic query phrases.
+      // These imply person-targeting research even without an explicit
+      // "opponent" word. NOTE: do not include "campaign finance report"
+      // here — it's ambiguous (could be the candidate's own compliance
+      // filing). Opponent fundraising research will trip on more
+      // specific phrases like "fundraising history" or "donor list".
+      const bioQueryPhrases = [
+        "fundraising history", "donor list", "donor base",
+        "war chest", "voting record",
+        "previous campaigns", "prior office", "prior elections",
+        "polling against", "head to head", "head-to-head",
+        "background check"
+      ];
+      for (const p of bioQueryPhrases) {
+        if (lc.includes(p)) return true;
+      }
+      return false;
+    }
+
     function demaskContentArray(content, entities) {
       if (!Array.isArray(content)) return content;
       return content.map(blk => {
@@ -4667,6 +4718,22 @@ When the user asks about filing deadlines, qualifying periods, ballot access dat
 
   WHY: Confidently wrong deadline or fabricated authority URL = candidate disqualified or misdirected. An honest deferral with a real authority contact preserves trust and prevents catastrophic errors. There is no penalty for saying "I don't have that — call this number / search the state's elections website."
 
+OPPONENT FACTS — HARD CONSTRAINT (read every time, before any answer about opponents):
+
+When the user asks about an opponent's fundraising, donor base, voting record, biography, prior campaigns, controversies, endorsements, or any specific fact about an opponent — your authoritative sources are EXACTLY THESE THREE, in priority order:
+
+1. The Intel panel data shown above in GROUND TRUTH (opponent name, party, office, threat_level, notes, bio, background, recentNews, campaignFocus, keyRisk).
+2. Tool results from this conversation.
+3. Information the user has provided in their messages this conversation.
+
+NEVER use web_search to research opponent biographical, fundraising, or strategic information. Even if the opponent's name is masked as {{OPPONENT_N}}, web_search results may identify a real-world person with the same name and inject training-data facts into your response. The web_search tool is automatically gated off for this turn when your message looks like opponent research, but the rule applies even when web_search remains available — do not use it for opponent-specific queries.
+
+NEVER state specific dollar amounts, dates, organizational affiliations (PAC names, donor names, employers), specific quotes, voting record specifics, or biographical claims (years in office, prior positions, education, family) about opponents that aren't in one of the three authoritative sources above.
+
+WHEN INTEL DATA IS LIMITED OR EMPTY: deferral with a recommendation to populate Intel is the CORRECT response, not a failure. Sample phrasing: "I don't have detailed information about {{OPPONENT_N}} in your Intel panel beyond [what's there]. Want to add what you know about their fundraising / endorsements / voting record? That'll let me give you sharper strategic advice."
+
+WHY: Opponent facts wrong by even a small amount destroy your credibility with a candidate. Confident wrong opponent claims lead to bad strategy decisions. Honest "I don't have that — let's populate Intel" preserves trust and produces better strategic advice over time.
+
 ================================================================
 
 You are Sam, a veteran political campaign manager with 20 years of experience. Direct, strategic, warm but no-nonsense. You speak in campaign language — earned media, persuadables, GOTV, burn rate, ground game, ballot position. You always have a strong opinion and a clear recommendation. When uncertain, say "let me verify that" — never "I don't know."
@@ -4777,10 +4844,47 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       // ========================================
+      // OPPONENT-RESEARCH GATE (Phase 1.5)
+      // Detect opponent-research intent in the latest user-text message
+      // and gate web_search out of tools[] for this turn. Anthropic's
+      // web_search_20250305 is server-resolved — there's no
+      // post-emit/pre-execute hook — so the gate has to be pre-call.
+      // The post-generation validator (further below) catches drift
+      // that slips through this gate.
+      // ========================================
+      const _latestUserText = (() => {
+        if (history && history.length > 0) {
+          for (let i = history.length - 1; i >= 0; i--) {
+            const m = history[i];
+            if (m && m.role === 'user' && typeof m.content === 'string') return m.content;
+          }
+          return '';
+        }
+        return message || '';
+      })();
+      const opponentResearchGate = isOpponentResearchQuery(_latestUserText, workspaceEntities);
+      if (opponentResearchGate) {
+        // Append a note to the system prompt so Sam knows web_search
+        // is unavailable for this turn and why. She can then defer
+        // honestly to the user instead of trying to research.
+        systemPrompt += '\n\nOPPONENT RESEARCH GATE — IMPORTANT: web_search is DISABLED for this turn because the user message contains opponent-research signals. Do NOT cite web sources. Use ONLY the Intel panel data shown in GROUND TRUTH and information the user has provided. If Intel data is limited, acknowledge that and recommend the user populate Intel with what they know about the opponent. This is a hard system constraint, not a soft suggestion.';
+        if (conversation_id) {
+          env.DB.prepare(
+            'INSERT INTO sam_opponent_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, blocked_search_query) VALUES (?, ?, ?, ?, ?, ?)'
+          ).bind(
+            generateId(16), conversation_id, chatOwnerId || null, rateLimitUserId || null,
+            'search_blocked', String(_latestUserText).slice(0, 600)
+          ).run().catch((e) => { console.warn('[opponent_gate] log failed:', e.message); });
+        }
+      }
+
+      // ========================================
       // TOOL DEFINITIONS — Sam 2.0 (consolidated)
       // ========================================
       const tools = [
-        { type: "web_search_20250305", name: "web_search" },
+        // web_search omitted for this turn when opponentResearchGate
+        // fires. Sam still has it for generic political research turns.
+        ...(opponentResearchGate ? [] : [{ type: "web_search_20250305", name: "web_search" }]),
         {
           name: "add_calendar_event",
           description: "Add a task OR event to the campaign calendar. Use type='task' for deadlines and to-dos (things to complete BY a date). Use type='event' for activities AT a specific time and place (town halls, fundraisers, meetings). Always include the date in YYYY-MM-DD format. Check the calendar context in Ground Truth before adding to avoid duplicates.",
@@ -5689,6 +5793,161 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           await logComplianceValidationEvent(
             'passed', claimedDates, auth, [], claimedUrls, [], complianceText, complianceText
           );
+        }
+      }
+
+      // ============================================================
+      // OPPONENT-FACT VALIDATOR (Phase 1.5)
+      //
+      // Catches unverified claims about opponents that web_search
+      // gating didn't pre-empt. Same architectural shape as the
+      // geographic and compliance validators: extract claims via
+      // cheap Haiku audit, cross-check against authoritative sources
+      // (Intel data, tool memory, user-provided messages), regen or
+      // strip if drift detected.
+      //
+      // Skip entirely when workspace has no opponents in Intel —
+      // nothing to cross-check against.
+      // ============================================================
+      const _intelOpponents = (intelContext && Array.isArray(intelContext.opponents))
+        ? intelContext.opponents.filter(o => o && o.name)
+        : [];
+
+      if (_intelOpponents.length > 0) {
+        const opponentSamText = extractTextFromContent(data.content);
+        // Build "known facts" blob from all authoritative sources for
+        // the audit Haiku to compare claims against.
+        const intelSummary = _intelOpponents.map(o =>
+          `- ${o.name} (${o.party || 'unknown party'})${o.office ? ', running for ' + o.office : ''}` +
+          `${o.threatLevel != null ? ' | threat ' + o.threatLevel + '/10' : ''}` +
+          `${o.keyRisk ? ' | risk: ' + o.keyRisk : ''}` +
+          `${o.campaignFocus ? ' | focus: ' + o.campaignFocus : ''}` +
+          `${o.bio ? ' | bio: ' + o.bio : ''}` +
+          `${o.background ? ' | background: ' + o.background : ''}` +
+          `${o.recentNews ? ' | recent: ' + o.recentNews : ''}`
+        ).join('\n');
+
+        // User messages from this conversation (string-content user
+        // messages — exclude tool_result blocks).
+        const userClaimsBlob = (messages || [])
+          .filter(m => m && m.role === 'user' && typeof m.content === 'string')
+          .map(m => m.content)
+          .join('\n---\n')
+          .slice(0, 4000);  // cap
+
+        async function extractUnauthorizedOpponentClaims(samText, intelStr, userMsgsStr) {
+          const prompt =
+            'You audit campaign coaching responses for unverified claims about opponents. Your output is JSON only — no preamble, no markdown.\n\n' +
+            'OPPONENTS_AND_INTEL_DATA:\n' + (intelStr || 'none') + '\n\n' +
+            'USER_MESSAGES_THIS_CONVERSATION:\n' + (userMsgsStr || 'none') + '\n\n' +
+            'SAM_RESPONSE:\n' + samText + '\n\n' +
+            'TASK: Identify each specific claim Sam made about an opponent that is NOT supported by OPPONENTS_AND_INTEL_DATA above and NOT supported by USER_MESSAGES. Specifics include: dollar amounts, dates, organizational names (PACs, donors, employers), specific quotes attributed to opponents, voting record specifics, prior offices held, biographical details (years, places, family).\n\n' +
+            'DO NOT flag:\n' +
+            '- General statements ("opponent has been campaigning")\n' +
+            '- Statements that paraphrase data already in OPPONENTS_AND_INTEL_DATA\n' +
+            '- The opponent\'s own name\n' +
+            '- Statements about what the user should do (strategy advice)\n' +
+            '- Office, party, jurisdiction, race-type info that\'s public race context\n\n' +
+            'Return JSON: {"claims": ["raised $129,500 last quarter", "Action For Florida PAC", "former state senator"]}\n' +
+            'If no unauthorized claims: {"claims": []}\n' +
+            'JSON ONLY.';
+          try {
+            const aResp = await fetch('https://api.anthropic.com/v1/messages', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+              body: JSON.stringify({
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 600,
+                temperature: 0,
+                messages: [{ role: 'user', content: prompt }]
+              })
+            });
+            const ad = await aResp.json();
+            await logApiUsage('sam_opponent_validator', ad, rateLimitUserId, chatOwnerId);
+            let txt = '';
+            if (ad && ad.content && Array.isArray(ad.content)) {
+              for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+            }
+            const mm = txt.match(/\{[\s\S]*\}/);
+            if (!mm) return [];
+            const parsed = JSON.parse(mm[0]);
+            return Array.isArray(parsed.claims) ? parsed.claims : [];
+          } catch (e) {
+            console.warn('[opponent_validator] extract failed:', e.message);
+            return [];
+          }
+        }
+
+        async function regenerateWithOpponentFeedback(originalMsgs, badContent, unauthorizedClaims) {
+          const retryMsgs = [
+            ...originalMsgs,
+            { role: 'assistant', content: badContent },
+            { role: 'user', content:
+              'STOP. Your previous response made claims about opponents that aren\'t in the user\'s Intel data, ' +
+              'tool results, or earlier messages: ' + JSON.stringify(unauthorizedClaims) + '. ' +
+              'Rewrite using ONLY verified opponent information from Intel. If Intel doesn\'t have what\'s needed, ' +
+              'defer honestly: "I don\'t have detailed information about your opponent in your Intel panel — want to add what you know about their fundraising / endorsements / voting record? That\'ll let me give you sharper strategic advice." ' +
+              'Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.'
+            }
+          ];
+          const regenResult = await callClaude(retryMsgs);
+          if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
+            regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
+          }
+          return regenResult;
+        }
+
+        function stripOpponentClaims(samText, unauthorizedClaims) {
+          if (!unauthorizedClaims || unauthorizedClaims.length === 0) return samText;
+          const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+          const cleaned = sentences.filter(s => {
+            const sLower = s.toLowerCase();
+            return !unauthorizedClaims.some(c => c && sLower.includes(String(c).toLowerCase()));
+          });
+          const joined = cleaned.join(' ').replace(/\s+/g, ' ').trim();
+          if (joined.length < 60) {
+            return "I don't have enough verified information about your opponent in your Intel panel to answer that confidently. Want to add what you know about them — fundraising, endorsements, voting record, prior offices? That'll let me give you sharper strategic advice.";
+          }
+          return joined + '\n\n*(Note: removed opponent claims that could not be verified against your Intel data.)*';
+        }
+
+        async function logOpponentValidationEvent(action, claims, unauthorized, original, final) {
+          try {
+            await env.DB.prepare(
+              'INSERT INTO sam_opponent_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, opponent_claims_detected, unauthorized_claims, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            ).bind(
+              generateId(16), conversation_id || null, chatOwnerId || null, rateLimitUserId || null,
+              action,
+              JSON.stringify(claims || []),
+              JSON.stringify(unauthorized || []),
+              (original || '').slice(0, 600),
+              (final || '').slice(0, 600)
+            ).run();
+          } catch (e) {
+            console.warn('[opponent_validator] log failed:', e.message);
+          }
+        }
+
+        if (opponentSamText.length > 60) {
+          const unauthorized = await extractUnauthorizedOpponentClaims(opponentSamText, intelSummary, userClaimsBlob);
+          if (unauthorized.length > 0) {
+            const retry = await regenerateWithOpponentFeedback(messages, data.content, unauthorized);
+            const retryText = extractTextFromContent(retry.content);
+            const retryUnauthorized = await extractUnauthorizedOpponentClaims(retryText, intelSummary, userClaimsBlob);
+            if (retryUnauthorized.length === 0) {
+              await logOpponentValidationEvent('regenerated', unauthorized, unauthorized, opponentSamText, retryText);
+              return new Response(JSON.stringify(retry), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+              });
+            }
+            const stripped = stripOpponentClaims(retryText, retryUnauthorized);
+            const strippedResp = { ...retry, content: [{ type: 'text', text: stripped }] };
+            await logOpponentValidationEvent('stripped', unauthorized, retryUnauthorized, opponentSamText, stripped);
+            return new Response(JSON.stringify(strippedResp), {
+              headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+          }
+          await logOpponentValidationEvent('passed', [], [], opponentSamText, opponentSamText);
         }
       }
 

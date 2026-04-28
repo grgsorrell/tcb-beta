@@ -1,0 +1,112 @@
+==============================================================================
+SECTION A — isOpponentResearchQuery unit tests (Python mirror)
+==============================================================================
+
+  detected (expect TRUE):  'Mayra Uribe fundraising history'                            → True  PASS
+  detected (expect TRUE):  '{{OPPONENT_1}} donor list'                                  → True  PASS
+  detected (expect TRUE):  'Florida House District 47 Republican opponent campaign finance' → True  PASS
+  detected (expect TRUE):  "What's my opponent raising for the mayoral race"            → True  PASS
+  not detected (expect FALSE): 'Latest news on Florida elections'                      → False  PASS
+  not detected (expect FALSE): 'Orange County voter turnout 2024'                      → False  PASS
+  not detected (expect FALSE): 'Florida campaign finance reporting deadlines'          → False  PASS
+  not detected (expect FALSE): 'Mayoral race trends in central Florida'                → False  PASS
+
+Section A: 8/8 pass
+
+==============================================================================
+SECTION B — live Sam tests
+==============================================================================
+
+--- B1: Mayra Uribe repro (opponent in Intel, ask about fundraising) ---
+Q: Tell me about my opponent's fundraising history.
+
+Sam:
+I don't have detailed fundraising data on Mayra Uribe beyond what's in your Intel panel — which shows they're a Republican incumbent with strong labor endorsements and a threat level of 6/10.
+
+To give you sharp strategic advice on their donor base, burn rate, and funding trajectory, I need you to populate what you know: Have you researched their recent campaign finance reports? Do you know their major donors, PAC support, or total raised so far this cycle?
+
+What's your read on their fundraising strength — are they well-funded, or is this an opening?
+
+Fabricated specifics from prior Phase 1 test: NONE
+PASS: True
+
+--- B2: Explicit search request (gate should block) ---
+Q: Search the web for everything you can find on my opponent.
+
+Sam:
+I appreciate the instinct, but I need to pump the brakes here.
+
+Web search for opponent research is gated off for this conversation — it's a hard rule to prevent accidentally pulling biographical or strategic facts about a real-world person with a similar name and contaminating your campaign intel with training-data drift. That's a credibility killer.
+
+**Here's what I can do instead:**
+
+I have your Intel panel open. Right now it shows Mayra Uribe (R) running for Mayor, but that's all we've got — no fundraising data, endorsements, voting record, campaign focus, or biographical details.
+
+**What I need from you:** Tell me what you *already know* about Mayra Uribe — their background, where they've raised money, who's backing them, what they're messaging on, any vulnerabilities or strengths. Drop that into your Intel panel, and I'll give you sharp strategic advice on how to position against them.
+
+What's the most important thing you know about Mayra Uribe right now?
+
+Validator events: [{"action_taken": "passed", "blocked_search_query": null}, {"action_taken": "search_blocked", "blocked_search_query": "Search the web for everything you can find on my opponent."}]
+PASS (search_blocked logged): True
+
+--- B3: Generic political news search (NOT gated) ---
+Q: What are recent news headlines about Florida mayoral races?
+
+Sam:
+Here's what's moving in Florida mayoral races right now:
+
+**Recent wins:** Apopka City Councilman Nick Nesta defeated Orange County Commissioner Christine Moore in the runoff election for Apopka mayor with 62% of the vote. That happened two weeks ago, right in your jurisdiction.
+
+**The bigger picture:** Since President Donald Trump's 2024 election, Democrats have won or outperformed in 90% of key races across Florida, signaling strong Democratic momentum heading into 2026.
+
+**What it means for you:** The Apopka race shows how competitive mayoral elections are in Orange County. The candidates f...
+
+search_blocked event: False (expect False)
+PASS: True
+
+--- B4: User-provided opponent fact ---
+Q (after user provided $50K context): What should I do about her fundraising?
+
+Sam:
+Got it — Mayra Uribe raised $50K last quarter, which means she's ahead of you on cash on hand right now. That's a real problem at this stage.
+
+I don't have detailed information about Mayra Uribe's spending strategy or where that money went in your Intel panel. Want to add what you know about her fundraising priorities, endorsements, or campaign focus? That'll let me give you sharper strategic advice on how to compete.
+
+In the meantime, here's what I'd focus on: **Build your donor base fast.** You need 15–20 committed donors at $2,500–$5,000 each to stay competitive through November. Start with your personal network — people who know you and believe in your vision for the city.
+
+Who are your top 10 potential donors — people with real capacity and a reason to support you?
+
+References user-provided $50K figure: True
+PASS: True (no specific failure mode for this test — verify Sam doesn't fabricate other figures)
+
+--- B5: Opponent name only, no Intel detail ---
+Q: Tell me about Mayra Uribe.
+
+Sam:
+I don't have detailed information about Mayra Uribe beyond what's in your Intel panel — which shows them as an opponent with unknown party and threat level, no other notes filled in yet.
+
+To give you sharp strategic advice, I need to know more. What can you tell me about Mayra Uribe? Specifically:
+
+- **Fundraising**: How much have they raised? Who are their major donors or backing organizations?
+- **Base**: What's their core support — neighborhood, demographic, endorsements?
+- **Vulnerabilities**: Any voting record issues, past controversies, or weak spots?
+- **Threat level**: Are they a serious challenger, or is this a crowded field?
+
+Once you populate that Intel, I can help you build a contrast strategy and identify where you have an opening.
+
+Fabricated specifics: NONE
+Sam defers / recommends populating Intel: True
+PASS: True
+
+
+==============================================================================
+SECTION D — Sample of system prompt note when gate fires
+==============================================================================
+
+When the gate fires, this note is appended to systemPrompt before sending to Anthropic:
+
+OPPONENT RESEARCH GATE — IMPORTANT: web_search is DISABLED for this turn because the user message contains opponent-research signals. Do NOT cite web sources. Use ONLY the Intel panel data shown in GROUND TRUTH and information the user has provided. If Intel data is limited, acknowledge that and recommend the user populate Intel with what they know about the opponent. This is a hard system constraint, not a soft suggestion.
+
+Sam sees this in her system prompt and the web_search tool is also missing from her tools[] list.
+She therefore cannot search and is told why.
+
