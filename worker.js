@@ -350,7 +350,8 @@ export default {
         { key: 'compliance_a', table: 'sam_compliance_validation_events' },
         { key: 'compliance_b', table: 'sam_finance_validation_events' },
         { key: 'donation',     table: 'sam_donation_validation_events' },
-        { key: 'opponent',     table: 'sam_opponent_validation_events' }
+        { key: 'opponent',     table: 'sam_opponent_validation_events' },
+        { key: 'citation',     table: 'sam_citation_validation_events' }
       ];
       const breakdown = {};
       let total = 0;
@@ -5071,6 +5072,25 @@ When the user asks about individual contribution limits, donation caps, max dona
 
   WHY: Contribution limit violations result in refunds at minimum, fines and bad press at worst, criminal liability in severe cases. The candidate's donors trust the campaign to know the rules. Confidently wrong limit guidance = a donor writes a check that has to be returned, sometimes publicly. There is no penalty for saying "I don't have that — call this number for current limits."
 
+CITATION DISCIPLINE — HARD CONSTRAINT (read every time, applies to ALL specific factual claims):
+
+When you state any specific factual claim — a dollar amount, a date, a phone number, a URL, an address, a named person, a percentage, a statistic, a benchmark, electoral history, or an organizational characterization of a place — the claim MUST be traceable to one of these sources:
+
+1. Ground Truth context shown above
+2. Intel data (opponents, endorsements, contributions panels)
+3. Tool results from this conversation
+4. Information the user has provided in their messages this conversation
+
+If a specific claim cannot be traced to one of those four sources, you have two options:
+
+A. STATE IT WITH A CAVEAT: "Industry benchmarks suggest [claim], though I'd verify with [appropriate authority] for your specific race." This applies to soft claims like statistics and benchmarks.
+
+B. DO NOT STATE IT: For high-stakes claims (specific dollar amounts, dates, phone numbers, URLs, named persons, statutes), do NOT state the claim from training data. Instead say "I don't have verified [X] — [actionable next step with authority]."
+
+The post-generation validator will catch unverified claims and either strip them (high-stakes) or tag them (soft). Avoid the strip by being honest about uncertainty in the first place.
+
+WHY: A campaign tool that confidently states wrong dollar amounts, dates, or names destroys trust the moment the user verifies independently. A tool that honestly tags uncertainty stays useful even when the underlying knowledge is incomplete.
+
 OPPONENT FACTS — HARD CONSTRAINT (read every time, before any answer about opponents):
 
 When the user asks about an opponent's fundraising, donor base, voting record, biography, prior campaigns, controversies, endorsements, or any specific fact about an opponent — your authoritative sources are EXACTLY THESE THREE, in priority order:
@@ -6749,16 +6769,22 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         async function extractUnauthorizedOpponentClaims(samText, intelStr, userMsgsStr) {
           const prompt =
             'You audit campaign coaching responses for unverified claims about opponents. Your output is JSON only — no preamble, no markdown.\n\n' +
+            'OPPONENTS_AND_INTEL_DATA below includes BOTH user-input fields (name, party, office, threatLevel, keyRisk) AND auto-research fields (bio, background, recentNews, campaignFocus). ALL fields are AUTHORITATIVE Intel data. Claims that quote, paraphrase, or summarize ANY of these fields — including auto-research fields — are AUTHORIZED, not unverified.\n\n' +
             'OPPONENTS_AND_INTEL_DATA:\n' + (intelStr || 'none') + '\n\n' +
             'USER_MESSAGES_THIS_CONVERSATION:\n' + (userMsgsStr || 'none') + '\n\n' +
             'SAM_RESPONSE:\n' + samText + '\n\n' +
-            'TASK: Identify each specific claim Sam made about an opponent that is NOT supported by OPPONENTS_AND_INTEL_DATA above and NOT supported by USER_MESSAGES. Specifics include: dollar amounts, dates, organizational names (PACs, donors, employers), specific quotes attributed to opponents, voting record specifics, prior offices held, biographical details (years, places, family).\n\n' +
+            'TASK: Identify each specific claim Sam made about an opponent that is NOT supported by OPPONENTS_AND_INTEL_DATA above and NOT supported by USER_MESSAGES.\n\n' +
+            'A claim must be ABOUT THE OPPONENT — meaning a specific assertion of fact attributed to or describing one of the named opponents in OPPONENTS_AND_INTEL_DATA. Generic political dynamics, strategic commentary, or characterizations of districts/electorates that are not tied to a specific opponent are NOT in scope for this validator.\n\n' +
+            'In-scope specifics: dollar amounts the opponent raised/spent, dates of opponent activity, organizational names attributed to the opponent (PACs, donors, employers), specific quotes attributed to opponents, voting-record specifics for the opponent, prior offices the opponent held, biographical details about the opponent (years, places, family).\n\n' +
             'DO NOT flag:\n' +
+            '- General political-dynamics commentary not specific to any opponent ("Chamber endorsements move money", "tax reform plays well in suburban districts", "incumbents have an advantage")\n' +
             '- General statements ("opponent has been campaigning")\n' +
-            '- Statements that paraphrase data already in OPPONENTS_AND_INTEL_DATA\n' +
+            '- Statements that paraphrase or summarize ANY field in OPPONENTS_AND_INTEL_DATA, including auto-research fields (bio, background, recentNews, campaignFocus, keyRisk)\n' +
             '- The opponent\'s own name\n' +
             '- Statements about what the user should do (strategy advice)\n' +
-            '- Office, party, jurisdiction, race-type info that\'s public race context\n\n' +
+            '- Office, party, jurisdiction, race-type info that\'s public race context\n' +
+            '- Statements about ENDORSERS or other non-opponent named persons (this validator scope is opponents ONLY)\n' +
+            '- Characterizations of the district\'s political lean ("red-leaning", "competitive", "blue") not tied to a specific opponent claim\n\n' +
             'Return JSON: {"claims": ["raised $129,500 last quarter", "Action For Florida PAC", "former state senator"]}\n' +
             'If no unauthorized claims: {"claims": []}\n' +
             'JSON ONLY.';
@@ -6840,22 +6866,269 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         }
 
         if (opponentSamText.length > 60) {
-          const unauthorized = await extractUnauthorizedOpponentClaims(opponentSamText, intelSummary, userClaimsBlob);
-          if (unauthorized.length > 0) {
-            const retry = await regenerateWithOpponentFeedback(messages, data.content, unauthorized);
-            const retryText = extractTextFromContent(retry.content);
-            const retryUnauthorized = await extractUnauthorizedOpponentClaims(retryText, intelSummary, userClaimsBlob);
-            if (retryUnauthorized.length === 0) {
-              await logOpponentValidationEvent('regenerated', unauthorized, unauthorized, opponentSamText, retryText);
-              return buildSafeResponse(retry);
+          // Phase 5b false-positive guard: only run audit if Sam's
+          // response actually mentions an opponent by name. If Sam
+          // is talking about endorsers, generic strategy, or other
+          // non-opponent content, the validator has no target —
+          // skip to avoid stripping clean responses (the bug from
+          // the red-team battery: validator footer appended to a
+          // response about DeSantis-the-endorser, not an opponent).
+          const _opponentNameRefd = _intelOpponents.some(o => {
+            if (!o.name) return false;
+            const re = new RegExp('\\b' + String(o.name).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+            return re.test(opponentSamText);
+          });
+          if (!_opponentNameRefd) {
+            await logOpponentValidationEvent('false_positive_skipped', [], [], opponentSamText, opponentSamText);
+          } else {
+            const unauthorized = await extractUnauthorizedOpponentClaims(opponentSamText, intelSummary, userClaimsBlob);
+            if (unauthorized.length > 0) {
+              const retry = await regenerateWithOpponentFeedback(messages, data.content, unauthorized);
+              const retryText = extractTextFromContent(retry.content);
+              const retryUnauthorized = await extractUnauthorizedOpponentClaims(retryText, intelSummary, userClaimsBlob);
+              if (retryUnauthorized.length === 0) {
+                await logOpponentValidationEvent('regenerated', unauthorized, unauthorized, opponentSamText, retryText);
+                return buildSafeResponse(retry);
+              }
+              const stripped = stripOpponentClaims(retryText, retryUnauthorized);
+              const strippedResp = { ...retry, content: [{ type: 'text', text: stripped }] };
+              await logOpponentValidationEvent('stripped', unauthorized, retryUnauthorized, opponentSamText, stripped);
+              return buildSafeResponse(strippedResp);
             }
-            const stripped = stripOpponentClaims(retryText, retryUnauthorized);
-            const strippedResp = { ...retry, content: [{ type: 'text', text: stripped }] };
-            await logOpponentValidationEvent('stripped', unauthorized, retryUnauthorized, opponentSamText, stripped);
-            return buildSafeResponse(strippedResp);
+            await logOpponentValidationEvent('passed', [], [], opponentSamText, opponentSamText);
           }
-          await logOpponentValidationEvent('passed', [], [], opponentSamText, opponentSamText);
         }
+      }
+
+      // ============================================================
+      // CITATION VALIDATOR (Phase 5a)
+      //
+      // Catch-all post-processor for unverified specific factual
+      // claims. Runs AFTER all fact-class validators (geographic,
+      // compliance A/B, donation, opponent). Only reached when no
+      // prior validator returned early — so this is the meta-layer
+      // for claims that fall through fact-class detection.
+      //
+      // Splits unverified claims into:
+      //   high_stakes (dollar/date/phone/url/person/statute) → STRIP
+      //   soft (percentage/stat/benchmark/electoral) → TAG inline
+      //
+      // Stripped events count toward Safe Mode threshold via
+      // getValidatorFiringBreakdown (filters action_taken IN
+      // ('regenerated','stripped')). Tagged events do not — tags
+      // are visible uncertainty signals, not reliability degradation.
+      // ============================================================
+      const _citationSamText = extractTextFromContent(data.content);
+
+      // Skip when the entire response is just a clarifying question (short
+      // and ends with ?). Sam's normal responses end with a follow-up
+      // question by style, so we can't gate on "ends with ?" — instead
+      // gate on "short AND ends with ?". Audit-Haiku already ignores
+      // questions back to the user inside longer answers.
+      const _trimmed = _citationSamText.trim();
+      const _isShortQuestion = _trimmed.length < 200 && /\?\s*$/.test(_trimmed);
+
+      if (_citationSamText.length >= 100 && !_isShortQuestion) {
+        // Build a rich GT block with human-readable date variants so the
+        // audit-Haiku doesn't strip date claims that are just format
+        // re-renderings of the Ground Truth election date (e.g.
+        // "Tuesday, November 3, 2026" of "2026-11-03").
+        let _electionHuman = '';
+        if (electionDate) {
+          try {
+            const d = new Date(electionDate + 'T00:00:00');
+            if (!isNaN(d.getTime())) {
+              const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+              const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+              _electionHuman = ` (${days[d.getUTCDay()]}, ${months[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()})`;
+            }
+          } catch (e) {}
+        }
+        const _dayCountWindow = effectiveDays != null
+          ? `${Math.max(0, effectiveDays - 2)}-${effectiveDays + 2} days (rendering varies by clock)`
+          : 'unknown';
+        const _gtSummary =
+          `Candidate: ${candidateName || 'unknown'} | Office: ${specificOffice || 'unknown'} | ` +
+          `Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'} | ` +
+          `Election date: ${electionDate || 'not set'}${_electionHuman} | Days to election: ${_dayCountWindow} | ` +
+          `Budget: ${budgetStr} | Win number: ${winNumberStr} | Raised: ${raisedStr} | Donors: ${donorCount || 0} | ` +
+          `Today: ${currentDate} (${isoToday})`;
+
+        const _intelBlob = (() => {
+          const lines = [];
+          if (intelContext && Array.isArray(intelContext.opponents)) {
+            for (const o of intelContext.opponents) {
+              if (!o || !o.name) continue;
+              lines.push(
+                `OPPONENT: ${o.name} (${o.party || 'unknown party'})` +
+                `${o.office ? ', running for ' + o.office : ''}` +
+                `${o.threatLevel != null ? ' | threat ' + o.threatLevel + '/10' : ''}` +
+                `${o.keyRisk ? ' | risk: ' + o.keyRisk : ''}` +
+                `${o.campaignFocus ? ' | focus: ' + o.campaignFocus : ''}` +
+                `${o.bio ? ' | bio: ' + o.bio : ''}` +
+                `${o.background ? ' | background: ' + o.background : ''}` +
+                `${o.recentNews ? ' | recent: ' + o.recentNews : ''}`
+              );
+            }
+          }
+          return lines.join('\n');
+        })();
+
+        const _toolMem = (typeof toolMemoryBlock === 'string' && toolMemoryBlock.length > 0) ? toolMemoryBlock : '';
+
+        // In-turn tool results: web_search and tool_use_id pairs from
+        // this turn's multi-round loop. extractToolPairs walks the
+        // assembled messages array. Sam may have just searched the web
+        // for verified facts (e.g. 2024 election results); those results
+        // are authoritative for citations she makes in the same turn.
+        const _inTurnTools = (() => {
+          try {
+            const pairs = extractToolPairs(messages || []);
+            if (pairs.length === 0) return '';
+            return pairs.map(p =>
+              `[tool: ${p.name}] input: ${typeof p.input === 'object' ? JSON.stringify(p.input).slice(0, 400) : String(p.input).slice(0, 400)}\nresult: ${String(p.result || '').slice(0, 3000)}`
+            ).join('\n---\n').slice(0, 12000);
+          } catch (e) { return ''; }
+        })();
+
+        const _userMsgsForCit = (messages || [])
+          .filter(m => m && m.role === 'user' && typeof m.content === 'string')
+          .map(m => m.content)
+          .join('\n---\n')
+          .slice(0, 4000);
+
+        async function validateUnsourcedClaims(samText) {
+          const prompt =
+            'You audit campaign coaching responses for unverified specific factual claims. Output JSON only — no preamble, no markdown.\n\n' +
+            'AUTHORITATIVE_SOURCES:\n\n' +
+            'GROUND_TRUTH:\n' + _gtSummary + '\n\n' +
+            'INTEL_DATA:\n' + (_intelBlob || 'none') + '\n\n' +
+            'TOOL_MEMORY (prior turns):\n' + (_toolMem || 'none') + '\n\n' +
+            'IN_TURN_TOOL_RESULTS (this turn):\n' + (_inTurnTools || 'none') + '\n\n' +
+            'USER_MESSAGES:\n' + (_userMsgsForCit || 'none') + '\n\n' +
+            'SAM_RESPONSE:\n' + samText + '\n\n' +
+            'TASK: Identify each specific factual claim in SAM_RESPONSE that is NOT supported by AUTHORITATIVE_SOURCES.\n\n' +
+            'Specifics include:\n' +
+            '- Dollar amounts, dates, phone numbers, URLs, addresses\n' +
+            '- Named persons (other than candidate, opponents, endorsers shown in AUTHORITATIVE_SOURCES)\n' +
+            '- Percentages, statistics, benchmarks ("80-120 doors per day", "5-10% response rate", "$30 cost per contact")\n' +
+            '- Electoral history claims ("Republicans won 55.6% in 2022")\n' +
+            '- Organizational characterizations of places ("this district trends Republican")\n' +
+            '- Specific statute citations\n\n' +
+            'DO NOT flag:\n' +
+            '- General strategy advice ("focus on persuadables", "increase donor outreach")\n' +
+            '- Conditional statements ("if you do X, then Y")\n' +
+            '- Questions back to user\n' +
+            '- Public-record geographic facts (state names, county names, well-known city names)\n' +
+            '- Information already in AUTHORITATIVE_SOURCES (paraphrase or quote)\n' +
+            '- Information that traces to IN_TURN_TOOL_RESULTS (web_search, lookup_*, etc.) — Sam quoting her own tool results this turn is AUTHORIZED\n' +
+            '- The election date in ANY format (ISO "2026-11-03", human "Tuesday, November 3, 2026", day-of-week prefixes, etc.) when it matches GROUND_TRUTH\'s election date\n' +
+            '- Day-count claims (e.g. "188 days away", "6 months out") that fall within the GROUND_TRUTH days-to-election window — these are calculations, not unverified claims\n' +
+            '- Generic role references already in Ground Truth (e.g., the candidate\'s own party)\n' +
+            '- Claims already accompanied by an explicit caveat ("industry benchmarks suggest...", "verify with...")\n\n' +
+            'Categorize each unverified claim into one of two buckets:\n' +
+            '- "high_stakes": specific dollar amounts, dates, phone numbers, URLs, addresses, named persons (not in AUTHORITATIVE_SOURCES), statute citations → these will be STRIPPED\n' +
+            '- "soft": percentages, statistics, benchmarks, electoral history, organizational characterizations → these will be TAGGED with "(unverified)"\n\n' +
+            'Return JSON: {"high_stakes": ["claim text 1", ...], "soft": ["claim text 1", ...]}\n' +
+            'Each claim should be a verbatim substring from SAM_RESPONSE so the post-processor can locate it.\n' +
+            'If none: {"high_stakes": [], "soft": []}\n' +
+            'JSON ONLY.';
+          try {
+            const aResp = await fetch('https://api.anthropic.com/v1/messages', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+              body: JSON.stringify({
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 800,
+                temperature: 0,
+                messages: [{ role: 'user', content: prompt }]
+              })
+            });
+            const ad = await aResp.json();
+            await logApiUsage('sam_citation_validator', ad, rateLimitUserId, chatOwnerId);
+            let txt = '';
+            if (ad && ad.content && Array.isArray(ad.content)) {
+              for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+            }
+            const mm = txt.match(/\{[\s\S]*\}/);
+            if (!mm) return { high_stakes: [], soft: [] };
+            const parsed = JSON.parse(mm[0]);
+            return {
+              high_stakes: Array.isArray(parsed.high_stakes) ? parsed.high_stakes.filter(c => typeof c === 'string' && c.length > 0) : [],
+              soft: Array.isArray(parsed.soft) ? parsed.soft.filter(c => typeof c === 'string' && c.length > 0) : []
+            };
+          } catch (e) {
+            console.warn('[citation_validator] extract failed:', e.message);
+            return { high_stakes: [], soft: [] };
+          }
+        }
+
+        function stripUnverifiedClaims(samText, claims) {
+          if (!claims || claims.length === 0) return samText;
+          const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+          const cleaned = sentences.filter(s => {
+            const sLower = s.toLowerCase();
+            return !claims.some(c => c && sLower.includes(String(c).toLowerCase()));
+          });
+          const joined = cleaned.join(' ').replace(/\s+/g, ' ').trim();
+          if (joined.length < 60) {
+            return "I want to make sure I'm grounded in your specific race data before giving you that. Tell me what you've already verified or ask me to look something up, and I'll work from there.";
+          }
+          return joined + '\n\n*(Note: removed specific claims that couldn\'t be traced to your race data, tools, or earlier messages.)*';
+        }
+
+        function tagUnverifiedClaims(samText, claims) {
+          if (!claims || claims.length === 0) return samText;
+          let out = samText;
+          const TAG = ' *(unverified — verify before relying on)*';
+          for (const c of claims) {
+            if (!c) continue;
+            const cStr = String(c);
+            const idxLower = out.toLowerCase().indexOf(cStr.toLowerCase());
+            if (idxLower < 0) continue;
+            const after = out.slice(idxLower + cStr.length);
+            // avoid double-tagging
+            if (after.startsWith(TAG) || after.startsWith(' *(unverified')) continue;
+            out = out.slice(0, idxLower + cStr.length) + TAG + after;
+          }
+          return out;
+        }
+
+        async function logCitationEvent(action, highStakes, soft, original, final) {
+          try {
+            const cats = {
+              high_stakes_count: (highStakes || []).length,
+              soft_count: (soft || []).length
+            };
+            await env.DB.prepare(
+              'INSERT INTO sam_citation_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, sam_unverified_claims, claim_categories, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            ).bind(
+              generateId(16), conversation_id || null, chatOwnerId || null, rateLimitUserId || null,
+              action,
+              JSON.stringify({ high_stakes: highStakes || [], soft: soft || [] }),
+              JSON.stringify(cats),
+              (original || '').slice(0, 600),
+              (final || '').slice(0, 600)
+            ).run();
+          } catch (e) {
+            console.warn('[citation_validator] log failed:', e.message);
+          }
+        }
+
+        const cv = await validateUnsourcedClaims(_citationSamText);
+        if (cv.high_stakes.length > 0) {
+          const stripped = stripUnverifiedClaims(_citationSamText, cv.high_stakes);
+          const strippedResp = { ...data, content: [{ type: 'text', text: stripped }] };
+          await logCitationEvent('stripped', cv.high_stakes, cv.soft, _citationSamText, stripped);
+          return buildSafeResponse(strippedResp);
+        }
+        if (cv.soft.length > 0) {
+          const tagged = tagUnverifiedClaims(_citationSamText, cv.soft);
+          const taggedResp = { ...data, content: [{ type: 'text', text: tagged }] };
+          await logCitationEvent('tagged', [], cv.soft, _citationSamText, tagged);
+          return buildSafeResponse(taggedResp);
+        }
+        await logCitationEvent('passed', [], [], _citationSamText, _citationSamText);
       }
 
       return buildSafeResponse(data);
