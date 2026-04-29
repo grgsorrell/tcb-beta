@@ -4113,7 +4113,7 @@ export default {
     }
 
     // ========================================
-    // INTEL: Remove opponent
+    // INTEL: Remove opponent (cascades to opposition_notes)
     // ========================================
     if (url.pathname === '/api/opponents/remove' && request.method === 'POST') {
       try {
@@ -4123,7 +4123,73 @@ export default {
         if (!requirePermission(ctx, 'intel', 'full')) return denyPermission('intel');
         const { id } = await request.json();
         if (!id) return jsonResponse({ error: 'id required' }, 400);
+        // Look up name first so we can clean up opposition_notes by name.
+        // Frontend also calls /api/intel/notes/delete explicitly; server-side
+        // cascade is the safety net for any frontend that misses it.
+        const oppRow = await env.DB.prepare(
+          'SELECT name FROM opponents WHERE id = ? AND workspace_owner_id = ?'
+        ).bind(id, ctx.ownerId).first();
         await env.DB.prepare('DELETE FROM opponents WHERE id = ? AND workspace_owner_id = ?').bind(id, ctx.ownerId).run();
+        if (oppRow && oppRow.name) {
+          await env.DB.prepare(
+            'DELETE FROM opposition_notes WHERE workspace_owner_id = ? AND opponent_name = ?'
+          ).bind(ctx.ownerId, oppRow.name).run().catch(() => {});
+        }
+        return jsonResponse({ success: true });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // INTEL: Opposition Notes (user-supplied free-text intel per opponent)
+    //
+    // Three endpoints. All workspace-scoped via workspace_owner_id.
+    // Save and delete require intel/full; load requires intel/read.
+    // 2,000 char cap enforced server-side; longer notes are clipped.
+    // ========================================
+    if (url.pathname === '/api/intel/notes/save' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'intel', 'full')) return denyPermission('intel');
+        const { opponent_name, notes } = await request.json();
+        const name = (opponent_name || '').trim();
+        if (!name) return jsonResponse({ error: 'opponent_name required' }, 400);
+        const clipped = String(notes == null ? '' : notes).slice(0, 2000);
+        const now = new Date().toISOString().replace('T', ' ').slice(0, 19);
+        await env.DB.prepare(
+          'INSERT INTO opposition_notes (id, workspace_owner_id, opponent_name, notes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(workspace_owner_id, opponent_name) DO UPDATE SET notes = excluded.notes, updated_at = excluded.updated_at'
+        ).bind(generateId(16), ctx.ownerId, name, clipped, now, now).run();
+        return jsonResponse({ success: true, notes: clipped, updated_at: now });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/intel/notes/load' && request.method === 'GET') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'intel', 'read')) return denyPermission('intel');
+        const rows = await env.DB.prepare(
+          'SELECT opponent_name, notes, updated_at FROM opposition_notes WHERE workspace_owner_id = ? ORDER BY updated_at DESC'
+        ).bind(ctx.ownerId).all();
+        return jsonResponse({ success: true, notes: (rows.results || []) });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    if (url.pathname === '/api/intel/notes/delete' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (!requirePermission(ctx, 'intel', 'full')) return denyPermission('intel');
+        const { opponent_name } = await request.json();
+        const name = (opponent_name || '').trim();
+        if (!name) return jsonResponse({ error: 'opponent_name required' }, 400);
+        await env.DB.prepare(
+          'DELETE FROM opposition_notes WHERE workspace_owner_id = ? AND opponent_name = ?'
+        ).bind(ctx.ownerId, name).run();
         return jsonResponse({ success: true });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
@@ -4854,9 +4920,18 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
       if (hasOpps || hasPulse) {
         intelGroundTruth = `\nAUTHORITATIVE INTEL — DO NOT CONTRADICT OR SEARCH FRESH:\nSource: user's Intel panel.`;
         if (hasOpps) {
-          intelGroundTruth += `\n\nOPPONENTS (${intelContext.opponents.length}):\n` + intelContext.opponents.map(o =>
-            `- ${o.name} (${o.party || 'unknown'})${o.office ? ' [' + o.office + ']' : ''} — threat ${o.threatLevel != null ? o.threatLevel + '/10' : 'unknown'}${o.keyRisk ? ' | risk: ' + o.keyRisk : ''}${o.campaignFocus ? ' | focus: ' + o.campaignFocus : ''}`
-          ).join('\n');
+          intelGroundTruth += `\n\nOPPONENTS (${intelContext.opponents.length}):\n` + intelContext.opponents.map(o => {
+            const lines = [
+              `- ${o.name} (${o.party || 'unknown'})${o.office ? ' [' + o.office + ']' : ''} — threat ${o.threatLevel != null ? o.threatLevel + '/10' : 'unknown'}`
+            ];
+            if (o.keyRisk) lines.push(`    Key risk: ${o.keyRisk}`);
+            if (o.campaignFocus) lines.push(`    Campaign focus: ${o.campaignFocus}`);
+            if (o.bio) lines.push(`    Bio: ${o.bio}`);
+            if (o.background) lines.push(`    Background: ${o.background}`);
+            if (o.recentNews) lines.push(`    Recent: ${o.recentNews}`);
+            if (o.userNotes) lines.push(`    USER NOTES (authoritative — candidate's own intel): ${o.userNotes}`);
+            return lines.join('\n');
+          }).join('\n');
         }
         if (hasPulse) {
           intelGroundTruth += `\n\nDISTRICT PULSE (recent):\n` + intelContext.pulseItems.slice(0, 6).map(p =>
@@ -5154,9 +5229,13 @@ OPPONENT FACTS — HARD CONSTRAINT (read every time, before any answer about opp
 
 When the user asks about an opponent's fundraising, donor base, voting record, biography, prior campaigns, controversies, endorsements, or any specific fact about an opponent — your authoritative sources are EXACTLY THESE THREE, in priority order:
 
-1. The Intel panel data shown above in GROUND TRUTH (opponent name, party, office, threat_level, notes, bio, background, recentNews, campaignFocus, keyRisk).
+1. The Intel panel data shown above in GROUND TRUTH (opponent name, party, office, threat_level, notes, bio, background, recentNews, campaignFocus, keyRisk, userNotes).
 2. Tool results from this conversation.
 3. Information the user has provided in their messages this conversation.
+
+USER NOTES: When an opponent has userNotes populated, treat that field as AUTHORITATIVE — it's the user's own intel from on-the-ground reporting, conversations, or research they've done. User notes are equivalent to user-provided messages in chat: trust them, factor them into strategy, reference them when relevant.
+
+User notes can include qualitative intel (fundraising rumors, endorsement chatter, vulnerabilities, donor info, recent moves) that the auto-research won't capture. Use this intel actively for strategic counter-messaging and risk assessment.
 
 NEVER use web_search to research opponent biographical, fundraising, or strategic information. Even if the opponent's name is masked as {{OPPONENT_N}}, web_search results may identify a real-world person with the same name and inject training-data facts into your response. The web_search tool is automatically gated off for this turn when your message looks like opponent research, but the rule applies even when web_search remains available — do not use it for opponent-specific queries.
 
@@ -6814,7 +6893,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           `${o.campaignFocus ? ' | focus: ' + o.campaignFocus : ''}` +
           `${o.bio ? ' | bio: ' + o.bio : ''}` +
           `${o.background ? ' | background: ' + o.background : ''}` +
-          `${o.recentNews ? ' | recent: ' + o.recentNews : ''}`
+          `${o.recentNews ? ' | recent: ' + o.recentNews : ''}` +
+          `${o.userNotes ? ' | userNotes (USER-SUPPLIED, AUTHORITATIVE): ' + o.userNotes : ''}`
         ).join('\n');
 
         // User messages from this conversation (string-content user
@@ -6828,7 +6908,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         async function extractUnauthorizedOpponentClaims(samText, intelStr, userMsgsStr) {
           const prompt =
             'You audit campaign coaching responses for unverified claims about opponents. Your output is JSON only — no preamble, no markdown.\n\n' +
-            'OPPONENTS_AND_INTEL_DATA below includes BOTH user-input fields (name, party, office, threatLevel, keyRisk) AND auto-research fields (bio, background, recentNews, campaignFocus). ALL fields are AUTHORITATIVE Intel data. Claims that quote, paraphrase, or summarize ANY of these fields — including auto-research fields — are AUTHORIZED, not unverified.\n\n' +
+            'OPPONENTS_AND_INTEL_DATA below includes BOTH user-input fields (name, party, office, threatLevel, keyRisk) AND auto-research fields (bio, background, recentNews, campaignFocus) AND user-supplied free-text notes (userNotes — the candidate\'s own on-the-ground intel). ALL fields are AUTHORITATIVE Intel data. Claims that quote, paraphrase, or summarize ANY of these fields — including auto-research and userNotes — are AUTHORIZED, not unverified.\n\n' +
             'OPPONENTS_AND_INTEL_DATA:\n' + (intelStr || 'none') + '\n\n' +
             'USER_MESSAGES_THIS_CONVERSATION:\n' + (userMsgsStr || 'none') + '\n\n' +
             'SAM_RESPONSE:\n' + samText + '\n\n' +
@@ -6838,7 +6918,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             'DO NOT flag:\n' +
             '- General political-dynamics commentary not specific to any opponent ("Chamber endorsements move money", "tax reform plays well in suburban districts", "incumbents have an advantage")\n' +
             '- General statements ("opponent has been campaigning")\n' +
-            '- Statements that paraphrase or summarize ANY field in OPPONENTS_AND_INTEL_DATA, including auto-research fields (bio, background, recentNews, campaignFocus, keyRisk)\n' +
+            '- Statements that paraphrase or summarize ANY field in OPPONENTS_AND_INTEL_DATA, including auto-research fields (bio, background, recentNews, campaignFocus, keyRisk) AND user-supplied notes (userNotes)\n' +
             '- The opponent\'s own name\n' +
             '- Statements about what the user should do (strategy advice)\n' +
             '- Office, party, jurisdiction, race-type info that\'s public race context\n' +
@@ -7036,7 +7116,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
                 `${o.campaignFocus ? ' | focus: ' + o.campaignFocus : ''}` +
                 `${o.bio ? ' | bio: ' + o.bio : ''}` +
                 `${o.background ? ' | background: ' + o.background : ''}` +
-                `${o.recentNews ? ' | recent: ' + o.recentNews : ''}`
+                `${o.recentNews ? ' | recent: ' + o.recentNews : ''}` +
+                `${o.userNotes ? ' | userNotes (USER-SUPPLIED, AUTHORITATIVE): ' + o.userNotes : ''}`
               );
             }
           }
@@ -7071,7 +7152,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             'You audit campaign coaching responses for unverified specific factual claims. Output JSON only — no preamble, no markdown.\n\n' +
             'AUTHORITATIVE_SOURCES:\n\n' +
             'GROUND_TRUTH:\n' + _gtSummary + '\n\n' +
-            'INTEL_DATA:\n' + (_intelBlob || 'none') + '\n\n' +
+            'INTEL_DATA (includes auto-research AND user-supplied userNotes — both authoritative):\n' + (_intelBlob || 'none') + '\n\n' +
             'TOOL_MEMORY (prior turns):\n' + (_toolMem || 'none') + '\n\n' +
             'IN_TURN_TOOL_RESULTS (this turn):\n' + (_inTurnTools || 'none') + '\n\n' +
             'USER_MESSAGES:\n' + (_userMsgsForCit || 'none') + '\n\n' +

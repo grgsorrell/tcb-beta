@@ -1,0 +1,76 @@
+Intel UI Phase 1 — Opposition Notes
+Run: 2026-04-29 13:20:41
+==============================================================================
+
+cjc userId: sXy4Rqp0aCskg2M9VVQptIeEDCpfLVtI
+jerry userId: cZYGhd2Rqyuj1mfj2WuDnVS8F6dhqab9
+
+==============================================================================
+API round-trip tests
+==============================================================================
+
+  A1 save returns 200 success: PASS — code=200
+  A1 load returns saved notes: PASS — notes=[{'opponent_name': 'Test Opponent A', 'notes': "Heard he's struggling to raise money in Apopka.", 'updated_at': '2026-04-29 20:20:44'}]
+  A2 upsert returns 200: PASS
+  A2 upsert preserves single row (no dup): PASS — row count=1
+  A2 load returns updated content: PASS
+  A3 save-empty returns 200: PASS
+  A3 load shows empty notes for cleared row: PASS
+  A4 delete returns 200: PASS
+  A4 deleted row absent from load: PASS
+  A5 unauth load returns 401: PASS — code=401
+  A5 unauth save returns 401: PASS — code=401
+  A6 shannan cannot see greg's notes (workspace isolation): PASS — shannan saw: []
+
+==============================================================================
+Sam integration tests
+==============================================================================
+
+S1 — Notes populated, ask 'What do we know about Jarod Fox's weaknesses?'
+Sam:
+Based on your own intel from the ground — which is gold in early campaign — Jarod Fox has a real vulnerability in rural North County. You heard at the Chamber breakfast last Tuesday that he's skipping North County events and hasn't been showing up consistently. That's a gap we can exploit, especially on agriculture and rural economic issues where a real estate developer from the Lake Mary corridor looks out of touch.
+
+His donor base is also concentrated in Lake Mary and Heathrow — that's a narrow geographic funnel. If we can build a credible rural/Apopka operation while he's focused on the suburban money corridor, we flip the district's center of gravity.
+
+The Chamber endorsement he got is a strength on business messaging, but it also boxes him in: he's now locked into property tax and deregulation talking points. That's predictable. We can position you as the candidate who listens to *all* of HD 39 — not just the real estate and development crowd.
+
+What's your read on rural voter priorities in Apopka and North County right now — agriculture, water policy, school funding? That's where we build the contrast.
+
+  S1 Sam references userNotes content (Apopka/rural/agriculture/Lake Mary/Heathrow): PASS — matched: True
+
+S2 — Notes populated, ask 'Where should I focus my message?'
+Sam:
+Let me pull the jurisdiction details for HD 39 so I can give you a targeted recommendation.
+
+  S2 Sam factors notes-derived weakness OR grounds via tool first: PASS
+S3 — Opponent validator events on S1/S2: [["false_positive_skipped", "intel_s2_1777494057639"], ["passed", "intel_s1_1777494050380"], ["search_blocked", "intel_s1_1777494050380"], ["false_positive_skipped", "intel_s2_1777493971517"], ["regenerated", "intel_s1_1777493963273"], ["search_blocked", "intel_s1_1777493963273"], ["false_positive_skipped", "intel_s2_1777493808085"], ["regenerated", "intel_s1_1777493798216"]]
+S4 — Citation validator events on S1/S2: [["passed", "intel_s1_1777494050380"], ["passed", "intel_s1_1777493691799"]]
+  S3 opponent validator did NOT strip (false-positive avoided): PASS
+  S4 citation validator did NOT strip userNotes-derived claims: PASS
+
+==============================================================================
+Regressions
+==============================================================================
+
+R1 epistemic Sam:
+Good question — let me be straight with you. **VERIFIED (I can state with confidence):** - You're running for State House in HD 39, Florida, as a Democrat - Election day is November 3, 2026 — 188 days away - Your win number is 5,000 votes - Your campaign budget is $50,000 - You haven't raised money yet and have zero donors logged - Your filing status is unknown (we haven't confirmed it yet) - You have no opponents added to your Intel panel yet **UNVERIFIED RECALL (I should caveat or defer):** - General campaign benchmarks — "you need X doors knocked per day," "mail response rates run Y%," "dig...
+
+  R1 Phase 7 epistemic still correct: PASS
+R2 Mayra Sam:
+I don't have detailed fundraising data on Mayra Uribe in your Intel panel beyond their name, party affiliation, and that they carry strong labor endorsements — which is a real asset in a general election.
+
+Here's what I need from you directly: What have you heard about Mayra Uribe's fundraising? Do you know:
+
+- Rough total raised in their last race (if they've run before)?
+- Who their major donors...
+
+  R2 entity masking — no Phase-1 specifics leaked: PASS — leaked=[]
+R3 news Sam:
+I'll search for recent news on your State House race in HD 39.The search didn't turn up specific recent news about HD 39 itself. What I did find is broader context: Republicans hold an 83-33 margin over Democrats in the 120-seat Florida State House, though Democrats recently flipped a deep-red Palm Beach House district (District 87) in a special election, showing there's momentum in certain pockets. You haven't added opponents to your Intel panel yet, so I don't have a read on who you're facing in HD 39. That's your first move — go to the My Opponents tab and add whoever's running. Once I know...
+
+  R3 NEWS QUERIES still works (cited or validator-gated, no filler): PASS — cited=False, validator-fired=True
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 19  Fail: 0

@@ -2134,6 +2134,10 @@ function switchToCampaign(campaignId) {
   // and pulse/actions are campaign-specific data (district, phase, etc).
   intelOpponents = [];
   intelOpponentsLoaded = false;
+  intelNotesByName = {};
+  intelNotesExpanded = {};
+  intelNotesEditing = {};
+  intelNotesLoaded = false;
   try {
     var cache = getIntelCache();
     delete cache.pulse;
@@ -5942,7 +5946,7 @@ function renderIntelPanel() {
   var el = document.getElementById('intel-content');
   if (!el) return;
   var html = '<div class="intel-tabs">';
-  var tabs = [{key:'opponents',label:'My Opponents'},{key:'pulse',label:'District Pulse'},{key:'threats',label:'Threat Assessment'}];
+  var tabs = [{key:'opponents',label:'My Opponents'},{key:'pulse',label:'District Pulse'},{key:'threats',label:'Threat Assessment'},{key:'notes',label:'Opposition Notes'}];
   tabs.forEach(function(t){ html += '<div class="intel-tab' + (intelActiveTab===t.key?' on':'') + '" onclick="switchIntelTab(\'' + t.key + '\')">' + t.label + '</div>'; });
   html += '</div><div id="intel-tab-content"></div>';
   el.innerHTML = html;
@@ -5953,7 +5957,7 @@ function switchIntelTab(tab) {
   intelActiveTab = tab;
   document.querySelectorAll('.intel-tab').forEach(function(t){ t.classList.remove('on'); });
   var tabs = document.querySelectorAll('.intel-tab');
-  var tabKeys = ['opponents','pulse','threats'];
+  var tabKeys = ['opponents','pulse','threats','notes'];
   var idx = tabKeys.indexOf(tab);
   if (idx >= 0 && tabs[idx]) tabs[idx].classList.add('on');
   loadIntelTab(tab, false);
@@ -5962,8 +5966,9 @@ function switchIntelTab(tab) {
 function setIntelRefreshVisibility(tabKey) {
   var btn = document.getElementById('intel-refresh-btn');
   if (!btn) return;
-  // Opponents has per-card refresh. Threats auto-reflects opponents state. No global refresh on either.
-  if (tabKey === 'opponents' || tabKey === 'threats') {
+  // Opponents has per-card refresh. Threats auto-reflects opponents state.
+  // Notes is user-edited (no refresh applies). No global refresh on these.
+  if (tabKey === 'opponents' || tabKey === 'threats' || tabKey === 'notes') {
     btn.style.display = 'none';
   } else {
     btn.style.display = '';
@@ -5987,6 +5992,24 @@ function loadIntelTab(tabKey, forceRefresh) {
       });
     } else {
       renderIntelTabContent(tabKey, intelOpponents, null);
+    }
+    return;
+  }
+
+  if (tabKey === 'notes') {
+    // Notes tab depends on opponents being loaded (Tab 1 is source of truth)
+    // and the notes blob from D1. Load both in sequence, then render.
+    var doRender = function(){
+      loadOppositionNotesFromD1(function(){
+        if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
+        renderIntelTabContent('notes', intelOpponents, null);
+      });
+    };
+    if (!intelOpponentsLoaded) {
+      showIntelLoading(tc);
+      loadOpponentsFromD1(doRender);
+    } else {
+      doRender();
     }
     return;
   }
@@ -6121,6 +6144,10 @@ function startFreshCampaignForProfile() {
   localStorage.removeItem('tcb_active_campaign');
   intelOpponents = [];
   intelOpponentsLoaded = false;
+  intelNotesByName = {};
+  intelNotesExpanded = {};
+  intelNotesEditing = {};
+  intelNotesLoaded = false;
   intelActiveCampaignMeta = null;
   try {
     var cache = getIntelCache();
@@ -6188,7 +6215,14 @@ function loadOpponentsFromD1(cb) {
       state: match.state || ''
     } : null;
     intelOpponentsLoaded = true;
-    if (cb) cb();
+    // Eagerly load opposition_notes too — Sam's chat handler needs userNotes
+    // available even when the user hasn't opened Tab 4. This single fetch
+    // populates intelNotesByName for the rest of the session.
+    if (intelOpponents.length > 0 && !intelNotesLoaded) {
+      loadOppositionNotesFromD1(function(){ if (cb) cb(); });
+    } else {
+      if (cb) cb();
+    }
   }).catch(function(e){
     console.log('[Opponents load]', e.message);
     intelOpponents = [];
@@ -6295,10 +6329,16 @@ function refreshOpponent(id) {
 }
 
 function removeOpponent(id) {
-  if (!confirm('Remove this opponent? They will also disappear from Threat Assessment.')) return;
+  if (!confirm('Remove this opponent? They will also disappear from Threat Assessment and any saved notes will be deleted.')) return;
   var sess = getD1Session();
+  // Find the opponent's name BEFORE we filter them out — the cascade
+  // delete on opposition_notes is keyed by name. (Server-side cascade
+  // also runs as a safety net inside /api/opponents/remove.)
+  var removed = intelOpponents.find(function(o){ return o.id === id; });
+  var removedName = removed ? removed.name : null;
   intelOpponents = intelOpponents.filter(function(o){ return o.id !== id; });
-  renderIntelTabContent(intelActiveTab === 'threats' ? 'threats' : 'opponents', intelOpponents, null);
+  if (removedName && typeof deleteOppNotesFor === 'function') deleteOppNotesFor(removedName);
+  renderIntelTabContent(intelActiveTab, intelOpponents, null);
   if (!sess) return;
   fetch(D1_API + '/api/opponents/remove', {
     method: 'POST',
@@ -6320,6 +6360,7 @@ function renderIntelTabContent(tabKey, data, fetchedAt) {
   if (tabKey === 'opponents') html += renderMyOpponentsTab(data);
   else if (tabKey === 'pulse') html += renderPulseTab(data);
   else if (tabKey === 'threats') html += renderThreatsTab(data);
+  else if (tabKey === 'notes') html += renderOppositionNotesTab(data);
   tc.innerHTML = html;
 }
 
@@ -6501,6 +6542,192 @@ function renderThreatsTab(opponents) {
     html += '</div>';
   });
   return html;
+}
+
+// ============================================================
+// TAB 4 — OPPOSITION NOTES (user-editable free-text intel per opponent)
+//
+// State: `intelNotesByName` is { [opponent_name]: { notes, updated_at } }.
+// `intelNotesExpanded` is { [opponent_name]: bool } — UI-only expand state.
+// `intelNotesEditing` is { [opponent_name]: bool } — toggles between view
+// (Edit button) and edit (Save button) per row.
+//
+// Source of truth for the opponent list is Tab 1 (intelOpponents). Tab 4
+// renders one row per opponent in that list, regardless of whether notes
+// have been saved. Empty rows show empty state when expanded.
+// ============================================================
+var intelNotesByName = {};
+var intelNotesExpanded = {};
+var intelNotesEditing = {};
+var intelNotesLoaded = false;
+
+function loadOppositionNotesFromD1(cb) {
+  var sess = getD1Session();
+  if (!sess) { intelNotesByName = {}; intelNotesLoaded = true; if (cb) cb(); return; }
+  fetch(D1_API + '/api/intel/notes/load', {
+    method: 'GET',
+    headers: { 'Authorization': 'Bearer ' + sess }
+  }).then(function(r){
+    if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
+    if (r.status === 403) { return r.json().then(function(b){ handlePermissionDenied(b); throw new Error('forbidden'); }); }
+    return r.json();
+  }).then(function(data){
+    intelNotesByName = {};
+    (data.notes || []).forEach(function(n){
+      intelNotesByName[n.opponent_name] = { notes: n.notes || '', updated_at: n.updated_at };
+    });
+    intelNotesLoaded = true;
+    if (cb) cb();
+  }).catch(function(e){
+    if (e.message !== 'unauthenticated' && e.message !== 'forbidden') console.warn('[notes load]', e.message);
+    intelNotesByName = {};
+    intelNotesLoaded = true;
+    if (cb) cb();
+  });
+}
+
+function renderOppositionNotesTab(opponents) {
+  var html = '<div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">Opposition Notes</div>';
+  html += '<div style="font-size:9px;color:rgba(255,255,255,.2);font-style:italic;margin-bottom:12px">Your own intel \u2014 fundraising rumors, endorsements, vulnerabilities, recent moves. Sam treats these as authoritative.</div>';
+
+  if (!opponents || opponents.length === 0) {
+    return html + '<div style="text-align:center;padding:32px 16px"><div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">No Opponents Added</div><div style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic;line-height:1.6">Add opponents to your <strong>My Opponents</strong> tab first. Once added, you can record what you know about them here.</div></div>';
+  }
+
+  opponents.forEach(function(opp){ html += renderOppositionNoteRow(opp); });
+  return html;
+}
+
+function renderOppositionNoteRow(opp) {
+  var name = opp.name || '';
+  var key = name; // linkage key
+  var keyAttr = encodeURIComponent(key);
+  var saved = intelNotesByName[name] || null;
+  var notes = saved ? (saved.notes || '') : '';
+  var hasSaved = !!(saved && saved.notes && saved.notes.length > 0);
+  var expanded = !!intelNotesExpanded[name];
+  var editing = !!intelNotesEditing[name];
+  var canEditIntel = (typeof canEdit === 'function') ? canEdit('intel') : true;
+  var arrow = expanded ? '\u25B2' : '\u25BC';
+
+  var html = '<div class="intel-card" style="padding:0;margin-bottom:10px;overflow:hidden">';
+
+  // Header row (clickable to expand/collapse)
+  html += '<div onclick="toggleOppNoteRow(\'' + escapeAttr(key) + '\')" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;cursor:pointer;user-select:none">' +
+    '<div style="display:flex;align-items:center;gap:10px">' +
+      '<div style="font-size:13px;font-weight:700;color:var(--t1)">' + escapeHtml(name) + '</div>' +
+      (hasSaved ? '<span style="font-size:8px;font-weight:700;letter-spacing:.1em;color:var(--gold);background:rgba(212,165,116,.12);border:1px solid rgba(212,165,116,.3);padding:2px 6px;border-radius:3px">NOTES SAVED</span>' : '') +
+    '</div>' +
+    '<div style="font-size:11px;color:var(--t3)">' + arrow + '</div>' +
+  '</div>';
+
+  // Expanded body
+  if (expanded) {
+    html += '<div style="padding:0 14px 14px;border-top:1px solid rgba(255,255,255,.05)">';
+
+    if (editing || !hasSaved) {
+      // Edit mode (or empty row): textarea + Save button
+      var counterId = 'oppnote-counter-' + keyAttr;
+      var taId = 'oppnote-ta-' + keyAttr;
+      var len = notes.length;
+      html += '<textarea id="' + taId + '" maxlength="2000" oninput="oppNoteCharCounter(\'' + escapeAttr(key) + '\')"' +
+        (canEditIntel ? '' : ' disabled') +
+        ' placeholder="Fundraising, endorsements, donors, vulnerabilities, recent moves, anything you\'ve heard..."' +
+        ' style="width:100%;min-height:100px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:10px;color:var(--t1);font-size:12px;font-family:var(--font-b);outline:none;resize:vertical;margin-top:10px;box-sizing:border-box">' +
+        escapeHtml(notes) + '</textarea>';
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">' +
+        '<div id="' + counterId + '" style="font-size:9px;color:var(--t3);letter-spacing:.05em">' + len + ' / 2000</div>';
+      if (canEditIntel) {
+        html += '<button onclick="saveOppNote(\'' + escapeAttr(key) + '\')" style="background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.4);color:var(--gold);padding:6px 14px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.05em;cursor:pointer">Save</button>';
+      }
+      html += '</div>';
+    } else {
+      // Read-only display + Edit button
+      html += '<div style="background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.06);border-radius:4px;padding:10px;margin-top:10px;font-size:12px;color:var(--t1);line-height:1.55;white-space:pre-wrap">' + escapeHtml(notes) + '</div>';
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">' +
+        '<div style="font-size:9px;color:var(--t3)">Last edited: ' + (saved && saved.updated_at ? escapeHtml(saved.updated_at) : 'just now') + '</div>';
+      if (canEditIntel) {
+        html += '<button onclick="editOppNote(\'' + escapeAttr(key) + '\')" style="background:transparent;border:1px solid rgba(212,165,116,.4);color:var(--gold);padding:6px 14px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.05em;cursor:pointer">Edit</button>';
+      }
+      html += '</div>';
+    }
+
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+function escapeAttr(s) { return String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+
+function toggleOppNoteRow(name) {
+  // Collapsing — drop expanded + editing flags so reopening starts in view mode if saved
+  if (intelNotesExpanded[name]) {
+    intelNotesExpanded[name] = false;
+    intelNotesEditing[name] = false;
+  } else {
+    intelNotesExpanded[name] = true;
+  }
+  renderIntelTabContent('notes', intelOpponents, null);
+}
+
+function editOppNote(name) {
+  if (typeof canEdit === 'function' && !canEdit('intel')) { showReadOnlyToast('intel'); return; }
+  intelNotesEditing[name] = true;
+  intelNotesExpanded[name] = true;
+  renderIntelTabContent('notes', intelOpponents, null);
+}
+
+function oppNoteCharCounter(name) {
+  var keyAttr = encodeURIComponent(name);
+  var ta = document.getElementById('oppnote-ta-' + keyAttr);
+  var counter = document.getElementById('oppnote-counter-' + keyAttr);
+  if (ta && counter) counter.textContent = ta.value.length + ' / 2000';
+}
+
+function saveOppNote(name) {
+  if (typeof canEdit === 'function' && !canEdit('intel')) { showReadOnlyToast('intel'); return; }
+  var keyAttr = encodeURIComponent(name);
+  var ta = document.getElementById('oppnote-ta-' + keyAttr);
+  if (!ta) return;
+  var notes = ta.value.slice(0, 2000);
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
+  fetch(D1_API + '/api/intel/notes/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({ opponent_name: name, notes: notes })
+  }).then(function(r){
+    if (r.status === 401) { handleUnauthenticated('Your session expired.'); throw new Error('unauthenticated'); }
+    if (r.status === 403) { return r.json().then(function(b){ handlePermissionDenied(b); throw new Error('forbidden'); }); }
+    return r.json();
+  }).then(function(data){
+    if (notes.length === 0) {
+      delete intelNotesByName[name];
+      intelNotesExpanded[name] = false;
+    } else {
+      intelNotesByName[name] = { notes: notes, updated_at: data.updated_at || new Date().toISOString().replace('T',' ').slice(0,19) };
+    }
+    intelNotesEditing[name] = false;
+    renderIntelTabContent('notes', intelOpponents, null);
+  }).catch(function(e){
+    if (e.message !== 'unauthenticated' && e.message !== 'forbidden') alert('Save failed: ' + e.message);
+  });
+}
+
+function deleteOppNotesFor(name) {
+  // Called from removeOpponent (Tab 1) so notes don't orphan.
+  delete intelNotesByName[name];
+  delete intelNotesExpanded[name];
+  delete intelNotesEditing[name];
+  var sess = getD1Session();
+  if (!sess) return;
+  fetch(D1_API + '/api/intel/notes/delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({ opponent_name: name })
+  }).catch(function(e){ console.warn('[notes delete]', e.message); });
 }
 
 function refreshIntelFromPanel() { refreshActiveIntelTab(); }
@@ -8594,7 +8821,9 @@ async function sendSamMessage() {
       if (hasOpponents) {
         intelCtx.opponents = intelOpponents.map(function(o){
           var d = o.data || {};
-          return { name: o.name, party: d.party||'', office: d.office||'', bio: d.bio||'', background: d.background||'', recentNews: d.recentNews||'', campaignFocus: d.campaignFocus||'', threatLevel: d.threatLevel||null, keyRisk: d.keyRisk||'' };
+          var noteRow = (typeof intelNotesByName !== 'undefined' && intelNotesByName) ? intelNotesByName[o.name] : null;
+          var userNotes = noteRow ? (noteRow.notes || '') : '';
+          return { name: o.name, party: d.party||'', office: d.office||'', bio: d.bio||'', background: d.background||'', recentNews: d.recentNews||'', campaignFocus: d.campaignFocus||'', threatLevel: d.threatLevel||null, keyRisk: d.keyRisk||'', userNotes: userNotes };
         });
       }
       if (hasPulse) intelCtx.pulseItems = intelCache.pulse.data.items;
