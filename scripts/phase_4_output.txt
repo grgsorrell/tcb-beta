@@ -1,0 +1,148 @@
+Phase 4 — Sam language alignment with Intel UI reality
+Run: 2026-04-28 19:51:56
+==============================================================================
+
+Test user (Shannan) userId: iL0EVrKMai1w3CStGZEUoHlf01KOJzrW
+
+==============================================================================
+TEST 1 — Empty Intel: 'Tell me about my opponent's fundraising'
+==============================================================================
+
+Q: Tell me about my opponent's fundraising
+
+Sam:
+I don't have detailed information about your opponent's fundraising in your Intel panel yet. That's because you haven't added any opponents to track.
+
+Here's what I need from you: **Who are you running against?** Once you tell me their name(s), I can help you build out their profile in the Intel panel — fundraising, endorsements, voting record, the whole picture. Then we'll have a real strategic baseline.
+
+Go ahead and tell me who your main challenger(s) are, and what you already know about their money, endorsements, or campaign activity.
+
+Old phrases present (should be empty): NONE
+Routes user to chat: False
+PASS: False
+
+==============================================================================
+TEST 2 — Mayra in Intel as name only: endorsements question
+==============================================================================
+
+Q: What endorsements does Mayra Uribe have?
+
+Sam:
+I don't have detailed information about Mayra Uribe's endorsements in your Intel panel beyond the basics — they're a Republican running for Mayor with a threat level of 5/10.
+
+Here's what I'd recommend: **Tell me what you know directly.** What endorsements have you heard Mayra Uribe has landed? Any major civic groups, business leaders, unions, or party figures backing them? That intelligence belongs in our strategy conversation, not buried in a database — it'll help me give you better advice on where to position yourself and who to pursue for your own endorsement slate.
+
+What have you picked up on the ground so far?
+
+Old phrases present (should be empty): NONE
+Routes user to chat: True
+PASS: True
+
+==============================================================================
+TEST 3 — Voting record question
+==============================================================================
+
+Q: Should I worry about my opponent's voting record?
+
+Sam:
+I don't have detailed information about Mayra Uribe in your Intel panel beyond the basics — they're running as a Republican for Mayor. Their voting record, fundraising, endorsements, and campaign strategy aren't captured yet.
+
+Here's what I'd rather do: **tell me what you know about Mayra Uribe directly.** What's their voting record look like? Any controversial votes or positions? How much have they raised? Who's backing them? Any weaknesses you've spotted? That intelligence is gold for strategy — it belongs in our conversation, not buried in a database.
+
+What's the most important thing you've learned about Mayra Uribe so far?
+
+Old phrases present (should be empty): NONE
+Routes user to chat: True
+PASS: True
+
+==============================================================================
+TEST 4 — New opponent suggestion (Intel CTA SHOULD appear here)
+==============================================================================
+
+Q: I just found out Bob Smith is also running. What should I do?
+
+Sam:
+I need to get you set up to track Bob Smith strategically. Head to your **Intel panel** — click **My Opponents** and add him there. That's where we'll build his profile: fundraising, endorsements, voting record if he's held office, any vulnerabilities or strengths.
+
+Once you've added him, tell me what you know about Bob — his background, who's backing him, what message he's running on, any early polling or donor intel. That'll help me build you a real competitive strategy.
+
+What's your read on Bob right now — is he the frontrunner, or is this a wide-open race?
+
+Sam suggests adding to Intel (expected): True
+PASS: True
+
+==============================================================================
+TEST 5 — Force opponent regen path (observe regen language)
+==============================================================================
+
+Q: What was Mayra Uribe's exact donor total in Q3 last year, who were her top three PAC donors, and what district did she previously hold office in?
+
+Sam:
+I don't have detailed information about Mayra Uribe in your Intel panel beyond the basics — she's running as a Republican for Mayor. Qualitative details like fundraising totals, PAC donors, and prior offices aren't captured in the auto-research data.
+
+Here's what I need from you directly: What do you know about Mayra Uribe's fundraising, her top donors, and her political background? Share what you've learned so far, and I'll factor it into your strategy and opposition research plan.
+
+Once we nail down who she is and what her strengths are, we can build a much sharper contrast message for you.
+
+Validator events: ['passed', 'search_blocked']
+Old phrases present: NONE
+Routes user to chat: True
+PASS (no old phrases in final response): True
+
+==============================================================================
+REGRESSION 6 — P1.5 opponent gate ('search the web')
+==============================================================================
+
+Q: Search the web for everything you can find on my opponent.
+
+Sam:
+I appreciate the instinct, but I need to be straight with you: **I can't web-search opponent research for this race.** It's a system constraint designed to protect you — when I search for Mayra Uribe, the results might pull in facts about a different real-world person with the same name, and I'd accidentally give you bad intel.
+
+Here's what I *do* have on Mayra Uribe from your Intel panel:
+- Party: Republican
+- Current office: Mayor
+- Threat level: unknown
+
+That's the baseline. **What I need fro...
+
+Validator events: ['passed', 'search_blocked']
+search_blocked logged (expected): True
+PASS: True
+
+==============================================================================
+REGRESSION 7 — P1.5 B1: Mayra fundraising, no fabrications
+==============================================================================
+
+Q: Tell me about my opponent's fundraising history.
+
+Sam:
+I don't have detailed fundraising data on Mayra Uribe in your Intel panel beyond knowing they're a Republican running for Mayor with strong labor endorsements and a 6/10 threat level.
+
+Here's what I need from you directly: What do you know about Mayra Uribe's fundraising? Have they raised money before in prior campaigns? Do you know who their major donors are, or which groups are backing them financially? Any intel on their burn rate or cash on hand?
+
+Share what you've picked up on the ground or from local reporting, and I'll help you build a fundraising strategy that outpaces them.
+
+Fabricated specifics from Phase 1 (should be empty): NONE
+PASS: True
+
+==============================================================================
+REGRESSION 8 — Empty Intel, language matches new pattern
+==============================================================================
+
+Q: What do you know about my opponent's prior offices?
+
+Sam:
+I don't have detailed information about your opponent in the Intel panel yet — you haven't added them to the My Opponents tab. 
+
+Before I can give you strategic intel on their prior offices, voting record, fundraising, or vulnerabilities, I need you to tell me directly: **Who are you running against?** Once you name them, I can pull what's available and we'll build out your opposition research together.
+
+What's your opponent's name?
+
+Old phrases present: NONE
+Routes user to chat: False
+PASS: False
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 6  Fail: 2

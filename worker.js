@@ -5083,9 +5083,9 @@ NEVER use web_search to research opponent biographical, fundraising, or strategi
 
 NEVER state specific dollar amounts, dates, organizational affiliations (PAC names, donor names, employers), specific quotes, voting record specifics, or biographical claims (years in office, prior positions, education, family) about opponents that aren't in one of the three authoritative sources above.
 
-WHEN INTEL DATA IS LIMITED OR EMPTY: deferral with a recommendation to populate Intel is the CORRECT response, not a failure. Sample phrasing: "I don't have detailed information about {{OPPONENT_N}} in your Intel panel beyond [what's there]. Want to add what you know about their fundraising / endorsements / voting record? That'll let me give you sharper strategic advice."
+WHEN INTEL DATA IS LIMITED OR EMPTY: deferral asking the user to share what they know directly in chat is the CORRECT response, not a failure. Intel only captures the opponent's name (which triggers auto-research) — qualitative details like fundraising, endorsements, voting record, or controversies have no UI home and should be discussed in chat. Sample phrasing: "I don't have detailed information about {{OPPONENT_N}} in your Intel panel beyond what auto-research found. Want to tell me what you know about their fundraising, endorsements, or voting record? Share it with me directly and I'll factor it into your strategy."
 
-WHY: Opponent facts wrong by even a small amount destroy your credibility with a candidate. Confident wrong opponent claims lead to bad strategy decisions. Honest "I don't have that — let's populate Intel" preserves trust and produces better strategic advice over time.
+WHY: Opponent facts wrong by even a small amount destroy your credibility with a candidate. Confident wrong opponent claims lead to bad strategy decisions. Honest "I don't have that — tell me what you know directly" preserves trust and produces better strategic advice over time.
 
 ================================================================
 
@@ -5231,7 +5231,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // Append a note to the system prompt so Sam knows web_search
         // is unavailable for this turn and why. She can then defer
         // honestly to the user instead of trying to research.
-        systemPrompt += '\n\nOPPONENT RESEARCH GATE — IMPORTANT: web_search is DISABLED for this turn because the user message contains opponent-research signals. Do NOT cite web sources. Use ONLY the Intel panel data shown in GROUND TRUTH and information the user has provided. If Intel data is limited, acknowledge that and recommend the user populate Intel with what they know about the opponent. This is a hard system constraint, not a soft suggestion.';
+        systemPrompt += '\n\nOPPONENT RESEARCH GATE — IMPORTANT: web_search is DISABLED for this turn because the user message contains opponent-research signals. Do NOT cite web sources. Use ONLY the Intel panel data shown in GROUND TRUTH and information the user has provided. If Intel data is limited, acknowledge that and ask the user to tell you what they know about the opponent directly in chat — qualitative details (fundraising, endorsements, voting record, controversies) belong in conversation, not in Intel. This is a hard system constraint, not a soft suggestion.';
         if (conversation_id) {
           env.DB.prepare(
             'INSERT INTO sam_opponent_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, blocked_search_query) VALUES (?, ?, ?, ?, ?, ?)'
@@ -6797,7 +6797,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               'STOP. Your previous response made claims about opponents that aren\'t in the user\'s Intel data, ' +
               'tool results, or earlier messages: ' + JSON.stringify(unauthorizedClaims) + '. ' +
               'Rewrite using ONLY verified opponent information from Intel. If Intel doesn\'t have what\'s needed, ' +
-              'defer honestly: "I don\'t have detailed information about your opponent in your Intel panel — want to add what you know about their fundraising / endorsements / voting record? That\'ll let me give you sharper strategic advice." ' +
+              'defer honestly: "I don\'t have detailed information about your opponent in your Intel panel — tell me what you know about their fundraising, endorsements, or voting record and I\'ll factor it into your strategy." ' +
               'Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.'
             }
           ];
@@ -6817,7 +6817,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           });
           const joined = cleaned.join(' ').replace(/\s+/g, ' ').trim();
           if (joined.length < 60) {
-            return "I don't have enough verified information about your opponent in your Intel panel to answer that confidently. Want to add what you know about them — fundraising, endorsements, voting record, prior offices? That'll let me give you sharper strategic advice.";
+            return "I don't have enough verified information about your opponent in your Intel panel to answer that confidently. Tell me what you know about them — fundraising, endorsements, voting record, prior offices — and I'll factor it into your strategy.";
           }
           return joined + '\n\n*(Note: removed opponent claims that could not be verified against your Intel data.)*';
         }
