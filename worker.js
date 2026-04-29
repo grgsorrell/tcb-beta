@@ -5091,6 +5091,18 @@ The post-generation validator will catch unverified claims and either strip them
 
 WHY: A campaign tool that confidently states wrong dollar amounts, dates, or names destroys trust the moment the user verifies independently. A tool that honestly tags uncertainty stays useful even when the underlying knowledge is incomplete.
 
+NEWS QUERIES — HARD CONSTRAINT:
+
+When the user asks about "news," "latest news," "recent news," "what's happening," "what's new," "the latest" — about their race, their district, their opponents, or local political developments — your FIRST action MUST be a web_search call. After web_search returns, your response MUST cite the specific articles/sources from the search results using an explicit attribution phrase: "Per [source]...", "According to [source]...", "Recent reporting from [source] indicates...", or "[Source name] reports...". A bare paraphrase without an attribution phrase counts as filler even when the data is real.
+
+NEVER characterize "news" or recent developments without calling web_search first. Vague phrasings like "your district is heating up," "things are moving," "Democrats are gaining momentum" without citation are FILLER — they are not news, they are guesses dressed up as news.
+
+If web_search returns no relevant results, say so honestly: "I searched but didn't find recent news specific to your race. I can search broader topics if helpful — what specifically are you trying to track?"
+
+If web_search is unavailable for this turn (e.g., opponent research gate fired), defer entirely: "I can't pull current news right now. Let me know what you've heard and I'll factor it in."
+
+WHY: A campaign manager who fabricates news destroys trust the moment the candidate verifies. A campaign manager who admits "I don't have current news" stays useful. Web search results with citations beat training-data recall every time for current events.
+
 OPPONENT FACTS — HARD CONSTRAINT (read every time, before any answer about opponents):
 
 When the user asks about an opponent's fundraising, donor base, voting record, biography, prior campaigns, controversies, endorsements, or any specific fact about an opponent — your authoritative sources are EXACTLY THESE THREE, in priority order:
@@ -6928,7 +6940,14 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       const _trimmed = _citationSamText.trim();
       const _isShortQuestion = _trimmed.length < 200 && /\?\s*$/.test(_trimmed);
 
-      if (_citationSamText.length >= 100 && !_isShortQuestion) {
+      // Phase 6a: bypass the 100-char threshold for short responses that
+      // assert a day-of-week for a specific date. Sam's wrong-day misreads
+      // ("May 22 is a Thursday") are typically 30-40 chars, below threshold.
+      // These assertions are high-stakes and the validator must see them.
+      const _hasDayDateAssertion = /\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/i.test(_citationSamText)
+        && /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/i.test(_citationSamText);
+
+      if ((_citationSamText.length >= 100 || _hasDayDateAssertion) && !_isShortQuestion) {
         // Build a rich GT block with human-readable date variants so the
         // audit-Haiku doesn't strip date claims that are just format
         // re-renderings of the Ground Truth election date (e.g.
@@ -6952,7 +6971,10 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           `Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'} | ` +
           `Election date: ${electionDate || 'not set'}${_electionHuman} | Days to election: ${_dayCountWindow} | ` +
           `Budget: ${budgetStr} | Win number: ${winNumberStr} | Raised: ${raisedStr} | Donors: ${donorCount || 0} | ` +
-          `Today: ${currentDate} (${isoToday})`;
+          `Today: ${currentDate} (${isoToday})` +
+          (typeof calendarReference === 'string' && calendarReference.length > 0
+            ? `\n\nCALENDAR_REFERENCE (authoritative day-of-week assignments — claims that match these are AUTHORIZED):\n${calendarReference}`
+            : '');
 
         const _intelBlob = (() => {
           const lines = [];
@@ -7014,7 +7036,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '- Percentages, statistics, benchmarks ("80-120 doors per day", "5-10% response rate", "$30 cost per contact")\n' +
             '- Electoral history claims ("Republicans won 55.6% in 2022")\n' +
             '- Organizational characterizations of places ("this district trends Republican")\n' +
-            '- Specific statute citations\n\n' +
+            '- Specific statute citations\n' +
+            '- Day-of-week assertions for specific dates ("May 15 is a Friday", "May 22, 2026 is a Thursday") — these are HIGH_STAKES and must trace to CALENDAR_REFERENCE in GROUND_TRUTH or to a tool result. If the date falls outside the calendar reference window, the day-of-week assertion is unverified.\n\n' +
             'DO NOT flag:\n' +
             '- General strategy advice ("focus on persuadables", "increase donor outreach")\n' +
             '- Conditional statements ("if you do X, then Y")\n' +
@@ -7027,7 +7050,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '- Generic role references already in Ground Truth (e.g., the candidate\'s own party)\n' +
             '- Claims already accompanied by an explicit caveat ("industry benchmarks suggest...", "verify with...")\n\n' +
             'Categorize each unverified claim into one of two buckets:\n' +
-            '- "high_stakes": specific dollar amounts, dates, phone numbers, URLs, addresses, named persons (not in AUTHORITATIVE_SOURCES), statute citations → these will be STRIPPED\n' +
+            '- "high_stakes": specific dollar amounts, dates, phone numbers, URLs, addresses, named persons (not in AUTHORITATIVE_SOURCES), statute citations, day-of-week assertions for dates not traceable to CALENDAR_REFERENCE → these will be STRIPPED\n' +
             '- "soft": percentages, statistics, benchmarks, electoral history, organizational characterizations → these will be TAGGED with "(unverified)"\n\n' +
             'Return JSON: {"high_stakes": ["claim text 1", ...], "soft": ["claim text 1", ...]}\n' +
             'Each claim should be a verbatim substring from SAM_RESPONSE so the post-processor can locate it.\n' +

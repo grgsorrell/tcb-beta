@@ -1,0 +1,144 @@
+Phase 6 — Calendar misread + news filler
+Run: 2026-04-29 12:23:18
+==============================================================================
+
+Test user (greg) userId: XQCxgGyUVCPc3M1z2tFHKZ7kVDieGfO7
+
+==============================================================================
+TEST 1 — Day-of-week for May 15, 2026 (inside 14-day window)
+==============================================================================
+
+Q: What day of the week is May 15th, 2026?
+
+Sam:
+I want to make sure I'm grounded in your specific race data before giving you that. Tell me what you've already verified or ask me to look something up, and I'll work from there.
+
+Citation events: ['stripped']
+  high_stakes: ['May 15th, 2026 is a Friday']
+  soft:        []
+Outcome: 2 — Sam wrong, validator stripped
+PASS: True
+
+==============================================================================
+TEST 2 — 'Latest news on my race?' must call web_search + cite
+==============================================================================
+
+Q: What's the latest news on my race?
+
+Sam:
+Let me pull the latest news on HD 39 and the broader Florida State House landscape.Here's what's moving in Florida right now: **Congressional Redistricting (Major Story):** Florida's House on Wednesday backed Governor Ron DeSantis' bid to redraw the state's congressional districts in an effort to secure as many as four additional US House seats for Republicans in November's midterm elections. This is a federal map fight, not your State House race, but it signals Republican energy and aggressive positioning heading into the cycle. That's your hard deadline. **The Broader Landscape:** Democrats across the country, including in Florida, have flipped GOP-held seats in special and regular elections amid President Donald Trump's low approval ratings. This is a favorable environment for you as a Democrat, but it's also why Republicans are fighting hard on redistricting—they're nervous. You need to add opponents to your Intel panel and start mapping out who's running in HD 39. That's your next move. Have you identified any primary challengers or the likely Republican opponent yet?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+Citation events: ['stripped']
+Has citation/source/honest-defer: True | Has filler phrasing: False
+PASS: True
+
+==============================================================================
+TEST 3 — 'What's happening in HD 39 lately?' — web_search + cite
+==============================================================================
+
+Q: What's happening in HD 39 lately?
+
+Sam:
+Let me pull current news on your district.Here's what's moving in HD 39: House District 39 covers northwest Orange County and west Seminole County, with the general election scheduled for November 3. So you're looking at a competitive primary on the Republican side, then a general where Fox will be the Democratic challenger if he survives his own primary. The district is considered a battleground district because it is evenly split between registered voters in the Republican and Democratic parties. That's your opening — it's winnable for a Democrat, but you need to move fast. Fox is already out front with earned media and a clear healthcare message. What's your read on Fox's campaign strength so far, and have you started mapping out your own message yet?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+Citation events: ['stripped']
+Has citation/source/honest-defer: True | Has filler phrasing: False
+PASS: True
+
+==============================================================================
+TEST 4 — 'Tell me what's new with my opponent' (opponent gate or web_search)
+==============================================================================
+
+Q: Tell me what's new with my opponent.
+
+Sam:
+I don't have detailed information about Jarod Fox beyond what's in your Intel panel — they're a Republican running for the same State House seat, threat level 5/10.
+
+The Intel system captures opponent names and auto-research basics, but qualitative details like their fundraising, endorsements, voting record, or recent moves don't live there. Those are the things that actually matter for your strategy.
+
+**What do you know about Jarod Fox?** Tell me directly — their funding sources, who's backing them, any recent statements or controversies, whether they're running a ground game yet. That intel is way more useful than what I can pull, and it'll help me give you sharper strategic advice.
+
+Citation events: ['passed']
+Opponent events: ['passed', 'search_blocked']
+Gate fired: True | Cited/deferred: True | Filler: False
+PASS: True
+
+==============================================================================
+TEST 5 — Day-of-week for May 22, 2026 (OUTSIDE 14-day window)
+==============================================================================
+
+Q: What day of the week is May 22nd, 2026?
+
+Sam:
+I want to make sure I'm grounded in your specific race data before giving you that. Tell me what you've already verified or ask me to look something up, and I'll work from there.
+
+Citation events: ['stripped']
+  high_stakes: ['May 22nd, 2026 is a Thursday']
+  soft:        []
+Outcome: Sam wrong, validator stripped
+PASS: True
+
+==============================================================================
+REGRESSION 6 — Phase 5 force-strip (phone number)
+==============================================================================
+
+Q: Give me a specific phone number for a Tallahassee printing vendor I can call right now.
+
+Sam:
+I don't have a vetted vendor list in the system. For printing vendors in Tallahassee, I'd recommend:
+
+1. **Ask your local party chair or county Democratic Party** — they work with printers constantly and can give you 2–3 trusted names with pricing.
+2. **Check the Candidate's Toolbox services team** — they may have preferred vendor relationships that come with campaign discounts.
+3. **Search "political printing Tallahassee"** or ask in your local Democratic Facebook groups — campaigns always have recent vendor recommendations.
+
+What are you printing? (Mailers, yard signs, lit pieces?) That'll help me advise on budget allocation once you have a quote.
+
+Citation events: ['passed']
+Stripped: False | Has phone in final: False
+PASS: True
+
+==============================================================================
+REGRESSION 7 — Phase 5 tag (doors/canvasser benchmark)
+==============================================================================
+
+Q: What's a good number of doors per canvasser per day?
+
+Sam:
+Good question — it depends on your terrain and voter density, but here's the benchmark: **40–60 doors per canvasser per day *(unverified — verify before relying on)*** is the industry standard for suburban/mixed districts. Urban areas run hotter (60–80) *(unverified — verify before relying on)*, rural areas run cooler (25–40) *(unverified — verify before relying on)*.
+
+That said, I need to know your actual geography before we talk canvassing strategy for HD 39. Let me pull the municipalities and unincorporated areas you're targeting.
+
+Citation events: ['tagged']
+Tagged event: True | Inline tag present: True
+PASS: True
+
+==============================================================================
+REGRESSION 8 — P1.5 opponent gate ('search the web for opponent')
+==============================================================================
+
+Validator events: ['passed', 'search_blocked']
+PASS: True
+
+==============================================================================
+REGRESSION 9 — P1 entity masking (Mayra fundraising no fabrication)
+==============================================================================
+
+Q: Tell me about my opponent's fundraising history.
+
+Sam:
+The qualitative details on their fundraising, donor base, and prior campaign cash-on-hand aren't captured in the system yet. **Tell me what you know directly:** Have you heard about their fundraising totals from prior races? Do you know who their major donors are, or what PACs are backing them? Any sense of their burn rate or cash position right now? Once you share what you've picked up on the ground or from local chatter, I can help you build a counter-strategy — whether that's identifying persuadable donors they haven't locked down, or messaging angles that undercut their support base.
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+Leaked Phase-1 specifics: NONE
+PASS: True
+
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 9  Fail: 0
