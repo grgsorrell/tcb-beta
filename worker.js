@@ -1662,9 +1662,14 @@ export default {
 
         const data = await request.json();
 
+        // Sam v2 Phase 1: candidate_site_url + candidate_bio_text + early_voting_start_date
+        // are upserted alongside core profile fields. candidate_site_content and
+        // candidate_site_fetched_at are NEVER written from /api/profile/save —
+        // they're owned by /api/profile/site/fetch which does the actual web fetch.
+        // (If the caller passes them, we ignore — preserves existing fetched content.)
         await env.DB.prepare(`
-          INSERT INTO profiles (user_id, candidate_name, specific_office, office_level, party, location, state, election_date, filing_status, win_number, win_number_data, onboarding_complete, updated_at)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+          INSERT INTO profiles (user_id, candidate_name, specific_office, office_level, party, location, state, election_date, filing_status, win_number, win_number_data, onboarding_complete, candidate_site_url, candidate_bio_text, early_voting_start_date, updated_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
           ON CONFLICT(user_id) DO UPDATE SET
             candidate_name = excluded.candidate_name,
             specific_office = excluded.specific_office,
@@ -1677,6 +1682,9 @@ export default {
             win_number = excluded.win_number,
             win_number_data = excluded.win_number_data,
             onboarding_complete = excluded.onboarding_complete,
+            candidate_site_url = excluded.candidate_site_url,
+            candidate_bio_text = excluded.candidate_bio_text,
+            early_voting_start_date = excluded.early_voting_start_date,
             updated_at = datetime('now')
         `).bind(
           ctx.ownerId,
@@ -1690,7 +1698,10 @@ export default {
           data.filing_status || null,
           data.win_number || null,
           data.win_number_data ? JSON.stringify(data.win_number_data) : null,
-          data.onboarding_complete ? 1 : 0
+          data.onboarding_complete ? 1 : 0,
+          data.candidate_site_url || null,
+          data.candidate_bio_text ? String(data.candidate_bio_text).slice(0, 1000) : null,
+          data.early_voting_start_date || null
         ).run();
 
         return jsonResponse({ success: true });
@@ -1723,6 +1734,160 @@ export default {
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
+    }
+
+    // ========================================
+    // PROFILE: Fetch candidate's campaign website (Sam v2 Phase 1)
+    // Server-side fetch (avoids client-side CORS), strips HTML to text,
+    // caps at 10,000 chars, stores in candidate_site_content.
+    // Triggered by onboarding website page or settings refresh button.
+    // ========================================
+    if (url.pathname === '/api/profile/site/fetch' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
+        const body = await request.json();
+        let siteUrl = String(body.url || '').trim();
+        if (!siteUrl) return jsonResponse({ error: 'url required' }, 400);
+        if (!/^https?:\/\//i.test(siteUrl)) siteUrl = 'https://' + siteUrl;
+        try { new URL(siteUrl); } catch (e) { return jsonResponse({ error: 'invalid_url' }, 400); }
+
+        // Fetch with a friendly UA. Cloudflare workers' fetch follows redirects by default.
+        let html = '';
+        let fetchError = null;
+        try {
+          const resp = await fetch(siteUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TCB-CandidateBot/1.0)' },
+            redirect: 'follow'
+          });
+          if (!resp.ok) {
+            fetchError = 'http_' + resp.status;
+          } else {
+            html = await resp.text();
+          }
+        } catch (e) {
+          fetchError = 'fetch_failed: ' + (e.message || 'unknown');
+        }
+
+        if (fetchError) {
+          // Persist URL even on fetch failure so user can retry/refresh
+          const nowErr = new Date().toISOString().replace('T', ' ').slice(0, 19);
+          await env.DB.prepare('INSERT OR IGNORE INTO profiles (user_id) VALUES (?)').bind(ctx.ownerId).run();
+          await env.DB.prepare(
+            'UPDATE profiles SET candidate_site_url = ?, candidate_site_fetched_at = ? WHERE user_id = ?'
+          ).bind(siteUrl, nowErr, ctx.ownerId).run();
+          return jsonResponse({ success: false, error: fetchError, url: siteUrl }, 200);
+        }
+
+        // Strip <script>/<style> blocks first (their contents shouldn't appear in text),
+        // then strip remaining tags. Collapse whitespace.
+        let text = html
+          .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+          .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+          .replace(/<noscript[\s\S]*?<\/noscript>/gi, ' ')
+          .replace(/<!--[\s\S]*?-->/g, ' ')
+          .replace(/<[^>]+>/g, ' ')
+          .replace(/&nbsp;/g, ' ')
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'")
+          .replace(/\s+/g, ' ')
+          .trim();
+        const truncated = text.length > 10000;
+        if (truncated) text = text.slice(0, 10000) + '\n\n[Site truncated for length, refresh available in settings]';
+
+        const now = new Date().toISOString().replace('T', ' ').slice(0, 19);
+        // Ensure profile row exists before UPDATE (covers the edge case where
+        // a brand-new user hits site/fetch before completing onboarding's
+        // profile save).
+        await env.DB.prepare('INSERT OR IGNORE INTO profiles (user_id) VALUES (?)').bind(ctx.ownerId).run();
+        await env.DB.prepare(
+          'UPDATE profiles SET candidate_site_url = ?, candidate_site_content = ?, candidate_site_fetched_at = ? WHERE user_id = ?'
+        ).bind(siteUrl, text, now, ctx.ownerId).run();
+
+        return jsonResponse({
+          success: true,
+          url: siteUrl,
+          content_length: text.length,
+          truncated: truncated,
+          fetched_at: now,
+          preview: text.slice(0, 240)
+        });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // PROFILE: Refresh candidate site (manual re-fetch from settings)
+    // Re-uses the stored candidate_site_url; same fetch+strip pipeline.
+    // ========================================
+    if (url.pathname === '/api/profile/site/refresh' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
+        const row = await env.DB.prepare(
+          'SELECT candidate_site_url FROM profiles WHERE user_id = ?'
+        ).bind(ctx.ownerId).first();
+        if (!row || !row.candidate_site_url) {
+          return jsonResponse({ success: false, error: 'no_url_on_file' }, 400);
+        }
+        // Delegate by re-invoking the same logic (POST to /site/fetch internally
+        // would require constructing a Request — easier to inline duplicate the
+        // fetch path. Keeping it DRY by extracting the helper would be nice; for
+        // now the duplication is small).
+        let html = '';
+        let fetchError = null;
+        try {
+          const resp = await fetch(row.candidate_site_url, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TCB-CandidateBot/1.0)' },
+            redirect: 'follow'
+          });
+          if (!resp.ok) fetchError = 'http_' + resp.status;
+          else html = await resp.text();
+        } catch (e) { fetchError = 'fetch_failed: ' + (e.message || 'unknown'); }
+        if (fetchError) return jsonResponse({ success: false, error: fetchError }, 200);
+        let text = html
+          .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+          .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+          .replace(/<noscript[\s\S]*?<\/noscript>/gi, ' ')
+          .replace(/<!--[\s\S]*?-->/g, ' ')
+          .replace(/<[^>]+>/g, ' ')
+          .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+          .replace(/\s+/g, ' ').trim();
+        const truncated = text.length > 10000;
+        if (truncated) text = text.slice(0, 10000) + '\n\n[Site truncated for length, refresh available in settings]';
+        const now = new Date().toISOString().replace('T', ' ').slice(0, 19);
+        await env.DB.prepare(
+          'UPDATE profiles SET candidate_site_content = ?, candidate_site_fetched_at = ? WHERE user_id = ?'
+        ).bind(text, now, ctx.ownerId).run();
+        return jsonResponse({ success: true, fetched_at: now, content_length: text.length, truncated: truncated });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
+    }
+
+    // ========================================
+    // PROFILE: Save fallback bio text (when no URL provided)
+    // ========================================
+    if (url.pathname === '/api/profile/bio/save' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        if (ctx.isSubUser) return denyOwnerOnly();
+        const body = await request.json();
+        const bio = body.bio_text == null ? '' : String(body.bio_text).slice(0, 1000);
+        await env.DB.prepare('INSERT OR IGNORE INTO profiles (user_id) VALUES (?)').bind(ctx.ownerId).run();
+        await env.DB.prepare(
+          'UPDATE profiles SET candidate_bio_text = ? WHERE user_id = ?'
+        ).bind(bio || null, ctx.ownerId).run();
+        return jsonResponse({ success: true });
+      } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
 
     // ========================================
@@ -4948,6 +5113,42 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
       const isNewUser = needsOnboarding === true;
       const isReturningUser = !isNewUser && officeType && officeType !== 'unknown';
 
+      // Sam v2 Phase 1: load candidate site content + fallback bio for the
+      // ABOUT YOUR CANDIDATE block. Owner-scoped: chatOwnerId points to the
+      // candidate's user_id (sub-users see the same content as the owner).
+      let candidateSiteContent = '';
+      let candidateSiteUrl = '';
+      let candidateSiteFetchedAt = '';
+      let candidateBioText = '';
+      let earlyVotingStartDate = '';
+      if (chatOwnerId) {
+        try {
+          const profileV2 = await env.DB.prepare(
+            'SELECT candidate_site_url, candidate_site_content, candidate_site_fetched_at, candidate_bio_text, early_voting_start_date FROM profiles WHERE user_id = ?'
+          ).bind(chatOwnerId).first();
+          if (profileV2) {
+            candidateSiteUrl = profileV2.candidate_site_url || '';
+            candidateSiteContent = profileV2.candidate_site_content || '';
+            candidateSiteFetchedAt = profileV2.candidate_site_fetched_at || '';
+            candidateBioText = profileV2.candidate_bio_text || '';
+            earlyVotingStartDate = profileV2.early_voting_start_date || '';
+          }
+        } catch (e) { console.warn('[v2 profile load]', e.message); }
+      }
+      // Build ABOUT YOUR CANDIDATE block — surfaces user-supplied identity
+      // context. Site content first (richer); bio appended (or sole content
+      // if no URL was provided). Block omitted entirely if both empty.
+      let aboutCandidateBlock = '';
+      if (candidateSiteContent || candidateBioText) {
+        aboutCandidateBlock = '\n================================================================\nABOUT YOUR CANDIDATE\n================================================================\n';
+        if (candidateSiteContent) {
+          aboutCandidateBlock += `\nThe candidate provided their campaign website during onboarding. Below is the content from ${candidateSiteUrl}${candidateSiteFetchedAt ? ' (retrieved ' + candidateSiteFetchedAt + ')' : ''}:\n\n---\n${candidateSiteContent}\n---\n\nUse this as authoritative context about who the candidate is, their background, positions, messaging, and tone. When relevant, reference their site ("Based on your site...", "Per your campaign messaging on ' + (candidateSiteUrl || 'your site') + '...").\n`;
+        }
+        if (candidateBioText) {
+          aboutCandidateBlock += `\nDuring onboarding, the candidate also shared the following about themselves:\n\n---\n${candidateBioText}\n---\n\nUse this as authoritative context. They are the authority on themselves.\n`;
+        }
+      }
+
       // ========================================
       // TOOL MEMORY — write + read for this turn
       //
@@ -5075,7 +5276,7 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
       const _toolMemoryRows = conversation_id ? await loadRecentToolMemory(conversation_id) : [];
       const toolMemoryBlock = formatToolMemoryBlock(_toolMemoryRows);
 
-      let systemPrompt = `================================================================
+      let systemPrompt = `${aboutCandidateBlock}================================================================
 STOP — FACTUAL DISCIPLINE (read before every response)
 ================================================================
 Before you output a specific date, dollar amount, filing deadline, qualifying period, vote total, polling number, percentage, or biographical fact about the candidate, CONFIRM you got it from one of these three sources: (a) the user's saved campaign data shown below in GROUND TRUTH, (b) a web_search result you called in THIS conversation, or (c) the user's own message earlier in this conversation. If you cannot point to one of those three, STOP. Do not write the answer. Either call web_search right now and cite what you find, or reply "I don't have that — verify with [specific authority such as the Supervisor of Elections]."
@@ -5225,6 +5426,20 @@ If you're uncertain whether the user's claim implies a stronger fact, ASK rather
 
 WHY: Inflating user-supplied claims into stronger claims creates false confidence. The user trusts their own data; if you transform it without permission, the user has to constantly correct you, eroding trust.
 
+USER AS AUTHORITY — HARD CONSTRAINT:
+
+When the user provides a URL or factual claim about themselves, their campaign, their own website, their own bio, their own positions, their own dates, or their own intel about opponents — TREAT IT AS AUTHORITATIVE. The candidate is the authority on themselves and their campaign.
+
+Specifically:
+- User-supplied URLs (especially their own campaign site) should be read via web_search/web_fetch without friction
+- User-stated facts about themselves are authoritative — do not require external verification
+- User-supplied dates (filing date, early voting, planned events) are authoritative once entered
+- User-supplied intel about opponents (in chat or Opposition Notes) is authoritative
+
+Do NOT defer or refuse when the user shares their own information. Read it, factor it in, cite it ("Per your campaign site...", "Based on what you shared...").
+
+WHY: The candidate trusts their own data. If you treat their URL or claims as untrusted, you become useless to them. They are the source of truth for their own campaign.
+
 OPPONENT FACTS — HARD CONSTRAINT (read every time, before any answer about opponents):
 
 When the user asks about an opponent's fundraising, donor base, voting record, biography, prior campaigns, controversies, endorsements, or any specific fact about an opponent — your authoritative sources are EXACTLY THESE THREE, in priority order:
@@ -5256,7 +5471,7 @@ GROUND TRUTH — ${currentDate} (${isoToday})
 ================================================================
 Candidate: ${candidateName || 'unknown'} | Office: ${specificOffice || officeType || 'unknown'} (${effectiveGovLevel})
 Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'}
-Election: ${electionDate || 'not set'}${effectiveDays != null ? ' (' + effectiveDays + ' days away)' : ''} | Phase: ${campaignPhase}
+Election: ${electionDate || 'not set'}${effectiveDays != null ? ' (' + effectiveDays + ' days away)' : ''} | Phase: ${campaignPhase}${earlyVotingStartDate ? '\nEarly voting starts: ' + earlyVotingStartDate + ' (user-supplied — authoritative)' : ''}
 Budget: ${budgetStr} | Win Number: ${winNumberStr}
 Raised: ${raisedStr} of ${goalStr} goal | Donors: ${donorCount || 0}${startingAmount ? ' | Starting cash: $' + Number(startingAmount).toLocaleString() : ''}
 Filed: ${filingStatus || 'unknown'}${effectiveDays != null && effectiveDays > 180 ? ' (early planning — do not ask about filing)' : ''}
@@ -5384,7 +5599,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         }
         return message || '';
       })();
-      const opponentResearchGate = isOpponentResearchQuery(_latestUserText, workspaceEntities);
+      // Sam v2 Phase 1: opponent gate exception for user-supplied URLs.
+      // When the user pastes a URL (especially their own campaign site), the
+      // gate must not fire — they're asking Sam to read their own content.
+      // Detect any HTTP(S) URL in the latest user message; if present, skip
+      // the gate. The candidate's stored candidate_site_url is also implicitly
+      // authorized (would match the URL detection if pasted, and is already
+      // in the system prompt's ABOUT YOUR CANDIDATE block).
+      const _userSuppliedUrl = (() => {
+        if (!_latestUserText) return null;
+        const m = String(_latestUserText).match(/https?:\/\/[^\s)\]<>"']+/i);
+        return m ? m[0] : null;
+      })();
+      const _gateRaw = isOpponentResearchQuery(_latestUserText, workspaceEntities);
+      const opponentResearchGate = _gateRaw && !_userSuppliedUrl;
       if (opponentResearchGate) {
         // Append a note to the system prompt so Sam knows web_search
         // is unavailable for this turn and why. She can then defer
@@ -7099,6 +7327,22 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           `Election date: ${electionDate || 'not set'}${_electionHuman} | Days to election: ${_dayCountWindow} | ` +
           `Budget: ${budgetStr} | Win number: ${winNumberStr} | Raised: ${raisedStr} | Donors: ${donorCount || 0} | ` +
           `Today: ${currentDate} (${isoToday})` +
+          (earlyVotingStartDate ? (() => {
+            // Compute days-to-early-voting window so day-count claims like
+            // "175 days out" derived from this date are AUTHORIZED.
+            let evDays = null;
+            try {
+              const evD = new Date(earlyVotingStartDate + 'T00:00:00');
+              const today = new Date(isoToday + 'T00:00:00');
+              if (!isNaN(evD.getTime()) && !isNaN(today.getTime())) {
+                evDays = Math.round((evD - today) / 86400000);
+              }
+            } catch (e) {}
+            const evWindow = evDays != null ? `${Math.max(0, evDays - 2)}-${evDays + 2} days` : 'unknown';
+            return ` | Early voting starts: ${earlyVotingStartDate} (user-supplied, authoritative — ANY format restating this date is AUTHORIZED, including "October 22", "Oct 22, 2026", "10/22", etc.; day-count claims in the ${evWindow} window are AUTHORIZED as derivations from this date)`;
+          })() : '') +
+          (candidateBioText ? `\nCandidate bio (user-supplied, authoritative): ${candidateBioText}` : '') +
+          (candidateSiteContent ? `\nCandidate site content available (${candidateSiteContent.length} chars from ${candidateSiteUrl}) — claims paraphrasing this content are AUTHORIZED` : '') +
           (typeof calendarReference === 'string' && calendarReference.length > 0
             ? `\n\nCALENDAR_REFERENCE (authoritative day-of-week assignments — claims that match these are AUTHORIZED):\n${calendarReference}`
             : '');
@@ -7176,7 +7420,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '- Information already in AUTHORITATIVE_SOURCES (paraphrase or quote)\n' +
             '- Information that traces to IN_TURN_TOOL_RESULTS (web_search, lookup_*, etc.) — Sam quoting her own tool results this turn is AUTHORIZED\n' +
             '- The election date in ANY format (ISO "2026-11-03", human "Tuesday, November 3, 2026", day-of-week prefixes, etc.) when it matches GROUND_TRUTH\'s election date\n' +
+            '- The early voting start date in ANY format when it matches GROUND_TRUTH\'s "Early voting starts" entry (user-supplied; authoritative)\n' +
             '- Day-count claims (e.g. "188 days away", "6 months out") that fall within the GROUND_TRUTH days-to-election window — these are calculations, not unverified claims\n' +
+            '- Candidate biographical claims that paraphrase or summarize GROUND_TRUTH\'s candidate bio or candidate site content (user-supplied; authoritative)\n' +
             '- Generic role references already in Ground Truth (e.g., the candidate\'s own party)\n' +
             '- Claims already accompanied by an explicit caveat ("industry benchmarks suggest...", "verify with...")\n\n' +
             'Categorize each unverified claim into one of two buckets:\n' +

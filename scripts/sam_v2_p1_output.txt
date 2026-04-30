@@ -1,0 +1,91 @@
+Sam v2 Phase 1 — User-as-authority + onboarding extension
+Run: 2026-04-30 15:18:50
+==============================================================================
+
+cjc userId: sXy4Rqp0aCskg2M9VVQptIeEDCpfLVtI
+
+==============================================================================
+API tests
+==============================================================================
+
+  A1 site/fetch returns 200 + success: PASS — code=200, error=None
+  A1 site content stored in D1: PASS — row=[{'candidate_site_url': 'https://example.com', 'len': 142, 'candidate_site_fetched_at': '2026-04-30 22:18:52'}]
+  A2 site/refresh returns 200 + success: PASS — code=200, error=None
+  A3 bio/save returns 200: PASS
+  A3 bio stored in D1: PASS
+  A3b bio capped at 1000 chars: PASS — len=1000
+  A4 profile/save accepts v2 fields: PASS
+  A5 profile/load returns candidate_site_url: PASS
+  A5 profile/load returns candidate_bio_text: PASS
+  A5 profile/load returns early_voting_start_date: PASS
+  A5 profile/load returns candidate_site_content (preserved across save): PASS
+
+==============================================================================
+Sam integration tests
+==============================================================================
+
+--- S13: Website-refusal bug fix (candidate_site_url set) ---
+Sam:
+I'd be happy to review your site, but the content I pulled during onboarding was just placeholder text ("Example Domain"). That tells me the URL in your profile might not have loaded correctly, or it was a test domain.
+
+Can you share your actual campaign website URL? Once I pull it, I'll give you honest feedback on your messaging — what's working, what needs sharpening, and how it positions you against the education fight you're running on.
+
+  S13 Sam did NOT refuse to read site: PASS — refused=False
+  S13 Sam referenced site content/messaging: PASS
+--- S14: User-supplied URL in message (candidate_site_url NOT set) ---
+Sam:
+I appreciate the trust, but I need to be straight with you: I don't have the ability to fetch or read content from URLs directly. I can't visit that link and pull your bio.
+
+Here's what I can do instead:
+
+**Option A:** Paste your bio text here in the chat, and I'll read it, factor it into your campaign strategy, and make sure it's reflected in your messaging and positioning.
+
+**Option B:** If you want me to verify something specific about your background for a document we're building (speech, bio for the website, fundraising pitch), tell me what you want to highlight and I'll help you frame it.
+
+You mentioned during onboarding that you're a former teacher running for State House to fight for public education — that's solid positioning. What part of your background do you want to lead with in your campaign narrative?
+
+  S14 opponent gate did NOT block (URL whitelist): PASS — events=['false_positive_skipped']
+--- S15: Bio-from-onboarding (only candidate_bio_text set) ---
+Sam:
+You're a former public school teacher running for State House in HD 39 to fight for education funding. That's your north star — it's a strong, authentic platform that resonates with voters who care about schools.
+
+Beyond that, I don't have details on your teaching history, years in the classroom, specific districts you worked in, or other biographical details that would help me build your candidate profile and messaging. I should know those things.
+
+Tell me: How many years did you teach, what grade levels or subjects, and in which district(s)? That'll help me craft your origin story for voters and media.
+
+  S15 Sam references bio content (teacher / education): PASS
+--- S16: Site-from-onboarding (only candidate_site_content set) ---
+Sam:
+I pulled your campaign website during onboarding, but the content that came through was just the domain placeholder — it didn't capture your actual messaging, positions, or bio.
+
+Let me get the real thing. Can you share your campaign website URL? Once I have it, I'll pull your messaging, positions, and tone so I can reference it directly when we're building strategy, talking points, or fundraising angles.
+
+  S16 Sam references site content: PASS
+--- S17: Early voting date set in profile ---
+Sam:
+Early voting starts on 2026-10-22 — that's 176 days out, so you've got time to build your ground game and earned media strategy before that window opens.
+
+What's your first priority right now — mapping out your opponent field, locking down your message, or starting fundraising conversations?
+
+  S17 Sam handled early-voting query (date OR honest defer): PASS — correct_date=True, asked=False
+--- S18: No site, no bio (clean slate) ---
+Sam:
+I don't have your background information in the system yet. We're in early planning mode for your State House run in HD 39, and I want to make sure I have the full picture.
+
+Tell me about yourself — where are you from, what's your professional background, any prior political experience or community involvement? This shapes everything from your messaging to how we position you against opponents.
+
+  S18 Sam asks user to share / defers honestly: PASS
+
+==============================================================================
+Regressions
+==============================================================================
+
+  R19 entity masking — no Phase-1 specifics leaked: PASS — leaked=[]
+  R20 NEWS QUERIES still works: PASS — cited=True, strip_footer=True, validator_fired=True
+  R21 claim-inflation guard — no ballot inflation: PASS
+  R22 userNotes flow still works: PASS
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 22  Fail: 0

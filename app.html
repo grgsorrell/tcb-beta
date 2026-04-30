@@ -1629,7 +1629,10 @@ function saveCampaign() {
     state: campaignData.state, election_date: campaignData.electionDate,
     filing_status: campaignData.filingStatus, win_number: campaignData.winNumber,
     win_number_data: campaignData.winNumberData ? JSON.stringify(campaignData.winNumberData) : null,
-    onboarding_complete: campaignData.onboardingComplete ? 1 : 0
+    onboarding_complete: campaignData.onboardingComplete ? 1 : 0,
+    candidate_site_url: campaignData.candidateSiteUrl || null,
+    candidate_bio_text: campaignData.candidateBioText || null,
+    early_voting_start_date: campaignData.earlyVotingStartDate || null
   });
 }
 // Per-row task save/delete (item #5). Same semantics as saveOneEvent.
@@ -2175,6 +2178,11 @@ function loadFromD1() {
       campaignData.winNumber = data.profile.win_number;
       campaignData.filingStatus = data.profile.filing_status;
       campaignData.onboardingComplete = !!data.profile.onboarding_complete;
+      // Sam v2 Phase 1 fields
+      campaignData.candidateSiteUrl = data.profile.candidate_site_url || '';
+      campaignData.candidateSiteFetchedAt = data.profile.candidate_site_fetched_at || '';
+      campaignData.candidateBioText = data.profile.candidate_bio_text || '';
+      campaignData.earlyVotingStartDate = data.profile.early_voting_start_date || '';
       if (data.profile.win_number_data) {
         try { campaignData.winNumberData = JSON.parse(data.profile.win_number_data); } catch(e) {}
       }
@@ -6910,9 +6918,11 @@ function startOnboarding() {
 function renderOnboarding() {
   var box = document.getElementById('ob-box');
   var step = onboardingStep;
-  var pctMap = [0, 0, 16, 33, 50, 66, 83, 100];
+  // Sam v2 Phase 1: 7 steps total now (added website page between former
+  // election-date step and budget step). pctMap maps step → progress %.
+  var pctMap = [0, 0, 14, 28, 42, 56, 70, 84, 100];
   var pct = pctMap[step] || 0;
-  var totalSteps = 6;
+  var totalSteps = 7;
   var samMsg = '';
   var bodyHtml = '';
 
@@ -6956,8 +6966,25 @@ function renderOnboarding() {
     bodyHtml = '<div class="ob-ttl">When is your election?</div><div class="ob-sub">Sam builds your entire campaign timeline backward from this date.</div>' +
       '<div class="ob-lbl">Election Date</div><input id="ob-date" type="date" value="' + (onboardingData.electionDate||'') + '" style="font-size:16px;padding:13px">' +
       '<div class="ob-hint">Don\'t know the exact date yet? You can update this anytime in Settings.</div>' +
+      '<div style="margin-top:18px"><div class="ob-lbl">Early Voting Start <span style="font-weight:400;color:var(--t3);font-size:11px">(Optional)</span></div>' +
+      '<input id="ob-evdate" type="date" value="' + (onboardingData.earlyVotingStartDate||'') + '" style="font-size:16px;padding:13px">' +
+      '<div class="ob-hint">Leave blank if not yet announced. Sam will add an "Early Voting Begins" event to your calendar.</div></div>' +
       '<div style="margin-top:16px"><div class="ob-lbl">Campaign City</div><input id="ob-city" placeholder="e.g. Sherman, TX" value="' + escapeHtml(onboardingData.city||'') + '"><div class="ob-hint">Used for local weather and campaign context.</div></div>';
   } else if (step === 6) {
+    // Sam v2 Phase 1: Campaign website / bio fallback page.
+    samMsg = "Do you have a <strong>campaign website?</strong> If so, I'll learn your background and messaging from it so you don't have to retype it every conversation.";
+    var siteUrlVal = onboardingData.candidateSiteUrl || '';
+    var bioVal = onboardingData.candidateBioText || '';
+    var bioLen = (bioVal || '').length;
+    bodyHtml = '<div class="ob-ttl">About You</div><div class="ob-sub">Sam can use your campaign site to learn about your background, positions, and messaging. Optional \u2014 skip if you don\'t have a site or a bio yet.</div>' +
+      '<div class="ob-lbl">Campaign Website URL <span style="font-weight:400;color:var(--t3);font-size:11px">(Optional)</span></div>' +
+      '<input id="ob-site-url" type="url" placeholder="https://yourcampaign.com" value="' + escapeAttr(siteUrlVal) + '" style="font-size:14px;padding:11px">' +
+      '<div id="ob-site-status" style="font-size:11px;color:var(--t3);margin-top:6px;min-height:14px"></div>' +
+      '<div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)">' +
+      '<div class="ob-lbl">Don\'t have a site yet? Tell me a bit about yourself. <span style="font-weight:400;color:var(--t3);font-size:11px">(Optional)</span></div>' +
+      '<textarea id="ob-bio" maxlength="1000" oninput="obBioCharCounter()" placeholder="Your background, why you\'re running, your top issues \u2014 anything Sam should know. You can also tell me later in chat." style="width:100%;min-height:90px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:10px;color:var(--t1);font-size:13px;font-family:var(--font-b);outline:none;resize:vertical;box-sizing:border-box">' + escapeHtml(bioVal) + '</textarea>' +
+      '<div id="ob-bio-counter" style="font-size:9px;color:var(--t3);text-align:right;margin-top:4px">' + bioLen + ' / 1000</div></div>';
+  } else if (step === 7) {
     samMsg = "Almost done! What's your <strong>total campaign budget?</strong> I'll track every dollar.";
     bodyHtml = '<div class="ob-ttl">What\'s your campaign budget?</div><div class="ob-sub">Sam tracks every expense and alerts you when you\'re running low. You can update this anytime.</div>' +
       '<div class="ob-lbl">Total Campaign Budget</div>' +
@@ -6970,7 +6997,7 @@ function renderOnboarding() {
         '<div class="qp" onclick="document.getElementById(\'ob-budget\').value=100000">$100,000</div>' +
       '</div>' +
       '<div class="ob-hint" style="margin-top:12px">No budget yet? Leave blank and set it later.</div>';
-  } else if (step === 7) {
+  } else if (step === 8) {
     // Completion
     samMsg = "You're all set, <strong>" + escapeHtml(onboardingData.firstName||'') + "!</strong> Your campaign headquarters is live. Let's get to work.";
     var days = daysUntil(onboardingData.electionDate);
@@ -6989,11 +7016,12 @@ function renderOnboarding() {
   }
 
   // Footer
-  var isComplete = step === 7;
+  var isComplete = step === 8;
   var footerHtml = '<div class="ob-ctr">' + (isComplete ? '&#9989; Setup Complete' : 'Step ' + step + ' of ' + totalSteps) + '</div><div class="ob-btns">';
   if (step > 1 && !isComplete) footerHtml += '<button class="ob-back" onclick="obBack()">&#8592; Back</button>';
-  if (step <= 5) footerHtml += '<button class="ob-next" onclick="obNext()">Continue &#8594;</button>';
-  else if (step === 6) footerHtml += '<button class="ob-next gold" onclick="obNext()">&#128640; Launch My Campaign</button>';
+  if (step === 6) footerHtml += '<button class="ob-skip" onclick="obSkipWebsite()" style="background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--t2);padding:10px 18px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;margin-right:8px">Skip</button>';
+  if (step <= 6) footerHtml += '<button class="ob-next" onclick="obNext()">Continue &#8594;</button>';
+  else if (step === 7) footerHtml += '<button class="ob-next gold" onclick="obNext()">&#128640; Launch My Campaign</button>';
   footerHtml += '</div>';
 
   box.innerHTML =
@@ -7047,9 +7075,17 @@ function obNext() {
     var dateVal = document.getElementById('ob-date').value;
     if (!dateVal) { alert('Please select an election date'); return; }
     onboardingData.electionDate = dateVal;
+    var evVal = document.getElementById('ob-evdate');
+    if (evVal) onboardingData.earlyVotingStartDate = evVal.value || '';
     var cityVal = document.getElementById('ob-city');
     if (cityVal) onboardingData.city = cityVal.value.trim();
   } else if (onboardingStep === 6) {
+    // Sam v2 Phase 1: website page. Both fields optional. Capture and continue.
+    var siteEl = document.getElementById('ob-site-url');
+    var bioEl = document.getElementById('ob-bio');
+    onboardingData.candidateSiteUrl = siteEl ? siteEl.value.trim() : '';
+    onboardingData.candidateBioText = bioEl ? bioEl.value.slice(0, 1000) : '';
+  } else if (onboardingStep === 7) {
     var budgetVal = document.getElementById('ob-budget').value;
     if (budgetVal) onboardingData.budget = budgetVal;
     // Save everything and show completion
@@ -7060,6 +7096,9 @@ function obNext() {
     campaignData.location = onboardingData.location || '';
     campaignData.state = onboardingData.state || '';
     campaignData.electionDate = onboardingData.electionDate;
+    campaignData.earlyVotingStartDate = onboardingData.earlyVotingStartDate || '';
+    campaignData.candidateSiteUrl = onboardingData.candidateSiteUrl || '';
+    campaignData.candidateBioText = onboardingData.candidateBioText || '';
     campaignData.city = onboardingData.city || '';
     saveCampaign();
     if (onboardingData.budget) {
@@ -7067,9 +7106,86 @@ function obNext() {
       if (!campaignBudget.expenses) campaignBudget.expenses = [];
       saveBudget();
     }
+    // Fire the website fetch + bio save server-side. Don't block the UI;
+    // user lands on completion screen while these run.
+    obFireSiteAndBioSaves();
+    // Auto-add early voting calendar event if provided
+    obAddEarlyVotingEvent();
   }
   onboardingStep++;
   renderOnboarding();
+}
+
+// Skip the website page entirely — same as Continue but doesn't capture
+// values (and doesn't fail if the elements aren't there).
+function obSkipWebsite() {
+  if (onboardingStep !== 6) return;
+  onboardingData.candidateSiteUrl = '';
+  onboardingData.candidateBioText = '';
+  onboardingStep++;
+  renderOnboarding();
+}
+
+// Live char counter for the bio textarea on step 6.
+function obBioCharCounter() {
+  var ta = document.getElementById('ob-bio');
+  var c = document.getElementById('ob-bio-counter');
+  if (ta && c) c.textContent = ta.value.length + ' / 1000';
+}
+
+// Fire server-side fetch for the candidate's campaign site (if URL provided)
+// and persist bio text (if provided). Both endpoints are best-effort: failures
+// are logged but don't block onboarding completion.
+function obFireSiteAndBioSaves() {
+  var sess = getD1Session();
+  if (!sess) return;
+  if (onboardingData.candidateSiteUrl) {
+    fetch(D1_API + '/api/profile/site/fetch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+      body: JSON.stringify({ url: onboardingData.candidateSiteUrl })
+    }).then(function(r){ return r.json(); })
+      .then(function(data){
+        if (data && data.success) {
+          campaignData.candidateSiteFetchedAt = data.fetched_at;
+          console.log('[onboarding] site fetched, ' + data.content_length + ' chars');
+        } else {
+          console.warn('[onboarding] site fetch failed:', data && data.error);
+        }
+      })
+      .catch(function(e){ console.warn('[onboarding] site fetch error:', e.message); });
+  }
+  if (onboardingData.candidateBioText) {
+    fetch(D1_API + '/api/profile/bio/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+      body: JSON.stringify({ bio_text: onboardingData.candidateBioText })
+    }).catch(function(e){ console.warn('[onboarding] bio save error:', e.message); });
+  }
+}
+
+// Auto-add an "Early Voting Begins" event to the calendar when the user
+// supplied an early voting start date during onboarding. Tagged so Sam's
+// calendar reference can recognize voting-period-start events.
+function obAddEarlyVotingEvent() {
+  var d = onboardingData.earlyVotingStartDate;
+  if (!d) return;
+  var sess = getD1Session();
+  if (!sess) return;
+  var evt = {
+    id: 'ev_' + Date.now(),
+    name: 'Early Voting Begins',
+    date: d,
+    time: '',
+    end_time: '',
+    location: '',
+    type: 'voting_period_start'
+  };
+  fetch(D1_API + '/api/events/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify(evt)
+  }).catch(function(e){ console.warn('[onboarding] early voting event save error:', e.message); });
 }
 
 function obBack() { if (onboardingStep > 1) { onboardingStep--; renderOnboarding(); } }
