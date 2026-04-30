@@ -5343,6 +5343,59 @@ Bare claims without attribution will be flagged by the post-generation validator
 
 WHY: A campaign manager who refuses to answer questions is useless. A campaign manager who answers with a real source the candidate can verify is genuinely helpful. Citation makes the answer trustworthy by construction — if the source is real and the candidate can click through to verify, you're delivering real value.
 
+CONFIDENCE SCORING — DEFAULT POSTURE FOR FACTUAL CLAIMS:
+
+When you state a factual claim, communicate your confidence level inline. This tells the user what to trust and why. Three levels:
+
+HIGH CONFIDENCE — claim is sourced from authoritative data:
+  - Web_search results with verifiable citation
+  - Profile data the user provided (election date, early voting date, candidate site, etc.)
+  - Intel panel data (auto-research + user notes)
+  - Tool results from this turn
+  - User's own messages in this conversation
+
+  HIGH confidence ALWAYS requires inline source attribution. If you can't cite, you can't claim HIGH.
+
+  Format examples:
+  "Florida early voting starts October 22, 2026 (HIGH confidence — Source: dos.fl.gov)"
+  "Filing deadline is June 12, 2026 (HIGH confidence — per Ballotpedia)"
+  "Per your campaign site, your top issues are healthcare and education (HIGH confidence — your own messaging)"
+
+MEDIUM CONFIDENCE — claim is pattern-based or industry-typical:
+  - Campaign strategy benchmarks ("80-120 doors per day," "5% mail response rate")
+  - General electoral patterns ("incumbents typically win re-election ~85% of the time")
+  - Industry best practices for messaging, fundraising, GOTV
+  - Historical patterns that may not apply to current race
+
+  MEDIUM confidence requires a caveat explaining what makes it uncertain.
+
+  Format examples:
+  "Door-knocking benchmarks of 80-120 per day are common in suburban districts (MEDIUM confidence — industry pattern, your district's density and volunteer experience may shift this)"
+  "Direct mail typically gets 3-5% response from cold lists (MEDIUM confidence — varies by district, message quality, and timing)"
+
+LOW CONFIDENCE — claim is inference, judgment, or recall without source:
+  - "I think..." reasoning Sam constructs
+  - Recall from training data without verification
+  - Predictions or projections about future outcomes
+  - Characterizations of districts, opponents, or dynamics not in Intel/web_search
+
+  LOW confidence requires explicit acknowledgment of uncertainty AND a path to higher confidence.
+
+  Format examples:
+  "Your district likely leans Republican by 6-8 points (LOW confidence — based on prior cycle pattern, want me to pull current voter registration data?)"
+  "I'd guess Fox is leaning into healthcare because that's his lane (LOW confidence — speculation based on his Intel bio, not verified messaging)"
+
+WHEN TO OMIT CONFIDENCE TAGS:
+
+Confidence scoring applies to FACTUAL CLAIMS. Don't tag:
+  - Strategic recommendations ("I think you should focus on X")
+  - Conversational responses ("got it", "what's next")
+  - Questions back to the user
+  - Conceptual or definitional answers ("a PAC is...")
+  - Math/calculations using data already in context
+
+WHY: A campaign manager who states everything with the same flat confidence is hiding their certainty level. A campaign manager who explicitly says "I'm sure of this — here's the source" vs "this is industry pattern, your race may differ" vs "this is my read, want to verify?" gives the candidate the information they need to act intelligently. Confidence scoring is honesty about epistemic state, not hedging.
+
 ENTITY MASKING — IMPORTANT CONTEXT FOR YOU:
 Names of people relevant to this campaign appear in this prompt as placeholder tokens, not real names. {{CANDIDATE}} is the candidate you work for. {{CANDIDATE_FIRST}} and {{CANDIDATE_LAST}} are first/last name references when only one part appears. {{OPPONENT_1}}, {{OPPONENT_2}}, etc. are opponents. {{ENDORSER_N}} are endorsers. {{DONOR_N}} are donors. The user reading your response will see real names — the placeholders are translated automatically before delivery.
 
@@ -5425,7 +5478,7 @@ A. STATE IT WITH A CAVEAT: "Industry benchmarks suggest [claim], though I'd veri
 
 B. DO NOT STATE IT: For high-stakes claims (specific dollar amounts, dates, phone numbers, URLs, named persons, statutes), do NOT state the claim from training data. Instead say "I don't have verified [X] — [actionable next step with authority]."
 
-The post-generation validator will catch unverified claims and either strip them (high-stakes) or tag them (soft). Avoid the strip by being honest about uncertainty in the first place.
+The post-generation validator will catch unverified claims and either strip them (high-stakes), trigger a regenerate-with-citation pass, or tag them with appropriate confidence levels (MEDIUM/LOW with reasoning). Avoid the strip by being honest about uncertainty in the first place — state your confidence inline.
 
 WHY: A campaign tool that confidently states wrong dollar amounts, dates, or names destroys trust the moment the user verifies independently. A tool that honestly tags uncertainty stays useful even when the underlying knowledge is incomplete.
 
@@ -5462,7 +5515,7 @@ CATEGORY C — DEFERRED (you should not state):
 - Specific opponent facts not in Intel
 - Specific news/current events without web_search citation
 
-Do NOT classify campaign strategy benchmarks as "I can tell you with certainty." They belong in Category B with caveats. The validator will tag your benchmark claims with "(unverified — verify before relying on)" — that's the correct uncertainty signal.
+Do NOT classify campaign strategy benchmarks as "I can tell you with certainty." They belong in Category B with caveats. Communicate confidence inline (MEDIUM or LOW) with reasoning — that's the correct uncertainty signal. The validator will check that your claims have appropriate confidence indicators and tag the ones that slip through.
 
 WHY: Confidently stating training-data benchmarks as verified facts misleads users into trusting numbers that may not apply to their race. Honest categorization keeps trust intact even when knowledge is incomplete.
 
@@ -7482,18 +7535,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '- Information already in AUTHORITATIVE_SOURCES (paraphrase or quote)\n' +
             '- Information that traces to IN_TURN_TOOL_RESULTS (web_search, lookup_*, etc.) — Sam quoting her own tool results this turn is AUTHORIZED\n' +
             '- **CLAIMS WITH AN INLINE CITATION**: Any specific factual claim that is accompanied in the same sentence (or immediately following parenthetical) by a source attribution — inline URL (https://... or domain.tld), "Source: [name]", "Per [organization]", "According to [website/agency]", "[Source name] reports/shows/lists/says". Cited claims are AUTHORIZED — even if you cannot verify the source independently, the user can click through. This is the primary v2 default — Sam answers with citations and the citation is the verification mechanism.\n' +
+            '- **CLAIMS WITH A CONFIDENCE INDICATOR ALREADY PRESENT**: Any claim accompanied by "(HIGH confidence — ...)", "(MEDIUM confidence — ...)", or "(LOW confidence — ...)" inline. Sam has already self-classified these — DO NOT re-flag. (HIGH confidence claims must also have a source attribution; if they don\'t, treat them as the high_stakes uncited bucket.)\n' +
             '- The election date in ANY format (ISO "2026-11-03", human "Tuesday, November 3, 2026", day-of-week prefixes, etc.) when it matches GROUND_TRUTH\'s election date\n' +
             '- The early voting start date in ANY format when it matches GROUND_TRUTH\'s "Early voting starts" entry (user-supplied; authoritative)\n' +
             '- Day-count claims (e.g. "188 days away", "6 months out") that fall within the GROUND_TRUTH days-to-election window — these are calculations, not unverified claims\n' +
             '- Candidate biographical claims that paraphrase or summarize GROUND_TRUTH\'s candidate bio or candidate site content (user-supplied; authoritative)\n' +
             '- Generic role references already in Ground Truth (e.g., the candidate\'s own party)\n' +
             '- Claims already accompanied by an explicit caveat ("industry benchmarks suggest...", "verify with...")\n\n' +
-            'Categorize each unverified claim into one of two buckets:\n' +
-            '- "high_stakes": specific dollar amounts, dates, phone numbers, URLs, addresses, named persons (not in AUTHORITATIVE_SOURCES), statute citations, day-of-week assertions for dates not traceable to CALENDAR_REFERENCE, procedural/legal/regulatory rules about campaign finance or compliance not traceable to a tool result → these will be STRIPPED\n' +
-            '- "soft": percentages, statistics, benchmarks, electoral history, organizational characterizations → these will be TAGGED with "(unverified)"\n\n' +
-            'Return JSON: {"high_stakes": ["claim text 1", ...], "soft": ["claim text 1", ...]}\n' +
+            'Categorize each unverified claim into one of three buckets:\n' +
+            '- "high_stakes": specific dollar amounts, dates, phone numbers, URLs, addresses, named persons (not in AUTHORITATIVE_SOURCES), statute citations, day-of-week assertions for dates not traceable to CALENDAR_REFERENCE, procedural/legal/regulatory rules about campaign finance or compliance not traceable to a tool result → these will trigger regenerate-with-citation, then strip if regen fails\n' +
+            '- "medium": pattern-based or industry-typical claims — campaign benchmarks ("80-120 doors per day", "5% mail response"), general electoral patterns ("incumbents win ~85%"), industry best practices for messaging/fundraising/GOTV → these will be TAGGED inline with "(MEDIUM confidence — industry pattern, your specific race may differ)"\n' +
+            '- "low": inference, judgment, recall without source — Sam\'s "I think" reasoning, predictions about future outcomes, characterizations of districts/opponents/dynamics not in Intel or web_search → these will be TAGGED inline with "(LOW confidence — inference, recommend verification)"\n\n' +
+            'Return JSON: {"high_stakes": ["claim text 1", ...], "medium": ["claim 1", ...], "low": ["claim 1", ...]}\n' +
             'Each claim should be a verbatim substring from SAM_RESPONSE so the post-processor can locate it.\n' +
-            'If none: {"high_stakes": [], "soft": []}\n' +
+            'If none: {"high_stakes": [], "medium": [], "low": []}\n' +
             'JSON ONLY.';
           try {
             const aResp = await fetch('https://api.anthropic.com/v1/messages', {
@@ -7513,15 +7568,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
             }
             const mm = txt.match(/\{[\s\S]*\}/);
-            if (!mm) return { high_stakes: [], soft: [] };
+            if (!mm) return { high_stakes: [], medium: [], low: [] };
             const parsed = JSON.parse(mm[0]);
+            const filt = (a) => Array.isArray(a) ? a.filter(c => typeof c === 'string' && c.length > 0) : [];
             return {
-              high_stakes: Array.isArray(parsed.high_stakes) ? parsed.high_stakes.filter(c => typeof c === 'string' && c.length > 0) : [],
-              soft: Array.isArray(parsed.soft) ? parsed.soft.filter(c => typeof c === 'string' && c.length > 0) : []
+              high_stakes: filt(parsed.high_stakes),
+              medium: filt(parsed.medium),
+              low: filt(parsed.low),
+              // Legacy compat: old "soft" bucket → treat as medium so older
+              // audit-Haiku responses still work during the deploy window.
+              ...(Array.isArray(parsed.soft) && parsed.soft.length > 0 ? { medium: filt(parsed.medium).concat(filt(parsed.soft)) } : {})
             };
           } catch (e) {
             console.warn('[citation_validator] extract failed:', e.message);
-            return { high_stakes: [], soft: [] };
+            return { high_stakes: [], medium: [], low: [] };
           }
         }
 
@@ -7544,20 +7604,31 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           return joined + '\n\n*(Note: removed specific claims that couldn\'t be traced to your race data, tools, or earlier messages.)*';
         }
 
-        function tagUnverifiedClaims(samText, claims) {
-          if (!claims || claims.length === 0) return samText;
+        function tagWithConfidence(samText, mediumClaims, lowClaims) {
+          // Sam v2 Phase 3: per-claim confidence tag injection. Replaces the
+          // v1/v2-Phase-2 generic "(unverified — verify before relying on)"
+          // tag with explicit MEDIUM/LOW confidence + reasoning. Scans text
+          // for first occurrence of each claim and inserts the appropriate
+          // confidence tag immediately after. Avoids double-tagging when a
+          // claim is already accompanied by HIGH/MEDIUM/LOW or "(unverified".
           let out = samText;
-          const TAG = ' *(unverified — verify before relying on)*';
-          for (const c of claims) {
-            if (!c) continue;
-            const cStr = String(c);
+          const MEDIUM_TAG = ' *(MEDIUM confidence — industry pattern, your specific race may differ)*';
+          const LOW_TAG = ' *(LOW confidence — inference, recommend verification)*';
+          const tagOnce = (claim, tagStr) => {
+            if (!claim) return;
+            const cStr = String(claim);
             const idxLower = out.toLowerCase().indexOf(cStr.toLowerCase());
-            if (idxLower < 0) continue;
+            if (idxLower < 0) return;
             const after = out.slice(idxLower + cStr.length);
-            // avoid double-tagging
-            if (after.startsWith(TAG) || after.startsWith(' *(unverified')) continue;
-            out = out.slice(0, idxLower + cStr.length) + TAG + after;
-          }
+            // Skip if already tagged (any confidence level OR legacy unverified marker)
+            if (/^\s*\*?\(?\s*(HIGH|MEDIUM|LOW)\s*confidence/i.test(after)
+                || after.startsWith(' *(unverified')
+                || after.startsWith(MEDIUM_TAG)
+                || after.startsWith(LOW_TAG)) return;
+            out = out.slice(0, idxLower + cStr.length) + tagStr + after;
+          };
+          for (const c of (mediumClaims || [])) tagOnce(c, MEDIUM_TAG);
+          for (const c of (lowClaims || [])) tagOnce(c, LOW_TAG);
           return out;
         }
 
@@ -7608,32 +7679,33 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         }
 
         const cv = await validateUnsourcedClaims(_citationSamText);
+        const cvSoft = (cv.medium || []).concat(cv.low || []);
         if (cv.high_stakes.length > 0) {
           // Try regen-with-citation FIRST (one retry).
           const retry = await regenerateWithCitationFeedback(messages, data.content, cv.high_stakes);
           const retryText = extractTextFromContent(retry.content);
           const retryCv = await validateUnsourcedClaims(retryText);
           if (retryCv.high_stakes.length === 0) {
-            // Regen succeeded — Sam now cites her claims. Tag any soft claims
-            // that the retry might also have surfaced.
+            // Regen succeeded — Sam now cites her claims. Tag any pattern/
+            // inference claims that the retry surfaced with confidence levels.
             let finalText = retryText;
-            if (retryCv.soft.length > 0) {
-              finalText = tagUnverifiedClaims(retryText, retryCv.soft);
+            if ((retryCv.medium || []).length > 0 || (retryCv.low || []).length > 0) {
+              finalText = tagWithConfidence(retryText, retryCv.medium, retryCv.low);
             }
             const finalResp = { ...retry, content: [{ type: 'text', text: finalText }] };
-            await logCitationEvent('regenerated_with_citation', cv.high_stakes, retryCv.soft, _citationSamText, finalText);
+            await logCitationEvent('regenerated_with_citation', cv.high_stakes, (retryCv.medium || []).concat(retryCv.low || []), _citationSamText, finalText);
             return buildSafeResponse(finalResp);
           }
-          // Regen still uncited → fall back to strip (existing v1 behavior).
+          // Regen still uncited → fall back to strip (existing behavior).
           const stripped = stripUnverifiedClaims(retryText, retryCv.high_stakes);
           const strippedResp = { ...retry, content: [{ type: 'text', text: stripped }] };
           await logCitationEvent('stripped', cv.high_stakes, retryCv.high_stakes, _citationSamText, stripped);
           return buildSafeResponse(strippedResp);
         }
-        if (cv.soft.length > 0) {
-          const tagged = tagUnverifiedClaims(_citationSamText, cv.soft);
+        if (cvSoft.length > 0) {
+          const tagged = tagWithConfidence(_citationSamText, cv.medium, cv.low);
           const taggedResp = { ...data, content: [{ type: 'text', text: tagged }] };
-          await logCitationEvent('tagged', [], cv.soft, _citationSamText, tagged);
+          await logCitationEvent('tagged', [], cvSoft, _citationSamText, tagged);
           return buildSafeResponse(taggedResp);
         }
         await logCitationEvent('passed', [], [], _citationSamText, _citationSamText);
