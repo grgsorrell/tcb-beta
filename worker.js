@@ -5281,6 +5281,68 @@ STOP — FACTUAL DISCIPLINE (read before every response)
 ================================================================
 Before you output a specific date, dollar amount, filing deadline, qualifying period, vote total, polling number, percentage, or biographical fact about the candidate, CONFIRM you got it from one of these three sources: (a) the user's saved campaign data shown below in GROUND TRUTH, (b) a web_search result you called in THIS conversation, or (c) the user's own message earlier in this conversation. If you cannot point to one of those three, STOP. Do not write the answer. Either call web_search right now and cite what you find, or reply "I don't have that — verify with [specific authority such as the Supervisor of Elections]."
 
+CITATION-FIRST — DEFAULT POSTURE (read every time, before every factual answer):
+
+Your default behavior is to ANSWER QUESTIONS, not defer. When the user asks a factual question, your first move is to retrieve the answer from a real source and cite it inline.
+
+WHEN TO CALL WEB_SEARCH:
+
+Call web_search for ANY question about current state of the world:
+- Laws, regulations, deadlines, filing requirements
+- Current officeholders, candidates, election dates
+- Contribution limits, reporting calendars, qualifying periods
+- Early voting dates, polling locations, ballot access requirements
+- Recent news, polls, fundraising data, FEC filings
+- Specific political figures, organizations, endorsements
+- District boundaries, demographics, voter registration
+
+Do NOT call web_search for:
+- Conceptual or definitional questions ("what's a PAC?", "what does 501c4 mean?")
+- Math or calculations using data already in context
+- Strategic reasoning over data already provided
+- Conversational responses ("thanks", "what's next?")
+
+WHEN ANSWERING FACTUAL QUESTIONS:
+
+1. Call web_search with a focused query
+2. Read the results
+3. State the answer with the source cited inline:
+   "Florida early voting starts October 22, 2026 (Source: dos.fl.gov)"
+   "Filing deadline is June 12, 2026 (Source: ballotpedia.org/Florida_House_District_39)"
+   "Individual contribution limit for FL state house is $1,000 (Source: dos.myflorida.com/campaign-finance)"
+4. Make the URL clickable in the response
+
+WHEN WEB_SEARCH RETURNS NOTHING USEFUL:
+
+Defer with a SPECIFIC RESOURCE POINTER, not a generic deferral.
+
+Bad: "Contact your local elections office for that information."
+Good: "I searched and didn't find a published date for that yet — it may not be released. The FL Division of Elections publishes the candidate calendar at dos.fl.gov/elections/candidates. Want me to set a calendar reminder to check back in two weeks?"
+
+Specific URL > generic advice. Always.
+
+WHEN ANSWERING FROM CONTEXT (Ground Truth, Intel, user-supplied data):
+
+No web_search needed. Cite the context source:
+- "Per your campaign site at [URL]..."
+- "Based on what you shared in onboarding..."
+- "From the Intel notes you saved on Jarod Fox..."
+
+Context-grounded answers are HIGH confidence by construction.
+
+CITATION FORMAT REQUIREMENT:
+
+Every specific factual claim about a date, dollar amount, named person, URL, address, statute, or law MUST include a source attribution in the same response. Acceptable formats:
+- Inline URL: "(https://dos.fl.gov)"
+- "Source: [domain]" or "Source: [organization name]"
+- "Per [URL]" or "Per [organization]"
+- "According to [source]"
+- "[Source name] reports/shows/lists..."
+
+Bare claims without attribution will be flagged by the post-generation validator and you'll be asked to regenerate with citations. Avoid the regen by citing the first time.
+
+WHY: A campaign manager who refuses to answer questions is useless. A campaign manager who answers with a real source the candidate can verify is genuinely helpful. Citation makes the answer trustworthy by construction — if the source is real and the candidate can click through to verify, you're delivering real value.
+
 ENTITY MASKING — IMPORTANT CONTEXT FOR YOU:
 Names of people relevant to this campaign appear in this prompt as placeholder tokens, not real names. {{CANDIDATE}} is the candidate you work for. {{CANDIDATE_FIRST}} and {{CANDIDATE_LAST}} are first/last name references when only one part appears. {{OPPONENT_1}}, {{OPPONENT_2}}, etc. are opponents. {{ENDORSER_N}} are endorsers. {{DONOR_N}} are donors. The user reading your response will see real names — the placeholders are translated automatically before delivery.
 
@@ -6328,7 +6390,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       async function extractClaimedComplianceDates(samText) {
-        const prompt = `You are a compliance-date auditor. Extract every specific calendar date or specific deadline mentioned in this campaign coaching response. Return JSON only.\n\nRESPONSE:\n${samText}\n\nTASK: Identify any specific dates (like "June 8, 2026", "May 12", "the 15th of May", "noon Eastern on June 12") presented as filing/qualifying/petition/ballot deadlines. EXCLUDE:\n- Today's date used as a reference point\n- Vague references ("early June", "this summer") unless presented as a deadline\n- Election day itself\n- Calendar items unrelated to compliance\n\nReturn JSON: {"dates": ["June 8, 2026", "noon Eastern June 12, 2026"]}\nIf no compliance dates: {"dates": []}\nJSON ONLY — no preamble, no markdown.`;
+        const prompt = `You are a compliance-date auditor. Extract every specific calendar date or specific deadline mentioned in this campaign coaching response that is NOT accompanied by a source citation. Return JSON only.\n\nRESPONSE:\n${samText}\n\nTASK: Identify any UNCITED specific dates (like "June 8, 2026", "May 12", "the 15th of May", "noon Eastern on June 12") presented as filing/qualifying/petition/ballot deadlines. EXCLUDE:\n- Today's date used as a reference point\n- Vague references ("early June", "this summer") unless presented as a deadline\n- Election day itself\n- Calendar items unrelated to compliance\n- DATES ACCOMPANIED BY A CITATION — inline URL (https://...), "Source: [name]", "Per [organization]", "According to [website]", "[domain] reports/shows/lists". Cited dates are AUTHORIZED even if you can't verify the source independently — the user can click through to verify.\n\nReturn JSON: {"dates": ["June 8, 2026", "noon Eastern June 12, 2026"]}\nIf no uncited compliance dates: {"dates": []}\nJSON ONLY — no preamble, no markdown.`;
         try {
           const resp = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
@@ -6624,7 +6686,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       async function extractClaimedFinanceDates(samText) {
-        const prompt = `You are a campaign-finance-report-date auditor. Extract every specific calendar date or deadline mentioned in this campaign coaching response that pertains to FINANCE REPORTS (quarterly reports, pre-primary / pre-general / post-election filings, FEC filing dates, coverage periods). Return JSON only.\n\nRESPONSE:\n${samText}\n\nTASK: Identify any specific dates (like "April 15, 2026", "July 31", "the 15th") presented as finance-report due dates, filing windows, or coverage periods. EXCLUDE:\n- Today's date or generic time references\n- Election day itself (unless specifically tied to a post-election report)\n- Filing/qualifying deadlines (those are Class A compliance, not finance reports)\n- Vague references unless presented as a deadline\n\nReturn JSON: {"dates": ["April 15, 2026", "Q2 2026 due July 31"]}\nIf no finance dates: {"dates": []}\nJSON ONLY — no preamble, no markdown.`;
+        const prompt = `You are a campaign-finance-report-date auditor. Extract every specific calendar date or deadline mentioned in this campaign coaching response that pertains to FINANCE REPORTS AND IS NOT ACCOMPANIED BY A SOURCE CITATION. Return JSON only.\n\nRESPONSE:\n${samText}\n\nTASK: Identify any UNCITED specific dates (like "April 15, 2026", "July 31", "the 15th") presented as finance-report due dates, filing windows, or coverage periods. EXCLUDE:\n- Today's date or generic time references\n- Election day itself (unless specifically tied to a post-election report)\n- Filing/qualifying deadlines (those are Class A compliance, not finance reports)\n- Vague references unless presented as a deadline\n- DATES ACCOMPANIED BY A CITATION — inline URL (https://...), "Source: [name]", "Per [organization]", "According to [website]", "[domain] reports/shows/lists". Cited dates are AUTHORIZED.\n\nReturn JSON: {"dates": ["April 15, 2026", "Q2 2026 due July 31"]}\nIf no uncited finance dates: {"dates": []}\nJSON ONLY — no preamble, no markdown.`;
         try {
           const resp = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
@@ -6885,7 +6947,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // care about amounts presented as donation/contribution
         // LIMITS or maximum allowable donations.
         const prompt =
-          'You are a donation-limit auditor. Extract every dollar amount mentioned in this campaign coaching response that is presented as a CONTRIBUTION LIMIT or MAXIMUM DONATION cap. Return JSON only.\n\n' +
+          'You are a donation-limit auditor. Extract every dollar amount mentioned in this campaign coaching response that is presented as a CONTRIBUTION LIMIT or MAXIMUM DONATION cap AND IS NOT ACCOMPANIED BY A SOURCE CITATION. Cited amounts (with inline URL, "Source: [name]", "Per [organization]", "According to [website]") are AUTHORIZED — exclude them. Return JSON only.\n\n' +
           'RESPONSE:\n' + samText + '\n\n' +
           'TASK: Identify dollar amounts (e.g., "$3,300", "$1,000 per election", "$5,000 per cycle") presented as:\n' +
           '- Individual contribution limits\n' +
@@ -7419,6 +7481,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '- Public-record geographic facts (state names, county names, well-known city names)\n' +
             '- Information already in AUTHORITATIVE_SOURCES (paraphrase or quote)\n' +
             '- Information that traces to IN_TURN_TOOL_RESULTS (web_search, lookup_*, etc.) — Sam quoting her own tool results this turn is AUTHORIZED\n' +
+            '- **CLAIMS WITH AN INLINE CITATION**: Any specific factual claim that is accompanied in the same sentence (or immediately following parenthetical) by a source attribution — inline URL (https://... or domain.tld), "Source: [name]", "Per [organization]", "According to [website/agency]", "[Source name] reports/shows/lists/says". Cited claims are AUTHORIZED — even if you cannot verify the source independently, the user can click through. This is the primary v2 default — Sam answers with citations and the citation is the verification mechanism.\n' +
             '- The election date in ANY format (ISO "2026-11-03", human "Tuesday, November 3, 2026", day-of-week prefixes, etc.) when it matches GROUND_TRUTH\'s election date\n' +
             '- The early voting start date in ANY format when it matches GROUND_TRUTH\'s "Early voting starts" entry (user-supplied; authoritative)\n' +
             '- Day-count claims (e.g. "188 days away", "6 months out") that fall within the GROUND_TRUTH days-to-election window — these are calculations, not unverified claims\n' +
@@ -7471,7 +7534,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           });
           const joined = cleaned.join(' ').replace(/\s+/g, ' ').trim();
           if (joined.length < 60) {
-            return "I want to make sure I'm grounded in your specific race data before giving you that. Tell me what you've already verified or ask me to look something up, and I'll work from there.";
+            // Sam v2 Phase 2 strip-fallback: actionable smart deferral instead
+            // of v1 defensive "I want to be grounded" message. Tells the user
+            // where the authoritative source lives and offers a follow-up.
+            // Specific URL routing requires question classifier (v2 Phase 5);
+            // generic-but-actionable is the v2 Phase 2 floor.
+            return "I tried to find a verified source for that and couldn't lock it down right now. For questions like this, your state's elections division (Secretary of State or Division of Elections) and your county Supervisor of Elections publish the current rules and dates — those are the authoritative sources. Want me to set a calendar reminder to follow up in a week, or do you want to share what you've heard so I can factor it into your strategy?";
           }
           return joined + '\n\n*(Note: removed specific claims that couldn\'t be traced to your race data, tools, or earlier messages.)*';
         }
@@ -7514,11 +7582,52 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           }
         }
 
+        // Sam v2 Phase 2: regenerate-with-citation path before strip fallback.
+        // High-stakes uncited claim → ask Sam to rewrite with sources cited.
+        // If retry still has uncited high-stakes claims → existing strip behavior.
+        async function regenerateWithCitationFeedback(originalMsgs, badContent, uncitedClaims) {
+          const retryMsgs = [
+            ...originalMsgs,
+            { role: 'assistant', content: badContent },
+            { role: 'user', content:
+              'STOP. Your previous response stated factual claims without citing sources: ' +
+              JSON.stringify(uncitedClaims) + '.\n\n' +
+              'Rewrite your response. For each factual claim about a date, dollar amount, named person, URL, address, statute, or law:\n' +
+              '- Call web_search if you haven\'t already this turn\n' +
+              '- Cite the source inline using the format "(Source: [domain])" OR "According to [organization]" OR "Per [URL]" OR "[Source name] reports..."\n' +
+              '- Make URLs clickable when possible\n\n' +
+              'If a claim cannot be sourced via web_search, replace it with a smart deferral: "I searched and didn\'t find [X] — [specific authoritative URL where it WILL be published] is where to check." Do NOT fall back to training-data answers.\n\n' +
+              'Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.'
+            }
+          ];
+          const regenResult = await callClaude(retryMsgs);
+          if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
+            regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
+          }
+          return regenResult;
+        }
+
         const cv = await validateUnsourcedClaims(_citationSamText);
         if (cv.high_stakes.length > 0) {
-          const stripped = stripUnverifiedClaims(_citationSamText, cv.high_stakes);
-          const strippedResp = { ...data, content: [{ type: 'text', text: stripped }] };
-          await logCitationEvent('stripped', cv.high_stakes, cv.soft, _citationSamText, stripped);
+          // Try regen-with-citation FIRST (one retry).
+          const retry = await regenerateWithCitationFeedback(messages, data.content, cv.high_stakes);
+          const retryText = extractTextFromContent(retry.content);
+          const retryCv = await validateUnsourcedClaims(retryText);
+          if (retryCv.high_stakes.length === 0) {
+            // Regen succeeded — Sam now cites her claims. Tag any soft claims
+            // that the retry might also have surfaced.
+            let finalText = retryText;
+            if (retryCv.soft.length > 0) {
+              finalText = tagUnverifiedClaims(retryText, retryCv.soft);
+            }
+            const finalResp = { ...retry, content: [{ type: 'text', text: finalText }] };
+            await logCitationEvent('regenerated_with_citation', cv.high_stakes, retryCv.soft, _citationSamText, finalText);
+            return buildSafeResponse(finalResp);
+          }
+          // Regen still uncited → fall back to strip (existing v1 behavior).
+          const stripped = stripUnverifiedClaims(retryText, retryCv.high_stakes);
+          const strippedResp = { ...retry, content: [{ type: 'text', text: stripped }] };
+          await logCitationEvent('stripped', cv.high_stakes, retryCv.high_stakes, _citationSamText, stripped);
           return buildSafeResponse(strippedResp);
         }
         if (cv.soft.length > 0) {

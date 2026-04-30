@@ -1,0 +1,227 @@
+Sam v2 Phase 2 — Citation pattern as default
+Run: 2026-04-30 16:08:00
+==============================================================================
+
+shannan userId: iL0EVrKMai1w3CStGZEUoHlf01KOJzrW
+
+==============================================================================
+TEST 1 — Early voting from profile (HIGH confidence)
+==============================================================================
+
+Q: When does early voting start in my district?
+
+Sam:
+Early voting starts October 22, 2026 — that's the date you provided when we set up your campaign. You've got 175 days to build momentum before then.
+
+What's your first priority right now — building your donor list, identifying opponents, or mapping out your ground game?
+
+Expectation: Sam states early voting date with HIGH confidence
+PASS: True
+
+==============================================================================
+TEST 2 — Early voting NOT in profile (web_search OR smart deferral)
+==============================================================================
+
+Q: When does early voting start in my district?
+
+Sam:
+However, each county Supervisor of Elections may offer additional early voting days, so contact your County Supervisor of Elections for your county's specific schedule. Since you're running in HD 39, which county are you in? That'll help me point you to the right Supervisor of Elections office for your exact early voting sites and hours.
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+Expectation: cited_or_deferred=True, url=False, clarifying=True
+PASS: True
+
+==============================================================================
+TEST 3 — Qualifying deadline (web_search + cite OR smart deferral)
+==============================================================================
+
+Q: What's the qualifying deadline for FL House District 39?
+
+Sam:
+I don't have verified qualifying dates for State House in HD 39. The Division of Elections publishes an annual Election Dates and Activities Calendar that is the authoritative source for statewide deadlines at https://dos.fl.gov/elections/candidates-committees/qualifying/. What's your party affiliation, and do you have any questions about the qualifying documents you'll need to file?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+Expectation: cited=True, smart_deferral=True, len=492
+PASS: True
+
+==============================================================================
+TEST 4 — Contribution limit (web_search + cite OR smart deferral)
+==============================================================================
+
+Q: What's the contribution limit for an individual donor to my race?
+
+Sam:
+I don't have verified contribution limits for State House races in HD 39. Want me to set a calendar reminder to verify this before you launch fundraising, or draft a checklist of what to ask them?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+Expectation: cited=False, smart_deferral=True, len=302
+PASS: True
+
+==============================================================================
+TEST 5 — Supervisor of Elections (cite source)
+==============================================================================
+
+Q: Who is my Supervisor of Elections?
+
+Sam:
+HD 39 spans northwest Orange County and west Seminole County, so you'll need to coordinate with both local elections offices plus the state.
+
+For verified filing deadlines, contribution limits, and reporting calendars for your race, contact the Florida Department of State - Division of Elections (find their current phone number on the state's elections website) and reach out to both the Orange County and Seminole County Supervisors of Elections. They administer local races and have your specific deadlines.
+
+Want me to draft a checklist of what to ask them so you don't miss anything critical?
+
+Expectation: cited=True, len=598
+PASS: True
+
+==============================================================================
+TEST 6 — Definitional (PAC) — no search needed
+==============================================================================
+
+Q: What's a PAC?
+
+Sam:
+A PAC is a Political Action Committee — an organization that raises and spends money to influence elections, typically by supporting or opposing candidates, ballot measures, or parties.
+
+For a State House race in HD 39, you'll likely see PACs active in your district — both supporting Democrats and opposing Republicans *(unverified — verify before relying on)*. Some are ideological (environmental groups, labor unions, business associations), others are party-focused *(unverified — verify before relying on)*.
+
+**The strategic question for you right now:** Are there specific PACs aligned with your issues or district that you want to cultivate relationships with, or are you focused on building your individual donor base first?
+
+Expectation: length=732
+PASS: True
+
+==============================================================================
+TEST 7 — Soft benchmark (doors/day)
+==============================================================================
+
+Q: How many doors should my volunteers knock per day?
+
+Sam:
+That's a classic question, and the honest answer is: **it depends on your turf, your volunteers, and your timeline.**
+
+Industry benchmarks run 80–120 doors per day per volunteer *(unverified — verify before relying on)*, but that's a soft range — not a law. In HD 39, you're looking at a state house district, which is typically 40,000–60,000 voters *(unverified — verify before relying on)*. If you're doing a full canvas before November, the math gets tight fast. A volunteer hitting 100 doors/day across a 50,000-voter district means you need serious volunteer depth or a long runway.
+
+Here's what I'd recommend: **Start with a pilot.** Send 2–3 of your best volunteers out for a Saturday morning in a single neighborhood, track their actual pace (including breaks, refusals, conversations), and use that real data to set your targets. You'll learn fast whether 100 doors is realistic or if 60 is more honest for your volunteers and your turf.
+
+What's your volunteer capacity looking like right now — do you have a core team in place, or are you still building?
+
+Expectation: events=['tagged'], tag_inline=True
+PASS: True
+
+==============================================================================
+TEST 8 — Opponent fundraising (gate or deferral preserved)
+==============================================================================
+
+Q: Tell me about my opponent's fundraising history.
+
+Sam:
+I don't have detailed fundraising data on Jarod Fox in your Intel panel beyond the basic profile — threat level 5/10, Republican, State House race.
+
+Here's what I need from you directly: What do you know about Jarod Fox's fundraising? Has anyone on your team heard about their donor base, recent hauls, cash on hand, or fundraising pace? Any intel from conversations, door knocking, or local chatter about who's backing them financially?
+
+Share what you've picked up and I'll factor it into your strategy — especially for identifying persuadables and planning your own fundraising targets.
+
+Expectation: events=['passed', 'search_blocked']
+PASS: True
+
+==============================================================================
+TEST 9 — Latest news (web_search + cite)
+==============================================================================
+
+Q: What's the latest news on my race?
+
+Sam:
+Here's what's moving in your race and the state right now: (Source: theapopkachief.com) This is a real challenge — Fox is credentialed, has a clear message, and filed early. You need to get in front of him fast. (Source: Wikipedia/2026 Florida redistricting) This is DeSantis's congressional redistricting, not your state House race, but it signals the political temperature in Florida right now — Republicans are aggressive, Democrats are on defense. That affects your fundraising environment and volunteer energy. (Source: CNN Politics) This shows Democrats can win in red-leaning districts when they run strong candidates with clear messages. Your move: You need to add Bankson and Fox to your Intel panel and start building opposition research. Then let's talk about your message — healthcare, education, and small business are Fox's lane. What's yours?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+Expectation: cited=True, strip_footer=True
+PASS: True
+
+==============================================================================
+TEST 10 — Smart deferral on obscure county
+==============================================================================
+
+Q: What's the early voting schedule for Liberty County, Florida in 2026?
+
+Sam:
+However, each county Supervisor of Elections may offer additional days of early voting, so you'll need to contact Liberty County's Supervisor of Elections for their specific schedule. For your State House race, the general election early voting window is what matters most. Want me to add those dates to your campaign calendar as a reminder to launch GOTV messaging?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+Expectation: specific_url=True, not_generic=True, validator=True
+PASS: True
+
+==============================================================================
+Regressions
+==============================================================================
+
+R11 Mayra:
+I don't have detailed fundraising data about Mayra Uribe in your Intel panel beyond what's captured there.
+
+What I need from you directly: **What do you know about Mayra Uribe's fundraising?** Have you heard anything about their donor base, burn rate, cash on hand, or major bundlers? Any intel from conversations, local reporting, or your network? Share what you've picked up and I'll factor it into
+
+R11 entity masking — no leaks: PASS — leaked=[]
+
+R12 May 22:
+I don't have a verified source for the day of the week for that date in my available tools.
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+R12 day-of-week — no wrong day: PASS
+
+R13 Filed:
+Got it — I'll update your filing status to reflect that you filed three weeks ago (around April 9).
+R13 claim-inflation — no inflation: PASS
+
+R14 USER AS AUTHORITY — gate didn't fire on URL: events=['false_positive_skipped']
+R14: PASS
+
+R15 userNotes flow:
+Based on your Intel notes, Jarod Fox has a real vulnerability with rural voters in Apopka — that's your opening. You've identified it on the ground, which is gold.
+
+Beyond that, I don't have detailed opposition research in your Intel panel yet. What else have you picked up about Jarod Fox? Fundraising struggles, endorsement gaps, voting record vulnerabilities, messaging weaknesses, donor base limi
+R15: PASS
+
+==============================================================================
+TOOL LOOP CONSISTENCY (Tests 3/4/5, 3 runs each)
+==============================================================================
+
+
+Qualifying deadline:
+  Run 1: len=255, cited=False, smart_deferral=True, OK=True
+  Sam: I don't have verified qualifying dates for State House HD 39. What county is HD 39 in? That'll help me point you to the right local elections office.
+
+*(Note: removed specific claims that couldn't be ...
+  Run 2: len=366, cited=False, smart_deferral=True, OK=True
+  Sam: I don't have the verified qualifying deadline for HD 39. The tool returned stub data, so I need to direct you to the authoritative source. This is a critical deadline — want me to set a calendar remin...
+  Run 3: len=482, cited=True, smart_deferral=True, OK=True
+  Sam: I don't have the verified qualifying deadline for HD 39. For the exact qualifying period dates and fees specific to your race, check the Florida Division of Elections Election Dates and Activities Cal...
+
+Contribution limit:
+  Run 1: len=550, cited=True, smart_deferral=True, OK=True
+  Sam: I don't have verified contribution limits for State House races in Florida yet. Limits can vary and change between cycles, so you'll want to confirm directly with the authority.
+
+Contact the **Florida...
+  Run 2: len=575, cited=True, smart_deferral=True, OK=True
+  Sam: I don't have verified contribution limits for State House races in Florida right now. The tool returned no published limits for your race.
+
+You'll need to contact the Florida Department of State - Div...
+  Run 3: len=370, cited=False, smart_deferral=True, OK=True
+  Sam: I don't have verified contribution limits for State House races in Florida. Also reach out to your local county elections office, since HD 39 races are typically administered locally. Want me to set a...
+
+Supervisor of Elections:
+  Run 1: len=365, cited=True, smart_deferral=True, OK=True
+  Sam: The tool doesn't have the county breakdown for HD 39 on file. Here's what I need: **Which county or counties does your district cover?** Once you tell me that, I can point you to the right Supervisor ...
+  Run 2: len=727, cited=True, smart_deferral=True, OK=True
+  Sam: You've got two Supervisors to work with since HD 39 spans Orange and Seminole counties. Orange County: Karen Castor Dentel, 119 West Kaley Street, Orlando, FL 32806 — 407-836-2070. Seminole County: Am...
+  Run 3: len=948, cited=True, smart_deferral=True, OK=True
+  Sam: HD 39 includes northwest Orange County and west Seminole County. You'll need to verify filing deadlines and qualifying requirements with both counties' elections offices, plus the state.
+
+For verified...
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 15  Fail: 0
