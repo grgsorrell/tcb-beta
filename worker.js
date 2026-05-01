@@ -4390,13 +4390,43 @@ export default {
       if (chatCtx && chatCtx.revoked) return denyRevoked();
       const rateLimitUserId = chatCtx ? chatCtx.userId : null;
       const chatOwnerId = chatCtx ? chatCtx.ownerId : null;
+
+      // Beta-account rate-limit bypass (dev infra). The four beta usernames
+      // skip the 100/day cap so iterative testing doesn't hit the limit
+      // mid-debug. Every bypass is logged to sam_rate_bypass_events with
+      // the actual call_count_today at the moment of bypass — production
+      // posture is intact for all other accounts.
+      const BETA_USERNAMES = ['greg', 'shannan', 'cjc', 'jerry'];
+      let _isBetaAccount = false;
+      let _betaUsername = null;
+      if (rateLimitUserId) {
+        try {
+          const userRow = await env.DB.prepare('SELECT username FROM users WHERE id = ?').bind(rateLimitUserId).first();
+          if (userRow && userRow.username) {
+            const u = String(userRow.username).toLowerCase();
+            if (BETA_USERNAMES.includes(u)) {
+              _isBetaAccount = true;
+              _betaUsername = u;
+            }
+          }
+        } catch (e) { console.warn('[rate_bypass] username lookup failed:', e.message); }
+      }
+
       if (rateLimitUserId) {
         const rateLimitDate = new Date().toISOString().split('T')[0];
         const usage = await env.DB.prepare(
           'SELECT message_count FROM usage_logs WHERE user_id = ? AND date = ?'
         ).bind(rateLimitUserId, rateLimitDate).first();
-        if (usage && usage.message_count >= 100) {
-          return jsonResponse({ error: 'Daily message limit reached. Sam will be ready again tomorrow!' }, 429);
+        const currentCount = usage ? usage.message_count : 0;
+        if (currentCount >= 100) {
+          if (_isBetaAccount) {
+            // Beta bypass — log and continue.
+            await env.DB.prepare(
+              'INSERT INTO sam_rate_bypass_events (id, user_id, username, call_count_today) VALUES (?, ?, ?, ?)'
+            ).bind(generateId(16), rateLimitUserId, _betaUsername, currentCount).run().catch((e) => { console.warn('[rate_bypass_log]', e.message); });
+          } else {
+            return jsonResponse({ error: 'Daily message limit reached. Sam will be ready again tomorrow!' }, 429);
+          }
         }
         await env.DB.prepare(
           'INSERT INTO usage_logs (user_id, date, message_count) VALUES (?, ?, 1) ON CONFLICT(user_id, date) DO UPDATE SET message_count = message_count + 1'
