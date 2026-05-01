@@ -1,0 +1,50 @@
+=== SCHEMA AUDIT ===
+
+sam_validation_events:
+  cols: ['action_taken', 'authorized_count', 'conversation_id', 'created_at', 'final_response_excerpt', 'id', 'jurisdiction_name', 'original_response_excerpt', 'sam_mentioned_locations', 'unauthorized_locations', 'user_id', 'workspace_owner_id']
+  extras: ['authorized_count', 'jurisdiction_name', 'sam_mentioned_locations', 'unauthorized_locations']
+  indexes: ['idx_sam_validation_events_conv', 'idx_sam_validation_action', 'idx_sam_validation_workspace_time']
+
+sam_compliance_validation_events:
+  cols: ['action_taken', 'authoritative_dates', 'conversation_id', 'created_at', 'fabrication_type', 'final_response_excerpt', 'id', 'original_response_excerpt', 'sam_claimed_dates', 'sam_claimed_urls', 'unauthorized_dates', 'unauthorized_urls', 'user_id', 'workspace_owner_id']
+  extras: ['authoritative_dates', 'fabrication_type', 'sam_claimed_dates', 'sam_claimed_urls', 'unauthorized_dates', 'unauthorized_urls']
+  indexes: ['idx_sam_compliance_val_action', 'idx_sam_compliance_val_workspace', 'idx_sam_compliance_val_conv']
+
+sam_finance_validation_events:
+  cols: ['action_taken', 'authoritative_dates', 'conversation_id', 'created_at', 'fabrication_type', 'final_response_excerpt', 'id', 'original_response_excerpt', 'sam_claimed_dates', 'sam_claimed_urls', 'unauthorized_dates', 'unauthorized_urls', 'user_id', 'workspace_owner_id']
+  extras: ['authoritative_dates', 'fabrication_type', 'sam_claimed_dates', 'sam_claimed_urls', 'unauthorized_dates', 'unauthorized_urls']
+  indexes: ['idx_finance_val_action', 'idx_finance_val_workspace', 'idx_finance_val_conv']
+
+sam_donation_validation_events:
+  cols: ['action_taken', 'authoritative_amounts', 'conversation_id', 'created_at', 'fabrication_type', 'final_response_excerpt', 'id', 'original_response_excerpt', 'sam_claimed_amounts', 'sam_claimed_urls', 'unauthorized_amounts', 'unauthorized_urls', 'user_id', 'workspace_owner_id']
+  extras: ['authoritative_amounts', 'fabrication_type', 'sam_claimed_amounts', 'sam_claimed_urls', 'unauthorized_amounts', 'unauthorized_urls']
+  indexes: ['idx_donation_val_action', 'idx_donation_val_workspace', 'idx_donation_val_conv']
+
+sam_opponent_validation_events:
+  cols: ['action_taken', 'blocked_search_query', 'conversation_id', 'created_at', 'final_response_excerpt', 'id', 'opponent_claims_detected', 'original_response_excerpt', 'unauthorized_claims', 'user_id', 'workspace_owner_id']
+  extras: ['blocked_search_query', 'opponent_claims_detected', 'unauthorized_claims']
+  indexes: ['idx_opponent_val_action', 'idx_opponent_val_workspace', 'idx_opponent_val_conv']
+
+sam_citation_validation_events:
+  cols: ['action_taken', 'claim_categories', 'conversation_id', 'created_at', 'final_response_excerpt', 'id', 'original_response_excerpt', 'sam_unverified_claims', 'user_id', 'workspace_owner_id']
+  extras: ['claim_categories', 'sam_unverified_claims']
+  indexes: ['idx_citation_val_action', 'idx_citation_val_workspace', 'idx_citation_val_conv']
+
+sam_safe_mode_events:
+  cols: ['activated_at', 'conversation_id', 'id', 'trigger_count', 'triggering_validator_breakdown', 'user_id', 'workspace_owner_id']
+  MISSING required: ['action_taken', 'created_at', 'final_response_excerpt', 'original_response_excerpt']
+  extras: ['activated_at', 'trigger_count', 'triggering_validator_breakdown']
+  indexes: ['idx_safe_mode_workspace', 'idx_safe_mode_unique_conv']
+
+sam_blank_response_events:
+  cols: ['conversation_id', 'created_at', 'fallback_used', 'id', 'original_blanked', 'retry_attempted', 'retry_blanked', 'user_id', 'workspace_owner_id']
+  MISSING required: ['action_taken', 'final_response_excerpt', 'original_response_excerpt']
+  extras: ['fallback_used', 'original_blanked', 'retry_attempted', 'retry_blanked']
+  indexes: ['idx_blank_response_conv']
+
+sam_classification_events:
+  cols: ['classified_category', 'classifier_failed', 'conversation_id', 'created_at', 'id', 'user_id', 'user_message_excerpt', 'workspace_owner_id']
+  MISSING required: ['action_taken', 'final_response_excerpt', 'original_response_excerpt']
+  extras: ['classified_category', 'classifier_failed', 'user_message_excerpt']
+  indexes: ['idx_classification_category', 'idx_classification_workspace', 'idx_classification_conv']
+

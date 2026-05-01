@@ -1,0 +1,84 @@
+
+=== sam_validation_events � sample stripped/regen events ===
+
+  [regenerated]
+  orig:  
+  final: 
+
+  [regenerated]
+  orig:  
+  final: 
+
+  [regenerated]
+  orig:  
+  final: 
+
+=== sam_compliance_validation_events � sample stripped/regen events ===
+
+  [regenerated]
+  orig:  I don't have verified qualifying dates for HD 39 yet — the 2026 calendar isn't finalized in the system. For your race, contact the **Florida Department of State - Division of Elections** (search "Fl
+  final: I don't have verified qualifying dates for HD 39 in the system yet. The authoritative source is the Florida Division of Elections at dos.fl.gov/elections — they publish the candidate calendar with e
+
+  [regenerated]
+  orig:  I don't have verified campaign finance report dates for State House races in HD 39 yet. The reporting calendar may not be finalized this early in the cycle. For the exact quarterly and pre-election fi
+  final: I don't have verified campaign finance report dates for State House races in HD 39. The reporting calendar for 2026 may not be finalized yet. For exact quarterly and pre-election filing deadlines, con
+
+  [regenerated]
+  orig:  I don't have verified qualifying dates for State House in Florida yet. The 2026 qualifying window isn't finalized in the state system. Contact the Florida Department of State - Division of Elections d
+  final: I don't have verified qualifying dates for State House in Florida yet. The 2026 qualifying window isn't finalized in the state system. Contact the Florida Department of State - Division of Elections a
+
+=== sam_donation_validation_events � sample stripped/regen events ===
+
+  [regenerated]
+  orig:  I need to look up the current federal contribution limits for you.For federal Senate races, individuals can contribute up to $3,500 per election (HIGH confidence — Source: fec.gov). Spouses can each
+  final: 
+
+  [regenerated]
+  orig:  No. Don't accept it.
+
+Here's why: Campaign finance law requires you to know who your donors are — it's not optional. An anonymous $5,000 contribution violates federal and Florida state law. You'd ha
+  final: No. Don't accept it.
+
+Here's why: Campaign finance law requires you to know who your donors are — it's not optional. An anonymous contribution violates the disclosure rules. You'd have to return it,
+
+  [regenerated]
+  orig:  No. Don't accept it.
+
+Here's why: Campaign finance law requires you to know who your donors are. An anonymous $5,000 contribution violates federal and state disclosure rules — you have to report the
+  final: No. Don't accept it.
+
+Here's why: Campaign finance law requires you to know who your donors are. An anonymous contribution violates disclosure rules — you have to report the donor's name, occupation
+
+=== sam_opponent_validation_events � sample stripped/regen events ===
+
+  [regenerated]
+  orig:  I don't have detailed fundraising data on Jarod Fox in your Intel panel beyond the basic profile (R, State House threat level 5/10). 
+
+What I can tell you: Jarod Fox's most recent campaign finance rep
+  final: I don't have detailed fundraising data on Jarod Fox in your Intel panel beyond the basic profile (R, State House threat level 5/10).
+
+What I can tell you: Jarod Fox's most recent campaign finance repo
+
+  [regenerated]
+  orig:  I don't have detailed fundraising data on Mayra Uribe in your Intel panel beyond the auto-research basics — they're a Republican, currently Mayor, and have strong labor endorsements (which is a key 
+  final: I don't have detailed fundraising data on Mayra Uribe in your Intel panel. What I do have is that they're a Republican with a threat level of 6/10, and strong labor endorsements are flagged as a key r
+
+  [regenerated]
+  orig:  I don't have detailed fundraising data on Mayra Uribe in your Intel panel beyond the basics — they're a Republican, former Mayor, threat level 6/10, with strong labor endorsements (which is notable 
+  final: I don't have detailed fundraising data on Mayra Uribe in your Intel panel beyond their name, party affiliation (R), and threat level (6/10). I can see they have strong labor endorsements, which is not
+
+=== sam_citation_validation_events � sample stripped/regen events ===
+
+  [stripped]
+  orig:  You're a former public school teacher running for State House in HD 39 to fight for education funding and labor protections — that's the foundation of your campaign and it's a strong one.
+
+You filed
+  final: You're a former public school teacher running for State House in HD 39 to fight for education funding and labor protections — that's the foundation of your campaign and it's a strong one. Per your c
+
+  [regenerated_with_citation]
+  orig:  Got it — I'll update your filing status to reflect that you filed three weeks ago (around April 10).
+  final: Got it — I'll update your filing status now.
+
+  [regenerated_with_url]
+  orig:  I don't have detailed fundraising data on Mayra Uribe in your Intel panel beyond the auto-research baseline — the system captured that they're a strong threat (6/10) with labor endorsements, but not
+  final: I don't have detailed fundraising data on Mayra Uribe in your Intel panel beyond the auto-research baseline — the system captured that they're a strong threat (6/10) with labor endorsements, but not

@@ -1,0 +1,56 @@
+======================================================================
+AUDIT 1 — Total row counts + last-7d distribution
+======================================================================
+
+sam_validation_events: total=610, last_7d=610
+  passed: 522
+  regenerated: 84
+  stripped: 4
+
+sam_compliance_validation_events: total=165, last_7d=165
+  passed: 143
+  regenerated: 21
+  stripped: 1
+
+sam_finance_validation_events: total=82, last_7d=82
+  passed: 82
+
+sam_donation_validation_events: total=151, last_7d=151
+  passed: 140
+  regenerated: 8
+  stripped: 3
+
+sam_opponent_validation_events: total=334, last_7d=334
+  search_blocked: 151
+  passed: 125
+  false_positive_skipped: 48
+  regenerated: 10
+
+sam_citation_validation_events: total=812, last_7d=812
+  stripped: 285
+  passed: 186
+  tagged: 118
+  regenerated_with_citation: 101
+  regenerated_with_url: 63
+  url_required_retry_failed: 59
+Traceback (most recent call last):
+  File "C:\Users\Fam\OneDrive\Desktop\New CTB 4_1_26\scripts\audit_v2_p7.py", line 30, in <module>
+    last7 = d1(f"SELECT COUNT(*) AS n FROM {t} WHERE created_at > datetime('now','-7 days')")[0]['n']
+            ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Fam\OneDrive\Desktop\New CTB 4_1_26\scripts\audit_v2_p7.py", line 8, in d1
+    if out.returncode != 0: raise RuntimeError(out.stderr)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\win\async.c, line 76
+
+======================================================================
+AUDIT 1 — Total row counts + last-7d distribution
+======================================================================
+Traceback (most recent call last):
+  File "C:\Users\Fam\OneDrive\Desktop\New CTB 4_1_26\scripts\audit_v2_p7.py", line 24, in <module>
+    last7 = d1(f"SELECT COUNT(*) AS n FROM {t} WHERE created_at > datetime('now','-7 days')")[0]['n']
+            ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Fam\OneDrive\Desktop\New CTB 4_1_26\scripts\audit_v2_p7.py", line 8, in d1
+    if out.returncode != 0: raise RuntimeError(out.stderr)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\win\async.c, line 76
+
