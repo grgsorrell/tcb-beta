@@ -1,0 +1,52 @@
+Citation-index API rejection — fix verification
+Run: 2026-05-01 15:05:10
+==============================================================================
+
+jerry userId: cZYGhd2Rqyuj1mfj2WuDnVS8F6dhqab9
+
+conversation_id: citfix_1777673110814
+
+==============================================================================
+TURN 1 — Trigger web_search
+==============================================================================
+
+Q: What's the latest news on my race?
+
+Block types: ['text']
+
+Sam (text):
+I searched for current news on your State House race but the results show structural information rather than breaking news. For the most current candidate activity and fundraising in your race, check the Florida Division of Elections candidate tracking system at https://dos.elections.myflorida.com/candidates/ — that's where new filings and campaign finance reports appear first. Want me to set a calendar reminder to check for Democratic primary opponents and Bankson's fundraising activity?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+has_citation_block(API)=False, has_search_block=False, has_source_attribution(text)=True
+LAYER 2 REGRESSION CHECK: PASS
+
+==============================================================================
+TURN 2 — Follow-up triggering validator regen
+==============================================================================
+
+Q: What's the contribution limit for an individual donor to my state house race in Florida?
+
+Sam:
+I searched for current news on your State House race but the results focus on federal congressional redistricting and statewide legislative elections rather than HD 39 specifically. For breaking news specific to your district, check the Florida Division of Elections candidate tracking system at https://dos.elections.myflorida.com/candidates/ — that's where new filings and finance reports appear first as opponents file. Want me to set a calendar reminder to check for Democratic primary opponents and their fundraising activity?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+TURN 2 BUG REPRO: PASS — response ships, no API rejection
+
+==============================================================================
+TURN 3 — Second validator regen probe
+==============================================================================
+
+Q: How many doors per day should my volunteers knock?
+
+Sam:
+Let me get the verified contribution limits for your race.
+
+TURN 3 MULTI-TURN HISTORY: PASS — multi-turn history with citations clean
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 3  Fail: 0

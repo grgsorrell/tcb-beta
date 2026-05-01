@@ -6316,6 +6316,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       async function callClaude(msgs) {
+        // Pre-call defense: strip dangling citations from any message in
+        // the array. Multi-turn conversations can carry citations from
+        // earlier turns whose web_search_tool_result blocks have aged out
+        // of the message stream — Anthropic API rejects with "Could not
+        // find search result for citation index" when that happens.
+        const sanitizedMsgs = sanitizeMessagesForApi(msgs);
         // Entity masking layer. Mask the incoming msgs array (covers
         // user messages, history, and any synthesized validator-regen
         // STOP messages). The systemPrompt was already masked at
@@ -6324,8 +6330,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // this function returns, so all downstream code (validators,
         // tool execution, logging) sees real names.
         const maskedMsgs = (workspaceEntities && workspaceEntities.length > 0)
-          ? maskMessagesArray(msgs, workspaceEntities)
-          : msgs;
+          ? maskMessagesArray(sanitizedMsgs, workspaceEntities)
+          : sanitizedMsgs;
         const resp = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
           headers: {
@@ -6448,11 +6454,42 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       function sanitizeAssistantContentForRegen(content) {
         if (typeof content === 'string') return content;
         if (!Array.isArray(content)) return [{ type: 'text', text: '' }];
-        const textOnly = content.filter(b => b && b.type === 'text' && typeof b.text === 'string');
+        // Strip both tool_use blocks AND citations field on text blocks.
+        // Why citations: web_search citations point to web_search_tool_result
+        // blocks via encrypted_index. The filter below drops those tool_result
+        // blocks. Without stripping citations, the API rejects with
+        // "messages.X.content.Y.citations.0: Could not find search result for
+        // citation index" — a production bug surfaced 2026-05-01.
+        const textOnly = content
+          .filter(b => b && b.type === 'text' && typeof b.text === 'string')
+          .map(b => ({ type: 'text', text: b.text }));
         if (textOnly.length === 0) {
           return [{ type: 'text', text: '(previous response was a tool call without text content)' }];
         }
         return textOnly;
+      }
+
+      // Defensive sanitizer for the full messages array. Strips citations
+      // from text blocks in any assistant message — handles multi-turn
+      // conversations where prior-turn citations reference search results
+      // that have aged out of the message stream. Keeps web_search_tool_result
+      // blocks intact (Anthropic uses them for current-turn citation
+      // resolution) but drops the citations field that points into them
+      // from text blocks. Result: Sam reads prior context, no dangling
+      // index lookups.
+      function sanitizeMessagesForApi(msgs) {
+        if (!Array.isArray(msgs)) return msgs;
+        return msgs.map(m => {
+          if (!m || !Array.isArray(m.content)) return m;
+          const cleaned = m.content.map(blk => {
+            if (!blk || typeof blk !== 'object') return blk;
+            if (blk.type === 'text' && typeof blk.text === 'string' && blk.citations) {
+              return { type: 'text', text: blk.text };
+            }
+            return blk;
+          });
+          return Object.assign({}, m, { content: cleaned });
+        });
       }
 
       // Cheap Haiku call (~$0.001) to extract place names from Sam's
