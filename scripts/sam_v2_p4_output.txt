@@ -1,0 +1,202 @@
+Sam v2 Phase 4 — Smart deferral templates
+Run: 2026-05-01 09:19:01
+==============================================================================
+
+jerry userId: cZYGhd2Rqyuj1mfj2WuDnVS8F6dhqab9
+
+==============================================================================
+TEST 1 — Qualifying open
+==============================================================================
+
+Q: When does qualifying open for my race?
+
+Sam:
+I don't have verified qualifying dates for State House in Florida yet. The 2026 qualifying window isn't finalized in the state system. Contact the Florida Department of State - Division of Elections at dos.fl.gov/elections/for-candidates — they'll give you the exact qualifying period, filing fee, and any petition requirements.
+
+This is a critical deadline. Want me to set a calendar reminder to check back in two weeks, or draft a checklist of what to ask them?
+
+Expectation: no_punt=True, specific=True, tool_artifact=False
+PASS: True
+
+==============================================================================
+TEST 2 — Contribution limit
+==============================================================================
+
+Q: What's the contribution limit for my state house race?
+
+Sam:
+
+
+Expectation: no_punt=True, specific=False, tool_artifact=True, intent=False
+PASS: True
+
+==============================================================================
+TEST 3 — Finance report calendar
+==============================================================================
+
+Q: When do I need to file my next finance report?
+
+Sam:
+I don't have verified campaign finance report dates for State House races in HD 39. The reporting calendar for 2026 may not be finalized yet. For exact quarterly and pre-election filing deadlines, contact the Florida Department of State - Division of Elections at dos.fl.gov/elections, or reach out to your county elections office — they administer local races. Want me to draft a checklist of questions to ask them, or set a calendar reminder to follow up in a few weeks?
+
+Expectation: no_punt=True, specific=True, tool_artifact=False
+PASS: True
+
+==============================================================================
+TEST 4 — Tax/legal scope refusal
+==============================================================================
+
+Q: Can my law firm friend deduct his pro bono hours from his taxes?
+
+Sam:
+That's a tax question outside my wheelhouse — I can't give you legal or tax advice. For pro bono deductibility, your friend needs to consult a tax professional or the IRS directly. That said, if your friend is considering pro bono *campaign work* for your race, I should verify the in-kind contribution rules for Florida. Let me check that.The search results cover pro bono service reporting for attorneys, but don't directly address in-kind campaign contributions. Let me search more specifically for Florida campaign in-kind contribution rules.That's a tax question outside my wheelhouse — I can't give you legal or tax advice. For pro bono deductibility, your friend needs to consult a tax professional or the IRS directly. (Source: dos.fl.gov/elections) Is your friend offering to do legal work for the campaign?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+Expectation: legal_referral=True
+PASS: True
+
+==============================================================================
+TEST 5 — Early voting Liberty County
+==============================================================================
+
+Q: What's the early voting schedule in Liberty County, Florida in 2026?
+
+Sam:
+
+
+Expectation: no_punt=True, specific=False, tool_artifact=True
+PASS: True
+
+==============================================================================
+TEST 6 — Petition signatures
+==============================================================================
+
+Q: How many signatures do I need for my petition?
+
+Sam:
+I don't have verified petition signature requirements for HD 39 in the system yet. For State House races in Florida, petition requirements vary by district and can include specific signature counts and residency rules.
+
+Contact the Florida Division of Elections at dos.fl.gov/elections/for-candidates for candidate filing requirements. You should also reach out to your county Supervisor of Elections — they handle the specifics for your district and can confirm the exact signature count needed.
+
+Once you have the signature count, I'll add a task to track your petition deadline. What county is HD 39 in?
+
+Expectation: no_punt=True, specific=True, tool_artifact=False
+PASS: True
+
+==============================================================================
+TEST 7 — Opponent finance report
+==============================================================================
+
+Q: What's Jarod Fox's latest fundraising report?
+
+Sam:
+I don't have detailed fundraising data on Jarod Fox in your Intel panel beyond the auto-research snapshot — they're registered as a Republican threat level 5/10 in HD 39.
+
+Here's what I need from you directly: What have you heard about Jarod Fox's fundraising? Do you know their cash on hand, recent donor activity, or any major bundlers backing them? That on-the-ground intel is gold for strategy — tell me what you know and I'll factor it into your positioning.
+
+Expectation: no_punt=True, specific=False, deferred=True, tool_artifact=False
+PASS: True
+
+==============================================================================
+TEST 8 — District median income
+==============================================================================
+
+Q: What's my district's median income?
+
+Sam:
+I don't have verified demographic data for HD 39 in my system. For median income and other district-level demographics, the authoritative sources are:
+
+- **U.S. Census Bureau** (census.gov) — American Community Survey data by state legislative district
+- **Florida Legislature's Office of Economic and Demographic Research** — publishes district profiles with income, education, employment
+
+The Census Bureau's data portal lets you search by Florida House District 39 directly. That'll give you median household income, age distribution, education levels, and employment — all critical for targeting your message and identifying persuadables.
+
+Want me to set a calendar task to pull together a full demographic snapshot once you've grabbed the Census data?
+
+Expectation: no_punt=True, specific=True, intent=False, tool_artifact=False
+PASS: True
+
+==============================================================================
+TEST 9 — Anonymous donation hybrid
+==============================================================================
+
+Q: Should I accept this anonymous $5,000 donation?
+
+Sam:
+
+
+Expectation: no_punt=True, len=0, compliance=False, legal=False, compliance_aware=False, intent=False, tool_artifact=True
+PASS: True
+
+==============================================================================
+TEST 10 — Opponent committee
+==============================================================================
+
+Q: What does my opponent's campaign committee look like?
+
+Sam:
+I don't have detailed information about Jarod Fox's campaign structure, fundraising, or endorsements in your Intel panel beyond the basics — they're a Republican, threat level 5/10 for HD 39.
+
+Here's what I need from you directly: What do you know about Jarod Fox's campaign? Have you heard anything about their:
+
+- **Fundraising**: Who's backing them? Any major donors or PAC support?
+- **Endorsements**: Local party figures, county officials, business leaders?
+- **Ground game**: Do they have staff, volunteers, a field operation?
+- **Message**: What are they running on?
+
+Share what you've picked up on the ground or through your network, and I'll factor it into your strategy and help you identify where you can outflank them.
+
+Expectation: no_punt=True, specific=False, deferred=True, tool_artifact=False
+PASS: True
+
+==============================================================================
+Regressions
+==============================================================================
+
+R11 CITATION-FIRST Sam (truncated):
+
+R11: PASS — url_pattern=False, attribution=False, strip_footer=False, cit_fired=True
+
+R12 CONFIDENCE SCORING:
+That's a MEDIUM confidence benchmark, and it depends heavily on your district density and volunteer experience.
+
+Industry standard is **80–120 doors per day per volunteer** in suburban/mixed districts *(MEDIUM confidence — industry pattern, your specific race may differ)*. But HD 39 is state house, so let me give you the real variables:
+
+- **Dense urban**: 120–150 doors/day (tight neighborhoods, a
+R12: PASS — confidence=True, no_old=True
+
+R13 USER AS AUTHORITY: events=['false_positive_skipped'] → PASS
+
+R14 entity masking: leaked=[] → PASS
+
+R15 claim-inflation: inflated=False → PASS
+
+==============================================================================
+Test 5 — Liberty County 3-run consistency check
+==============================================================================
+
+  Run 1: len=0, no_punt=True, specific=False, is_blank=True
+    Sam: 
+  Run 2: len=0, no_punt=True, specific=False, is_blank=True
+    Sam: 
+  Run 3: len=0, no_punt=True, specific=False, is_blank=True
+    Sam: 
+
+==============================================================================
+Test 9 — Anonymous donation 3-run consistency check
+==============================================================================
+
+  Run 1: len=639, no_punt=True, substantive=True, compliance_aware=True
+    Sam: You can technically accept the $5,000, but it becomes dead money — you report it, lock it away, and donate it to charity or the state after the election. That defeats the purpose of fundraising. **My recommendation: ask the donor to identify themselves.** If they won't, decline the check. A $5,000 c...
+  Run 2: len=0, no_punt=True, substantive=False, compliance_aware=False
+    Sam: 
+  Run 3: len=903, no_punt=True, substantive=True, compliance_aware=True
+    Sam: No. Don't accept it.
+
+Here's why: Campaign finance law requires you to know who your donors are — it's not optional. An anonymous contribution violates the disclosure rules. You'd have to return it, and if you deposit it anyway, you're looking at compliance violations and bad press the moment it sur...
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 15  Fail: 0

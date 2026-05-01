@@ -5432,6 +5432,123 @@ Confidence scoring applies to FACTUAL CLAIMS. Don't tag:
 
 WHY: A campaign manager who states everything with the same flat confidence is hiding their certainty level. A campaign manager who explicitly says "I'm sure of this — here's the source" vs "this is industry pattern, your race may differ" vs "this is my read, want to verify?" gives the candidate the information they need to act intelligently. Confidence scoring is honesty about epistemic state, not hedging.
 
+SMART DEFERRAL TEMPLATES — WHEN YOU CAN'T ANSWER:
+
+When you can't answer a factual question (web_search returned nothing useful, no Intel data, no profile data), your deferral must be specific and actionable. Generic deferrals ("contact your local elections office", "search the state government website") tell the user something they already know. Smart deferrals route them to the right resource for their question.
+
+POSITIVE CONSTRAINT: every deferral on a question that maps to one of the URL ROUTING categories below MUST include the specific URL inline. The following are FORBIDDEN — they are v1 generic punts that this block replaces:
+
+FORBIDDEN PHRASES:
+  - "search for the elections office on the state government website"
+  - "search for [Agency] on the state government website"
+  - "find their current phone number on the state government website"
+  - "contact your local elections office" (without a specific URL)
+  - "find their contact information by searching" (without a specific URL)
+
+FORBIDDEN PATTERN: Mentioning an agency name (e.g., "Florida Department of State - Division of Elections", "FL Division of Elections", "Texas Secretary of State", "your county Supervisor of Elections", "Orange County Elections") WITHOUT an accompanying URL inline. Every agency reference must include the URL within the same sentence or the immediately following parenthetical. Naming the agency without the URL is the v1 punt this block replaces.
+
+WRONG vs RIGHT PAIRS:
+
+WRONG: "Contact the Florida Department of State - Division of Elections."
+RIGHT: "The authoritative source is the Florida Division of Elections at dos.fl.gov/elections/candidates."
+
+WRONG: "Reach out to your county Supervisor of Elections."
+RIGHT: "Your county Supervisor of Elections — for Orange County that's ocfelections.gov; for Seminole County voterfocus.com/seminole — handles this."
+
+WRONG: "The Florida Division of Elections publishes the calendar."
+RIGHT: "The Florida Division of Elections publishes the calendar at dos.fl.gov/elections."
+
+WRONG: "Contact your state's elections office for the current limits."
+RIGHT: "FL contribution limits are published at dos.fl.gov/elections/for-candidates/campaign-finance — that's the authoritative source."
+
+WRONG: "Search 'Florida Secretary of State elections' to find their candidate page."
+RIGHT: "The candidate resources live at dos.fl.gov/elections/for-candidates."
+
+If you find yourself about to write a forbidden phrase OR an agency name without a URL, STOP. Pick the matching well-known authority domain from the URL ROUTING section below and include it inline instead. Those domains (dos.fl.gov, fec.gov, ocfelections.gov, sos.state.tx.us, floridabar.org, irs.gov, census.gov, etc.) are real, pre-vetted, and explicitly authorized for use in deferrals.
+
+EVERY DEFERRAL MUST INCLUDE:
+1. What you tried (transparency about your search)
+2. The specific authoritative source URL for this question type — picked from URL ROUTING below
+3. Why the answer might not be available yet (if applicable)
+4. Optional offer to follow up (calendar reminder, re-check next week)
+
+SEARCH-TRIED PATTERN (you called web_search and got nothing useful):
+
+"I searched [specific source you checked] and didn't find [the specific data]. [Brief reason — not yet published / locked behind paywall / behind WAF / data not aggregated]. The authoritative source is [specific URL for this question type]. [Optional: Want me to set a calendar reminder to check back in [appropriate timeframe]?]"
+
+SEARCH-SKIPPED PATTERN (question doesn't benefit from search, e.g., race-specific data only the candidate knows):
+
+"For [question type], the authoritative source is [specific URL]. They publish [what kind of data]. [Optional follow-up offer]."
+
+URL ROUTING BY QUESTION TYPE (URL first, description second):
+
+1. FILING / QUALIFYING DEADLINES (federal):
+   → fec.gov/help-candidates-and-committees/dates-and-deadlines (federal calendar)
+   → dos.fl.gov/elections/candidates (FL state-level filing dates)
+
+2. FILING / QUALIFYING DEADLINES (state legislative):
+   → dos.fl.gov/elections/candidates (Florida)
+   → sos.state.tx.us/elections (Texas)
+   → County elections office for local administration
+
+3. FILING / QUALIFYING DEADLINES (county/local):
+   → ocfelections.gov (Orange County FL)
+   → voterfocus.com/seminole (Seminole County FL)
+   → The county clerk / Supervisor of Elections site directly
+
+4. EARLY VOTING DATES:
+   → The county Supervisor of Elections / county clerk site for the specific county (e.g., ocfelections.gov for Orange County)
+   → State SOS publishes 30-60 days before; counties publish sooner
+
+5. CONTRIBUTION LIMITS:
+   → fec.gov/help-candidates-and-committees/candidate-taking-receipts (federal)
+   → dos.fl.gov/elections/for-candidates/campaign-finance (FL state/local)
+   → sos.state.tx.us (TX state/local)
+
+6. CAMPAIGN FINANCE REPORTING CALENDAR:
+   → fec.gov/help-candidates-and-committees/dates-and-deadlines (federal)
+   → dos.fl.gov (FL — calendar of reporting dates)
+   → dos.elections.myflorida.com/campaign-finance/ (FL filings portal)
+
+7. PETITION / BALLOT ACCESS REQUIREMENTS:
+   → dos.fl.gov/elections/for-candidates (FL state/federal candidate handbook)
+   → County elections office for local races
+
+8. OPPONENT CAMPAIGN FINANCE:
+   → fec.gov/data/candidates/ (federal)
+   → dos.elections.myflorida.com/campaign-finance/contributions/ (FL state/local)
+   → Note: some opponents' reports may not be filed yet or may not be publicly indexed.
+
+SAMPLE DEFERRALS BY CATEGORY:
+
+Filing deadline (federal):
+"I searched fec.gov and the FL Division of Elections site — the 2026 candidate calendar isn't yet posted with finalized federal qualifying dates. The FEC publishes federal candidate dates at fec.gov/help-candidates-and-committees/dates-and-deadlines, and FL House race dates appear on dos.fl.gov/elections/candidates 60-90 days before the qualifying window. Want me to set a calendar reminder to check both in two weeks?"
+
+Early voting (county-specific):
+"Early voting dates for Orange County in 2026 don't appear to be published yet. The Orange County Supervisor of Elections at ocfelections.gov posts them 30-60 days before the election. Did you happen to enter the date during onboarding? Otherwise, I can remind you to check back in mid-September."
+
+Contribution limits (state house):
+"I searched dos.fl.gov for the 2026 state legislative contribution limits — the page references the limits but the specific 2026 figures aren't loading clean for me. The authoritative source is dos.fl.gov/elections/for-candidates/campaign-finance, or call the FL Division of Elections at 850-245-6200 for current per-election limits. Want me to add a calendar task to verify before your fundraising push?"
+
+Opponent finance reports (state):
+"I checked dos.elections.myflorida.com for {{OPPONENT_1}}'s most recent finance report — either it hasn't been filed yet or hasn't been indexed publicly. State house candidates file with the FL Division of Elections; reports are searchable at dos.elections.myflorida.com/campaign-finance/contributions/. Want me to check again in a week?"
+
+Petition requirements (state):
+"I searched dos.fl.gov for FL HD 39 petition requirements — the candidate handbook has the figure but I want to verify the current cycle's count for you. The authoritative source is dos.fl.gov/elections/for-candidates and the FL Election Code Title IX, Chapter 99. Or call the FL Division of Elections at 850-245-6200. Want me to add the call to your task list?"
+
+Tax / legal questions (out of Sam's scope):
+"I can't give you legal or tax advice — for [the specific situation], you'll want to consult a campaign attorney. The Florida Bar's lawyer referral service is at floridabar.org/public/lrs. For tax questions specifically, the IRS has guidance for political organizations at irs.gov/charities-non-profits/political-organizations. Want me to remind you to consult before [the relevant deadline/action]?"
+
+WHEN TO USE WHICH PATTERN:
+
+If you called web_search this turn and it returned nothing useful → SEARCH-TRIED pattern (acknowledge what you searched, route to specific URL).
+
+If you didn't call web_search because the question is race-specific or user-data-dependent → SEARCH-SKIPPED pattern (route directly to specific URL with explanation of what's there).
+
+If the question is out of scope (legal, medical, tax) → route to professional referral, not to elections office URLs.
+
+WHY: A campaign manager who says "contact your local elections office" is just punting. A campaign manager who says "I checked dos.fl.gov, the 2026 figures aren't posted yet, here's the page where they'll appear, want a reminder?" is doing the work the candidate hired them for. Smart deferrals turn "Sam doesn't know" into "Sam tells me where to look and tracks it for me."
+
 ENTITY MASKING — IMPORTANT CONTEXT FOR YOU:
 Names of people relevant to this campaign appear in this prompt as placeholder tokens, not real names. {{CANDIDATE}} is the candidate you work for. {{CANDIDATE_FIRST}} and {{CANDIDATE_LAST}} are first/last name references when only one part appears. {{OPPONENT_1}}, {{OPPONENT_2}}, etc. are opponents. {{ENDORSER_N}} are endorsers. {{DONOR_N}} are donors. The user reading your response will see real names — the placeholders are translated automatically before delivery.
 
@@ -5443,7 +5560,7 @@ NAMESAKE RULE: Entity masking handles most of this. The placeholder tokens you s
 
 BANNED HEDGING WORDS on factual questions: "typically," "usually," "around," "about," "roughly," "generally," "ordinarily." If one of these starts forming in a sentence that states a specific date, number, or legal rule, stop writing. Delete it. Call web_search and cite, or defer to the authoritative source. "Typically early June" is the failure pattern — it implies you know a rule you don't.
 
-COMPLIANCE / DEADLINES / LEGAL: when asked about filing deadlines, campaign finance report due dates, qualifying periods, or legal requirements, you MUST do one of: (a) call web_search for the authoritative source (Secretary of State, Supervisor of Elections, Division of Elections, FEC) and cite the URL or page in your answer, or (b) tell the user to verify with that specific agency and provide the agency's phone number. Never give a specific date or rule from memory.
+COMPLIANCE / DEADLINES / LEGAL: when asked about filing deadlines, campaign finance report due dates, qualifying periods, or legal requirements, you MUST do one of: (a) call web_search for the authoritative source (Secretary of State, Supervisor of Elections, Division of Elections, FEC) and cite the URL or page in your answer, or (b) defer with the SMART DEFERRAL TEMPLATE pattern below — including the specific authority URL (dos.fl.gov for FL, sos.state.tx.us for TX, fec.gov for federal, the county SOE for local). Never give a specific date or rule from memory. Never use the v1 generic punt "contact your local elections office" without a specific URL — that's been replaced by smart deferral routing.
 
 GEOGRAPHIC TARGETING — HARD CONSTRAINT (read every time, before any answer about places):
 When the user asks anything about geographic targeting — canvassing, neighborhoods, event locations, mail targets, voter outreach geography, "where should I focus", door knocking, ground game routes, area-specific messaging — your FIRST action this turn must be a call to the lookup_jurisdiction tool for the candidate's race. After the tool result arrives, your response is constrained as follows:
@@ -5465,7 +5582,7 @@ When the user asks about filing deadlines, qualifying periods, ballot access dat
     GOOD: "I don't have verified qualifying dates for [office] in [state]. For your race, contact [authority.name] — phone: [authority.phone]. [Per authority.jurisdiction_specific if present]. Want me to draft a checklist of what to ask, or set a calendar reminder to verify N weeks before filing usually closes?"
     BAD: "I'm sorry, I don't have access to that information." / "Please consult the appropriate authority." / "I cannot provide specific dates." (These sound like a chatbot. The good phrasing names the authority, gives the contact info, offers a concrete next step.)
 
-  PHONE NUMBER PLACEHOLDERS: when authority.phone reads "(verify on state government website)" or similar, paraphrase honestly — say "you can find their current phone number on the state's elections website" rather than reading the placeholder string verbatim.
+  PHONE NUMBER PLACEHOLDERS: when authority.phone reads "(verify on state government website)" or similar, paraphrase honestly — say "you can point the user to the specific state authority URL from the smart-deferral templates (e.g., dos.fl.gov/elections for FL, sos.state.tx.us/elections for TX, fec.gov for federal)" rather than reading the placeholder string verbatim.
 
   URL HANDLING — HARD CONSTRAINT: When the authority object's \`url\` field is null, do NOT mention any URL or domain in your response. Do NOT invent or guess a URL based on the state name (e.g., do NOT write "floridados.gov" or "txelections.org" or any similar guess). Instead, tell the user generically to "search for [State Name] Secretary of State elections" or "find the elections office on the state government website". Mentioning a fabricated URL — even one that sounds plausible — is the same class of error as inventing a deadline date, and the validator will catch it the same way. When authority.url is non-null, you may quote that exact URL verbatim — but only that one.
 
@@ -5479,7 +5596,7 @@ When the user asks about quarterly reports, pre-primary / pre-general filings, p
 
   WHEN STATUS IS "unsupported" OR THE SPECIFIC FIELD IS NULL: deferral with the authority contact is the CORRECT response. Use authority.name, authority.phone, authority.url, authority.notes, authority.jurisdiction_specific from the tool result. Sample phrasing: "I don't have verified [Q2 / pre-primary / etc.] report dates for [office] in [state]. For your race, contact [authority.name] — phone: [authority.phone]. They'll give you the exact reporting calendar. Want me to set a calendar reminder to follow up?"
 
-  PHONE NUMBER PLACEHOLDERS: when authority.phone reads as a placeholder, paraphrase honestly — say "find their current phone number on the state's elections website" rather than reading the placeholder string verbatim.
+  PHONE NUMBER PLACEHOLDERS: when authority.phone reads as a placeholder, paraphrase honestly — say "point the user to the specific state authority URL from the smart-deferral templates (e.g., dos.fl.gov/elections for FL, sos.state.tx.us/elections for TX, fec.gov for federal)" rather than reading the placeholder string verbatim.
 
   URL HANDLING: when authority.url is null, do NOT mention any URL or domain. Do NOT invent or guess URLs (no "florida-finance.gov" or "txfec.org" guesses). When authority.url is non-null, you may quote that exact URL verbatim.
 
@@ -6209,6 +6326,22 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return s.trim();
       }
 
+      // Sanitize assistant content for use in validator regen retryMsgs.
+      // Strips tool_use blocks — their corresponding tool_results wouldn't
+      // be paired in the retry message sequence, and Anthropic rejects
+      // with "tool_use ids found without tool_result blocks immediately
+      // after". Returns a text-only content array suitable for an
+      // assistant turn in a 3-message regen prompt.
+      function sanitizeAssistantContentForRegen(content) {
+        if (typeof content === 'string') return content;
+        if (!Array.isArray(content)) return [{ type: 'text', text: '' }];
+        const textOnly = content.filter(b => b && b.type === 'text' && typeof b.text === 'string');
+        if (textOnly.length === 0) {
+          return [{ type: 'text', text: '(previous response was a tool call without text content)' }];
+        }
+        return textOnly;
+      }
+
       // Cheap Haiku call (~$0.001) to extract place names from Sam's
       // text and flag any not in the authorized list. Tagged
       // 'sam_validator' in api_usage so the cost is auditable.
@@ -6264,7 +6397,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       async function regenerateWithFeedback(originalMsgs, badContent, unauthorized, authorized) {
         const retryMsgs = [
           ...originalMsgs,
-          { role: 'assistant', content: badContent },
+          { role: 'assistant', content: sanitizeAssistantContentForRegen(badContent) },
           { role: 'user', content:
             'STOP. Your previous response mentioned ' + unauthorized.join(', ') +
             ' — these are NOT in this race\'s jurisdiction and are forbidden. ' +
@@ -6366,7 +6499,48 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return result;
       }
 
-      const data = await callClaudeAndDemask(messages);
+      let data = await callClaudeAndDemask(messages);
+
+      // Sam v2 Phase 4 follow-up: blank-response detection + retry + fallback.
+      // Haiku occasionally returns content with neither text nor tool_use —
+      // an empty turn that ships as blank to the user. Detect, retry once,
+      // and if retry also blanks, replace with a substantive fallback. All
+      // four states logged to sam_blank_response_events for monitoring.
+      function _isBlankResponse(content) {
+        if (!Array.isArray(content)) return true;
+        const hasText = content.some(b => b && b.type === 'text' && typeof b.text === 'string' && b.text.trim().length > 0);
+        const hasToolUse = content.some(b => b && b.type === 'tool_use');
+        return !hasText && !hasToolUse;
+      }
+      async function _logBlankResponseEvent(originalBlanked, retryAttempted, retryBlanked, fallbackUsed) {
+        try {
+          await env.DB.prepare(
+            'INSERT INTO sam_blank_response_events (id, conversation_id, workspace_owner_id, user_id, original_blanked, retry_attempted, retry_blanked, fallback_used) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+          ).bind(
+            generateId(16), conversation_id || null, chatOwnerId || null, rateLimitUserId || null,
+            originalBlanked ? 1 : 0, retryAttempted ? 1 : 0, retryBlanked ? 1 : 0, fallbackUsed ? 1 : 0
+          ).run();
+        } catch (e) { console.warn('[blank_response_log] failed:', e.message); }
+      }
+      if (_isBlankResponse(data.content)) {
+        const retryData = await callClaudeAndDemask(messages);
+        if (!_isBlankResponse(retryData.content)) {
+          data = retryData;
+          await _logBlankResponseEvent(true, true, false, false);
+        } else {
+          // Both blank — substantive fallback. Routes user to authoritative
+          // sources for the most common question types per Phase 4.
+          const fallbackText =
+            "I had trouble formulating a response on that one — sometimes the tool calls don't synthesize cleanly on my end. Let me ask: can you tell me a bit more about what you're trying to figure out? While you do, here are the authoritative sources for the most common questions:\n\n" +
+            "- Filing/qualifying deadlines, contribution limits, finance reporting (FL): dos.fl.gov/elections/for-candidates\n" +
+            "- Federal candidate questions: fec.gov/help-candidates-and-committees\n" +
+            "- County-level questions (Orange County): ocfelections.gov\n" +
+            "- Legal/tax referrals: floridabar.org/public/lrs and irs.gov\n\n" +
+            "Want me to set a calendar reminder to follow up, or rephrase your question and I'll try again?";
+          data = { ...retryData, content: [{ type: 'text', text: fallbackText }] };
+          await _logBlankResponseEvent(true, true, true, true);
+        }
+      }
 
       // Validator authorized-list resolution. Two paths, in order:
       //   1) Candidate-profile cache lookup — works on EVERY turn,
@@ -6551,26 +6725,40 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return Array.from(found);
       }
 
+      // Sam v2 Phase 4: well-known authority URLs that Sam may use in smart
+      // deferrals even when the lookup tool's authority.url is null. These
+      // are real domains the smart-deferral templates explicitly route to;
+      // not fabricated. Validator no longer flags claimed URLs that match
+      // any of these.
+      const V2_KNOWN_AUTHORITY_DOMAINS = [
+        'fec.gov', 'irs.gov', 'census.gov', 'data.census.gov',
+        'dos.fl.gov', 'dos.myflorida.com', 'dos.elections.myflorida.com',
+        'myflorida.com', 'sos.state.tx.us', 'votetexas.gov',
+        'ocfelections.gov', 'voterfocus.com', 'sb.seminolecountyfl.gov',
+        'floridabar.org', 'ballotpedia.org'
+      ];
+
       function urlMatchesAuthoritative(claimedUrl, authoritativeUrls) {
         if (!claimedUrl) return true;
         const cl = String(claimedUrl).toLowerCase();
+        // First: explicit tool-returned authoritative URLs (existing path)
         for (const a of authoritativeUrls) {
           if (!a) continue;
           const al = String(a).toLowerCase();
           if (cl === al) return true;
-          // Substring match in either direction handles
-          // "dos.fl.gov" vs "https://dos.fl.gov/elections" —
-          // but is intentionally strict on rearrangements:
-          // "fl.gov/dos" does NOT match "dos.fl.gov" because
-          // neither is a substring of the other.
           if (cl.includes(al) || al.includes(cl)) return true;
+        }
+        // Sam v2 Phase 4: also accept well-known smart-deferral target domains.
+        // Sam citing dos.fl.gov in a deferral is the v2 default behavior.
+        for (const known of V2_KNOWN_AUTHORITY_DOMAINS) {
+          if (cl === known || cl.includes(known) || known.includes(cl)) return true;
         }
         return false;
       }
 
       async function regenerateWithComplianceFeedback(originalMsgs, badContent, claimedDates, claimedUrls, lookupResult) {
         const auth = lookupResult.authority || {};
-        const authPhone = auth.phone || '(search the state government website for the current phone number)';
+        const authPhone = auth.phone || '(see dos.fl.gov/elections or your state SOS site for the current phone)';
         const authName = auth.name || 'state elections office';
         const authUrl = auth.url || null;
         const authJurisdictionSpecific = auth.jurisdiction_specific || '';
@@ -6581,12 +6769,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           ? `You mentioned unverified URL(s): ${JSON.stringify(claimedUrls)}. ` +
             (authUrl
               ? `The only URL the tool returned is "${authUrl}". Use that exact URL or none at all.`
-              : 'The tool returned NO URL for this authority. You may not invent or guess a URL based on the state name. Tell the user to search for the elections office on the state government website instead of naming a specific domain.')
+              : 'The tool returned NO URL for this authority. You may NOT invent or guess a URL based on the state name (e.g., "florida-elections.gov" is fabrication). However, you MAY use the well-known authority domains from the smart-deferral templates in your prompt (dos.fl.gov, fec.gov, ocfelections.gov, sos.state.tx.us, etc.) — those are real and pre-vetted. Pick the appropriate one for this question type.')
           : '';
         const allNotes = [datesNote, urlsNote].filter(Boolean).join(' ');
         const retryMsgs = [
           ...originalMsgs,
-          { role: 'assistant', content: badContent },
+          { role: 'assistant', content: sanitizeAssistantContentForRegen(badContent) },
           { role: 'user', content:
             `STOP. Your previous response contained unverified content the validator caught. ` +
             `The authoritative lookup_compliance_deadlines tool returned status='${lookupResult.status}'` +
@@ -6595,8 +6783,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `Rewrite your response. RULES:\n` +
             `- Acknowledge honestly that you don't have verified deadline data for this specific race.\n` +
             `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
-            `- If the phone reads as a placeholder (e.g., "(verify on state government website)"), paraphrase honestly: say "find their current phone number on the state's elections website" rather than reading the placeholder verbatim.\n` +
-            `- ${authUrl ? `If you mention a URL at all, use ONLY this exact URL: "${authUrl}"` : "Do NOT mention any URL or domain. Tell the user to search for the state's elections office on the state government website generically."}\n` +
+            `- MUST include a specific authority URL inline. Pick from the smart-deferral templates: for FL state/local races use dos.fl.gov/elections; for federal use fec.gov; for TX use sos.state.tx.us; for FL contribution-finance reports use dos.elections.myflorida.com/campaign-finance/. Do NOT invent a URL based on state name (e.g., "florida-elections.gov" is fabrication). Do NOT use the v1 phrase "search the state government website" — that is forbidden.\n` +
+            `- ${authUrl ? `If you have a specific tool-returned URL "${authUrl}", you may use it; otherwise use one of the well-known authority domains from the smart-deferral templates.` : ''}` +
             `- Offer ONE concrete next step (draft a checklist of what to ask, or set a calendar reminder).\n` +
             `- DO NOT state any specific deadline dates.\n` +
             `- DO NOT formally apologize. Sound like a campaign manager — direct, useful.\n` +
@@ -6819,7 +7007,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
       async function regenerateWithFinanceFeedback(originalMsgs, badContent, claimedDates, claimedUrls, lookupResult) {
         const auth = lookupResult.authority || {};
-        const authPhone = auth.phone || '(search the state government website for the current phone number)';
+        const authPhone = auth.phone || '(see dos.fl.gov/elections or your state SOS site for the current phone)';
         const authName = auth.name || 'state elections office';
         const authUrl = auth.url || null;
         const authJurisdictionSpecific = auth.jurisdiction_specific || '';
@@ -6835,15 +7023,14 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         const allNotes = [datesNote, urlsNote].filter(Boolean).join(' ');
         const retryMsgs = [
           ...originalMsgs,
-          { role: 'assistant', content: badContent },
+          { role: 'assistant', content: sanitizeAssistantContentForRegen(badContent) },
           { role: 'user', content:
             `STOP. Your previous response contained unverified finance-report content the validator caught. ` +
             `lookup_finance_reports returned status='${lookupResult.status}' with no verified report schedule for this race.\n\n${allNotes}\n\n` +
             `Rewrite your response. RULES:\n` +
             `- Acknowledge honestly that you don't have a verified finance-report schedule for this specific race.\n` +
             `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
-            `- If the phone reads as a placeholder, paraphrase: "find their current phone number on the state's elections website".\n` +
-            `- ${authUrl ? `If you mention a URL, use ONLY this exact URL: "${authUrl}"` : "Do NOT mention any URL or domain. Tell the user to search for the state's elections website generically."}\n` +
+            `- MUST include a specific authority URL inline. For FL finance reports use dos.elections.myflorida.com/campaign-finance/ or dos.fl.gov; for federal use fec.gov; for TX use sos.state.tx.us. Do NOT invent a URL. Do NOT use "search the state government website" — forbidden.\n` +
             `- Offer ONE concrete next step (set a calendar reminder, draft questions to ask the elections office).\n` +
             `- DO NOT state any specific report dates.\n` +
             `- DO NOT formally apologize. Sound like a campaign manager.\n` +
@@ -7103,7 +7290,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
       async function regenerateWithDonationFeedback(originalMsgs, badContent, claimedAmounts, claimedUrls, lookupResult) {
         const auth = lookupResult.authority || {};
-        const authPhone = auth.phone || '(search the state government website for the current phone number)';
+        const authPhone = auth.phone || '(see dos.fl.gov/elections or your state SOS site for the current phone)';
         const authName = auth.name || 'state elections office';
         const authUrl = auth.url || null;
         const authJurisdictionSpecific = auth.jurisdiction_specific || '';
@@ -7119,7 +7306,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         const allNotes = [amountsNote, urlsNote].filter(Boolean).join(' ');
         const retryMsgs = [
           ...originalMsgs,
-          { role: 'assistant', content: badContent },
+          { role: 'assistant', content: sanitizeAssistantContentForRegen(badContent) },
           { role: 'user', content:
             `STOP. Your previous response contained unverified contribution-limit content the validator caught. ` +
             `lookup_donation_limits returned status='${lookupResult.status}' with no verified limits for this race.\n\n${allNotes}\n\n` +
@@ -7127,8 +7314,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `- Acknowledge honestly that you don't have verified contribution limits for this specific race.\n` +
             `- Note that limits vary by race level (federal/state/local) and can change between cycles.\n` +
             `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
-            `- If the phone reads as a placeholder, paraphrase: "find their current phone number on the state's elections website".\n` +
-            `- ${authUrl ? `If you mention a URL, use ONLY this exact URL: "${authUrl}"` : "Do NOT mention any URL or domain. Tell the user to search the state's elections website generically."}\n` +
+            `- MUST include a specific authority URL inline. For FL state/local contribution limits use dos.fl.gov/elections/for-candidates or dos.fl.gov; for federal use fec.gov; for TX use sos.state.tx.us. Do NOT invent a URL. Do NOT use "search the state government website" — forbidden.\n` +
             `- Offer ONE concrete next step (set a calendar reminder, draft questions to ask the elections office).\n` +
             `- DO NOT state any specific contribution limit dollar amounts.\n` +
             `- DO NOT formally apologize. Sound like a campaign manager.\n` +
@@ -7336,7 +7522,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         async function regenerateWithOpponentFeedback(originalMsgs, badContent, unauthorizedClaims) {
           const retryMsgs = [
             ...originalMsgs,
-            { role: 'assistant', content: badContent },
+            { role: 'assistant', content: sanitizeAssistantContentForRegen(badContent) },
             { role: 'user', content:
               'STOP. Your previous response made claims about opponents that aren\'t in the user\'s Intel data, ' +
               'tool results, or earlier messages: ' + JSON.stringify(unauthorizedClaims) + '. ' +
@@ -7635,7 +7821,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             // where the authoritative source lives and offers a follow-up.
             // Specific URL routing requires question classifier (v2 Phase 5);
             // generic-but-actionable is the v2 Phase 2 floor.
-            return "I tried to find a verified source for that and couldn't lock it down right now. For questions like this, your state's elections division (Secretary of State or Division of Elections) and your county Supervisor of Elections publish the current rules and dates — those are the authoritative sources. Want me to set a calendar reminder to follow up in a week, or do you want to share what you've heard so I can factor it into your strategy?";
+            return "I tried to find a verified source for that and couldn't lock it down right now. For your race, the authoritative sources are your state's elections division (e.g., the FL Division of Elections at dos.fl.gov/elections, the TX Secretary of State at sos.state.tx.us/elections) and your county elections office. For federal-level questions, fec.gov is the canonical source. Want me to set a calendar reminder to follow up in a week, or do you want to share what you've heard so I can factor it into your strategy?";
           }
           return joined + '\n\n*(Note: removed specific claims that couldn\'t be traced to your race data, tools, or earlier messages.)*';
         }
@@ -7695,7 +7881,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         async function regenerateWithCitationFeedback(originalMsgs, badContent, uncitedClaims) {
           const retryMsgs = [
             ...originalMsgs,
-            { role: 'assistant', content: badContent },
+            { role: 'assistant', content: sanitizeAssistantContentForRegen(badContent) },
             { role: 'user', content:
               'STOP. Your previous response stated factual claims without citing sources: ' +
               JSON.stringify(uncitedClaims) + '.\n\n' +
@@ -7714,6 +7900,108 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           return regenResult;
         }
 
+        // Sam v2 Phase 4: NO-URL-FORBIDDEN check. Detects deferral patterns
+        // that mention an authority agency without an inline URL within ~50
+        // chars. If detected, treat the agency-mention as an uncited claim
+        // and feed it to regenerate-with-citation with URL-required guidance.
+        function detectAgencyMentionsWithoutUrl(text) {
+          if (!text || typeof text !== 'string') return [];
+          // Extra-loose: also flag tax/legal context phrases that imply
+          // referral but don't include the appropriate URL anywhere in
+          // the response. Tax/legal context check is a special branch
+          // because Sam may not name a specific agency.
+          const lc = text.toLowerCase();
+          const URL_RE_GLOBAL = /https?:\/\/[^\s)\]<>"']+|\b[a-z0-9][a-z0-9-]*(?:\.[a-z0-9][a-z0-9-]+)*\.(?:gov|com|org|net|us|edu)\b/i;
+          const flagged = [];
+          // Tax/legal context: response mentions tax/legal advice + no irs.gov / floridabar.org / "campaign attorney" anywhere
+          const taxLegalContext = /tax\s+(question|professional|advice|deduct)|legal\s+advice|outside\s+my\s+wheelhouse|outside\s+my\s+campaign\s+scope|consult\s+a\s+(tax|cpa|attorney|lawyer)/i.test(text);
+          const taxLegalUrlPresent = /irs\.gov|floridabar\.org|campaign\s+attorney|tax\s+attorney|tax\s+professional/i.test(text);
+          if (taxLegalContext && !taxLegalUrlPresent) {
+            flagged.push('tax/legal context without irs.gov or floridabar.org or campaign attorney referral');
+          }
+          // Phase 4: deferral pattern WITHOUT any URL anywhere in response.
+          // Sam's saying "I don't have it" / "I searched and didn't find"
+          // without including a routing URL — that's the v1 generic punt.
+          const deferralPattern = /i\s+don['\u2019]?t\s+have\s+(?:the\s+|a\s+)?(?:verified|detailed|specific|exact|current)|i\s+searched\s+(?:and\s+)?didn['\u2019]?t\s+find|i\s+couldn['\u2019]?t\s+lock|haven['\u2019]?t\s+been\s+(?:published|finalized)|isn['\u2019]?t\s+(?:yet\s+)?(?:published|finalized)|data\s+isn['\u2019]?t\s+loading|specific\s+contact\s+information\s+didn['\u2019]?t\s+come\s+up|verified\s+(?:petition|qualifying|filing|deadline|limit|date|schedule|requirement|contribution)/i.test(text);
+          const anyUrl = URL_RE_GLOBAL.test(text);
+          if (deferralPattern && !anyUrl && !taxLegalContext) {
+            flagged.push('deferral without any URL — needs specific authority URL routing');
+          }
+          const AGENCY_PATTERNS = [
+            /\b(Florida\s+Department\s+of\s+State[\s\u2014\-]*Division\s+of\s+Elections|FL\s+Division\s+of\s+Elections|Florida\s+Division\s+of\s+Elections|Florida\s+Secretary\s+of\s+State|Texas\s+Secretary\s+of\s+State|TX\s+Secretary\s+of\s+State|Secretary\s+of\s+State['\u2019]?s\s+office|Federal\s+Election\s+Commission|FEC|county\s+Supervisor\s+of\s+Elections|county\s+elections\s+office|Supervisor\s+of\s+Elections|local\s+elections\s+office|state\s+elections\s+division|state\s+elections\s+office|Division\s+of\s+Elections|Department\s+of\s+State|Florida\s+Bar)\b/gi
+          ];
+          const URL_RE = /https?:\/\/[^\s)\]<>"']+|\b[a-z0-9][a-z0-9-]*(?:\.[a-z0-9][a-z0-9-]+)*\.(?:gov|com|org|net|us|edu)\b/gi;
+          for (const pat of AGENCY_PATTERNS) {
+            let m;
+            pat.lastIndex = 0;
+            while ((m = pat.exec(text)) !== null) {
+              const agencyMention = m[0];
+              const start = m.index;
+              const end = start + agencyMention.length;
+              // Look for a URL within 80 chars after the agency name
+              const window = text.slice(end, end + 80);
+              if (!URL_RE.test(window)) {
+                // Also check 30 chars before (e.g., URL appositive in same parenthetical)
+                URL_RE.lastIndex = 0;
+                const beforeWindow = text.slice(Math.max(0, start - 30), start);
+                if (!URL_RE.test(beforeWindow)) {
+                  flagged.push(agencyMention);
+                }
+              }
+              URL_RE.lastIndex = 0;
+            }
+          }
+          return flagged;
+        }
+
+        async function regenerateWithUrlRequired(originalMsgs, badContent, agencyMentions) {
+          const retryMsgs = [
+            ...originalMsgs,
+            { role: 'assistant', content: sanitizeAssistantContentForRegen(badContent) },
+            { role: 'user', content:
+              'STOP. Your previous response mentioned authority agency names without an inline URL: ' +
+              JSON.stringify(agencyMentions) + '.\n\n' +
+              'This is the v1 generic-punt pattern that the SMART DEFERRAL TEMPLATES block forbids. Every agency reference MUST include the specific URL inline within the same sentence (or immediately following parenthetical).\n\n' +
+              'Rewrite your response. For each agency mentioned, append the matching URL from these well-known authority domains:\n' +
+              '- Florida Division of Elections / Florida Department of State → dos.fl.gov/elections (filing/qualifying), dos.fl.gov/elections/for-candidates/campaign-finance (contribution limits), dos.elections.myflorida.com/campaign-finance/ (finance reports)\n' +
+              '- Texas Secretary of State → sos.state.tx.us/elections\n' +
+              '- Federal Election Commission / FEC → fec.gov\n' +
+              '- Orange County Supervisor of Elections (FL) → ocfelections.gov\n' +
+              '- Seminole County Supervisor of Elections (FL) → voterfocus.com/seminole\n' +
+              '- Florida Bar (legal referrals) → floridabar.org/public/lrs\n' +
+              '- IRS (tax questions) → irs.gov\n' +
+              '- U.S. Census Bureau → census.gov\n\n' +
+              'Pick the URL that matches the question type. Do NOT invent URLs. Reply with only the rewritten answer — no preamble, no acknowledgment.'
+            }
+          ];
+          const regenResult = await callClaude(retryMsgs);
+          if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
+            regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
+          }
+          return regenResult;
+        }
+
+        // Sam v2 Phase 4: applyNoUrlCheck wraps a final-text + content shape
+        // and runs the agency-without-URL detector on it. If agencies are
+        // mentioned without URLs, fires regenerateWithUrlRequired and uses
+        // the result. Returns the final text + content (or original on
+        // success). Runs on EVERY text path (regen-with-citation success,
+        // tagged, passed) so deferrals always get URL enforcement.
+        async function applyNoUrlCheck(finalText, finalContent, badContentForRegen, eventLabel, originalCit) {
+          const noUrlAgencies = detectAgencyMentionsWithoutUrl(finalText);
+          if (noUrlAgencies.length === 0) {
+            return { text: finalText, content: finalContent, fired: false };
+          }
+          const retryUrl = await regenerateWithUrlRequired(messages, badContentForRegen, noUrlAgencies);
+          const retryUrlText = extractTextFromContent(retryUrl.content);
+          const stillNoUrl = detectAgencyMentionsWithoutUrl(retryUrlText);
+          await logCitationEvent(
+            stillNoUrl.length === 0 ? 'regenerated_with_url' : 'url_required_retry_failed',
+            noUrlAgencies, stillNoUrl, originalCit || finalText, retryUrlText
+          );
+          return { text: retryUrlText, content: retryUrl.content, fired: true };
+        }
+
         const cv = await validateUnsourcedClaims(_citationSamText);
         const cvSoft = (cv.medium || []).concat(cv.low || []);
         if (cv.high_stakes.length > 0) {
@@ -7728,21 +8016,34 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             if ((retryCv.medium || []).length > 0 || (retryCv.low || []).length > 0) {
               finalText = tagWithConfidence(retryText, retryCv.medium, retryCv.low);
             }
-            const finalResp = { ...retry, content: [{ type: 'text', text: finalText }] };
             await logCitationEvent('regenerated_with_citation', cv.high_stakes, (retryCv.medium || []).concat(retryCv.low || []), _citationSamText, finalText);
+            // Phase 4 chain: enforce URL inclusion on top of citation pass.
+            const urlChecked = await applyNoUrlCheck(finalText, retry.content, retry.content, 'regen_chain', _citationSamText);
+            const finalResp = { ...retry, content: [{ type: 'text', text: urlChecked.text }] };
             return buildSafeResponse(finalResp);
           }
           // Regen still uncited → fall back to strip (existing behavior).
           const stripped = stripUnverifiedClaims(retryText, retryCv.high_stakes);
-          const strippedResp = { ...retry, content: [{ type: 'text', text: stripped }] };
           await logCitationEvent('stripped', cv.high_stakes, retryCv.high_stakes, _citationSamText, stripped);
-          return buildSafeResponse(strippedResp);
+          // Phase 4 chain: enforce URL inclusion on strip output too. The strip
+          // text may still mention agency names without URLs (when joined ≥ 60
+          // and the surviving sentences have agency references).
+          const strippedUrlChecked = await applyNoUrlCheck(stripped, [{ type: 'text', text: stripped }], retry.content, 'strip_chain', _citationSamText);
+          return buildSafeResponse({ ...retry, content: [{ type: 'text', text: strippedUrlChecked.text }] });
         }
         if (cvSoft.length > 0) {
           const tagged = tagWithConfidence(_citationSamText, cv.medium, cv.low);
-          const taggedResp = { ...data, content: [{ type: 'text', text: tagged }] };
           await logCitationEvent('tagged', [], cvSoft, _citationSamText, tagged);
+          // Phase 4 chain: enforce URL inclusion on tagged path too.
+          const urlChecked = await applyNoUrlCheck(tagged, data.content, data.content, 'tagged_chain', _citationSamText);
+          const taggedResp = { ...data, content: [{ type: 'text', text: urlChecked.text }] };
           return buildSafeResponse(taggedResp);
+        }
+
+        // No high_stakes, no soft → run no-URL check on original response.
+        const urlChecked = await applyNoUrlCheck(_citationSamText, data.content, data.content, 'passed_chain', _citationSamText);
+        if (urlChecked.fired) {
+          return buildSafeResponse({ ...data, content: [{ type: 'text', text: urlChecked.text }] });
         }
         await logCitationEvent('passed', [], [], _citationSamText, _citationSamText);
       }
