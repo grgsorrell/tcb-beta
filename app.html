@@ -5503,6 +5503,33 @@ function renderSettings() {
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#127919;</div><div><div class="sr-nm">Win Number</div><div class="sr-desc">' + winNum + '</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128176;</div><div><div class="sr-nm">Campaign Budget</div><div class="sr-desc">' + budgetStr + (campaignBudget.total > 0 ? ' · $' + remaining.toLocaleString() + ' remaining' : '') + '</div></div></div><button class="edit-bud-btn" onclick="promptEditBudget()">Edit</button></div>' +
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128179;</div><div><div class="sr-nm">Donation Page URL</div><div class="sr-desc">' + (campaignData.donationUrl ? escapeHtml(campaignData.donationUrl) : 'Not set') + '</div></div></div><button class="edit-bud-btn" onclick="editDonationUrl()">Edit</button></div>' +
+      // Sam v2 Phase 6: Campaign Website (URL + last-updated + Edit/Refresh)
+      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#127760;</div><div><div class="sr-nm">Campaign Website</div><div class="sr-desc">' +
+        (campaignData.candidateSiteUrl
+          ? escapeHtml(campaignData.candidateSiteUrl) + (campaignData.candidateSiteFetchedAt ? ' &middot; updated ' + escapeHtml(campaignData.candidateSiteFetchedAt) : '')
+          : 'Not set') +
+      '</div></div></div>' +
+      '<div style="display:flex;gap:6px">' +
+        (campaignData.candidateSiteUrl
+          ? '<button class="edit-bud-btn" onclick="editCandidateSiteUrl()">Edit</button><button class="edit-bud-btn" onclick="refreshCandidateSite()">Refresh</button>'
+          : '<button class="edit-bud-btn" onclick="editCandidateSiteUrl()">Add URL</button>') +
+      '</div></div>' +
+      // Sam v2 Phase 6: About You bio (1000 char max, modal editor)
+      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128221;</div><div><div class="sr-nm">About You</div><div class="sr-desc">' +
+        (campaignData.candidateBioText
+          ? escapeHtml(String(campaignData.candidateBioText).slice(0, 80)) + (campaignData.candidateBioText.length > 80 ? '&hellip;' : '') + ' (' + campaignData.candidateBioText.length + ' / 1000)'
+          : 'Not set') +
+      '</div></div></div>' +
+      '<button class="edit-bud-btn" onclick="editCandidateBio()">' + (campaignData.candidateBioText ? 'Edit' : 'Add Bio') + '</button></div>' +
+      // Sam v2 Phase 6: Early voting start date
+      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128683;</div><div><div class="sr-nm">Early Voting Start</div><div class="sr-desc">' +
+        (campaignData.earlyVotingStartDate ? formatDate(campaignData.earlyVotingStartDate) : 'Not set') +
+      '</div></div></div>' +
+      '<div style="display:flex;gap:6px">' +
+        (campaignData.earlyVotingStartDate
+          ? '<button class="edit-bud-btn" onclick="editEarlyVotingDate()">Edit</button><button class="edit-bud-btn" onclick="clearEarlyVotingDate()">Clear</button>'
+          : '<button class="edit-bud-btn" onclick="editEarlyVotingDate()">Add Date</button>') +
+      '</div></div>' +
     '</div>' +
     '<div class="settings-section"><div class="settings-lbl">Sam Configuration</div>' +
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#129302;</div><div><div class="sr-nm">Sam Intelligence Brief</div><div class="sr-desc">' + (function(){ try { var b = JSON.parse(localStorage.getItem(storageKey('ctb_candidate_brief'))); return b && b._generatedAt ? 'Last updated: ' + new Date(b._generatedAt).toLocaleDateString() : 'Not yet generated'; } catch(e) { return 'Not yet generated'; } })() + '</div></div></div><button class="btn-primary" style="font-size:11px;padding:6px 14px;white-space:nowrap" onclick="refreshIntelligenceBrief()">Refresh Intelligence</button></div>' +
@@ -7164,28 +7191,212 @@ function obFireSiteAndBioSaves() {
   }
 }
 
-// Auto-add an "Early Voting Begins" event to the calendar when the user
-// supplied an early voting start date during onboarding. Tagged so Sam's
-// calendar reference can recognize voting-period-start events.
-function obAddEarlyVotingEvent() {
-  var d = onboardingData.earlyVotingStartDate;
-  if (!d) return;
+// Auto-add/update/remove an "Early Voting Begins" calendar event based on
+// the candidate's profile.early_voting_start_date. Used by both onboarding
+// (onboarding save) and Settings (Edit Date / Clear flows). Looks up the
+// existing event by type='voting_period_start' OR name='Early Voting Begins';
+// updates date if found, creates if missing, deletes if date is null.
+function syncEarlyVotingCalendarEvent(newDate) {
   var sess = getD1Session();
   if (!sess) return;
-  var evt = {
-    id: 'ev_' + Date.now(),
-    name: 'Early Voting Begins',
-    date: d,
-    time: '',
-    end_time: '',
-    location: '',
-    type: 'voting_period_start'
-  };
-  fetch(D1_API + '/api/events/save', {
+  var existing = (events || []).find(function(e){
+    return (e && (e.type === 'voting_period_start' || e.name === 'Early Voting Begins'));
+  });
+  if (newDate) {
+    if (existing) {
+      existing.date = newDate;
+      existing.type = 'voting_period_start';
+      saveOneEvent(existing);
+    } else {
+      var evt = {
+        id: 'ev_' + Date.now(),
+        name: 'Early Voting Begins',
+        date: newDate,
+        time: '',
+        end_time: '',
+        location: '',
+        type: 'voting_period_start'
+      };
+      events.push(evt);
+      saveOneEvent(evt);
+    }
+  } else {
+    if (existing) {
+      events = events.filter(function(e){ return e.id !== existing.id; });
+      deleteOneEvent(existing.id);
+    }
+  }
+}
+
+// Onboarding wrapper — preserves the existing onboarding call site.
+function obAddEarlyVotingEvent() {
+  if (onboardingData.earlyVotingStartDate) syncEarlyVotingCalendarEvent(onboardingData.earlyVotingStartDate);
+}
+
+// ============================================================
+// Sam v2 Phase 6: Settings UI handlers for Campaign Profile
+// (candidate site URL, bio, early voting date)
+// ============================================================
+
+// Lightweight toast for transient confirmations. Same visual shell as the
+// permission-denied / read-only toasts already in this file.
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--n3);border:1px solid rgba(212,165,116,.3);color:var(--gold);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.4);';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.style.transition = 'opacity .3s'; t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 300); }, 2200);
+}
+
+function editCandidateSiteUrl() {
+  var current = campaignData.candidateSiteUrl || '';
+  var newUrl = prompt('Campaign website URL:', current);
+  if (newUrl === null) return; // cancel
+  newUrl = String(newUrl).trim();
+  if (!newUrl) {
+    alert('URL cannot be empty. Use Refresh to update content from the same URL, or Clear to remove the website entirely (use the Edit Bio section if you want to switch to bio-only).');
+    return;
+  }
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
+  // Show loading toast — fetch can take a few seconds for large sites.
+  showToast('Fetching site content...');
+  fetch(D1_API + '/api/profile/site/fetch', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
-    body: JSON.stringify(evt)
-  }).catch(function(e){ console.warn('[onboarding] early voting event save error:', e.message); });
+    body: JSON.stringify({ url: newUrl })
+  }).then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data && data.success) {
+        campaignData.candidateSiteUrl = data.url || newUrl;
+        campaignData.candidateSiteFetchedAt = data.fetched_at;
+        saveState(storageKey('ctb_campaignData'), campaignData);
+        showToast('Site fetched (' + (data.content_length || 0) + ' chars)');
+        renderSettings();
+      } else {
+        alert("Couldn't fetch that URL — verify it's correct and try again. (" + (data && data.error ? data.error : 'unknown error') + ")");
+      }
+    })
+    .catch(function(e){ alert("Couldn't fetch that URL — " + e.message); });
+}
+
+function refreshCandidateSite() {
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
+  if (!campaignData.candidateSiteUrl) {
+    alert('No site URL on file — use Add URL first.');
+    return;
+  }
+  showToast('Refreshing site content...');
+  fetch(D1_API + '/api/profile/site/refresh', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({})
+  }).then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data && data.success) {
+        campaignData.candidateSiteFetchedAt = data.fetched_at;
+        saveState(storageKey('ctb_campaignData'), campaignData);
+        showToast('Refreshed');
+        renderSettings();
+      } else {
+        alert("Couldn't refresh — site may be down or URL needs updating. (" + (data && data.error ? data.error : 'unknown error') + ")");
+      }
+    })
+    .catch(function(e){ alert("Couldn't refresh — " + e.message); });
+}
+
+function editCandidateBio() {
+  // Inline modal for bio (1000 char max with live counter).
+  var existing = campaignData.candidateBioText || '';
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px';
+  overlay.innerHTML =
+    '<div style="background:var(--n2);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:24px;max-width:560px;width:100%">' +
+      '<div style="font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--t1);margin-bottom:6px">' + (existing ? 'Edit' : 'Add') + ' Your Bio</div>' +
+      '<div style="font-size:12px;color:var(--t3);margin-bottom:14px">Sam uses this to ground her advice in your background. Your professional history, why you\'re running, top issues, anything that shapes your race.</div>' +
+      '<textarea id="settings-bio-ta" maxlength="1000" oninput="document.getElementById(\'settings-bio-counter\').textContent=this.value.length+\' / 1000\'" style="width:100%;min-height:160px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:12px;color:var(--t1);font-size:13px;font-family:var(--font-b);outline:none;resize:vertical;box-sizing:border-box">' + escapeHtml(existing) + '</textarea>' +
+      '<div id="settings-bio-counter" style="font-size:10px;color:var(--t3);text-align:right;margin-top:6px">' + existing.length + ' / 1000</div>' +
+      '<div style="display:flex;justify-content:space-between;gap:10px;margin-top:18px">' +
+        (existing ? '<button onclick="clearCandidateBio(this.parentElement.parentElement.parentElement)" style="background:transparent;border:1px solid rgba(232,112,112,.4);color:var(--red);padding:9px 16px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer">Clear Bio</button>' : '<div></div>') +
+        '<div style="display:flex;gap:8px">' +
+          '<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--t2);padding:9px 16px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer">Cancel</button>' +
+          '<button onclick="saveCandidateBio(this.closest(\'div[style*=fixed]\'))" style="background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.4);color:var(--gold);padding:9px 18px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer">Save</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  var ta = document.getElementById('settings-bio-ta');
+  if (ta) ta.focus();
+}
+
+function saveCandidateBio(overlay) {
+  var ta = document.getElementById('settings-bio-ta');
+  if (!ta) return;
+  var bio = ta.value.slice(0, 1000);
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
+  fetch(D1_API + '/api/profile/bio/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({ bio_text: bio })
+  }).then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data && data.success) {
+        campaignData.candidateBioText = bio;
+        saveState(storageKey('ctb_campaignData'), campaignData);
+        if (overlay) overlay.remove();
+        showToast('Bio saved');
+        renderSettings();
+      } else {
+        alert("Couldn't save bio — please try again.");
+      }
+    })
+    .catch(function(e){ alert("Couldn't save bio — " + e.message); });
+}
+
+function clearCandidateBio(overlay) {
+  if (!confirm('Clear bio? Sam will no longer reference it in your conversations.')) return;
+  var sess = getD1Session();
+  if (!sess) { handleUnauthenticated('Your session expired.'); return; }
+  fetch(D1_API + '/api/profile/bio/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({ bio_text: '' })
+  }).then(function(r){ return r.json(); })
+    .then(function(){
+      campaignData.candidateBioText = '';
+      saveState(storageKey('ctb_campaignData'), campaignData);
+      if (overlay) overlay.remove();
+      showToast('Bio cleared');
+      renderSettings();
+    })
+    .catch(function(e){ alert("Couldn't clear bio — " + e.message); });
+}
+
+function editEarlyVotingDate() {
+  var current = campaignData.earlyVotingStartDate || '';
+  var newDate = prompt('Early voting start date (YYYY-MM-DD):', current);
+  if (newDate === null) return; // cancel
+  newDate = String(newDate).trim();
+  if (newDate && !/^\d{4}-\d{2}-\d{2}$/.test(newDate)) {
+    alert('Please use YYYY-MM-DD format (e.g., 2026-10-22).');
+    return;
+  }
+  campaignData.earlyVotingStartDate = newDate || null;
+  saveCampaign(); // saveCampaign already POSTs early_voting_start_date to /api/profile/save
+  syncEarlyVotingCalendarEvent(newDate || null);
+  showToast(newDate ? 'Early voting date saved' : 'Early voting date cleared');
+  renderSettings();
+}
+
+function clearEarlyVotingDate() {
+  if (!confirm("Remove early voting date? This will also remove the 'Early Voting Begins' event from your calendar.")) return;
+  campaignData.earlyVotingStartDate = null;
+  saveCampaign();
+  syncEarlyVotingCalendarEvent(null);
+  showToast('Early voting date cleared');
+  renderSettings();
 }
 
 function obBack() { if (onboardingStep > 1) { onboardingStep--; renderOnboarding(); } }

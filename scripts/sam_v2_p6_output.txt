@@ -1,0 +1,55 @@
+Sam v2 Phase 6 — Settings UI backend + Sam propagation
+Run: 2026-05-01 10:21:52
+==============================================================================
+
+cjc userId: sXy4Rqp0aCskg2M9VVQptIeEDCpfLVtI
+
+==============================================================================
+Backend integration
+==============================================================================
+
+  T13 site fetch (new URL stores content + fetched_at): PASS — len=142, ts=2026-05-01 17:21:54
+  T14 site refresh (timestamp updates without URL change): PASS — prev=2026-05-01 17:21:54, new=2026-05-01 17:21:56
+  T15 bio save (text stored): PASS
+  T15b bio cap 1000 chars: PASS — len=1000
+  T16 early voting save: PASS — got=2026-10-22
+  T17 early voting clear: PASS — got=None
+
+==============================================================================
+Sam propagation
+==============================================================================
+
+T18 Sam (bio propagation):
+You're a former public school teacher running for State House in HD 39 to fight for education funding and labor protections — that's the foundation of your campaign and it's a strong one. Per your campaign profile, you have a $50,000 budget and need 5,000 votes to win. What's your biggest priority right now — locking down your message on education funding, starting to build your donor list, or something else?
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+  T18 Sam references new bio content: PASS — refs=True
+
+T19 Sam (site propagation):
+Based on what you shared in onboarding, your core message is **fighting for education funding and labor protections** — grounded in your background as a former public school teacher.
+
+That's a strong positioning for a State House race. Teachers have credibility on education, and labor protections resonate with working families across HD 39.
+
+Before we sharpen your messaging further, I need to see your campaign website. You provided a URL during onboarding, but the content that came through was placeholder text. Can you confirm your actual campaign site URL so I can pull your stated positions, issue priorities, and any messaging you've already developed?
+
+  T19 Sam references site content: PASS
+
+T20 Sam (early voting):
+Early voting starts October 22, 2026 (HIGH confidence — you entered this during onboarding).
+
+That's 175 days away, so you've got time to build your ground game and earned media strategy before the final sprint. What's your plan for the early vote period — are you thinking heavy mail, digital, or door-to-door push?
+
+  T20 Sam states October 22, 2026: PASS
+
+==============================================================================
+Regressions
+==============================================================================
+
+  T21 v2 P1 onboarding profile-save still works: PASS
+  T22 v2 P5 classifier still works (Thanks → conversational): PASS — cat=conversational
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 11  Fail: 0
