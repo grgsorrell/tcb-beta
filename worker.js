@@ -4401,13 +4401,19 @@ export default {
       let _betaUsername = null;
       if (rateLimitUserId) {
         try {
-          const userRow = await env.DB.prepare('SELECT username FROM users WHERE id = ?').bind(rateLimitUserId).first();
+          // Username column is set for production users, but beta logins
+          // (/auth/beta-login) only set email like "<username>@beta.tcb".
+          // Fall back to extracting username from email when username is null.
+          const userRow = await env.DB.prepare('SELECT username, email FROM users WHERE id = ?').bind(rateLimitUserId).first();
+          let u = null;
           if (userRow && userRow.username) {
-            const u = String(userRow.username).toLowerCase();
-            if (BETA_USERNAMES.includes(u)) {
-              _isBetaAccount = true;
-              _betaUsername = u;
-            }
+            u = String(userRow.username).toLowerCase();
+          } else if (userRow && userRow.email && /@beta\.tcb$/.test(userRow.email)) {
+            u = String(userRow.email).replace(/@beta\.tcb$/, '').toLowerCase();
+          }
+          if (u && BETA_USERNAMES.includes(u)) {
+            _isBetaAccount = true;
+            _betaUsername = u;
           }
         } catch (e) { console.warn('[rate_bypass] username lookup failed:', e.message); }
       }
