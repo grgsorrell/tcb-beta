@@ -1,5 +1,5 @@
 Sam v2 Phase 5 — Question classifier
-Run: 2026-05-01 15:12:27
+Run: 2026-05-01 16:46:32
 ==============================================================================
 
 cjc userId: sXy4Rqp0aCskg2M9VVQptIeEDCpfLVtI
@@ -11,12 +11,12 @@ TEST 1 — Early voting (factual)
 Q: When does early voting start?
 
 Sam:
-Early voting starts October 15, 2026 (HIGH confidence — per your campaign data).
+Early voting starts **October 15, 2026** (per your campaign data entered during onboarding — authoritative).
 
-That's 167 days away, so you've got solid runway to build your ground game and earned media strategy before the voting window opens. What's your first priority — building your donor list, mapping the district, or locking down your core message?
+What's your first priority: building your donor list, defining your message, or mapping out where you'll focus your field operations?
 
 Classification: factual (failed=0, expected=['factual'])
-Response check: has_url=False, len=326
+Response check: has_url=False, len=243
 PASS: True
 
 ==============================================================================
@@ -26,18 +26,16 @@ TEST 2 — Message framing (strategic)
 Q: How should I frame my message on healthcare?
 
 Sam:
-I need to know more about your district and what you're hearing on the ground before I can give you sharp messaging advice.
+I need to know more about your district and your position before I can give you sharp messaging advice. A few quick questions:
 
-Three quick questions:
+1. **What's your actual healthcare stance?** Are you running on expanding access, lowering costs, protecting existing coverage, something else—or are you still developing your position?
 
-1. **What's the top healthcare issue you're hearing from voters in HD 39?** (cost of care, access, abortion, mental health, something else?)
-2. **What's your personal stake in this?** (family experience, professional background, community impact — voters connect to authenticity, not talking points)
-3. **Do you know where your likely opponent stands on healthcare yet?** (If you've added them to your Intel panel, I can see their positioning; if not, what have you heard?)
+2. **What does your district look like?** HD 39 has specific demographics and healthcare concerns (rural vs. urban, older vs. younger, insured vs. uninsured rates). Do you know your district's profile, or should I pull that data?
 
-Once I understand the actual landscape — not the generic talking points — I can help you build a message that cuts through and moves persuadables in your district.
+Once I understand your position and your persuadables, I can tell you exactly how to frame it for maximum impact in your race.
 
 Classification: strategic (failed=0, expected=['strategic'])
-Response check: substantive=True, len=787
+Response check: substantive=True, len=672
 PASS: True
 
 ==============================================================================
@@ -47,16 +45,12 @@ TEST 3 — Anonymous donation (compliance)
 Q: Can I accept this anonymous $5,000 donation?
 
 Sam:
-I don't have verified contribution limits for FL State House races in 2026 yet. But I can tell you this: Florida law requires that for each contribution received, the campaign treasurer must indicate the name and address of the contributor.
+In practical terms, accepting it creates a compliance headache with zero benefit — you'd have to report it, can't use it, and must dispose of it later. The donor needs to provide their name, employer, and occupation for the contribution to be usable. **Tell the donor: "I appreciate the support, but I need your name and employer information to accept the contribution. Anonymous donations can't be spent under Florida law."** If they won't provide that info, they can't give to your campaign. What's your timeline for launching your first fundraising push?
 
-The Florida Division of Elections at dos.fl.gov/elections/for-candidates/campaign-finance recommends that you not spend an anonymous contribution. Since it's impossible to return the contribution to the contributor, they recommend that at the end of the campaign, you donate the amount of the anonymous contribution to an appropriate entity.
-
-**Do not accept this $5,000 as an anonymous donation.** Contact the Florida Division of Elections at dos.fl.gov/elections/for-candidates/campaign-finance to confirm the current per-election contribution limit for HD 39, and consult a campaign attorney (Florida Bar referral at floridabar.org/public/lrs) before accepting any contribution you cannot fully document.
-
-Who is making this donation, and do you have their name and address?
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
 
 Classification: compliance (failed=0, expected=['compliance'])
-Response check: legal=True, compliance_aware=True
+Response check: legal=False, compliance_aware=True
 PASS: True
 
 ==============================================================================
@@ -66,13 +60,13 @@ TEST 4 — Win chances (predictive)
 Q: What are my chances of winning?
 
 Sam:
-I can't predict election outcomes — that's your call to make based on the data. What I *can* do is help you understand the inputs.
+I can't predict election outcomes—that's your call to make based on the data. But I can give you the inputs you need to assess your position.
 
-Right now, here's what we're working with: You've got 186 days until November 3rd *(LOW confidence — inference, recommend verification)*, a $50,000 budget, a 5,000-vote win number, and zero dollars raised so far. You haven't added any opponents to your Intel panel yet, so I don't know who you're up against or what their fundraising looks like. No polling data, no voter registration breakdown for HD 39, no message testing.
+Here's what we know right now: You need 5,000 votes to win in HD 39 *(LOW confidence — inference, recommend verification)*, and you've got 186 days to get there. You're in the early-campaign phase with a $50K budget and zero dollars raised so far. You haven't added opponents to your Intel panel yet, so I don't have a read on who you're up against or how they're positioned.
 
-**Here's what I'd verify first:** Who are your opponents, and what's their fundraising pace? What does voter registration look like in your district — registration advantage, persuadable density, turnout patterns from the last cycle? *(LOW confidence — inference, recommend verification)* Once we have that, you'll have real inputs to make your own prediction.
+What would actually help you make a prediction: current voter registration data for HD 39 (party breakdown, persuadables), early polling if you can afford it, and a hard look at your opponent's fundraising and ground game once you identify them. You also need to know the Democratic primary structure in Florida—whether it's a top-two system or winner-take-all *(LOW confidence — inference, recommend verification)*.
 
-Want me to pull current voter registration data for HD 39, or should we start by getting your opponents into the Intel panel?
+**Next step: Add your opponent(s) to the Intel panel so we can assess the field you're running in.** Once I know who you're up against, I can help you build a strategy that maximizes your path to 5,000 votes.
 
 Classification: predictive (failed=0, expected=['predictive'])
 Response check: no_prediction=True, inputs=True
@@ -85,12 +79,12 @@ TEST 5 — Thanks (conversational)
 Q: Thanks Sam!
 
 Sam:
-You got it! Let's build something strong for HD 39. 
+Got it — happy to be here. You're running for State House in HD 39, and we've got 186 days to build this thing. Let's make it count.
 
-What's your first priority right now — are we mapping out your message, getting your core team locked in, or diving into fundraising strategy?
+What's the first thing you want to tackle — are we starting with message, money, or mapping out your ground game?
 
 Classification: conversational (failed=0, expected=['conversational'])
-Response check: brief=True, len=196
+Response check: brief=True, len=247
 PASS: True
 
 ==============================================================================
@@ -100,10 +94,12 @@ TEST 6 — What's next (conversational)
 Q: What's next on my schedule?
 
 Sam:
-You don't have any upcoming tasks or events scheduled yet. With 186 days until the November 3rd general election, let me verify your filing requirements and we can build your calendar from there.
+You don't have any upcoming tasks or events on your calendar yet. We're in early-campaign mode with 186 days until election day (November 3, 2026), so this is the right time to lock in your key deadlines and milestones.
+
+What should we tackle first — filing deadline verification, opponent research, or your initial fundraising push?
 
 Classification: factual (failed=0, expected=['conversational', 'strategic', 'factual'])
-Response check: len=195
+Response check: len=333
 PASS: True
 
 ==============================================================================
@@ -113,14 +109,19 @@ TEST 7 — Opponent strategy (strategic)
 Q: Tell me about my opponent's strategy.
 
 Sam:
-I don't have detailed information about Jarod Fox's strategy beyond the basic Intel data — they're a Republican running for State House in HD 39, threat level 5/10.
+I don't have detailed information about Jarod Fox's strategy in your Intel panel beyond the basics — Republican, threat level 5/10 for State House HD 39.
 
-What I'm missing is the qualitative intel that matters: What's their fundraising looking like? Who are they courting for endorsements? What issues are they messaging on? Have you heard anything about their ground game or where they're planning to spend?
+What have you heard on the ground? Tell me directly:
+- What's Jarod Fox's fundraising looking like?
+- Where are they focusing (geographic areas, voter groups)?
+- What's their message — healthcare, economy, education, something else?
+- Any endorsements or organizational backing you've noticed?
+- Vulnerabilities or controversies?
 
-Tell me what you know directly — conversations you've had, intel from the district, donor chatter, their recent moves — and I'll factor it into your counter-strategy. That on-the-ground read is worth more than any auto-research.
+Share what you know and I'll factor it into your counter-strategy.
 
 Classification: strategic (failed=0, expected=['strategic'])
-Response check: len=649
+Response check: len=552
 PASS: True
 
 ==============================================================================
@@ -130,16 +131,18 @@ TEST 8 — Campaign update (conversational/strategic)
 Q: Hey can you give me an update on my campaign?
 
 Sam:
-Good to see you. Let me give you the lay of the land where we stand right now.
+Good to see you. Here's where you stand:
 
-**The basics:** You're running for State House in HD 39 with 186 days until election day (November 3rd). You've got a $50,000 budget and a 5,000-vote win number. Early voting kicks off October 15th.
+**The snapshot:** You're 186 days out from election day (November 3rd), running for State House in HD 39 as a Democrat. You've set a $50,000 budget with a 5,000-vote win number. Early voting kicks off October 15th. You haven't filed yet — that's coming, but not urgent at this phase.
 
-**The reality:** You haven't raised a dime yet, and you haven't added any opponents to your Intel panel *(LOW confidence — inference, recommend verification)*. That's the first gap to close — you need to know who you're running against and what their fundraising and messaging look like *(LOW confidence — inference, recommend verification)*. That intel shapes everything from your positioning to your budget allocation.
+**The gap:** You're at $0 raised against a $50,000 goal, and you haven't added any opponents to your Intel panel yet. That's the first real move — knowing who you're running against shapes everything else *(LOW confidence — inference, recommend verification)*.
 
-**What's next:** Before we build out your full campaign plan, I need to know: Have you identified your opponents yet, or should we start there?
+**What I'd recommend right now:** Add your opponents to the My Opponents tab so we can build out your competitive landscape and start thinking about message positioning. Once we know who's in the race, we can map out your fundraising timeline and early-stage outreach strategy.
+
+Who are you running against?
 
 Classification: factual (failed=0, expected=['conversational', 'strategic', 'factual'])
-Response check: len=845
+Response check: len=896
 PASS: True
 
 ==============================================================================
@@ -149,22 +152,14 @@ TEST 9 — Attack opponent (strategic)
 Q: Should I attack my opponent on healthcare?
 
 Sam:
-Not yet — and probably not at all in a primary environment.
+Before I give you a straight answer, I need to know: **What's Jarod Fox's actual healthcare record or position?** 
 
-Here's my read: You're 186 days out in an early-campaign phase with zero dollars raised and a 5,000-vote win number. Your bandwidth should be on **building your own healthcare message and proving you can execute**, not tearing down Jarod Fox.
+From your Intel, I have Jarod Fox at threat level 5/10, but I don't have their voting record, statements, or vulnerabilities on healthcare specifically. That matters — a lot. Attacking on healthcare only works if you can land a credible hit: a vote they took, a position they stated, a broken promise to constituents.
 
-Attack ads work when you've already defined yourself positively. Right now, you need to:
-
-1. **Own healthcare as YOUR issue** — what's your specific plan? (Lower premiums? Expand coverage? Fix rural access?) Make it credible and memorable.
-2. **Build earned media** around your healthcare vision — town halls, op-eds, endorsements from healthcare workers or patient advocates.
-3. **Raise money** to amplify that message. Donors give to candidates with a clear vision, not just critics.
-
-Once you've staked that ground and have the resources to amplify contrast, *then* you can point out where Jarod Fox falls short. But leading with attack when you haven't defined yourself yet makes you look desperate and gives him the oxygen to respond.
-
-What's your actual healthcare position — what would you do differently than the status quo?
+Tell me what you know about Jarod Fox's healthcare stance or record. Then I'll tell you whether it's a winning lane for you or a distraction.
 
 Classification: strategic (failed=0, expected=['strategic'])
-Response check: len=1137
+Response check: len=576
 PASS: True
 
 ==============================================================================
@@ -174,14 +169,12 @@ TEST 10 — Qualifying deadline (factual)
 Q: What's the qualifying deadline for my race?
 
 Sam:
-I don't have verified qualifying dates for State House races in Florida yet. The authoritative source is the Florida Division of Elections at dos.fl.gov/elections/candidates — that's where qualifying dates will be posted. You should also contact your county/city elections office, since HD 39 races are administered locally.
+I don't have verified qualifying dates for State House races in HD 39 yet. The 2026 calendar isn't finalized on the state elections site. Here's what you need to do: contact the **Florida Department of State - Division of Elections** at **dos.fl.gov/elections/for-candidates** to get the exact qualifying period start and end dates, plus the filing fee. Since HD 39 is a state legislative race, also reach out to your county elections office — they'll have the local administration details.
 
-For your race, contact the Florida Division of Elections at dos.fl.gov/elections/candidates and your local county elections office to get the exact qualifying period start and end dates, filing fee, and any petition signature requirements.
-
-What county is HD 39 in? I can help you find the specific local elections office contact.
+Want me to add a calendar reminder to follow up in two weeks, or do you want to call them this week?
 
 Classification: factual (failed=0, expected=['factual'])
-Response check: has_url=True, len=656, tool_artifact=False
+Response check: has_url=True, len=592, tool_artifact=False
 PASS: True
 
 ==============================================================================
@@ -223,7 +216,7 @@ PASS: True
 TEST 13 — Classifier latency
 ==============================================================================
 
-Total turn latency: 3946ms (includes classifier + Sam + tools + validators)
+Total turn latency: 3962ms (includes classifier + Sam + tools + validators)
 PASS (turn < 30s): True
 
 ==============================================================================
@@ -232,15 +225,17 @@ Regressions
 
 R14 USER AS AUTHORITY: blocked=False → PASS
 
-R15 CITATION-FIRST Sam (truncated): For federal Senate races, individuals can contribute up to $3,500 per election to a U.S. Senate candidate. (Source: https://www.fec.gov/help-candidates-and-committees/candidate-taking-receipts/contrib
+R15 CITATION-FIRST Sam (truncated): Individuals can contribute up to $3,500 per election to a U.S. Senate candidate. Are you exploring a Senate run, or is this for strategic context on your State House race?
+
+*(Note: removed specific cl
 R15: PASS — cited=True, tool_artifact=False
 
-R16 CONFIDENCE SCORING (truncated): That's a MEDIUM confidence benchmark question — the answer depends heavily on your district's density, volunteer experience, and weather.
+R16 CONFIDENCE SCORING (truncated): That's a MEDIUM confidence benchmark question — let me ground it in your specific race first.
 
-Industry standard is 80–120 doors per day per volunteer in su
+Industry standard is 80–120 doors per day per volunteer, depending on neighborhood density, walking dista
 confidence=True → PASS
 
-R17 SMART DEFERRAL Sam (truncated): I don't have verified qualifying dates for HD 39. The Florida Department of State - Division of Elections publishes candidate deadlines at dos.fl.gov/elections/candidates — that's where the 2026 quali
+R17 SMART DEFERRAL Sam (truncated): I don't have verified qualifying dates for State House HD 39. The specific qualifying period, petition requirements, and filing fee for your 2026 race aren't yet published. Contact the Florida Departm
 has_url=True, tool_artifact=False → PASS
 
 R18 entity masking: leaked=[] → PASS

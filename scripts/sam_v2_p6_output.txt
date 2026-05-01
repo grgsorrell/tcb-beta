@@ -1,5 +1,5 @@
 Sam v2 Phase 6 — Settings UI backend + Sam propagation
-Run: 2026-05-01 15:18:22
+Run: 2026-05-01 16:46:36
 ==============================================================================
 
 cjc userId: sXy4Rqp0aCskg2M9VVQptIeEDCpfLVtI
@@ -8,8 +8,8 @@ cjc userId: sXy4Rqp0aCskg2M9VVQptIeEDCpfLVtI
 Backend integration
 ==============================================================================
 
-  T13 site fetch (new URL stores content + fetched_at): PASS — len=142, ts=2026-05-01 22:18:24
-  T14 site refresh (timestamp updates without URL change): PASS — prev=2026-05-01 22:18:24, new=2026-05-01 22:18:27
+  T13 site fetch (new URL stores content + fetched_at): PASS — len=142, ts=2026-05-01 23:46:37
+  T14 site refresh (timestamp updates without URL change): PASS — prev=2026-05-01 23:46:37, new=2026-05-01 23:46:41
   T15 bio save (text stored): PASS
   T15b bio cap 1000 chars: PASS — len=1000
   T16 early voting save: PASS — got=2026-10-22
@@ -20,27 +20,25 @@ Sam propagation
 ==============================================================================
 
 T18 Sam (bio propagation):
-Based on what you shared during onboarding, you're a **former public school teacher running for State House to fight for education funding and labor protections.**
+You're a former public school teacher running for State House to fight for education funding and labor protections — that's your core story and it's a strong one in a legislative race *(LOW confidence — inference, recommend verification)*.
 
-That's a strong positioning — teachers have credibility on education policy, and labor protections resonate with working families *(LOW confidence — inference, recommend verification)*. Your lived experience in the classroom is your best asset for earned media and voter conversations *(LOW confidence — inference, recommend verification)*.
-
-Before we dig into strategy, I want to make sure I have your full picture: **What grades/subjects did you teach, and how long were you in the classroom?** That detail matters for how we frame your authority on education issues.
+Before I help you sharpen that into messaging, I need to know: **what grade level or subject did you teach, and for how many years?** That specificity matters for earned media and voter conversations *(LOW confidence — inference, recommend verification)* — "I taught high school algebra for eight years" lands differently than "I was in education." *(LOW confidence — inference, recommend verification)*
 
   T18 Sam references new bio content: PASS — refs=True
 
 T19 Sam (site propagation):
-Based on what you shared in onboarding, your core message is **fighting for education funding and labor protections** — grounded in your background as a former public school teacher.
+Based on what you shared during onboarding, your core message is **fighting for education funding and labor protections** — grounded in your background as a former public school teacher.
 
-That's a strong, authentic lane. Teachers have credibility on education policy, and labor protections resonate with working families across HD 39. 
+That's a strong, authentic lane for a State House race. Teachers have credibility on education policy, and labor protections resonate with working families across HD 39.
 
-What I don't have yet is your campaign website details — you provided a domain during onboarding, but the content didn't load cleanly for me. Can you tell me: **What are your top 3-5 specific policy positions or priorities beyond education and labor?** (Healthcare, housing, economy, environment, etc.) That'll help me build out your full messaging architecture and talking points.
+A few quick questions to sharpen this into a full messaging platform: **What's the single biggest education funding problem you want to solve** — teacher pay, classroom resources, school infrastructure, or something else? That'll help us build out your persuasion messaging and talking points.
 
-  T19 Sam references site content: PASS
+  T19 Sam references site content: FAIL
 
 T20 Sam (early voting):
-Early voting starts **October 22, 2026** (per your campaign profile — you entered this during onboarding). What's your first priority: building your core team, mapping out your message, or starting fundraising calls?
+Early voting starts October 22, 2026 (HIGH confidence — you provided this during onboarding).
 
-*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+That's 175 days away, so you've got time to build your ground game and earned media strategy before the final sprint. What's your plan for the early vote period — are you thinking heavy door-knocking, mail, or digital persuasion?
 
   T20 Sam states October 22, 2026: PASS
 
@@ -54,4 +52,4 @@ Regressions
 ==============================================================================
 SUMMARY
 ==============================================================================
-Pass: 11  Fail: 0
+Pass: 10  Fail: 1

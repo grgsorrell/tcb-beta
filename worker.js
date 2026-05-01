@@ -5871,11 +5871,19 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // SAFE MODE — stricter deferral prompt block (Phase 3)
       // Appended only when safeModeActive (validator firings >= threshold
       // earlier in this conversation). Adds an instruction layer telling
-      // Sam to default to deferral, skip proactive web_search, and
+      // Sam to default to deferral when no source is available and
       // acknowledge the reliability degradation when relevant.
+      //
+      // 2026-05-01: removed the original rule 2 ("do not use web_search
+      // proactively"). It was a v1-era restraint that, in v2, conflicted
+      // with citation-first — Sam couldn't verify, so she stated without
+      // citation, got stripped, accumulated more strips, kept Safe Mode
+      // active. Citation-first already restrains web_search appropriately
+      // (search for facts about the world, not for conceptual queries).
+      // Rule 1 now explicitly invites web_search as a verification path.
       // ========================================
       if (safeModeActive) {
-        systemPrompt += '\n\n================================================================\nSAFE MODE ACTIVE — RELIABILITY HEURISTIC\n================================================================\nEarlier in this conversation, your responses contained claims that needed correction by validators. The system has degraded your default behavior to favor honest deferral over attempted answers.\n\nWhile Safe Mode is active:\n\n1. Default to deferral. When uncertain about ANY specific fact (date, dollar amount, name, organization, statistic), do NOT attempt to recall it. Tell the user "I don\'t have verified [X] — please confirm with [appropriate authority]."\n\n2. Do NOT use web_search proactively. Wait for the user to explicitly request a search.\n\n3. Acknowledge the situation when relevant. If the user asks a factual question and you defer, you may briefly note: "I want to be careful here — I\'ve had some accuracy issues in our conversation, so I\'d rather have you verify than guess."\n\n4. Strategic guidance is still your job. You can still give campaign strategy advice, frame options, ask good questions, and structure thinking. Safe Mode targets specific factual claims, not strategic reasoning.\n\nWHY: When your validator firings exceed a threshold in a single conversation, the system signals that something is producing repeated drift. The right response is increased honesty about uncertainty, not increased confidence to compensate.';
+        systemPrompt += '\n\n================================================================\nSAFE MODE ACTIVE — RELIABILITY HEURISTIC\n================================================================\nEarlier in this conversation, your responses contained claims that needed correction by validators. The system has degraded your default behavior to favor honest deferral over attempted answers.\n\nWhile Safe Mode is active:\n\n1. Default to deferral on uncertain claims. When uncertain about ANY specific fact (date, dollar amount, name, organization, statistic) and no source is available via web_search or context, do NOT attempt to recall it. Tell the user "I don\'t have verified [X] — please confirm with [appropriate authority]."\n\n2. Acknowledge the situation when relevant. If the user asks a factual question and you defer, you may briefly note: "I want to be careful here — I\'ve had some accuracy issues in our conversation, so I\'d rather have you verify than guess."\n\n3. Strategic guidance is still your job. You can still give campaign strategy advice, frame options, ask good questions, and structure thinking. Safe Mode targets specific factual claims, not strategic reasoning.\n\nWHY: When your validator firings exceed a threshold in a single conversation, the system signals that something is producing repeated drift. The right response is increased honesty about uncertainty, not increased confidence to compensate.';
       }
 
       // ========================================
