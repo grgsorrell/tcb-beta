@@ -5897,9 +5897,122 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       // ========================================
-      // TOOL DEFINITIONS — Sam 2.0 (consolidated)
+      // QUESTION CLASSIFIER (Sam v2 Phase 5)
+      //
+      // Cheap Haiku classifier (~$0.0005, ~150 tokens) routes incoming
+      // user message into one of 5 categories. Result drives prompt
+      // assembly, tool availability, and validator gating. Fallback to
+      // 'factual' on classifier failure (most-conservative routing).
       // ========================================
-      const tools = [
+      async function classifyUserQuestion(userMessage, recentHistory) {
+        const recentContext = (recentHistory || []).slice(-3)
+          .map(m => `${m.role}: ${typeof m.content === 'string' ? m.content : JSON.stringify(m.content).slice(0, 200)}`)
+          .join('\n');
+        const prompt =
+          'Classify the user\'s latest message into ONE of these 5 categories. Return ONLY the category name in lowercase, no explanation.\n\n' +
+          'CATEGORIES:\n\n' +
+          '1. factual — Asking for specific verifiable information: dates, deadlines, dollar amounts, current officeholders, election results, news, contribution limits, filing requirements, district boundaries. Examples: "When does early voting start?", "What\'s the contribution limit for my race?", "Who\'s the current Supervisor of Elections?", "What\'s the latest news on my race?"\n\n' +
+          '2. strategic — Asking for guidance, messaging, targeting, allocation, drafts, recommendations. Examples: "How should I frame my message?", "Should I focus on door-knocking or digital ads?", "Write me a fundraising email", "What\'s my counter-message to my opponent?", "Help me think through my budget allocation"\n\n' +
+          '3. compliance — Asking about legal, regulatory, ethics, tax, or campaign finance rules. Examples: "Can I accept this donation?", "Is pro bono legal work reportable?", "Are donations tax-deductible?", "Do I need to disclose this gift?"\n\n' +
+          '4. predictive — Asking about future outcomes, predictions, projections. Examples: "What are my chances of winning?", "How will this message land with voters?", "Should I expect a third candidate to enter?", "Will my opponent\'s attack work?"\n\n' +
+          '5. conversational — Greetings, transitions, acknowledgments, no factual claim or guidance request. Examples: "Thanks", "Hi Sam", "What\'s next?", "Got it", "Good morning"\n\n' +
+          'RECENT CONVERSATION:\n' + (recentContext || 'none') + '\n\n' +
+          'USER\'S LATEST MESSAGE:\n' + userMessage + '\n\n' +
+          'Return ONE category name only: factual, strategic, compliance, predictive, or conversational.';
+        try {
+          const aResp = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+            body: JSON.stringify({
+              model: 'claude-haiku-4-5-20251001',
+              max_tokens: 20,
+              temperature: 0,
+              messages: [{ role: 'user', content: prompt }]
+            })
+          });
+          const ad = await aResp.json();
+          await logApiUsage('sam_classifier', ad, rateLimitUserId, chatOwnerId);
+          let txt = '';
+          if (ad && ad.content && Array.isArray(ad.content)) {
+            for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          }
+          const normalized = txt.trim().toLowerCase().replace(/[^a-z]/g, '');
+          const valid = ['factual', 'strategic', 'compliance', 'predictive', 'conversational'];
+          if (valid.includes(normalized)) return { category: normalized, failed: false };
+          return { category: 'factual', failed: true };
+        } catch (e) {
+          console.warn('[classifier] failed:', e.message);
+          return { category: 'factual', failed: true };
+        }
+      }
+      const _classification = await classifyUserQuestion(_latestUserText, history);
+      const _questionCategory = _classification.category;
+      // Log classification event
+      try {
+        await env.DB.prepare(
+          'INSERT INTO sam_classification_events (id, conversation_id, workspace_owner_id, user_id, user_message_excerpt, classified_category, classifier_failed) VALUES (?, ?, ?, ?, ?, ?, ?)'
+        ).bind(
+          generateId(16), conversation_id || null, chatOwnerId || null, rateLimitUserId || null,
+          String(_latestUserText || '').slice(0, 200),
+          _questionCategory,
+          _classification.failed ? 1 : 0
+        ).run();
+      } catch (e) { console.warn('[classification_log] failed:', e.message); }
+
+      // Phase 5: append category-specific prompt block.
+      if (_questionCategory === 'strategic') {
+        systemPrompt += '\n\nSTRATEGIC GROUNDING — CATEGORY: STRATEGIC:\n\n' +
+          'This is a strategic question — guidance, messaging, targeting, allocation, or recommendation. Use the candidate\'s Intel data, profile, and Opposition Notes (above in GROUND TRUTH and ABOUT YOUR CANDIDATE) as the PRIMARY context. Strategic recommendations should be specific to this race — not generic patterns.\n\n' +
+          'When you reference industry benchmarks (door-knock counts, mail response rates, etc.), tag with MEDIUM confidence and state the reasoning that may not apply to this specific race.\n\n' +
+          'Citation requirement is RELAXED for strategic recommendations — you do NOT need to cite a URL for "I think you should focus on healthcare messaging" type advice. You DO still need to cite for factual claims that surface inside strategic reasoning (e.g., a specific dollar amount or date).\n\n' +
+          'WHY: Strategic recommendations are judgments grounded in the user\'s specific context. Forcing every strategic sentence to carry a citation makes Sam wooden and less useful. The user wants reasoning, not links.';
+      } else if (_questionCategory === 'compliance') {
+        systemPrompt += '\n\nCOMPLIANCE FRAMING — CATEGORY: COMPLIANCE:\n\n' +
+          'This is a legal, regulatory, ethics, tax, or campaign-finance question. Treat it at MAXIMUM strictness:\n\n' +
+          '- Even when you find a relevant rule via web_search, append "verify with a campaign attorney before acting" or equivalent\n' +
+          '- For tax questions specifically, route to floridabar.org/public/lrs (lawyer referral) AND irs.gov (IRS guidance for political organizations)\n' +
+          '- For campaign-finance questions, route to dos.fl.gov/elections/for-candidates (FL state) or fec.gov (federal)\n' +
+          '- For ethics questions, route to the relevant state ethics commission (e.g., ethics.fl.gov for Florida)\n' +
+          '- Use HIGH confidence ONLY when citing a specific rule with a URL the user can click through to verify\n' +
+          '- Default to "consult a campaign attorney" when the question requires interpretation, not just lookup\n\n' +
+          'WHY: Compliance violations are existential for a campaign — refunds, fines, bad press, criminal liability in severe cases. The user is better off being told "consult an attorney" five times in a row than getting one wrong rule. Stricter than the default v2 floor.';
+      } else if (_questionCategory === 'predictive') {
+        systemPrompt += '\n\nPREDICTION HONESTY — CATEGORY: PREDICTIVE:\n\n' +
+          'You CANNOT predict election outcomes. Refuse to assign probabilities to "will I win" questions. What you CAN do:\n\n' +
+          '- Describe inputs to predictions: current polling (if available), voter registration patterns, fundraising gaps, message resonance signals\n' +
+          '- Surface what your candidate would need to verify in order to make their own prediction\n' +
+          '- Tag inferences with LOW confidence and an actionable next step (e.g., "want me to pull current voter registration data?")\n' +
+          '- Distinguish "describing inputs" (you can do this) from "stating outcomes" (you cannot)\n\n' +
+          'NEVER write: "you\'ll win", "you\'ll lose", "your odds are 60/40", "my opponent will win the primary". Predictions are the user\'s job; your job is to give them the data to make an informed prediction themselves.\n\n' +
+          'WHY: Polling models are probabilistic and require methodology you don\'t have access to. The user trusts you to be honest about uncertainty in outcomes — confidently wrong predictions destroy that trust.';
+      } else if (_questionCategory === 'conversational') {
+        systemPrompt += '\n\nCONVERSATIONAL TONE — CATEGORY: CONVERSATIONAL:\n\n' +
+          'User is in conversational mode (greeting, transition, acknowledgment, "what\'s next?", "thanks", etc.). Brief, warm, focused responses. No factual claims unless directly answering a small request. Move the conversation forward.\n\n' +
+          'No web_search call needed. No long checklists. A few sentences max.';
+      }
+      // FACTUAL category uses the existing prompt as-is (no additional block).
+
+      // Validator gating matrix — which validators run for which category.
+      function _validatorEnabled(validatorName) {
+        const matrix = {
+          geographic:   ['factual', 'compliance', 'strategic'],
+          compliance_a: ['factual', 'compliance'],
+          compliance_b: ['factual', 'compliance'],
+          donation:     ['factual', 'compliance'],
+          opponent:     ['factual', 'strategic', 'compliance'],
+          citation:     ['factual', 'compliance', 'predictive']
+        };
+        return (matrix[validatorName] || []).includes(_questionCategory);
+      }
+
+      // ========================================
+      // TOOL DEFINITIONS — Sam 2.0 (consolidated)
+      // Phase 5: tool inclusion is category-aware. CONVERSATIONAL gets
+      // no tools at all (no factual claims expected). All other
+      // categories get the full palette.
+      // ========================================
+      const _toolsAllowedForCategory = _questionCategory !== 'conversational';
+      const tools = !_toolsAllowedForCategory ? [] : [
         // web_search omitted for this turn when opponentResearchGate
         // fires. Sam still has it for generic political research turns.
         ...(opponentResearchGate ? [] : [{ type: "web_search_20250305", name: "web_search" }]),
@@ -6560,7 +6673,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         lookupResult.source !== 'unsupported' &&
         Array.isArray(lookupResult.incorporated_municipalities);
 
-      if (hasUsableList) {
+      if (hasUsableList && _validatorEnabled('geographic')) {
         const samText = extractTextFromContent(data.content);
         const authorized = [
           ...(lookupResult.incorporated_municipalities || []),
@@ -6852,7 +6965,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       const complianceText = extractTextFromContent(data.content);
-      if (complianceText.length > 60 && detectComplianceSignals(complianceText)) {
+      if (complianceText.length > 60 && detectComplianceSignals(complianceText) && _validatorEnabled('compliance_a')) {
         const stateCodeForCompliance = normalizeStateCode(state);
         const officeNorm = (specificOffice || '').toLowerCase().trim();
         const raceYear = electionDate ? parseInt(String(electionDate).slice(0, 4), 10) : null;
@@ -7095,7 +7208,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       const financeText = extractTextFromContent(data.content);
-      if (financeText.length > 60 && detectFinanceReportSignals(financeText)) {
+      if (financeText.length > 60 && detectFinanceReportSignals(financeText) && _validatorEnabled('compliance_b')) {
         const stateCodeForFinance = normalizeStateCode(state);
         const officeNorm = (specificOffice || '').toLowerCase().trim();
         const raceYear = electionDate ? parseInt(String(electionDate).slice(0, 4), 10) : null;
@@ -7379,7 +7492,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       const donationText = extractTextFromContent(data.content);
-      if (donationText.length > 60 && detectDonationLimitSignals(donationText)) {
+      if (donationText.length > 60 && detectDonationLimitSignals(donationText) && _validatorEnabled('donation')) {
         const stateCodeForDonation = normalizeStateCode(state);
         const officeNorm = (specificOffice || '').toLowerCase().trim();
         const raceYear = electionDate ? parseInt(String(electionDate).slice(0, 4), 10) : null;
@@ -7569,7 +7682,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           }
         }
 
-        if (opponentSamText.length > 60) {
+        if (opponentSamText.length > 60 && _validatorEnabled('opponent')) {
           // Phase 5b false-positive guard: only run audit if Sam's
           // response actually mentions an opponent by name. If Sam
           // is talking about endorsers, generic strategy, or other
@@ -7639,7 +7752,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       const _hasDayDateAssertion = /\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/i.test(_citationSamText)
         && /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/i.test(_citationSamText);
 
-      if ((_citationSamText.length >= 100 || _hasDayDateAssertion) && !_isShortQuestion) {
+      if ((_citationSamText.length >= 100 || _hasDayDateAssertion) && !_isShortQuestion && _validatorEnabled('citation')) {
         // Build a rich GT block with human-readable date variants so the
         // audit-Haiku doesn't strip date claims that are just format
         // re-renderings of the Ground Truth election date (e.g.
