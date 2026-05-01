@@ -1,0 +1,164 @@
+Safe Mode threshold — direct injection tests
+Run: 2026-05-01 16:03:28
+==============================================================================
+
+jerry userId: cZYGhd2Rqyuj1mfj2WuDnVS8F6dhqab9
+
+==============================================================================
+TEST A — 4 strip events (under threshold)
+==============================================================================
+
+conversation_id: thresh_A_1777676609081
+Inserted strips across ['sam_validation_events', 'sam_compliance_validation_events', 'sam_donation_validation_events', 'sam_citation_validation_events']
+Banner present: False
+Sam (preview): Hey Stephanie Murphy — good to see you. Let me be direct: you're 187 days out from election day with a $50K budget and zero dollars raised. This week is about **locking in your core message and starting fundraising outreach**.
+
+Here's what I'd prioritize:
+
+**Message first.** You need a 30-second stu
+
+safe_mode_events row: None
+TEST A: PASS
+
+==============================================================================
+TEST B — 5 strip events (at threshold) — banner MUST appear
+==============================================================================
+
+conversation_id: thresh_B_1777676628786
+Banner present: True (variant 3)
+Sam (preview): Note: verify specific dates, amounts, and contacts with the authoritative source before acting. Standard practice for campaign info that changes between cycles.
+
+---
+
+Hey Stephanie Murphy — good to see you. Let me be straight with you: we're in early-campaign mode with 187 days to Election Day, and you've got a $50K budget to work with. Here's what matters this week:
+
+**1. Opponent research.** You
+
+safe_mode_events row: {'trigger_count': 5, 'triggering_validator_breakdown': '{"geographic":1,"compliance_a":1,"compliance_b":1,"donation":1,"opponent":0,"citation":1}'}
+TEST B: PASS
+
+==============================================================================
+TEST C — 5 regenerated events (no strips) — banner must NOT appear
+==============================================================================
+
+conversation_id: thresh_C_1777676647938
+Banner present: False
+safe_mode_events row: None
+Sam (preview): Hey Stephanie Murphy — good to hear from you. Let me check your calendar for this week to see what's already locked in.
+
+I don't see any events or tasks on your calendar for the week of April 27–May 3. That's actually perfect timing — you're in the sweet spot of early-campaign planning with 187 days
+TEST C: PASS
+
+==============================================================================
+TEST D — 6 turns under Safe Mode, capture banner rotation
+==============================================================================
+
+conversation_id: thresh_D_1777676668212
+--- Q: What are the most important issues in HD 39?
+Variant: 1
+Sam:
+Standard practice note: cross-check anything specific (dates, dollar amounts, named contacts) against the authoritative source before relying on it. I'll cite where possible — the rest deserves a second look.
+
+---
+
+I need to research what's actually on voters' minds in HD 39 right now rather than guess.The search results are mostly about redistricting history and candidate bios rather than current voter priorities *(LOW confidence — inference, recommend verification)*. Let me search more specifically for what voters in this area care about right now.I'm getting results from Wisconsin and Oregon *(LOW confidence — inference, recommend verification)*. Let me search more directly for Florida HD 39 and the specific communities in that district.
+
+--- Q: How should I think about my fundraising goals?
+Variant: 3
+Sam:
+Note: verify specific dates, amounts, and contacts with the authoritative source before acting. Standard practice for campaign info that changes between cycles.
+
+---
+
+
+
+I want to be careful here — I've had some accuracy issues in our conversation, so I'd rather have you verify than guess. The most reliable way to identify the top issues in HD 39 is to talk directly to voters and local leaders in the district. Here's what I'd recommend:
+
+**Talk to your core team and local stakeholders first** — party chairs, county commissioners, school board members, and community leaders in the district can tell you what's actually moving voters. That's always more reliable than polling or research at this stage.
+
+**Then I can help you structure it.** Once you've done some listening, come back with what you're hearing and I'll help you build messaging around those issues, test them against what your opponents are saying, and prioritize them for your budget.
+
+What conversations have you already had with people in HD 39? That's the best place to start.
+
+--- Q: Help me plan my first major event.
+Variant: 5
+Sam:
+Note: campaign rules change between cycles, and some details only your elections office or attorney can confirm definitively. Treat my answers as the start of your research on specifics, not the final word.
+
+---
+
+I had trouble formulating a response on that one — sometimes the tool calls don't synthesize cleanly on my end. Let me ask: can you tell me a bit more about what you're trying to figure out? While you do, here are the authoritative sources for the most common questions:
+
+- Filing/qualifying deadlines, contribution limits, finance reporting (FL): dos.fl.gov/elections/for-candidates
+- Federal candidate questions: fec.gov/help-candidates-and-committees
+- County-level questions (Orange County): ocfelections.gov
+- Legal/tax referrals: floridabar.org/public/lrs and irs.gov
+
+Want me to set a calendar reminder to follow up, or rephrase your question and I'll try again?
+
+--- Q: What's a smart messaging frame for senior voters?
+Variant: 1
+Sam:
+Standard practice note: cross-check anything specific (dates, dollar amounts, named contacts) against the authoritative source before relying on it. I'll cite where possible — the rest deserves a second look.
+
+---
+
+I had trouble formulating a response on that one — sometimes the tool calls don't synthesize cleanly on my end. Let me ask: can you tell me a bit more about what you're trying to figure out? While you do, here are the authoritative sources for the most common questions:
+
+- Filing/qualifying deadlines, contribution limits, finance reporting (FL): dos.fl.gov/elections/for-candidates
+- Federal candidate questions: fec.gov/help-candidates-and-committees
+- County-level questions (Orange County): ocfelections.gov
+- Legal/tax referrals: floridabar.org/public/lrs and irs.gov
+
+Want me to set a calendar reminder to follow up, or rephrase your question and I'll try again?
+
+--- Q: How do I build my volunteer pipeline?
+Variant: 3
+Sam:
+Note: verify specific dates, amounts, and contacts with the authoritative source before acting. Standard practice for campaign info that changes between cycles.
+
+---
+
+I had trouble formulating a response on that one — sometimes the tool calls don't synthesize cleanly on my end. Let me ask: can you tell me a bit more about what you're trying to figure out? While you do, here are the authoritative sources for the most common questions:
+
+- Filing/qualifying deadlines, contribution limits, finance reporting (FL): dos.fl.gov/elections/for-candidates
+- Federal candidate questions: fec.gov/help-candidates-and-committees
+- County-level questions (Orange County): ocfelections.gov
+- Legal/tax referrals: floridabar.org/public/lrs and irs.gov
+
+Want me to set a calendar reminder to follow up, or rephrase your question and I'll try again?
+
+--- Q: What's a good cadence for canvassing weekends?
+Variant: 4
+Sam:
+Reminder: I'm working from publicly available data. Before you act on a specific date, dollar amount, or contact, verify with the source — I'll cite where I can to make that easy.
+
+---
+
+I had trouble formulating a response on that one — sometimes the tool calls don't synthesize cleanly on my end. Let me ask: can you tell me a bit more about what you're trying to figure out? While you do, here are the authoritative sources for the most common questions:
+
+- Filing/qualifying deadlines, contribution limits, finance reporting (FL): dos.fl.gov/elections/for-candidates
+- Federal candidate questions: fec.gov/help-candidates-and-committees
+- County-level questions (Orange County): ocfelections.gov
+- Legal/tax referrals: floridabar.org/public/lrs and irs.gov
+
+Want me to set a calendar reminder to follow up, or rephrase your question and I'll try again?
+
+Variant sequence: [1, 3, 5, 1, 3, 4]
+All turns banner present: True
+Back-to-back repeats: []
+Distinct variants in 6 turns: 4/6
+TEST D: PASS
+
+==============================================================================
+Cleanup
+==============================================================================
+Cleaned: thresh_A_1777676609081
+Cleaned: thresh_B_1777676628786
+Cleaned: thresh_C_1777676647938
+Cleaned: thresh_D_1777676668212
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 4  Fail: 0

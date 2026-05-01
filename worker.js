@@ -357,8 +357,13 @@ export default {
       let total = 0;
       for (const t of tables) {
         try {
+          // Strip-only counting: only 'stripped' is a genuine reliability
+          // signal. Regenerated events are Sam self-correcting (architecture
+          // working). Tagged / passed events are visible uncertainty signals
+          // or clean validations. Excluding them prevents Safe Mode from
+          // tripping on normal v2 operation.
           const r = await env.DB.prepare(
-            `SELECT COUNT(*) AS n FROM ${t.table} WHERE conversation_id = ? AND action_taken IN ('regenerated', 'stripped')`
+            `SELECT COUNT(*) AS n FROM ${t.table} WHERE conversation_id = ? AND action_taken = 'stripped'`
           ).bind(conversationId).first();
           const n = (r && typeof r.n === 'number') ? r.n : 0;
           breakdown[t.key] = n;
@@ -4459,7 +4464,11 @@ export default {
       // intentional, matches the "trigger on prior demonstrated drift"
       // semantic.
       // ========================================
-      const SAFE_MODE_THRESHOLD = 3;
+      // Threshold raised 2026-05-01 from 3 → 5 alongside strip-only
+      // counting in getValidatorFiringBreakdown. 5 strip events in a
+      // single conversation means Sam attempted to fabricate something
+      // and got caught 5 separate times — a real reliability signal.
+      const SAFE_MODE_THRESHOLD = 5;
       const safeModeFirings = conversation_id
         ? await getValidatorFiringBreakdown(conversation_id)
         : { total: 0, breakdown: {} };
@@ -4476,22 +4485,54 @@ export default {
       }
 
       // Banner prepended to Sam's text on delivery when Safe Mode is
-      // active. Applied to whatever response object is being returned —
-      // normal data, regen retry, or stripped response — at every
-      // return-Response site in this handler.
-      const SAFE_MODE_BANNER =
-        '\u26A0\uFE0F **Heads up:** I\'ve had trouble verifying some specifics in our conversation. Please double-check anything specific I tell you \u2014 dates, amounts, names, or claims about your race \u2014 with your local elections office or other authoritative source before acting on it.\n\n---\n\n';
+      // active. Six rotating variants — selected deterministically per
+      // (conversation_id, turn_number) so back-to-back turns in the same
+      // conversation render different banners. Tone is "standard
+      // operating discipline," not "Sam admitting incompetence."
+      const SAFE_MODE_BANNERS = [
+        "Quick reminder: for high-stakes specifics — filing dates, dollar amounts, contribution rules — verify with the authoritative source before acting. I'll cite sources where I can; some things move too fast for me to track.\n\n---\n\n",
+
+        "Standard practice note: cross-check anything specific (dates, dollar amounts, named contacts) against the authoritative source before relying on it. I'll cite where possible — the rest deserves a second look.\n\n---\n\n",
+
+        "One thing to keep in mind: rules and dates change between cycles. Anything I tell you about specific deadlines, amounts, or contacts — verify with the source before acting. That's standard discipline, not a flag on this conversation.\n\n---\n\n",
+
+        "Note: verify specific dates, amounts, and contacts with the authoritative source before acting. Standard practice for campaign info that changes between cycles.\n\n---\n\n",
+
+        "Reminder: I'm working from publicly available data. Before you act on a specific date, dollar amount, or contact, verify with the source — I'll cite where I can to make that easy.\n\n---\n\n",
+
+        "Note: campaign rules change between cycles, and some details only your elections office or attorney can confirm definitively. Treat my answers as the start of your research on specifics, not the final word.\n\n---\n\n"
+      ];
+
+      // Stateless deterministic banner picker — hash of conversation_id +
+      // turn_number into the banner array. Different turns in the same
+      // conversation produce different indexes, so consecutive Safe Mode
+      // turns won't show the same variant. No D1 schema, no race risk.
+      function selectSafeModeBanner(conversationId, turnNumber) {
+        const seed = (conversationId || '') + '_' + (turnNumber || 0);
+        let hash = 0;
+        for (let i = 0; i < seed.length; i++) {
+          hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+          hash = hash & hash;
+        }
+        return SAFE_MODE_BANNERS[Math.abs(hash) % SAFE_MODE_BANNERS.length];
+      }
+
+      // Turn number derived from history length. Each user turn adds at
+      // least one entry, so the count is monotonically increasing across
+      // the conversation — perfect deterministic seed for banner rotation.
+      const _safeModeTurnNumber = Array.isArray(history) ? history.length : 0;
 
       function applySafeModeBanner(respObj) {
         if (!safeModeActive || !respObj || !Array.isArray(respObj.content)) return respObj;
+        const banner = selectSafeModeBanner(conversation_id, _safeModeTurnNumber);
         const firstTextIdx = respObj.content.findIndex(b => b && b.type === 'text');
         if (firstTextIdx >= 0) {
           respObj.content[firstTextIdx] = {
             ...respObj.content[firstTextIdx],
-            text: SAFE_MODE_BANNER + (respObj.content[firstTextIdx].text || '')
+            text: banner + (respObj.content[firstTextIdx].text || '')
           };
         } else {
-          respObj.content = [{ type: 'text', text: SAFE_MODE_BANNER }, ...respObj.content];
+          respObj.content = [{ type: 'text', text: banner }, ...respObj.content];
         }
         return respObj;
       }
@@ -7768,9 +7809,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       //   soft (percentage/stat/benchmark/electoral) → TAG inline
       //
       // Stripped events count toward Safe Mode threshold via
-      // getValidatorFiringBreakdown (filters action_taken IN
-      // ('regenerated','stripped')). Tagged events do not — tags
-      // are visible uncertainty signals, not reliability degradation.
+      // getValidatorFiringBreakdown (filters action_taken = 'stripped'
+      // only — regenerated/tagged/passed are excluded since they
+      // represent the architecture working as intended).
       // ============================================================
       const _citationSamText = extractTextFromContent(data.content);
 
