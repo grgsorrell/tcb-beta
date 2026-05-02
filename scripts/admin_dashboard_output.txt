@@ -1,0 +1,54 @@
+Admin dashboard MVP — functional tests
+Run: 2026-05-02 09:42:59
+==============================================================================
+
+T1 columns: is_admin=True, is_disabled=True, audit_table=True
+T1: PASS
+
+T2 greg row: [{'id': 'XQCxgGyUVCPc3M1z2tFHKZ7kVDieGfO7', 'username': 'greg', 'is_admin': 1, 'is_disabled': 0}]
+T2: PASS — greg_id=XQCxgGyUVCPc3M1z2tFHKZ7kVDieGfO7
+
+T3 list status: 200, user count: 15
+T3: PASS
+
+T4 shannan list status: 403, error: admin_required
+T4: PASS
+
+T5 sub_tcb in list: 0, has_beta_users: True
+T5: PASS
+
+T6 nones_at_end=True, desc_order=True, last_logins=['2026-05-02 16:43:03', '2026-05-02 16:41:39', '2026-05-02 04:08:10', '2026-05-02 04:08:01', '2026-04-30 00:34:44']…
+T6: PASS
+
+T7 detail status: 200
+T7: PASS
+
+T8 cost_summary: {'lifetime': 6.18773772, 'last_7d': 4.8395563600000004, 'today': 0.1517534}
+T8: PASS
+
+T9 lifetime categories: ['Sam chat', 'Intel research', 'Validators', 'Briefs', 'Web search (VPS)', 'Classifier']
+T9: PASS — sam_chat=True, classifier=True, validators=True
+
+T10 disable greg→ status=400, error=cannot_disable_self
+T10: PASS
+
+T11 disable shannan (session-bound id=iL0EVrKMai1w3CStGZEUoHlf01KOJzrW): status=200, body={'success': True}
+T11: PASS
+
+T12 shannan after disable: status=403, error=account_disabled
+T12: PASS
+
+T12b shannan /api/data/load-all: status=403, error=account_disabled
+T13 enable shannan: status=200, body={'success': True}
+T13: PASS
+
+T14 shannan after re-enable: status=200, error=None
+T14: PASS
+
+T15 audit rows: [{'action': 'enable_user', 'admin_user_id': 'XQCxgGyUVCPc3M1z2tFHKZ7kVDieGfO7', 'target_user_id': 'iL0EVrKMai1w3CStGZEUoHlf01KOJzrW'}, {'action': 'disable_user', 'admin_user_id': 'XQCxgGyUVCPc3M1z2tFHKZ7kVDieGfO7', 'target_user_id': 'iL0EVrKMai1w3CStGZEUoHlf01KOJzrW'}, {'action': 'enable_user', 'admin_user_id': 'XQCxgGyUVCPc3M1z2tFHKZ7kVDieGfO7', 'target_user_id': 'iL0EVrKMai1w3CStGZEUoHlf01KOJzrW'}, {'action': 'disable_user', 'admin_user_id': 'XQCxgGyUVCPc3M1z2tFHKZ7kVDieGfO7', 'target_user_id': 'iL0EVrKMai1w3CStGZEUoHlf01KOJzrW'}]
+T15: PASS — disable=True, enable=True, admin_match=True
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 15  Fail: 0

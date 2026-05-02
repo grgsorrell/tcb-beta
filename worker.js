@@ -15,6 +15,31 @@ export default {
     const url = new URL(request.url);
 
     // ========================================
+    // DISABLED-ACCOUNT ENFORCEMENT (admin MVP — 2026-05-02)
+    // Pre-route check: if request carries a session for a disabled user,
+    // 403 immediately. Single query per session-bearing request; routes
+    // without Authorization headers (login, signup) pass through.
+    // ========================================
+    {
+      const _authHeader = request.headers.get('Authorization');
+      if (_authHeader && _authHeader.startsWith('Bearer ')) {
+        const _sessionId = _authHeader.slice(7);
+        const _session = await env.DB.prepare(
+          'SELECT u.is_disabled FROM sessions s LEFT JOIN users u ON s.user_id = u.id WHERE s.session_id = ? AND s.expires_at > datetime(\'now\')'
+        ).bind(_sessionId).first().catch(() => null);
+        if (_session && _session.is_disabled === 1) {
+          return new Response(JSON.stringify({
+            error: 'account_disabled',
+            message: 'Your account has been suspended. Contact support if you believe this is an error.'
+          }), {
+            status: 403,
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Admin-Key" }
+          });
+        }
+      }
+    }
+
+    // ========================================
     // HELPER: Generate random ID
     // ========================================
     function generateId(length = 32) {
@@ -100,6 +125,23 @@ export default {
       if (minLevel === 'read') return level === 'read' || level === 'full';
       if (minLevel === 'full') return level === 'full';
       return false;
+    }
+
+    // ========================================
+    // HELPER: requireAdmin — gates /api/admin/users/* endpoints.
+    // Returns the authenticated user's id when users.is_admin = 1,
+    // null otherwise. Callers should 403 on null.
+    // ========================================
+    async function requireAdmin(req) {
+      const userId = await getUserFromSession(req);
+      if (!userId) return null;
+      const u = await env.DB.prepare('SELECT id, is_admin FROM users WHERE id = ?').bind(userId).first();
+      if (!u || u.is_admin !== 1) return null;
+      return userId;
+    }
+
+    function denyAdmin() {
+      return jsonResponse({ error: 'admin_required', message: 'Forbidden — admin access required' }, 403);
     }
 
     // Standard denial responses consumed by the frontend. Shape is stable
@@ -4019,6 +4061,163 @@ export default {
     }
 
     // ========================================
+    // ========================================
+    // ============================================================
+    // ADMIN DASHBOARD MVP (2026-05-02) — user-flag gated endpoints
+    // ============================================================
+    // GET  /api/admin/users
+    // GET  /api/admin/users/:id
+    // POST /api/admin/users/:id/disable
+    // POST /api/admin/users/:id/enable
+    //
+    // Distinct from the legacy /api/admin/api-usage and /api/admin/stats
+    // endpoints (X-Admin-Key gated). The new endpoints gate on the
+    // users.is_admin flag set by Greg via D1 manual update.
+
+    // GET /api/admin/users — list with last_login + cost summaries
+    if (url.pathname === '/api/admin/users' && request.method === 'GET') {
+      const adminId = await requireAdmin(request);
+      if (!adminId) return denyAdmin();
+      try {
+        // last_login is the most recent session row for that user. NULL
+        // when the user has never logged in. Cost columns are LEFT-JOIN
+        // aggregates so users with zero api_usage rows still appear.
+        const rows = await env.DB.prepare(
+          "SELECT u.id, u.email, u.username, u.full_name, u.created_at, " +
+          "u.is_admin, u.is_disabled, " +
+          "(SELECT MAX(created_at) FROM sessions WHERE user_id = u.id) AS last_login, " +
+          "COALESCE((SELECT SUM(estimated_cost) FROM api_usage WHERE user_id = u.id), 0) AS total_cost_lifetime, " +
+          "COALESCE((SELECT SUM(estimated_cost) FROM api_usage WHERE user_id = u.id AND created_at >= datetime('now','start of day')), 0) AS total_cost_today " +
+          "FROM users u " +
+          // Sub-user anchor rows have @sub.tcb emails and never log in
+          // through the admin-visible flow; exclude them so the list
+          // matches what beta-test owners actually do.
+          "WHERE u.email NOT LIKE '%@sub.tcb' " +
+          // ORDER BY (last_login IS NULL), last_login DESC — puts NULLs last
+          // by sorting first on the IS-NULL boolean (0 < 1), then DESC by date.
+          "ORDER BY (last_login IS NULL), last_login DESC"
+        ).all();
+        return jsonResponse({ success: true, users: rows.results || [] });
+      } catch (e) {
+        return jsonResponse({ error: e.message }, 500);
+      }
+    }
+
+    // GET /api/admin/users/:id — full profile + cost breakdown
+    {
+      const m = url.pathname.match(/^\/api\/admin\/users\/([A-Za-z0-9_-]+)$/);
+      if (m && request.method === 'GET') {
+        const adminId = await requireAdmin(request);
+        if (!adminId) return denyAdmin();
+        const targetId = m[1];
+        try {
+          const profile = await env.DB.prepare(
+            "SELECT u.id, u.email, u.username, u.full_name, u.created_at, " +
+            "u.is_admin, u.is_disabled, " +
+            "(SELECT MAX(created_at) FROM sessions WHERE user_id = u.id) AS last_login " +
+            "FROM users u WHERE u.id = ?"
+          ).bind(targetId).first();
+          if (!profile) return jsonResponse({ error: 'not_found' }, 404);
+
+          // Cost rollups for three windows.
+          const costSummary = await env.DB.prepare(
+            "SELECT " +
+            "COALESCE(SUM(estimated_cost), 0) AS lifetime, " +
+            "COALESCE(SUM(CASE WHEN created_at >= datetime('now','-7 days') THEN estimated_cost ELSE 0 END), 0) AS last_7d, " +
+            "COALESCE(SUM(CASE WHEN created_at >= datetime('now','start of day') THEN estimated_cost ELSE 0 END), 0) AS today " +
+            "FROM api_usage WHERE user_id = ?"
+          ).bind(targetId).first();
+
+          // Per-feature breakdown grouped server-side into display
+          // categories. Three windows returned in one round-trip so the
+          // detail page renders without a second fetch.
+          const categoryExpr =
+            "CASE " +
+            "WHEN feature = 'sam_chat' THEN 'Sam chat' " +
+            "WHEN feature = 'sam_classifier' THEN 'Classifier' " +
+            "WHEN feature LIKE 'sam_%_validator' OR feature = 'sam_validator' THEN 'Validators' " +
+            "WHEN feature LIKE '%_vps' THEN 'Web search (VPS)' " +
+            "WHEN feature LIKE 'intel_%' THEN 'Intel research' " +
+            "WHEN feature LIKE 'morning_brief%' OR feature LIKE 'day1_brief%' OR feature LIKE 'candidate_brief%' OR feature LIKE 'sams_take%' THEN 'Briefs' " +
+            "ELSE feature END";
+
+          async function breakdown(window) {
+            let where = "user_id = ?";
+            if (window === 'today') where += " AND created_at >= datetime('now','start of day')";
+            if (window === 'last_7d') where += " AND created_at >= datetime('now','-7 days')";
+            const r = await env.DB.prepare(
+              "SELECT " + categoryExpr + " AS category, " +
+              "SUM(estimated_cost) AS total, COUNT(*) AS calls " +
+              "FROM api_usage WHERE " + where + " GROUP BY category ORDER BY total DESC"
+            ).bind(targetId).all();
+            return r.results || [];
+          }
+          const breakdownToday = await breakdown('today');
+          const breakdown7d = await breakdown('last_7d');
+          const breakdownLifetime = await breakdown('lifetime');
+
+          return jsonResponse({
+            success: true,
+            profile,
+            cost_summary: costSummary || { lifetime: 0, last_7d: 0, today: 0 },
+            breakdown_today: breakdownToday,
+            breakdown_7d: breakdown7d,
+            breakdown_lifetime: breakdownLifetime,
+          });
+        } catch (e) {
+          return jsonResponse({ error: e.message }, 500);
+        }
+      }
+    }
+
+    // POST /api/admin/users/:id/disable — set is_disabled=1, audit log
+    {
+      const m = url.pathname.match(/^\/api\/admin\/users\/([A-Za-z0-9_-]+)\/disable$/);
+      if (m && request.method === 'POST') {
+        const adminId = await requireAdmin(request);
+        if (!adminId) return denyAdmin();
+        const targetId = m[1];
+        if (targetId === adminId) {
+          return jsonResponse({ error: 'cannot_disable_self', message: 'Admins cannot disable their own account.' }, 400);
+        }
+        try {
+          const target = await env.DB.prepare('SELECT id, is_admin, is_disabled FROM users WHERE id = ?').bind(targetId).first();
+          if (!target) return jsonResponse({ error: 'not_found' }, 404);
+          if (target.is_admin === 1) {
+            return jsonResponse({ error: 'cannot_disable_admin', message: 'Admins cannot be disabled.' }, 400);
+          }
+          await env.DB.prepare('UPDATE users SET is_disabled = 1 WHERE id = ?').bind(targetId).run();
+          await env.DB.prepare(
+            'INSERT INTO admin_audit_log (id, admin_user_id, action, target_user_id) VALUES (?, ?, ?, ?)'
+          ).bind(generateId(16), adminId, 'disable_user', targetId).run().catch(() => {});
+          return jsonResponse({ success: true });
+        } catch (e) {
+          return jsonResponse({ error: e.message }, 500);
+        }
+      }
+    }
+
+    // POST /api/admin/users/:id/enable — clear is_disabled, audit log
+    {
+      const m = url.pathname.match(/^\/api\/admin\/users\/([A-Za-z0-9_-]+)\/enable$/);
+      if (m && request.method === 'POST') {
+        const adminId = await requireAdmin(request);
+        if (!adminId) return denyAdmin();
+        const targetId = m[1];
+        try {
+          const target = await env.DB.prepare('SELECT id FROM users WHERE id = ?').bind(targetId).first();
+          if (!target) return jsonResponse({ error: 'not_found' }, 404);
+          await env.DB.prepare('UPDATE users SET is_disabled = 0 WHERE id = ?').bind(targetId).run();
+          await env.DB.prepare(
+            'INSERT INTO admin_audit_log (id, admin_user_id, action, target_user_id) VALUES (?, ?, ?, ?)'
+          ).bind(generateId(16), adminId, 'enable_user', targetId).run().catch(() => {});
+          return jsonResponse({ success: true });
+        } catch (e) {
+          return jsonResponse({ error: e.message }, 500);
+        }
+      }
+    }
+
     // ========================================
     // ADMIN: API Usage Report
     // ========================================
