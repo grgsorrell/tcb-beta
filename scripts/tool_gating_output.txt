@@ -1,0 +1,74 @@
+Tool-gating split — verification
+Run: 2026-05-01 17:46:55
+==============================================================================
+
+jerry userId: cZYGhd2Rqyuj1mfj2WuDnVS8F6dhqab9
+
+==============================================================================
+T1 — Greg's bug class: 'add this to my Speeches folder' single-turn
+==============================================================================
+
+Sam:
+I'll save that to your Speeches folder right now.
+
+tool_use blocks: ['save_note']
+  save_note input: title='3-Minute Kickoff Speech', folder='Speeches', content_len=399
+T1: PASS — save_note called=True, folder='Speeches'
+
+==============================================================================
+T2 — Conversational greetings — NO tool calls expected
+==============================================================================
+
+  'Thanks!' → tools=[]
+  'Good morning Sam!' → tools=[]
+  'What's next?' → tools=[]
+  'Got it' → tools=[]
+T2: PASS — 4/4 clean; spurious=[]
+
+==============================================================================
+T3 — Action requests phrased casually — tools should fire
+==============================================================================
+
+T3a save elevator pitch → tools=['save_note']
+T3a: PASS — tools=['save_note']
+
+T3b 'log $500 from John Smith' → tools=['log_contribution']
+T3b: PASS — tools=['log_contribution']
+
+T3c 'add to calendar May 12 9am' → tools=['add_calendar_event']
+T3c: PASS — tools=['add_calendar_event']
+
+T3d 'log $50 yard signs' → tools=['add_expense']
+T3d: PASS — tools=['add_expense']
+
+T3e 'mark printer task complete' → tools=[]
+T3e: FAIL — tools=[]
+
+==============================================================================
+T4 — Strategic discussion → save to Strategy folder
+==============================================================================
+
+T4 → tools=['save_note']
+  save_note input: title='30-Day Fundraising Plan', folder='Campaign Plan'
+T4: FAIL — save_note=True, folder='Campaign Plan'
+
+==============================================================================
+Classifier categories (batch lookup)
+==============================================================================
+
+  T1: ? (toolgate_T1_1777682815988)
+  T2 'Thanks!': ? (toolgate_T2_1777682821538_Thanks)
+  T2 'Good morning Sam!': ? (toolgate_T2_1777682826322_Goodm)
+  T2 'What's next?': ? (toolgate_T2_1777682829291_What's)
+  T2 'Got it': ? (toolgate_T2_1777682834801_Gotit)
+  T3a: ? (toolgate_T3a_1777682839224)
+  T3b: ? (toolgate_T3b_1777682842510)
+  T3c: ? (toolgate_T3c_1777682845787)
+  T3d: ? (toolgate_T3d_1777682848860)
+  T3e: ? (toolgate_T3e_1777682852853)
+  T4: ? (toolgate_T4_1777682856335)
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 6  Fail: 2

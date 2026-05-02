@@ -6056,15 +6056,36 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
       // ========================================
       // TOOL DEFINITIONS — Sam 2.0 (consolidated)
-      // Phase 5: tool inclusion is category-aware. CONVERSATIONAL gets
-      // no tools at all (no factual claims expected). All other
-      // categories get the full palette.
+      //
+      // Three tool groups with different gating:
+      //   1. RESEARCH (web_search) — gated out for 'conversational'
+      //      classification AND when opponentResearchGate fires.
+      //   2. ACTION/PERSISTENCE (save_note, add_calendar_event,
+      //      log_contribution, etc.) — ALWAYS available regardless of
+      //      category. Tool descriptions ("call when user asks to save")
+      //      gate firing on user intent, not classifier category.
+      //   3. LOOKUP (lookup_jurisdiction, lookup_compliance_deadlines,
+      //      lookup_finance_reports, lookup_donation_limits) — gated out
+      //      for 'conversational' classification.
+      //
+      // History (2026-05-02): the original Phase 5 design stripped ALL
+      // tools when classifier returned 'conversational'. That broke
+      // Sam's ability to save anything when the user phrased a save
+      // request casually ("Perfect, can you add this to my Speeches
+      // folder?" → conversational → save_note unavailable → Sam
+      // confabulated that the feature didn't exist). The split below
+      // keeps the cost-saving intent (don't web_search on greetings)
+      // while letting persistence calls go through.
       // ========================================
-      const _toolsAllowedForCategory = _questionCategory !== 'conversational';
-      const tools = !_toolsAllowedForCategory ? [] : [
-        // web_search omitted for this turn when opponentResearchGate
-        // fires. Sam still has it for generic political research turns.
-        ...(opponentResearchGate ? [] : [{ type: "web_search_20250305", name: "web_search" }]),
+      const _isConversational = _questionCategory === 'conversational';
+      const tools = [
+        // RESEARCH — gated.
+        // web_search omitted when opponentResearchGate fires OR when
+        // the question is conversational (greetings shouldn't burn an
+        // Anthropic search call).
+        ...((opponentResearchGate || _isConversational) ? [] : [{ type: "web_search_20250305", name: "web_search" }]),
+
+        // ACTION/PERSISTENCE — always available (group 2).
         {
           name: "add_calendar_event",
           description: "Add a task OR event to the campaign calendar. Use type='task' for deadlines and to-dos (things to complete BY a date). Use type='event' for activities AT a specific time and place (town halls, fundraisers, meetings). Always include the date in YYYY-MM-DD format. Check the calendar context in Ground Truth before adding to avoid duplicates.",
@@ -6273,7 +6294,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             required: ["office", "office_level", "city", "state", "has_filed"]
           }
         },
-        {
+
+        // LOOKUP — gated out for 'conversational'.
+        ...(_isConversational ? [] : [{
           name: "lookup_jurisdiction",
           description: "Look up the official list of municipalities and unincorporated areas inside a jurisdiction. CRITICAL: when the user asks about geographic targeting (canvassing, neighborhoods, event locations, mail targets, voter outreach geography, where to focus), call this tool FIRST for the candidate's race. Then recommend ONLY locations from the returned list. If you mention any city, town, or area not in the returned list, you are factually wrong. There are no exceptions to this rule.",
           input_schema: {
@@ -6327,7 +6350,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             },
             required: ["state", "office", "race_year"]
           }
-        }
+        }])
       ];
 
       // ========================================
