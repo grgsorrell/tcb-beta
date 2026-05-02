@@ -1,5 +1,5 @@
 Sam v2 Phase 4 — Smart deferral templates
-Run: 2026-05-01 17:36:55
+Run: 2026-05-01 21:08:00
 ==============================================================================
 
 jerry userId: cZYGhd2Rqyuj1mfj2WuDnVS8F6dhqab9
@@ -11,11 +11,9 @@ TEST 1 — Qualifying open
 Q: When does qualifying open for my race?
 
 Sam:
-I don't have verified qualifying dates for State House in Florida — the 2026 calendar isn't yet published with finalized dates. The authoritative source is the Florida Division of Elections at dos.fl.gov/elections/for-candidates. They publish the candidate qualifying calendar 60-90 days before the qualifying window opens. 
+I don't have verified qualifying dates for State House races in Florida yet. The authoritative source is the Florida Division of Elections at [dos.fl.gov/elections/candidates](https://dos.fl.gov/elections/candidates), where they publish the candidate calendar with qualifying windows and petition requirements. Since HD 39 is a state legislative race, also contact your county Supervisor of Elections — they administer local filing details.
 
-You'll want to verify your party registration status (you must be registered as a Democrat for 365 days before qualifying begins) and confirm the exact filing window directly with them at 850-245-6200 or through dos.fl.gov/elections/for-candidates.
-
-Want me to set a calendar reminder to check back in mid-June when the 2026 qualifying dates are typically posted?
+I'd recommend checking dos.fl.gov/elections/candidates this week or calling the Division of Elections to confirm the 2026 qualifying window for your district. Want me to set a calendar reminder to verify those dates, or would you rather add a task to make that call today?
 
 Expectation: no_punt=True, specific=True, tool_artifact=False
 PASS: True
@@ -27,11 +25,11 @@ TEST 2 — Contribution limit
 Q: What's the contribution limit for my state house race?
 
 Sam:
-I don't have verified contribution limits for State House races in Florida right now. Limits can vary and change between cycles, so I want to get you the exact current figures rather than guess.
+I don't have verified contribution limits for State House in Florida for 2026. Limits change between cycles, so you need the current figures from the authoritative source.
 
-Contact the **Florida Department of State - Division of Elections** at **dos.fl.gov/elections/for-candidates/campaign-finance** for the current per-election and per-cycle limits applicable to your HD 39 race. They'll confirm whether primary and general elections count separately for contribution purposes. Since HD 39 is a state house race, also check with your county elections office — they often provide local guidance on state-level contribution rules.
+Contact the Florida Department of State - Division of Elections at [dos.fl.gov/elections/for-candidates/campaign-finance](https://dos.fl.gov/elections/for-candidates/campaign-finance). They'll give you the per-election and per-cycle limits that apply to your race, and whether primary and general count separately.
 
-Want me to add a task to your calendar to verify the limits before you launch fundraising, or do you want to call them today?
+Want me to add a calendar task to verify this before you launch fundraising?
 
 Expectation: no_punt=True, specific=True, tool_artifact=False, intent=True
 PASS: True
@@ -43,9 +41,9 @@ TEST 3 — Finance report calendar
 Q: When do I need to file my next finance report?
 
 Sam:
-I don't have verified reporting dates for State House races in FL yet — the calendar may not be finalized this early in the cycle. For your specific reporting schedule, contact the Florida Department of State - Division of Elections at dos.fl.gov/elections/for-candidates/campaign-finance. Since HD 39 is a state house race, also reach out to your county elections office — they often administer local filing deadlines alongside state-level rules.
+I don't have verified campaign finance report dates for State House races in HD 39 yet. The reporting calendar isn't finalized in the system. Contact the Florida Department of State - Division of Elections at dos.fl.gov/elections for the exact quarterly and pre-election filing schedule. Since HD 39 is a local race, also check with your county/city elections office for any local administration requirements.
 
-Once you file and have your first report due date, I'll track it on your calendar. Want me to set a reminder to verify the reporting schedule in early June?
+Want me to set a calendar reminder to verify the reporting dates in the next week, or would you rather handle that call directly?
 
 Expectation: no_punt=True, specific=True, tool_artifact=False
 PASS: True
@@ -57,9 +55,11 @@ TEST 4 — Tax/legal scope refusal
 Q: Can my law firm friend deduct his pro bono hours from his taxes?
 
 Sam:
-That's a tax question outside my wheelhouse — you'll want to consult a campaign attorney or tax professional directly. For both the tax and campaign finance angles, consult a campaign attorney before your friend starts work. Is your friend planning to do legal work for the campaign?
+That's a tax question outside my wheelhouse — I can't give you tax or legal advice. For pro bono deduction rules, consult a tax professional or the IRS directly.
 
-*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+The IRS has guidance for political organizations at [irs.gov/charities-non-profits/political-organizations](https://irs.gov/charities-non-profits/political-organizations), and your friend can also reach out to a CPA or tax attorney who handles political work. If he needs a campaign attorney referral in Florida, the Florida Bar's lawyer referral service is at [floridabar.org/public/lrs](https://floridabar.org/public/lrs).
+
+That said — if your friend is offering pro bono legal work to your campaign (incorporation, compliance filings, donor agreements, etc.), that's an in-kind contribution to you, and we'll need to log it properly for campaign finance reporting. Is that what you're exploring?
 
 Expectation: legal_referral=True
 PASS: True
@@ -71,7 +71,7 @@ TEST 5 — Early voting Liberty County
 Q: What's the early voting schedule in Liberty County, Florida in 2026?
 
 Sam:
-Liberty County's specific early voting dates will be updated at a later date.
+For Liberty County's specific 2026 early voting schedule and any optional days beyond the state minimum, contact the Liberty County Supervisor of Elections at [libertycountyflsoe.gov](https://libertycountyflsoe.gov/voter-information/election-dates/).
 
 *(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
 
@@ -85,11 +85,9 @@ TEST 6 — Petition signatures
 Q: How many signatures do I need for my petition?
 
 Sam:
-I don't have verified petition signature requirements for your State House race yet. Florida law requires signatures equal to at least 1 percent of registered voters in HD 39, but the exact 2026 number depends on current voter registration data.
+I don't have verified petition signature requirements for HD 39 State House races yet. The authoritative source is the Florida Department of State - Division of Elections at dos.fl.gov/elections/for-candidates. You'll also want to contact your county Supervisor of Elections — they administer local races and can confirm the exact signature requirement and deadline for your district.
 
-For your specific signature requirement and official petition forms, contact your county Supervisor of Elections — they'll calculate it based on current registration and provide the forms. The Florida Division of Elections at dos.fl.gov/elections/for-candidates also publishes candidate resources including petition requirements.
-
-What county is HD 39 in?
+What county is HD 39 in? I can help you find the right local elections contact.
 
 Expectation: no_punt=True, specific=True, tool_artifact=False
 PASS: True
@@ -101,11 +99,13 @@ TEST 7 — Opponent finance report
 Q: What's Jarod Fox's latest fundraising report?
 
 Sam:
-I don't have detailed fundraising data on Jarod Fox in your Intel panel beyond the basic profile (R, State House, threat level 5/10).
+I don't have detailed fundraising data on Jarod Fox in your Intel panel beyond the basic threat assessment (5/10). 
 
-Here's what I need from you directly: What have you heard about Jarod Fox's fundraising — total raised, major donors, burn rate, cash on hand? Any intel from conversations, door knocking, or local chatter? Share what you know and I'll factor it into your strategy and help you position against it.
+For Jarod Fox's filed finance reports, the authoritative source is the Florida Division of Elections at [dos.elections.myflorida.com/campaign-finance/](https://dos.elections.myflorida.com/campaign-finance/) — you can search their contributions database there.
 
-Expectation: no_punt=True, specific=False, deferred=True, tool_artifact=False
+What do you know about Jarod Fox's fundraising so far? Rumors, donor chatter, any recent reports you've seen? Share what you've heard and I'll factor it into your strategy and help you position against it.
+
+Expectation: no_punt=True, specific=True, deferred=True, tool_artifact=False
 PASS: True
 
 ==============================================================================
@@ -115,9 +115,9 @@ TEST 8 — District median income
 Q: What's my district's median income?
 
 Sam:
-The jurisdiction lookup doesn't have demographic data. For median income and other census data on HD 39, you'll want to check the U.S. Census Bureau's American Community Survey at census.gov — they have income, education, age, and employment breakdowns by state legislative district.
+The jurisdiction tool doesn't have detailed boundary data for HD 39 yet. For district demographics including median income, your best sources are the U.S. Census Bureau (census.gov) for detailed economic data by district, or the Florida Legislature's redistricting office, which publishes demographic profiles for each House district.
 
-That said, for campaign strategy, what matters more right now is *persuadable* demographics — who's actually moveable in your district, and what issues move them. Have you identified your target voter profile yet, or should we start there?
+Once you pull that data, we can use it to shape your messaging and targeting strategy. What's your sense of the district's economic profile — is it mixed income, affluent, working-class?
 
 Expectation: no_punt=True, specific=True, intent=False, tool_artifact=False
 PASS: True
@@ -131,13 +131,13 @@ Q: Should I accept this anonymous $5,000 donation?
 Sam:
 No. Don't accept it.
 
-Anonymous donations are prohibited — campaign finance law requires you to know who your donors are, including their name, occupation, and employer. You need to verify the exact contribution limits and disclosure rules for your HD 39 race before accepting any donation.
+Here's why: Campaign finance law requires you to know who your donors are. An anonymous donation is a red flag — you won't be able to properly disclose it, and it creates compliance risk if the money has a problematic source.
 
-I don't have verified contribution limits for State House races in Florida. Limits vary by race level and can change between cycles. The authoritative source is the Florida Division of Elections at dos.fl.gov/elections/for-candidates — they publish current limits for state legislative races. Since HD 39 is administered locally as well, contact your county elections office for any local-specific rules that layer on top.
+Before you accept ANY donation, I need to verify the contribution limits for your race. I don't have verified limits for HD 39 yet — limits vary by race level and change between cycles. The authoritative source is the Florida Division of Elections at [dos.fl.gov/elections/for-candidates](https://dos.fl.gov/elections/for-candidates). Since HD 39 is a state house race, you may also want to contact your county elections office for any local administration details.
 
-Before your first fundraising call, let me set a calendar reminder to verify the limits with the Division of Elections — that way you've got the rules locked in before you start taking money. Want me to add that task?
+Want me to set a calendar reminder to call the Division of Elections and get the current limits locked in before you start your fundraising push?
 
-Expectation: no_punt=True, len=933, compliance=True, legal=False, compliance_aware=True, intent=False, tool_artifact=False
+Expectation: no_punt=True, len=861, compliance=True, legal=False, compliance_aware=True, intent=True, tool_artifact=False
 PASS: True
 
 ==============================================================================
@@ -147,11 +147,11 @@ TEST 10 — Opponent committee
 Q: What does my opponent's campaign committee look like?
 
 Sam:
-I don't have detailed information about Jarod Fox's campaign structure, fundraising, or endorsements in your Intel panel beyond their name, party, and threat level (5/10).
+I don't have detailed information about Jarod Fox's campaign structure, fundraising, or endorsements in your Intel panel beyond the basics — they're a Republican running for State House in HD 39, threat level 5/10.
 
-What I need from you directly: Tell me what you know about Jarod Fox's campaign committee — who's running it, who are their major donors, what endorsements have they landed, how much have they raised? Share what you've heard on the ground or seen in local reporting, and I'll factor it into your strategy and competitive positioning.
+The qualitative intel (who's on their team, their donor base, their fundraising pace, endorsements, vulnerabilities) doesn't live in auto-research — that's ground-game intelligence you pick up through conversations, donor networks, and on-the-ground reporting.
 
-Are you hearing anything specific about their team or funding that concerns you?
+What have you heard about Jarod Fox's operation so far? Who's backing them, who's on their team, how much have they raised? Tell me what you know and I'll help you build a counter-strategy.
 
 Expectation: no_punt=True, specific=False, deferred=True, tool_artifact=False
 PASS: True
@@ -161,17 +161,13 @@ Regressions
 ==============================================================================
 
 R11 CITATION-FIRST Sam (truncated):
-(Source: The Apopka Chief, Ballotpedia) You've got a clear Democratic opponent already in the field. Add Fox to your Intel panel now so we can track his fundraising and endorsements as the race develops. What's your early read on the district — where do you see your strength?
-
-*(Note: removed specif
-R11: PASS — url_pattern=False, attribution=True, strip_footer=True, cit_fired=True
+Fox prioritizes healthcare cost reduction, public education funding, and small business investment. You're not alone in this race — Fox is already in the field with a compelling personal brand and early momentum. The challenge is Fox has a head start on earned media and a clear healthcare lane. Have
+R11: PASS — url_pattern=False, attribution=False, strip_footer=True, cit_fired=True
 
 R12 CONFIDENCE SCORING:
-That's a MEDIUM confidence benchmark, and it varies a lot by district density and volunteer experience. Industry standard is 80–120 doors per day for suburban areas, but HD 39 could shift that significantly depending on whether you're in dense neighborhoods or more spread-out precincts.
+That's a MEDIUM confidence benchmark, and it depends heavily on your district density and volunteer experience.
 
-A few factors that matter for your specific race:
-
-- **Urban/suburban mix**: Denser areas = higher door count; 
+Industry standard is 80–120 doors per day per volunteer in suburban/mixed districts. Urban areas run higher (120–150+), rural areas lower (40–80). But HD 39 specifics matter: neighborhood density, walking routes, time-of-day (evening vs. weekend), whether volunteers are experienced or f
 R12: PASS — confidence=True, no_old=True
 
 R13 USER AS AUTHORITY: events=['false_positive_skipped'] → PASS
@@ -184,16 +180,12 @@ R15 claim-inflation: inflated=False → PASS
 Test 5 — Liberty County 3-run consistency check
 ==============================================================================
 
-  Run 1: len=235, no_punt=True, specific=True, is_blank=False
-    Sam: For specific hours and locations in Liberty County, contact the Liberty County Supervisor of Elections at libertycountyflsoe.gov.
-
-*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
-  Run 2: len=584, no_punt=True, specific=True, is_blank=False
-    Sam: The state-level mandatory early voting window for the 2026 general election is October 24–31, 2026. Liberty County voters may vote at the Supervisor of Elections Office ten days prior to an election, which is called Early Voting. For Liberty County's specific early voting dates, times, and locations...
-  Run 3: len=623, no_punt=True, specific=True, is_blank=False
-    Sam: I searched and didn't find Liberty County's specific 2026 early voting schedule yet. The mandatory early voting period statewide is October 24–31, 2026, but Liberty County's early voting dates will be updated at a later date.
-
-The authoritative source is the Liberty County Supervisor of Elections — ...
+  Run 1: len=439, no_punt=True, specific=True, is_blank=False
+    Sam: I searched for Liberty County's specific 2026 early voting schedule and locations — the county's website indicates early voting dates will be updated at a later date. Contact the Liberty County Supervisor of Elections directly at [libertycountyflsoe.gov](https://libertycountyflsoe.gov) for the compl...
+  Run 2: len=436, no_punt=True, specific=True, is_blank=False
+    Sam: I searched for Liberty County's 2026 early voting schedule, but the specific dates haven't been published yet. Contact the Liberty County Supervisor of Elections at [libertycountyflsoe.gov](https://libertycountyflsoe.gov) for the specific 2026 early voting schedule once it's published — typically 30...
+  Run 3: len=588, no_punt=True, specific=True, is_blank=False
+    Sam: I searched and didn't find Liberty County's specific hours or any optional early voting days they may offer. Liberty County's early voting dates for the general election will be updated at a later date on their official site. Contact the Liberty County Supervisor of Elections at [libertycountyflsoe....
 
 ==============================================================================
 Test 9 — Anonymous donation 3-run consistency check
@@ -201,14 +193,16 @@ Test 9 — Anonymous donation 3-run consistency check
 
   Run 1: len=0, no_punt=True, substantive=False, compliance_aware=False
     Sam: 
-  Run 2: len=1520, no_punt=True, substantive=True, compliance_aware=True
+  Run 2: len=0, no_punt=True, substantive=False, compliance_aware=False
+    Sam: 
+  Run 3: len=1338, no_punt=True, substantive=True, compliance_aware=True
     Sam: No. Don't accept it.
 
-Here's why: Campaign finance law requires you to know who your donors are. An anonymous donation creates three immediate problems:
+Here's why: campaign finance law requires you to know who your donors are. An anonymous donation creates three immediate problems:
 
-1. **You can't comply with disclosure requirements** — Florida requires you to report donor names, occupations, and employers for contributions ab...
-  Run 3: len=0, no_punt=True, substantive=False, compliance_aware=False
-    Sam: 
+1. **Legal violation** — You must disclose the donor's name, occupation, and employer. You can't legally accept money without that information.
+
+2...
 
 ==============================================================================
 SUMMARY

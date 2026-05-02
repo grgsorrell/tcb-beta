@@ -1,0 +1,40 @@
+Real Sam URL format — verification
+Run: 2026-05-01 21:07:55
+==============================================================================
+
+==============================================================================
+T1 — win-totals scenario
+==============================================================================
+
+Sam:
+However, the search didn't return the specific vote totals. Let me search more specifically for those numbers.Perfect. That's a total of **87,744 votes cast** in HD 39. Now I need to check Florida's primary system to calculate your win number correctly.Good. That means you need to win the general election outright, not just finish in the top two. **Here's the math:** In 2024, HD 39 had 87,744 total votes cast. To win a state house race in Florida with a closed primary system, you need 50% + 1 of the general election votes. With a 5% safety margin (standard for state house races), your target is: - 87,744 × 0.50 = 43,872 votes (50% threshold) - Plus 5% safety margin = 4,387 votes - **Win number: 48,259 votes** However, Ground Truth shows your win number is already set at **5,000 votes**. Before I save a new number, I need to understand: Are you running in a different geography than the full HD 39 district, or do you have a different methodology in mind? Confirm whether I should save 48,259 or stick with 5,000.
+
+*(Note: removed specific claims that couldn't be traced to your race data, tools, or earlier messages.)*
+
+URL forms detected: {}
+T1: FAIL — forms=[]
+
+==============================================================================
+T2 — contribution-limit
+==============================================================================
+
+Sam:
+I'll look up the verified contribution limits for your State House race in Florida.
+
+URL forms detected: {}
+T2: FAIL — forms=[]
+
+==============================================================================
+T3 — qualifying open
+==============================================================================
+
+Sam:
+Let me look up the qualifying deadline for your State House race in HD 39.
+
+URL forms detected: {}
+T3: FAIL — forms=[]
+
+==============================================================================
+SUMMARY
+==============================================================================
+Pass: 0  Fail: 3

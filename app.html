@@ -8969,13 +8969,76 @@ function stripCitations(text) {
 }
 
 function formatSamText(text) {
-  return stripCitations(cleanResearchNarration(text))
-    .replace(/\[Actions taken:[^\]]*\]/gi, '')        // Strip tool action log annotations
-    .replace(/\[Action:[^\]]*\]/gi, '')               // Strip action annotations
-    .replace(/\【\d+[:\d]*†?[a-z]*\】/g, '')       // Remove 【1†source】 style citations
-    .replace(/\[\d+\]/g, '')                          // Remove [1] [2] style citations
-    .replace(/\s*\.\s*\n/g, '.\n')                   // Fix ". \n" ��� ".\n"
-    .replace(/\n{3,}/g, '\n\n')                       // Collapse 3+ newlines to 2
+  // Order matters: clean → markdown links → token-swap anchors → bare URLs
+  // → restore anchors → bold → newlines. Markdown links run first so the
+  // bare-URL step doesn't double-wrap them; token-swap removes already-
+  // anchored content from the bare-URL regex's reach.
+  var processed = stripCitations(cleanResearchNarration(text))
+    .replace(/\[Actions taken:[^\]]*\]/gi, '')
+    .replace(/\[Action:[^\]]*\]/gi, '')
+    .replace(/\【\d+[:\d]*†?[a-z]*\】/g, '')
+    .replace(/\[\d+\]/g, '')
+    .replace(/\s*\.\s*\n/g, '.\n')
+    .replace(/\n{3,}/g, '\n\n');
+
+  // Helper: trim trailing sentence punctuation off a captured URL so
+  // "Visit dos.fl.gov." doesn't include the period in the link.
+  function trimTrailing(s) {
+    var trailing = '';
+    while (s.length > 0 && /[.,;:!?)\]]/.test(s.slice(-1))) {
+      trailing = s.slice(-1) + trailing;
+      s = s.slice(0, -1);
+    }
+    return [s, trailing];
+  }
+
+  // Helper: token-swap anchors out so subsequent regex steps can't see
+  // inside them. Caller restores via restoreAnchors at the end.
+  var anchors = [];
+  function swapAnchors(s) {
+    return s.replace(/<a\b[^>]*>[\s\S]*?<\/a>/g, function(m) {
+      anchors.push(m);
+      return '\u0000A' + (anchors.length - 1) + '\u0000';
+    });
+  }
+
+  // Markdown links: [text](url) → <a>text</a>. Requires scheme in URL part.
+  processed = processed.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+  processed = swapAnchors(processed);
+
+  // Auto-link schemed URLs (https://...).
+  processed = processed.replace(/https?:\/\/[^\s<>"']+/gi, function(url) {
+    var parts = trimTrailing(url);
+    return '<a href="' + parts[0] + '" target="_blank" rel="noopener noreferrer">' +
+           parts[0] + '</a>' + parts[1];
+  });
+  // Re-swap to capture the schemed-URL anchors before the bare-URL step.
+  processed = swapAnchors(processed);
+
+  // Auto-link bare domains, TLD-restricted to avoid false positives like
+  // "e.g.", "Section 106.141, F.S.", "v1.2.3", "192.168.1.1".
+  // TLD whitelist agreed with Greg 2026-05-02: gov, com, org, net, edu, us,
+  // io, co, info, app. Excludes "fl" (state abbreviation).
+  // Negative lookbehind (?<![@\w]) prevents matching the domain part of
+  // an email address (greg@example.com) or any wordchar-attached fragment.
+  processed = processed.replace(
+    /(?<![@\w])([a-z0-9][a-z0-9-]*(?:\.[a-z0-9][a-z0-9-]*)*\.(?:gov|com|org|net|edu|us|io|co|info|app))(\/[^\s<>"']*)?/gi,
+    function(match) {
+      var parts = trimTrailing(match);
+      return '<a href="https://' + parts[0] + '" target="_blank" rel="noopener noreferrer">' +
+             parts[0] + '</a>' + parts[1];
+    }
+  );
+
+  // Restore token-swapped anchors.
+  processed = processed.replace(/\u0000A(\d+)\u0000/g, function(_, i) {
+    return anchors[parseInt(i, 10)];
+  });
+
+  return processed
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n/g, '<br>');
 }
