@@ -6902,7 +6902,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         if (joined.length < 60) {
           return "I want to make sure I'm grounded in your specific jurisdiction before giving you a recommendation. Could you share a particular area or angle (high-density precincts, donor-rich neighborhoods, areas with low past turnout) and I'll work from there?";
         }
-        return joined + '\n\n*(Note: removed recommendations that were outside your race\'s jurisdiction.)*';
+        // Strip happens silently — no user-visible footer. Validator events
+        // are still logged in sam_validation_events for audit (commit
+        // landing 2026-05-05 removed footers across all 5 strip paths
+        // for UX consistency with the citation validator fix in 852781a).
+        return joined;
       }
 
       async function logValidationEvent(jurisdictionName, authorizedList, mentioned, unauthorized, action, originalText, finalText) {
@@ -7288,10 +7292,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         if (joined.length < 60) {
           return "I don't have verified deadline data for your race. Contact your state's elections office directly to confirm — verified authoritative dates are the only safe source for filing-related decisions.";
         }
-        const noteParts = [];
-        if (unauthorizedDates && unauthorizedDates.length > 0) noteParts.push('deadline dates');
-        if (unauthorizedUrls && unauthorizedUrls.length > 0) noteParts.push('URLs');
-        return joined + `\n\n*(Note: removed ${noteParts.join(' and ')} that could not be verified against the authoritative lookup.)*`;
+        // Silent strip — see geographic validator note. logComplianceValidationEvent
+        // still receives unauthorizedDates / unauthorizedUrls for audit logging.
+        return joined;
       }
 
       async function logComplianceValidationEvent(action, claimedDates, authoritative, unauthorizedDates, claimedUrls, unauthorizedUrls, original, final) {
@@ -7534,10 +7537,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         if (joined.length < 60) {
           return "I don't have a verified finance-report schedule for your race. Contact your state's elections office directly to confirm exact report dates — verified authoritative dates are the only safe source for filing-related decisions.";
         }
-        const noteParts = [];
-        if (unauthorizedDates && unauthorizedDates.length > 0) noteParts.push('finance-report dates');
-        if (unauthorizedUrls && unauthorizedUrls.length > 0) noteParts.push('URLs');
-        return joined + `\n\n*(Note: removed ${noteParts.join(' and ')} that could not be verified against the authoritative lookup.)*`;
+        // Silent strip — see geographic validator note. logFinanceValidationEvent
+        // still receives unauthorizedDates / unauthorizedUrls for audit logging.
+        return joined;
       }
 
       async function logFinanceValidationEvent(action, claimedDates, authoritative, unauthorizedDates, claimedUrls, unauthorizedUrls, original, final) {
@@ -7818,10 +7820,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         if (joined.length < 60) {
           return "I don't have verified contribution limits for your race. Limits vary by race level and can change between cycles — contact your state's elections office for the current authoritative limits before you start your fundraising push.";
         }
-        const noteParts = [];
-        if (unauthorizedAmounts && unauthorizedAmounts.length > 0) noteParts.push('contribution-limit amounts');
-        if (unauthorizedUrls && unauthorizedUrls.length > 0) noteParts.push('URLs');
-        return joined + `\n\n*(Note: removed ${noteParts.join(' and ')} that could not be verified against the authoritative lookup.)*`;
+        // Silent strip — see geographic validator note. logDonationValidationEvent
+        // still receives unauthorizedAmounts / unauthorizedUrls for audit logging.
+        return joined;
       }
 
       async function logDonationValidationEvent(action, claimedAmounts, authoritative, unauthorizedAmounts, claimedUrls, unauthorizedUrls, original, final) {
@@ -8024,7 +8025,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           if (joined.length < 60) {
             return "I don't have enough verified information about your opponent in your Intel panel to answer that confidently. Tell me what you know about them — fundraising, endorsements, voting record, prior offices — and I'll factor it into your strategy.";
           }
-          return joined + '\n\n*(Note: removed opponent claims that could not be verified against your Intel data.)*';
+          // Silent strip — see geographic validator note. logOpponentValidationEvent
+          // still receives unauthorized claims for audit logging.
+          return joined;
         }
 
         async function logOpponentValidationEvent(action, claims, unauthorized, original, final) {
