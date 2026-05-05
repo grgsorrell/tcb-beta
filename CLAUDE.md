@@ -46,7 +46,7 @@ CSS Variables:
 
 ## Beta Users
 Usernames: greg, shannan, cjc, jerry
-Password: Beta#01
+Password: see Cloudflare secret BETA_PASSWORD on candidate-toolbox-secretary2 (rotated 2026-05-04; D1 users.password_hash also stores SHA-256 of the same value with `_tcb_salt_2026` salt for the unified /api/auth/login path)
 Session: 30 days (remember me) / 8 hours
 
 ## Critical Rules — Never Break These
@@ -820,7 +820,7 @@ localStorage wipe + D1 resync).
 ## Search Architecture
 Primary: VPS search (self-hosted, $0/call)
   - SearXNG + Trafilatura on Hetzner VPS
-  - Auth: X-Search-Key: tcb-search-2026
+  - Auth: X-Search-Key value held in env.VPS_SEARCH_KEY (Cloudflare secret on candidate-toolbox-secretary2; mirror in VPS /home/search-service/.env)
   - 15 second timeout
   - REQUIRES HTTPS — set env.VPS_SEARCH_URL to HTTPS endpoint
   - Setup: domain with SSL pointing to 178.104.115.66:8889

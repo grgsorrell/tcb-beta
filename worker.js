@@ -717,7 +717,7 @@ export default {
         try {
           const rosterResp = await fetch('https://research.thecandidatestoolbox.com/candidates/federal', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+            headers: { 'Content-Type': 'application/json', 'X-Search-Key': env.VPS_SEARCH_KEY },
             body: JSON.stringify({ office: fecCode, state, district, election_year: year }),
             signal: AbortSignal.timeout(25000)
           });
@@ -742,7 +742,7 @@ export default {
             try {
               const finResp = await fetch('https://research.thecandidatestoolbox.com/candidate/finances', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+                headers: { 'Content-Type': 'application/json', 'X-Search-Key': env.VPS_SEARCH_KEY },
                 body: JSON.stringify({ candidate_id: fecMatch.candidate_id }),
                 signal: AbortSignal.timeout(25000)
               });
@@ -772,7 +772,7 @@ export default {
           const vpsBase = (env.VPS_SEARCH_URL || 'https://search.thecandidatestoolbox.com').replace(/\/+$/, '') + '/smart-search';
           const vpsResp = await fetch(vpsBase, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+            headers: { 'Content-Type': 'application/json', 'X-Search-Key': env.VPS_SEARCH_KEY },
             body: JSON.stringify({ query: name + ' ' + (office || '') + ' ' + (state || '') + ' campaign ' + year, max_results: 5, max_chars: 8000 }),
             signal: AbortSignal.timeout(15000)
           });
@@ -905,9 +905,14 @@ export default {
     if (url.pathname === '/auth/beta-login' && request.method === 'POST') {
       try {
         const { username, password } = await request.json();
-        const BETA_USERS = { greg: 'Beta#01', shannan: 'Beta#01', cjc: 'Beta#01', jerry: 'Beta#01' };
+        const ALLOWED_BETA_USERS = new Set(['greg', 'shannan', 'cjc', 'jerry']);
         const cleanUser = (username || '').toLowerCase().trim();
-        if (!BETA_USERS[cleanUser] || BETA_USERS[cleanUser] !== password) {
+        // Password is held in env.BETA_PASSWORD (Cloudflare secret).
+        // env.BETA_PASSWORD is undefined on Workers without the secret
+        // configured (e.g., tcb-beta), which makes this comparison
+        // fail-closed — any submitted password is rejected. That's
+        // intentional defense-in-depth for direct hits on dead routes.
+        if (!ALLOWED_BETA_USERS.has(cleanUser) || !env.BETA_PASSWORD || password !== env.BETA_PASSWORD) {
           return jsonResponse({ error: 'Invalid credentials' }, 401);
         }
         // Find or create D1 user
@@ -4751,7 +4756,7 @@ export default {
         const promises = queries.map(q =>
           fetch(vpsBase, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-Search-Key': 'tcb-search-2026' },
+            headers: { 'Content-Type': 'application/json', 'X-Search-Key': env.VPS_SEARCH_KEY },
             body: JSON.stringify({ query: q, max_results: 5, max_chars: maxCharsPerQuery || 5000 }),
             signal: AbortSignal.timeout(15000)
           }).then(r => r.json()).catch(() => null)
