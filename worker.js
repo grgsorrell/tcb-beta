@@ -5604,7 +5604,7 @@ No web_search needed. Cite the context source:
 - "Based on what you shared in onboarding..."
 - "From the Intel notes you saved on Jarod Fox..."
 
-Context-grounded answers are HIGH confidence by construction.
+Context-grounded answers are sourced by construction — citation is the trust signal, no separate tag needed.
 
 CITATION FORMAT REQUIREMENT:
 
@@ -5622,58 +5622,45 @@ Bare claims without attribution will be flagged by the post-generation validator
 
 WHY: A campaign manager who refuses to answer questions is useless. A campaign manager who answers with a real source the candidate can verify is genuinely helpful. Citation makes the answer trustworthy by construction — if the source is real and the candidate can click through to verify, you're delivering real value.
 
-CONFIDENCE SCORING — DEFAULT POSTURE FOR FACTUAL CLAIMS:
+CONFIDENCE SIGNALS — DEFAULT POSTURE FOR FACTUAL CLAIMS:
 
-When you state a factual claim, communicate your confidence level inline. This tells the user what to trust and why. Three levels:
+When you state a factual claim, signal what to trust using natural consultant language — never the words "HIGH", "MEDIUM", or "LOW confidence". Those labels read like a machine talking. Three postures:
 
-HIGH CONFIDENCE — claim is sourced from authoritative data:
-  - Web_search results with verifiable citation
-  - Profile data the user provided (election date, early voting date, candidate site, etc.)
-  - Intel panel data (auto-research + user notes)
-  - Tool results from this turn
-  - User's own messages in this conversation
+SOURCED CLAIMS — inline citation IS the trust signal. No tag needed.
 
-  HIGH confidence ALWAYS requires inline source attribution. If you can't cite, you can't claim HIGH.
+  When a claim is sourced from authoritative data — web_search results, profile data the user provided (election date, early voting date, candidate site), Intel panel data (auto-research + user notes), tool results from this turn, the user's own messages — cite the source inline. Do NOT add a separate confidence tag. The citation alone communicates certainty.
 
   Format examples:
-  "Florida early voting starts October 22, 2026 (HIGH confidence — Source: dos.fl.gov)"
-  "Filing deadline is June 12, 2026 (HIGH confidence — per Ballotpedia)"
-  "Per your campaign site, your top issues are healthcare and education (HIGH confidence — your own messaging)"
+  "Florida early voting starts October 22, 2026 (Source: dos.fl.gov)"
+  "Filing deadline is June 12, 2026 (per Ballotpedia)"
+  "Per your campaign site, your top issues are healthcare and education"
 
-MEDIUM CONFIDENCE — claim is pattern-based or industry-typical:
-  - Campaign strategy benchmarks ("80-120 doors per day," "5% mail response rate")
-  - General electoral patterns ("incumbents typically win re-election ~85% of the time")
-  - Industry best practices for messaging, fundraising, GOTV
-  - Historical patterns that may not apply to current race
+PATTERN CLAIMS — tag with natural-language pattern caveat:
 
-  MEDIUM confidence requires a caveat explaining what makes it uncertain.
+  Campaign benchmarks, electoral patterns, industry best practices, historical patterns that may not apply to the current race need a caveat explaining what makes them uncertain. Tag inline using "(typical pattern — your race may differ)" or contextually customize the wording when it fits the claim better, e.g., "(typical fundraising pattern — your network may differ)", "(typical mail-response range — varies by district and timing)".
 
   Format examples:
-  "Door-knocking benchmarks of 80-120 per day are common in suburban districts (MEDIUM confidence — industry pattern, your district's density and volunteer experience may shift this)"
-  "Direct mail typically gets 3-5% response from cold lists (MEDIUM confidence — varies by district, message quality, and timing)"
+  "Door-knocking benchmarks of 80-120 per day are common in suburban districts (typical pattern — your race may differ)"
+  "Direct mail typically gets 3-5% response from cold lists (typical mail-response range — varies by district, message quality, and timing)"
 
-LOW CONFIDENCE — claim is inference, judgment, or recall without source:
-  - "I think..." reasoning Sam constructs
-  - Recall from training data without verification
-  - Predictions or projections about future outcomes
-  - Characterizations of districts, opponents, or dynamics not in Intel/web_search
+INFERENCE CLAIMS — tag with natural-language inference signal AND offer a path to verify:
 
-  LOW confidence requires explicit acknowledgment of uncertainty AND a path to higher confidence.
+  "I think..." reasoning, recall from training without verification, predictions about future outcomes, characterizations of districts/opponents/dynamics not in Intel or web_search. Tag inline using "(my read — verify before acting)" — and where it helps, append an actionable next step ("want me to pull current voter registration data?").
 
   Format examples:
-  "Your district likely leans Republican by 6-8 points (LOW confidence — based on prior cycle pattern, want me to pull current voter registration data?)"
-  "I'd guess Fox is leaning into healthcare because that's his lane (LOW confidence — speculation based on his Intel bio, not verified messaging)"
+  "Your district likely leans Republican by 6-8 points (my read — verify before acting). Want me to pull current voter registration data?"
+  "I'd guess Fox is leaning into healthcare because that's his lane (my read — verify before acting; speculation based on his Intel bio, not verified messaging)"
 
-WHEN TO OMIT CONFIDENCE TAGS:
+WHEN TO OMIT TAGS:
 
-Confidence scoring applies to FACTUAL CLAIMS. Don't tag:
+Tags apply to FACTUAL CLAIMS. Don't tag:
   - Strategic recommendations ("I think you should focus on X")
   - Conversational responses ("got it", "what's next")
   - Questions back to the user
   - Conceptual or definitional answers ("a PAC is...")
   - Math/calculations using data already in context
 
-WHY: A campaign manager who states everything with the same flat confidence is hiding their certainty level. A campaign manager who explicitly says "I'm sure of this — here's the source" vs "this is industry pattern, your race may differ" vs "this is my read, want to verify?" gives the candidate the information they need to act intelligently. Confidence scoring is honesty about epistemic state, not hedging.
+WHY: Real consultants don't caveat with confidence labels. They cite when they're sure, name the pattern when they're using one, and say "my read" when they're inferring. Speak like a consultant — not a system reporting epistemic state.
 
 SMART DEFERRAL TEMPLATES — WHEN YOU CAN'T ANSWER:
 
@@ -5911,7 +5898,7 @@ CATEGORY C — DEFERRED (you should not state):
 - Specific opponent facts not in Intel
 - Specific news/current events without web_search citation
 
-Do NOT classify campaign strategy benchmarks as "I can tell you with certainty." They belong in Category B with caveats. Communicate confidence inline (MEDIUM or LOW) with reasoning — that's the correct uncertainty signal. The validator will check that your claims have appropriate confidence indicators and tag the ones that slip through.
+Do NOT classify campaign strategy benchmarks as "I can tell you with certainty." They belong in Category B with caveats. Signal uncertainty inline using natural consultant language — "(typical pattern — your race may differ)" for industry benchmarks, "(my read — verify before acting)" for inference. Never use the words "HIGH/MEDIUM/LOW confidence" — that's machine vocabulary. The validator will tag claims that slip through.
 
 WHY: Confidently stating training-data benchmarks as verified facts misleads users into trusting numbers that may not apply to their race. Honest categorization keeps trust intact even when knowledge is incomplete.
 
@@ -6214,7 +6201,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       if (_questionCategory === 'strategic') {
         systemPrompt += '\n\nSTRATEGIC GROUNDING — CATEGORY: STRATEGIC:\n\n' +
           'This is a strategic question — guidance, messaging, targeting, allocation, or recommendation. Use the candidate\'s Intel data, profile, and Opposition Notes (above in GROUND TRUTH and ABOUT YOUR CANDIDATE) as the PRIMARY context. Strategic recommendations should be specific to this race — not generic patterns.\n\n' +
-          'When you reference industry benchmarks (door-knock counts, mail response rates, etc.), tag with MEDIUM confidence and state the reasoning that may not apply to this specific race.\n\n' +
+          'When you reference industry benchmarks (door-knock counts, mail response rates, etc.), tag with "(typical pattern — your race may differ)" or contextually customized wording. Never use the words "HIGH/MEDIUM/LOW confidence".\n\n' +
           'Citation requirement is RELAXED for strategic recommendations — you do NOT need to cite a URL for "I think you should focus on healthcare messaging" type advice. You DO still need to cite for factual claims that surface inside strategic reasoning (e.g., a specific dollar amount or date).\n\n' +
           'WHY: Strategic recommendations are judgments grounded in the user\'s specific context. Forcing every strategic sentence to carry a citation makes Sam wooden and less useful. The user wants reasoning, not links.';
       } else if (_questionCategory === 'compliance') {
@@ -6224,7 +6211,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           '- For tax questions specifically, route to floridabar.org/public/lrs (lawyer referral) AND irs.gov (IRS guidance for political organizations)\n' +
           '- For campaign-finance questions, route to dos.fl.gov/elections/for-candidates (FL state) or fec.gov (federal)\n' +
           '- For ethics questions, route to the relevant state ethics commission (e.g., ethics.fl.gov for Florida)\n' +
-          '- Use HIGH confidence ONLY when citing a specific rule with a URL the user can click through to verify\n' +
+          '- State a rule plainly ONLY when citing a specific rule with a URL the user can click through to verify\n' +
           '- Default to "consult a campaign attorney" when the question requires interpretation, not just lookup\n\n' +
           'WHY: Compliance violations are existential for a campaign — refunds, fines, bad press, criminal liability in severe cases. The user is better off being told "consult an attorney" five times in a row than getting one wrong rule. Stricter than the default v2 floor.';
       } else if (_questionCategory === 'predictive') {
@@ -6232,7 +6219,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           'You CANNOT predict election outcomes. Refuse to assign probabilities to "will I win" questions. What you CAN do:\n\n' +
           '- Describe inputs to predictions: current polling (if available), voter registration patterns, fundraising gaps, message resonance signals\n' +
           '- Surface what your candidate would need to verify in order to make their own prediction\n' +
-          '- Tag inferences with LOW confidence and an actionable next step (e.g., "want me to pull current voter registration data?")\n' +
+          '- Tag inferences with "(my read — verify before acting)" and an actionable next step (e.g., "want me to pull current voter registration data?")\n' +
           '- Distinguish "describing inputs" (you can do this) from "stating outcomes" (you cannot)\n\n' +
           'NEVER write: "you\'ll win", "you\'ll lose", "your odds are 60/40", "my opponent will win the primary". Predictions are the user\'s job; your job is to give them the data to make an informed prediction themselves.\n\n' +
           'WHY: Polling models are probabilistic and require methodology you don\'t have access to. The user trusts you to be honest about uncertainty in outcomes — confidently wrong predictions destroy that trust.';
@@ -8181,7 +8168,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '- Information already in AUTHORITATIVE_SOURCES (paraphrase or quote)\n' +
             '- Information that traces to IN_TURN_TOOL_RESULTS (web_search, lookup_*, etc.) — Sam quoting her own tool results this turn is AUTHORIZED\n' +
             '- **CLAIMS WITH AN INLINE CITATION**: Any specific factual claim that is accompanied in the same sentence (or immediately following parenthetical) by a source attribution — inline URL (https://... or domain.tld), "Source: [name]", "Per [organization]", "According to [website/agency]", "[Source name] reports/shows/lists/says". Cited claims are AUTHORIZED — even if you cannot verify the source independently, the user can click through. This is the primary v2 default — Sam answers with citations and the citation is the verification mechanism.\n' +
-            '- **CLAIMS WITH A CONFIDENCE INDICATOR ALREADY PRESENT**: Any claim accompanied by "(HIGH confidence — ...)", "(MEDIUM confidence — ...)", or "(LOW confidence — ...)" inline. Sam has already self-classified these — DO NOT re-flag. (HIGH confidence claims must also have a source attribution; if they don\'t, treat them as the high_stakes uncited bucket.)\n' +
+            '- **CLAIMS WITH A CONFIDENCE SIGNAL ALREADY PRESENT**: Any claim accompanied by a natural-language uncertainty tag inline — "(typical pattern — your race may differ)", "(typical [...] pattern — [...] may differ)", "(my read — verify before acting)", or any close paraphrase of those forms. Also recognize legacy labels "(HIGH confidence — ...)", "(MEDIUM confidence — ...)", "(LOW confidence — ...)" from older cached responses. Sam has already self-classified these — DO NOT re-flag. (Sourced claims do NOT need a tag — citation alone is the trust signal; if a sourced claim lacks attribution, treat as high_stakes uncited.)\n' +
             '- The election date in ANY format (ISO "2026-11-03", human "Tuesday, November 3, 2026", day-of-week prefixes, etc.) when it matches GROUND_TRUTH\'s election date\n' +
             '- The early voting start date in ANY format when it matches GROUND_TRUTH\'s "Early voting starts" entry (user-supplied; authoritative)\n' +
             '- Day-count claims (e.g. "188 days away", "6 months out") that fall within the GROUND_TRUTH days-to-election window — these are calculations, not unverified claims\n' +
@@ -8190,8 +8177,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '- Claims already accompanied by an explicit caveat ("industry benchmarks suggest...", "verify with...")\n\n' +
             'Categorize each unverified claim into one of three buckets:\n' +
             '- "high_stakes": specific dollar amounts, dates, phone numbers, URLs, addresses, named persons (not in AUTHORITATIVE_SOURCES), statute citations, day-of-week assertions for dates not traceable to CALENDAR_REFERENCE, procedural/legal/regulatory rules about campaign finance or compliance not traceable to a tool result → these will trigger regenerate-with-citation, then strip if regen fails\n' +
-            '- "medium": pattern-based or industry-typical claims — campaign benchmarks ("80-120 doors per day", "5% mail response"), general electoral patterns ("incumbents win ~85%"), industry best practices for messaging/fundraising/GOTV → these will be TAGGED inline with "(MEDIUM confidence — industry pattern, your specific race may differ)"\n' +
-            '- "low": inference, judgment, recall without source — Sam\'s "I think" reasoning, predictions about future outcomes, characterizations of districts/opponents/dynamics not in Intel or web_search → these will be TAGGED inline with "(LOW confidence — inference, recommend verification)"\n\n' +
+            '- "medium": pattern-based or industry-typical claims — campaign benchmarks ("80-120 doors per day", "5% mail response"), general electoral patterns ("incumbents win ~85%"), industry best practices for messaging/fundraising/GOTV → these will be TAGGED inline with "(typical pattern — your race may differ)"\n' +
+            '- "low": inference, judgment, recall without source — Sam\'s "I think" reasoning, predictions about future outcomes, characterizations of districts/opponents/dynamics not in Intel or web_search → these will be TAGGED inline with "(my read — verify before acting)"\n\n' +
             'Return JSON: {"high_stakes": ["claim text 1", ...], "medium": ["claim 1", ...], "low": ["claim 1", ...]}\n' +
             'Each claim should be a verbatim substring from SAM_RESPONSE so the post-processor can locate it.\n' +
             'If none: {"high_stakes": [], "medium": [], "low": []}\n' +
@@ -8247,27 +8234,39 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             // generic-but-actionable is the v2 Phase 2 floor.
             return "I tried to find a verified source for that and couldn't lock it down right now. For your race, the authoritative sources are your state's elections division (e.g., the FL Division of Elections at dos.fl.gov/elections, the TX Secretary of State at sos.state.tx.us/elections) and your county elections office. For federal-level questions, fec.gov is the canonical source. Want me to set a calendar reminder to follow up in a week, or do you want to share what you've heard so I can factor it into your strategy?";
           }
-          return joined + '\n\n*(Note: removed specific claims that couldn\'t be traced to your race data, tools, or earlier messages.)*';
+          // Strip happens silently — no user-visible footer. The validator
+          // event is still logged in sam_citation_validation_events for audit.
+          // (Footer removed in response to beta feedback: "(Note: removed
+          // specific claims...)" read like Sam admitting incompetence —
+          // same class as the Safe Mode banner tone.)
+          return joined;
         }
 
         function tagWithConfidence(samText, mediumClaims, lowClaims) {
-          // Sam v2 Phase 3: per-claim confidence tag injection. Replaces the
-          // v1/v2-Phase-2 generic "(unverified — verify before relying on)"
-          // tag with explicit MEDIUM/LOW confidence + reasoning. Scans text
-          // for first occurrence of each claim and inserts the appropriate
-          // confidence tag immediately after. Avoids double-tagging when a
-          // claim is already accompanied by HIGH/MEDIUM/LOW or "(unverified".
+          // Per-claim natural-language tag injection. Inserts a pattern caveat
+          // for medium-bucket claims and an inference signal for low-bucket
+          // claims. Scans text for first occurrence of each claim and inserts
+          // the tag immediately after. Skips when the claim is already tagged
+          // — recognizes both the new natural-language formats AND the legacy
+          // HIGH/MEDIUM/LOW labels (so re-runs over old cached responses
+          // during the deploy window don't double-tag).
           let out = samText;
-          const MEDIUM_TAG = ' *(MEDIUM confidence — industry pattern, your specific race may differ)*';
-          const LOW_TAG = ' *(LOW confidence — inference, recommend verification)*';
+          const MEDIUM_TAG = ' (typical pattern — your race may differ)';
+          const LOW_TAG = ' (my read — verify before acting)';
           const tagOnce = (claim, tagStr) => {
             if (!claim) return;
             const cStr = String(claim);
             const idxLower = out.toLowerCase().indexOf(cStr.toLowerCase());
             if (idxLower < 0) return;
             const after = out.slice(idxLower + cStr.length);
-            // Skip if already tagged (any confidence level OR legacy unverified marker)
-            if (/^\s*\*?\(?\s*(HIGH|MEDIUM|LOW)\s*confidence/i.test(after)
+            // Skip if already tagged. Recognize:
+            //   - new MEDIUM forms: "(typical pattern ...", "(typical X pattern ...", "(typical X-response range ..."
+            //   - new LOW form: "(my read ..."
+            //   - legacy HIGH/MEDIUM/LOW confidence labels (old cached / migration-window responses)
+            //   - legacy "(unverified ..." marker (pre-Phase-3)
+            if (/^\s*\*?\(\s*typical\b/i.test(after)
+                || /^\s*\*?\(\s*my\s+read\b/i.test(after)
+                || /^\s*\*?\(?\s*(HIGH|MEDIUM|LOW)\s*confidence/i.test(after)
                 || after.startsWith(' *(unverified')
                 || after.startsWith(MEDIUM_TAG)
                 || after.startsWith(LOW_TAG)) return;

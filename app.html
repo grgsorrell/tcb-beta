@@ -5499,7 +5499,7 @@ function renderSettings() {
 
   document.getElementById('settings-content').innerHTML =
     '<div class="settings-section"><div class="settings-lbl">Campaign Profile</div>' +
-      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#127963;</div><div><div class="sr-nm">Campaign Info</div><div class="sr-desc">' + escapeHtml(name) + ' · ' + escapeHtml(office) + ' · ' + elDate + '</div></div></div><button class="edit-bud-btn" onclick="editCampaignInfo()">Edit</button></div>' +
+      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#127963;</div><div><div class="sr-nm">Campaign Info</div><div class="sr-desc">' + escapeHtml(name) + ' · ' + escapeHtml(office) + '</div></div></div><button class="edit-bud-btn" onclick="editCampaignInfo()">Edit</button></div>' +
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#127919;</div><div><div class="sr-nm">Win Number</div><div class="sr-desc">' + winNum + '</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128176;</div><div><div class="sr-nm">Campaign Budget</div><div class="sr-desc">' + budgetStr + (campaignBudget.total > 0 ? ' · $' + remaining.toLocaleString() + ' remaining' : '') + '</div></div></div><button class="edit-bud-btn" onclick="promptEditBudget()">Edit</button></div>' +
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128179;</div><div><div class="sr-nm">Donation Page URL</div><div class="sr-desc">' + (campaignData.donationUrl ? escapeHtml(campaignData.donationUrl) : 'Not set') + '</div></div></div><button class="edit-bud-btn" onclick="editDonationUrl()">Edit</button></div>' +
@@ -5521,6 +5521,15 @@ function renderSettings() {
           : 'Not set') +
       '</div></div></div>' +
       '<button class="edit-bud-btn" onclick="editCandidateBio()">' + (campaignData.candidateBioText ? 'Edit' : 'Add Bio') + '</button></div>' +
+      // Election date — dedicated subsection (Shannan beta feedback: needed editable on its own)
+      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128197;</div><div><div class="sr-nm">Election Date</div><div class="sr-desc">' +
+        (campaignData.electionDate ? formatDate(campaignData.electionDate) : 'Not set') +
+      '</div></div></div>' +
+      '<div style="display:flex;gap:6px">' +
+        (campaignData.electionDate
+          ? '<button class="edit-bud-btn" onclick="editElectionDate()">Edit Date</button><button class="edit-bud-btn" onclick="clearElectionDate()">Clear</button>'
+          : '<button class="edit-bud-btn" onclick="editElectionDate()">Add Date</button>') +
+      '</div></div>' +
       // Sam v2 Phase 6: Early voting start date
       '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128683;</div><div><div class="sr-nm">Early Voting Start</div><div class="sr-desc">' +
         (campaignData.earlyVotingStartDate ? formatDate(campaignData.earlyVotingStartDate) : 'Not set') +
@@ -7388,6 +7397,38 @@ function editEarlyVotingDate() {
   syncEarlyVotingCalendarEvent(newDate || null);
   showToast(newDate ? 'Early voting date saved' : 'Early voting date cleared');
   renderSettings();
+}
+
+// Election date edit/clear — mirrors editEarlyVotingDate pattern. saveCampaign
+// already POSTs election_date via /api/profile/save (no backend change needed).
+// No calendar event sync — election date is profile-only; downstream renderers
+// (countdown badges, Sam's Take days-to-election, etc.) read campaignData.electionDate
+// dynamically.
+function editElectionDate() {
+  var current = campaignData.electionDate || '';
+  var newDate = prompt('Election date (YYYY-MM-DD):', current);
+  if (newDate === null) return; // cancel
+  newDate = String(newDate).trim();
+  if (newDate && !/^\d{4}-\d{2}-\d{2}$/.test(newDate)) {
+    alert('Please use YYYY-MM-DD format (e.g., 2026-11-03).');
+    return;
+  }
+  campaignData.electionDate = newDate || null;
+  saveCampaign();
+  showToast(newDate ? 'Election date saved' : 'Election date cleared');
+  updateTopbar();
+  renderSettings();
+  refreshDashboard();
+}
+
+function clearElectionDate() {
+  if (!confirm('Remove election date? This affects calendar and timing calculations.')) return;
+  campaignData.electionDate = null;
+  saveCampaign();
+  showToast('Election date cleared');
+  updateTopbar();
+  renderSettings();
+  refreshDashboard();
 }
 
 function clearEarlyVotingDate() {
