@@ -2638,6 +2638,140 @@ export default {
     }
 
     // ========================================
+    // SHARED HELPER: webSearchFallbackForLookup
+    //
+    // When a primary lookup tool (lookup_compliance_deadlines,
+    // lookup_finance_reports, lookup_donation_limits) exhausts its
+    // source cascade and would return status='unsupported', the
+    // endpoint calls this helper to issue a single authoritative
+    // web_search and produce a cite-ready excerpt + URL. The endpoint
+    // then returns status='web_search_fallback' with the augmented
+    // payload so Sam quotes content directly without having to chain
+    // a web_search herself.
+    //
+    // Why this exists at the worker layer (not in Sam's prompt):
+    // two prompt iterations (commits 3ee0980 + 16778c9) failed to
+    // get Haiku 4.5 to chain web_search after an unsupported lookup
+    // tool result, even with mandatory wording matching the working
+    // NEWS QUERIES pattern. Hypothesis 4 confirmed (Haiku model bias
+    // on tool chaining after a "no data" tool result). Forcing the
+    // fallback at the data layer removes Sam's choice from the
+    // equation — single round-trip, structured payload, citation
+    // discipline preserved via Sam's existing instructions.
+    //
+    // Returns: { excerpt: string|null, url: string|null, hasUsableContent: boolean }
+    //   - excerpt: a single quoted paragraph the search Haiku selected
+    //     as most relevant. Empty/null if the search produced nothing
+    //     usable.
+    //   - url: the URL of the first web_search_result block from
+    //     Anthropic's server-side search. Null if no search results
+    //     came back (treated as unusable — citation requirement).
+    //   - hasUsableContent: true iff both excerpt AND url are present
+    //     AND the search Haiku didn't bail with NO_USABLE_CONTENT.
+    //
+    // Failure modes handled silently (return unusable result, caller
+    // falls through to existing 'unsupported' deferral path):
+    //   - Anthropic API errors / rate limits / network failures
+    //   - Haiku skipping the web_search call (training-data recall
+    //     without search → no result blocks → unusable)
+    //   - Search returning irrelevant results (Haiku says
+    //     NO_USABLE_CONTENT)
+    // ========================================
+    async function webSearchFallbackForLookup(query, logCtx) {
+      if (!query || typeof query !== 'string') {
+        return { excerpt: null, url: null, hasUsableContent: false };
+      }
+      try {
+        const resp = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': env.ANTHROPIC_API_KEY,
+            'anthropic-version': '2023-06-01'
+          },
+          body: JSON.stringify({
+            model: 'claude-haiku-4-5-20251001',
+            max_tokens: 800,
+            temperature: 0,
+            tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 1 }],
+            system:
+              'You are a search-and-quote helper for a campaign-management tool. ' +
+              'Call web_search exactly once with the query you receive. From the search results, ' +
+              'return the single most relevant paragraph that directly answers the query, quoted ' +
+              'as-is from the source. Include the source URL inline (markdown link or bare URL). ' +
+              'If the search returns nothing that answers the query, respond with exactly: ' +
+              'NO_USABLE_CONTENT. Do not speculate, do not synthesize across multiple sources, ' +
+              'do not add commentary — quote the most authoritative single source verbatim and stop.',
+            messages: [{ role: 'user', content: query }]
+          })
+        });
+        const data = await resp.json();
+        // Log spend separately from chat so it's analyzable. Caller passes
+        // ctx (userId/ownerId) for billing attribution; both optional.
+        try {
+          await logApiUsage(
+            'lookup_websearch_fallback',
+            data,
+            (logCtx && logCtx.userId) || null,
+            (logCtx && logCtx.ownerId) || null
+          );
+        } catch (_) {}
+
+        if (!data || !Array.isArray(data.content)) {
+          return { excerpt: null, url: null, hasUsableContent: false };
+        }
+
+        // Concatenate all text blocks into the excerpt. Haiku may emit
+        // a brief lead-in before the quoted paragraph; keeping the full
+        // text gives Sam max flexibility in how she quotes it.
+        let excerpt = '';
+        for (const blk of data.content) {
+          if (blk && blk.type === 'text' && typeof blk.text === 'string') {
+            excerpt += blk.text;
+          }
+        }
+        excerpt = excerpt.trim();
+
+        // Sentinel: helper-Haiku decided the search produced nothing
+        // usable. Caller falls through to existing deferral path.
+        if (!excerpt || /^NO_USABLE_CONTENT\b/i.test(excerpt)) {
+          return { excerpt: null, url: null, hasUsableContent: false };
+        }
+
+        // Pull the first URL from the first web_search_tool_result block.
+        // Anthropic's native web_search returns blocks of shape:
+        //   { type: 'web_search_tool_result',
+        //     content: [{ type: 'web_search_result', url, title, ... }, ...] }
+        let url = null;
+        for (const blk of data.content) {
+          if (blk && blk.type === 'web_search_tool_result' && Array.isArray(blk.content)) {
+            for (const r of blk.content) {
+              if (r && typeof r.url === 'string' && r.url.length > 0) {
+                url = r.url;
+                break;
+              }
+            }
+            if (url) break;
+          }
+        }
+
+        // No tool-result block means Haiku either skipped the search
+        // (recalled from training instead) or the API stripped the
+        // results. Either way we have no citation — return unusable
+        // since the citation requirement is what makes the fallback
+        // safe to ship.
+        if (!url) {
+          return { excerpt: null, url: null, hasUsableContent: false };
+        }
+
+        return { excerpt, url, hasUsableContent: true };
+      } catch (e) {
+        console.warn('[lookup_websearch_fallback] failed:', e.message);
+        return { excerpt: null, url: null, hasUsableContent: false };
+      }
+    }
+
+    // ========================================
     // DATA API: lookup_compliance_deadlines
     //
     // Backs the lookup_compliance_deadlines Sam tool — verified filing
@@ -2680,10 +2814,16 @@ export default {
         // still keys uniquely with the office + year). We treat NULL
         // jurisdiction_name as an empty string for index lookup.
         const cacheJurKey = jurisdictionName || '';
+        // Dual TTL: verified rows fresh for 90 days; web_search_fallback
+        // rows fresh for 14 days (shorter window so a future Ballotpedia/SOS
+        // integration supersedes stale fallbacks within ~2 weeks).
         const cached = await env.DB.prepare(
           "SELECT * FROM compliance_deadlines_cache " +
           "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
-          "AND created_at > datetime('now', '-90 days') LIMIT 1"
+          "AND ( " +
+          "  (status != 'web_search_fallback' AND created_at > datetime('now', '-90 days')) " +
+          "  OR (status = 'web_search_fallback' AND created_at > datetime('now', '-14 days')) " +
+          ") LIMIT 1"
         ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
 
         if (cached) {
@@ -2698,25 +2838,57 @@ export default {
 
         if (!result) {
           const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
-          result = {
-            status: 'unsupported',
-            deadlines: {
-              qualifying_period_start: null,
-              qualifying_period_end: null,
-              qualifying_period_end_time: null,
-              petition_deadline: null,
-              filing_fee: null
-            },
-            authority: authority,
-            source: 'stub_authority_only',
-            last_updated: new Date().toISOString()
-          };
+
+          // Web_search fallback before giving up entirely. Forces the cited
+          // fallback at the data layer to mitigate Hypothesis 4 (Haiku not
+          // reliably chaining web_search after an unsupported tool result —
+          // see commits 3ee0980 + 16778c9 for the failed prompt-side
+          // attempts). Single round-trip, structured payload, citation
+          // discipline preserved via Sam's existing prompt instructions.
+          const fbQuery = [
+            stateCode ? expandStateName(stateCode) : stateRaw,
+            office,
+            raceYear,
+            'qualifying period filing deadline'
+          ].filter(Boolean).join(' ');
+          const fb = await webSearchFallbackForLookup(fbQuery, { userId: ctx.userId, ownerId: ctx.ownerId });
+
+          if (fb && fb.hasUsableContent) {
+            result = {
+              status: 'web_search_fallback',
+              deadlines: {
+                qualifying_period_start: null,
+                qualifying_period_end: null,
+                qualifying_period_end_time: null,
+                petition_deadline: null,
+                filing_fee: null
+              },
+              authority: authority,
+              source: 'web_search_fallback',
+              web_search: { excerpt: fb.excerpt, url: fb.url },
+              last_updated: new Date().toISOString()
+            };
+          } else {
+            result = {
+              status: 'unsupported',
+              deadlines: {
+                qualifying_period_start: null,
+                qualifying_period_end: null,
+                qualifying_period_end_time: null,
+                petition_deadline: null,
+                filing_fee: null
+              },
+              authority: authority,
+              source: 'stub_authority_only',
+              last_updated: new Date().toISOString()
+            };
+          }
         }
 
         // Persist to cache (UPSERT on the unique index).
         await env.DB.prepare(
-          'INSERT INTO compliance_deadlines_cache (id, state_code, office_normalized, race_year, jurisdiction_name, status, qualifying_period_start, qualifying_period_end, qualifying_period_end_time, petition_deadline, filing_fee, authority_name, authority_phone, authority_url, authority_notes, authority_jurisdiction_specific, source, last_updated) ' +
-          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'INSERT INTO compliance_deadlines_cache (id, state_code, office_normalized, race_year, jurisdiction_name, status, qualifying_period_start, qualifying_period_end, qualifying_period_end_time, petition_deadline, filing_fee, authority_name, authority_phone, authority_url, authority_notes, authority_jurisdiction_specific, source, last_updated, web_search_excerpt, web_search_url) ' +
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
           'ON CONFLICT(state_code, office_normalized, race_year, jurisdiction_name) DO UPDATE SET ' +
           '  status = excluded.status, ' +
           '  qualifying_period_start = excluded.qualifying_period_start, ' +
@@ -2731,6 +2903,8 @@ export default {
           '  authority_jurisdiction_specific = excluded.authority_jurisdiction_specific, ' +
           '  source = excluded.source, ' +
           '  last_updated = excluded.last_updated, ' +
+          '  web_search_excerpt = excluded.web_search_excerpt, ' +
+          '  web_search_url = excluded.web_search_url, ' +
           '  created_at = datetime(\'now\')'
         ).bind(
           generateId(16), stateCode || '', officeNormalized, raceYear, jurisdictionName,
@@ -2746,7 +2920,9 @@ export default {
           result.authority.notes,
           result.authority.jurisdiction_specific,
           result.source,
-          result.last_updated
+          result.last_updated,
+          result.web_search ? result.web_search.excerpt : null,
+          result.web_search ? result.web_search.url : null
         ).run().catch((e) => { console.warn('[compliance] cache write failed:', e.message); });
 
         return jsonResponse({ ...result, cached: false });
@@ -2765,6 +2941,9 @@ export default {
           petition_deadline: row.petition_deadline,
           filing_fee: row.filing_fee
         },
+        web_search: (row.web_search_excerpt && row.web_search_url)
+          ? { excerpt: row.web_search_excerpt, url: row.web_search_url }
+          : null,
         authority: {
           name: row.authority_name,
           phone: row.authority_phone,
@@ -2820,10 +2999,15 @@ export default {
         const officeNormalized = office.toLowerCase().trim();
         const cacheJurKey = jurisdictionName || '';
 
+        // Dual TTL: verified rows fresh for 90 days; web_search_fallback
+        // rows fresh for 14 days (matches /api/compliance/lookup pattern).
         const cached = await env.DB.prepare(
           "SELECT * FROM finance_reports_cache " +
           "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
-          "AND created_at > datetime('now', '-90 days') LIMIT 1"
+          "AND ( " +
+          "  (status != 'web_search_fallback' AND created_at > datetime('now', '-90 days')) " +
+          "  OR (status = 'web_search_fallback' AND created_at > datetime('now', '-14 days')) " +
+          ") LIMIT 1"
         ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
 
         if (cached) {
@@ -2837,28 +3021,56 @@ export default {
 
         if (!result) {
           const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
-          result = {
-            status: 'unsupported',
-            reports: {
-              quarterly_schedule: null,
-              pre_election_special: null,
-              post_election: null
-            },
-            authority: authority,
-            source: 'stub_authority_only',
-            last_updated: new Date().toISOString()
-          };
+
+          // Web_search fallback before giving up entirely. See compliance
+          // lookup for the architectural rationale (Hypothesis-4 mitigation).
+          const fbQuery = [
+            stateCode ? expandStateName(stateCode) : stateRaw,
+            office,
+            raceYear,
+            'campaign finance reporting deadlines'
+          ].filter(Boolean).join(' ');
+          const fb = await webSearchFallbackForLookup(fbQuery, { userId: ctx.userId, ownerId: ctx.ownerId });
+
+          if (fb && fb.hasUsableContent) {
+            result = {
+              status: 'web_search_fallback',
+              reports: {
+                quarterly_schedule: null,
+                pre_election_special: null,
+                post_election: null
+              },
+              authority: authority,
+              source: 'web_search_fallback',
+              web_search: { excerpt: fb.excerpt, url: fb.url },
+              last_updated: new Date().toISOString()
+            };
+          } else {
+            result = {
+              status: 'unsupported',
+              reports: {
+                quarterly_schedule: null,
+                pre_election_special: null,
+                post_election: null
+              },
+              authority: authority,
+              source: 'stub_authority_only',
+              last_updated: new Date().toISOString()
+            };
+          }
         }
 
         await env.DB.prepare(
-          'INSERT INTO finance_reports_cache (id, state_code, office_normalized, race_year, jurisdiction_name, status, reports_json, authority_json, source, last_updated) ' +
-          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'INSERT INTO finance_reports_cache (id, state_code, office_normalized, race_year, jurisdiction_name, status, reports_json, authority_json, source, last_updated, web_search_excerpt, web_search_url) ' +
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
           'ON CONFLICT(state_code, office_normalized, race_year, COALESCE(jurisdiction_name,\'\')) DO UPDATE SET ' +
           '  status = excluded.status, ' +
           '  reports_json = excluded.reports_json, ' +
           '  authority_json = excluded.authority_json, ' +
           '  source = excluded.source, ' +
           '  last_updated = excluded.last_updated, ' +
+          '  web_search_excerpt = excluded.web_search_excerpt, ' +
+          '  web_search_url = excluded.web_search_url, ' +
           '  created_at = datetime(\'now\')'
         ).bind(
           generateId(16), stateCode || '', officeNormalized, raceYear, jurisdictionName,
@@ -2866,7 +3078,9 @@ export default {
           JSON.stringify(result.reports || {}),
           JSON.stringify(result.authority || {}),
           result.source,
-          result.last_updated
+          result.last_updated,
+          result.web_search ? result.web_search.excerpt : null,
+          result.web_search ? result.web_search.url : null
         ).run().catch((e) => { console.warn('[finance] cache write failed:', e.message); });
 
         return jsonResponse({ ...result, cached: false });
@@ -2887,6 +3101,9 @@ export default {
           pre_election_special: reports.pre_election_special || null,
           post_election: reports.post_election || null
         },
+        web_search: (row.web_search_excerpt && row.web_search_url)
+          ? { excerpt: row.web_search_excerpt, url: row.web_search_url }
+          : null,
         authority: authority,
         source: row.source,
         last_updated: row.last_updated,
@@ -2934,10 +3151,15 @@ export default {
         const officeNormalized = office.toLowerCase().trim();
         const cacheJurKey = jurisdictionName || '';
 
+        // Dual TTL: verified rows fresh for 90 days; web_search_fallback
+        // rows fresh for 14 days (matches /api/compliance/lookup pattern).
         const cached = await env.DB.prepare(
           "SELECT * FROM donation_limits_cache " +
           "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
-          "AND created_at > datetime('now', '-90 days') LIMIT 1"
+          "AND ( " +
+          "  (status != 'web_search_fallback' AND created_at > datetime('now', '-90 days')) " +
+          "  OR (status = 'web_search_fallback' AND created_at > datetime('now', '-14 days')) " +
+          ") LIMIT 1"
         ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
 
         if (cached) {
@@ -2951,29 +3173,62 @@ export default {
 
         if (!result) {
           const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
-          result = {
-            status: 'unsupported',
-            limits: {
-              individual_per_election: null,
-              individual_per_cycle: null,
-              counts_primary_and_general_separately: null,
-              notes: null
-            },
-            authority: authority,
-            source: 'stub_authority_only',
-            last_updated: new Date().toISOString()
-          };
+
+          // Web_search fallback before giving up entirely. See compliance
+          // lookup for the architectural rationale (Hypothesis-4 mitigation).
+          // Query uses "individual contribution limit per election" (singular,
+          // explicit) to disambiguate from PAC / party committee / aggregate
+          // limits — those are explicitly excluded by the DONATION LIMITS
+          // hard-constraint and surfacing them would be a citation hazard.
+          const fbQuery = [
+            stateCode ? expandStateName(stateCode) : stateRaw,
+            office,
+            raceYear,
+            'individual contribution limit per election'
+          ].filter(Boolean).join(' ');
+          const fb = await webSearchFallbackForLookup(fbQuery, { userId: ctx.userId, ownerId: ctx.ownerId });
+
+          if (fb && fb.hasUsableContent) {
+            result = {
+              status: 'web_search_fallback',
+              limits: {
+                individual_per_election: null,
+                individual_per_cycle: null,
+                counts_primary_and_general_separately: null,
+                notes: null
+              },
+              authority: authority,
+              source: 'web_search_fallback',
+              web_search: { excerpt: fb.excerpt, url: fb.url },
+              last_updated: new Date().toISOString()
+            };
+          } else {
+            result = {
+              status: 'unsupported',
+              limits: {
+                individual_per_election: null,
+                individual_per_cycle: null,
+                counts_primary_and_general_separately: null,
+                notes: null
+              },
+              authority: authority,
+              source: 'stub_authority_only',
+              last_updated: new Date().toISOString()
+            };
+          }
         }
 
         await env.DB.prepare(
-          'INSERT INTO donation_limits_cache (id, state_code, office_normalized, race_year, jurisdiction_name, status, limits_json, authority_json, source, last_updated) ' +
-          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          'INSERT INTO donation_limits_cache (id, state_code, office_normalized, race_year, jurisdiction_name, status, limits_json, authority_json, source, last_updated, web_search_excerpt, web_search_url) ' +
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
           'ON CONFLICT(state_code, office_normalized, race_year, COALESCE(jurisdiction_name,\'\')) DO UPDATE SET ' +
           '  status = excluded.status, ' +
           '  limits_json = excluded.limits_json, ' +
           '  authority_json = excluded.authority_json, ' +
           '  source = excluded.source, ' +
           '  last_updated = excluded.last_updated, ' +
+          '  web_search_excerpt = excluded.web_search_excerpt, ' +
+          '  web_search_url = excluded.web_search_url, ' +
           '  created_at = datetime(\'now\')'
         ).bind(
           generateId(16), stateCode || '', officeNormalized, raceYear, jurisdictionName,
@@ -2981,7 +3236,9 @@ export default {
           JSON.stringify(result.limits || {}),
           JSON.stringify(result.authority || {}),
           result.source,
-          result.last_updated
+          result.last_updated,
+          result.web_search ? result.web_search.excerpt : null,
+          result.web_search ? result.web_search.url : null
         ).run().catch((e) => { console.warn('[donation] cache write failed:', e.message); });
 
         return jsonResponse({ ...result, cached: false });
@@ -3003,6 +3260,9 @@ export default {
           counts_primary_and_general_separately: limits.counts_primary_and_general_separately == null ? null : limits.counts_primary_and_general_separately,
           notes: limits.notes == null ? null : limits.notes
         },
+        web_search: (row.web_search_excerpt && row.web_search_url)
+          ? { excerpt: row.web_search_excerpt, url: row.web_search_url }
+          : null,
         authority: authority,
         source: row.source,
         last_updated: row.last_updated,
@@ -5861,49 +6121,55 @@ COMPLIANCE / FILING / QUALIFYING — HARD CONSTRAINT (read every time, before an
 
 When the user asks about filing deadlines, qualifying periods, ballot access dates, petition deadlines, filing fees, or any "must do X by date Y to be on the ballot" question — your FIRST action this turn is a call to lookup_compliance_deadlines for the candidate's race.
 
-  PRIMARY SOURCE: lookup_compliance_deadlines. When status is "found" or "partial", state the dates and fees confidently with the tool as citation. Don't re-search.
+  PRIMARY SOURCE: lookup_compliance_deadlines. The tool's response status drives your handling:
 
-  FALLBACK WHEN TOOL UNSUPPORTED OR NULL: your NEXT action MUST be a web_search call. Cite an authoritative source inline — state Division of Elections (dos.fl.gov, sos.state.tx.us, etc.), state statute, county supervisor of elections page, Ballotpedia. Always include a verify-with-authority caveat. Sample: "Per FL Division of Elections (dos.fl.gov/elections), qualifying for State House opens at noon on Monday, June 8, 2026 — confirm with them and your county elections office before you build your filing checklist around that date."
+    "found" or "partial" — verified data from the source cascade. State dates and fees confidently with the tool as citation.
 
-  TRAINING-DATA RECALL FORBIDDEN: every date, deadline, and fee must trace to lookup_compliance_deadlines OR a current web_search citation. No recall without a fresh citation.
+    "web_search_fallback" — the source cascade was exhausted, but the tool's built-in web_search backstop surfaced cited content. The response includes a 'web_search' field with 'excerpt' (cite-ready paragraph) and 'url' (source page). Quote the excerpt and cite the URL inline, with a verify-with-authority caveat. Sample: "Per FL Division of Elections (dos.fl.gov/elections), qualifying for State House opens at noon on Monday, June 8, 2026 — confirm with them and your county elections office before you build your filing checklist around that date."
 
-  WHEN BOTH TOOL AND SEARCH FAIL: defer with the authority contact from the tool's authority object. Defer ONLY after web_search has been attempted and returned no usable result — not as a first-line fallback. Sample: "I don't have verified qualifying dates for [office] in [state]. Contact [authority.name] at [authority.phone] for the current calendar."
+    "unsupported" — both the source cascade and the web_search backstop returned nothing usable. Defer with the authority contact from the tool's authority object. Sample: "I don't have verified qualifying dates for [office] in [state]. Contact [authority.name] at [authority.phone] for the current calendar."
 
-  URL HANDLING: when authority.url is null and web_search wasn't used, do NOT invent or guess URLs. Use authoritative domains from web_search results when available.
+  TRAINING-DATA RECALL FORBIDDEN: every date, deadline, and fee must trace to the tool's verified data (status found/partial) OR the tool's web_search excerpt (status web_search_fallback). No recall without a fresh citation from the tool result.
 
-  WHY: Confidently wrong deadline = candidate disqualified. Citation requirement plus verify-with-authority caveat keeps Sam honest while staying useful. There is no penalty for "I deferred and called the elections office."
+  URL HANDLING: only use URLs from the tool result — authority.url for verified data, web_search.url for fallback content. When both are null, do NOT invent or guess URLs.
+
+  WHY: Confidently wrong deadline = candidate disqualified. Citation requirement plus verify-with-authority caveat keeps Sam honest while staying useful. The tool's built-in web_search backstop ensures findable deadlines reach you without chaining searches yourself.
 
 CAMPAIGN FINANCE REPORTS — HARD CONSTRAINT (read every time, before any answer about reports):
 
 When the user asks about quarterly reports, pre-primary / pre-general filings, post-election reports, FEC filing dates, or any "when is my campaign finance report due" question — your FIRST action this turn is a call to lookup_finance_reports for the candidate's race.
 
-  PRIMARY SOURCE: lookup_finance_reports. When status is "found" or "partial", state the report dates and coverage periods confidently with the tool as citation. Don't re-search.
+  PRIMARY SOURCE: lookup_finance_reports. The tool's response status drives your handling:
 
-  FALLBACK WHEN TOOL UNSUPPORTED OR NULL: your NEXT action MUST be a web_search call. Cite an authoritative source inline — state Division of Elections, FEC for federal, state campaign finance commission. Always include a verify-with-authority caveat. Sample: "Per FEC (fec.gov), Q2 reports are due July 15 — verify your specific candidate-committee deadline since pre-primary filings may move."
+    "found" or "partial" — verified data from the source cascade. State report dates and coverage periods confidently with the tool as citation.
 
-  TRAINING-DATA RECALL FORBIDDEN: every report date and coverage period must trace to lookup_finance_reports OR a current web_search citation. No recall without a fresh citation.
+    "web_search_fallback" — the source cascade was exhausted, but the tool's built-in web_search backstop surfaced cited content. The response includes a 'web_search' field with 'excerpt' (cite-ready paragraph) and 'url' (source page). Quote the excerpt and cite the URL inline, with a verify-with-authority caveat. Sample: "Per FEC (fec.gov), Q2 reports are due July 15 — verify your specific candidate-committee deadline since pre-primary filings may move."
 
-  WHEN BOTH TOOL AND SEARCH FAIL: defer with the authority contact from the tool's authority object. Defer ONLY after web_search has been attempted and returned no usable result — not as a first-line fallback. Sample: "I don't have a verified [Q2 / pre-primary / etc.] report calendar for [office] in [state]. Contact [authority.name] at [authority.phone]."
+    "unsupported" — both the source cascade and the web_search backstop returned nothing usable. Defer with the authority contact from the tool's authority object. Sample: "I don't have a verified [Q2 / pre-primary / etc.] report calendar for [office] in [state]. Contact [authority.name] at [authority.phone]."
 
-  URL HANDLING: when authority.url is null and web_search wasn't used, do NOT invent or guess URLs. Use authoritative domains from web_search results when available.
+  TRAINING-DATA RECALL FORBIDDEN: every report date and coverage period must trace to the tool's verified data (status found/partial) OR the tool's web_search excerpt (status web_search_fallback). No recall without a fresh citation from the tool result.
 
-  WHY: Missing a finance report = fines and bad press at minimum. Citation requirement plus verify caveat keeps Sam honest while staying useful. Confidently wrong report dates can cost the candidate cash on hand to fight fines.
+  URL HANDLING: only use URLs from the tool result — authority.url for verified data, web_search.url for fallback content. When both are null, do NOT invent or guess URLs.
+
+  WHY: Missing a finance report = fines and bad press at minimum. Citation requirement plus verify caveat keeps Sam honest while staying useful. The tool's built-in web_search backstop ensures findable report calendars reach you without chaining searches yourself.
 
 DONATION LIMITS — HARD CONSTRAINT (read every time, before any answer about contribution limits):
 
 When the user asks about individual contribution limits, donation caps, max donations, "how much can a donor give", per-election or per-cycle limits — your FIRST action this turn is a call to lookup_donation_limits for the candidate's race.
 
-  PRIMARY SOURCE: lookup_donation_limits. When status is "found" or "partial", state the amounts confidently with the tool as citation. Don't re-search.
+  PRIMARY SOURCE: lookup_donation_limits. The tool's response status drives your handling:
 
-  FALLBACK WHEN TOOL UNSUPPORTED OR NULL: your NEXT action MUST be a web_search call. Cite an authoritative source inline — state Division of Elections (dos.fl.gov, sos.state.tx.us, etc.), state statute, FEC for federal, Ballotpedia for cross-jurisdictional. Always include a verify-with-authority caveat. Sample: "Per FL Division of Elections (dos.fl.gov/elections), the individual limit is $1,000 per election — verify with them since limits can change between cycles. Want me to set a reminder?"
+    "found" or "partial" — verified data from the source cascade. State amounts confidently with the tool as citation.
 
-  TRAINING-DATA RECALL FORBIDDEN: every figure must trace to lookup_donation_limits OR a current web_search citation. Even if you remember the number, no recall without a fresh citation.
+    "web_search_fallback" — the source cascade was exhausted, but the tool's built-in web_search backstop surfaced cited content. The response includes a 'web_search' field with 'excerpt' (cite-ready paragraph) and 'url' (source page). Quote the excerpt and cite the URL inline, with a verify-with-authority caveat. Sample: "Per FL Division of Elections (dos.fl.gov/elections), the individual limit is $1,000 per election — verify with them since limits can change between cycles. Want me to set a reminder?"
 
-  WHEN BOTH TOOL AND SEARCH FAIL: defer with the authority contact — name, phone, URL from the tool's authority object. Defer ONLY after web_search has been attempted and returned no usable result — not as a first-line fallback. Sample: "I don't have verified contribution limits for [office] in [state]. Contact [authority.name] at [authority.phone]."
+    "unsupported" — both the source cascade and the web_search backstop returned nothing usable. Defer with the authority contact from the tool's authority object. Sample: "I don't have verified contribution limits for [office] in [state]. Contact [authority.name] at [authority.phone]."
 
-  URL HANDLING: when authority.url is null and web_search wasn't used, do NOT invent or guess URLs. Use authoritative domains from web_search results when available.
+  TRAINING-DATA RECALL FORBIDDEN: every figure must trace to the tool's verified data (status found/partial) OR the tool's web_search excerpt (status web_search_fallback). No training-data recall, even if you remember the number.
 
-  WHY: A campaign manager who states the limit (with verify caveat) is useful. One who refuses when authoritative sources are findable online is not. Citation requirement keeps Sam honest about source. Worst-case "I deferred and called the office" is still safe.
+  URL HANDLING: only use URLs from the tool result — authority.url for verified data, web_search.url for fallback content. When both are null, do NOT invent or guess URLs.
+
+  WHY: A campaign manager who states the limit (with verify caveat) is useful. One who refuses when authoritative sources are findable online is not. The tool's built-in web_search backstop ensures findable answers reach you without chaining searches yourself; the citation requirement keeps every figure traceable.
 
 CITATION DISCIPLINE — HARD CONSTRAINT (read every time, applies to ALL specific factual claims):
 
