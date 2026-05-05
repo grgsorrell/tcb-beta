@@ -2695,13 +2695,19 @@ export default {
             temperature: 0,
             tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 1 }],
             system:
-              'You are a search-and-quote helper for a campaign-management tool. ' +
-              'Call web_search exactly once with the query you receive. From the search results, ' +
-              'return the single most relevant paragraph that directly answers the query, quoted ' +
-              'as-is from the source. Include the source URL inline (markdown link or bare URL). ' +
-              'If the search returns nothing that answers the query, respond with exactly: ' +
-              'NO_USABLE_CONTENT. Do not speculate, do not synthesize across multiple sources, ' +
-              'do not add commentary — quote the most authoritative single source verbatim and stop.',
+              'You are a search-and-quote helper for a campaign-management tool. Call web_search exactly once with the query you receive.\n\n' +
+              'OUTPUT REQUIREMENTS:\n' +
+              '- Quote ONE paragraph VERBATIM from the source page. Do NOT paraphrase. Do NOT summarize. Do NOT recombine sentences from different parts of the page. The text you return must appear in the source word-for-word.\n' +
+              '- Quote the smallest paragraph that contains the label + the answer to the query. Don\'t include unrelated office categories or other items listed under the same header.\n' +
+              '- Include the source URL inline (markdown link or bare URL).\n' +
+              '- Preserve the paragraph\'s section header or label. Source pages categorize dates and amounts under labels like "Qualifying Period", "Petition Deadline", "Party Affiliation Deadline", "Individual Contribution Limit", "PAC Limit", "Quarterly Report Schedule" — quote the label along with the value so the category is unambiguous to the reader.\n\n' +
+              'DISAMBIGUATION:\n' +
+              'Source pages often list multiple dates or dollar amounts under the same office category. The query you receive specifies which category answers the user\'s question. Identify the paragraph that matches the query category exactly:\n' +
+              '- For compliance queries, "qualifying period open close dates" matches a "Qualifying Period: [date range]" paragraph, NOT a "Petition Deadline" or "Party Affiliation" paragraph even if those are nearby on the page.\n' +
+              '- For donation queries, "individual contribution limit" matches an "Individual: $X per election" paragraph, NOT a "PAC" or "Party Committee" limit paragraph.\n\n' +
+              'If multiple paragraphs are plausibly relevant and you cannot identify ONE that matches the query category exactly, respond with NO_USABLE_CONTENT. A category mismatch (quoting a petition deadline when the query asks about qualifying period; quoting a PAC limit when the query asks about individual contribution limit) is WORSE than no answer — return NO_USABLE_CONTENT in that case.\n\n' +
+              'If the search returns nothing that answers the query at all, also respond with NO_USABLE_CONTENT.\n\n' +
+              'Do not speculate. Do not synthesize. Do not add commentary. Quote one verbatim paragraph (with its label preserved) and stop.',
             messages: [{ role: 'user', content: query }]
           })
         });
@@ -2849,7 +2855,7 @@ export default {
             stateCode ? expandStateName(stateCode) : stateRaw,
             office,
             raceYear,
-            'qualifying period filing deadline'
+            'qualifying period open close dates'
           ].filter(Boolean).join(' ');
           const fb = await webSearchFallbackForLookup(fbQuery, { userId: ctx.userId, ownerId: ctx.ownerId });
 
