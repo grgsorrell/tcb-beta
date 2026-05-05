@@ -4677,14 +4677,50 @@ export default {
         ? await getValidatorFiringBreakdown(conversation_id)
         : { total: 0, breakdown: {} };
       const safeModeActive = safeModeFirings.total >= SAFE_MODE_THRESHOLD;
-      // Idempotent activation log — INSERT OR IGNORE on the unique
-      // conversation_id index ensures exactly one row per conversation.
+
+      // Turn number derived from history length. Each user turn adds at
+      // least one entry, so the count is monotonically increasing across
+      // the conversation — used both as the deterministic seed for banner
+      // rotation and as the basis for the cadence calculation below.
+      const _safeModeTurnNumber = Array.isArray(history) ? history.length : 0;
+
+      // Activation turn — the turn Safe Mode FIRST activated for this
+      // conversation. Default to current turn for first activation; on
+      // subsequent turns, read from the persisted row (activation_turn_number
+      // key stashed in the triggering_validator_breakdown JSON column —
+      // no schema migration needed since the column is already TEXT JSON).
+      let _safeModeActivationTurn = _safeModeTurnNumber;
       if (safeModeActive && conversation_id) {
+        const existing = await env.DB.prepare(
+          'SELECT triggering_validator_breakdown FROM sam_safe_mode_events WHERE conversation_id = ?'
+        ).bind(conversation_id).first().catch(() => null);
+        if (existing && existing.triggering_validator_breakdown) {
+          try {
+            const parsed = JSON.parse(existing.triggering_validator_breakdown);
+            if (typeof parsed.activation_turn_number === 'number') {
+              _safeModeActivationTurn = parsed.activation_turn_number;
+            }
+            // Pre-fix rows lack activation_turn_number — fall through to
+            // default (current turn). Cadence cycle effectively restarts
+            // from the next turn after this deploy. Acceptable migration
+            // edge case (in-flight conversations re-anchor; new
+            // conversations get correct activation tracking from the start).
+          } catch (e) {}
+        }
+        // Idempotent activation log — INSERT OR IGNORE on the unique
+        // conversation_id index ensures exactly one row per conversation.
+        // activation_turn_number is stashed in the breakdown JSON so cadence
+        // computation works on subsequent turns. The INSERT is fire-and-forget
+        // (.run().catch(...)) — the SELECT above is what gates banner cadence.
+        const _breakdownWithActivation = {
+          ...safeModeFirings.breakdown,
+          activation_turn_number: _safeModeActivationTurn
+        };
         env.DB.prepare(
           'INSERT OR IGNORE INTO sam_safe_mode_events (id, conversation_id, workspace_owner_id, user_id, trigger_count, triggering_validator_breakdown) VALUES (?, ?, ?, ?, ?, ?)'
         ).bind(
           generateId(16), conversation_id, chatOwnerId || null, rateLimitUserId || null,
-          safeModeFirings.total, JSON.stringify(safeModeFirings.breakdown)
+          safeModeFirings.total, JSON.stringify(_breakdownWithActivation)
         ).run().catch((e) => { console.warn('[safe_mode] log failed:', e.message); });
       }
 
@@ -4721,13 +4757,20 @@ export default {
         return SAFE_MODE_BANNERS[Math.abs(hash) % SAFE_MODE_BANNERS.length];
       }
 
-      // Turn number derived from history length. Each user turn adds at
-      // least one entry, so the count is monotonically increasing across
-      // the conversation — perfect deterministic seed for banner rotation.
-      const _safeModeTurnNumber = Array.isArray(history) ? history.length : 0;
+      // _safeModeTurnNumber is declared earlier (alongside the activation-row
+      // lookup) so it can seed both banner rotation and the cadence check
+      // below. Don't re-declare here.
 
       function applySafeModeBanner(respObj) {
         if (!safeModeActive || !respObj || !Array.isArray(respObj.content)) return respObj;
+        // Cadence guard: banner appears on the activation turn (delta=0),
+        // then every 4 turns after (delta=4, 8, 12, ...). Reduces visual
+        // noise on long sessions while still surfacing the reliability
+        // reminder periodically. Stricter prompt-side Safe Mode behavior
+        // (the appended block in system prompt) is unchanged — this only
+        // affects the visible banner.
+        const turnsSinceActivation = _safeModeTurnNumber - _safeModeActivationTurn;
+        if (turnsSinceActivation < 0 || turnsSinceActivation % 4 !== 0) return respObj;
         const banner = selectSafeModeBanner(conversation_id, _safeModeTurnNumber);
         const firstTextIdx = respObj.content.findIndex(b => b && b.type === 'text');
         if (firstTextIdx >= 0) {
