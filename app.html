@@ -8080,6 +8080,12 @@ function initSamSpeechRecognition() {
   };
 
   samSpeechRecognition.onresult = function(e) {
+    // Guard against async stop() flushes: when sendSamMessage stops the mic,
+    // the browser may emit one more onresult with buffered unfinalized speech
+    // AFTER the input has been synchronously cleared. samStopListening sets
+    // samIsListening = false before calling stop(), so the late flush sees
+    // false and bails before restoring the just-sent transcript.
+    if (!samIsListening) return;
     var transcript = '';
     for (var i = e.resultIndex; i < e.results.length; i++) {
       transcript += e.results[i][0].transcript;
