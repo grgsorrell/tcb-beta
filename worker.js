@@ -322,6 +322,12 @@ export default {
           if (!e.real_name || !e.placeholder) continue;
           const realLc = e.real_name.toLowerCase();
           if (realLc.includes(' ')) continue;
+          // Skip fuzzy match for short entity names — Levenshtein at distance 2
+          // collides with too many common English words ("What" ↔ "Wyatt",
+          // "Smith" ↔ "smile", etc.). 6+ char entities get misspelling
+          // protection (e.g., "Stephany" → "Stephanie"); shorter names rely
+          // on Pass 1 exact-match only.
+          if (realLc.length < 6) continue;
           if (Math.abs(realLc.length - lc.length) > 2) continue;
           if (lc === realLc) continue;
           if (levenshtein(lc, realLc, 2) <= 2) return e.placeholder;
