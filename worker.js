@@ -8511,7 +8511,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '- **CLAIMS WITH A CONFIDENCE SIGNAL ALREADY PRESENT**: Any claim accompanied by a natural-language uncertainty tag inline — "(typical pattern — your race may differ)", "(typical [...] pattern — [...] may differ)", "(my read — verify before acting)", or any close paraphrase of those forms. Also recognize legacy labels "(HIGH confidence — ...)", "(MEDIUM confidence — ...)", "(LOW confidence — ...)" from older cached responses. Sam has already self-classified these — DO NOT re-flag. (Sourced claims do NOT need a tag — citation alone is the trust signal; if a sourced claim lacks attribution, treat as high_stakes uncited.)\n' +
             '- The election date in ANY format (ISO "2026-11-03", human "Tuesday, November 3, 2026", day-of-week prefixes, etc.) when it matches GROUND_TRUTH\'s election date\n' +
             '- The early voting start date in ANY format when it matches GROUND_TRUTH\'s "Early voting starts" entry (user-supplied; authoritative)\n' +
-            '- Day-count claims (e.g. "188 days away", "6 months out") that fall within the GROUND_TRUTH days-to-election window — these are calculations, not unverified claims\n' +
+            '- Day-count claims (e.g. "188 days away", "5 days away", "X days away", "X days from today", "6 months out", "**X** days" with markdown formatting) that derive from a date Sam stated earlier in the response (with citation) OR from GROUND_TRUTH — these are calculations, not unverified claims. Day-counts inherit the citation status of the underlying date — if the date is cited, the day-count from that date is also cited.\n' +
             '- Candidate biographical claims that paraphrase or summarize GROUND_TRUTH\'s candidate bio or candidate site content (user-supplied; authoritative)\n' +
             '- Generic role references already in Ground Truth (e.g., the candidate\'s own party)\n' +
             '- Claims already accompanied by an explicit caveat ("industry benchmarks suggest...", "verify with...")\n\n' +
@@ -8652,6 +8652,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               '- Call web_search if you haven\'t already this turn\n' +
               '- Cite the source inline using the format "(Source: [domain])" OR "According to [organization]" OR "Per [URL]" OR "[Source name] reports..."\n' +
               '- Make URLs clickable when possible\n\n' +
+              'CITATION PRESERVATION: If your previous response ALREADY had citations (markdown links, "Per [URL]", "Source: [domain]"), KEEP THEM. This regeneration is fixing only the specific uncited claims listed above. Do NOT remove existing citations — that strips usable content. Sentences with valid existing citations should appear unchanged in your rewrite.\n\n' +
               'If a claim cannot be sourced via web_search, replace it with a smart deferral: "I searched and didn\'t find [X] — [specific authoritative URL where it WILL be published] is where to check." Do NOT fall back to training-data answers.\n\n' +
               'Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.'
             }
