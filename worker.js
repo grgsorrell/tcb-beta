@@ -2784,11 +2784,111 @@ export default {
           return { excerpt: null, url: null, hasUsableContent: false };
         }
 
+        // Server-side verification: helper-Haiku synthesizes despite
+        // verbatim instructions and few-shot examples (Hypothesis 4
+        // confirmed in commits f10faa3 + e881967). Fetch the source
+        // URL and confirm the excerpt appears verbatim in the page
+        // text. If not, force NO_USABLE_CONTENT — caller falls
+        // through to the authority-deferral path with real contact
+        // info from Phase 1 backfill (compliance_authorities).
+        const verified = await verifyExcerptInSource(excerpt, url);
+        if (!verified) {
+          console.warn('[lookup_websearch_fallback] excerpt-in-source verification FAILED. URL:', url.slice(0, 80));
+          return { excerpt: null, url: null, hasUsableContent: false };
+        }
+
         return { excerpt, url, hasUsableContent: true };
       } catch (e) {
         console.warn('[lookup_websearch_fallback] failed:', e.message);
         return { excerpt: null, url: null, hasUsableContent: false };
       }
+    }
+
+    // ========================================
+    // VERIFICATION HELPERS for webSearchFallbackForLookup
+    //
+    // Three-layer defense against helper-Haiku synthesis fabrication:
+    //
+    //   1. verifyExcerptInSource — fetches the source URL, strips HTML,
+    //      normalizes text, checks excerpt appears verbatim. Failure
+    //      modes (network error, non-HTML content, paywall) all return
+    //      false — fail-safe to NO_USABLE_CONTENT.
+    //   2. stripHtml — minimal regex-based HTML→text. No external deps.
+    //      Strips script/style/noscript/comments first, then tags,
+    //      then common HTML entities. Good enough for substring matching;
+    //      not a perfect HTML parser.
+    //   3. normalizeForMatch — handles formatting differences that would
+    //      cause false negatives on legitimate verbatim quotes. Strips
+    //      markdown, smart-quotes, em/en dashes, non-breaking spaces,
+    //      raw URLs, "Source:" labels. Lowercases. Whitespace-collapses.
+    //
+    // Architectural tradeoff (intentional): false negatives (legitimate
+    // verbatim quotes rejected by overly-strict normalization or by
+    // JS-rendered/PDF source pages) are acceptable — Sam defers cleanly
+    // with the Phase 1 authority backfill. False positives (synthesized
+    // content slipping through) are NOT acceptable — they're the bug
+    // class this layer exists to prevent.
+    // ========================================
+    async function verifyExcerptInSource(excerpt, url) {
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: { 'User-Agent': 'TCB-helper-verifier/1.0' },
+          signal: AbortSignal.timeout(8000),
+          redirect: 'follow'
+        });
+        if (!response.ok) return false;
+        const contentType = (response.headers.get('content-type') || '').toLowerCase();
+        if (!contentType.includes('html') && !contentType.includes('text/plain')) {
+          // PDFs and binary content can't be text-verified in Workers — fail safe.
+          return false;
+        }
+        const html = await response.text();
+        if (!html || html.length < 200 || html.length > 10000000) return false;
+        const sourceText = normalizeForMatch(stripHtml(html));
+        const normalizedExcerpt = normalizeForMatch(excerpt);
+        if (!normalizedExcerpt || normalizedExcerpt.length < 30) return false;
+        return sourceText.includes(normalizedExcerpt);
+      } catch (e) {
+        console.warn('[verifyExcerptInSource] fetch failed:', e.message, 'url:', (url || '').slice(0, 80));
+        return false;
+      }
+    }
+
+    function stripHtml(html) {
+      if (!html || typeof html !== 'string') return '';
+      return html
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<noscript[\s\S]*?<\/noscript>/gi, ' ')
+        .replace(/<!--[\s\S]*?-->/g, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/&amp;/gi, '&')
+        .replace(/&lt;/gi, '<')
+        .replace(/&gt;/gi, '>')
+        .replace(/&quot;/gi, '"')
+        .replace(/&#39;/gi, "'")
+        .replace(/&#x27;/gi, "'");
+    }
+
+    function normalizeForMatch(text) {
+      if (!text || typeof text !== 'string') return '';
+      return text
+        .replace(/\*\*([^*]+)\*\*/g, '$1')           // strip **bold**
+        .replace(/\*([^*]+)\*/g, '$1')               // strip *italic*
+        .replace(/__([^_]+)__/g, '$1')               // strip __bold__
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')     // markdown link → keep text
+        .replace(/`([^`]+)`/g, '$1')                 // inline code
+        .replace(/\bhttps?:\/\/[^\s]+/g, ' ')        // strip raw URLs
+        .replace(/\bSource:\s*/gi, ' ')              // strip "Source:" labels
+        .replace(/[“”]/g, '"')             // smart double quotes → straight
+        .replace(/[‘’]/g, "'")             // smart single quotes → straight
+        .replace(/[–—]/g, '-')             // en/em dash → hyphen
+        .replace(/[   ]/g, ' ')       // non-breaking spaces → regular
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
     }
 
     // ========================================
