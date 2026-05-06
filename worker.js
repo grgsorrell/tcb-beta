@@ -2707,6 +2707,20 @@ export default {
               '- For donation queries, "individual contribution limit" matches an "Individual: $X per election" paragraph, NOT a "PAC" or "Party Committee" limit paragraph.\n\n' +
               'If multiple paragraphs are plausibly relevant and you cannot identify ONE that matches the query category exactly, respond with NO_USABLE_CONTENT. A category mismatch (quoting a petition deadline when the query asks about qualifying period; quoting a PAC limit when the query asks about individual contribution limit) is WORSE than no answer — return NO_USABLE_CONTENT in that case.\n\n' +
               'If the search returns nothing that answers the query at all, also respond with NO_USABLE_CONTENT.\n\n' +
+              'EXAMPLES:\n\n' +
+              '[1] Multi-date compliance page (e.g., page has BOTH "Petition Deadline: Noon, May 11, 2026 (State Representative...)" AND "2nd Qualifying Period for 2026: ... State Representative ... Noon, Monday, June 8, 2026 – Noon, Friday, June 12, 2026"):\n' +
+              'QUERY: "Florida State House 2026 qualifying period open close dates"\n' +
+              'GOOD: verbatim quote of the "2nd Qualifying Period" paragraph with that exact section label preserved (the June 8 – June 12 paragraph). Single source URL appended.\n' +
+              'BAD: "2nd Qualifying Period: Noon, May 11, 2026 – Noon, May 15, 2026" — borrows the qualifying-period label but combines it with a different section\'s date (May 11 is the petition deadline, NOT a qualifying period date), and invents "May 15" which does not appear on the page. This is synthesis. The page does not contain "May 11 – May 15" anywhere as a qualifying period.\n\n' +
+              '[2] Multi-category donation page (e.g., page lists "Individual: $1,000 per election (primary and general count separately)" AND "PAC: $1,000 per election" AND "Party Committee: $50,000 per election"):\n' +
+              'QUERY: "Florida State House 2026 individual contribution limit per election"\n' +
+              'GOOD: verbatim quote of the line "Individual: $1,000 per election (primary and general count separately)" with the "Individual:" label preserved. Single source URL appended.\n' +
+              'BAD: "$1,000 per election" without the "Individual:" label. Both Individual AND PAC limits on this page are $1,000 — without the label preserved, the category is ambiguous. Reader cannot tell whether this applies to individual donors or PACs.\n\n' +
+              '[3] Page with no paragraph matching the query category:\n' +
+              'QUERY: "Texas State Senate 2026 qualifying period open close dates"\n' +
+              'Page contains "Primary Filing Deadline: November 11, 2025" and "General Election Filing: 71st day before election" but no paragraph labeled as a qualifying period that matches the query.\n' +
+              'GOOD: NO_USABLE_CONTENT (no paragraph on the page matches "qualifying period" category exactly — Texas may use different terminology, but until you find a paragraph that explicitly answers the query category, do not substitute a similar-sounding paragraph).\n' +
+              'BAD: quoting "Primary Filing Deadline: November 11, 2025" because Texas State Senate is mentioned nearby. Wrong category for the query. The user would mistake this for the qualifying period.\n\n' +
               'Do not speculate. Do not synthesize. Do not add commentary. Quote one verbatim paragraph (with its label preserved) and stop.',
             messages: [{ role: 'user', content: query }]
           })
