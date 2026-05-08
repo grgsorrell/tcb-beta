@@ -5147,8 +5147,33 @@ export default {
       // lookup) so it can seed both banner rotation and the cadence check
       // below. Don't re-declare here.
 
+      // Detect whether this server call is a follow-up round (round 2+)
+      // of a multi-round tool turn. Signal: the most recent user-role
+      // entry in history contains tool_result blocks (not user-typed
+      // text). Used to suppress per-user-turn UX elements (Safe Mode
+      // banner) so they fire at most once per user turn, not once per
+      // server response. In-band detection beats D1 turn-identity
+      // tracking — no schema change, no race risk, no hash collisions,
+      // signal is guaranteed available in the request payload.
+      function isMultiRoundFollowUp(hist) {
+        if (!Array.isArray(hist) || hist.length === 0) return false;
+        const last = hist[hist.length - 1];
+        if (!last || last.role !== 'user') return false;
+        if (Array.isArray(last.content)) {
+          return last.content.some(b => b && b.type === 'tool_result');
+        }
+        return false;
+      }
+
       function applySafeModeBanner(respObj) {
         if (!safeModeActive || !respObj || !Array.isArray(respObj.content)) return respObj;
+        // Banner identity is per-user-turn, not per-server-response.
+        // Round 1 already made the cadence decision for this user turn;
+        // round 2 is the same turn continuing. Skip on follow-up rounds
+        // to prevent double-fire (which previously happened when validator
+        // activation crossed threshold mid-turn or history-length math
+        // produced cadence collisions across rounds).
+        if (isMultiRoundFollowUp(history)) return respObj;
         // Cadence guard: banner appears on the activation turn (delta=0),
         // then every 4 turns after (delta=4, 8, 12, ...). Reduces visual
         // noise on long sessions while still surfacing the reliability
