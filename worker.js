@@ -1,5 +1,5 @@
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     // CORS headers helper
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
@@ -7066,6 +7066,574 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       // ============================================================
+      // GEMINI 2.5 FLASH SHADOW CLIENT (Phase 1 of Gemini migration)
+      //
+      // Single-responsibility wrapper around Gemini's generateContent
+      // endpoint. Search Grounding always enabled. Function-calling NOT
+      // exposed (per shadow-test scope: Sam-Gemini answers conversational
+      // and research-flavored content; UI handles actions on the Haiku
+      // side). Caller is responsible for entity-masking the contents
+      // array before passing in — real opponent names must NEVER reach
+      // Google's servers. See runShadowGeminiTurn for the masking layer.
+      //
+      // Returns translated response shape (NOT Anthropic-format).
+      // Consumer wraps via geminiToAnthropic for validator-audit
+      // compatibility.
+      //
+      // Field-name verification (2026-05-07): for gemini-2.5-flash REST,
+      // grounding tool name is "google_search" (snake_case), NOT the
+      // older "googleSearchRetrieval" from the Gemini 1.5 era. Source:
+      // ai.google.dev/gemini-api/docs/google-search.
+      // ============================================================
+      async function geminiCallSam({ systemPrompt, contents }) {
+        const startedAt = Date.now();
+
+        if (!env.GEMINI_API_KEY) {
+          return { text: null, error: 'GEMINI_API_KEY env var not configured', latencyMs: Date.now() - startedAt, status: null };
+        }
+        if (!systemPrompt || typeof systemPrompt !== 'string') {
+          return { text: null, error: 'systemPrompt missing or not a string', latencyMs: Date.now() - startedAt, status: null };
+        }
+        if (!Array.isArray(contents) || contents.length === 0) {
+          return { text: null, error: 'contents array empty or missing', latencyMs: Date.now() - startedAt, status: null };
+        }
+
+        const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + encodeURIComponent(env.GEMINI_API_KEY);
+        const body = {
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents: contents,
+          tools: [{ google_search: {} }],
+          generationConfig: {
+            temperature: 0.4,
+            maxOutputTokens: 4096
+          }
+        };
+
+        let resp;
+        try {
+          resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: AbortSignal.timeout(15000)
+          });
+        } catch (e) {
+          return { text: null, error: 'fetch failed: ' + (e && e.message ? e.message : String(e)), latencyMs: Date.now() - startedAt, status: null };
+        }
+
+        const latencyMs = Date.now() - startedAt;
+
+        if (!resp.ok) {
+          let bodyText = '';
+          try { bodyText = (await resp.text()).slice(0, 500); } catch (_) {}
+          return { text: null, error: 'HTTP ' + resp.status + ' ' + resp.statusText + (bodyText ? ' — body: ' + bodyText : ''), latencyMs, status: resp.status };
+        }
+
+        let data;
+        try {
+          data = await resp.json();
+        } catch (e) {
+          return { text: null, error: 'response JSON parse failed: ' + (e && e.message ? e.message : String(e)), latencyMs, status: resp.status };
+        }
+
+        const candidate = data && Array.isArray(data.candidates) && data.candidates[0];
+        if (!candidate) {
+          return { text: null, error: 'no candidate in Gemini response', latencyMs, status: resp.status };
+        }
+
+        // Concatenate all text parts. Gemini may emit multiple parts;
+        // only text parts contribute to the displayable response.
+        let text = '';
+        const parts = (candidate.content && Array.isArray(candidate.content.parts)) ? candidate.content.parts : [];
+        for (const p of parts) {
+          if (p && typeof p.text === 'string') text += p.text;
+        }
+        text = text.trim();
+
+        // Grounding metadata extraction. groundingChunks is the array
+        // Gemini returns when grounding fired — its length is the count
+        // of grounding invocations. URLs deduped at extraction.
+        let groundingUsed = 0;
+        const groundingUrls = [];
+        const gm = candidate.groundingMetadata;
+        if (gm && Array.isArray(gm.groundingChunks)) {
+          groundingUsed = gm.groundingChunks.length;
+          for (const ch of gm.groundingChunks) {
+            const uri = ch && ch.web && typeof ch.web.uri === 'string' ? ch.web.uri : null;
+            if (uri && groundingUrls.indexOf(uri) < 0) groundingUrls.push(uri);
+          }
+        }
+
+        const usage = data.usageMetadata || {};
+        return {
+          text,
+          latencyMs,
+          inputTokens: typeof usage.promptTokenCount === 'number' ? usage.promptTokenCount : 0,
+          outputTokens: typeof usage.candidatesTokenCount === 'number' ? usage.candidatesTokenCount : 0,
+          groundingUsed,
+          groundingUrls,
+          finishReason: typeof candidate.finishReason === 'string' ? candidate.finishReason : null,
+          raw: data
+        };
+      }
+
+      // ============================================================
+      // SHADOW TRANSLATORS: anthropicToGemini + geminiToAnthropic
+      //
+      // Boundary translation between Anthropic message format (used
+      // throughout worker.js) and Gemini's contents/parts format.
+      //
+      // Forward direction (anthropicToGemini): converts the masked
+      // messages array into Gemini contents[].
+      //
+      //   STRIPPED block types: tool_use ("Sam called X" marker, no
+      //   data), web_search_tool_result (Anthropic-native search
+      //   metadata; data flows through Sam's cited text response),
+      //   server_tool_use, image, document, and any unknown types.
+      //   Function calling is disabled for shadow.
+      //
+      //   PRESERVED as inline text: tool_result blocks. Custom
+      //   tool_result content (FEC data, lookup_compliance_deadlines
+      //   output, etc.) is substantive context Sam reasoned over.
+      //   Without preservation, multi-turn shadow comparison is
+      //   biased — Gemini would lack data Haiku had. Format:
+      //   [TOOL_CONTEXT: tool_use_id={id}, content={content}]
+      //   tool_use_id retained for shadow-log traceability; structured
+      //   marker reads as data context, not instructions.
+      //
+      // Pass 2 merges consecutive same-role messages (rare after
+      // tool_result preservation but defensive). Pass 3 drops leading
+      // model messages (Gemini wants user-first).
+      //
+      // Reverse direction (geminiToAnthropic): wraps Gemini's text
+      // response in Anthropic-shape content array [{type:"text",text}]
+      // so existing validator functions and extractTextFromContent
+      // walkers can audit Gemini output without modification.
+      //
+      // Both functions are defensive: malformed input returns safe
+      // defaults (empty array / empty text), never throws.
+      // ============================================================
+      function anthropicToGemini(messages) {
+        if (!Array.isArray(messages)) return [];
+
+        // Pass 1: walk messages; extract text parts and preserve
+        // tool_result content as inline text markers.
+        const draft = [];
+        for (const msg of messages) {
+          if (!msg || typeof msg !== 'object') continue;
+
+          // Map role: assistant -> model. Anything else -> user
+          // (defensive; Anthropic only uses user/assistant in practice).
+          const geminiRole = msg.role === 'assistant' ? 'model' : 'user';
+
+          const parts = [];
+          if (typeof msg.content === 'string') {
+            const text = msg.content.trim();
+            if (text) parts.push({ text });
+          } else if (Array.isArray(msg.content)) {
+            for (const blk of msg.content) {
+              if (!blk || typeof blk !== 'object') continue;
+
+              if (blk.type === 'text' && typeof blk.text === 'string') {
+                const text = blk.text.trim();
+                if (text) parts.push({ text });
+                continue;
+              }
+
+              if (blk.type === 'tool_result') {
+                // Preserve tool_result content as inline text. Without
+                // this, Gemini lacks the data Sam reasoned over (e.g.,
+                // FEC fetch results, lookup_compliance_deadlines output)
+                // and shadow comparison is biased on multi-turn flows
+                // where the user references the data ("walk me through
+                // it"). See Schwertner-FEC pattern in scope doc.
+                const id = (typeof blk.tool_use_id === 'string') ? blk.tool_use_id : 'unknown';
+                let contentStr = '';
+                if (typeof blk.content === 'string') {
+                  contentStr = blk.content;
+                } else if (Array.isArray(blk.content)) {
+                  // tool_result content can be array of blocks
+                  // (text, image, etc.) — extract text, JSON-stringify
+                  // any non-text sub-blocks for fidelity.
+                  for (const sub of blk.content) {
+                    if (sub && sub.type === 'text' && typeof sub.text === 'string') {
+                      contentStr += sub.text;
+                    } else if (sub && typeof sub === 'object') {
+                      try { contentStr += JSON.stringify(sub); } catch (_) {}
+                    }
+                  }
+                } else if (blk.content !== null && typeof blk.content === 'object') {
+                  try { contentStr = JSON.stringify(blk.content); } catch (_) {}
+                }
+                contentStr = contentStr.trim();
+                if (contentStr) {
+                  parts.push({ text: '[TOOL_CONTEXT: tool_use_id=' + id + ', content=' + contentStr + ']' });
+                }
+                continue;
+              }
+
+              // Strip: tool_use, web_search_tool_result, server_tool_use,
+              // image, document, unknown types. tool_use is a "Sam called
+              // X" marker with no data; web_search_tool_result data flows
+              // through Sam's cited text response.
+            }
+          }
+
+          // Skip messages with no text after stripping/preserving.
+          if (parts.length === 0) continue;
+
+          draft.push({ role: geminiRole, parts });
+        }
+
+        // Pass 2: merge consecutive same-role messages by concatenating
+        // their parts. Stripping tool-only assistant turns can produce
+        // adjacent model+model or user+user — Gemini expects alternating.
+        const merged = [];
+        for (const c of draft) {
+          if (merged.length > 0 && merged[merged.length - 1].role === c.role) {
+            merged[merged.length - 1].parts.push(...c.parts);
+          } else {
+            merged.push(c);
+          }
+        }
+
+        // Pass 3: drop leading model messages — Gemini wants user-first.
+        // In practice Sam's history starts with user; this is defensive.
+        while (merged.length > 0 && merged[0].role !== 'user') {
+          merged.shift();
+        }
+
+        return merged;
+      }
+
+      // ============================================================
+      // HOISTED FROM OPPONENT VALIDATOR BLOCK
+      // Function-declaration form so it's accessible from the production
+      // opponent-validator caller (line ~8700, inside intel-opponents
+      // if-block) AND from runShadowGeminiTurn (this scope). Pure thin
+      // wrapper around audit-Haiku. No logic change from the original
+      // nested definition.
+      // ============================================================
+      async function extractUnauthorizedOpponentClaims(samText, intelStr, userMsgsStr) {
+        const prompt =
+          'You audit campaign coaching responses for unverified claims about opponents. Your output is JSON only — no preamble, no markdown.\n\n' +
+          'OPPONENTS_AND_INTEL_DATA below includes BOTH user-input fields (name, party, office, threatLevel, keyRisk) AND auto-research fields (bio, background, recentNews, campaignFocus) AND user-supplied free-text notes (userNotes — the candidate\'s own on-the-ground intel). ALL fields are AUTHORITATIVE Intel data. Claims that quote, paraphrase, or summarize ANY of these fields — including auto-research and userNotes — are AUTHORIZED, not unverified.\n\n' +
+          'OPPONENTS_AND_INTEL_DATA:\n' + (intelStr || 'none') + '\n\n' +
+          'USER_MESSAGES_THIS_CONVERSATION:\n' + (userMsgsStr || 'none') + '\n\n' +
+          'SAM_RESPONSE:\n' + samText + '\n\n' +
+          'TASK: Identify each specific claim Sam made about an opponent that is NOT supported by OPPONENTS_AND_INTEL_DATA above and NOT supported by USER_MESSAGES.\n\n' +
+          'A claim must be ABOUT THE OPPONENT — meaning a specific assertion of fact attributed to or describing one of the named opponents in OPPONENTS_AND_INTEL_DATA. Generic political dynamics, strategic commentary, or characterizations of districts/electorates that are not tied to a specific opponent are NOT in scope for this validator.\n\n' +
+          'In-scope specifics: dollar amounts the opponent raised/spent, dates of opponent activity, organizational names attributed to the opponent (PACs, donors, employers), specific quotes attributed to opponents, voting-record specifics for the opponent, prior offices the opponent held, biographical details about the opponent (years, places, family).\n\n' +
+          'DO NOT flag:\n' +
+          '- General political-dynamics commentary not specific to any opponent ("Chamber endorsements move money", "tax reform plays well in suburban districts", "incumbents have an advantage")\n' +
+          '- General statements ("opponent has been campaigning")\n' +
+          '- Statements that paraphrase or summarize ANY field in OPPONENTS_AND_INTEL_DATA, including auto-research fields (bio, background, recentNews, campaignFocus, keyRisk) AND user-supplied notes (userNotes)\n' +
+          '- The opponent\'s own name\n' +
+          '- Statements about what the user should do (strategy advice)\n' +
+          '- Office, party, jurisdiction, race-type info that\'s public race context\n' +
+          '- Statements about ENDORSERS or other non-opponent named persons (this validator scope is opponents ONLY)\n' +
+          '- Characterizations of the district\'s political lean ("red-leaning", "competitive", "blue") not tied to a specific opponent claim\n\n' +
+          'Return JSON: {"claims": ["raised $129,500 last quarter", "Action For Florida PAC", "former state senator"]}\n' +
+          'If no unauthorized claims: {"claims": []}\n' +
+          'JSON ONLY.';
+        try {
+          const aResp = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+            body: JSON.stringify({
+              model: 'claude-haiku-4-5-20251001',
+              max_tokens: 600,
+              temperature: 0,
+              messages: [{ role: 'user', content: prompt }]
+            })
+          });
+          const ad = await aResp.json();
+          await logApiUsage('sam_opponent_validator', ad, rateLimitUserId, chatOwnerId);
+          let txt = '';
+          if (ad && ad.content && Array.isArray(ad.content)) {
+            for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          }
+          const mm = txt.match(/\{[\s\S]*\}/);
+          if (!mm) return [];
+          const parsed = JSON.parse(mm[0]);
+          return Array.isArray(parsed.claims) ? parsed.claims : [];
+        } catch (e) {
+          console.warn('[opponent_validator] extract failed:', e.message);
+          return [];
+        }
+      }
+
+      // ============================================================
+      // SHADOW ORCHESTRATION + ALLOWLIST
+      //
+      // shadowEnabledForUser: env-var allowlist gate. SHADOW_GEMINI_USER_IDS
+      // is comma-separated user_ids. greg + shannan only initially.
+      //
+      // runShadowGeminiTurn: orchestration. Applies entity masking →
+      // translates → calls Gemini → runs 5 validator audits in parallel
+      // on BOTH Haiku raw response AND Gemini text → INSERT to
+      // shadow_gemini_log. Defensive throughout — any failure logs
+      // warning and returns; never bubbles up to affect production.
+      //
+      // ENTITY-MASK FLOW (read this before touching the orchestration):
+      //
+      //   Outgoing to Google:
+      //     - systemPrompt is masked upstream at line 6535 (single
+      //       comprehensive sweep over the full assembled string,
+      //       covering intelGroundTruth, candidateName interpolation,
+      //       tool memory, additionalContext, race brief). All post-mask
+      //       systemPrompt += additions (lines 6575, 6651-6681) are
+      //       hardcoded literals — verified — so they cannot reintroduce
+      //       real names. By the time runShadowGeminiTurn receives
+      //       systemPrompt, it has placeholders ({{OPPONENT_1}}) only.
+      //     - messages are NOT pre-masked at this point (callClaude masks
+      //       internally on a local that doesn't escape). Step 1 below
+      //       applies sanitizeMessagesForApi + maskMessagesArray before
+      //       translation, mirroring the worker.js:7041-7045 pattern.
+      //     - Result: Google receives placeholders only. Real opponent
+      //       names never reach Gemini servers.
+      //
+      //   Incoming from Google:
+      //     - Gemini returns text containing {{OPPONENT_1}} placeholders
+      //       (because it was given masked input). Step 4 demasks this
+      //       text BEFORE audit and BEFORE D1 storage — mirrors the
+      //       production callClaudeAndDemask pattern (line 7868). Privacy
+      //       unaffected: Google has already returned the data, the
+      //       demask is a same-side operation translating placeholders
+      //       back to real names so audits compare apples-to-apples
+      //       against Haiku's demasked text and reviewers reading the
+      //       shadow log see human-readable opponent names.
+      //
+      //   Single source of truth: workspaceEntities (loaded from D1
+      //   entity_masks for this workspace owner). Same set used by
+      //   callClaude, by line 6535's systemPrompt sweep, and by Step 1
+      //   below — keeping the placeholders consistent in both directions.
+      //
+      // Citation audit deferred — validateUnsourcedClaims is too entangled
+      // with inner-scope context (_gtSummary, _intelBlob, _toolMem,
+      // _inTurnTools, _userMsgsForCit) to extract cleanly without
+      // refactoring the citation-validator block. Documented gap;
+      // shadow review process notes citation as known absence.
+      // ============================================================
+      function shadowEnabledForUser(envRef, userId) {
+        if (!userId || typeof userId !== 'string') return false;
+        const raw = envRef && envRef.SHADOW_GEMINI_USER_IDS;
+        if (!raw || typeof raw !== 'string') return false;
+        const allowlist = raw.split(',').map(s => s.trim()).filter(Boolean);
+        return allowlist.indexOf(userId) >= 0;
+      }
+
+      async function runShadowGeminiTurn(params) {
+        try {
+          const {
+            conversationId, userId, ownerId,
+            systemPrompt, messages, workspaceEntities,
+            latestUserText, classifierCategory,
+            haikuFinalContent, haikuRawContent, haikuLatencyMs, turnIndex,
+            lookupResult, intelContext
+          } = params || {};
+
+          // STEP 1: ENTITY-MASK INTEGRITY GATE
+          // Apply same masking layer callClaude uses (worker.js:7041-7045
+          // pattern). messages at this point are NOT pre-masked — the
+          // production callClaude masks internally on a local variable
+          // that doesn't escape. Real opponent names must NEVER reach
+          // Google's servers.
+          const sanitizedMsgs = sanitizeMessagesForApi(messages || []);
+          const maskedMsgs = (workspaceEntities && workspaceEntities.length > 0)
+            ? maskMessagesArray(sanitizedMsgs, workspaceEntities)
+            : sanitizedMsgs;
+
+          // STEP 2: TRANSLATE
+          const geminiContents = anthropicToGemini(maskedMsgs);
+          if (!Array.isArray(geminiContents) || geminiContents.length === 0) {
+            console.warn('[shadow_gemini] empty contents after translation; skipping turn');
+            return;
+          }
+
+          // STEP 3: CALL GEMINI
+          const geminiResp = await geminiCallSam({ systemPrompt, contents: geminiContents });
+
+          // STEP 4: EXTRACT + DEMASK TEXTS for audit
+          //
+          // Haiku side: data.content is already demasked by callClaudeAndDemask
+          // (line 7868) — _shadowHaikuRawContent inherits that demask, so
+          // haikuRawText / haikuFinalText already have real names.
+          //
+          // Gemini side: geminiResp.text is the raw response from Google,
+          // which contains {{OPPONENT_1}}-style placeholders (Gemini was
+          // given masked input). Demask on our side BEFORE audit and BEFORE
+          // D1 storage. Three reasons:
+          //   1. Privacy: unaffected. Google has already returned the data;
+          //      this is a same-side translation, not a new outbound request.
+          //   2. Audit comparability: opponent audit's prompt matches
+          //      samText against intelStr (real names). If geminiText has
+          //      placeholders but intelStr has real names, the audit-Haiku
+          //      can't link claims to opponents → false positives/negatives.
+          //      Demasking puts both Haiku and Gemini audits on the same
+          //      apples-to-apples footing.
+          //   3. Reviewer UX: shadow_gemini_log is read by Greg + Shannan
+          //      side-by-side with Haiku output. Storing demasked Gemini
+          //      text means no manual unmasking step during review.
+          //
+          // Mirrors the production callClaudeAndDemask pattern. workspaceEntities
+          // is the single source of truth for both mask + demask directions.
+          const haikuRawText = extractTextFromContent(haikuRawContent);
+          const haikuFinalText = extractTextFromContent(haikuFinalContent);
+          const geminiTextRaw = (geminiResp && typeof geminiResp.text === 'string') ? geminiResp.text : '';
+          const geminiText = (workspaceEntities && workspaceEntities.length > 0)
+            ? demaskText(geminiTextRaw, workspaceEntities)
+            : geminiTextRaw;
+          const geminiCallSucceeded = !!(geminiResp && !geminiResp.error && geminiText);
+
+          // STEP 5: BUILD AUDIT CONTEXT (mirror production assembly)
+          const _intelOpps = (intelContext && Array.isArray(intelContext.opponents))
+            ? intelContext.opponents.filter(o => o && o.name)
+            : [];
+          const intelSummary = _intelOpps.map(o =>
+            '- ' + o.name + ' (' + (o.party || 'unknown party') + ')' +
+            (o.office ? ', running for ' + o.office : '') +
+            (o.threatLevel != null ? ' | threat ' + o.threatLevel + '/10' : '') +
+            (o.keyRisk ? ' | risk: ' + o.keyRisk : '') +
+            (o.campaignFocus ? ' | focus: ' + o.campaignFocus : '') +
+            (o.bio ? ' | bio: ' + o.bio : '') +
+            (o.background ? ' | background: ' + o.background : '') +
+            (o.recentNews ? ' | recent: ' + o.recentNews : '') +
+            (o.userNotes ? ' | userNotes (USER-SUPPLIED, AUTHORITATIVE): ' + o.userNotes : '')
+          ).join('\n');
+          const userClaimsBlob = (messages || [])
+            .filter(m => m && m.role === 'user' && typeof m.content === 'string')
+            .map(m => m.content)
+            .join('\n---\n')
+            .slice(0, 4000);
+          const authorizedList = (lookupResult && lookupResult.source !== 'unsupported')
+            ? [
+                ...(Array.isArray(lookupResult.incorporated_municipalities) ? lookupResult.incorporated_municipalities : []),
+                ...(Array.isArray(lookupResult.major_unincorporated_areas) ? lookupResult.major_unincorporated_areas : [])
+              ]
+            : [];
+
+          // STEP 6: RUN 5 AUDITS IN PARALLEL on both texts.
+          // Each audit gated on its required context (mirror production).
+          // safeAudit catches per-audit failures so one failure doesn't
+          // tank the whole shadow log row.
+          const safeAudit = async (label, fn) => {
+            try { return { label, result: await fn() }; }
+            catch (e) {
+              console.warn('[shadow_audit] ' + label + ' failed:', e.message);
+              return { label, result: null };
+            }
+          };
+          const auditPromises = [];
+          const tryEnqueue = (label, samText, gate, fn) => {
+            if (samText && samText.length > 60 && gate) auditPromises.push(safeAudit(label, fn));
+          };
+
+          // Haiku raw audits
+          tryEnqueue('haiku_geo', haikuRawText, authorizedList.length > 0, () => extractUnauthorizedPlaces(haikuRawText, authorizedList));
+          tryEnqueue('haiku_complA', haikuRawText, detectComplianceSignals(haikuRawText), () => extractClaimedComplianceDates(haikuRawText));
+          tryEnqueue('haiku_complB', haikuRawText, detectFinanceReportSignals(haikuRawText), () => extractClaimedFinanceDates(haikuRawText));
+          tryEnqueue('haiku_donation', haikuRawText, detectDonationLimitSignals(haikuRawText), () => extractClaimedDonationAmounts(haikuRawText));
+          tryEnqueue('haiku_opp', haikuRawText, _intelOpps.length > 0, () => extractUnauthorizedOpponentClaims(haikuRawText, intelSummary, userClaimsBlob));
+
+          // Gemini audits — only if call succeeded
+          if (geminiCallSucceeded) {
+            tryEnqueue('gemini_geo', geminiText, authorizedList.length > 0, () => extractUnauthorizedPlaces(geminiText, authorizedList));
+            tryEnqueue('gemini_complA', geminiText, detectComplianceSignals(geminiText), () => extractClaimedComplianceDates(geminiText));
+            tryEnqueue('gemini_complB', geminiText, detectFinanceReportSignals(geminiText), () => extractClaimedFinanceDates(geminiText));
+            tryEnqueue('gemini_donation', geminiText, detectDonationLimitSignals(geminiText), () => extractClaimedDonationAmounts(geminiText));
+            tryEnqueue('gemini_opp', geminiText, _intelOpps.length > 0, () => extractUnauthorizedOpponentClaims(geminiText, intelSummary, userClaimsBlob));
+          }
+
+          const auditResultsArr = await Promise.all(auditPromises);
+          const audits = {};
+          for (const { label, result } of auditResultsArr) audits[label] = result;
+
+          // STEP 7: BUILD validator results JSON {passes, failures}
+          const buildResults = (prefix) => {
+            const passes = [];
+            const failures = [];
+            const checkArrayResult = (key, validatorName, fieldName) => {
+              if (audits[key] === undefined) return; // not gated this turn
+              const r = audits[key];
+              if (r === null) { failures.push({ validator: validatorName, error: 'audit failed' }); return; }
+              if (Array.isArray(r) && r.length === 0) { passes.push(validatorName); return; }
+              if (Array.isArray(r)) { failures.push({ validator: validatorName, [fieldName]: r }); return; }
+            };
+            // Geographic returns {mentioned, unauthorized}; treat differently
+            if (audits[prefix + '_geo'] !== undefined) {
+              const r = audits[prefix + '_geo'];
+              if (r === null) failures.push({ validator: 'geographic', error: 'audit failed' });
+              else if (r && Array.isArray(r.unauthorized) && r.unauthorized.length === 0) passes.push('geographic');
+              else if (r && Array.isArray(r.unauthorized)) failures.push({ validator: 'geographic', unauthorized: r.unauthorized });
+            }
+            checkArrayResult(prefix + '_complA', 'compliance_a', 'dates');
+            checkArrayResult(prefix + '_complB', 'compliance_b', 'dates');
+            checkArrayResult(prefix + '_donation', 'donation', 'amounts');
+            checkArrayResult(prefix + '_opp', 'opponent', 'claims');
+            return { passes, failures };
+          };
+          const haikuValidatorResults = buildResults('haiku');
+          const geminiValidatorResults = buildResults('gemini');
+
+          // STEP 8: INSERT to shadow_gemini_log
+          try {
+            await env.DB.prepare(
+              'INSERT INTO shadow_gemini_log ' +
+              '(id, conversation_id, user_id, workspace_owner_id, turn_index, ' +
+              ' user_message, classifier_category, ' +
+              ' haiku_response, haiku_latency_ms, haiku_validator_results, ' +
+              ' gemini_response, gemini_latency_ms, gemini_input_tokens, gemini_output_tokens, ' +
+              ' gemini_grounding_used, gemini_grounding_urls, gemini_error, ' +
+              ' validator_audit_passes, validator_audit_failures) ' +
+              'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            ).bind(
+              generateId(16),
+              conversationId || null,
+              userId || null,
+              ownerId || null,
+              typeof turnIndex === 'number' ? turnIndex : null,
+              (latestUserText || '').slice(0, 5000),
+              classifierCategory || null,
+              haikuFinalText.slice(0, 10000),
+              typeof haikuLatencyMs === 'number' ? haikuLatencyMs : null,
+              JSON.stringify(haikuValidatorResults),
+              geminiCallSucceeded ? geminiText.slice(0, 10000) : null,
+              (geminiResp && typeof geminiResp.latencyMs === 'number') ? geminiResp.latencyMs : null,
+              (geminiResp && typeof geminiResp.inputTokens === 'number') ? geminiResp.inputTokens : null,
+              (geminiResp && typeof geminiResp.outputTokens === 'number') ? geminiResp.outputTokens : null,
+              (geminiResp && typeof geminiResp.groundingUsed === 'number') ? geminiResp.groundingUsed : 0,
+              JSON.stringify((geminiResp && geminiResp.groundingUrls) || []),
+              (geminiResp && geminiResp.error) || null,
+              JSON.stringify(geminiValidatorResults.passes),
+              JSON.stringify(geminiValidatorResults.failures)
+            ).run();
+          } catch (e) {
+            console.warn('[shadow_gemini_log] D1 insert failed:', (e && e.message) || String(e));
+          }
+        } catch (e) {
+          console.warn('[runShadowGeminiTurn] outer failure:', (e && e.message) || String(e));
+        }
+      }
+
+      function geminiToAnthropic(geminiResponse) {
+        // Wrap geminiCallSam's return value into Anthropic-shape content
+        // array: [{type: "text", text}]. Suitable for passing to
+        // validators that walk Anthropic content arrays, or to
+        // extractTextFromContent for plain-text extraction.
+        //
+        // Always returns a single text block. Grounding metadata
+        // (URLs, count) is captured separately by the caller via
+        // geminiResponse.groundingUrls / .groundingUsed — not part of
+        // the Anthropic content shape.
+        if (!geminiResponse || typeof geminiResponse !== 'object') {
+          return [{ type: 'text', text: '' }];
+        }
+        const text = (typeof geminiResponse.text === 'string') ? geminiResponse.text : '';
+        return [{ type: 'text', text }];
+      }
+
+      // ============================================================
       // GEOGRAPHIC HALLUCINATION VALIDATOR
       //
       // Three prompt-rule iterations failed to stop Haiku 4.5 from
@@ -7365,7 +7933,15 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return result;
       }
 
+      const _shadowHaikuStartedAt = Date.now();
       let data = await callClaudeAndDemask(messages);
+      const _shadowHaikuLatencyMs = Date.now() - _shadowHaikuStartedAt;
+      // Deep-copy data.content BEFORE the validator pipeline mutates it.
+      // Shadow audits compare model RAW outputs (Haiku raw vs Gemini raw)
+      // for fair signal — post-pipeline Haiku content is already cleaned.
+      const _shadowHaikuRawContent = (data && Array.isArray(data.content))
+        ? JSON.parse(JSON.stringify(data.content))
+        : [];
 
       // Sam v2 Phase 4 follow-up: blank-response detection + retry + fallback.
       // Haiku occasionally returns content with neither text nor tool_use —
@@ -8333,54 +8909,10 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           .join('\n---\n')
           .slice(0, 4000);  // cap
 
-        async function extractUnauthorizedOpponentClaims(samText, intelStr, userMsgsStr) {
-          const prompt =
-            'You audit campaign coaching responses for unverified claims about opponents. Your output is JSON only — no preamble, no markdown.\n\n' +
-            'OPPONENTS_AND_INTEL_DATA below includes BOTH user-input fields (name, party, office, threatLevel, keyRisk) AND auto-research fields (bio, background, recentNews, campaignFocus) AND user-supplied free-text notes (userNotes — the candidate\'s own on-the-ground intel). ALL fields are AUTHORITATIVE Intel data. Claims that quote, paraphrase, or summarize ANY of these fields — including auto-research and userNotes — are AUTHORIZED, not unverified.\n\n' +
-            'OPPONENTS_AND_INTEL_DATA:\n' + (intelStr || 'none') + '\n\n' +
-            'USER_MESSAGES_THIS_CONVERSATION:\n' + (userMsgsStr || 'none') + '\n\n' +
-            'SAM_RESPONSE:\n' + samText + '\n\n' +
-            'TASK: Identify each specific claim Sam made about an opponent that is NOT supported by OPPONENTS_AND_INTEL_DATA above and NOT supported by USER_MESSAGES.\n\n' +
-            'A claim must be ABOUT THE OPPONENT — meaning a specific assertion of fact attributed to or describing one of the named opponents in OPPONENTS_AND_INTEL_DATA. Generic political dynamics, strategic commentary, or characterizations of districts/electorates that are not tied to a specific opponent are NOT in scope for this validator.\n\n' +
-            'In-scope specifics: dollar amounts the opponent raised/spent, dates of opponent activity, organizational names attributed to the opponent (PACs, donors, employers), specific quotes attributed to opponents, voting-record specifics for the opponent, prior offices the opponent held, biographical details about the opponent (years, places, family).\n\n' +
-            'DO NOT flag:\n' +
-            '- General political-dynamics commentary not specific to any opponent ("Chamber endorsements move money", "tax reform plays well in suburban districts", "incumbents have an advantage")\n' +
-            '- General statements ("opponent has been campaigning")\n' +
-            '- Statements that paraphrase or summarize ANY field in OPPONENTS_AND_INTEL_DATA, including auto-research fields (bio, background, recentNews, campaignFocus, keyRisk) AND user-supplied notes (userNotes)\n' +
-            '- The opponent\'s own name\n' +
-            '- Statements about what the user should do (strategy advice)\n' +
-            '- Office, party, jurisdiction, race-type info that\'s public race context\n' +
-            '- Statements about ENDORSERS or other non-opponent named persons (this validator scope is opponents ONLY)\n' +
-            '- Characterizations of the district\'s political lean ("red-leaning", "competitive", "blue") not tied to a specific opponent claim\n\n' +
-            'Return JSON: {"claims": ["raised $129,500 last quarter", "Action For Florida PAC", "former state senator"]}\n' +
-            'If no unauthorized claims: {"claims": []}\n' +
-            'JSON ONLY.';
-          try {
-            const aResp = await fetch('https://api.anthropic.com/v1/messages', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-              body: JSON.stringify({
-                model: 'claude-haiku-4-5-20251001',
-                max_tokens: 600,
-                temperature: 0,
-                messages: [{ role: 'user', content: prompt }]
-              })
-            });
-            const ad = await aResp.json();
-            await logApiUsage('sam_opponent_validator', ad, rateLimitUserId, chatOwnerId);
-            let txt = '';
-            if (ad && ad.content && Array.isArray(ad.content)) {
-              for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
-            }
-            const mm = txt.match(/\{[\s\S]*\}/);
-            if (!mm) return [];
-            const parsed = JSON.parse(mm[0]);
-            return Array.isArray(parsed.claims) ? parsed.claims : [];
-          } catch (e) {
-            console.warn('[opponent_validator] extract failed:', e.message);
-            return [];
-          }
-        }
+        // extractUnauthorizedOpponentClaims hoisted to outer chat-handler
+        // scope — see definition near other audit functions. Hoisted so
+        // shadow path (runShadowGeminiTurn) can call the same audit
+        // function as production. No logic change.
 
         async function regenerateWithOpponentFeedback(originalMsgs, badContent, unauthorizedClaims) {
           const retryMsgs = [
@@ -8926,6 +9458,38 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         await logCitationEvent('passed', [], [], _citationSamText, _citationSamText);
       }
 
+      // SHADOW: fire-and-forget Gemini call for users in allowlist.
+      // Runs in background via ctx.waitUntil — user-facing latency
+      // unaffected. Logs to shadow_gemini_log; never affects the
+      // user-facing response.
+      if (ctx && typeof ctx.waitUntil === 'function' && shadowEnabledForUser(env, rateLimitUserId)) {
+        // history at this point includes the current user message (client
+        // appends before sending; line 7830 uses history as-is for the
+        // Anthropic call). Pattern: history.length = 2N + 1 where N is
+        // the 0-indexed turn number. Math.floor(/2) gives N directly.
+        // history.length=0 only on the legacy first-turn fallback where
+        // client sends the `message` field with empty history; floor(0/2)=0
+        // is correct for that case too.
+        const _shadowTurnIdx = Array.isArray(history) ? Math.floor(history.length / 2) : 0;
+        ctx.waitUntil(
+          runShadowGeminiTurn({
+            conversationId: conversation_id,
+            userId: rateLimitUserId,
+            ownerId: chatOwnerId,
+            systemPrompt,
+            messages,
+            workspaceEntities,
+            latestUserText: _latestUserText,
+            classifierCategory: _questionCategory,
+            haikuFinalContent: data.content,
+            haikuRawContent: _shadowHaikuRawContent,
+            haikuLatencyMs: _shadowHaikuLatencyMs,
+            turnIndex: _shadowTurnIdx,
+            lookupResult,
+            intelContext
+          }).catch(e => console.warn('[shadow_gemini] runShadowGeminiTurn threw:', e && e.message))
+        );
+      }
       return buildSafeResponse(data);
 
     } catch (error) {
