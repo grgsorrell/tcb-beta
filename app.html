@@ -9335,7 +9335,35 @@ async function sendSamMessage() {
 
     // Show any text that came with tool calls
     var fullText = textParts.join('\n');
-    if (fullText.trim()) {
+
+    // Round-1 narration suppression (P4 fix). When Sam emits pre-tool
+    // intent narration ("Let me pull...", "I need to look up...") in
+    // round 1 alongside tool_use blocks, users see two messages
+    // back-to-back: announcement then answer. Suppress pure-narration
+    // round-1 to keep chat clean while preserving substantive round-1
+    // content (clarifying questions, temporal corrections, etc).
+    //
+    // Disciplined heuristic — avoid false positives on substantive
+    // round-1 content:
+    //   - tool blocks present (round-2 imminent)
+    //   - round-1 length < 200 chars (longer = likely substantive)
+    //   - matches narration prefix regex
+    //
+    // Buffered for fallback rendering if round-2 fails (catch block
+    // below) — never leaves user with blank turn.
+    var _suppressedRound1Text = null;
+    var _suppressRound1 = false;
+    if (fullText.trim() && toolBlocks.length > 0) {
+      var _r1trim = fullText.trim();
+      var _narrationPrefix = /^(Let me|I need to look up|I'll (look up|pull|search|check|verify|get|check on))/i;
+      if (_r1trim.length < 200 && _narrationPrefix.test(_r1trim)) {
+        _suppressRound1 = true;
+        _suppressedRound1Text = fullText;
+        console.debug('[round-1-narration-suppressed]', _r1trim.slice(0, 50));
+      }
+    }
+
+    if (fullText.trim() && !_suppressRound1) {
       if (isDocumentContent(fullText)) {
         msgsEl.innerHTML += renderDocumentBubble(extractDocTitle(fullText), fullText);
       } else {
@@ -9387,8 +9415,12 @@ async function sendSamMessage() {
     });
     msgsEl.scrollTop = msgsEl.scrollHeight;
 
-    // Save to history
-    var historyContent = fullText;
+    // Save to history. When round-1 was suppressed for narration,
+    // also skip pushing the narration to chatHistory — otherwise on
+    // page reload it reappears in the conversation log, AND it
+    // pollutes Sam's next-turn context (encouraging more narration
+    // by example). Confirmations are preserved either way.
+    var historyContent = _suppressRound1 ? '' : fullText;
     if (confirmations.length > 0) historyContent += (historyContent ? '\n' : '') + confirmations.join('\n');
     if (historyContent) { chatHistory.push({ role: 'assistant', content: historyContent }); saveChatHistory(); }
 
@@ -9459,6 +9491,21 @@ async function sendSamMessage() {
       } catch (followErr) {
         var typing2b = document.getElementById('sam-typing2');
         if (typing2b) typing2b.remove();
+        // Fallback: if round-1 was suppressed but round-2 failed,
+        // render the buffered round-1 text now — better than blank UI.
+        // Also push to chatHistory so the conversation log is consistent.
+        if (_suppressedRound1Text) {
+          if (isDocumentContent(_suppressedRound1Text)) {
+            msgsEl.innerHTML += renderDocumentBubble(extractDocTitle(_suppressedRound1Text), _suppressedRound1Text);
+          } else {
+            msgsEl.innerHTML += '<div class="sam-msg">' + formatSamText(_suppressedRound1Text) + '</div>';
+            samSpeak(_suppressedRound1Text);
+          }
+          msgsEl.scrollTop = msgsEl.scrollHeight;
+          chatHistory.push({ role: 'assistant', content: _suppressedRound1Text });
+          saveChatHistory();
+          console.debug('[round-1-narration-restored-on-failure]');
+        }
       }
     }
 
