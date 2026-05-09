@@ -1,0 +1,72 @@
+[
+  {
+    "state": "TX",
+    "office_level": ["state", "district", "county", "local"],
+    "category": "finance_ethics",
+    "question": "Do I need a campaign treasurer even if I don't raise money?",
+    "question_variants": ["When do I have to appoint a campaign treasurer?", "Do I need a treasurer before fundraising?", "Can I spend my own money before filing a treasurer appointment?"],
+    "answer": "Yes. You must file a Campaign Treasurer Appointment (Form CTA) with the appropriate authority before you can accept any contributions, make any expenditures, or even publicly announce your candidacy for office.",
+    "source_url": "https://www.ethics.state.tx.us/resources/FAQs/FAQ_COH_Legal.php",
+    "source_name": "Texas Ethics Commission – Campaign Treasurer FAQ",
+    "last_verified_date": "2026-05-09",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Applies to all candidates seeking state, district, county, or local office in Texas."
+  },
+  {
+    "state": "TX",
+    "office_level": ["federal", "state", "district", "county", "local"],
+    "category": "election_dates",
+    "question": "When is the 2026 Primary Runoff and when does early voting start?",
+    "question_variants": ["What is the date of the primary runoff?", "When can I start voting in the runoff?", "Runoff election dates 2026"],
+    "answer": "The 2026 Primary Runoff Election Day is Tuesday, May 26, 2026. Early voting for the runoff begins on Monday, May 18, 2026, and ends on Friday, May 22, 2026.",
+    "source_url": "https://www.sos.state.tx.us/elections/voter/important-election-dates.shtml",
+    "source_name": "Texas Secretary of State – Important Election Dates",
+    "last_verified_date": "2026-05-09",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Applies to all Texas voters and candidates with primary runoffs on the ballot."
+  },
+  {
+    "state": "TX",
+    "office_level": ["state", "district", "county", "local"],
+    "category": "ballot_access",
+    "question": "If I lost my primary, can I run as an independent in the general election?",
+    "question_variants": ["Does Texas have a sore loser law?", "Can a primary loser run in November?", "Can I be a write-in after losing a primary?"],
+    "answer": "No. Under Texas Election Code § 162.015, a person who was a candidate in a primary election is ineligible to be an independent candidate or a write-in candidate for that same office in the succeeding general election.",
+    "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.162.htm#162.015",
+    "source_name": "Texas Election Code § 162.015",
+    "last_verified_date": "2026-05-09",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Applies to all candidates who participated in a primary election cycle."
+  },
+  {
+    "state": "TX",
+    "office_level": ["state", "district"],
+    "category": "residency",
+    "question": "How long do I have to live in my district before I can run for State Representative?",
+    "question_variants": ["What are the residency requirements for State House?", "How long must I be a resident of my district?", "Residency rules for TX House candidates"],
+    "answer": "A candidate for State Representative must have lived in Texas for two years and in the specific district for one year immediately preceding the date of the election.",
+    "source_url": "https://www.sos.state.tx.us/elections/candidates/guide/2026/qualifications2026.shtml",
+    "source_name": "Texas Secretary of State – Candidate Qualifications 2026",
+    "last_verified_date": "2026-05-09",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Applies to all candidates for the Texas House of Representatives."
+  },
+  {
+    "state": "TX",
+    "office_level": ["state", "district", "county", "local"],
+    "category": "candidate_eligibility",
+    "question": "Can I run for office if I have a past felony conviction?",
+    "question_variants": ["Felony rules for TX candidates", "Can a felon run for office in Texas?", "Restoration of rights for running for office"],
+    "answer": "A person convicted of a felony is ineligible to run for office unless they have been pardoned or otherwise released from the resulting disabilities of the conviction (e.g., completed all terms of their sentence, including parole).",
+    "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.141.htm#141.001",
+    "source_name": "Texas Election Code § 141.001",
+    "last_verified_date": "2026-05-09",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Applies to all candidates for public office in Texas."
+  }
+]

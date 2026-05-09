@@ -1,6 +1,7 @@
 import { stripToolReferencesForGemini } from './lib/strip_tool_references.mjs';
 import { extractCitedUrls } from './lib/extract_cited_urls.mjs';
 import { classifyClaimSourcing, temperatureForCategory } from './lib/grounding_aware_validation.mjs';
+import { lookupCampaignReference } from './lib/campaign_reference_lookup.mjs';
 
 export default {
   async fetch(request, env, ctx) {
@@ -2493,6 +2494,67 @@ export default {
     // Fire-and-forget from the client. Logging failure must NEVER
     // block the chat flow — endpoint always returns 200.
     // ========================================
+    // ========================================
+    // CAMPAIGN REFERENCE LOOKUP (test endpoint, admin/beta-gated)
+    //
+    // GET /api/campaign-reference/lookup?state=TX&category=election_dates&q=runoff
+    //
+    // V1 test endpoint for the campaign_reference table. Validates the
+    // lookup algorithm before wiring into Sam's pre-fetch context assembly.
+    // Admin or beta-username gated — not for general user access.
+    //
+    // Auth: reads `Authorization: Bearer <token>` header. The frontend
+    // extracts the token from `tcb_d1_session` localStorage/cookie and
+    // converts to Bearer header before each fetch. Curl tests should use
+    // -H "Authorization: Bearer <token>" directly (Cookie header is NOT
+    // read by getSessionContext).
+    //
+    // Returns: { state, category, query, matches_count, matches: [...] }
+    //   matches: top 3 rows by token-match score (V1 algorithm in
+    //   lib/campaign_reference_lookup.mjs)
+    // ========================================
+    if (url.pathname === '/api/campaign-reference/lookup' && request.method === 'GET') {
+      const ctx = await getSessionContext(request);
+      if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+      if (ctx.revoked) return denyRevoked();
+
+      const userInfo = await env.DB.prepare(
+        'SELECT username, is_admin FROM users WHERE id = ?'
+      ).bind(ctx.userId).first();
+      const BETA_USERNAMES = ['greg', 'shannan', 'cjc', 'jerry'];
+      const isAdmin = userInfo && userInfo.is_admin === 1;
+      const isBeta = userInfo && BETA_USERNAMES.indexOf(userInfo.username) >= 0;
+      if (!isAdmin && !isBeta) {
+        return jsonResponse({ error: 'admin_required', message: 'Admin or beta access required' }, 403);
+      }
+
+      const stateParam = url.searchParams.get('state');
+      const categoryParam = url.searchParams.get('category');
+      const qParam = url.searchParams.get('q');
+
+      if (!stateParam) {
+        return jsonResponse({ error: 'state query param required' }, 400);
+      }
+
+      try {
+        const matches = await lookupCampaignReference(env.DB, {
+          state: stateParam,
+          category: categoryParam,
+          queryText: qParam
+        });
+        return jsonResponse({
+          state: stateParam.toUpperCase(),
+          category: categoryParam || null,
+          query: qParam || null,
+          matches_count: matches.length,
+          matches
+        });
+      } catch (e) {
+        console.warn('[campaign_reference_lookup] failed:', (e && e.message) || String(e));
+        return jsonResponse({ error: 'lookup_failed', message: (e && e.message) || String(e) }, 500);
+      }
+    }
+
     if (url.pathname === '/api/sam/turn-log' && request.method === 'POST') {
       try {
         const ctx = await getSessionContext(request);
