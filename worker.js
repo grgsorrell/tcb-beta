@@ -2,6 +2,7 @@ import { stripToolReferencesForGemini } from './lib/strip_tool_references.mjs';
 import { extractCitedUrls } from './lib/extract_cited_urls.mjs';
 import { classifyClaimSourcing, temperatureForCategory } from './lib/grounding_aware_validation.mjs';
 import { lookupCampaignReference } from './lib/campaign_reference_lookup.mjs';
+import { classifyForReferenceLookup } from './lib/classify_reference_lookup.mjs';
 
 export default {
   async fetch(request, env, ctx) {
@@ -6826,6 +6827,119 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           // Pre-fetch failure is non-fatal — Gemini path continues with
           // bare systemPrompt; Search Grounding becomes the sole source
           // for factual claims this turn.
+        }
+      }
+
+      // Phase 2 of campaign_reference: pre-fetch hook for Gemini-engine
+      // users. Classifies the user's message for compliance/factual
+      // intent (state + specific category required in V1), queries the
+      // campaign_reference D1 table, injects matching rows into
+      // systemPrompt as a VERIFIED CAMPAIGN REFERENCE DATA block.
+      // Gemini sees verified facts and wraps them in conversational
+      // framing instead of fabricating from training data.
+      //
+      // Only fires for samEngine='gemini' — Haiku users continue using
+      // their tool palette (lookup_compliance_deadlines, etc).
+      //
+      // Telemetry logged to campaign_reference_lookup_events on every
+      // turn where this hook runs (whether lookup fires or not).
+      let _campaignRefRowsForLog = [];
+      let _campaignRefDecisionForLog = 'skipped_non_gemini';
+      let _campaignRefStateForLog = null;
+      let _campaignRefCategoryForLog = null;
+      let _campaignRefRawOutputForLog = null;
+      if (samEngine === 'gemini') {
+        try {
+          const _refClassifierResult = classifyForReferenceLookup(_latestUserText, state);
+          _campaignRefRawOutputForLog = JSON.stringify(_refClassifierResult);
+
+          if (_refClassifierResult.needsLookup) {
+            _campaignRefStateForLog = _refClassifierResult.state;
+            _campaignRefCategoryForLog = _refClassifierResult.category;
+            const _refMatches = await lookupCampaignReference(env.DB, {
+              state: _refClassifierResult.state,
+              category: _refClassifierResult.category,
+              queryText: _refClassifierResult.queryText
+            });
+
+            if (_refMatches && _refMatches.length > 0) {
+              _campaignRefRowsForLog = _refMatches.map(r => r.id);
+              _campaignRefDecisionForLog = 'lookup_fired';
+
+              const _refLines = [];
+              _refLines.push('================================================================');
+              _refLines.push('VERIFIED CAMPAIGN REFERENCE DATA (use these facts authoritatively)');
+              _refLines.push('================================================================');
+              _refLines.push('');
+              for (const _row of _refMatches) {
+                _refLines.push('Q: ' + _row.question);
+                _refLines.push('A: ' + _row.answer);
+                _refLines.push('Source: ' + (_row.source_name || _row.source_url) + ' (verified ' + _row.last_verified_date + ', ' + _row.update_frequency + ')');
+                if (_row.scope) _refLines.push('Scope: ' + _row.scope);
+                _refLines.push('---');
+              }
+              _refLines.push('');
+              // V1 ships with passive integration. Forceful precedence
+              // language here (or on FACTUAL GROUNDING / GROUNDING MANDATE
+              // blocks) interacted with the tool-oriented HARD CONSTRAINT
+              // blocks at ~line 6388 ("must trace to the tool's verified
+              // data") and triggered Sam into the unsupported-deferral
+              // path. Phase 2.5 will gate those HARD CONSTRAINT blocks to
+              // samEngine='haiku'; until then, do NOT add precedence
+              // language here or on the FG/GM blocks.
+              _refLines.push('When responding, integrate these facts naturally into your answer in your strategic consultant voice. Cite the source briefly inline (e.g., "per Texas Election Code § 162.015" or "per the Texas Ethics Commission"). Do NOT say "according to my data," "I have records showing," or similar database-pointing phrasing — speak from authoritative knowledge.');
+              _refLines.push('');
+              _refLines.push('For rows marked update_frequency=volatile, briefly note the source date and that the situation may have evolved since then (e.g., "as of December 2025, the SCOTUS ruling allowed..."). Keep the caveat to one short clause within the existing sentence — don\'t add multiple disclaimers or undercut the strategic answer.');
+              _refLines.push('');
+              _refLines.push('If the user\'s question goes beyond what these rows cover, answer the rest from your training/grounding knowledge but maintain factual accuracy and continue the consultant-voice framing.');
+              _refLines.push('================================================================');
+
+              const _refBlock = '\n\n' + _refLines.join('\n');
+              const _maskedRefBlock = (workspaceEntities && workspaceEntities.length > 0)
+                ? maskText(_refBlock, workspaceEntities, { skipQuoteProtection: true })
+                : _refBlock;
+              systemPrompt += _maskedRefBlock;
+            } else {
+              _campaignRefDecisionForLog = 'lookup_fired_no_matches';
+              _campaignRefStateForLog = _refClassifierResult.state;
+              _campaignRefCategoryForLog = _refClassifierResult.category;
+            }
+          } else {
+            _campaignRefDecisionForLog = _refClassifierResult.reason || 'no_lookup';
+            _campaignRefStateForLog = _refClassifierResult.state || null;
+          }
+        } catch (e) {
+          console.warn('[campaign_reference_prefetch] failed:', (e && e.message) || String(e));
+          _campaignRefDecisionForLog = 'error';
+          // Pre-fetch failure is non-fatal — Gemini path continues with
+          // its existing systemPrompt; the assemblePreFetchContext block
+          // above ran independently and is unaffected.
+        }
+
+        // Telemetry write — fire-and-forget. Logging failure must not
+        // block the chat turn.
+        if (ctx && typeof ctx.waitUntil === 'function') {
+          ctx.waitUntil((async () => {
+            try {
+              await env.DB.prepare(
+                'INSERT INTO campaign_reference_lookup_events (id, conversation_id, user_id, workspace_owner_id, user_message_excerpt, classifier_decision, state_extracted, category_extracted, rows_returned, row_ids, raw_classifier_output) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+              ).bind(
+                generateId(16),
+                conversation_id || null,
+                rateLimitUserId || null,
+                chatOwnerId || null,
+                String(_latestUserText || '').slice(0, 500),
+                _campaignRefDecisionForLog,
+                _campaignRefStateForLog,
+                _campaignRefCategoryForLog,
+                _campaignRefRowsForLog.length,
+                JSON.stringify(_campaignRefRowsForLog),
+                _campaignRefRawOutputForLog
+              ).run();
+            } catch (e) {
+              console.warn('[campaign_reference_lookup_events] log failed:', e.message);
+            }
+          })());
         }
       }
 
