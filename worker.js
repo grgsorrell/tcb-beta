@@ -1,3 +1,7 @@
+import { stripToolReferencesForGemini } from './lib/strip_tool_references.mjs';
+import { extractCitedUrls } from './lib/extract_cited_urls.mjs';
+import { classifyClaimSourcing, temperatureForCategory } from './lib/grounding_aware_validation.mjs';
+
 export default {
   async fetch(request, env, ctx) {
     // CORS headers helper
@@ -90,9 +94,13 @@ export default {
       const userId = await getUserFromSession(req);
       if (!userId) return null;
       const user = await env.DB.prepare(
-        'SELECT id, email FROM users WHERE id = ?'
+        'SELECT id, email, sam_engine FROM users WHERE id = ?'
       ).bind(userId).first();
       if (!user) return null;
+      // Defensive samEngine normalization — anything other than literal
+      // 'gemini' falls back to 'haiku'. Covers NULL (legacy rows pre-migration),
+      // typos, and any future engine values we haven't taught the worker about.
+      const normalizeEngine = (val) => (val === 'gemini') ? 'gemini' : 'haiku';
       if (user.email && user.email.endsWith('@sub.tcb')) {
         const subUsername = user.email.replace(/@sub\.tcb$/, '');
         // LOWER() match — anchor emails are stored lowercased (login
@@ -107,9 +115,18 @@ export default {
         }
         let perms = {};
         try { perms = JSON.parse(sub.permissions_json || '{}'); } catch (e) {}
-        return { userId, ownerId: sub.owner_id, isSubUser: true, permissions: perms };
+        // Sub-user inherits the workspace OWNER's sam_engine — Sam follows
+        // the workspace, not the individual caller. One extra D1 read on
+        // the sub-user path; owner path already has sam_engine from the
+        // SELECT above. Sub-user path is rare so the extra round trip is
+        // acceptable for correctness.
+        const ownerRow = await env.DB.prepare(
+          'SELECT sam_engine FROM users WHERE id = ?'
+        ).bind(sub.owner_id).first();
+        const samEngine = normalizeEngine(ownerRow && ownerRow.sam_engine);
+        return { userId, ownerId: sub.owner_id, isSubUser: true, permissions: perms, samEngine };
       }
-      return { userId, ownerId: userId, isSubUser: false, permissions: null };
+      return { userId, ownerId: userId, isSubUser: false, permissions: null, samEngine: normalizeEngine(user.sam_engine) };
     }
 
     // Returns true if ctx can perform an action gated by (tab, minLevel).
@@ -664,23 +681,53 @@ export default {
     // ========================================
     // HELPER: Log API usage to console and D1
     // ========================================
-    async function logApiUsage(feature, data, userId, ownerId) {
-      const usage = data && data.usage ? data.usage : {};
-      const inputTokens = (usage.input_tokens || 0) + (usage.cache_creation_input_tokens || 0) + (usage.cache_read_input_tokens || 0);
-      const outputTokens = usage.output_tokens || 0;
-      // Haiku 4.5 rates: $0.80/M input, $4.00/M output
-      // Cache creation: $1.00/M, Cache read: $0.08/M
-      const cacheCreate = usage.cache_creation_input_tokens || 0;
-      const cacheRead = usage.cache_read_input_tokens || 0;
-      const regularInput = usage.input_tokens || 0;
-      const cost = (regularInput * 0.80 / 1000000) + (cacheCreate * 1.00 / 1000000) + (cacheRead * 0.08 / 1000000) + (outputTokens * 4.00 / 1000000);
-      console.log(`[API] ${feature}: ${inputTokens} in / ${outputTokens} out = $${cost.toFixed(4)}`);
+    // Generalized API usage logger. Handles both Anthropic-shape responses
+    // ({ usage: { input_tokens, output_tokens, cache_creation_input_tokens,
+    // cache_read_input_tokens } }) and Gemini-shape responses (flat
+    // { inputTokens, outputTokens, ... } from geminiCallSam). modelTag
+    // selects rates and is also written to api_usage.model so weekly
+    // cost-per-engine queries work cleanly.
+    //
+    // Backwards compatible: existing 4-arg calls (no modelTag) default to
+    // claude-haiku-4-5-20251001 and behave exactly as before.
+    //
+    // Search Grounding billing note: Gemini 2.5 Flash grounded requests
+    // are 1,500 RPD free (shared with Flash-Lite), then $35/1000. Tracked
+    // separately via the groundingUsed count from geminiCallSam — not in
+    // this token-based cost calc. Phase 1 + Phase 4 won't hit the free
+    // limit; revisit when broader rollout pushes daily aggregate above.
+    async function logApiUsage(feature, data, userId, ownerId, modelTag) {
+      const model = modelTag || 'claude-haiku-4-5-20251001';
+      let inputTokens, outputTokens, cost;
+
+      if (model.startsWith('gemini')) {
+        // Gemini-shape: flat { inputTokens, outputTokens } from geminiCallSam.
+        // Rates verified 2026-05-08 from ai.google.dev/pricing — Gemini 2.5
+        // Flash paid tier: text/image/video input $0.30/1M, output $2.50/1M.
+        // Audio input ($1.00/1M) not handled — Sam is text-only.
+        inputTokens = (data && typeof data.inputTokens === 'number') ? data.inputTokens : 0;
+        outputTokens = (data && typeof data.outputTokens === 'number') ? data.outputTokens : 0;
+        cost = (inputTokens * 0.30 / 1_000_000) + (outputTokens * 2.50 / 1_000_000);
+      } else {
+        // Anthropic-shape: data.usage with input/output/cache fields.
+        // Haiku 4.5 rates: input $0.80/1M, output $4.00/1M, cache create
+        // $1.00/1M, cache read $0.08/1M.
+        const usage = data && data.usage ? data.usage : {};
+        const cacheCreate = usage.cache_creation_input_tokens || 0;
+        const cacheRead = usage.cache_read_input_tokens || 0;
+        const regularInput = usage.input_tokens || 0;
+        inputTokens = regularInput + cacheCreate + cacheRead;
+        outputTokens = usage.output_tokens || 0;
+        cost = (regularInput * 0.80 / 1_000_000) + (cacheCreate * 1.00 / 1_000_000) + (cacheRead * 0.08 / 1_000_000) + (outputTokens * 4.00 / 1_000_000);
+      }
+
+      console.log(`[API] ${feature} (${model}): ${inputTokens} in / ${outputTokens} out = $${cost.toFixed(4)}`);
       try {
         // workspace_owner_id attributes the cost to the billing workspace;
         // user_id records the actual caller (sub-user or owner) for audit.
         await env.DB.prepare(
           'INSERT INTO api_usage (id, user_id, workspace_owner_id, feature, input_tokens, output_tokens, estimated_cost, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(generateId(16), userId || '', ownerId || null, feature, inputTokens, outputTokens, cost, 'claude-haiku-4-5-20251001').run();
+        ).bind(generateId(16), userId || '', ownerId || null, feature, inputTokens, outputTokens, cost, model).run();
       } catch(e) { /* don't fail the request if logging fails */ }
     }
 
@@ -4985,6 +5032,13 @@ export default {
       if (chatCtx && chatCtx.revoked) return denyRevoked();
       const rateLimitUserId = chatCtx ? chatCtx.userId : null;
       const chatOwnerId = chatCtx ? chatCtx.ownerId : null;
+      // Brain selection flag for the Sam-on-Gemini migration. Owners read
+      // their own users.sam_engine; sub-users inherit their workspace
+      // owner's value (resolved in getSessionContext). Defaults to 'haiku'
+      // for null/typo/unknown values per normalizeEngine. Read here so
+      // downstream code (line 7962 area switching block, shadow gate,
+      // pre-fetch trigger) all see one canonical value.
+      const samEngine = (chatCtx && chatCtx.samEngine) || 'haiku';
 
       // Beta-account rate-limit bypass (dev infra). The four beta usernames
       // skip the 100/day cap so iterative testing doesn't hit the limit
@@ -6012,6 +6066,11 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
       const toolMemoryBlock = formatToolMemoryBlock(_toolMemoryRows);
 
       let systemPrompt = `${aboutCandidateBlock}================================================================
+TEMPORAL ANCHOR
+================================================================
+As of today, ${isoToday}, your training data is stale. Election dates, filing deadlines, contribution limits, and procedural rules change between cycles. For ANY compliance, financial, or scheduling question, you MUST use Google Search Grounding to retrieve current sources rather than recalling facts from training. If grounding fails to surface a verifiable answer, defer with a specific authority URL — do NOT substitute training-data details.
+
+================================================================
 STOP — FACTUAL DISCIPLINE (read before every response)
 ================================================================
 Before you output a specific date, dollar amount, filing deadline, qualifying period, vote total, polling number, percentage, or biographical fact about the candidate, CONFIRM you got it from one of these three sources: (a) the user's saved campaign data shown below in GROUND TRUTH, (b) a web_search result you called in THIS conversation, or (c) the user's own message earlier in this conversation. If you cannot point to one of those three, STOP. Do not write the answer. Either call web_search right now and cite what you find, or reply "I don't have that — verify with [specific authority such as the Supervisor of Elections]."
@@ -6671,6 +6730,43 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         ).run();
       } catch (e) { console.warn('[classification_log] failed:', e.message); }
 
+      // Pre-fetch context for the Gemini brain (Phase 1). Cache-only
+      // reads from D1 — same tables the lookup_* tools populate. Result
+      // is masked then appended to systemPrompt. Only fires when this
+      // user is on the Gemini engine; Haiku path keeps using tool calls.
+      // Position: after classifier sets _questionCategory (so triggering
+      // logic has access) but before category-specific framing append
+      // (so pre-fetched data is positioned ahead of category instructions
+      // in the final prompt).
+      if (samEngine === 'gemini') {
+        try {
+          const _preFetchBlock = await assemblePreFetchContext({
+            stateCode: state ? normalizeStateCode(state) : '',
+            office: specificOffice || officeType || '',
+            raceYear: parseInt((electionDate || '').slice(0, 4), 10) || (new Date().getFullYear()),
+            location: location || '',
+            intelContext,
+            questionCategory: _questionCategory,
+            latestUserText: _latestUserText,
+            jurisdictionName: location || ''
+          });
+          if (_preFetchBlock) {
+            // Mask the pre-fetch block — it may contain real names from
+            // authority records or jurisdiction municipality lists. Same
+            // mask settings as the systemPrompt sweep at line 6610.
+            const _maskedPreFetch = (workspaceEntities && workspaceEntities.length > 0)
+              ? maskText(_preFetchBlock, workspaceEntities, { skipQuoteProtection: true })
+              : _preFetchBlock;
+            systemPrompt += _maskedPreFetch;
+          }
+        } catch (e) {
+          console.warn('[pre_fetch] assembly failed:', (e && e.message) || String(e));
+          // Pre-fetch failure is non-fatal — Gemini path continues with
+          // bare systemPrompt; Search Grounding becomes the sole source
+          // for factual claims this turn.
+        }
+      }
+
       // Phase 5: append category-specific prompt block.
       if (_questionCategory === 'strategic') {
         systemPrompt += '\n\nSTRATEGIC GROUNDING — CATEGORY: STRATEGIC:\n\n' +
@@ -6704,6 +6800,16 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       } else if (_questionCategory === 'factual') {
         systemPrompt += '\n\nFACTUAL GROUNDING — CATEGORY: FACTUAL:\n\n' +
           'This is a factual question — dates, dollar amounts, named people, current events, electoral history, compliance rules. Default to web_search FIRST before answering. If web_search returns nothing useful, defer with a smart-deferral URL pointer (see SMART DEFERRAL TEMPLATES) — do NOT recall from training. Citation is mandatory for every specific claim.';
+      }
+
+      // Phase 2: Gemini-specific grounding mandate. Prompt-side pressure
+      // (config-side dynamicRetrievalConfig is unavailable on Gemini 2.5
+      // Flash). Gated on samEngine + relevant category — strategic and
+      // conversational don't need grounding pressure (mandate would just
+      // be noise on those turns).
+      if (samEngine === 'gemini' && (_questionCategory === 'factual' || _questionCategory === 'compliance' || _questionCategory === 'predictive')) {
+        systemPrompt += '\n\n================================================================\nGROUNDING MANDATE FOR THIS TURN\n================================================================\n' +
+          'GROUNDING MANDATE — this ' + _questionCategory + ' turn requires Search Grounding for any specific date, dollar amount, named contact, current event, compliance rule, or biographical claim. Do NOT use training-data recall for specifics. When grounding surfaces no verifiable source, defer with a specific authority URL using SMART DEFERRAL TEMPLATES — never substitute plausible-sounding training details. The validator strips any specific claim that didn\'t trace to grounding or pre-fetched context.';
       }
 
       // Validator gating matrix — which validators run for which category.
@@ -7110,8 +7216,30 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // older "googleSearchRetrieval" from the Gemini 1.5 era. Source:
       // ai.google.dev/gemini-api/docs/google-search.
       // ============================================================
-      async function geminiCallSam({ systemPrompt, contents }) {
+      async function geminiCallSam({ systemPrompt, contents, timeoutMs, temperature }) {
         const startedAt = Date.now();
+
+        // ============================================================
+        // Phase 1.5.B test forcing hook. Set the GEMINI_FORCE_FAIL secret
+        // to simulate a failure mode without corrupting the real API key:
+        //   wrangler secret put GEMINI_FORCE_FAIL    (then enter: timeout|auth|5xx|rate_limit|malformed)
+        //   ...run test queries...
+        //   wrangler secret delete GEMINI_FORCE_FAIL
+        // The real GEMINI_API_KEY stays intact throughout. Returns the
+        // exact shape geminiCallSam returns on a real failure of that
+        // kind, so runProductionGeminiTurn's classification + Phase
+        // 1.5.B retry logic exercise the production code paths.
+        // ============================================================
+        if (env.GEMINI_FORCE_FAIL) {
+          const mode = String(env.GEMINI_FORCE_FAIL).toLowerCase().trim();
+          if (mode === 'timeout') return { text: null, error: 'fetch failed: simulated timeout (forced)', latencyMs: typeof timeoutMs === 'number' ? timeoutMs : 15000, status: null };
+          if (mode === 'auth') return { text: null, error: 'HTTP 401 Unauthorized — API key not valid (forced)', latencyMs: 100, status: 401 };
+          if (mode === '5xx') return { text: null, error: 'HTTP 503 Service Unavailable (forced)', latencyMs: 100, status: 503 };
+          if (mode === 'rate_limit') return { text: null, error: 'HTTP 429 Too Many Requests (forced)', latencyMs: 100, status: 429 };
+          if (mode === 'malformed') return { text: null, error: 'no candidate in Gemini response (forced)', latencyMs: 100, status: 200 };
+          // Unknown mode — log and fall through to real path
+          console.warn('[geminiCallSam] GEMINI_FORCE_FAIL set to unknown mode, ignoring:', mode);
+        }
 
         if (!env.GEMINI_API_KEY) {
           return { text: null, error: 'GEMINI_API_KEY env var not configured', latencyMs: Date.now() - startedAt, status: null };
@@ -7129,7 +7257,10 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           contents: contents,
           tools: [{ google_search: {} }],
           generationConfig: {
-            temperature: 0.4,
+            // Phase 2: caller can override temperature per-category. Default
+            // 0.4 preserved for backward compat with existing callers
+            // (shadow path, any future callers without explicit temperature).
+            temperature: typeof temperature === 'number' ? temperature : 0.4,
             maxOutputTokens: 4096
           }
         };
@@ -7140,7 +7271,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
-            signal: AbortSignal.timeout(15000)
+            signal: AbortSignal.timeout(typeof timeoutMs === 'number' ? timeoutMs : 15000)
           });
         } catch (e) {
           return { text: null, error: 'fetch failed: ' + (e && e.message ? e.message : String(e)), latencyMs: Date.now() - startedAt, status: null };
@@ -7175,17 +7306,36 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         }
         text = text.trim();
 
-        // Grounding metadata extraction. groundingChunks is the array
-        // Gemini returns when grounding fired — its length is the count
-        // of grounding invocations. URLs deduped at extraction.
+        // Grounding metadata extraction (Phase 2: extracts both chunks AND
+        // supports for grounding-aware validation downstream).
+        // - groundingChunks: source URLs Gemini fetched
+        // - groundingSupports: per-segment claim → source mapping
         let groundingUsed = 0;
         const groundingUrls = [];
+        const groundingChunks = [];
+        const groundingSupports = [];
         const gm = candidate.groundingMetadata;
-        if (gm && Array.isArray(gm.groundingChunks)) {
-          groundingUsed = gm.groundingChunks.length;
-          for (const ch of gm.groundingChunks) {
-            const uri = ch && ch.web && typeof ch.web.uri === 'string' ? ch.web.uri : null;
-            if (uri && groundingUrls.indexOf(uri) < 0) groundingUrls.push(uri);
+        if (gm) {
+          if (Array.isArray(gm.groundingChunks)) {
+            groundingUsed = gm.groundingChunks.length;
+            for (const ch of gm.groundingChunks) {
+              const uri = ch && ch.web && typeof ch.web.uri === 'string' ? ch.web.uri : null;
+              const title = ch && ch.web && typeof ch.web.title === 'string' ? ch.web.title : null;
+              groundingChunks.push({ uri, title });
+              if (uri && groundingUrls.indexOf(uri) < 0) groundingUrls.push(uri);
+            }
+          }
+          if (Array.isArray(gm.groundingSupports)) {
+            for (const sup of gm.groundingSupports) {
+              if (!sup || !sup.segment) continue;
+              const seg = sup.segment;
+              groundingSupports.push({
+                text: typeof seg.text === 'string' ? seg.text : '',
+                startIndex: typeof seg.startIndex === 'number' ? seg.startIndex : null,
+                endIndex: typeof seg.endIndex === 'number' ? seg.endIndex : null,
+                chunkIndices: Array.isArray(sup.groundingChunkIndices) ? sup.groundingChunkIndices.slice() : []
+              });
+            }
           }
         }
 
@@ -7197,6 +7347,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           outputTokens: typeof usage.candidatesTokenCount === 'number' ? usage.candidatesTokenCount : 0,
           groundingUsed,
           groundingUrls,
+          groundingChunks,
+          groundingSupports,
           finishReason: typeof candidate.finishReason === 'string' ? candidate.finishReason : null,
           raw: data
         };
@@ -7440,12 +7592,514 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // refactoring the citation-validator block. Documented gap;
       // shadow review process notes citation as known absence.
       // ============================================================
-      function shadowEnabledForUser(envRef, userId) {
+      function shadowEnabledForUser(envRef, userId, samEngineFlag) {
+        // Shadow stops once a user is flipped to Gemini production —
+        // they ARE the Gemini path, no comparison data needed. Phase 1
+        // gate. Defensive default: missing samEngineFlag → 'haiku' →
+        // shadow continues (preserves existing behavior for not-yet-flipped users).
+        if (samEngineFlag === 'gemini') return false;
         if (!userId || typeof userId !== 'string') return false;
         const raw = envRef && envRef.SHADOW_GEMINI_USER_IDS;
         if (!raw || typeof raw !== 'string') return false;
         const allowlist = raw.split(',').map(s => s.trim()).filter(Boolean);
         return allowlist.indexOf(userId) >= 0;
+      }
+
+      // ============================================================
+      // GEMINI PRODUCTION FAILURE LOGGER (Step G)
+      //
+      // Writes a row to gemini_production_failures whenever
+      // runProductionGeminiTurn falls back to Haiku. Decoupled from
+      // sam_turn_logs because failure may happen before a turn fully
+      // completes. Read by manual queries during Phase 1-4 to spot
+      // trends; alert if rate exceeds ~1% over any 1-hour window.
+      // ============================================================
+      async function logGeminiFailure(params) {
+        try {
+          const {
+            failureMode, statusCode, errorMessage,
+            userId, ownerId, conversationId, retryAttempt
+          } = params || {};
+          await env.DB.prepare(
+            'INSERT INTO gemini_production_failures (id, user_id, workspace_owner_id, conversation_id, failure_mode, status_code, error_message, retry_attempt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+          ).bind(
+            generateId(16),
+            userId || null,
+            ownerId || null,
+            conversationId || null,
+            failureMode || 'unhandled',
+            (typeof statusCode === 'number') ? statusCode : null,
+            errorMessage ? String(errorMessage).slice(0, 500) : null,
+            (typeof retryAttempt === 'number') ? retryAttempt : 1
+          ).run();
+        } catch (e) {
+          // Logging failure must not block fallback path.
+          console.warn('[gemini_production_failures] D1 insert failed:', (e && e.message) || String(e));
+        }
+      }
+
+      // ============================================================
+      // RUN PRODUCTION GEMINI TURN (Step F)
+      //
+      // Inline-awaited counterpart to runShadowGeminiTurn. Differences:
+      //   - Returns Anthropic-shape { content, usage } so downstream
+      //     code (validators, regen, response assembly) is shape-identical.
+      //   - Throws on Gemini failure (caught by switching block at the
+      //     callClaudeAndDemask line, triggers Haiku fallback).
+      //   - Calls stripToolReferencesForGemini on the masked systemPrompt
+      //     before sending to Gemini.
+      //   - No shadow audit calls — validator pipeline runs downstream
+      //     on returned data, identical to the Haiku path.
+      //   - Logs usage via the generalized logApiUsage with
+      //     modelTag = 'gemini-2.5-flash' so the api_usage row carries
+      //     the correct rates and engine attribution.
+      //
+      // ENTITY-MASK FLOW (same as shadow path):
+      //   - systemPrompt arrives already masked (line 6610) AND with
+      //     pre-fetch context appended (also masked at append time).
+      //     Strip tool references next (replaces tool names with prose),
+      //     then send to Gemini.
+      //   - messages masked here in step 1 (sanitize + mask).
+      //   - Gemini's response demasked in step 4 before returning so
+      //     validators downstream see real names (matches Haiku path).
+      //
+      // Failure modes throw; caller catches and logs:
+      //   - timeout / rate_limit / auth / 5xx / malformed / unhandled
+      //   - Each thrown error includes .failureMode and .statusCode
+      //     for the logger.
+      // ============================================================
+      async function runProductionGeminiTurn(params) {
+        const {
+          systemPrompt: rawSystemPrompt,
+          messages: rawMessages,
+          workspaceEntities: workEntities,
+          conversationId, userId, ownerId,
+          timeoutOverrideMs,
+          classifierCategory  // Phase 2: per-category temperature
+        } = params || {};
+
+        // Step 1: Strip tool references from systemPrompt (Gemini doesn't
+        // have tools to call). Pure string transform — already masked
+        // by upstream sweep at line 6610, so real names are placeholders.
+        const geminiSystemPrompt = stripToolReferencesForGemini(rawSystemPrompt);
+
+        // Step 2: Mask messages (mirrors callClaude internal masking).
+        const sanitizedMsgs = sanitizeMessagesForApi(rawMessages || []);
+        const maskedMsgs = (workEntities && workEntities.length > 0)
+          ? maskMessagesArray(sanitizedMsgs, workEntities)
+          : sanitizedMsgs;
+
+        // Step 3: Translate to Gemini contents shape.
+        const geminiContents = anthropicToGemini(maskedMsgs);
+        if (!Array.isArray(geminiContents) || geminiContents.length === 0) {
+          const err = new Error('empty contents after translation');
+          err.failureMode = 'malformed';
+          throw err;
+        }
+
+        // Step 4: Call Gemini. geminiCallSam handles 15s timeout and
+        // returns { text, inputTokens, outputTokens, latencyMs,
+        // groundingUsed, groundingUrls, error }. Translate failure
+        // shapes into thrown errors with failureMode set so the catch
+        // path can log appropriately.
+        let geminiResp;
+        try {
+          geminiResp = await geminiCallSam({
+            systemPrompt: geminiSystemPrompt,
+            contents: geminiContents,
+            timeoutMs: timeoutOverrideMs,
+            // Phase 2: per-category temperature minimizes parametric-memory
+            // gap-filling on factual/compliance turns. Default 0.4 if no
+            // category passed (e.g. shadow path).
+            temperature: temperatureForCategory(classifierCategory)
+          });
+        } catch (e) {
+          // geminiCallSam catches its own fetch errors and returns
+          // structured { error, status } — this catch is for unexpected
+          // synchronous throws (helper crashes). Treat as 'unhandled'.
+          const err = new Error((e && e.message) || 'gemini call threw');
+          err.failureMode = 'unhandled';
+          throw err;
+        }
+
+        if (geminiResp && geminiResp.error) {
+          const err = new Error(geminiResp.error);
+          // Classify failure mode for Phase 1.5.B switching block.
+          // geminiCallSam returns { error, status } — `status` is HTTP
+          // code when available, null for fetch-layer failures (timeout,
+          // DNS) and for early-return validation errors (missing API
+          // key, etc.).
+          //
+          // Coverage:
+          //   401, 403       → auth
+          //   429            → rate_limit (transient → retry)
+          //   500-599        → 5xx (transient → retry)
+          //   400 + auth msg → auth (Google often returns 400 for invalid keys)
+          //   400 other      → malformed (no retry — request body issue)
+          //   null + timeout → timeout (transient → retry)
+          //   null + key msg → auth (early-return for missing GEMINI_API_KEY)
+          //   200 + error    → malformed (success status but parse fail / no candidates)
+          //   anything else  → unhandled (no retry — surface graceful error)
+          const sc = (typeof geminiResp.status === 'number') ? geminiResp.status : null;
+          const errMsg = String(geminiResp.error || '');
+          const looksLikeKeyIssue = /api[\s_]?key|invalid.{0,20}key|expired|unauthorized|GEMINI_API_KEY/i.test(errMsg);
+          const looksLikeTimeout = /timeout|aborted/i.test(errMsg);
+          if (sc === 429) err.failureMode = 'rate_limit';
+          else if (sc === 401 || sc === 403) err.failureMode = 'auth';
+          else if (sc === 400 && looksLikeKeyIssue) err.failureMode = 'auth';
+          else if (sc === 400) err.failureMode = 'malformed';
+          else if (sc && sc >= 500 && sc < 600) err.failureMode = '5xx';
+          else if (sc === null && looksLikeTimeout) err.failureMode = 'timeout';
+          else if (sc === null && looksLikeKeyIssue) err.failureMode = 'auth';
+          else if (sc === 200) err.failureMode = 'malformed';
+          else err.failureMode = 'unhandled';
+          err.statusCode = sc;
+          throw err;
+        }
+
+        const rawText = (geminiResp && typeof geminiResp.text === 'string') ? geminiResp.text : '';
+        if (!rawText) {
+          const err = new Error('gemini returned empty text');
+          err.failureMode = 'malformed';
+          throw err;
+        }
+
+        // Step 5: Demask response text — Gemini saw masked input and
+        // emitted masked output; flip placeholders back to real names
+        // so downstream validators + UI see human-readable content.
+        // Privacy unaffected — demask is a same-side translation.
+        const demaskedText = (workEntities && workEntities.length > 0)
+          ? demaskText(rawText, workEntities)
+          : rawText;
+
+        // Step 6: Log usage with Gemini rates. modelTag drives logApiUsage
+        // to use Gemini-shape data fields and Gemini pricing.
+        await logApiUsage(
+          'sam_chat_gemini',
+          {
+            inputTokens: (typeof geminiResp.inputTokens === 'number') ? geminiResp.inputTokens : 0,
+            outputTokens: (typeof geminiResp.outputTokens === 'number') ? geminiResp.outputTokens : 0
+          },
+          userId,
+          ownerId,
+          'gemini-2.5-flash'
+        );
+
+        // Step 7: Return Anthropic-shape data so downstream code is
+        // shape-identical. Single text block. Usage shape mirrors
+        // Anthropic for consistency with the Haiku path's data shape;
+        // cache fields are zeroed (no Gemini caching used in Phase 1).
+        return {
+          content: [{ type: 'text', text: demaskedText }],
+          usage: {
+            input_tokens: (typeof geminiResp.inputTokens === 'number') ? geminiResp.inputTokens : 0,
+            output_tokens: (typeof geminiResp.outputTokens === 'number') ? geminiResp.outputTokens : 0,
+            cache_creation_input_tokens: 0,
+            cache_read_input_tokens: 0
+          },
+          // Internal-only marker — downstream code treats this as
+          // ordinary Anthropic data, but tools that want to inspect
+          // engine attribution can read the marker. Optional.
+          _samEngine: 'gemini',
+          // Phase 2: grounding metadata for grounding-aware citation
+          // validation downstream. Validators read data._grounding to
+          // check if specific claims are sourced via Gemini's grounding
+          // metadata (Tier 1) and verify against grounded chunk URLs
+          // (Tier 2). Haiku turns leave this undefined → grounding-aware
+          // logic falls through to existing strip behavior.
+          _grounding: {
+            used: geminiResp.groundingUsed || 0,
+            urls: geminiResp.groundingUrls || [],
+            supports: geminiResp.groundingSupports || [],
+            chunks: geminiResp.groundingChunks || []
+          }
+        };
+      }
+
+      // ============================================================
+      // PHASE 1.5.C — REGEN VIA ENGINE
+      //
+      // Routes validator regens through the user's sam_engine.
+      // Validators (audit phase) stay on Haiku regardless. Only
+      // response generation routes per engine.
+      //
+      // Scope: defined inside the chat handler block, alongside
+      // runProductionGeminiTurn. Closes over samEngine, systemPrompt,
+      // workspaceEntities, conversation_id, rateLimitUserId, chatOwnerId
+      // — all chat-handler-scope variables. Cannot be hoisted to outer
+      // worker scope without parameterizing those bindings.
+      //
+      // Returns { result, error }:
+      //   - On success: result is the regen content (Anthropic-shape),
+      //     error is null. Caller proceeds with existing demask + use logic.
+      //   - On Gemini regen failure: result is null, error is a jsonResponse
+      //     for the chat handler to return immediately. Caller pattern:
+      //       const { result, error } = await regenViaEngine(retryMsgs);
+      //       if (error) return error;
+      //
+      // For Haiku users (samEngine !== 'gemini'), no error path —
+      // callClaude throws on Anthropic infra failures, propagating up
+      // the chat handler like before. Haiku-side behavior is unchanged.
+      //
+      // For Gemini regen failures: logs to gemini_production_failures
+      // with retry_attempt=1 (regen path doesn't retry — primary
+      // brain-selection retry already happened upstream; an additional
+      // regen-time retry would multiply tail latency). Returns graceful
+      // error consistent with main switching block.
+      // ============================================================
+      async function regenViaEngine(retryMsgs) {
+        if (samEngine === 'gemini') {
+          try {
+            const result = await runProductionGeminiTurn({
+              systemPrompt,
+              messages: retryMsgs,
+              workspaceEntities,
+              conversationId: conversation_id,
+              userId: rateLimitUserId,
+              ownerId: chatOwnerId,
+              classifierCategory: _questionCategory
+            });
+            return { result, error: null };
+          } catch (e) {
+            await logGeminiFailure({
+              failureMode: e.failureMode || 'unhandled',
+              statusCode: (typeof e.statusCode === 'number') ? e.statusCode : null,
+              errorMessage: 'regen: ' + ((e && e.message) || String(e)),
+              userId: rateLimitUserId,
+              ownerId: chatOwnerId,
+              conversationId: conversation_id,
+              retryAttempt: 1
+            });
+            console.warn('[gemini_regen] failed during validator pipeline:', e.failureMode || (e && e.message));
+            return {
+              result: null,
+              error: jsonResponse({
+                error: { message: 'Sam is having trouble right now — give me a moment and try again.' }
+              }, 503)
+            };
+          }
+        }
+        return { result: await callClaude(retryMsgs), error: null };
+      }
+
+      // ============================================================
+      // PRE-FETCH CONTEXT FOR GEMINI PATH (Phase 1)
+      //
+      // Sam-on-Gemini has function calling DISABLED. She can't invoke
+      // lookup_compliance_deadlines / lookup_finance_reports /
+      // lookup_donation_limits / lookup_jurisdiction the way Haiku
+      // does. This function reads the same D1 cache tables those tools
+      // populate, formats matching entries as prose with the agreed
+      // status labels (Verified / Partially verified / Web-search-backed
+      // / No verified data available), and returns a block to append
+      // to systemPrompt.
+      //
+      // The labels are part of a contract — stripToolReferencesForGemini's
+      // hard-constraint blocks (compliance / finance / donation /
+      // geographic) instruct Sam to recognize these prose labels and
+      // apply matching handling. Test coverage in step E asserts both
+      // sides of the contract are wired correctly.
+      //
+      // PHASE 1 LIMITATION (cache-only): on cache miss, the prose says
+      // "No verified data available" and Sam defers to authority or
+      // Search Grounding. The lookup_* HTTP endpoints have a built-in
+      // web_search backstop (commit 81f5208) that primes cache on miss
+      // — but extracting that cascade into a reusable internal helper
+      // is Phase 2 work. For Phase 1 (greg + shannan only), most races
+      // are already cached from Haiku-side use, so cache-hit rate
+      // should be high. Spot-test verification will surface if cache
+      // misses are common.
+      // ============================================================
+      async function assemblePreFetchContext(params) {
+        const {
+          stateCode, office, raceYear, location,
+          intelContext, questionCategory, latestUserText, jurisdictionName
+        } = params || {};
+
+        if (!stateCode || !office || !Number.isFinite(raceYear)) {
+          return ''; // insufficient race identity for cache lookup
+        }
+
+        const officeNormalized = (office || '').toLowerCase().trim();
+        const cacheJurKey = jurisdictionName || '';
+        const text = (latestUserText || '').toLowerCase();
+
+        // Triggering logic — classifier-driven with query-signal augmentation.
+        // 'compliance' category fires all three compliance lookups always.
+        // 'factual' / 'strategic' fires individual lookups when text signals
+        // match the relevant intent. Conversational and predictive don't fire
+        // pre-fetch.
+        const fireCompliance = questionCategory === 'compliance' ||
+          /qualif|filing|deadline|petition|ballot access/.test(text);
+        const fireFinanceReports = questionCategory === 'compliance' ||
+          /finance report|quarterly|q[1-4] report|pre-primary|pre-general|filing calendar/.test(text);
+        const fireDonationLimits = questionCategory === 'compliance' ||
+          /contribution limit|donation cap|max donation|how much can.*give|per.election|per.cycle/.test(text);
+        const fireJurisdiction = (questionCategory === 'factual' || questionCategory === 'strategic') &&
+          /door knock|canvass|target.*area|precinct|where.*should|neighborhood|geography|where to focus/.test(text);
+
+        if (!fireCompliance && !fireFinanceReports && !fireDonationLimits && !fireJurisdiction) {
+          return '';
+        }
+
+        // Parallel cache reads. Dual-TTL guard mirrors the production
+        // lookup endpoints: 90 days for verified rows, 14 days for
+        // web_search_fallback rows.
+        const dualTtlClause = "((status != 'web_search_fallback' AND created_at > datetime('now', '-90 days')) OR (status = 'web_search_fallback' AND created_at > datetime('now', '-14 days')))";
+        const [comp, fin, don, jur] = await Promise.all([
+          fireCompliance
+            ? env.DB.prepare(
+                "SELECT * FROM compliance_deadlines_cache " +
+                "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
+                "AND " + dualTtlClause + " LIMIT 1"
+              ).bind(stateCode, officeNormalized, raceYear, cacheJurKey).first()
+            : Promise.resolve(null),
+          fireFinanceReports
+            ? env.DB.prepare(
+                "SELECT * FROM finance_reports_cache " +
+                "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
+                "AND " + dualTtlClause + " LIMIT 1"
+              ).bind(stateCode, officeNormalized, raceYear, cacheJurKey).first()
+            : Promise.resolve(null),
+          fireDonationLimits
+            ? env.DB.prepare(
+                "SELECT * FROM donation_limits_cache " +
+                "WHERE state_code = ? AND office_normalized = ? AND race_year = ? AND COALESCE(jurisdiction_name,'') = ? " +
+                "AND " + dualTtlClause + " LIMIT 1"
+              ).bind(stateCode, officeNormalized, raceYear, cacheJurKey).first()
+            : Promise.resolve(null),
+          fireJurisdiction
+            ? env.DB.prepare(
+                "SELECT * FROM jurisdiction_lookups WHERE state = ? AND office = ? AND COALESCE(jurisdiction_name,'') = ? LIMIT 1"
+              ).bind(stateCode, officeNormalized, cacheJurKey).first()
+            : Promise.resolve(null)
+        ]);
+
+        // Status → prose label. Anything other than 'found'/'partial'/'web_search_fallback'
+        // falls to "No verified data available" (covers 'unsupported' and any future status).
+        const labelForStatus = (status) => {
+          if (status === 'found') return 'Verified';
+          if (status === 'partial') return 'Partially verified';
+          if (status === 'web_search_fallback') return 'Web-search-backed';
+          return 'No verified data available';
+        };
+
+        const sections = [];
+
+        // Compliance Deadlines section
+        if (fireCompliance) {
+          if (comp) {
+            const lines = [`Compliance Deadlines (${labelForStatus(comp.status)}):`];
+            if (comp.status === 'web_search_fallback' && comp.web_search_excerpt) {
+              lines.push(`- Excerpt: "${comp.web_search_excerpt.replace(/"/g, "'").slice(0, 600)}"`);
+              if (comp.web_search_url) lines.push(`- Source: ${comp.web_search_url}`);
+            } else if (comp.status === 'found' || comp.status === 'partial') {
+              if (comp.qualifying_period_start) lines.push(`- Qualifying opens: ${comp.qualifying_period_start}`);
+              if (comp.qualifying_period_end) {
+                lines.push(`- Qualifying closes: ${comp.qualifying_period_end}` +
+                  (comp.qualifying_period_end_time ? ` at ${comp.qualifying_period_end_time}` : ''));
+              }
+              if (comp.petition_deadline) lines.push(`- Petition deadline: ${comp.petition_deadline}`);
+              if (comp.filing_fee) lines.push(`- Filing fee: ${comp.filing_fee}`);
+              if (comp.authority_url) lines.push(`- Source: ${comp.authority_url}`);
+            }
+            if (comp.authority_name) {
+              lines.push(`- Authority: ${comp.authority_name}` +
+                (comp.authority_phone ? `, ${comp.authority_phone}` : ''));
+            }
+            sections.push(lines.join('\n'));
+          } else {
+            sections.push('Compliance Deadlines (No verified data available):\n- No cached compliance data for this race; defer to the state elections authority or use Search Grounding for findable sources.');
+          }
+        }
+
+        // Finance Reports section — uses reports_json + authority_json
+        if (fireFinanceReports) {
+          if (fin) {
+            const lines = [`Finance Reports (${labelForStatus(fin.status)}):`];
+            if (fin.status === 'web_search_fallback' && fin.web_search_excerpt) {
+              lines.push(`- Excerpt: "${fin.web_search_excerpt.replace(/"/g, "'").slice(0, 600)}"`);
+              if (fin.web_search_url) lines.push(`- Source: ${fin.web_search_url}`);
+            } else if ((fin.status === 'found' || fin.status === 'partial') && fin.reports_json) {
+              try {
+                const rep = JSON.parse(fin.reports_json);
+                if (Array.isArray(rep)) {
+                  for (const r of rep.slice(0, 6)) {
+                    const name = r.name || r.label || r.report_name || 'Report';
+                    const due = r.due_date || r.due || r.date || '(date unknown)';
+                    const period = r.coverage_period || r.period || r.coverage || '';
+                    lines.push(`- ${name}: due ${due}` + (period ? ` (covers ${period})` : ''));
+                  }
+                }
+              } catch (e) { /* skip malformed json */ }
+            }
+            if (fin.authority_json) {
+              try {
+                const auth = JSON.parse(fin.authority_json);
+                if (auth && auth.name) {
+                  lines.push(`- Authority: ${auth.name}` + (auth.phone ? `, ${auth.phone}` : ''));
+                }
+                if (auth && auth.url) lines.push(`- Authority URL: ${auth.url}`);
+              } catch (e) { /* skip malformed json */ }
+            }
+            sections.push(lines.join('\n'));
+          } else {
+            sections.push('Finance Reports (No verified data available):\n- No cached finance report calendar for this race.');
+          }
+        }
+
+        // Donation Limits section — uses limits_json + authority_json
+        if (fireDonationLimits) {
+          if (don) {
+            const lines = [`Donation Limits (${labelForStatus(don.status)}):`];
+            if (don.status === 'web_search_fallback' && don.web_search_excerpt) {
+              lines.push(`- Excerpt: "${don.web_search_excerpt.replace(/"/g, "'").slice(0, 600)}"`);
+              if (don.web_search_url) lines.push(`- Source: ${don.web_search_url}`);
+            } else if ((don.status === 'found' || don.status === 'partial') && don.limits_json) {
+              try {
+                const lim = JSON.parse(don.limits_json);
+                if (lim && typeof lim === 'object') {
+                  for (const [k, v] of Object.entries(lim)) {
+                    if (v != null && v !== '') lines.push(`- ${k}: ${v}`);
+                  }
+                }
+              } catch (e) { /* skip malformed json */ }
+            }
+            if (don.authority_json) {
+              try {
+                const auth = JSON.parse(don.authority_json);
+                if (auth && auth.name) {
+                  lines.push(`- Authority: ${auth.name}` + (auth.phone ? `, ${auth.phone}` : ''));
+                }
+                if (auth && auth.url) lines.push(`- Authority URL: ${auth.url}`);
+              } catch (e) { /* skip malformed json */ }
+            }
+            sections.push(lines.join('\n'));
+          } else {
+            sections.push('Donation Limits (No verified data available):\n- No cached donation limit data for this race.');
+          }
+        }
+
+        // Authorized Places section (jurisdiction)
+        if (fireJurisdiction) {
+          if (jur && (jur.incorporated_municipalities || jur.major_unincorporated_areas)) {
+            const munis = (jur.incorporated_municipalities || '').trim();
+            const unincs = (jur.major_unincorporated_areas || '').trim();
+            const allPlaces = [munis, unincs].filter(Boolean).join(', ');
+            const heading = jur.official_name || `${office} in ${stateCode}`;
+            sections.push(
+              `Authorized Places for ${heading}:\n- ${allPlaces}`
+            );
+          } else {
+            sections.push('Authorized Places (No verified data available):\n- No cached jurisdiction data for this race; if Sam answers a place-targeting question, defer to the county elections office for the verified municipality list.');
+          }
+        }
+
+        if (sections.length === 0) return '';
+
+        return '\n\n================================================================\nPRE-FETCHED CONTEXT FOR THIS TURN (verified at request time)\n================================================================\n\n' +
+          sections.join('\n\n') +
+          '\n\nUSE THIS DATA AS GROUND TRUTH for the categories shown. Cite the URLs when referencing these values. Do NOT use Search Grounding for items already covered above.\n================================================================';
       }
 
       async function runShadowGeminiTurn(params) {
@@ -7861,7 +8515,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             '. Reply with only the regenerated answer — no preamble, no acknowledgment of this correction.'
           }
         ];
-        const regenResult = await callClaude(retryMsgs);
+        const { result: regenResult, error: _regenErr } = await regenViaEngine(retryMsgs);
+        if (_regenErr) return _regenErr;
         // Demask before returning so validator code reads real names.
         if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
           regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
@@ -7958,12 +8613,98 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return result;
       }
 
+      // BRAIN SELECTION (Step H of Phase 1 Gemini migration). Routes
+      // this turn through runProductionGeminiTurn for users on the
+      // Gemini engine, otherwise the existing Haiku path. On any Gemini
+      // failure, falls through to Haiku so the user never sees a
+      // brain-related error message — failure is logged to
+      // gemini_production_failures for telemetry.
+      //
+      // Variable naming: _shadowHaikuRawContent is captured regardless
+      // of brain. On the Haiku path (or Gemini→Haiku fallback path) it
+      // genuinely IS Haiku raw content for the shadow trigger downstream.
+      // On the Gemini-success path, samEngine === 'gemini' closes the
+      // shadow gate (shadowEnabledForUser returns false), so this
+      // variable is captured but never read. Kept for code-shape
+      // consistency with the existing validator pipeline.
       const _shadowHaikuStartedAt = Date.now();
-      let data = await callClaudeAndDemask(messages);
+      let data;
+      if (samEngine === 'gemini') {
+        try {
+          data = await runProductionGeminiTurn({
+            systemPrompt,
+            messages,
+            workspaceEntities,
+            conversationId: conversation_id,
+            userId: rateLimitUserId,
+            ownerId: chatOwnerId,
+            classifierCategory: _questionCategory
+          });
+        } catch (e) {
+          // Phase 1.5.B: NO Haiku fallback for Gemini-engine users.
+          // Response generation always-and-only from engine of choice.
+          // On transient failures (timeout, 5xx, rate_limit), retry once
+          // with shorter timeout. On non-transient failures (auth,
+          // malformed, unhandled), graceful error. Either way, never
+          // silently swap brains.
+          await logGeminiFailure({
+            failureMode: e.failureMode || 'unhandled',
+            statusCode: (typeof e.statusCode === 'number') ? e.statusCode : null,
+            errorMessage: (e && e.message) || String(e),
+            userId: rateLimitUserId,
+            ownerId: chatOwnerId,
+            conversationId: conversation_id,
+            retryAttempt: 1
+          });
+
+          const isTransient = ['timeout', '5xx', 'rate_limit'].includes(e.failureMode);
+          if (isTransient) {
+            console.warn('[gemini_production] transient failure, retrying once with 8s timeout:', e.failureMode);
+            try {
+              data = await runProductionGeminiTurn({
+                systemPrompt,
+                messages,
+                workspaceEntities,
+                conversationId: conversation_id,
+                userId: rateLimitUserId,
+                ownerId: chatOwnerId,
+                classifierCategory: _questionCategory,
+                timeoutOverrideMs: 8000
+              });
+            } catch (e2) {
+              await logGeminiFailure({
+                failureMode: e2.failureMode || 'unhandled',
+                statusCode: (typeof e2.statusCode === 'number') ? e2.statusCode : null,
+                errorMessage: (e2 && e2.message) || String(e2),
+                userId: rateLimitUserId,
+                ownerId: chatOwnerId,
+                conversationId: conversation_id,
+                retryAttempt: 2
+              });
+              // Auth failure surfacing on retry is a deploy-time issue
+              // (key revoked / quota exhausted between attempts).
+              if (e2.failureMode === 'auth') {
+                console.error('[gemini_production] AUTH FAILURE — investigate API key / quota immediately:', (e2 && e2.message));
+              }
+              return jsonResponse({
+                error: { message: 'Sam is having trouble right now — give me a moment and try again.' }
+              }, 503);
+            }
+          } else {
+            // Non-transient (auth, malformed, unhandled) — no retry; graceful error.
+            console.warn('[gemini_production] non-transient failure, returning graceful error:', e.failureMode);
+            if (e.failureMode === 'auth') {
+              console.error('[gemini_production] AUTH FAILURE — investigate API key / quota immediately:', (e && e.message));
+            }
+            return jsonResponse({
+              error: { message: 'Sam is having trouble right now — give me a moment and try again.' }
+            }, 503);
+          }
+        }
+      } else {
+        data = await callClaudeAndDemask(messages);
+      }
       const _shadowHaikuLatencyMs = Date.now() - _shadowHaikuStartedAt;
-      // Deep-copy data.content BEFORE the validator pipeline mutates it.
-      // Shadow audits compare model RAW outputs (Haiku raw vs Gemini raw)
-      // for fair signal — post-pipeline Haiku content is already cleaned.
       const _shadowHaikuRawContent = (data && Array.isArray(data.content))
         ? JSON.parse(JSON.stringify(data.content))
         : [];
@@ -8258,7 +8999,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.`
           }
         ];
-        const regenResult = await callClaude(retryMsgs);
+        const { result: regenResult, error: _regenErr } = await regenViaEngine(retryMsgs);
+        if (_regenErr) return _regenErr;
         if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
           regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
         }
@@ -8503,7 +9245,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.`
           }
         ];
-        const regenResult = await callClaude(retryMsgs);
+        const { result: regenResult, error: _regenErr } = await regenViaEngine(retryMsgs);
+        if (_regenErr) return _regenErr;
         if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
           regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
         }
@@ -8786,7 +9529,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.`
           }
         ];
-        const regenResult = await callClaude(retryMsgs);
+        const { result: regenResult, error: _regenErr } = await regenViaEngine(retryMsgs);
+        if (_regenErr) return _regenErr;
         if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
           regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
         }
@@ -8951,7 +9695,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               'Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.'
             }
           ];
-          const regenResult = await callClaude(retryMsgs);
+          const { result: regenResult, error: _regenErr } = await regenViaEngine(retryMsgs);
+          if (_regenErr) return _regenErr;
           if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
             regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
           }
@@ -9288,24 +10033,186 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           return out;
         }
 
-        async function logCitationEvent(action, highStakes, soft, original, final) {
+        async function logCitationEvent(action, highStakes, soft, original, final, telemetry) {
           try {
             const cats = {
               high_stakes_count: (highStakes || []).length,
               soft_count: (soft || []).length
             };
+            // Phase 2: telemetry param is optional; existing call sites pass
+            // 5 args (no telemetry) and get all-zero telemetry columns.
+            const t = telemetry || {};
             await env.DB.prepare(
-              'INSERT INTO sam_citation_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, sam_unverified_claims, claim_categories, original_response_excerpt, final_response_excerpt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+              'INSERT INTO sam_citation_validation_events ' +
+              '(id, conversation_id, workspace_owner_id, user_id, action_taken, sam_unverified_claims, claim_categories, original_response_excerpt, final_response_excerpt, ' +
+              ' grounding_used, sourced_claims_count, tier1_unsourced_count, tier2_demoted_count, tier3_caught_count, claims_not_found_in_response_count, grounding_supports_json) ' +
+              'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             ).bind(
               generateId(16), conversation_id || null, chatOwnerId || null, rateLimitUserId || null,
               action,
               JSON.stringify({ high_stakes: highStakes || [], soft: soft || [] }),
               JSON.stringify(cats),
               (original || '').slice(0, 600),
-              (final || '').slice(0, 600)
+              (final || '').slice(0, 600),
+              (typeof t.grounding_used === 'number') ? t.grounding_used : 0,
+              (typeof t.sourced_claims_count === 'number') ? t.sourced_claims_count : 0,
+              (typeof t.tier1_unsourced_count === 'number') ? t.tier1_unsourced_count : 0,
+              (typeof t.tier2_demoted_count === 'number') ? t.tier2_demoted_count : 0,
+              (typeof t.tier3_caught_count === 'number') ? t.tier3_caught_count : 0,
+              (typeof t.claims_not_found_in_response_count === 'number') ? t.claims_not_found_in_response_count : 0,
+              t.grounding_supports_json || null
             ).run();
           } catch (e) {
             console.warn('[citation_validator] log failed:', e.message);
+          }
+        }
+
+        // ============================================================
+        // PHASE 2 — TIER 2: verifyClaimsAgainstGroundedSources
+        //
+        // For Tier-1-sourced claims, fetch the grounded chunk URLs and
+        // audit-Haiku verifies the source content actually supports each
+        // claim. Catches the "hallucinated support" pattern Pro flagged
+        // (Gemini metadata says claim is sourced when source content
+        // doesn't back it).
+        //
+        // FAIL-CLOSED on parse/audit failure: when audit can't run, demote
+        // ALL auditable claims (caller strips). Different calculus from
+        // Tier 3 (verifyCitationAccuracy fails open). Tier 2 IS the
+        // verifier — if it can't audit, we don't know whether claims
+        // are verified, so we strip. Trade-off: Haiku outage causes
+        // over-stripping. Acceptable safe direction.
+        //
+        // Multi-source: for each claim's chunkIndices, ALL referenced
+        // URLs are fetched and shown to audit-Haiku. Claim passes if
+        // ANY cited source supports it (Greg's call).
+        // ============================================================
+        async function verifyClaimsAgainstGroundedSources(sourcedClaims, groundingChunks) {
+          if (!Array.isArray(sourcedClaims) || sourcedClaims.length === 0) {
+            return { unverifiedClaims: [] };
+          }
+          if (!Array.isArray(groundingChunks) || groundingChunks.length === 0) {
+            return { unverifiedClaims: [] };
+          }
+
+          // Build claim → URLs map
+          const urlSet = new Set();
+          const claimToUrls = new Map();
+          for (const sc of sourcedClaims) {
+            const indices = (sc.classification && sc.classification.chunkIndices) || [];
+            const urls = [];
+            for (const idx of indices) {
+              const ch = groundingChunks[idx];
+              if (ch && typeof ch.uri === 'string' && ch.uri) {
+                urls.push(ch.uri);
+                urlSet.add(ch.uri);
+              }
+            }
+            claimToUrls.set(sc.claim, urls);
+          }
+
+          if (urlSet.size === 0) return { unverifiedClaims: [] };
+
+          // Parallel fetch each unique URL (5s timeout, redirect-follow
+          // handles vertexaisearch redirects transparently)
+          const sourceMap = {};
+          await Promise.all([...urlSet].map(async (url) => {
+            try {
+              const r = await fetch(url, {
+                method: 'GET',
+                headers: { 'User-Agent': 'TCB-grounded-source-verifier/1.0' },
+                signal: AbortSignal.timeout(5000),
+                redirect: 'follow'
+              });
+              if (!r.ok) return;
+              const ct = (r.headers.get('content-type') || '').toLowerCase();
+              if (!ct.includes('html') && !ct.includes('text/plain')) return;
+              const html = await r.text();
+              if (!html || html.length < 200 || html.length > 10000000) return;
+              sourceMap[url] = normalizeForMatch(stripHtml(html)).slice(0, 6000);
+            } catch (e) {
+              // Per-URL failure — skip
+            }
+          }));
+
+          // Build per-claim source list. Claims with no reachable source
+          // fail closed (demoted).
+          const claimsWithSources = [];
+          const preDemoted = [];
+          for (const sc of sourcedClaims) {
+            const urls = claimToUrls.get(sc.claim) || [];
+            const reachableUrls = urls.filter(u => sourceMap[u]);
+            if (reachableUrls.length === 0) {
+              preDemoted.push(sc.claim);
+            } else {
+              claimsWithSources.push({
+                claim: sc.claim,
+                sources: reachableUrls.map(u => ({ url: u, content: sourceMap[u] }))
+              });
+            }
+          }
+
+          if (claimsWithSources.length === 0) {
+            return { unverifiedClaims: preDemoted };
+          }
+
+          // All auditable claim texts (used for fail-closed branches below)
+          const allAuditableClaimTexts = claimsWithSources.map(c => c.claim);
+
+          // Build audit prompt — single Haiku call covering all auditable
+          // claims and their cited sources
+          const auditPayload = claimsWithSources.map((c, i) => {
+            const srcBlocks = c.sources.map(s => '  Source ' + s.url + ':\n  ' + s.content.slice(0, 4000)).join('\n\n');
+            return 'CLAIM ' + (i + 1) + ': ' + c.claim + '\n\nCITED SOURCES:\n' + srcBlocks;
+          }).join('\n\n---\n\n');
+
+          const prompt =
+            'You verify whether grounded factual claims are actually supported by their cited sources.\n\n' +
+            'For each CLAIM below, determine if the CITED SOURCES contain the same fact (same date, same dollar amount, same procedural detail) labeled with the same concept.\n\n' +
+            '- "May 11 is the petition deadline" SUPPORTS "petition deadline is May 11"\n' +
+            '- "May 11 is the petition deadline" does NOT support "qualifying opens May 11"\n' +
+            '- A date in the source attached to a different concept is NOT support\n' +
+            '- A claim is supported if ANY of the cited source blocks listed under that CLAIM number contains the matching fact-concept pair. Each CLAIM has 1+ source blocks; check all of them before deciding.\n\n' +
+            auditPayload + '\n\n' +
+            'Return JSON: {"unsupported_claim_indices": [N, M, ...]} — array of 1-based claim numbers that are NOT supported.\n' +
+            'If all claims are supported: {"unsupported_claim_indices": []}\n' +
+            'JSON ONLY.';
+
+          try {
+            const resp = await fetch('https://api.anthropic.com/v1/messages', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+              body: JSON.stringify({
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 800,
+                temperature: 0,
+                messages: [{ role: 'user', content: prompt }]
+              })
+            });
+            const ad = await resp.json();
+            await logApiUsage('sam_grounded_source_verifier', ad, rateLimitUserId, chatOwnerId);
+            let txt = '';
+            if (ad && ad.content && Array.isArray(ad.content)) {
+              for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+            }
+            const m = txt.match(/\{[\s\S]*\}/);
+            // Phase 2 fix 1 — FAIL CLOSED on unparseable response.
+            // Demote all auditable claims so caller strips them.
+            if (!m) return { unverifiedClaims: [...preDemoted, ...allAuditableClaimTexts] };
+            const parsed = JSON.parse(m[0]);
+            const indices = Array.isArray(parsed.unsupported_claim_indices) ? parsed.unsupported_claim_indices : [];
+            const auditDemoted = indices
+              .filter(i => Number.isInteger(i) && i >= 1 && i <= claimsWithSources.length)
+              .map(i => claimsWithSources[i - 1].claim);
+            return { unverifiedClaims: [...preDemoted, ...auditDemoted] };
+          } catch (e) {
+            console.warn('[verifyClaimsAgainstGroundedSources] audit failed:', e.message);
+            // Phase 2 fix 1 — FAIL CLOSED on Haiku infra failure.
+            // Demote all auditable claims. Trade-off: temporary Haiku
+            // outage causes over-stripping (Sam gets deferential during
+            // outage). That's the right safe direction — Tier 2 IS the
+            // verifier, not a defense-in-depth check.
+            return { unverifiedClaims: [...preDemoted, ...allAuditableClaimTexts] };
           }
         }
 
@@ -9328,7 +10235,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               'Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.'
             }
           ];
-          const regenResult = await callClaude(retryMsgs);
+          const { result: regenResult, error: _regenErr } = await regenViaEngine(retryMsgs);
+          if (_regenErr) return _regenErr;
           if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
             regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
           }
@@ -9389,6 +10297,137 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           return flagged;
         }
 
+        // ============================================================
+        // PHASE 1.5.A — CITATION ACCURACY VERIFICATION (chat-side analog
+        // of helper-Haiku verifyExcerptInSource at line 2877, commit
+        // 55cc9a8 shape).
+        //
+        // WHY: Citation validator's URL-presence heuristic accepts
+        // fabricated date/amount claims as long as a URL is appended.
+        // 7 confirmed production fabrications between 2026-05-01 and
+        // 2026-05-08 (FL state house "qualifying opens May 11" with
+        // dos.fl.gov / Ballotpedia citations — the URLs name May 11 as
+        // the petition deadline, NOT qualifying open). Memory entry:
+        // tcb_citation_validator_fake_url_trust_pattern.md.
+        //
+        // WHAT: fetches each cited URL, normalizes HTML, hands source
+        // content + response text to an audit-Haiku with a strict
+        // supported/unsupported prompt that distinguishes "date appears
+        // in source" from "date paired with the same concept the response
+        // claims." Returns list of claims the audit flagged as unsupported.
+        //
+        // FAIL BEHAVIOR:
+        //   - URL fetch fails (network/paywall/non-HTML): that URL
+        //     contributes no source content. If NO cited URLs could be
+        //     fetched, falls back to extracting date strings from the
+        //     response and returning them ALL as unsupported (FAIL
+        //     CLOSED — strip rather than ship unverified).
+        //   - Audit-Haiku API call fails: returns allVerified=true
+        //     (FAIL OPEN — don't block on infra issues; the production
+        //     bug we're fixing is the citation validator's blind trust
+        //     of URL presence, not infrastructure-level verifier issues).
+        // ============================================================
+        async function verifyCitationAccuracy(textToVerify) {
+          if (!textToVerify || typeof textToVerify !== 'string') {
+            return { allVerified: true, unsupportedClaims: [] };
+          }
+
+          // Extract cited URLs (handles both protocol-prefixed and bare-domain
+          // forms — Gemini emits bare domains, Haiku emits markdown links).
+          // Phase 1.5.A.1 fix: the original protocol-only regex silently
+          // no-op'd on bare-domain citations, leaving ~50% of
+          // regenerated_with_url events unverified. See
+          // tcb_citation_validator_fake_url_trust_pattern.md and
+          // tests/verify_citation_url_extraction.test.mjs.
+          const urls = extractCitedUrls(textToVerify);
+          if (urls.length === 0) return { allVerified: true, unsupportedClaims: [] };
+
+          // Parallel fetch of cited URLs. Each fetch has 5s timeout.
+          // Reuses stripHtml + normalizeForMatch from outer scope (line 2903/2920).
+          const sourceResults = await Promise.all(urls.map(async (url) => {
+            try {
+              const r = await fetch(url, {
+                method: 'GET',
+                headers: { 'User-Agent': 'TCB-citation-verifier/1.0' },
+                signal: AbortSignal.timeout(5000),
+                redirect: 'follow'
+              });
+              if (!r.ok) return { url, sourceText: null };
+              const ct = (r.headers.get('content-type') || '').toLowerCase();
+              if (!ct.includes('html') && !ct.includes('text/plain')) return { url, sourceText: null };
+              const html = await r.text();
+              if (!html || html.length < 200 || html.length > 10000000) return { url, sourceText: null };
+              return { url, sourceText: normalizeForMatch(stripHtml(html)).slice(0, 6000) };
+            } catch (e) {
+              return { url, sourceText: null };
+            }
+          }));
+
+          const reachableSources = sourceResults.filter(s => s.sourceText);
+
+          // FAIL CLOSED: if no cited URL was fetchable, extract date claims
+          // and return them all as unsupported. User sees a deferral instead
+          // of risking shipping fabricated dates with citations we couldn't
+          // independently verify.
+          if (reachableSources.length === 0) {
+            const dateRe = /\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\b/gi;
+            const dates = [...new Set((textToVerify.match(dateRe) || []))];
+            return { allVerified: dates.length === 0, unsupportedClaims: dates };
+          }
+
+          // Have source content. Audit-Haiku verifies claims against sources.
+          const sourcesText = reachableSources
+            .map(s => '=== Source ' + s.url + ' ===\n' + s.sourceText)
+            .join('\n\n');
+
+          const prompt =
+            'You verify that a campaign coaching response\'s specific factual claims are actually supported by their cited sources.\n\n' +
+            'CITED SOURCES (' + reachableSources.length + ' URLs, normalized HTML, first 6000 chars each):\n' + sourcesText + '\n\n' +
+            'CAMPAIGN COACHING RESPONSE:\n' + textToVerify.slice(0, 3000) + '\n\n' +
+            'TASK: Identify any specific factual claim in the RESPONSE that is paired with a cited URL but is NOT supported by the source content.\n\n' +
+            'Check specifically for:\n' +
+            '- Specific dates (qualifying open/close, filing deadlines, petition deadlines, election dates)\n' +
+            '- Specific dollar amounts (donation limits, filing fees, contribution caps)\n' +
+            '- Specific procedures (where to file, who to contact)\n\n' +
+            'A claim is "supported" only if the source content contains the same date/amount labeled with the SAME concept.\n' +
+            '- "May 11 is the petition deadline" SUPPORTS "petition deadline is May 11"\n' +
+            '- "May 11 is the petition deadline" does NOT support "qualifying opens May 11" — petition and qualifying are different concepts\n' +
+            '- A date appearing in the source attached to a different label is NOT support for the response\'s claim\n' +
+            '- A dollar amount appearing in the source as a fee is NOT support for a claim labeling it as a contribution limit\n\n' +
+            'Return JSON: {"unsupported_claims": ["the exact substring from RESPONSE that is unsupported, e.g., \\"qualifying opens at noon on May 11, 2026\\""]}\n' +
+            'If all claims are supported by their cited sources: {"unsupported_claims": []}\n' +
+            'JSON ONLY — no preamble.';
+
+          try {
+            const resp = await fetch('https://api.anthropic.com/v1/messages', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+              body: JSON.stringify({
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 800,
+                temperature: 0,
+                messages: [{ role: 'user', content: prompt }]
+              })
+            });
+            const ad = await resp.json();
+            await logApiUsage('sam_citation_verifier', ad, rateLimitUserId, chatOwnerId);
+            let txt = '';
+            if (ad && ad.content && Array.isArray(ad.content)) {
+              for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+            }
+            const m = txt.match(/\{[\s\S]*\}/);
+            if (!m) return { allVerified: true, unsupportedClaims: [] };
+            const parsed = JSON.parse(m[0]);
+            const unsupported = Array.isArray(parsed.unsupported_claims) ? parsed.unsupported_claims : [];
+            return { allVerified: unsupported.length === 0, unsupportedClaims: unsupported };
+          } catch (e) {
+            console.warn('[verifyCitationAccuracy] verifier failed:', e.message);
+            // Fail open on verifier infrastructure issues — the production
+            // bug we're fixing is URL-trust, not verifier-up failure.
+            return { allVerified: true, unsupportedClaims: [] };
+          }
+        }
+
         async function regenerateWithUrlRequired(originalMsgs, badContent, agencyMentions) {
           const retryMsgs = [
             ...originalMsgs,
@@ -9409,7 +10448,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               'Pick the URL that matches the question type. Do NOT invent URLs. Reply with only the rewritten answer — no preamble, no acknowledgment.'
             }
           ];
-          const regenResult = await callClaude(retryMsgs);
+          const { result: regenResult, error: _regenErr } = await regenViaEngine(retryMsgs);
+          if (_regenErr) return _regenErr;
           if (workspaceEntities && workspaceEntities.length > 0 && regenResult && Array.isArray(regenResult.content)) {
             regenResult.content = demaskContentArray(regenResult.content, workspaceEntities);
           }
@@ -9424,45 +10464,204 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // tagged, passed) so deferrals always get URL enforcement.
         async function applyNoUrlCheck(finalText, finalContent, badContentForRegen, eventLabel, originalCit) {
           const noUrlAgencies = detectAgencyMentionsWithoutUrl(finalText);
+
+          // Phase 1.5.A: even when URL enforcement isn't needed, verify
+          // cited claims in the current text. The regen-with-citation
+          // success path can deliver fabricated dates with URLs (Haiku
+          // regen invents "May 11 (per Ballotpedia)" — URL is real,
+          // Ballotpedia mentions May 11 as petition deadline, but the
+          // response claims it's qualifying open). Verifier catches the
+          // semantic mismatch.
           if (noUrlAgencies.length === 0) {
+            const verification = await verifyCitationAccuracy(finalText);
+            if (!verification.allVerified) {
+              const verifiedStripped = stripUnverifiedClaims(finalText, verification.unsupportedClaims);
+              await logCitationEvent(
+                'strip_after_verification_failed',
+                [], verification.unsupportedClaims,
+                originalCit || finalText, verifiedStripped
+              );
+              return {
+                text: verifiedStripped,
+                content: [{ type: 'text', text: verifiedStripped }],
+                fired: true
+              };
+            }
             return { text: finalText, content: finalContent, fired: false };
           }
+
           const retryUrl = await regenerateWithUrlRequired(messages, badContentForRegen, noUrlAgencies);
           const retryUrlText = extractTextFromContent(retryUrl.content);
           const stillNoUrl = detectAgencyMentionsWithoutUrl(retryUrlText);
+
+          // Phase 1.5.A: URL-enforcement regen is the highest-risk
+          // fabrication path — Haiku is instructed to "rewrite" the
+          // response with URLs and frequently invents dates alongside.
+          // Verify cited claims in the regen output. If unsupported,
+          // strip the fabricated claims rather than ship them.
+          let finalRetryText = retryUrlText;
+          let finalRetryContent = retryUrl.content;
+          let verificationStripped = false;
+          if (stillNoUrl.length === 0) {
+            const verification = await verifyCitationAccuracy(retryUrlText);
+            if (!verification.allVerified) {
+              finalRetryText = stripUnverifiedClaims(retryUrlText, verification.unsupportedClaims);
+              finalRetryContent = [{ type: 'text', text: finalRetryText }];
+              verificationStripped = true;
+            }
+          }
+
           await logCitationEvent(
-            stillNoUrl.length === 0 ? 'regenerated_with_url' : 'url_required_retry_failed',
-            noUrlAgencies, stillNoUrl, originalCit || finalText, retryUrlText
+            verificationStripped
+              ? 'strip_after_verification_failed'
+              : (stillNoUrl.length === 0 ? 'regenerated_with_url' : 'url_required_retry_failed'),
+            noUrlAgencies, stillNoUrl, originalCit || finalText, finalRetryText
           );
-          return { text: retryUrlText, content: retryUrl.content, fired: true };
+          return { text: finalRetryText, content: finalRetryContent, fired: true };
         }
 
         const cv = await validateUnsourcedClaims(_citationSamText);
         const cvSoft = (cv.medium || []).concat(cv.low || []);
         if (cv.high_stakes.length > 0) {
-          // Try regen-with-citation FIRST (one retry).
-          const retry = await regenerateWithCitationFeedback(messages, data.content, cv.high_stakes);
+          // ========================================================
+          // PHASE 2: grounding-aware split BEFORE regen.
+          //   Tier 1 (free): classifyClaimSourcing checks groundingSupports
+          //   Tier 2 (paid): verifyClaimsAgainstGroundedSources audits
+          //                  Tier-1-sourced claims against grounded chunk URLs
+          //   Claims that pass both tiers SURVIVE without regen.
+          //   Claims that fail either tier go to regen (existing path).
+          // ========================================================
+          const groundingSupports = (data && data._grounding && Array.isArray(data._grounding.supports)) ? data._grounding.supports : [];
+          const groundingChunks = (data && data._grounding && Array.isArray(data._grounding.chunks)) ? data._grounding.chunks : [];
+
+          let tier1Sourced = [];
+          let tier1Unsourced = [];
+          let tier2Demoted = [];
+          let claimsNotFoundCount = 0;
+          const classifications = [];
+
+          for (const claim of cv.high_stakes) {
+            const result = classifyClaimSourcing(claim, _citationSamText, groundingSupports);
+            classifications.push({ claim: String(claim).slice(0, 200), result });
+            if (result.reason === 'claim_not_found') claimsNotFoundCount++;
+            if (result.sourced) {
+              tier1Sourced.push({ claim, classification: result });
+            } else {
+              tier1Unsourced.push({ claim, classification: result });
+            }
+          }
+
+          // Tier 2: verify Tier-1-sourced claims against grounded source URLs
+          if (tier1Sourced.length > 0 && groundingChunks.length > 0) {
+            const tier2Result = await verifyClaimsAgainstGroundedSources(tier1Sourced, groundingChunks);
+            if (tier2Result && Array.isArray(tier2Result.unverifiedClaims) && tier2Result.unverifiedClaims.length > 0) {
+              const unverifiedSet = new Set(tier2Result.unverifiedClaims);
+              tier2Demoted = tier1Sourced.filter(s => unverifiedSet.has(s.claim));
+              tier1Sourced = tier1Sourced.filter(s => !unverifiedSet.has(s.claim));
+            }
+          }
+
+          const claimsNeedingRegen = [
+            ...tier1Unsourced.map(c => c.claim),
+            ...tier2Demoted.map(c => c.claim)
+          ];
+
+          const baseTelemetry = {
+            grounding_used: (data && data._grounding && data._grounding.used) || 0,
+            sourced_claims_count: tier1Sourced.length,
+            tier1_unsourced_count: tier1Unsourced.length,
+            tier2_demoted_count: tier2Demoted.length,
+            claims_not_found_in_response_count: claimsNotFoundCount,
+            grounding_supports_json: JSON.stringify({
+              supports: groundingSupports,
+              classifications,
+              tier2_demoted: tier2Demoted.map(d => d.claim)
+            })
+          };
+
+          // All claims sourced — skip regen entirely
+          if (claimsNeedingRegen.length === 0) {
+            let finalText = _citationSamText;
+            if (cvSoft.length > 0) finalText = tagWithConfidence(_citationSamText, cv.medium, cv.low);
+            await logCitationEvent('passed_grounding_aware', cv.high_stakes, cvSoft, _citationSamText, finalText, baseTelemetry);
+            const urlChecked = await applyNoUrlCheck(finalText, data.content, data.content, 'grounded_chain', _citationSamText);
+            return buildSafeResponse({ ...data, content: [{ type: 'text', text: urlChecked.text }] });
+          }
+
+          // Some claims need regen — pass only those subset to regen
+          const retry = await regenerateWithCitationFeedback(messages, data.content, claimsNeedingRegen);
           const retryText = extractTextFromContent(retry.content);
           const retryCv = await validateUnsourcedClaims(retryText);
-          if (retryCv.high_stakes.length === 0) {
-            // Regen succeeded — Sam now cites her claims. Tag any pattern/
-            // inference claims that the retry surfaced with confidence levels.
+
+          // Phase 2 fix 2: run Tier 1 + Tier 2 on REGEN output too. The
+          // regen may have produced new grounded claims (Gemini regen can
+          // re-ground). Without re-checking, those would be subject to
+          // strip even if grounded. Defense in depth.
+          const retryGroundingSupports = (retry && retry._grounding && Array.isArray(retry._grounding.supports)) ? retry._grounding.supports : [];
+          const retryGroundingChunks = (retry && retry._grounding && Array.isArray(retry._grounding.chunks)) ? retry._grounding.chunks : [];
+
+          let retryTier1Sourced = [];
+          let retryTier1Unsourced = [];
+          let retryTier2Demoted = [];
+          let retryClaimsNotFoundCount = 0;
+          const retryClassifications = [];
+
+          for (const claim of retryCv.high_stakes) {
+            const result = classifyClaimSourcing(claim, retryText, retryGroundingSupports);
+            retryClassifications.push({ claim: String(claim).slice(0, 200), result });
+            if (result.reason === 'claim_not_found') retryClaimsNotFoundCount++;
+            if (result.sourced) {
+              retryTier1Sourced.push({ claim, classification: result });
+            } else {
+              retryTier1Unsourced.push({ claim, classification: result });
+            }
+          }
+
+          if (retryTier1Sourced.length > 0 && retryGroundingChunks.length > 0) {
+            const tier2Result = await verifyClaimsAgainstGroundedSources(retryTier1Sourced, retryGroundingChunks);
+            if (tier2Result && Array.isArray(tier2Result.unverifiedClaims) && tier2Result.unverifiedClaims.length > 0) {
+              const unverifiedSet = new Set(tier2Result.unverifiedClaims);
+              retryTier2Demoted = retryTier1Sourced.filter(s => unverifiedSet.has(s.claim));
+              retryTier1Sourced = retryTier1Sourced.filter(s => !unverifiedSet.has(s.claim));
+            }
+          }
+
+          const retryClaimsNeedingStrip = [
+            ...retryTier1Unsourced.map(c => c.claim),
+            ...retryTier2Demoted.map(c => c.claim)
+          ];
+
+          const retryTelemetry = {
+            ...baseTelemetry,
+            sourced_claims_count: tier1Sourced.length + retryTier1Sourced.length,
+            tier1_unsourced_count: tier1Unsourced.length + retryTier1Unsourced.length,
+            tier2_demoted_count: tier2Demoted.length + retryTier2Demoted.length,
+            claims_not_found_in_response_count: claimsNotFoundCount + retryClaimsNotFoundCount,
+            grounding_supports_json: JSON.stringify({
+              supports: groundingSupports,
+              classifications,
+              tier2_demoted: tier2Demoted.map(d => d.claim),
+              retry_supports: retryGroundingSupports,
+              retry_classifications: retryClassifications,
+              retry_tier2_demoted: retryTier2Demoted.map(d => d.claim)
+            })
+          };
+
+          if (retryClaimsNeedingStrip.length === 0) {
+            // Regen recovered all claims via grounding (or all retry-validator-flagged
+            // claims came from grounding-aware-sourced subset). Tag soft, ship.
             let finalText = retryText;
             if ((retryCv.medium || []).length > 0 || (retryCv.low || []).length > 0) {
               finalText = tagWithConfidence(retryText, retryCv.medium, retryCv.low);
             }
-            await logCitationEvent('regenerated_with_citation', cv.high_stakes, (retryCv.medium || []).concat(retryCv.low || []), _citationSamText, finalText);
-            // Phase 4 chain: enforce URL inclusion on top of citation pass.
+            await logCitationEvent('regenerated_with_citation', cv.high_stakes, (retryCv.medium || []).concat(retryCv.low || []), _citationSamText, finalText, retryTelemetry);
             const urlChecked = await applyNoUrlCheck(finalText, retry.content, retry.content, 'regen_chain', _citationSamText);
-            const finalResp = { ...retry, content: [{ type: 'text', text: urlChecked.text }] };
-            return buildSafeResponse(finalResp);
+            return buildSafeResponse({ ...retry, content: [{ type: 'text', text: urlChecked.text }] });
           }
-          // Regen still uncited → fall back to strip (existing behavior).
-          const stripped = stripUnverifiedClaims(retryText, retryCv.high_stakes);
-          await logCitationEvent('stripped', cv.high_stakes, retryCv.high_stakes, _citationSamText, stripped);
-          // Phase 4 chain: enforce URL inclusion on strip output too. The strip
-          // text may still mention agency names without URLs (when joined ≥ 60
-          // and the surviving sentences have agency references).
+
+          // Strip the retry-unsourced subset only
+          const stripped = stripUnverifiedClaims(retryText, retryClaimsNeedingStrip);
+          await logCitationEvent('stripped', cv.high_stakes, retryClaimsNeedingStrip, _citationSamText, stripped, retryTelemetry);
           const strippedUrlChecked = await applyNoUrlCheck(stripped, [{ type: 'text', text: stripped }], retry.content, 'strip_chain', _citationSamText);
           return buildSafeResponse({ ...retry, content: [{ type: 'text', text: strippedUrlChecked.text }] });
         }
@@ -9487,7 +10686,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // Runs in background via ctx.waitUntil — user-facing latency
       // unaffected. Logs to shadow_gemini_log; never affects the
       // user-facing response.
-      if (ctx && typeof ctx.waitUntil === 'function' && shadowEnabledForUser(env, rateLimitUserId)) {
+      if (ctx && typeof ctx.waitUntil === 'function' && shadowEnabledForUser(env, rateLimitUserId, samEngine)) {
         // history at this point includes the current user message (client
         // appends before sending; line 7830 uses history as-is for the
         // Anthropic call). Pattern: history.length = 2N + 1 where N is
