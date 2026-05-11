@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "NY",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "Is there a U.S. Senate race in New York for the 2026 cycle?",
+    "question_variants": [
+      "Are Chuck Schumer or Kirsten Gillibrand up for re-election in 2026?",
+      "When is the next US Senate election in NY?",
+      "New York US Senate seats 2026"
+    ],
+    "answer": "No. There is no regular U.S. Senate election in New York in 2026. Senator Chuck Schumer (Class 3) is not up until 2028, and Senator Kirsten Gillibrand (Class 1) is not up until 2030.",
+    "source_url": "https://elections.ny.gov/election-results-and-data",
+    "source_name": "New York State Board of Elections – Election Data",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Are there term limits for the Governor of New York?",
+    "question_variants": [
+      "Can Governor Hochul run for re-election in 2026?",
+      "How many terms can a NY Governor serve?",
+      "New York gubernatorial term limits"
+    ],
+    "answer": "No. There are no term limits for the Governor of New York or any statewide elected official. Governor Kathy Hochul is eligible to run for re-election in 2026.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/CNS/A4",
+    "source_name": "New York Constitution Article IV § 1",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Do the Governor and Lieutenant Governor run on the same ticket in the primary election?",
+    "question_variants": [
+      "Are NY Governor and LG elected together?",
+      "Joint ticket rules for New York Governor",
+      "Do I vote for Governor and LG separately?"
+    ],
+    "answer": "Candidates for Governor and Lieutenant Governor run separately in the partisan primary elections. However, the winners of each primary are paired together and run as a joint ticket on the November General Election ballot.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/CNS/A4",
+    "source_name": "New York Constitution Article IV § 1",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates and voters"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "When is the 2026 New York Primary Election?",
+    "question_variants": [
+      "What date is the NY primary in 2026?",
+      "New York 2026 primary date",
+      "When do polls open for the NY primary?"
+    ],
+    "answer": "The New York Primary Election is scheduled for Tuesday, June 23, 2026 (the fourth Tuesday in June).",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/8-100",
+    "source_name": "N.Y. Elec. Law § 8-100(1)(a)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "When is the 2026 New York General Election?",
+    "question_variants": [
+      "What date is the NY general election in 2026?",
+      "NY 2026 midterm election date",
+      "When is Election Day 2026 in New York?"
+    ],
+    "answer": "The New York General Election is on Tuesday, November 3, 2026.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/8-100",
+    "source_name": "N.Y. Elec. Law § 8-100(1)(c)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "What is 'Fusion Voting' and how does it work in New York?",
+    "question_variants": [
+      "Can a candidate run on multiple party lines in NY?",
+      "Cross-endorsement rules New York",
+      "How do the Working Families and Conservative parties cross-endorse?"
+    ],
+    "answer": "Under New York's 'Fusion Voting' system, multiple political parties can nominate the exact same candidate. The candidate's name appears separately on the ballot under each party's line (e.g., Democratic and Working Families), and all votes cast for the candidate across those lines are aggregated into a single total.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/1-104",
+    "source_name": "N.Y. Elec. Law § 1-104",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and party committees"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the requirements for a political party to maintain automatic ballot access in New York?",
+    "question_variants": [
+      "How does a third party stay on the ballot in NY?",
+      "Party qualification threshold New York 130,000 votes",
+      "What is the threshold to be a recognized political party in NY?"
+    ],
+    "answer": "To maintain recognized status, a party's candidate for Governor or President (at the last preceding gubernatorial or presidential election) must receive at least 130,000 votes OR 2% of the total votes cast for that office, whichever is greater. As of 2026, the qualified parties are Democratic, Republican, Conservative, and Working Families.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/1-104",
+    "source_name": "N.Y. Elec. Law § 1-104(3)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Third-party organizers and state committees"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the difference in authority between the New York State Board of Elections and the New York City Board of Elections?",
+    "question_variants": [
+      "Does the State BoE run elections in Brooklyn?",
+      "NYC Board of Elections vs State BoE",
+      "Who manages voting machines in Manhattan?"
+    ],
+    "answer": "The State Board of Elections handles statewide campaign finance and general election law enforcement. However, the New York City Board of Elections (NYC BoE) is a separately constituted body that directly administers all voting, ballot printing, and polling locations strictly within the five boroughs of NYC. Campaigns operating in NYC must interact directly with the NYC BoE for ballot access and voter data.",
+    "source_url": "https://vote.nyc/page/about-board",
+    "source_name": "New York City Board of Elections",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and consultants operating within NYC"
+  },
+  {
+    "state": "NY",
+    "office_level": ["municipal"],
+    "category": "runoff_rules",
+    "question": "Does New York use Ranked-Choice Voting (RCV)?",
+    "question_variants": [
+      "Is ranked choice voting used for Governor in NY?",
+      "RCV rules New York City",
+      "Do I rank candidates for Congress in NY?"
+    ],
+    "answer": "Ranked-Choice Voting (RCV) is used EXCLUSIVELY in New York City, and ONLY for Primary and Special Elections for five specific city offices: Mayor, Public Advocate, Comptroller, Borough President, and City Council. RCV is NOT used for General Elections, nor is it used anywhere outside of NYC or for state/federal offices.",
+    "source_url": "https://vote.nyc/page/ranked-choice-voting",
+    "source_name": "New York City Board of Elections – RCV Guide",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "NYC Municipal Candidates and Voters"
+  },
+  {
+    "state": "NY",
+    "office_level": ["judicial"],
+    "category": "ballot_access",
+    "question": "How do candidates get on the ballot for the New York Supreme Court?",
+    "question_variants": [
+      "Are there primary elections for NY Supreme Court judges?",
+      "Judicial nominating conventions NY",
+      "How to run for Supreme Court in New York"
+    ],
+    "answer": "Candidates for the New York Supreme Court (the state's trial-level court of general jurisdiction) are not chosen through direct primary elections. Instead, they are nominated at Judicial Delegate Conventions by delegates who were elected by party voters during the primary.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-106",
+    "source_name": "N.Y. Elec. Law § 6-106",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the New York Public Campaign Finance Program (PCFP)?",
+    "question_variants": [
+      "State matching funds NY",
+      "How does the PCFB matching system work?",
+      "Do state assembly candidates get public money?"
+    ],
+    "answer": "The PCFP is a voluntary program where candidates for statewide office and the state legislature can receive public matching funds for small-dollar contributions ($5 to $250). To qualify, candidates must reach specific fundraising thresholds and collect a minimum number of donations from residents of their specific district or the state.",
+    "source_url": "https://pcfb.ny.gov/program-overview",
+    "source_name": "New York State Public Campaign Finance Board",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State-level candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the matching fund ratio for State Senate and State Assembly candidates in the PCFP?",
+    "question_variants": [
+      "Tiered matching funds NY legislature",
+      "How much does the state match for a $250 donation?",
+      "PCFB matching ratios breakpoints"
+    ],
+    "answer": "For legislative candidates, the program uses a progressively tiered match for the first $250 of eligible in-district contributions. The first $50 is matched at 12-to-1. The next $100 ($51-$150) is matched at 9-to-1. The final $100 ($151-$250) is matched at 8-to-1. Therefore, a full $250 contribution yields $2,300 in public matching funds.",
+    "source_url": "https://pcfb.ny.gov/candidate-committee-services",
+    "source_name": "New York State Public Campaign Finance Board",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State Legislative candidates participating in PCFP"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the matching fund ratio for Statewide candidates (Governor, AG, Comptroller) in the PCFP?",
+    "question_variants": [
+      "Governor matching funds ratio NY",
+      "Statewide public campaign finance limits",
+      "6-to-1 match New York"
+    ],
+    "answer": "For participating statewide candidates (Governor, Lieutenant Governor, Attorney General, Comptroller), eligible in-state contributions between $5 and $250 are matched at a flat 6-to-1 ratio. A $100 contribution yields $600 in public funds.",
+    "source_url": "https://pcfb.ny.gov/candidate-committee-services",
+    "source_name": "New York State Public Campaign Finance Board",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates participating in PCFP"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Which congressional maps are in effect for the 2026 election cycle in New York?",
+    "question_variants": [
+      "Are the Hochul 2024 congressional maps still active?",
+      "Did the IRC draw the 2026 maps?",
+      "NY-11 redistricting lawsuit status 2026"
+    ],
+    "answer": "As of early 2026, the congressional maps signed into law in February 2024 are in effect. While a state trial court struck down NY-11 as racially dilutive in January 2026, the U.S. Supreme Court issued a stay in March 2026 pending state appellate review, leaving the 2024 boundaries temporarily active.",
+    "source_url": "https://www.nyirc.gov/congressional-plan",
+    "source_name": "New York Independent Redistricting Commission",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the 2025-2026 contribution limits for a candidate running for Governor of New York?",
+    "question_variants": [
+      "How much can an individual give to a Governor candidate in NY?",
+      "What is the max donation for statewide office in 2026?",
+      "NY Governor contribution limits 2026"
+    ],
+    "answer": "For the 2025-2026 cycle, individuals and PACs may contribute up to $9,000 per election to a candidate for Governor, Attorney General, or Comptroller. This limit applies regardless of whether the candidate is participating in the Public Campaign Finance Program.",
+    "source_url": "https://elections.ny.gov/2025-state-level-contribution-limits",
+    "source_name": "New York State Board of Elections – Contribution Limits",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates and donors"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the 2025-2026 contribution limits for State Senate and State Assembly in New York?",
+    "question_variants": [
+      "Max donation for NY State Assembly 2026",
+      "NY State Senate contribution limits",
+      "How much can I give to my local state representative in NY?"
+    ],
+    "answer": "For the 2025-2026 cycle, the contribution limit for individuals and PACs giving to non-participating candidates is $5,000 per election for State Senate, and $3,000 per election for State Assembly. These limits are calculated per election cycle by the State BoE based on active registered voters.",
+    "source_url": "https://elections.ny.gov/2025-state-level-contribution-limits",
+    "source_name": "New York State Board of Elections – Contribution Limits",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State Legislative candidates and donors"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are Limited Liability Companies (LLCs) treated for campaign contribution limits in New York?",
+    "question_variants": [
+      "LLC loophole New York 2019 reform",
+      "Can my LLC donate to a NY candidate?",
+      "Do LLCs have the same limits as individuals in NY?"
+    ],
+    "answer": "Following a January 2019 reform closing the 'LLC loophole', an LLC may contribute a maximum aggregate of $5,000 in a single calendar year, combined across ALL state and local candidates. Furthermore, the contribution must be attributed proportionally to the LLC's direct and indirect members from the very first dollar.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-116",
+    "source_name": "N.Y. Elec. Law § 14-116",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "LLC owners and Campaign Treasurers"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Can a corporation contribute directly to a candidate for state office in New York?",
+    "question_variants": [
+      "Are corporate contributions legal in NY?",
+      "Can my business donate to a state candidate?",
+      "Corporate aggregate limit NY"
+    ],
+    "answer": "Yes, but strictly limited. A corporation may contribute up to a total aggregate of $5,000 in a single calendar year, combined across all New York state and local candidates and political committees.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-116",
+    "source_name": "N.Y. Elec. Law § 14-116",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Corporations and Campaign Treasurers"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How many petition signatures are required for a statewide candidate to access the primary ballot in New York?",
+    "question_variants": [
+      "Signature requirement for NY Governor",
+      "How many signatures to run statewide in NY?",
+      "Geographic distribution rule for statewide petitions NY"
+    ],
+    "answer": "A statewide candidate must collect 15,000 valid signatures, or 5% of enrolled party voters (whichever is less). Critically, this total must include at least 100 signatures (or 5% of enrolled voters) from each of at least one-half of the state's congressional districts.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-136",
+    "source_name": "N.Y. Elec. Law § 6-136(1)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to change party enrollment to vote in a closed primary in New York?",
+    "question_variants": [
+      "When must I register as a Democrat to vote in the NY primary?",
+      "Party change deadline New York 2026",
+      "Closed primary cut-off date NY"
+    ],
+    "answer": "New York is a strict closed primary state. To vote in a party's June primary, an already-registered voter wishing to change their party enrollment must submit the change no later than February 14 of the election year. Applications received after February 14 do not take effect until after the primary.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/5-304",
+    "source_name": "N.Y. Elec. Law § 5-304(3)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Voters wishing to participate in primaries"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "What is the deadline for a new voter to register for the 2026 New York Primary or General Election?",
+    "question_variants": [
+      "Voter registration deadline NY 2026",
+      "10-day registration rule New York",
+      "When is the last day to register for the election?"
+    ],
+    "answer": "Under New York's 10-day rule, a new voter registration application must be received by the Board of Elections no later than 10 days before the election. For the June 23, 2026 primary, the deadline is June 13, 2026.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/5-210",
+    "source_name": "N.Y. Elec. Law § 5-210",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "How many days of Early Voting does New York require?",
+    "question_variants": [
+      "Early voting period New York",
+      "When does early voting start in NY?",
+      "9-day early voting window"
+    ],
+    "answer": "New York mandates a 9-day early voting period. Early voting begins on the tenth day prior to an election and ends on the second day prior to the election.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/8-600",
+    "source_name": "N.Y. Elec. Law § 8-600",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and Get-Out-The-Vote operations"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote at the polls in New York?",
+    "question_variants": [
+      "New York voter ID laws",
+      "Do I need my driver's license to vote in NY?",
+      "Poll ID requirements NY"
+    ],
+    "answer": "No. New York does not require a photo ID to vote at the polls. Only first-time voters who registered by mail without providing their driver's license or Social Security number may be asked to show identification (which can include non-photo options like a utility bill).",
+    "source_url": "https://elections.ny.gov/request-ballot",
+    "source_name": "New York State Board of Elections",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Can voters circulate a recall petition to remove the Governor or other state officials in New York?",
+    "question_variants": [
+      "Statewide recall rules New York",
+      "How to recall a politician in NY",
+      "Does NY have a recall mechanism?"
+    ],
+    "answer": "No. New York State does not have a general statutory or constitutional mechanism for voters to recall elected state officials. Removal of statewide officers is handled via the legislative impeachment process.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/CNS/A6",
+    "source_name": "New York Constitution Article VI § 24",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Statewide officials"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the minimum age to run for Governor or Lieutenant Governor in New York?",
+    "question_variants": [
+      "How old do you have to be to be NY Governor?",
+      "Age requirement for Lt. Governor NY",
+      "Gubernatorial candidate age limit"
+    ],
+    "answer": "A candidate for Governor or Lieutenant Governor must be at least 30 years old, a citizen of the United States, and a resident of New York for at least five years immediately preceding the election.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/CNS/A4",
+    "source_name": "New York Constitution Article IV § 2",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "What is the voter registration deadline and early voting period for the 2026 New York General Election?",
+    "question_variants": [
+      "When is the last day to register for the 2026 general election in NY?",
+      "General election early voting dates NY 2026",
+      "October registration deadline New York"
+    ],
+    "answer": "Under the 10-day rule, voter registration applications for the General Election must be received by October 24, 2026. The mandated 9-day Early Voting period also begins on October 24, 2026, and runs through November 1, 2026.",
+    "source_url": "https://elections.ny.gov/2026-election-deadlines-poster",
+    "source_name": "New York State Board of Elections – Election Deadlines",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and Get-Out-The-Vote operations"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal"],
+    "category": "ballot_access",
+    "question": "How many petition signatures are required for a U.S. House candidate to access the primary ballot in New York?",
+    "question_variants": [
+      "Signature threshold for Congress NY",
+      "How many signatures to run for US House in New York?",
+      "Designating petition requirements Congressional District"
+    ],
+    "answer": "To access the primary ballot via a designating petition, a candidate for the U.S. House of Representatives must collect 1,250 valid signatures from enrolled voters of their party within the congressional district, or 5% of the enrolled voters, whichever is less, under N.Y. Elec. Law § 6-136(2)(g).",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-136",
+    "source_name": "N.Y. Elec. Law § 6-136(2)(g)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature thresholds for State Senate and State Assembly designating petitions?",
+    "question_variants": [
+      "Signatures needed for NY State Legislature",
+      "How many signatures to run for State Assembly NY?",
+      "State Senate petition requirements 1000 signatures"
+    ],
+    "answer": "A candidate for New York State Senate must collect 1,000 valid signatures from enrolled party voters within the district. A candidate for New York State Assembly must collect 500 valid signatures from enrolled party voters within the district (or 5% of enrolled voters, whichever is less).",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-136",
+    "source_name": "N.Y. Elec. Law § 6-136(2)(h-i)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["county", "municipal"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for county-level offices in New York?",
+    "question_variants": [
+      "How many signatures to run for county executive?",
+      "Local office petition rules NY",
+      "County legislature signature requirement"
+    ],
+    "answer": "For county-level offices, the requirement is generally 5% of the enrolled voters of the party in the political subdivision. However, state law caps the maximum number of required signatures based on the population/size of the subdivision (e.g., capping at 2,000, 1,500, or 1,000 depending on the county).",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-136",
+    "source_name": "N.Y. Elec. Law § 6-136(2)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County and local candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "What is an Independent Nominating Petition for U.S. House in New York?",
+    "question_variants": [
+      "Running as an independent in NY",
+      "Independent line ballot access New York",
+      "How do unaffiliated candidates get on the ballot?"
+    ],
+    "answer": "Candidates without a recognized party line must file an Independent Nominating Petition to appear on the general election ballot. For U.S. House, this requires 3,500 valid signatures under N.Y. Elec. Law § 6-142(2)(e). These petitions are typically collected and filed during a specific window in April and May.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-142",
+    "source_name": "N.Y. Elec. Law § 6-142",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent and third-party candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "Does New York allow no-excuse absentee voting?",
+    "question_variants": [
+      "Can anyone vote by mail in NY?",
+      "Early Mail Voter Act New York",
+      "Do I need an excuse to get an absentee ballot in 2026?"
+    ],
+    "answer": "Yes. The Early Mail Voter Act of 2023 allows any registered voter to request an 'Early Mail Ballot' without a traditional excuse. This law survived a 2024 constitutional challenge (Stefanik v. Hochul) and is fully operational for the 2026 cycle.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/8-700",
+    "source_name": "N.Y. Elec. Law § 8-700",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "What are the postmark and receipt deadlines for mail-in ballots in New York?",
+    "question_variants": [
+      "When is my absentee ballot due in NY?",
+      "7-day receipt deadline for ballots New York",
+      "Postmark rules for Early Mail Ballots"
+    ],
+    "answer": "A mail ballot must be postmarked no later than Election Day. It will be counted as long as it is received by the County Board of Elections no later than 7 days after the election (e.g., November 10, 2026, for the General Election).",
+    "source_url": "https://elections.ny.gov/2026-election-deadlines-poster",
+    "source_name": "New York State Board of Elections – Election Deadlines",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and Campaigns"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the difference between COELIG and the State Board of Elections for campaign compliance?",
+    "question_variants": [
+      "Who enforces campaign finance in NY?",
+      "JCOPE vs BOE vs COELIG",
+      "Where do I file my financial disclosure?"
+    ],
+    "answer": "The State Board of Elections (BOE) Division of Election Law Enforcement handles all direct campaign finance reporting, contribution limits, and election law violations. The Commission on Ethics and Lobbying in Government (COELIG—formerly JCOPE) oversees financial disclosures for state officials, lobbying regulations, and broader ethics investigations.",
+    "source_url": "https://ethics.ny.gov/about-coelig",
+    "source_name": "New York State Commission on Ethics and Lobbying in Government",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates, Consultants, and Lobbyists"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the periodic and pre-election reporting schedule for campaign committees in New York?",
+    "question_variants": [
+      "When are campaign finance reports due in NY?",
+      "32-day pre-primary report deadline",
+      "New York periodic campaign filing dates"
+    ],
+    "answer": "Committees must file two standard 'Periodic' reports per year (January 15 and July 15). During an election where the candidate is on the ballot, committees must additionally file a 32-day pre-election report, an 11-day pre-election report, and a 27-day post-election report.",
+    "source_url": "https://elections.ny.gov/system/files/documents/2025/12/2026-filing-calendar-12112025-approved.secure.accessible.pdf",
+    "source_name": "New York State Board of Elections – Filing Calendar",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the 24-hour reporting rule for late contributions in New York?",
+    "question_variants": [
+      "When do I have to report late donations within 24 hours?",
+      "Late contribution timeframe NY",
+      "Reporting $1,000 donations right before the election"
+    ],
+    "answer": "Under N.Y. Elec. Law § 14-108(1)(d), any contribution or loan exceeding $1,000 received during the 14 days immediately preceding an election must be reported to the Board of Elections within 24 hours of receipt. This applies exclusively to contributions and loans, not to expenditures.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-108",
+    "source_name": "N.Y. Elec. Law § 14-108(1)(d)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "How is the order of candidate names determined on the New York ballot?",
+    "question_variants": [
+      "Who gets listed first on the ballot in NY?",
+      "Is ballot order randomized in New York?",
+      "Randomized alphabet drawing BoE"
+    ],
+    "answer": "Ballot order is determined by a 'Randomized Alphabet Drawing' conducted by the Board of Elections. The order in which the alphabet is drawn dictates the order in which candidates appear under the respective party lines, neutralizing alphabetical advantage.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/7-116",
+    "source_name": "N.Y. Elec. Law § 7-116",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "Does New York have a 'Sore Loser' law that prevents primary losers from appearing on the general election ballot?",
+    "question_variants": [
+      "Can a candidate who loses the primary run on another line in NY?",
+      "Sore loser law under fusion voting",
+      "Running on the Working Families line after losing the Democratic primary"
+    ],
+    "answer": "New York's 'sore loser' restriction is soft due to fusion voting. A candidate who loses a party primary is prohibited from filing an Independent Nominating Petition for that same office. However, if they already secured a different recognized party's line (e.g., losing the Democratic primary but winning the Working Families primary), they will still appear on the general election ballot on that alternate line.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-146",
+    "source_name": "N.Y. Elec. Law § 6-146",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates seeking multiple party lines"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "What is the Wilson-Pakula process in New York Election Law?",
+    "question_variants": [
+      "Can a Democrat run on the Republican line in NY?",
+      "Wilson-Pakula certificate of authorization",
+      "How do cross-endorsements work for non-enrolled members?"
+    ],
+    "answer": "The Wilson-Pakula Act requires that if a candidate is not officially enrolled in a political party, they cannot be designated or nominated by that party unless the party's appropriate committee explicitly issues a 'Certificate of Authorization' permitting them to run on their line.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-120",
+    "source_name": "N.Y. Elec. Law § 6-120(3)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates seeking cross-endorsements"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "How do the Conservative Party and Working Families Party typically utilize the Wilson-Pakula process?",
+    "question_variants": [
+      "WFP endorsement mechanics NY",
+      "Conservative Party cross endorsement",
+      "Third party lines New York"
+    ],
+    "answer": "Because third parties have smaller voter bases, the Conservative Party frequently uses Wilson-Pakula authorizations to cross-endorse Republican candidates, while the Working Families Party uses it to cross-endorse Democratic candidates, allowing those candidates to aggregate votes from both lines under Fusion Voting.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-120",
+    "source_name": "N.Y. Elec. Law § 6-120(3)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "What is the 'placeholder candidate' mechanism used by third parties like the Working Families Party?",
+    "question_variants": [
+      "WFP placeholder strategy NY",
+      "How does a party swap candidates off their line?",
+      "Nomination vacancy creation New York"
+    ],
+    "answer": "A party may designate a 'placeholder' candidate during the petition phase before major party primaries are decided. Because NY law only allows removing a candidate via death, declination, or disqualification, the party later cross-nominates the placeholder for a judicial office (disqualifying them from the original race), creating a legal vacancy that the party committee then fills with their true intended candidate.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-148",
+    "source_name": "N.Y. Elec. Law § 6-148",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Party Committees and Campaign Strategists"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the specific residency requirements to run for the New York State Legislature?",
+    "question_variants": [
+      "How long do I have to live in NY to run for State Senate?",
+      "Residency rules State Assembly NY",
+      "Do I have to live in the district to run?"
+    ],
+    "answer": "Under New York Constitution Article III § 7, a candidate must be a resident of New York for 5 years, and a resident of the district for 12 months immediately preceding the election. Exception: in a redistricting year, they need only be a resident of the county containing the altered district for 12 months.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/CNS/A3",
+    "source_name": "New York Constitution Article III § 7",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative Candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the specific residency and age requirements to run for U.S. House in New York?",
+    "question_variants": [
+      "Do I have to live in the district to run for Congress in NY?",
+      "Age requirement for Congress New York",
+      "Can I run for a congressional seat if I live in a different district?"
+    ],
+    "answer": "A U.S. House candidate must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of New York State when elected. The U.S. Constitution does not require the candidate to live within the specific congressional district boundaries.",
+    "source_url": "https://elections.ny.gov/requirements-hold-office",
+    "source_name": "New York State Board of Elections / U.S. Constitution Art. I § 2",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for local officials in New York City?",
+    "question_variants": [
+      "NYC Mayor term limits",
+      "Can a City Council member serve 3 terms in NY?",
+      "Term limits for Public Advocate and Comptroller"
+    ],
+    "answer": "Under the NYC Charter, the Mayor, Public Advocate, Comptroller, Borough Presidents, and City Council members are strictly limited to serving two consecutive four-year terms.",
+    "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-120",
+    "source_name": "New York City Charter § 1137",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "NYC Municipal Candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "candidate_eligibility",
+    "question": "Can a person with a felony conviction vote in New York while on parole or probation?",
+    "question_variants": [
+      "Felon voting rights NY",
+      "Can I vote after getting out of prison in New York?",
+      "Voting post-incarceration rules NY"
+    ],
+    "answer": "Yes. A 2021 law automatically restores the right to vote for individuals convicted of a felony immediately upon their release from incarceration. Being on parole or post-release supervision does not restrict voting, though the individual must re-register.",
+    "source_url": "https://elections.ny.gov/voting-after-incarceration",
+    "source_name": "New York State Board of Elections – Voting After Incarceration",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All eligible citizens"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "What are the baseline eligibility requirements to register to vote in New York?",
+    "question_variants": [
+      "How long do I need to live in NY to vote?",
+      "Can 17 year olds vote in the primary NY?",
+      "Voter qualifications New York"
+    ],
+    "answer": "To vote in New York, an individual must be a U.S. citizen, at least 18 years old by the date of the general election, and a resident of the state and the county, city, or village for at least 30 days before the election.",
+    "source_url": "https://elections.ny.gov/voting-after-incarceration",
+    "source_name": "New York State Board of Elections – Voter Qualifications",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "What is an Affidavit Ballot and when is it used?",
+    "question_variants": [
+      "Provisional ballot New York equivalent",
+      "Voting if my name isn't on the poll book NY",
+      "How to cast an affidavit ballot"
+    ],
+    "answer": "An Affidavit Ballot is New York's equivalent to a provisional ballot. If a voter believes they are eligible but their name is missing from the poll book or their signature is missing, they are legally entitled to vote via paper affidavit ballot and sign an oath envelope, which officials verify post-election.",
+    "source_url": "https://vote.nyc/page/understanding-ballot",
+    "source_name": "New York City Board of Elections / N.Y. Elec. Law § 8-302",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and poll watchers"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "What is the timeline for challenging a candidate's petition signatures in New York?",
+    "question_variants": [
+      "General objections to petitions timeline",
+      "How to knock someone off the ballot NY",
+      "Specifications of objections deadline"
+    ],
+    "answer": "Opponents must file 'General Objections' with the Board of Elections within 3 days after the petition is filed. Then, detailed 'Specifications of Objections' (outlining exactly which signatures are invalid and why) must be filed within 6 days following the filing of the General Objection.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-154",
+    "source_name": "N.Y. Elec. Law § 6-154",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaigns and Election Lawyers"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "Under what circumstances can a party substitute a candidate after nominations are finalized?",
+    "question_variants": [
+      "How to replace a candidate on the ballot NY",
+      "Vacated nominations substitution rules",
+      "Can a candidate withdraw after winning the primary in NY?"
+    ],
+    "answer": "New York law restricts removing or substituting a candidate once nominated. A vacancy can generally only be created and filled if the candidate dies, officially declines the nomination within a very narrow statutory window, or becomes legally disqualified (e.g., by moving out of state or being nominated for a judgeship).",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-148",
+    "source_name": "N.Y. Elec. Law § 6-148",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Party Committees"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "What is the procedure for running as a write-in candidate in New York?",
+    "question_variants": [
+      "Do write-in candidates have to register in NY?",
+      "How to legally canvass write-in votes",
+      "Certificate of Candidacy write in NY"
+    ],
+    "answer": "Voters can write in any name on the ballot. However, to ensure write-in votes are officially tallied and canvassed, a write-in candidate must file a Certificate of Candidacy with the Board of Elections no later than 27 days before the primary or general election.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-153",
+    "source_name": "N.Y. Elec. Law § 6-153",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates in New York allowed to use campaign funds for personal expenses?",
+    "question_variants": [
+      "Personal use of campaign funds NY",
+      "Can I buy a car with campaign money?",
+      "New York rules on spending campaign donations"
+    ],
+    "answer": "No. New York Election Law explicitly prohibits the conversion of campaign funds to a personal use. Expenditures must be exclusively related to the candidate's campaign or the execution of their public office duties.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-130",
+    "source_name": "N.Y. Elec. Law § 14-130",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All state and local candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal"],
+    "category": "ballot_access",
+    "question": "What is the petition signature requirement to run for U.S. Senate in New York?",
+    "question_variants": [
+      "How many signatures to run for Senate in NY?",
+      "Senate ballot access NY",
+      "Statewide federal signature requirements"
+    ],
+    "answer": "Although there is no regular U.S. Senate election in NY in 2026, the statewide designating petition requirement is 15,000 valid signatures (or 5% of enrolled voters), including at least 100 signatures from each of at least half of the state's 26 congressional districts.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-136",
+    "source_name": "N.Y. Elec. Law § 6-136(1)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the residency requirements to run for Governor, Attorney General, or Comptroller in New York?",
+    "question_variants": [
+      "How long do I need to live in NY to run for AG?",
+      "Residency rules for statewide office",
+      "Do I have to be a NY resident to run for Comptroller?"
+    ],
+    "answer": "Under the New York Constitution, candidates for Governor, Lieutenant Governor, Attorney General, and State Comptroller must be citizens, at least 30 years old, and residents of New York State for at least five years immediately preceding the election.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/CNS/A5",
+    "source_name": "New York Constitution Article V § 1",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "What are the state restrictions on placing campaign signs near highways in New York?",
+    "question_variants": [
+      "Can I put political signs on state roads?",
+      "NYSDOT campaign sign rules",
+      "Where are campaign signs prohibited in NY?"
+    ],
+    "answer": "Under New York State Department of Transportation (NYSDOT) regulations, it is illegal to place political campaign signs within the state highway right-of-way. Signs placed illegally are subject to immediate removal and confiscation by NYSDOT crews.",
+    "source_url": "https://www.dot.ny.gov/news/press-releases/2022/2022-10-18",
+    "source_name": "New York State Department of Transportation",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All campaigns"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure requirements for campaign text messages (SMS) and robocalls in New York?",
+    "question_variants": [
+      "Do campaign texts need an 'Ad paid for by' disclaimer?",
+      "Robocall disclosure requirements NY",
+      "SMS political rules New York"
+    ],
+    "answer": "Political robocalls and SMS text messages must include explicit 'Paid for by' disclosures and comply with federal TCPA consent standards. NY law strictly prohibits anonymous mass political communications, requiring the sponsor's identity to be clearly stated.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-106",
+    "source_name": "N.Y. Elec. Law § 14-106",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All campaigns utilizing digital communication"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the digital advertising disclosure rules for New York campaigns?",
+    "question_variants": [
+      "Democracy Protection Act NY",
+      "Do Facebook ads need disclaimers in New York?",
+      "Digital political ad rules"
+    ],
+    "answer": "Under the Democracy Protection Act, all paid internet and digital political advertisements must clearly display a 'Paid for by' disclosure. Social media platforms are also required to maintain a public archive of political ads purchased by independent expenditure committees.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-107-B",
+    "source_name": "N.Y. Elec. Law § 14-107-b",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Digital strategists and campaigns"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What triggers the requirement to report an Independent Expenditure in New York?",
+    "question_variants": [
+      "When does an independent group have to file?",
+      "Independent expenditure definition NY",
+      "Reporting threshold for Super PACs New York"
+    ],
+    "answer": "Under N.Y. Elec. Law § 14-107, an independent expenditure is a communication that expressly advocates for or against a candidate, made without coordination. Any person or entity making independent expenditures aggregating $1,000 or more must file disclosures with the State BoE.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-107",
+    "source_name": "N.Y. Elec. Law § 14-107",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Super PACs and Independent Expenditure Committees"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When must an Independent Expenditure Committee register in New York?",
+    "question_variants": [
+      "How to form an IEC in NY",
+      "Registration deadline for Super PACs",
+      "Independent expenditure registration"
+    ],
+    "answer": "An Independent Expenditure Committee (IEC) must formally register with the State Board of Elections by filing a statement of organization before making any independent expenditures that aggregate to $1,000 or more.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-107",
+    "source_name": "N.Y. Elec. Law § 14-107(3)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent Expenditure Committees"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for filing campaign finance reports late with the New York State Board of Elections?",
+    "question_variants": [
+      "How much is the fine for late campaign reports in NY?",
+      "State BoE late filing penalties",
+      "What happens if I miss the reporting deadline?"
+    ],
+    "answer": "The State BoE Division of Election Law Enforcement can impose civil penalties for late filing. Penalties typically range up to $1,000 for a first-time failure to file a standard periodic report, and up to $1,000 or the cost of the communication for late independent expenditure reports.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-126",
+    "source_name": "N.Y. Elec. Law § 14-126",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the process for filing an ethics complaint against a state official with COELIG?",
+    "question_variants": [
+      "How to report ethics violations NY",
+      "Filing a complaint with JCOPE/COELIG",
+      "Who investigates conflicts of interest for state legislators?"
+    ],
+    "answer": "The Commission on Ethics and Lobbying in Government (COELIG) investigates complaints regarding violations of the state's ethics laws, such as conflicts of interest or improper gifts. Complaints can be filed securely online or by mail, and COELIG has subpoena power to investigate.",
+    "source_url": "https://ethics.ny.gov/report-misconduct",
+    "source_name": "New York State Commission on Ethics and Lobbying in Government",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Consultants"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the Form CF-02 and when must a candidate file it in New York?",
+    "question_variants": [
+      "How to register a campaign committee NY",
+      "Statement of Organization deadline",
+      "CF-02 filing requirements"
+    ],
+    "answer": "Form CF-02 is the Committee Registration/Statement of Organization form. It must be filed with the State Board of Elections within 5 days after a candidate or committee chooses a treasurer and a depository bank, which must be done before receiving or spending any funds.",
+    "source_url": "https://elections.ny.gov/campaign-finance-forms",
+    "source_name": "New York State Board of Elections",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Campaign Treasurers"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How long must a campaign treasurer retain campaign finance records in New York?",
+    "question_variants": [
+      "Campaign record retention requirements NY",
+      "How many years to keep campaign receipts?",
+      "BoE audit record retention"
+    ],
+    "answer": "Under New York Election Law, a campaign treasurer must preserve all detailed accounts, records, bills, and receipts verifying their campaign finance disclosure statements for five years from the date of filing the statement to which they pertain.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-118",
+    "source_name": "N.Y. Elec. Law § 14-118",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the rules for disposing of surplus campaign funds in New York?",
+    "question_variants": [
+      "Surplus funds disposition NY",
+      "Can I give my leftover campaign money to charity?",
+      "What happens to campaign money when I close my committee?"
+    ],
+    "answer": "Surplus campaign funds cannot be used for personal benefit. They may be returned to donors pro-rata, transferred to a party committee, donated to a 501(c)(3) charity, or held in the committee account for a future election campaign by the same candidate.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-130",
+    "source_name": "N.Y. Elec. Law § 14-130",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates concluding campaigns"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are foreign nationals prohibited from contributing to state and local campaigns in New York?",
+    "question_variants": [
+      "Can a foreign citizen donate to my city council race?",
+      "Foreign contribution ban NY",
+      "Are non-citizens allowed to give to New York campaigns?"
+    ],
+    "answer": "Yes. Following recent legislative amendments to N.Y. Elec. Law § 14-116-a, it is a felony for hostile foreign nations, their entities, or any foreign national to make contributions or independent expenditures in connection with any New York state or local election.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-116-A",
+    "source_name": "N.Y. Elec. Law § 14-116-a",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All state and local campaigns"
+  },
+  {
+    "state": "NY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "How do the Conservative Party and Working Families Party formally endorse candidates who are not enrolled members?",
+    "question_variants": [
+      "Third party endorsement process NY",
+      "Conservative party convention rules",
+      "How to get the WFP endorsement"
+    ],
+    "answer": "Third parties hold executive committee meetings or conventions to formally authorize cross-endorsements. Under the Wilson-Pakula Act, the party's state or county executive committee must issue a Certificate of Authorization for the non-enrolled candidate to legally appear on their ballot line.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-120",
+    "source_name": "N.Y. Elec. Law § 6-120",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates seeking third-party lines"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the Financial Disclosure Statement (FDS) for New York state officials?",
+    "question_variants": [
+      "Do legislators have to disclose outside income?",
+      "COELIG FDS rules",
+      "What financial information is public for NY politicians?"
+    ],
+    "answer": "Statewide elected officials, state legislators, and certain high-level state employees must file an annual Financial Disclosure Statement (FDS) with COELIG by May 15. The FDS requires the disclosure of outside income, investments, real estate, and potential conflicts of interest.",
+    "source_url": "https://ethics.ny.gov/financial-disclosure",
+    "source_name": "New York State Commission on Ethics and Lobbying in Government",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State officials and Candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are examples of impermissible personal uses of campaign funds in New York?",
+    "question_variants": [
+      "Can campaign funds pay for my country club membership?",
+      "What is considered personal use of donations NY?",
+      "Illegal ways to spend campaign money"
+    ],
+    "answer": "Impermissible personal uses include paying for a candidate's personal mortgage or rent, clothing (other than campaign promotional apparel), country club memberships, personal vacations, and tuition payments that are not directly related to the campaign or public office.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/14-130",
+    "source_name": "N.Y. Elec. Law § 14-130",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers and Candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What role does the New York State Comptroller play in the Public Campaign Finance Program (PCFP)?",
+    "question_variants": [
+      "Who audits the state matching funds NY?",
+      "Comptroller oversight of PCFB",
+      "Does the state audit participating campaigns?"
+    ],
+    "answer": "While the PCFP is administered by the Public Campaign Finance Board, the State Comptroller is responsible for managing the state's campaign finance fund and conducting post-election audits of participating campaigns to ensure public matching funds were spent legally.",
+    "source_url": "https://pcfb.ny.gov/program-overview",
+    "source_name": "New York State Public Campaign Finance Board",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Participating PCFP Campaigns"
+  },
+  {
+    "state": "NY",
+    "office_level": ["municipal"],
+    "category": "finance_ethics",
+    "question": "Are contribution limits for New York City offices different from the New York State limits?",
+    "question_variants": [
+      "NYC Mayor contribution limits vs NY Governor",
+      "Do city candidates follow State BoE limits?",
+      "NYC CFB rules on max donations"
+    ],
+    "answer": "Yes. The New York City Campaign Finance Board (NYC CFB) enforces separate, much stricter contribution limits for city offices (Mayor, Public Advocate, Comptroller, Borough President, City Council) than the State BoE limits for state offices. A NYC Mayoral candidate limit is $2,100, far below the Governor's $9,000.",
+    "source_url": "https://www.nyccfb.info/candidate-services/limits-and-thresholds/",
+    "source_name": "New York City Campaign Finance Board",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "NYC Municipal Candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["municipal"],
+    "category": "finance_ethics",
+    "question": "How does the New York City matching funds program differ from the state PCFP?",
+    "question_variants": [
+      "NYC 8 to 1 matching funds vs state program",
+      "How much does the NYC CFB match?",
+      "City council matching fund ratio"
+    ],
+    "answer": "The NYC Campaign Finance Board operates its own matching program for city offices. It provides an 8-to-1 match for the first $250 of an eligible NYC resident's contribution (up to $2,000 in public funds per donor), whereas the state PCFP has a tiered 12:1/9:1/8:1 ratio for legislative races and 6:1 for statewide races.",
+    "source_url": "https://www.nyccfb.info/get-involved/matching-funds-program/",
+    "source_name": "New York City Campaign Finance Board",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "NYC Municipal Candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["municipal"],
+    "category": "finance_ethics",
+    "question": "What are the 'Doing Business' limits for New York City candidates?",
+    "question_variants": [
+      "Can developers donate to the Mayor?",
+      "NYC CFB lobbyist contribution limits",
+      "Doing business definition CFB"
+    ],
+    "answer": "The NYC CFB enforces strict 'Doing Business' limits on contributions from individuals who have financial dealings with the city (e.g., lobbyists, contractors, developers). For a Mayoral candidate, a person 'doing business' with the city can only contribute $400, and these contributions are not eligible for public matching funds.",
+    "source_url": "https://www.nyccfb.info/candidate-services/limits-and-thresholds/",
+    "source_name": "New York City Campaign Finance Board",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "NYC Municipal Candidates and City Contractors"
+  },
+  {
+    "state": "NY",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are judges selected for the New York Court of Appeals?",
+    "question_variants": [
+      "Are Court of Appeals judges elected in NY?",
+      "Highest court selection process New York",
+      "How long do NY highest court judges serve?"
+    ],
+    "answer": "Judges for the New York Court of Appeals (the state's highest court) are not elected. They are appointed by the Governor from a shortlist provided by the Commission on Judicial Nomination and must be confirmed by the State Senate to serve 14-year terms.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/CNS/A6",
+    "source_name": "New York Constitution Article VI § 2",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial nominees"
+  },
+  {
+    "state": "NY",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Town and Village Justice Court judges elected in New York?",
+    "question_variants": [
+      "Are local justices elected in NY?",
+      "Village court judge elections",
+      "Do town judges run with a party label?"
+    ],
+    "answer": "Town and Village Justices are elected locally in partisan or nonpartisan elections, depending on the specific municipality's rules. They serve 4-year terms and have jurisdiction over local matters, misdemeanors, and minor civil claims.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/CNS/A6",
+    "source_name": "New York Constitution Article VI § 17",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local Judicial Candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies in the New York State Legislature filled?",
+    "question_variants": [
+      "Special election for State Assembly NY",
+      "How is a vacant state senate seat filled?",
+      "Do special elections have primaries in NY?"
+    ],
+    "answer": "Vacancies in the State Legislature are filled by special elections called by the Governor. Critically, there are no primary elections for these special elections; the respective county party committees directly nominate their candidates to appear on the special election ballot.",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/6-114",
+    "source_name": "N.Y. Elec. Law § 6-114",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Party Committees and State Legislative Candidates"
+  },
+  {
+    "state": "NY",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "How do term limits work for New York City Council members during a redistricting cycle?",
+    "question_variants": [
+      "Can a NYC Council member serve 3 terms?",
+      "2-4-4 term limits NYC",
+      "Redistricting effect on city council terms"
+    ],
+    "answer": "Normally, NYC Council members are limited to two consecutive 4-year terms. However, due to redistricting every 20 years, the terms follow a 2-year, 4-year, 4-year pattern (e.g., 2021, 2023, 2027) so members can technically serve up to three consecutive terms if one is a 2-year term.",
+    "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-59",
+    "source_name": "New York City Charter § 25",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "NYC City Council Members"
+  },
+  {
+    "state": "NY",
+    "office_level": ["judicial"],
+    "category": "ballot_access",
+    "question": "Why does New York use Judicial Delegate Conventions for Supreme Court nominations instead of direct primaries?",
+    "question_variants": [
+      "Lopez Torres Supreme Court case New York",
+      "Is the judicial convention system constitutional?",
+      "Why don't we vote for Supreme Court nominees directly?"
+    ],
+    "answer": "New York uses Judicial Delegate Conventions to nominate Supreme Court justices to promote geographic and demographic diversity and insulate trial judges from direct retail campaigning. This convention system was upheld as constitutional by the U.S. Supreme Court in Lopez Torres v. NY State Bd. of Elections (2008).",
+    "source_url": "https://www.supremecourt.gov/opinions/07pdf/06-766.pdf",
+    "source_name": "NYS Bd. of Elections v. Lopez Torres, 552 U.S. 196 (2008)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Judicial candidates and party delegates"
+  }
+]
