@@ -1,0 +1,1244 @@
+[
+  {
+    "state": "CA",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "Is there a U.S. Senate race in California for the 2026 cycle?",
+    "question_variants": [
+      "Are any California U.S. Senate seats up for election in 2026?",
+      "When is the next U.S. Senate election in CA?",
+      "Is Alex Padilla or Adam Schiff up for re-election in 2026?"
+    ],
+    "answer": "No. There is no regular U.S. Senate election in California in 2026. Senator Alex Padilla (Class 3) is not up until 2028, and Senator Adam Schiff (Class 1) is not up until 2030.",
+    "source_url": "https://www.sos.ca.gov/elections/upcoming-elections",
+    "source_name": "California Secretary of State – Upcoming Elections",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Can Governor Gavin Newsom run for re-election in 2026?",
+    "question_variants": [
+      "Is the California Governor's seat open in 2026?",
+      "What are the term limits for California Governor?",
+      "Can Newsom seek a third term?"
+    ],
+    "answer": "No. The Governor's seat is open in 2026 because Gavin Newsom is term-limited. Under the California Constitution, the Governor is limited to two terms in a lifetime.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=CONS&division=&title=&part=&chapter=&article=V",
+    "source_name": "California Constitution Article V § 2",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "How does California's 'Top-Two' primary system work for the 2026 election?",
+    "question_variants": [
+      "Does California have a closed primary?",
+      "Can Republicans vote for Democrats in the CA primary?",
+      "How do candidates advance to the general election in CA?"
+    ],
+    "answer": "All candidates for voter-nominated offices appear on a single ballot regardless of party preference. The top two vote-getters, regardless of party, advance to the general election; even if one candidate receives a majority in the primary, a general election is still held between the top two.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=8002.5.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 8002.5",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All federal and state candidates (except Presidential and party central committees)"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "When is the 2026 California Primary Election?",
+    "question_variants": [
+      "What date is the CA primary in 2026?",
+      "California 2026 primary date",
+      "When do polls open for the CA primary?"
+    ],
+    "answer": "The California Primary Election is on Tuesday, June 2, 2026. Polls are open from 7:00 a.m. to 8:00 p.m.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=1201.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 1201",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "When is the 2026 California General Election?",
+    "question_variants": [
+      "What date is the CA general election in 2026?",
+      "CA 2026 midterm election date",
+      "When is Election Day 2026 in California?"
+    ],
+    "answer": "The California General Election is on Tuesday, November 3, 2026. All registered voters will receive a mail-in ballot starting 29 days before this date.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=1200.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 1200",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Which congressional maps are in effect for the 2026 election cycle in California?",
+    "question_variants": [
+      "Did California change its congressional districts for 2026?",
+      "What is Prop 50's impact on 2026 house races?",
+      "Are we using the 2021 CRC maps for Congress in 2026?"
+    ],
+    "answer": "The mid-decade maps established by Proposition 50 (The Election Rigging Response Act), passed in a special election in November 2025, are in effect for the 2026 congressional elections. These replace the 2021 Citizens Redistricting Commission boundaries for U.S. House seats.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202520260ACA8",
+    "source_name": "Resolution Chapter 156, Statutes of 2025 (ACA 8)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "volatile",
+    "verification_method": "statute_citation",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Who drew the State Assembly and State Senate maps for the 2026 cycle?",
+    "question_variants": [
+      "Were the legislative maps changed by Prop 50?",
+      "Are state legislative districts the same as 2024?",
+      "Who has authority over CA legislative redistricting?"
+    ],
+    "answer": "The California Citizens Redistricting Commission (CRC) boundaries drawn in 2021 remain authoritative for State Assembly and State Senate districts in 2026. Proposition 50 only affected congressional maps.",
+    "source_url": "https://www.wedrawthelinesca.org/final_maps",
+    "source_name": "California Citizens Redistricting Commission",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State Assembly and State Senate candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the 2025-2026 contribution limits for a candidate running for Governor?",
+    "question_variants": [
+      "How much can an individual give to a Governor candidate in CA?",
+      "What is the max donation for statewide office in 2026?",
+      "CA Governor contribution limits 2026"
+    ],
+    "answer": "For the 2025-2026 cycle, individuals and non-small contributor PACs may contribute up to $39,200 per election to a candidate for Governor.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/state-contribution-limits.html",
+    "source_name": "FPPC – State Contribution Limits",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Governor candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the individual contribution limits for State Legislative or local candidates in 2026?",
+    "question_variants": [
+      "Max donation for CA State Assembly 2026",
+      "CA State Senate contribution limits",
+      "City council default contribution limits CA"
+    ],
+    "answer": "For the 2025-2026 cycle, the limit for individuals and PACs is $5,900 per election for State Assembly, State Senate, and local/county candidates (unless a local ordinance supersedes). Other statewide offices (like Attorney General or Treasurer) have a limit of $9,800 per election.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/state-contribution-limits.html",
+    "source_name": "FPPC – State Contribution Limits",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Legislative and Local candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Can a corporation contribute directly to a candidate for state office in California?",
+    "question_variants": [
+      "Are corporate contributions legal in CA?",
+      "Can my business donate to a state candidate?",
+      "California corporate donation rules for state candidates"
+    ],
+    "answer": "Yes. California law permits corporations to make direct contributions to state candidates, subject to the same limits as individuals (e.g., $5,900 for legislative candidates). This does not apply to federal candidates.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/state-contribution-limits.html",
+    "source_name": "FPPC – Campaign Rules for State Candidates",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and corporate donors"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "filing_requirements",
+    "question": "What is the 2026 filing fee for the office of Governor in California?",
+    "question_variants": [
+      "How much does it cost to run for Governor in CA?",
+      "California Governor filing fee amount",
+      "Candidate filing fees for statewide office"
+    ],
+    "answer": "The filing fee for Governor is 2% of the annual salary at the time of filing, which for 2026 is approximately $4,682.02. This fee must be paid to the Secretary of State.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=8103.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 8103",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Governor candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "filing_requirements",
+    "question": "What is the filing fee for State Assembly or State Senate in 2026?",
+    "question_variants": [
+      "Cost to run for CA State Assembly",
+      "State Senate filing fee CA",
+      "How much is the legislative filing fee in California?"
+    ],
+    "answer": "The filing fee for the State Legislature is 1% of the annual salary at the time of filing, which for 2026 is approximately $1,282.15.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=8103.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 8103",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state"],
+    "category": "filing_requirements",
+    "question": "How can a candidate avoid paying the filing fee in California?",
+    "question_variants": [
+      "Signatures in lieu of filing fee CA",
+      "Can I run for office in CA for free?",
+      "What is the signature threshold for in-lieu petitions?"
+    ],
+    "answer": "Candidates may submit a 'petition in lieu of filing fee' to reduce or eliminate the fee by collecting signatures from registered voters. The threshold varies by office (e.g., 10,000 for statewide, 3,000 for Congress).",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=8106.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 8106",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All federal and state candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "finance_ethics",
+    "question": "What is the Form 700 and when must a candidate file it?",
+    "question_variants": [
+      "Statement of Economic Interests CA requirement",
+      "When is Form 700 due for candidates?",
+      "Do CA candidates have to disclose personal assets?"
+    ],
+    "answer": "Form 700 (Statement of Economic Interests) is a mandatory disclosure of personal financial holdings. Candidates must file it no later than the final filing date for their declaration of candidacy.",
+    "source_url": "https://www.fppc.ca.gov/Form700.html",
+    "source_name": "FPPC – Form 700 Statement of Economic Interests",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and public officials"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How soon must a candidate committee file Form 410 after reaching the $2,000 threshold?",
+    "question_variants": [
+      "When to register a campaign committee in CA",
+      "Form 410 filing deadline",
+      "What is the money threshold to trigger committee registration in CA?"
+    ],
+    "answer": "A committee must file Form 410 within 10 days of receiving $2,000 or more in contributions. During the 90 days before an election, committees must file within 24 hours of reaching the threshold.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=84101.&lawCode=GOV",
+    "source_name": "Cal. Gov. Code § 84101",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and local candidate committees"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "Does every registered voter in California automatically receive a mail-in ballot in 2026?",
+    "question_variants": [
+      "California universal mail-in voting",
+      "Do I have to request an absentee ballot in CA?",
+      "Will I get a ballot in the mail automatically?"
+    ],
+    "answer": "Yes. Per AB 37, all registered voters in California are automatically sent a mail-in ballot for every election. Ballots are mailed out starting 29 days before the election.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=3000.5.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 3000.5",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All registered voters"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "What is the deadline to register to vote in California for the 2026 primary?",
+    "question_variants": [
+      "Voter registration deadline CA 2026",
+      "When is the last day to register for the June primary?",
+      "CA 15-day voter registration rule"
+    ],
+    "answer": "The standard deadline to register to vote is 15 days before the election (May 18, 2026). However, voters can still register 'conditionally' at any polling place or vote center up through Election Day.",
+    "source_url": "https://www.sos.ca.gov/elections/voter-registration",
+    "source_name": "California Secretary of State – Voter Registration",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "How does 'Conditional Voter Registration' work in California?",
+    "question_variants": [
+      "Same-day voter registration CA",
+      "Can I register to vote on Election Day in California?",
+      "CVR process CA"
+    ],
+    "answer": "Conditional Voter Registration (CVR) allows eligible citizens to register and vote after the 15-day deadline. CVR must be done in person at a county elections office, vote center, or designated satellite location.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=2170.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 2170",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters who missed the 15-day deadline"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote at the polls in California?",
+    "question_variants": [
+      "California voter ID laws",
+      "Do I need my driver's license to vote in CA?",
+      "Poll ID requirements CA"
+    ],
+    "answer": "Generally, no. Most voters do not need to show ID. First-time voters who registered by mail without providing a driver's license or SSN may be asked for ID (photo or non-photo) at the polls.",
+    "source_url": "https://www.sos.ca.gov/elections/voting-resources/voting-california/what-bring",
+    "source_name": "California Secretary of State – Voter ID Guide",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "CA",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many California counties have adopted the Voter's Choice Act (VCA) for 2026?",
+    "question_variants": [
+      "Which counties use vote centers vs polling places?",
+      "VCA counties list 2026",
+      "Is Los Angeles a Voter's Choice Act county?"
+    ],
+    "answer": "For the 2026 cycle, 29 of California's 58 counties are participating in the Voter's Choice Act, which replaces traditional polling places with regional vote centers. This includes Los Angeles County, the state's largest voting jurisdiction.",
+    "source_url": "https://www.sos.ca.gov/elections/voters-choice-act",
+    "source_name": "California Secretary of State – VCA Counties",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Voters in VCA-participating counties"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for members of the California State Legislature?",
+    "question_variants": [
+      "How long can someone serve in the CA Assembly?",
+      "Prop 28 term limits",
+      "State Senate term limits CA"
+    ],
+    "answer": "Under Proposition 28 (2012), individuals may serve a total of 12 years in the State Legislature during their lifetime. This time can be served in one house or split between the Assembly and Senate.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=CONS&division=&title=&part=&chapter=&article=IV",
+    "source_name": "California Constitution Article IV § 2(a)(4)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Assembly and State Senate candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "What is the signature threshold to qualify a recall against a statewide officer like the Governor?",
+    "question_variants": [
+      "How many signatures to recall a CA Governor?",
+      "CA recall percentage requirement",
+      "Recalling a statewide official in California"
+    ],
+    "answer": "The threshold is 12% of the last vote for the office. Additionally, signatures must be collected from at least five counties equal to 1% of the last vote for the office in each of those counties.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=CONS&division=&title=&part=&chapter=&article=II",
+    "source_name": "California Constitution Article II § 14(b)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide officials"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "Can a candidate include a 'Statement of Qualifications' in the voter information guide?",
+    "question_variants": [
+      "CA candidate statement rules",
+      "How much does it cost to put a statement in the voter guide?",
+      "Candidate statement word limit CA"
+    ],
+    "answer": "Yes. Candidates for state and federal office may submit a 250-word statement. Candidates must typically pay their pro-rata share of the printing costs, unless they meet specific financial hardship criteria.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=13307.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 13307",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voter-nominated and local candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "candidate_eligibility",
+    "question": "Can a person with a felony conviction vote in California while on parole or probation?",
+    "question_variants": [
+      "Felon voting rights CA",
+      "Prop 17 voting rights",
+      "Can you vote while on parole in California?"
+    ],
+    "answer": "Yes. Under Proposition 17 (2020), individuals with felony convictions regain the right to vote immediately upon the completion of their prison term. Being on parole or probation does not restrict a person's right to register and vote in California.",
+    "source_url": "https://www.sos.ca.gov/elections/voting-resources/voting-california/who-can-vote-california/voting-rights-restoration",
+    "source_name": "California Secretary of State – Voting Rights Restoration",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All eligible citizens"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Are contribution limits in California applied per election or per cycle?",
+    "question_variants": [
+      "CA primary vs general donation limits",
+      "Can a donor give twice in one year in CA?",
+      "FPPC per election rule"
+    ],
+    "answer": "California limits are applied 'per election.' This means a donor can give the maximum amount for the primary and then give the maximum amount again for the general election, provided the candidate advances.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=85301.&lawCode=GOV",
+    "source_name": "Cal. Gov. Code § 85301",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State candidates and donors"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "What is the standard voter registration deadline for the November 3, 2026 California General Election?",
+    "question_variants": [
+      "When is the last day to register for the 2026 general election?",
+      "General election registration deadline CA 2026",
+      "How many days before the general election must I register?"
+    ],
+    "answer": "The standard 15-day voter registration deadline for the 2026 General Election is October 19, 2026. However, voters can still utilize Conditional Voter Registration (CVR) up through Election Day.",
+    "source_url": "https://www.sos.ca.gov/elections/voter-registration",
+    "source_name": "California Secretary of State – Voter Registration",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "When do mail ballots go out for the 2026 California General Election?",
+    "question_variants": [
+      "When does early voting start for the general election?",
+      "When will CA voters receive their general election ballots?",
+      "Mail ballot mail-out date 2026"
+    ],
+    "answer": "County elections officials must begin mailing ballots to all active registered voters 29 days before the election, which for the General Election is October 5, 2026. This also marks the first day of early voting at county elections offices.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=3000.5.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 3000.5",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "How many signatures are required for a Petition in Lieu of Filing Fee for statewide, U.S. House, or State Legislative candidates?",
+    "question_variants": [
+      "In lieu signature threshold Congress CA",
+      "How many signatures to waive filing fee for State Assembly?",
+      "Signatures needed to avoid paying fee CA"
+    ],
+    "answer": "To fully waive the filing fee, candidates for statewide office must collect 10,000 valid signatures. U.S. House and State Senate candidates must collect 3,000 signatures. State Assembly candidates must collect 1,500 signatures.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=8106.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 8106",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Congressional and State Legislative candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How many valid signatures are required to qualify a state ballot initiative for the 2026 cycle?",
+    "question_variants": [
+      "CA citizen initiative signature requirement 2026",
+      "How many signatures to get a proposition on the ballot?",
+      "Signature threshold for constitutional amendments CA"
+    ],
+    "answer": "For the 2026 cycle, qualifying a statutory initiative requires 545,651 valid signatures (exactly 5% of the 10,933,016 votes cast for Governor in 2022). A constitutional amendment initiative requires 874,641 valid signatures (8% of that turnout).",
+    "source_url": "https://www.sos.ca.gov/elections/ballot-measures/how-qualify-initiative",
+    "source_name": "California Secretary of State – Initiative Qualification",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature requirement to qualify a new political party in California for 2026?",
+    "question_variants": [
+      "How to form a new political party CA",
+      "Signatures needed for third party ballot access",
+      "Party qualification threshold California"
+    ],
+    "answer": "To qualify a new party, organizers must collect valid petition signatures equal to 10% of the votes cast at the last gubernatorial election. Alternatively, a party can qualify if exactly 0.33% of total registered state voters explicitly register with that party preference.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=5100.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 5100",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Third-party organizers"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When must a committee file Form 462 to report Independent Expenditures?",
+    "question_variants": [
+      "Independent expenditure reporting timeline CA",
+      "When is Form 462 due?",
+      "FPPC rules for reporting independent spending"
+    ],
+    "answer": "A committee making an independent expenditure must file Form 462 with the FPPC via email within 10 days of making the expenditure. This verifies that the expenditure was not coordinated with the candidate or opposing committee.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/where-and-when-to-file-campaign-statements.html",
+    "source_name": "FPPC – Campaign Filing Schedules",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent Expenditure Committees"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What triggers the requirement to file as a 'Major Donor' under Form 461 in California?",
+    "question_variants": [
+      "Major Donor reporting threshold CA",
+      "When do individuals have to file Form 461?",
+      "How much can I donate before becoming a Major Donor?"
+    ],
+    "answer": "An individual or entity becomes a 'Major Donor' and must file Form 461 if they make contributions totaling $10,000 or more in a single calendar year to California state or local candidates and committees.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/major-donor-and-independent-expenditure-committees.html",
+    "source_name": "FPPC – Major Donor Committees",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Donors and entities"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the filing schedule for the Form 460 Recipient Committee Campaign Statement?",
+    "question_variants": [
+      "When are campaign finance reports due in CA?",
+      "Form 460 deadlines 2026",
+      "How often do I file my campaign finance report?"
+    ],
+    "answer": "Committees must file semi-annual reports (typically due Jan 31 and July 31). Additionally, during an election year, they must file pre-election statements (generally 40 days and 12 days before the election) detailing all receipts and expenditures.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/where-and-when-to-file-campaign-statements.html",
+    "source_name": "FPPC – Campaign Filing Schedules",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidate and Recipient Committees"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the definition of the 90-day window for Late Contributions in California?",
+    "question_variants": [
+      "Form 497 late contribution timeline",
+      "When do I have to report donations within 24 hours?",
+      "CA 90-day election window reporting"
+    ],
+    "answer": "Under Gov. Code § 82036, a 'Late Contribution' is any contribution of $1,000 or more made or received during the entire 90-day period immediately preceding an election. These must be reported within 24 hours using Form 497.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=82036.&lawCode=GOV",
+    "source_name": "Cal. Gov. Code § 82036",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidate and Recipient Committees"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the specific residency and age requirements to run for Governor or U.S. House in California?",
+    "question_variants": [
+      "How old to run for Governor in CA?",
+      "Do I have to live in the district to run for Congress in CA?",
+      "CA candidate age and residency rules"
+    ],
+    "answer": "A candidate for Governor must be an 'elector' (at least 18 years old) and a resident of California for 5 years immediately preceding the election. A U.S. House candidate must be at least 25 years old, a citizen for 7 years, and an inhabitant of California when elected.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=CONS&division=&title=&part=&chapter=&article=V",
+    "source_name": "California Constitution Article V § 2",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and Statewide candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "special_district"],
+    "category": "ballot_access",
+    "question": "What are the rules for a candidate's Ballot Designation in California?",
+    "question_variants": [
+      "3-word descriptor on ballot CA",
+      "What can I put under my name on the ballot?",
+      "Ballot designation rules California"
+    ],
+    "answer": "A ballot designation appears under the candidate's name and is limited to three words (with some exceptions for incumbents). It must accurately describe the candidate's current principal profession, vocation, or occupation, or state their incumbent status, and must not mislead voters.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=13107.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 13107",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "How does the 'Sore Loser' law apply under California's Top-Two Primary system?",
+    "question_variants": [
+      "Can a candidate who lost the primary run as an independent in the general?",
+      "Write-in campaign after losing CA primary",
+      "Sore loser rule Top-Two CA"
+    ],
+    "answer": "Under the Top-Two Primary system, a candidate who fails to finish in the top two in the primary election cannot run as an independent or write-in candidate in the general election for that same voter-nominated office.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=8605.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 8605",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voter-nominated office candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["county", "municipal", "special_district"],
+    "category": "recall_rules",
+    "question": "What is the signature threshold to recall a local official like a city councilmember or county supervisor?",
+    "question_variants": [
+      "Local recall threshold CA",
+      "Signatures needed to recall a mayor in California",
+      "School board recall signature requirements"
+    ],
+    "answer": "For local officials, the threshold is a percentage of the total registered voters in the jurisdiction, sliding from 10% for large districts (over 100,000 voters) up to 30% for very small districts (under 1,000 voters). For most medium-sized jurisdictions, it is 20%.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=11221.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 11221",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local officials and recall committees"
+  },
+  {
+    "state": "CA",
+    "office_level": ["county", "municipal", "special_district"],
+    "category": "recall_rules",
+    "question": "What is the procedure for initiating a local recall in California?",
+    "question_variants": [
+      "Steps to recall a local politician CA",
+      "Notice of Intent to Recall process",
+      "How do you start a recall election for a school board?"
+    ],
+    "answer": "Proponents must serve a 'Notice of Intention to Circulate Recall Petition' on the official, publish it, and file it with the local elections official. Once the petition format is approved, proponents have a set window (e.g., 40 to 160 days, depending on jurisdiction size) to collect signatures.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=ELEC&division=11.&title=&part=&chapter=1.&article=2.",
+    "source_name": "Cal. Elec. Code § 11020 et seq.",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local officials and recall committees"
+  },
+  {
+    "state": "CA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are judges selected and retained for the California Supreme Court and Courts of Appeal?",
+    "question_variants": [
+      "Do we elect Supreme Court judges in California?",
+      "Appellate court judicial elections CA",
+      "California judicial retention elections"
+    ],
+    "answer": "Supreme Court and Appellate Court justices are appointed by the Governor and confirmed by the Commission on Judicial Appointments. They do not run in contested elections; instead, voters decide whether to keep them in 'yes or no' retention elections at the end of their 12-year terms.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=CONS&division=&title=&part=&chapter=&article=VI",
+    "source_name": "California Constitution Article VI § 16(a)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Appellate and Supreme Court Justices"
+  },
+  {
+    "state": "CA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Trial Court (Superior Court) judges elected in California?",
+    "question_variants": [
+      "Superior court judge elections CA",
+      "Are trial judges partisan in California?",
+      "Running for judge in CA"
+    ],
+    "answer": "Superior Court judges are elected in countywide, nonpartisan elections for 6-year terms. If an incumbent is unopposed, their name typically does not appear on the ballot, and they are declared re-elected unless a write-in petition is filed.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=CONS&division=&title=&part=&chapter=&article=VI",
+    "source_name": "California Constitution Article VI § 16(b)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Trial Court Judges"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "What are the state restrictions on placing campaign signs near highways?",
+    "question_variants": [
+      "Caltrans campaign sign rules",
+      "Where can I place political yard signs in CA?",
+      "State Outdoor Advertising Act political signs"
+    ],
+    "answer": "The State Outdoor Advertising Act forbids placing campaign signs on public rights-of-way, including state highways, fences, trees, or utility poles. Signs must be on private property with the owner's permission and must be removed within 10 days after the election.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=5405.3.&lawCode=BPC",
+    "source_name": "Cal. Bus. & Prof. Code § 5405.3",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All campaigns"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure requirements for campaign text messages (SMS) and robocalls in California?",
+    "question_variants": [
+      "AB 1494 text message rules",
+      "Do campaign texts need an 'Ad paid for by' disclaimer?",
+      "Robocall disclosure requirements CA"
+    ],
+    "answer": "Under AB 1494 and FPPC rules, mass text messages and robocalls must include an 'Ad paid for by' or 'Who funded this ad?' disclosure. For texts, this can be a direct statement or a link to a website containing the full disclosure.",
+    "source_url": "https://www.fppc.ca.gov/siteassets/documents/tad/fact_sheets/political_ads/political_ad_disclosures_fact_sheet_final.pdf",
+    "source_name": "FPPC – Political Advertisement Disclosures",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All campaigns using digital communication"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal", "judicial", "special_district"],
+    "category": "finance_ethics",
+    "question": "Can a candidate use campaign funds for personal expenses?",
+    "question_variants": [
+      "Personal use of campaign funds CA",
+      "Can I buy a car with campaign money?",
+      "California rules on spending campaign donations"
+    ],
+    "answer": "No. The California Government Code strictly prohibits the personal use of campaign funds. Expenditures must be directly related to a political, legislative, or governmental purpose. If the expense confers a substantial personal benefit, it must be directly related to a campaign activity.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=GOV&division=9.&title=9.&part=&chapter=9.&article=4.",
+    "source_name": "Cal. Gov. Code § 89510 et seq.",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All state and local candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal", "judicial", "special_district"],
+    "category": "finance_ethics",
+    "question": "How long must a candidate committee retain its campaign finance records?",
+    "question_variants": [
+      "Campaign record retention requirements CA",
+      "How many years to keep campaign receipts?",
+      "FPPC audit record retention"
+    ],
+    "answer": "Candidate committees, major donors, and independent expenditure committees must retain all detailed accounts, records, bills, and receipts for four years following the date the campaign statement to which they relate is filed.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=84104.&lawCode=GOV",
+    "source_name": "Cal. Gov. Code § 84104",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers and Candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there independent local ethics commissions in major California cities?",
+    "question_variants": [
+      "LA Ethics Commission rules",
+      "Does San Francisco have its own campaign finance board?",
+      "Local election commission equivalents in CA"
+    ],
+    "answer": "Yes. Major municipalities have their own independent ethics agencies, such as the Los Angeles City Ethics Commission and the San Francisco Ethics Commission, which enforce local campaign finance ordinances that often impose stricter contribution limits and reporting requirements than state law.",
+    "source_url": "https://ethics.lacity.org/",
+    "source_name": "Los Angeles City Ethics Commission",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates in specific major cities"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "Where can a voter complete Conditional Voter Registration (CVR) in California?",
+    "question_variants": [
+      "Where to do same-day registration CA",
+      "Can I register at a polling place on Election Day?",
+      "CVR location requirements"
+    ],
+    "answer": "Voters can complete CVR (same-day registration) at their county elections office, any official vote center, or designated satellite locations from the close of regular registration (15 days prior) up through 8:00 p.m. on Election Day.",
+    "source_url": "https://www.sos.ca.gov/elections/voter-registration/same-day-reg",
+    "source_name": "California Secretary of State – Same Day Registration",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Get-Out-The-Vote operations"
+  },
+  {
+    "state": "CA",
+    "office_level": ["county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the rules for official ballot drop boxes in California counties?",
+    "question_variants": [
+      "Are ballot drop boxes secure in CA?",
+      "When do drop boxes open?",
+      "County requirements for mail ballot boxes"
+    ],
+    "answer": "Counties must provide secure, accessible drop boxes available starting 28 days before the election. Drop boxes must be locked exactly at 8:00 p.m. on Election Day. State law mandates strict chain-of-custody and security protocols for ballot retrieval.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=3025.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 3025",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and county administrators"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "Under what circumstances is a provisional ballot used at a California polling place?",
+    "question_variants": [
+      "When do I have to cast a provisional ballot?",
+      "Are provisional ballots counted in CA?",
+      "Voting if my name isn't on the roster"
+    ],
+    "answer": "Provisional ballots are used if a voter's eligibility cannot immediately be verified (e.g., name not on roster, registered in another county, or marked as already having returned a mail ballot). They are counted after elections officials verify the voter's registration and confirm they haven't voted elsewhere.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14310.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 14310",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "What is the deadline for a mail-in ballot to be received and counted in California?",
+    "question_variants": [
+      "Does my ballot have to arrive by Election Day in CA?",
+      "California mail ballot postmark rule",
+      "7-day receipt deadline for ballots"
+    ],
+    "answer": "A mail-in ballot will be counted if it is postmarked on or before Election Day and received by the county elections official no later than 7 days after Election Day.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=3020.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 3020",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for filing campaign finance reports late with the FPPC?",
+    "question_variants": [
+      "How much is the fine for late campaign reports in CA?",
+      "FPPC late filing fees",
+      "What happens if I miss the Form 460 deadline?"
+    ],
+    "answer": "Late statements are subject to a standard fine of $10 per day from the filing officer. Additionally, failure to file can result in a direct FPPC enforcement penalty of up to $5,000 per violation.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/where-and-when-to-file-campaign-statements.html",
+    "source_name": "Cal. Gov. Code § 91013",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are foreign nationals prohibited from contributing to state and local campaigns in California?",
+    "question_variants": [
+      "Can a foreign citizen donate to my city council race?",
+      "Foreign contribution ban CA",
+      "Are non-citizens allowed to give to California campaigns?"
+    ],
+    "answer": "Yes. California law (Gov. Code § 85320) specifically mirrors federal law by prohibiting a foreign principal or foreign national from making any contribution or independent expenditure in connection with any state or local election.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=85320.&lawCode=GOV",
+    "source_name": "Cal. Gov. Code § 85320",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All state and local campaigns"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "How are contribution limits aggregated between affiliated entities in California?",
+    "question_variants": [
+      "Can two PACs run by the same person double the limit?",
+      "Affiliated committee aggregation CA",
+      "Do corporate subsidiaries share a contribution limit?"
+    ],
+    "answer": "Contributions made by affiliated entities (e.g., a parent corporation and its subsidiaries, or two PACs controlled by the same individuals) are aggregated and treated as a single contribution for the purpose of enforcing contribution limits.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=85311.&lawCode=GOV",
+    "source_name": "Cal. Gov. Code § 85311",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Donors and Campaign Treasurers"
+  },
+  {
+    "state": "CA",
+    "office_level": ["county", "municipal"],
+    "category": "candidate_eligibility",
+    "question": "How are candidate qualifications verified or challenged locally?",
+    "question_variants": [
+      "Who checks if a candidate meets the requirements?",
+      "How to challenge a candidate's diploma in CA",
+      "Elec Code 13.5 verification"
+    ],
+    "answer": "Under Elections Code § 13.5, candidates for certain offices must file documentation (degrees, diplomas) proving their qualifications. However, the elections official is not required to verify the authenticity of the documents; challenges must generally be pursued through the courts via a writ of mandate.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=13.5.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 13.5",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates and opponents"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "ballot_access",
+    "question": "How is the order of candidates' names on the ballot determined in California?",
+    "question_variants": [
+      "Who gets listed first on the ballot in CA?",
+      "Is ballot order alphabetical?",
+      "Randomized alphabet drawing CA"
+    ],
+    "answer": "Ballot order is determined by a 'Randomized Alphabet Drawing' conducted by the Secretary of State 82 days before the election. Furthermore, for statewide and U.S. House races, candidate names are rotated throughout the Assembly districts to prevent positional bias.",
+    "source_url": "https://www.sos.ca.gov/elections/randomized-alphabet",
+    "source_name": "California Secretary of State – Randomized Alphabet",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state"],
+    "category": "candidate_eligibility",
+    "question": "Can a candidate run for more than one office on the same ballot in California?",
+    "question_variants": [
+      "Running for two offices at once CA",
+      "Can I run for Assembly and Congress at the same time?",
+      "Multiple office ballot access"
+    ],
+    "answer": "No. Under Elections Code § 8003(b), no person may file nomination papers for more than one office at the same election, with limited exceptions for certain party central committee positions or non-incompatible local board seats.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=8003.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 8003",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies in the California State Legislature filled?",
+    "question_variants": [
+      "Special election for State Assembly CA",
+      "How is a vacant state senate seat filled?",
+      "Legislative vacancy procedures"
+    ],
+    "answer": "Legislative vacancies are filled by special election. The Governor must call the special election within 14 days of the vacancy occurring. The election is generally held on a Tuesday at least 126 days, but not more than 140 days, after the proclamation.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=1773.&lawCode=GOV",
+    "source_name": "Cal. Gov. Code § 1773",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How does a candidate formally close or terminate their campaign committee?",
+    "question_variants": [
+      "Terminating a campaign committee CA",
+      "How to close Form 410",
+      "FPPC account closure rules"
+    ],
+    "answer": "To terminate a committee, the candidate must spend down all funds (leaving a $0 balance), ensure all debts are paid or forgiven, and file a terminating Form 410 along with a final Form 460 reporting the zero balance.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/where-and-when-to-file-campaign-statements.html",
+    "source_name": "FPPC – Campaign Rules",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What must a candidate do with leftover or surplus campaign funds?",
+    "question_variants": [
+      "Surplus funds disposition CA",
+      "Can I give my leftover campaign money to charity?",
+      "Gov Code 89519 rules"
+    ],
+    "answer": "Under Gov. Code § 89519, funds become 'surplus' 90 days after leaving office or 90 days after the post-election reporting period. Surplus funds can only be used for paying outstanding debts, refunding contributors, charitable donations, or contributions to political parties (with restrictions).",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=89519.&lawCode=GOV",
+    "source_name": "Cal. Gov. Code § 89519",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates leaving office or concluding campaigns"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is Cal-ACCESS and who must use it?",
+    "question_variants": [
+      "California electronic filing system",
+      "Where do I file my FPPC forms online?",
+      "Cal-ACCESS requirement"
+    ],
+    "answer": "Cal-ACCESS is the Secretary of State's online filing system. State candidates, major donors, and PACs must file their campaign finance disclosure reports electronically through Cal-ACCESS if they receive contributions or make expenditures totaling $25,000 or more.",
+    "source_url": "https://www.sos.ca.gov/campaign-lobbying/cal-access-resources",
+    "source_name": "California Secretary of State – Cal-ACCESS",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State-level committees and Major Donors"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state"],
+    "category": "runoff_rules",
+    "question": "What happens in a Top-Two general election if one of the two advancing candidates dies before the election?",
+    "question_variants": [
+      "Deceased candidate Top-Two CA",
+      "If a primary winner dies, does the third place person advance?",
+      "Replacement candidates Top-Two general"
+    ],
+    "answer": "If a candidate who advanced to the general election dies, their name remains on the ballot (or is removed depending on timing, but no replacement is made). The third-place finisher from the primary does NOT automatically advance to replace them.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=8809.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 8809",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voter-nominated candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "How long do proponents have to circulate a recall petition for a statewide officer in California?",
+    "question_variants": [
+      "Recall circulation timeline CA",
+      "How many days to get recall signatures?",
+      "Statewide recall window"
+    ],
+    "answer": "For statewide officers (like the Governor), proponents have 160 days from the time the petition is approved for circulation by the Secretary of State to collect the necessary number of signatures.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=CONS&division=&title=&part=&chapter=&article=II",
+    "source_name": "California Constitution Article II § 14(a)",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Recall proponents and Statewide officers"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "Are candidates running for the CalPERS Board of Administration subject to the same campaign finance rules as political candidates?",
+    "question_variants": [
+      "CalPERS board election rules",
+      "Do retirement board candidates file Form 460?",
+      "PRA application to CalPERS"
+    ],
+    "answer": "Yes. Candidates running for the Board of Administration of the Public Employees' Retirement System (CalPERS) are explicitly subject to the campaign finance disclosure requirements (like filing Form 460) of the Political Reform Act.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=82036.&lawCode=GOV",
+    "source_name": "Cal. Gov. Code § 82036",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "CalPERS Board Candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates allowed in the November General Election under California's Top-Two system?",
+    "question_variants": [
+      "Can I run as a write-in for the general election?",
+      "Top-Two write in rules CA",
+      "General election write in candidates"
+    ],
+    "answer": "No. For voter-nominated offices (like Congress and State Legislature), write-in candidates are only permitted in the Primary Election. Write-in candidates are prohibited on the General Election ballot for these offices.",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=8600.&lawCode=ELEC",
+    "source_name": "Cal. Elec. Code § 8600",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voter-nominated candidates"
+  },
+  {
+    "state": "CA",
+    "office_level": ["municipal", "county"],
+    "category": "finance_ethics",
+    "question": "Can a city or county impose stricter contribution limits than the state default of $5,900?",
+    "question_variants": [
+      "Local vs state contribution limits CA",
+      "Can my city lower the max donation?",
+      "Municipal campaign finance ordinances"
+    ],
+    "answer": "Yes. While the state imposes a default limit (currently $5,900) on local jurisdictions under AB 571, cities and counties retain the authority to pass their own local ordinances establishing stricter, lower contribution limits for their municipal races.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/state-contribution-limits.html",
+    "source_name": "FPPC – State and Local Contribution Limits",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates and city councils"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is a 'Sponsored Committee' in California?",
+    "question_variants": [
+      "Sponsored PAC rules CA",
+      "Committee naming requirements FPPC",
+      "Does a union have to put its name on its PAC?"
+    ],
+    "answer": "A 'Sponsored Committee' is a PAC that is financially supported or managed by a specific organization (like a union, trade association, or corporation). The committee must include the name of its sponsor in the official committee name.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/where-and-when-to-file-campaign-statements.html",
+    "source_name": "FPPC – Campaign Rules",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "PACs and Sponsoring Organizations"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is a Slate Mailer Organization and what form must they file?",
+    "question_variants": [
+      "Slate mailer reporting CA",
+      "Form 400 filing",
+      "How are voter guides regulated in California?"
+    ],
+    "answer": "A Slate Mailer Organization is an entity that receives $500 or more to produce a mass mailing that supports or opposes four or more candidates or measures. They must register using Form 400 and report their financial activity.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/slate-mailer-organizations.html",
+    "source_name": "FPPC – Slate Mailer Organizations",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Consultants and Mail Vendors"
+  },
+  {
+    "state": "CA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "finance_ethics",
+    "question": "What are the physical formatting rules for 'Paid for by' disclosures on print advertisements?",
+    "question_variants": [
+      "How big does the disclaimer have to be on a mailer?",
+      "Prop 34 print ad rules",
+      "Disclaimer font size requirements CA"
+    ],
+    "answer": "For print advertisements like mailers and flyers, the 'Ad paid for by' disclosure must be printed in at least 10-point font, in a color that contrasts with the background, and be clearly legible to the average reader.",
+    "source_url": "https://www.fppc.ca.gov/siteassets/documents/tad/fact_sheets/political_ads/political_ad_disclosures_fact_sheet_final.pdf",
+    "source_name": "FPPC – Political Advertisement Disclosures",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All Campaigns and Printers"
+  },
+  {
+    "state": "CA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is a 'General Purpose Committee' under California law?",
+    "question_variants": [
+      "Independent PAC definition CA",
+      "What is a general purpose committee?",
+      "State PAC vs candidate committee"
+    ],
+    "answer": "A General Purpose Committee is a PAC that is formed to support or oppose multiple candidates or measures across various elections, rather than being primarily formed to support a single specific candidate or single specific ballot measure.",
+    "source_url": "https://www.fppc.ca.gov/learn/campaign-rules/general-purpose-committees.html",
+    "source_name": "FPPC – General Purpose Committees",
+    "last_verified_date": "2026-05-11",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Political Action Committees"
+  }
+]
