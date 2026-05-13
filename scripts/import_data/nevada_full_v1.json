@@ -1,0 +1,1334 @@
+[
+  {
+    "state": "NV",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "Is there a U.S. Senate race in Nevada for the 2026 cycle?",
+    "question_variants": [
+      "Are Catherine Cortez Masto or Jacky Rosen up for re-election in 2026?",
+      "When is the next US Senate election in NV?",
+      "2026 Nevada Senate candidates"
+    ],
+    "answer": "No. There is no U.S. Senate race in Nevada in 2026. Senator Catherine Cortez Masto (Class 3) is next up for re-election in 2028, and Senator Jacky Rosen (Class 1) is next up in 2030.",
+    "source_url": "https://www.nvsos.gov/sos/elections",
+    "source_name": "Nevada Secretary of State – Elections",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is Governor Joe Lombardo running for re-election in 2026?",
+    "question_variants": [
+      "Is the Nevada Governor's seat open in 2026?",
+      "Who is running for Nevada Governor in 2026?",
+      "Joe Lombardo 2026 re-election intent"
+    ],
+    "answer": "Yes. Governor Joe Lombardo (R), who was elected in 2022, is eligible for and seeking re-election to a second term in 2026.",
+    "source_url": "https://www.nvsos.gov/sos/elections/candidates",
+    "source_name": "Nevada Secretary of State – Candidates",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Nevada statewide executive offices are up for election in 2026?",
+    "question_variants": [
+      "Who is on the ballot in Nevada in 2026?",
+      "Is the Attorney General up for reelection?",
+      "2026 Nevada state executive elections"
+    ],
+    "answer": "All six of Nevada's constitutional executive offices are on the 2026 ballot: Governor, Lieutenant Governor, Attorney General, Secretary of State, State Treasurer, and State Controller.",
+    "source_url": "https://www.nvsos.gov/sos/elections/candidates",
+    "source_name": "Nevada Secretary of State – Election Information",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Nevada use ranked-choice voting (RCV) and open primaries in 2026?",
+    "question_variants": [
+      "Did Question 3 pass in Nevada?",
+      "Are Nevada primaries open to independents?",
+      "Nevada final-five voting 2026"
+    ],
+    "answer": "No. Ballot Question 3, which would have established open primaries and ranked-choice voting for general elections, was rejected by voters in 2024. Because constitutional amendments require passage in two consecutive general elections, its 2022 initial approval was nullified, maintaining the status quo.",
+    "source_url": "https://www.nvsos.gov/sos/elections/election-information/2024-election-information",
+    "source_name": "Nevada Secretary of State – 2024 Election Results",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county"],
+    "category": "voter_interaction",
+    "question": "Are Nevada primary elections closed or open?",
+    "question_variants": [
+      "Can nonpartisan voters vote in the Nevada primary?",
+      "Do I have to register with a party to vote in the primary?",
+      "Closed partisan primary NV"
+    ],
+    "answer": "Nevada holds strictly closed partisan primaries. Only voters registered with a major political party may vote in that party's primary election for partisan offices.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec175",
+    "source_name": "NRS 293.175",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in Nevada in 2026?",
+    "question_variants": [
+      "Nevada voter ID laws 2026",
+      "Did Question 7 pass?",
+      "Do I need my driver's license to vote in NV?"
+    ],
+    "answer": "Currently, Nevada does not require photo ID to vote if a voter's signature matches their registration. However, voters passed Question 7 (a photo ID requirement) in 2024. Because it is a constitutional amendment, it must pass a second time on the 2026 ballot to take effect.",
+    "source_url": "https://www.nvsos.gov/sos/elections/voters/election-day-voting",
+    "source_name": "Nevada Secretary of State – Voting",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does every voter in Nevada automatically receive a mail-in ballot?",
+    "question_variants": [
+      "Universal mail voting Nevada",
+      "Do I have to request an absentee ballot in NV?",
+      "AB 321 mail ballots"
+    ],
+    "answer": "Yes. Under AB 321, codified in NRS 293.269911, every active registered voter in Nevada is automatically mailed a ballot for every election unless they explicitly submit a form to opt out.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec269911",
+    "source_name": "NRS 293.269911",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "What is the deadline for a mail-in ballot to be received and counted in Nevada?",
+    "question_variants": [
+      "When is my absentee ballot due in NV?",
+      "Nevada mail ballot postmark rule",
+      "4-day receipt deadline for ballots"
+    ],
+    "answer": "A mail-in ballot will be counted if it is postmarked on or before Election Day and received by the county clerk no later than 5:00 p.m. on the fourth day following the election.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec269921",
+    "source_name": "NRS 293.269921(2)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Nevada allow same-day voter registration?",
+    "question_variants": [
+      "Can I register to vote at the polls in Nevada?",
+      "Same-day registration rules NV",
+      "Election day registration Nevada"
+    ],
+    "answer": "Yes. Nevada offers same-day voter registration. Eligible citizens can register to vote and cast a ballot in person at any polling location during the early voting period or on Election Day, using a valid Nevada driver's license or ID card.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec5772",
+    "source_name": "NRS 293.5772",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How does Automatic Voter Registration (AVR) work in Nevada?",
+    "question_variants": [
+      "Are you automatically registered to vote at the DMV in NV?",
+      "Question 5 AVR implementation",
+      "Motor voter rules Nevada"
+    ],
+    "answer": "Nevada utilizes an Automatic Voter Registration (AVR) system. Under NRS 293.5727, any eligible citizen who completes a transaction at the DMV is automatically registered to vote unless they explicitly decline at the point of service.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec5727",
+    "source_name": "NRS 293.5727",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When is the 2026 Nevada Primary Election?",
+    "question_variants": [
+      "What date is the NV primary in 2026?",
+      "Nevada 2026 primary date",
+      "When do polls open for the NV primary?"
+    ],
+    "answer": "The Nevada Primary Election is on Tuesday, June 9, 2026. Under NRS 293.175, the primary election is statutorily held on the second Tuesday in June.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec175",
+    "source_name": "NRS 293.175",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When is the 2026 Nevada General Election?",
+    "question_variants": [
+      "What date is the NV general election in 2026?",
+      "NV 2026 midterm election date",
+      "When is Election Day 2026 in Nevada?"
+    ],
+    "answer": "The Nevada General Election is on Tuesday, November 3, 2026.",
+    "source_url": "https://www.nvsos.gov/sos/elections",
+    "source_name": "Nevada Secretary of State – Elections",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for partisan candidates for the 2026 Nevada primary?",
+    "question_variants": [
+      "When did candidates have to file for the 2026 primary in Nevada?",
+      "Declaration of candidacy deadline 2026",
+      "Nevada March filing deadline"
+    ],
+    "answer": "For partisan candidates, the filing period for declarations of candidacy opened on the first Monday in March and closed at 5:00 p.m. on the second Friday following the first Monday in March (March 2 to March 13, 2026).",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec177",
+    "source_name": "NRS 293.177(1)(b)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "When is the filing deadline for Independent candidates in Nevada for 2026?",
+    "question_variants": [
+      "Running as an independent in NV",
+      "Independent ballot access deadline Nevada",
+      "When are nonparty petitions due?"
+    ],
+    "answer": "Independent candidates who wish to bypass the partisan primary and appear on the general election ballot must file their petition of candidacy no later than the third Friday in June (June 19, 2026).",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec200",
+    "source_name": "NRS 293.200(4)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "filing_requirements",
+    "question": "What are the candidate filing fees in Nevada?",
+    "question_variants": [
+      "How much does it cost to run for office in NV?",
+      "Nevada filing fee schedule 2026",
+      "Does Nevada charge a filing fee for candidates?"
+    ],
+    "answer": "Nevada has a graduated filing fee schedule. U.S. Senator is $500; U.S. House, Governor, and Supreme Court Justice are $300; other statewide executive offices are $200; District Judge is $150; State Senate, State Assembly, and Justice of the Peace are $100; and other district or county offices are $30.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec193",
+    "source_name": "NRS 293.193",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for Governor in Nevada?",
+    "question_variants": [
+      "How old do you have to be to be NV Governor?",
+      "Gubernatorial candidate residency rules",
+      "Do I have to live in Nevada for 5 years to run for Governor?"
+    ],
+    "answer": "Under the Nevada Constitution, a candidate for Governor must be a qualified elector, at least 25 years old at the time of the election, and a resident citizen of Nevada for at least two years immediately preceding the election.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art5Sec3",
+    "source_name": "Nevada Constitution Article 5 § 3",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for the Nevada State Legislature?",
+    "question_variants": [
+      "How old to run for State Senate NV?",
+      "Residency rules State Assembly Nevada",
+      "Do I have to live in the district to run for Assembly?"
+    ],
+    "answer": "A candidate for the Nevada State Senate or State Assembly must be a qualified elector, at least 21 years old at the time of the election, and a resident citizen of the state for at least one year immediately preceding the election.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art4Sec5",
+    "source_name": "Nevada Constitution Article 4 § 5",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for U.S. House in Nevada?",
+    "question_variants": [
+      "Do I have to live in the district to run for Congress in NV?",
+      "Congressional age limit Nevada",
+      "US House qualifications"
+    ],
+    "answer": "Under the U.S. Constitution, a candidate for the U.S. House of Representatives must be at least 25 years old, a U.S. citizen for seven years, and an inhabitant of Nevada when elected. District residency is not required.",
+    "source_url": "https://www.nvsos.gov/sos/elections/candidates",
+    "source_name": "Nevada Secretary of State / U.S. Constitution Art. I § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "recall_rules",
+    "question": "What is the operational process for a recall election in Nevada?",
+    "question_variants": [
+      "How does a recall election work in NV?",
+      "Can a recalled politician resign before the election?",
+      "Nevada recall ballot rules"
+    ],
+    "answer": "A recall can be triggered after six months in office with signatures equal to 25% of the votes cast in the last election for that office. Once a petition is verified, the targeted official has 5 days to resign. If they do not, a special election is scheduled within 30 days. Other candidates may appear on the ballot, and a plurality winner takes the unexpired term.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art2Sec9",
+    "source_name": "Nevada Constitution Article 2 § 9",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "When does early voting (in-person) begin in Nevada?",
+    "question_variants": [
+      "When can I vote early in NV?",
+      "In-person early voting window",
+      "Nevada early voting duration"
+    ],
+    "answer": "In-person early voting in Nevada runs for a statutorily mandated 14 days. It begins on the Saturday that is 17 days before the election and concludes on the Friday immediately preceding Election Day.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec3568",
+    "source_name": "NRS 293.3568",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Are secure drop boxes for absentee ballots legally mandated in Nevada?",
+    "question_variants": [
+      "Can I put my absentee ballot in a drop box in NV?",
+      "Mail ballot drop boxes Nevada",
+      "Does Nevada use drop boxes for voting?"
+    ],
+    "answer": "Yes. Under AB 321, Nevada law requires county and city clerks to establish secure mail ballot drop boxes at every polling place during the early voting period and on Election Day, protecting the practice from localized placement disputes.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec269927",
+    "source_name": "NRS 293.269927",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to cure a mail ballot signature in Nevada?",
+    "question_variants": [
+      "When do I have to fix my signature for my mail ballot?",
+      "Absentee ballot curing window NV",
+      "Nevada mail ballot signature mismatch"
+    ],
+    "answer": "If a mail ballot signature is missing or does not match the registration record, the county clerk must notify the voter. The voter has until 5:00 p.m. on the sixth day following the election to cure the defect by providing a signature confirmation.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec269927",
+    "source_name": "NRS 293.269927",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Can a corporation contribute directly to a candidate for state office in Nevada?",
+    "question_variants": [
+      "Are corporate contributions legal in NV?",
+      "Can my business donate to a state candidate?",
+      "LLC donation rules Nevada"
+    ],
+    "answer": "Yes. Nevada permits direct corporate treasury contributions to candidates. Corporations and LLCs are treated as \"persons\" and are subject to the same strict individual limits of $5,000 for the primary and $5,000 for the general election ($10,000 per cycle). There is no automatic inflation adjustment for these limits.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec100",
+    "source_name": "NRS 294A.100",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Corporations, LLCs, and Campaign Treasurers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits for Nevada state campaigns?",
+    "question_variants": [
+      "How much can a PAC give to a candidate in NV?",
+      "PAC contribution limits Nevada",
+      "Super PAC direct donation rules"
+    ],
+    "answer": "Political Action Committees (PACs) in Nevada may receive unlimited contributions, but they are subject to the exact same per-candidate contribution limits as individuals: $5,000 for the primary and $5,000 for the general election.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec100",
+    "source_name": "NRS 294A.100",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "PACs and Campaign Treasurers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the Contributions and Expenses (C&E) reporting schedule in Nevada?",
+    "question_variants": [
+      "When are campaign finance reports due in NV?",
+      "C&E report deadlines Nevada",
+      "Nevada periodic campaign filing dates"
+    ],
+    "answer": "Candidates must file Contributions & Expenses (C&E) reports electronically through the Aurora system. During an election year, reports are due pre-primary, pre-general, and post-general. Additionally, an Annual Report is due by January 15 of each year.",
+    "source_url": "https://www.nvsos.gov/sos/elections/candidate-information",
+    "source_name": "Nevada Secretary of State – Candidate Information",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the itemized disclosure threshold for campaign contributions in Nevada?",
+    "question_variants": [
+      "When do I have to list a donor's name in NV?",
+      "Campaign contribution disclosure limit",
+      "Nevada $100 donation rule"
+    ],
+    "answer": "Any campaign contribution in excess of $100 must be individually itemized on the candidate's Contributions & Expenses (C&E) report, disclosing the contributor's name and address.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec120",
+    "source_name": "NRS 294A.120",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Are anonymous campaign contributions permitted in Nevada?",
+    "question_variants": [
+      "Can I donate cash anonymously in NV?",
+      "Anonymous contribution cap Nevada",
+      "Passing the hat rules campaign finance"
+    ],
+    "answer": "No. Under NRS 294A.190, candidates are strictly prohibited from accepting anonymous contributions of $100 or more. Any prohibited anonymous contribution must be remitted to the State Treasurer for deposit in the State General Fund.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec190",
+    "source_name": "NRS 294A.190",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Are candidates required to open a separate bank account for their campaign in Nevada?",
+    "question_variants": [
+      "Campaign bank account rules NV",
+      "Can I use my personal checking account for donations?",
+      "Nevada campaign depository requirements"
+    ],
+    "answer": "Yes. Under Nevada law, any candidate who receives $1,000 or more in aggregate contributions must open a separate campaign depository account at a financial institution. Commingling campaign funds with personal or business funds is prohibited.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec130",
+    "source_name": "NRS 294A.130",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers and Candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Can a donor give money to a Nevada campaign through another person?",
+    "question_variants": [
+      "Conduit reporting mechanism NV",
+      "Straw donor prohibition Nevada",
+      "Making contributions in the name of another"
+    ],
+    "answer": "No. NRS 294A.112 strictly prohibits making a contribution in the name of another person (straw donor) and prohibits any candidate from knowingly accepting a contribution made by a person in the name of another.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec112",
+    "source_name": "NRS 294A.112",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Donors and Campaign Treasurers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Do campaign contribution limits apply during a recall election in Nevada?",
+    "question_variants": [
+      "Recall financing limits Nevada",
+      "Can a recalled politician raise unlimited money?",
+      "Recall contribution caps NV"
+    ],
+    "answer": "Yes. A separate contribution limit applies specifically to special recall elections in Nevada. Donors may contribute up to an additional $5,000 to a candidate in a recall election, which is entirely distinct from and does not affect the standard $10,000 primary/general election cycle limits.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec115",
+    "source_name": "NRS 294A.115",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Incumbent officials facing recall"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does a mail-in ballot require a witness signature in Nevada?",
+    "question_variants": [
+      "Who can witness an absentee ballot in NV?",
+      "Does someone have to watch me vote by mail?",
+      "Nevada mail ballot witness requirement"
+    ],
+    "answer": "No. Unlike some other states, Nevada does not require a witness signature or a notary public to validate a mail-in ballot. The ballot is verified exclusively by matching the voter's signature on the return envelope against their voter registration record.",
+    "source_url": "https://www.nvsos.gov/sos/elections/voters/mail-ballot-voting",
+    "source_name": "Nevada Secretary of State – Mail Ballot Voting",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Absentee voters"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How are vacancies in the U.S. Senate filled in Nevada?",
+    "question_variants": [
+      "Who replaces a US Senator from Nevada?",
+      "Does the Governor appoint Senate vacancies in NV?",
+      "Special election for US Senate"
+    ],
+    "answer": "If a U.S. Senate seat becomes vacant, the Governor appoints a replacement to serve an interim term. A special election is then scheduled to fill the remainder of the unexpired term.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-304.html#NRS304Sec030",
+    "source_name": "NRS 304.030",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How are vacancies in the U.S. House of Representatives filled in Nevada?",
+    "question_variants": [
+      "Does the Governor appoint US House vacancies?",
+      "Special election for Congress NV",
+      "Congressional vacancy fill Nevada"
+    ],
+    "answer": "Vacancies in the U.S. House can only be filled by a special election called by a proclamation from the Governor. The Governor does not have the authority to appoint an interim Representative.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-304.html#NRS304Sec050",
+    "source_name": "NRS 304.050",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies in the Nevada State Legislature filled?",
+    "question_variants": [
+      "Special election for State Assembly NV",
+      "Does the Governor appoint state senators?",
+      "Legislative vacancy fill Nevada"
+    ],
+    "answer": "Legislative vacancies in Nevada are filled by an appointment from the board of county commissioners. The appointee must be a member of the same political party as the former legislator. If the district spans multiple counties, the commissioners from each county meet jointly and cast a proportional vote based on the district's population within their respective counties.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-218a.html#NRS218ASec260",
+    "source_name": "NRS 218A.260",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates and County Commissioners"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "What is the procedure for running as a write-in candidate in Nevada?",
+    "question_variants": [
+      "Do write-in candidates have to register in NV?",
+      "How to legally canvass write-in votes",
+      "Write-in voting line on the ballot"
+    ],
+    "answer": "Write-in candidacies are strictly prohibited in Nevada. Under state law, voting must be only upon candidates whose names appear printed on the ballot, and no person may write in the name of an additional candidate for any office.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec270",
+    "source_name": "NRS 293.270(2)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the signature requirement for a minor political party to gain ballot access in Nevada?",
+    "question_variants": [
+      "How to form a new political party NV",
+      "Signatures needed for third party ballot access",
+      "Party qualification threshold Nevada"
+    ],
+    "answer": "To qualify a minor political party for ballot access, organizers must file a petition containing valid signatures equal to at least 1% of the total votes cast for U.S. House of Representatives in the state at the preceding general election.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec1715",
+    "source_name": "NRS 293.1715",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Third-party organizers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are justices selected for the Nevada Supreme Court and Court of Appeals?",
+    "question_variants": [
+      "Are Supreme Court judges elected in NV?",
+      "Nevada judicial elections partisan",
+      "How long do NV highest court judges serve?"
+    ],
+    "answer": "The Nevada Supreme Court (7 justices) and the Court of Appeals (3 judges, created in 2014) are elected in statewide nonpartisan elections to serve six-year terms. Mid-term vacancies are filled by gubernatorial appointment from a list provided by the Commission on Judicial Selection.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art6Sec3",
+    "source_name": "Nevada Constitution Article 6 § 3",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Which state legislative and congressional maps are in effect for the 2026 Nevada elections?",
+    "question_variants": [
+      "Did Nevada redraw its assembly districts for 2026?",
+      "Who drew the redistricting maps",
+      "Are we using an independent commission for the state legislature?"
+    ],
+    "answer": "The 2026 elections use the maps drawn and passed by the Nevada Legislature in 2021. Nevada does not have an independent redistricting commission. The state comprises 4 U.S. House districts, 21 State Senate districts, and 42 State Assembly districts.",
+    "source_url": "https://www.nvsos.gov/sos/elections",
+    "source_name": "Nevada Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State Legislative and U.S. House candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the polling place electioneering buffer zone in Nevada?",
+    "question_variants": [
+      "How close to the door can I campaign in NV?",
+      "100-foot rule Nevada voting",
+      "Campaign signs at polling places"
+    ],
+    "answer": "Nevada enforces a strict 100-foot electioneering buffer zone measured from the entrance to the voting area of a polling place. No campaigning, solicitation, or distribution of political materials is permitted within this boundary.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec740",
+    "source_name": "NRS 293.740",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaigns and Poll Workers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Nevada law require employers to give time off to vote?",
+    "question_variants": [
+      "Do I get paid time off to vote in NV?",
+      "Employee voting leave Nevada",
+      "1 to 3 hours off to vote rule"
+    ],
+    "answer": "Yes. If it is impractical for a voter to vote before or after work, employers must grant 1 to 3 hours of paid time off to vote, depending on the distance between the workplace and the polling place.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec463",
+    "source_name": "NRS 293.463",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Employers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "When are County Commissioners elected in Nevada?",
+    "question_variants": [
+      "Are county commission races partisan in NV?",
+      "County Commissioner term length",
+      "Local executive elections"
+    ],
+    "answer": "County Commissioners in Nevada are elected in partisan elections to serve four-year terms. They function as the governing body for county-level administration.",
+    "source_url": "https://www.nvsos.gov/sos/elections",
+    "source_name": "Nevada Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County-level Candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the specific qualifications to run for Attorney General in Nevada?",
+    "question_variants": [
+      "How old do I need to be to run for Attorney General in NV?",
+      "Does the Attorney General have to be a lawyer in Nevada?",
+      "Attorney General residency rules"
+    ],
+    "answer": "A candidate for Nevada Attorney General must be a qualified elector, at least 30 years of age, a resident citizen of the state for three years immediately preceding the election, and a member of the State Bar of Nevada in good standing.",
+    "source_url": "https://www.leg.state.nv.us/nrs/NRS-228.html#NRS228Sec010",
+    "source_name": "NRS 228.010",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the specific qualifications to run for Secretary of State in Nevada?",
+    "question_variants": [
+      "How old do I need to be to run for Secretary of State?",
+      "Secretary of State residency rules Nevada",
+      "Candidate eligibility for SoS NV"
+    ],
+    "answer": "A candidate for Nevada Secretary of State must be a qualified elector (registered to vote), at least 25 years of age at the time of the election, and a resident citizen of the state for two years immediately preceding the election.",
+    "source_url": "https://www.leg.state.nv.us/nrs/NRS-225.html#NRS225Sec010",
+    "source_name": "NRS 225.010",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Nevada Supreme Court?",
+    "question_variants": [
+      "Do Supreme Court justices have to be lawyers in NV?",
+      "Nevada judicial qualifications",
+      "How long must I practice law to be a judge?"
+    ],
+    "answer": "A candidate for the Nevada Supreme Court must be a qualified elector, at least 25 years of age, a resident of Nevada for two years, and an attorney licensed and admitted to practice law for not less than 15 years (at least two of which must be in Nevada).",
+    "source_url": "https://www.leg.state.nv.us/nrs/NRS-002.html#NRS002Sec020",
+    "source_name": "NRS 2.020",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Nevada District Court or Court of Appeals?",
+    "question_variants": [
+      "Do district judges have to be lawyers in NV?",
+      "Court of appeals candidate requirements",
+      "How many years of law practice to be a district judge in Nevada?"
+    ],
+    "answer": "Candidates for the Nevada District Court or Court of Appeals must be at least 25 years old, a two-year resident of Nevada, and licensed to practice law for not less than 10 years (at least two of which must be in Nevada).",
+    "source_url": "https://www.nvsos.gov/elections/candidate-information/filing-for-judicial-office",
+    "source_name": "Nevada Secretary of State – Judicial Filing",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who succeeds the Governor of Nevada in the event of a vacancy?",
+    "question_variants": [
+      "What happens if the NV Governor resigns?",
+      "Lieutenant Governor succession Nevada",
+      "Gubernatorial vacancy fill"
+    ],
+    "answer": "If a vacancy occurs in the office of the Governor due to death, resignation, or removal, the Lieutenant Governor assumes the powers and duties of the office for the remainder of the unexpired term.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art5Sec17",
+    "source_name": "Nevada Constitution Article 5 § 17",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide officials"
+  },
+  {
+    "state": "NV",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are mid-term vacancies filled in the Nevada court system?",
+    "question_variants": [
+      "Who appoints judges in Nevada?",
+      "Commission on Judicial Selection",
+      "Judicial vacancy fill process NV"
+    ],
+    "answer": "When a mid-term vacancy occurs in the Supreme Court, Court of Appeals, or District Court, the Commission on Judicial Selection conducts interviews and provides a list of three nominees to the Governor, who then must appoint one to serve until the next general election.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art6Sec20",
+    "source_name": "Nevada Constitution Article 6 § 20",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates and Legal Counsel"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies filled for Nevada's Attorney General, Secretary of State, or State Treasurer?",
+    "question_variants": [
+      "Does the Governor appoint the AG in NV?",
+      "Vacancy fill for statewide executive offices",
+      "Who replaces the Secretary of State?"
+    ],
+    "answer": "If a vacancy occurs in a statewide executive office (such as Attorney General, Secretary of State, Treasurer, or Controller), the Governor has the authority to appoint an interim replacement to serve out the remainder of the unexpired term or until the next general election.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art5Sec8",
+    "source_name": "Nevada Constitution Article 5 § 8",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive officials"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Are candidates in Nevada allowed to use campaign funds for personal expenses?",
+    "question_variants": [
+      "Personal use of campaign funds NV",
+      "Can I buy a car with campaign money?",
+      "Nevada rules on spending campaign donations"
+    ],
+    "answer": "No. Under Nevada law, it is strictly prohibited to convert campaign contributions to personal use. Expenses must be directly related to the campaign or the execution of public office duties.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec160",
+    "source_name": "NRS 294A.160",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What are the rules for disposing of surplus campaign funds in Nevada?",
+    "question_variants": [
+      "Surplus funds disposition NV",
+      "Can I give my leftover campaign money to charity?",
+      "What happens to campaign money when I close my committee?"
+    ],
+    "answer": "Unspent campaign funds in Nevada cannot be kept for personal use. They must be returned to contributors, used in the candidate's next election, donated to a tax-exempt nonprofit, contributed to a political party, or donated to a government entity.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec160",
+    "source_name": "NRS 294A.160",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates concluding campaigns"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "How are independent expenditures disclosed in Nevada?",
+    "question_variants": [
+      "When does an independent group have to file?",
+      "Independent expenditure reporting NV",
+      "Aurora independent expenditure schedules"
+    ],
+    "answer": "Any person or committee making independent expenditures must report those expenses electronically via the Secretary of State's Aurora system, adhering to the same standard pre-election and annual reporting schedule as candidates if their spending exceeds the required statutory thresholds.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec140",
+    "source_name": "NRS 294A.140",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Super PACs and Independent Expenditure Committees"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for filing a campaign finance report late with the Nevada Secretary of State?",
+    "question_variants": [
+      "Late filing fees NV",
+      "How much is the fine for missing a reporting deadline?",
+      "Aurora C&E report late penalties"
+    ],
+    "answer": "The Secretary of State can assess civil penalties for late Contributions & Expenses (C&E) reports. The fine is tiered based on the number of days late and can reach up to a maximum penalty of $5,000 for a severe delinquency.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-294a.html#NRS294ASec420",
+    "source_name": "NRS 294A.420",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What are the criminal penalties for voter intimidation in Nevada?",
+    "question_variants": [
+      "Is voter intimidation a felony in NV?",
+      "Election interference laws Nevada",
+      "NRS 293.710 intimidation rules"
+    ],
+    "answer": "Under NRS 293.710, using force, coercion, or intimidation to impede or prevent the free exercise of the franchise by any voter, or interfering with election officials, is a Category E felony punishable by prison time.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec710",
+    "source_name": "NRS 293.710",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the rules for poll observers in Nevada?",
+    "question_variants": [
+      "Can I watch the vote counting in NV?",
+      "Poll watcher requirements Nevada",
+      "Do election observers need to sign a form?"
+    ],
+    "answer": "Poll observers are permitted inside polling places, but they must sign an acknowledgment form agreeing to abide by state laws, remain in designated observation areas, and strictly avoid interfering with the voting process or election workers.",
+    "source_url": "https://www.nvsos.gov/sos/elections/election-information/election-observers",
+    "source_name": "Nevada Secretary of State – Election Observers",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Poll watchers and Campaigns"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the pre-registration deadline for mail-in or online voter registration in Nevada?",
+    "question_variants": [
+      "When is the last day to register online to vote in NV?",
+      "17-day registration rule Nevada",
+      "Voter registration deadline prior to same-day"
+    ],
+    "answer": "Standard online and mail-in voter registration closes 17 days before the election. Individuals who miss this deadline may still utilize same-day registration at early voting locations or polling places on Election Day.",
+    "source_url": "https://www.nvsos.gov/sos/elections/voters/registering-to-vote",
+    "source_name": "Nevada Secretary of State – Voter Registration",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How are inactive voters removed from the registration rolls in Nevada?",
+    "question_variants": [
+      "Voter roll purges NV",
+      "How many elections can I miss before my registration is cancelled?",
+      "NVRA list maintenance Nevada"
+    ],
+    "answer": "Under the NVRA list maintenance framework, a voter is designated 'inactive' if election mail bounces. If an inactive voter does not respond to a forward notice and subsequently fails to vote in two consecutive federal general elections, their registration is legally cancelled.",
+    "source_url": "https://www.nvsos.gov/sos/elections/voters/list-maintenance",
+    "source_name": "Nevada Secretary of State – List Maintenance",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Election Officials"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Can private groups set up unauthorized drop boxes for mail-in ballots in Nevada?",
+    "question_variants": [
+      "Are private ballot drop boxes legal in NV?",
+      "Who controls mail ballot drop boxes?",
+      "NRS 293.730 unauthorized boxes"
+    ],
+    "answer": "No. Under Nevada law, it is strictly prohibited for anyone other than a county or city clerk to establish or operate a mail ballot drop box. Unauthorized collection boxes are illegal.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec730",
+    "source_name": "NRS 293.730",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaigns and Political Parties"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Who acts as the chief elections official in Clark and Washoe counties?",
+    "question_variants": [
+      "Does the county clerk run elections in Las Vegas?",
+      "Clark County Registrar of Voters",
+      "Washoe county election administration"
+    ],
+    "answer": "In Nevada's two most populous counties, Clark (Las Vegas) and Washoe (Reno), election administration is handled by an appointed Registrar of Voters rather than the elected County Clerk. The Registrar manages all voter registration and ballot processing for their respective jurisdiction.",
+    "source_url": "https://www.clarkcountynv.gov/government/departments/elections/index.php",
+    "source_name": "Clark County Election Department",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Consultants"
+  },
+  {
+    "state": "NV",
+    "office_level": ["municipal"],
+    "category": "election_dates",
+    "question": "Are mayoral and city council elections partisan in Nevada?",
+    "question_variants": [
+      "Do mayors run with a party label in NV?",
+      "City council partisan elections Nevada",
+      "Municipal election structure"
+    ],
+    "answer": "No. Mayoral, city council, and local school board elections in Nevada are strictly nonpartisan. Candidates appear on the ballot without a political party affiliation next to their name.",
+    "source_url": "https://www.nvsos.gov/sos/elections",
+    "source_name": "Nevada Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Municipal and School Board candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["special_district"],
+    "category": "election_dates",
+    "question": "Are local school board elections partisan in Nevada?",
+    "question_variants": [
+      "School board trustee elections NV",
+      "Do school board candidates run with a party label?",
+      "Education board election structure"
+    ],
+    "answer": "Local school board trustee elections in Nevada are statutorily nonpartisan. Candidates do not run with a political party affiliation and the races do not involve partisan primaries.",
+    "source_url": "https://www.nvsos.gov/sos/elections",
+    "source_name": "Nevada Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School Board candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "Are County Sheriff and District Attorney elections partisan in Nevada?",
+    "question_variants": [
+      "Is the sheriff race partisan in NV?",
+      "District Attorney election schedule",
+      "County executive officer terms"
+    ],
+    "answer": "Yes. County Sheriffs and District Attorneys are elected in partisan elections to serve four-year terms, meaning candidates run with a designated political party affiliation.",
+    "source_url": "https://www.nvsos.gov/sos/elections",
+    "source_name": "Nevada Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County-level candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the structure of the Nevada Legislature's session?",
+    "question_variants": [
+      "Does the Nevada legislature meet every year?",
+      "Biennial legislative session NV",
+      "120-day session limit Nevada"
+    ],
+    "answer": "The Nevada Legislature operates on a biennial schedule, meeting in regular session only during odd-numbered years. The session is constitutionally limited to a maximum of 120 consecutive calendar days.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art4Sec2",
+    "source_name": "Nevada Constitution Article 4 § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators and Consultants"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who can call a special session of the Nevada Legislature?",
+    "question_variants": [
+      "Special session authority NV",
+      "Can the legislature convene itself?",
+      "Governor proclamation for special session"
+    ],
+    "answer": "The Governor of Nevada has the constitutional authority to convene the Legislature in a special session via proclamation. During a special session, the Legislature may only consider legislation related to the specific purposes set forth by the Governor, unless the legislature calls itself into session with a two-thirds vote.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art5Sec9",
+    "source_name": "Nevada Constitution Article 5 § 9",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How can citizens amend the Nevada Constitution via initiative?",
+    "question_variants": [
+      "Constitutional amendment process NV",
+      "2-cycle initiative requirement",
+      "How to change the Nevada constitution by vote"
+    ],
+    "answer": "A citizen-initiated constitutional amendment must be approved by a majority of voters in TWO consecutive even-year general elections before it becomes part of the state constitution (e.g., Question 3's failure in 2024 after passing in 2022).",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art19Sec2",
+    "source_name": "Nevada Constitution Article 19 § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How can the Nevada Legislature place a constitutional amendment on the ballot?",
+    "question_variants": [
+      "Legislative referral for constitutional amendment NV",
+      "How does the legislature change the NV constitution?",
+      "Two-session requirement Nevada"
+    ],
+    "answer": "The Nevada Legislature can refer a constitutional amendment to the voters by passing a joint resolution with a simple majority in TWO consecutive legislative sessions. After passing both sessions, the amendment is placed on the general election ballot for final voter ratification.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art16Sec1",
+    "source_name": "Nevada Constitution Article 16 § 1",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators and Campaigns"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the geographic distribution requirement for statutory initiative signatures in Nevada?",
+    "question_variants": [
+      "Do I need signatures from every county in NV?",
+      "Initiative geographic distribution rule",
+      "10% threshold across congressional districts"
+    ],
+    "answer": "To qualify a statutory initiative, organizers must collect valid signatures equal to 10% of the voters who cast ballots in the last preceding general election. Critically, these signatures must be proportionately distributed, achieving the 10% threshold within each of Nevada's four separate congressional districts.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art19Sec2",
+    "source_name": "Nevada Constitution Article 19 § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the NVOTE database?",
+    "question_variants": [
+      "Nevada statewide voter registration system",
+      "How are voter rolls managed in NV?",
+      "Secretary of State NVOTE database"
+    ],
+    "answer": "NVOTE is the centralized, top-down statewide voter registration database managed by the Nevada Secretary of State. It aggregates registration data from all counties and interfaces with the DMV for Automatic Voter Registration (AVR) processing.",
+    "source_url": "https://www.nvsos.gov/sos/elections/voters",
+    "source_name": "Nevada Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Election Officials and Consultants"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the Aurora campaign finance system?",
+    "question_variants": [
+      "Where do I file my C&E reports electronically?",
+      "Nevada Secretary of State Aurora portal",
+      "Campaign finance software NV"
+    ],
+    "answer": "Aurora is the Nevada Secretary of State's mandatory electronic filing system for campaign finance. All candidates and committees must use Aurora to file their Contributions & Expenses (C&E) reports and Financial Disclosure Statements.",
+    "source_url": "https://www.nvsos.gov/sos/elections/candidate-information",
+    "source_name": "Nevada Secretary of State – Aurora",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "runoff_rules",
+    "question": "Who can request a recount in a Nevada election?",
+    "question_variants": [
+      "Automatic recount margin Nevada",
+      "How to challenge election results in NV",
+      "Recount request deposit requirements"
+    ],
+    "answer": "Nevada does not have automatic recounts. Any defeated candidate can demand a recount within 3 working days after the final canvass of the vote. However, the requesting candidate must pay the estimated costs of the recount in advance as a deposit.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec403",
+    "source_name": "NRS 293.403",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Legal Counsel"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for Nevada's statewide executive officers?",
+    "question_variants": [
+      "How long can someone serve as Secretary of State in NV?",
+      "Attorney General term limits",
+      "Executive office consecutive terms Nevada"
+    ],
+    "answer": "Under the Nevada Constitution, the Governor, Lieutenant Governor, Secretary of State, State Treasurer, State Controller, and Attorney General are strictly limited to serving two four-year terms in their respective offices.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art5Sec19",
+    "source_name": "Nevada Constitution Article 5 § 19",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive officials"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for members of the Nevada State Legislature?",
+    "question_variants": [
+      "How long can someone serve in the NV Assembly?",
+      "State Representative term limits Nevada",
+      "State Senate consecutive terms"
+    ],
+    "answer": "The Nevada Constitution strictly limits state legislators to serving a maximum of 12 years (six terms) in the State Assembly and 12 years (three terms) in the State Senate.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art4Sec3",
+    "source_name": "Nevada Constitution Article 4 § 3 & 4",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "How many congressional districts does Nevada have for the 2026 cycle?",
+    "question_variants": [
+      "Number of US House seats in NV",
+      "Nevada congressional apportionment",
+      "How many electoral votes does Nevada have?"
+    ],
+    "answer": "Based on the post-2020 census apportionment, Nevada is allocated 4 U.S. House districts, granting the state a total of 6 Electoral College votes.",
+    "source_url": "https://www.nvsos.gov/sos/elections",
+    "source_name": "Nevada Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "NV",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the single-subject rule for ballot initiatives in Nevada?",
+    "question_variants": [
+      "Can an initiative cover multiple topics in NV?",
+      "Single-subject requirement ballot measures",
+      "Nevada Constitution Article 19 restrictions"
+    ],
+    "answer": "The Nevada Constitution mandates that any initiative petition must embrace only one subject and matters necessarily connected to it. If an initiative contains multiple unrelated subjects, it can be struck down by the courts.",
+    "source_url": "https://www.leg.state.nv.us/Const/NVConst.html#Art19Sec1",
+    "source_name": "Nevada Constitution Article 19 § 1",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees and Legal Counsel"
+  },
+  {
+    "state": "NV",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "runoff_rules",
+    "question": "How are election contests and protests adjudicated in Nevada?",
+    "question_variants": [
+      "Statement of Contest Nevada",
+      "Who hears election fraud disputes?",
+      "Contesting an election result NV"
+    ],
+    "answer": "A defeated candidate may file a formal Statement of Contest within 5 days after a recount is completed or 14 days after the election. Contests for state and county offices are adjudicated by the district court, while contests involving the Governor or state legislators are decided by the Legislature.",
+    "source_url": "https://www.leg.state.nv.us/nrs/nrs-293.html#NRS293Sec407",
+    "source_name": "NRS 293.407",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Legal Counsel"
+  }
+]
