@@ -1,0 +1,1280 @@
+[
+  {
+    "state": "IA",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "Is there a U.S. Senate race in Iowa for the 2026 cycle?",
+    "question_variants": [
+      "Are Chuck Grassley or Joni Ernst up for re-election in 2026?",
+      "When is the next US Senate election in IA?",
+      "Is the Iowa US Senate seat an open race?"
+    ],
+    "answer": "Yes. There is an open U.S. Senate race in Iowa in 2026. Incumbent Senator Joni Ernst announced in September 2025 that she will not seek a third term. Senator Chuck Grassley is not on the ballot until 2028.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State – Candidate Information",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is Governor Kim Reynolds running for re-election in 2026?",
+    "question_variants": [
+      "Is the Iowa Governor's seat open in 2026?",
+      "Can Reynolds seek another term?",
+      "Iowa 2026 gubernatorial race status"
+    ],
+    "answer": "No. Governor Kim Reynolds announced in April 2025 that she will not seek re-election, making the 2026 gubernatorial race an open seat. This creates a rare scenario of dual open seats for both Governor and U.S. Senate on the same Iowa ballot, the first such occurrence since 1968.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State – Candidate Information",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Iowa in 2026?",
+    "question_variants": [
+      "Who is on the state ballot in IA in 2026?",
+      "Is the Attorney General up for reelection?",
+      "Does Iowa elect a Secretary of Agriculture?"
+    ],
+    "answer": "The statewide executive offices on the 2026 ballot are Governor, Lieutenant Governor, Attorney General, Secretary of State, Auditor of State, Treasurer of State, and Secretary of Agriculture.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State – Election Information",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Who enforces campaign finance rules in Iowa?",
+    "question_variants": [
+      "Does the Secretary of State handle campaign finance in IA?",
+      "Jurisdiction of the IECDB in Iowa",
+      "Where do I file campaign finance reports?"
+    ],
+    "answer": "Campaign finance in Iowa is administered and enforced by the Iowa Ethics and Campaign Disclosure Board (IECDB), which operates entirely separately from the Secretary of State's election administration functions.",
+    "source_url": "https://ethics.iowa.gov/",
+    "source_name": "Iowa Ethics and Campaign Disclosure Board",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Campaign Treasurers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the threshold for registering a candidate campaign committee with the IECDB?",
+    "question_variants": [
+      "When do I have to register a campaign committee in IA?",
+      "IECDB registration dollar limit",
+      "How much can I spend before filing a committee?"
+    ],
+    "answer": "A candidate must register a campaign committee with the IECDB within 10 days of receiving contributions, making expenditures, or incurring loans aggregating more than $1,000.",
+    "source_url": "https://ethics.iowa.gov/frequently-asked-questions/campaign-finance-faqs",
+    "source_name": "IECDB – Campaign Finance FAQs",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All state and local candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the individual contribution limits for state and local candidates in Iowa?",
+    "question_variants": [
+      "How much can an individual give to a Governor candidate in IA?",
+      "Statewide contribution limits Iowa",
+      "Does Iowa have campaign donation caps?"
+    ],
+    "answer": "Iowa has NO contribution limits for state and local candidates. Candidates running for state or local office may receive unlimited funds from individuals and PACs, provided the contributions are properly disclosed.",
+    "source_url": "https://ethics.iowa.gov/frequently-asked-questions/campaign-finance-faqs",
+    "source_name": "IECDB – Campaign Finance FAQs",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and donors"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Can labor unions contribute directly to a candidate from their general treasury in Iowa?",
+    "question_variants": [
+      "Are union dues contributions legal in IA?",
+      "Labor union donation rules Iowa",
+      "Do unions have to use a PAC?"
+    ],
+    "answer": "Yes. Unlike corporations and financial institutions, labor unions are NOT included in the direct contribution prohibitions outlined in Iowa Code § 68A.503. Labor unions may make unlimited direct contributions from their general treasuries to state and local candidates in Iowa.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.503.pdf",
+    "source_name": "Iowa Code § 68A.503",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unions and Campaign Treasurers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Iowa?",
+    "question_variants": [
+      "Iowa voter ID laws",
+      "Do I need my driver's license to vote in IA?",
+      "Poll ID requirements Iowa"
+    ],
+    "answer": "Yes. Since 2017, Iowa law requires a valid photo ID to vote. Acceptable forms include an Iowa driver's license, Iowa non-operator ID, U.S. passport, U.S. military or veteran ID, tribal ID, or an Iowa Voter ID Card.",
+    "source_url": "https://sos.iowa.gov/voters/voterid",
+    "source_name": "Iowa Secretary of State – Voter ID",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How does a voter get an ID if they do not have a driver's license in Iowa?",
+    "question_variants": [
+      "Iowa Voter ID Card mechanism",
+      "Free voting ID Iowa",
+      "Voting without a driver's license IA"
+    ],
+    "answer": "Registered voters who do not have an Iowa driver's license or non-operator ID are automatically mailed an Iowa Voter ID Card for free by their county auditor. This card contains a 4-digit PIN used for voting and requesting absentee ballots.",
+    "source_url": "https://sos.iowa.gov/voters/voterid",
+    "source_name": "Iowa Secretary of State – Voter ID",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Can someone vote in Iowa if they forgot their photo ID?",
+    "question_variants": [
+      "Attesting voter mechanism IA",
+      "Voting without ID at polls Iowa",
+      "Can another voter vouch for my identity?"
+    ],
+    "answer": "Yes, a voter without ID can have another registered voter from the same precinct attest to their identity. The attesting voter must provide their own valid ID and can only attest for up to two people per election. Alternatively, the voter can cast a provisional ballot.",
+    "source_url": "https://sos.iowa.gov/voters/voterid",
+    "source_name": "Iowa Secretary of State – Voter ID",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline in Iowa?",
+    "question_variants": [
+      "When is the last day to register to vote in IA?",
+      "15-day registration rule Iowa",
+      "Does Iowa have same-day registration?"
+    ],
+    "answer": "The pre-registration deadline is 15 days before the election. However, Iowa offers same-day registration, allowing eligible citizens to register and vote simultaneously at their polling place on Election Day or during in-person early voting.",
+    "source_url": "https://sos.iowa.gov/voters/election-day",
+    "source_name": "Iowa Secretary of State – Election Day Registration",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How many days of early voting are available in Iowa?",
+    "question_variants": [
+      "When does early voting start in IA?",
+      "20-day early voting window Iowa",
+      "Iowa in-person absentee duration"
+    ],
+    "answer": "Iowa offers a 20-day window for in-person early absentee voting. Voters can cast their ballots at the county auditor's office or designated satellite locations during this period leading up to Election Day.",
+    "source_url": "https://sos.iowa.gov/voters/absentee-voting",
+    "source_name": "Iowa Secretary of State – Absentee Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and GOTV operations"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the deadline for an absentee ballot to be returned and counted in Iowa?",
+    "question_variants": [
+      "When is my absentee ballot due in IA?",
+      "Iowa mail ballot postmark rule",
+      "Election Day 8pm ballot receipt"
+    ],
+    "answer": "Absentee ballots must be physically received by the county auditor's office by 8:00 p.m. on Election Day. Iowa does not have a postmark grace period; ballots arriving after the polls close are rejected.",
+    "source_url": "https://sos.iowa.gov/voters/absentee-voting",
+    "source_name": "Iowa Secretary of State – Absentee Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Absentee voters and Campaigns"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Do I need an ID number to request an absentee ballot in Iowa?",
+    "question_variants": [
+      "Iowa absentee ballot request requirements",
+      "Voter PIN for mail ballot IA",
+      "Can I request a mail ballot without a driver's license?"
+    ],
+    "answer": "Yes. An absentee ballot request form must include a Voter Verification Number. This can be an Iowa driver's license or non-operator ID number, or the 4-digit PIN located on the voter's free Iowa Voter ID Card.",
+    "source_url": "https://sos.iowa.gov/voters/absentee-voting",
+    "source_name": "Iowa Secretary of State – Absentee Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Absentee voters"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "candidate_eligibility",
+    "question": "Can a person with a felony conviction vote in Iowa?",
+    "question_variants": [
+      "Felon voting rights IA",
+      "Voting post-incarceration rules Iowa",
+      "Executive order felony voting restoration"
+    ],
+    "answer": "Yes. Under a 2020 Executive Order issued by Governor Kim Reynolds, voting rights are automatically restored to most individuals with felony convictions upon completion of their sentence, including probation and parole. Certain violent felonies, like homicide, require an individual application to the Governor.",
+    "source_url": "https://governor.iowa.gov/services/voting-rights-restoration",
+    "source_name": "Iowa Governor's Office – Voting Rights Restoration",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All eligible citizens"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When is the 2026 Iowa Primary Election?",
+    "question_variants": [
+      "What date is the IA primary in 2026?",
+      "Iowa June primary date",
+      "When do polls open for the IA primary?"
+    ],
+    "answer": "The Iowa Primary Election is held on Tuesday, June 2, 2026. State law mandates the primary for the first Tuesday in June in even-numbered years.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State – Candidate Information",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When is the 2026 Iowa General Election?",
+    "question_variants": [
+      "What date is the IA general election in 2026?",
+      "Iowa 2026 midterm election date",
+      "When is Election Day 2026 in Iowa?"
+    ],
+    "answer": "The Iowa General Election is scheduled for Tuesday, November 3, 2026.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State – Candidate Information",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "When was the candidate filing deadline for the 2026 Iowa primary?",
+    "question_variants": [
+      "When did candidates have to file for the 2026 primary in Iowa?",
+      "Declaration of candidacy deadline 2026",
+      "Iowa March filing deadline"
+    ],
+    "answer": "The filing deadline for major party candidates to appear on the June primary ballot was March 13, 2026. This date marks the close of the filing window, which legally concludes 81 days prior to the primary.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State – Candidate Information",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws the congressional and legislative maps in Iowa?",
+    "question_variants": [
+      "Iowa redistricting commission",
+      "How are districts drawn in Iowa?",
+      "Legislative Services Agency LSA redistricting"
+    ],
+    "answer": "Iowa utilizes a distinctive non-partisan redistricting process. The Legislative Services Agency (LSA), a nonpartisan staff agency, draws the maps without analyzing political data, election results, or incumbent addresses. The legislature must vote on the LSA's first two proposed plans up or down without amendments.",
+    "source_url": "https://www.legis.iowa.gov/legislators/redistricting",
+    "source_name": "Iowa Legislature – Redistricting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and state legislative candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "How many congressional and legislative districts does Iowa have?",
+    "question_variants": [
+      "Number of US House seats in IA",
+      "Iowa legislative district structure",
+      "How many state senators in Iowa?"
+    ],
+    "answer": "Iowa is apportioned 4 U.S. House districts. The state legislature consists of 50 State Senate districts and 100 State House districts. The maps are nested, meaning every State Senate district contains exactly two State House districts.",
+    "source_url": "https://www.legis.iowa.gov/legislators/redistricting",
+    "source_name": "Iowa Legislature – Redistricting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and state legislative candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "Are judges elected in partisan elections in Iowa?",
+    "question_variants": [
+      "Missouri Plan Iowa judicial selection",
+      "Are there primary elections for judges in IA?",
+      "Iowa Supreme Court retention elections"
+    ],
+    "answer": "No. Iowa uses a merit-based selection system (the Missouri Plan). The State Judicial Nominating Commission nominates candidates, the Governor appoints them, and judges subsequently face periodic yes/no retention elections during general elections, rather than contested partisan elections.",
+    "source_url": "https://www.iowacourts.gov/for-the-public/educational-resources-and-services/iowa-courts-history/merit-selection-in-iowa",
+    "source_name": "Iowa Judicial Branch – Merit Selection",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What are the voting hours on Election Day in Iowa?",
+    "question_variants": [
+      "When do polls open and close in IA?",
+      "Iowa election day voting hours",
+      "What time do polls close on Election Day?"
+    ],
+    "answer": "Polling places in Iowa are open from 7:00 a.m. to 8:00 p.m. on Election Day. Any voter who is in line at the polling place by 8:00 p.m. is legally permitted to cast their ballot.",
+    "source_url": "https://sos.iowa.gov/voters/election-day",
+    "source_name": "Iowa Secretary of State – Election Day",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Can a corporation or financial institution contribute directly to a candidate for office in Iowa?",
+    "question_variants": [
+      "Are corporate contributions legal in IA?",
+      "Can my business donate to a state candidate?",
+      "Is there a ban on bank or insurance company donations in Iowa?"
+    ],
+    "answer": "No. Under Iowa Code § 68A.503, it is illegal for any for-profit or nonprofit corporation, bank, savings and loan association, credit union, or insurance company to make a direct monetary or in-kind contribution to a candidate. These entities may only participate in political activity through a separate, registered PAC (Political Action Committee).",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.503.pdf",
+    "source_name": "Iowa Code § 68A.503",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Corporations, Financial Institutions, and Campaign Treasurers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the legislative session contribution ban in Iowa?",
+    "question_variants": [
+      "Lobbyist session ban IA",
+      "When are contributions banned for state reps?",
+      "Blackout period for donations Iowa"
+    ],
+    "answer": "Under Iowa Code § 68A.504, state legislators and statewide executive candidates cannot solicit or accept contributions from lobbyists or PACs during the regular legislative session (12:00 a.m. first day through 11:59 p.m. sine die). For the Governor and gubernatorial candidates, the ban extends 30 days post-session; exceptions exist for federal accounts, statutory political committees, and special elections.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.504.pdf",
+    "source_name": "Iowa Code § 68A.504",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State candidates, Lobbyists, and PACs"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "recall_rules",
+    "question": "Can voters recall the Governor or state legislators in Iowa?",
+    "question_variants": [
+      "Statewide recall mechanism IA",
+      "How to recall a state official in Iowa",
+      "Does Iowa allow for the removal of politicians by petition?"
+    ],
+    "answer": "No. Neither the Iowa Constitution nor the Iowa Code provides a mechanism for the recall of statewide elected officials or members of the General Assembly. While some Iowa cities may have local recall provisions under their specific municipal home rule charters, state-level officials are not subject to recall.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/39.pdf",
+    "source_name": "Iowa Code Chapter 39 / Iowa Constitution",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for the Iowa State Senate?",
+    "question_variants": [
+      "How old to run for State Senate IA?",
+      "District residency for IA Senate candidates",
+      "Qualifications for Iowa State Senator"
+    ],
+    "answer": "Under Iowa Constitution Article III § 5, a candidate for the State Senate must be at least 25 years of age, a U.S. citizen, and a resident of the state for one year. Crucially, they must have resided in the specific district they seek to represent for at least 60 days prior to the election.",
+    "source_url": "https://www.legis.iowa.gov/docs/publications/Constitution/Constitution_of_the_State_of_Iowa_2023.pdf",
+    "source_name": "Iowa Constitution Article III § 5",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Senate candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for the Iowa State House?",
+    "question_variants": [
+      "How old to run for State Representative IA?",
+      "District residency for IA House candidates",
+      "Qualifications for Iowa State Representative"
+    ],
+    "answer": "Under Iowa Constitution Article III § 4, a candidate for the State House of Representatives must be at least 21 years of age, a U.S. citizen, and a resident of the state for one year. They must have resided in the specific district for at least 60 days prior to the election.",
+    "source_url": "https://www.legis.iowa.gov/docs/publications/Constitution/Constitution_of_the_State_of_Iowa_2023.pdf",
+    "source_name": "Iowa Constitution Article III § 4",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State House candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Governor of Iowa?",
+    "question_variants": [
+      "How old do you have to be to be IA Governor?",
+      "Gubernatorial residency requirement Iowa",
+      "Qualifications for Governor IA"
+    ],
+    "answer": "Under Iowa Constitution Article IV § 6, a candidate for Governor must be at least 30 years old and a citizen of the United States. Additionally, the candidate must have been a resident of Iowa for at least two years immediately preceding the election.",
+    "source_url": "https://www.legis.iowa.gov/docs/publications/Constitution/Constitution_of_the_State_of_Iowa_2023.pdf",
+    "source_name": "Iowa Constitution Article IV § 6",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to serve on the Iowa Supreme Court?",
+    "question_variants": [
+      "How old to be a judge in Iowa?",
+      "Do Supreme Court justices have to be lawyers in IA?",
+      "Qualifications for IA Supreme Court"
+    ],
+    "answer": "A candidate for the Iowa Supreme Court must be a member of the Iowa bar and at least 35 years of age at the time of appointment. Under Iowa Code § 46.14, justices must also be residents of the state and have practiced law for a minimum of five years.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/46.14.pdf",
+    "source_name": "Iowa Code § 46.14",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies in the Iowa General Assembly filled?",
+    "question_variants": [
+      "Special election for State Assembly IA",
+      "How is a vacant state senate seat filled in Iowa?",
+      "Legislative vacancy procedure IA"
+    ],
+    "answer": "Legislative vacancies in Iowa are filled strictly by special election called by Governor proclamation under Iowa Code § 69.14. There is no provision for interim appointments by the Governor or county boards for these seats.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/69.14.pdf",
+    "source_name": "Iowa Code § 69.14",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are mid-term vacancies filled in the Iowa court system?",
+    "question_variants": [
+      "Who appoints judges in Iowa?",
+      "Judicial vacancy fill process IA",
+      "Role of the State Judicial Nominating Commission"
+    ],
+    "answer": "When a judicial vacancy occurs, the State Judicial Nominating Commission (for Supreme Court and Appeals) or District Nominating Commission provides a list of nominees to the Governor. Under Iowa Constitution Art. V § 16, the Governor must appoint one of the nominees within 30 days.",
+    "source_url": "https://www.legis.iowa.gov/docs/publications/Constitution/Constitution_of_the_State_of_Iowa_2023.pdf",
+    "source_name": "Iowa Constitution Article V § 16",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates and legal counsel"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the process for curing a mail ballot signature error in Iowa?",
+    "question_variants": [
+      "When do I have to fix my signature for my mail ballot?",
+      "Absentee ballot curing window IA",
+      "Iowa mail ballot signature mismatch"
+    ],
+    "answer": "If an absentee ballot envelope is found to have a signature deficiency or mismatch, the county auditor must notify the voter within 24 hours. Under Iowa Code § 53.31, the voter has until the close of business on the Monday before Election Day to cure the defect in person.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/53.31.pdf",
+    "source_name": "Iowa Code § 53.31",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Under what circumstances is a provisional ballot used in Iowa?",
+    "question_variants": [
+      "When do I have to cast a provisional ballot?",
+      "Iowa provisional ballot rules",
+      "Voting if my ID is missing at the polls"
+    ],
+    "answer": "Provisional ballots are issued if a voter's eligibility cannot be immediately confirmed, most commonly due to a lack of required photo ID. Under Iowa Code § 49.81, the ballot is counted only if the voter provides ID or cures the residency issue at the county auditor's office by the set deadline.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/49.81.pdf",
+    "source_name": "Iowa Code § 49.81",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone at Iowa polling places?",
+    "question_variants": [
+      "How close to the door can I campaign in IA?",
+      "300-foot rule Iowa voting",
+      "Campaign signs at polling places IA"
+    ],
+    "answer": "Iowa enforces a 300-foot electioneering buffer zone measured from any outside door of a building containing a polling place. Under Iowa Code § 39A.4(1)(a)(3), distributing literature or soliciting votes within this boundary is a criminal offense.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/39A.4.pdf",
+    "source_name": "Iowa Code § 39A.4",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaigns and Poll Workers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Can 17-year-olds vote in a partisan primary in Iowa?",
+    "question_variants": [
+      "Voting in primary if 17 IA",
+      "Underage primary voting rules Iowa",
+      "Do I have to be 18 to vote in the June primary?"
+    ],
+    "answer": "Yes. Under Iowa Code § 48A.5, a 17-year-old who will be 18 years of age on or before the date of the general election is permitted to register and vote in the preceding primary election.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/48A.5.pdf",
+    "source_name": "Iowa Code § 48A.5(2)(c)(2)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Young voters and Campaigns"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Iowa law require employers to grant time off to vote?",
+    "question_variants": [
+      "Do I get paid time off to vote in IA?",
+      "Employee voting leave Iowa",
+      "3 hours off to vote rule Iowa"
+    ],
+    "answer": "Yes. Under Iowa Code § 49.109, any employee who does not have three consecutive non-working hours while the polls are open is entitled to three hours of paid leave to vote. The employee must request this leave in writing from their employer before Election Day.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/49.109.pdf",
+    "source_name": "Iowa Code § 49.109",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Employers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the itemized disclosure threshold for individual campaign contributions in Iowa?",
+    "question_variants": [
+      "When do I have to list a donor's name in IA?",
+      "Campaign contribution disclosure limit Iowa",
+      "Iowa $25 donation rule"
+    ],
+    "answer": "Iowa has one of the lowest itemization thresholds in the nation. Under Iowa Code § 68A.402, campaign committees must individually itemize every contribution that exceeds $25 in aggregate from a single contributor in a calendar year.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.402.pdf",
+    "source_name": "Iowa Code § 68A.402",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the limit for anonymous campaign contributions in Iowa?",
+    "question_variants": [
+      "Can I donate cash anonymously in IA?",
+      "Anonymous contribution cap Iowa",
+      "Passing the hat rules Iowa campaign finance"
+    ],
+    "answer": "Anonymous contributions are strictly limited to $25 or less per contributor. Under Iowa Code § 68A.501, any anonymous contribution exceeding $25 is prohibited and must be remitted to the state's general fund or a charitable organization.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.501.pdf",
+    "source_name": "Iowa Code § 68A.501",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the reporting requirement for Independent Expenditures in Iowa?",
+    "question_variants": [
+      "When does an independent group have to file in IA?",
+      "Independent expenditure threshold Iowa",
+      "48-hour IE reporting rule"
+    ],
+    "answer": "Any person or group making independent expenditures aggregating more than $1,000 in a calendar year must file an Independent Expenditure Report. Under Iowa Code § 68A.404, this report must be filed electronically within 48 hours of the expenditure.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.404.pdf",
+    "source_name": "Iowa Code § 68A.404",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Super PACs and Independent Expenditure Committees"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using their campaign consultants for independent expenditures in Iowa?",
+    "question_variants": [
+      "IA consultant cooling off period",
+      "Independent expenditure coordination rules Iowa",
+      "6-month lookback rule Iowa"
+    ],
+    "answer": "Yes. To prevent illegal coordination, Iowa Code § 68A.404(7) prohibits a person making an independent expenditure from employing a consultant who has provided services to the candidate for the same office within the preceding six months.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.404.pdf",
+    "source_name": "Iowa Code § 68A.404(7)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Consultants and Super PACs"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the rules for disposing of surplus campaign funds in Iowa?",
+    "question_variants": [
+      "Surplus funds disposition IA",
+      "Can I give my leftover campaign money to charity in Iowa?",
+      "What happens to campaign money when I close my committee?"
+    ],
+    "answer": "Surplus campaign funds cannot be converted to personal use. Under Iowa Code § 68A.303, funds may be returned to contributors, transferred to a political party, donated to a charitable organization, or used for the candidate's next campaign.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.303.pdf",
+    "source_name": "Iowa Code § 68A.303",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates concluding campaigns"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the filing deadline for non-partisan or independent candidates for the 2026 general election in Iowa?",
+    "question_variants": [
+      "When must independent candidates file in IA?",
+      "Iowa non-partisan candidate deadline",
+      "August filing deadline Iowa"
+    ],
+    "answer": "Candidates nominated by petition (Independents) or by non-party political organizations for the general election must file their paperwork between early and mid-August. For the 2026 cycle, the deadline is August 14 at 5:00 p.m.",
+    "source_url": "https://sos.iowa.gov/elections/pdf/2026/2026calendar.pdf",
+    "source_name": "Iowa Secretary of State – 2026 Elections Calendar",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Independent and non-party candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Iowa have a postmark grace period for mail ballots?",
+    "question_variants": [
+      "Iowa mail ballot postmark rule",
+      "When is the latest my ballot can arrive in IA?",
+      "Absentee ballot receipt deadline"
+    ],
+    "answer": "No. Iowa has no postmark grace period. To be counted, an absentee ballot must be physically received by the county auditor's office before the polls close at 8:00 p.m. on Election Day.",
+    "source_url": "https://sos.iowa.gov/voters/absentee-voting",
+    "source_name": "Iowa Secretary of State – Absentee Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and Campaigns"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "runoff_rules",
+    "question": "What triggers an automatic or state-funded recount in Iowa?",
+    "question_variants": [
+      "Automatic recount margin Iowa",
+      "When is a recount required by law in IA?",
+      "Recount request threshold IA"
+    ],
+    "answer": "Under Iowa Code § 50.48, any candidate can request a recount. The state or county pays for it only if the margin between the winning and losing candidate is less than 50 votes or less than 1% of the total votes cast for the office, whichever is greater. If the margin is wider, the requesting candidate pays a bond, refunded only if the recount changes the outcome.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/50.48.pdf",
+    "source_name": "Iowa Code § 50.48(1)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Legal Counsel"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How are vacancies in the U.S. Senate filled in Iowa?",
+    "question_variants": [
+      "Who replaces a US Senator from Iowa?",
+      "Does the Governor appoint Senate vacancies in IA?",
+      "Special election for US Senate Iowa"
+    ],
+    "answer": "Under Iowa Code § 69.13, if a U.S. Senate seat becomes vacant, the Governor appoints a temporary replacement. This appointee serves until the vacancy is filled by a special election, which is held concurrently with the next pending regular election (provided the vacancy occurs at least 89 days prior).",
+    "source_url": "https://www.legis.iowa.gov/docs/code/69.13.pdf",
+    "source_name": "Iowa Code § 69.13",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "IA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are the members of the State Judicial Nominating Commission appointed in Iowa?",
+    "question_variants": [
+      "State Judicial Nominating Commission composition",
+      "2019 Iowa judicial reform",
+      "Who picks the commissioners for Iowa judges?"
+    ],
+    "answer": "Under Iowa Code § 46.1, following a 2019 reform, the State Judicial Nominating Commission consists of 17 members: 8 lawyers elected by resident members of the Iowa bar, and 9 lay members appointed by the Governor. This structure removed the Supreme Court justice as chair and granted the Governor majority appointment power.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/46.1.pdf",
+    "source_name": "Iowa Code § 46.1",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates and legal counsel"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for U.S. House in Iowa?",
+    "question_variants": [
+      "Do I have to live in the district to run for Congress in IA?",
+      "Congressional age limit Iowa",
+      "US House qualifications"
+    ],
+    "answer": "Under the U.S. Constitution, a candidate for the U.S. House of Representatives must be at least 25 years old, a U.S. citizen for seven years, and an inhabitant of Iowa when elected. District residency is not constitutionally required.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State / U.S. Constitution Art. I § 2",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Iowa?",
+    "question_variants": [
+      "How old do you have to be to be IA Lt Governor?",
+      "Lieutenant Governor residency requirement Iowa",
+      "Qualifications for Lt Gov IA"
+    ],
+    "answer": "Under Iowa Constitution Article IV § 6, the qualifications for Lieutenant Governor are identical to the Governor: the candidate must be at least 30 years old, a citizen of the United States, and a resident of Iowa for at least two years immediately preceding the election.",
+    "source_url": "https://www.legis.iowa.gov/docs/publications/Constitution/Constitution_of_the_State_of_Iowa_2023.pdf",
+    "source_name": "Iowa Constitution Article IV § 6",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Lieutenant Gubernatorial candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General, Secretary of State, Auditor, or Treasurer in Iowa?",
+    "question_variants": [
+      "Do I have to be a lawyer to be AG in IA?",
+      "Statewide executive residency rules Iowa",
+      "Qualifications for Secretary of State IA"
+    ],
+    "answer": "While the Iowa Constitution broadly requires statewide executive officers to be qualified electors (18 years old and an Iowa resident), the Attorney General must specifically be authorized to practice law in Iowa in order to legally perform the statutory duties outlined in Iowa Code § 13.2.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/13.2.pdf",
+    "source_name": "Iowa Code § 13.2",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the role of the Iowa Secretary of Agriculture?",
+    "question_variants": [
+      "Does Iowa elect a Secretary of Agriculture?",
+      "Statewide agricultural office Iowa",
+      "Is the Ag Secretary appointed in IA?"
+    ],
+    "answer": "The Iowa Secretary of Agriculture is a distinctive 7th statewide elected executive officer. Serving a four-year term, the Secretary heads the Iowa Department of Agriculture and Land Stewardship (IDALS) and is elected during the midterm cycle alongside the Governor.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What are the term lengths for justices on the Iowa Supreme Court?",
+    "question_variants": [
+      "How long do Supreme Court justices serve in IA?",
+      "Iowa Supreme Court retention elections",
+      "Supreme Court structure Iowa"
+    ],
+    "answer": "The Iowa Supreme Court consists of seven justices. Following their initial appointment and first retention election, justices serve eight-year terms before facing another yes/no retention vote at a general election.",
+    "source_url": "https://www.iowacourts.gov/iowa-courts/supreme-court/",
+    "source_name": "Iowa Judicial Branch",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What are the term lengths for judges on the Iowa Court of Appeals?",
+    "question_variants": [
+      "How long do appellate judges serve in IA?",
+      "Iowa Court of Appeals retention",
+      "Appellate court structure Iowa"
+    ],
+    "answer": "The Iowa Court of Appeals consists of nine judges. After their initial appointment and first retention election, they serve six-year terms before facing subsequent yes/no retention elections.",
+    "source_url": "https://www.iowacourts.gov/iowa-courts/court-of-appeals/",
+    "source_name": "Iowa Judicial Branch",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What are the term lengths for District Court judges in Iowa?",
+    "question_variants": [
+      "How long do trial judges serve in IA?",
+      "Iowa District Court retention elections",
+      "Trial court term limits Iowa"
+    ],
+    "answer": "Iowa District Court judges serve six-year terms following their initial appointment and first retention election. They must stand for a yes/no retention vote to remain in office.",
+    "source_url": "https://www.iowacourts.gov/iowa-courts/district-court/",
+    "source_name": "Iowa Judicial Branch",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What was the outcome of the 2010 Iowa Supreme Court retention election?",
+    "question_variants": [
+      "Varnum v Brien retention election",
+      "Did Iowa voters unseat Supreme Court justices?",
+      "Same-sex marriage ruling judges Iowa"
+    ],
+    "answer": "In a highly distinctive historical event for states using merit selection, three Iowa Supreme Court justices were unseated in the 2010 retention election. Voters removed them following a targeted campaign responding to the Court's unanimous 'Varnum v. Brien' decision legalizing same-sex marriage.",
+    "source_url": "https://www.iowacourts.gov/for-the-public/educational-resources-and-services/iowa-courts-history/merit-selection-in-iowa",
+    "source_name": "Iowa Judicial Branch",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Campaign strategists and Judicial candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["judicial"],
+    "category": "voter_interaction",
+    "question": "What is the ballot format for a judicial retention election in Iowa?",
+    "question_variants": [
+      "How do judges appear on the ballot in IA?",
+      "Retention ballot question wording",
+      "Are judges opposed on the ballot in Iowa?"
+    ],
+    "answer": "Judicial retention elections do not feature competing candidates. Voters are presented with a simple binary question for each judge: 'Shall Judge [Name] be retained in office?' with 'Yes' and 'No' options.",
+    "source_url": "https://sos.iowa.gov/elections/voterinformation/judgeretention.html",
+    "source_name": "Iowa Secretary of State – Judge Retention",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Judicial candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How are vacancies in the U.S. House of Representatives filled in Iowa?",
+    "question_variants": [
+      "Special election for Congress IA",
+      "Does the Governor appoint US House vacancies in Iowa?",
+      "Congressional vacancy fill procedure"
+    ],
+    "answer": "Vacancies in the U.S. House of Representatives are filled exclusively by a special election called by the Governor via proclamation under Iowa Code § 69.14. The Governor cannot appoint an interim Representative.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/69.14.pdf",
+    "source_name": "Iowa Code § 69.14",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who succeeds the Governor of Iowa in the event of a vacancy?",
+    "question_variants": [
+      "What happens if the IA Governor resigns?",
+      "Lieutenant Governor succession Iowa",
+      "Gubernatorial vacancy fill"
+    ],
+    "answer": "If the Governor dies, resigns, or is removed, the Lieutenant Governor becomes the Governor for the remainder of the unexpired term under Iowa Constitution Article IV § 17.",
+    "source_url": "https://www.legis.iowa.gov/docs/publications/Constitution/Constitution_of_the_State_of_Iowa_2023.pdf",
+    "source_name": "Iowa Constitution Article IV § 17",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide officials"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies filled for Iowa's Attorney General, Secretary of State, Auditor, Treasurer, or Secretary of Agriculture?",
+    "question_variants": [
+      "Does the Governor appoint the AG in IA?",
+      "Vacancy fill for statewide executive offices",
+      "Who replaces the State Treasurer?"
+    ],
+    "answer": "If a vacancy occurs in a statewide executive office (Attorney General, Secretary of State, Auditor, Treasurer, or Secretary of Agriculture), the Governor appoints a replacement to serve until the vacancy can be filled at the next pending general election under Iowa Code § 69.8.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/69.8.pdf",
+    "source_name": "Iowa Code § 69.8",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive officials"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "When does the absentee ballot request window open in Iowa?",
+    "question_variants": [
+      "When can I request a mail ballot in IA?",
+      "70-day absentee request window",
+      "How early can I apply for an absentee ballot?"
+    ],
+    "answer": "Voters in Iowa may begin submitting absentee ballot request forms to their county auditor 70 days before the election. The request form must be physically received by the auditor's office no later than 5:00 p.m. on the 15th day before the election.",
+    "source_url": "https://sos.iowa.gov/voters/absentee-voting",
+    "source_name": "Iowa Secretary of State – Absentee Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Are secure drop boxes for absentee ballots legally permitted in Iowa?",
+    "question_variants": [
+      "Can I put my absentee ballot in a drop box in IA?",
+      "Mail ballot drop boxes Iowa",
+      "Does Iowa use drop boxes for voting?"
+    ],
+    "answer": "Yes, but they are strictly limited. Under Iowa law (SF 413), a county may establish only one secure drop box, and it must be located on the property surrounding the county auditor's office under continuous video surveillance.",
+    "source_url": "https://www.legis.iowa.gov/docs/publications/LGE/89/SF413.pdf",
+    "source_name": "Iowa SF 413",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Election Officials"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the Verified Statement of Registration (VSR) requirement in Iowa?",
+    "question_variants": [
+      "Out of state PAC registration IA",
+      "Federal committee reporting Iowa",
+      "VSR filing deadline"
+    ],
+    "answer": "Under Iowa Code § 68A.201A, any federal or out-of-state political committee that contributes more than $50 to an Iowa candidate or committee must file a Verified Statement of Registration (VSR) with the IECDB within 15 days of making the contribution.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.201A.pdf",
+    "source_name": "Iowa Code § 68A.201A",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal PACs and Campaign Treasurers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the standard campaign finance reporting periods in Iowa?",
+    "question_variants": [
+      "When are campaign finance reports due in IA?",
+      "Reporting calendar specifics Iowa",
+      "January 19 annual report"
+    ],
+    "answer": "In an election year, a candidate committee files standard disclosure reports on May 19 (pre-primary), July 19 (post-primary), October 19 (pre-general), and an annual report on January 19. Supplemental reports may be required depending on election timing.",
+    "source_url": "https://ethics.iowa.gov/frequently-asked-questions/campaign-finance-faqs",
+    "source_name": "IECDB – Reporting Deadlines",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for filing a campaign finance report late with the IECDB?",
+    "question_variants": [
+      "Late filing fees IA",
+      "How much is the fine for missing a reporting deadline?",
+      "IECDB late penalties"
+    ],
+    "answer": "Under Iowa Code § 68A.701, the IECDB assesses automatic escalating civil penalties for late reports. The base penalty typically begins at $20 and escalates to $50, $100, and $200 depending on the number of days the report is delinquent and the committee type.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.701.pdf",
+    "source_name": "Iowa Code § 68A.701",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure requirements for print advertising and yard signs in Iowa?",
+    "question_variants": [
+      "Do mailers need an 'Ad paid for by' disclaimer?",
+      "Attribution statements Iowa",
+      "Yard sign disclaimer requirements"
+    ],
+    "answer": "Any published political material designed to influence an election must include an explicit 'Paid for by' attribution statement. Under Iowa Code § 68A.405, this statement must clearly identify the name and address of the person or committee paying for the material.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.405.pdf",
+    "source_name": "Iowa Code § 68A.405",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All Campaigns and Printers"
+  },
+  {
+    "state": "IA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the state restrictions on placing campaign signs in public areas in Iowa?",
+    "question_variants": [
+      "Can I put political signs on state roads?",
+      "Right-of-way yard sign rules IA",
+      "Where are campaign signs prohibited in Iowa?"
+    ],
+    "answer": "Under Iowa Code § 68A.406, it is illegal to place campaign signs within the public right-of-way along highways and streets. It is also illegal to place campaign signs on corporate property without explicit permission from the property owner.",
+    "source_url": "https://www.legis.iowa.gov/docs/code/68A.406.pdf",
+    "source_name": "Iowa Code § 68A.406",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All campaigns"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "How do State Senate and State House districts overlap in Iowa?",
+    "question_variants": [
+      "Nesting requirement Iowa redistricting",
+      "How many house seats are in a senate district?",
+      "IA legislative district structure"
+    ],
+    "answer": "Iowa utilizes a strict 'nesting' requirement in its redistricting maps. Each of the 50 State Senate districts is divided exactly in half to create two State House districts, totaling 100 House districts.",
+    "source_url": "https://www.legis.iowa.gov/legislators/redistricting",
+    "source_name": "Iowa Legislature – Redistricting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the structure of the Iowa General Assembly's legislative session?",
+    "question_variants": [
+      "Does the Iowa legislature meet every year?",
+      "Annual legislative session IA",
+      "Is there a day limit on the Iowa session?"
+    ],
+    "answer": "The Iowa General Assembly meets annually. There is no strict constitutional cap on the number of days the legislature can meet, but per diem expenses are only paid for 110 days in odd-numbered years and 100 days in even-numbered years, practically concluding the session by late April or May.",
+    "source_url": "https://www.legis.iowa.gov/agencies/nonpartisan/lsa",
+    "source_name": "Iowa Legislative Services Agency",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State Legislators and Consultants"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the single-subject rule for legislation in Iowa?",
+    "question_variants": [
+      "Can an omnibus bill cover multiple topics in IA?",
+      "Single-subject requirement Iowa",
+      "Iowa Constitution Article 3 restrictions"
+    ],
+    "answer": "The Iowa Constitution mandates that every act shall embrace but one subject, and matters properly connected therewith, which subject shall be expressed in the title. This prevents unrelated 'riders' from being attached to legislation.",
+    "source_url": "https://www.legis.iowa.gov/docs/publications/Constitution/Constitution_of_the_State_of_Iowa_2023.pdf",
+    "source_name": "Iowa Constitution Article III § 29",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators and Legal Counsel"
+  },
+  {
+    "state": "IA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How often is a constitutional convention question placed on the Iowa ballot?",
+    "question_variants": [
+      "Constitutional convention referendum Iowa",
+      "When can voters call a convention in IA?",
+      "Decennial convention question"
+    ],
+    "answer": "Under Article X § 3 of the Iowa Constitution, a question asking voters whether a convention should be called to revise and amend the state constitution must automatically appear on the general election ballot every 10 years ending in zero (e.g., 2020, 2030).",
+    "source_url": "https://www.legis.iowa.gov/docs/publications/Constitution/Constitution_of_the_State_of_Iowa_2023.pdf",
+    "source_name": "Iowa Constitution Article X § 3",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees and Strategists"
+  },
+  {
+    "state": "IA",
+    "office_level": ["municipal"],
+    "category": "election_dates",
+    "question": "Are mayoral and city council elections partisan in Iowa?",
+    "question_variants": [
+      "Do mayors run with a party label in IA?",
+      "City council partisan elections Iowa",
+      "Municipal election structure"
+    ],
+    "answer": "No. The vast majority of mayoral and city council elections in Iowa, including in large cities like Des Moines, are strictly nonpartisan. Candidates appear on the ballot without a political party affiliation.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Municipal candidates"
+  },
+  {
+    "state": "IA",
+    "office_level": ["special_district", "municipal"],
+    "category": "election_dates",
+    "question": "When are local school board elections held in Iowa?",
+    "question_variants": [
+      "School board trustee elections IA",
+      "Do school board candidates run with a party label?",
+      "Education board election schedule"
+    ],
+    "answer": "Local school board elections in Iowa are nonpartisan and are held in November of odd-numbered years, separating them from the federal and state partisan general election cycle.",
+    "source_url": "https://sos.iowa.gov/elections/candidates/index.html",
+    "source_name": "Iowa Secretary of State",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School Board candidates"
+  }
+]
