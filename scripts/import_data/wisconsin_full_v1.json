@@ -1,0 +1,1208 @@
+[
+  {
+    "state": "WI",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "Is there a U.S. Senate election in Wisconsin in 2026?",
+    "question_variants": [
+      "Are Tammy Baldwin or Ron Johnson up for re-election in 2026?",
+      "When is the next Wisconsin US Senate race?",
+      "2026 Wisconsin Senate candidates"
+    ],
+    "answer": "No. There is no U.S. Senate race in Wisconsin for the 2026 cycle. Senator Tammy Baldwin won re-election in November 2024 and is next up in 2030, while Senator Ron Johnson is next up for re-election in 2028.",
+    "source_url": "https://elections.wi.gov/elections",
+    "source_name": "Wisconsin Elections Commission – Election Schedule",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is Governor Tony Evers running for re-election in 2026?",
+    "question_variants": [
+      "Is the Wisconsin Governor's seat open in 2026?",
+      "Can Evers seek a third term?",
+      "Wisconsin 2026 gubernatorial candidates"
+    ],
+    "answer": "No. Governor Tony Evers announced in July 2025 that he will not seek a third term, leaving the Wisconsin gubernatorial seat open for the 2026 cycle.",
+    "source_url": "https://elections.wi.gov/candidates",
+    "source_name": "Wisconsin Elections Commission – Candidate Information",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What was the outcome of the 2026 Wisconsin Supreme Court spring election?",
+    "question_variants": [
+      "Who won the April 7 Wisconsin Supreme Court race?",
+      "Wisconsin Supreme Court liberal majority 2026",
+      "Rebecca Bradley retirement Wisconsin"
+    ],
+    "answer": "In the April 7, 2026 spring election, liberal-backed Chris Taylor defeated conservative-backed Maria Lazar by approximately 20 percentage points to fill the seat being vacated by retiring conservative Justice Rebecca Bradley, expanding the court's liberal majority from 4-3 to 5-2. Bradley announced in late 2025 she would not seek reelection. Taylor will be sworn in August 1, 2026.",
+    "source_url": "https://elections.wi.gov/elections/election-results",
+    "source_name": "Wisconsin Elections Commission – Election Results",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates and Campaigns"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When is the 2026 partisan primary election in Wisconsin?",
+    "question_variants": [
+      "What date is the WI primary in 2026?",
+      "Wisconsin August primary date",
+      "When do polls open for the WI partisan primary?"
+    ],
+    "answer": "The Wisconsin partisan primary election is scheduled for Tuesday, August 11, 2026.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/5/02/12s",
+    "source_name": "Wis. Stat. § 5.02(12s)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "When is the 2026 general election in Wisconsin?",
+    "question_variants": [
+      "What date is the WI general election in 2026?",
+      "Wisconsin 2026 midterm election date",
+      "When is Election Day 2026 in Wisconsin?"
+    ],
+    "answer": "The general election in Wisconsin will be held on Tuesday, November 3, 2026.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/5/02/5",
+    "source_name": "Wis. Stat. § 5.02(5)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "WI",
+    "office_level": ["judicial", "municipal", "special_district"],
+    "category": "election_dates",
+    "question": "When was the 2026 spring election held in Wisconsin?",
+    "question_variants": [
+      "Wisconsin April election date 2026",
+      "When did we vote for Supreme Court in WI?",
+      "Spring election calendar Wisconsin"
+    ],
+    "answer": "The Wisconsin spring election, which includes nonpartisan races for judicial, municipal, and school board offices, was held on Tuesday, April 7, 2026.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/5/02/21",
+    "source_name": "Wis. Stat. § 5.02(21)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Local and Judicial candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["judicial", "municipal", "special_district"],
+    "category": "election_dates",
+    "question": "When was the 2026 spring primary held in Wisconsin?",
+    "question_variants": [
+      "Wisconsin February primary date",
+      "When was the nonpartisan primary in WI?",
+      "Spring primary election calendar"
+    ],
+    "answer": "The Wisconsin spring primary for nonpartisan offices was held on Tuesday, February 17, 2026.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/5/02/22",
+    "source_name": "Wis. Stat. § 5.02(22)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Local and Judicial candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the jurisdictional split between the Wisconsin Elections Commission and the Wisconsin Ethics Commission?",
+    "question_variants": [
+      "Who enforces campaign finance vs election law in WI?",
+      "Does the Secretary of State run elections in Wisconsin?",
+      "WEC vs Ethics Commission roles"
+    ],
+    "answer": "The Wisconsin Elections Commission (WEC) administers elections and ballot access, while the separate Wisconsin Ethics Commission handles campaign finance reporting, contribution limits, and lobbying regulations. Distinctively, the Wisconsin Secretary of State does not administer elections.",
+    "source_url": "https://ethics.wi.gov/Pages/AboutUs/AboutUs.aspx",
+    "source_name": "Wisconsin Ethics Commission – About Us",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates, Consultants, and Legal Counsel"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote at the polls in Wisconsin?",
+    "question_variants": [
+      "Wisconsin voter ID laws",
+      "Do I need my driver's license to vote in WI?",
+      "Poll ID requirements Wisconsin"
+    ],
+    "answer": "Yes. Wisconsin law strictly requires voters to show an acceptable photo ID to vote at their polling place. Acceptable IDs include a Wisconsin driver's license, state ID card, U.S. passport, or military ID.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/5/02/6m",
+    "source_name": "Wis. Stat. § 5.02(6m)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Wisconsin allow same-day voter registration at polling places?",
+    "question_variants": [
+      "Can I register to vote at the polls in Wisconsin?",
+      "Same-day registration rules WI",
+      "Is there an Election Day Registration option?"
+    ],
+    "answer": "Yes. Eligible voters in Wisconsin can register to vote at their polling place on Election Day by providing an acceptable proof of residence document.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/iii/55/2",
+    "source_name": "Wis. Stat. § 6.55(2)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Are secure drop boxes for absentee ballots legally permitted in Wisconsin for 2026?",
+    "question_variants": [
+      "Did the Supreme Court bring back drop boxes in WI?",
+      "Can I put my absentee ballot in a drop box?",
+      "Priorities USA v. WEC drop box ruling"
+    ],
+    "answer": "Yes. In its July 2024 ruling in Priorities USA v. WEC, the Wisconsin Supreme Court restored the authority of municipal clerks to use secure, unstaffed drop boxes for the return of absentee ballots, overturning a previous 2022 ban. The Wisconsin Elections Commission provides operational guidance to municipal clerks on drop box security.",
+    "source_url": "https://elections.wi.gov/voters/absentee-voting",
+    "source_name": "Wisconsin Elections Commission – Absentee Voting",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does an absentee ballot require a witness signature in Wisconsin?",
+    "question_variants": [
+      "Who can witness an absentee ballot in WI?",
+      "Does someone have to watch me vote by mail?",
+      "Wisconsin absentee ballot witness requirement"
+    ],
+    "answer": "Yes. Wisconsin law requires that a voter mark their absentee ballot in the presence of an adult U.S. citizen witness. The witness must sign the certificate envelope for the ballot to be counted.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/iv/87/4/b/1",
+    "source_name": "Wis. Stat. § 6.87(4)(b)1",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Absentee voters"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What address information must a witness provide on a Wisconsin absentee ballot envelope?",
+    "question_variants": [
+      "Will my ballot be rejected if the witness leaves off their address?",
+      "Absentee witness address rules WI",
+      "Curing a witness address error"
+    ],
+    "answer": "In addition to their signature, the witness must write their printed name and complete address on the absentee ballot certificate envelope. If the address is missing, the ballot may be rejected.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/iv/87/2",
+    "source_name": "Wis. Stat. § 6.87(2)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Absentee voters and Poll Watchers"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "candidate_eligibility",
+    "question": "Can a person with a felony conviction vote in Wisconsin?",
+    "question_variants": [
+      "Felon voting rights WI",
+      "Can I vote after getting off probation in Wisconsin?",
+      "Voting post-incarceration rules WI"
+    ],
+    "answer": "Yes, but only after they have fully completed their sentence, which includes serving any term of incarceration as well as any period of probation, parole, or extended supervision. Voting rights are then automatically restored, but the individual must re-register to vote.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/i/03/1/b",
+    "source_name": "Wis. Stat. § 6.03(1)(b)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All eligible citizens"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county"],
+    "category": "voter_interaction",
+    "question": "Does Wisconsin have an open primary system?",
+    "question_variants": [
+      "Can an independent vote in the Wisconsin Democratic primary?",
+      "Do I have to register with a party to vote in the primary?",
+      "Open primary rules WI"
+    ],
+    "answer": "Yes. Wisconsin holds open primaries, meaning voters do not need to be registered with a specific political party to participate. However, on the partisan primary ballot, a voter can only vote for candidates within one chosen party.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/5/02/12",
+    "source_name": "Wis. Stat. § 5.02(12)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for the August 11, 2026 Wisconsin partisan primary?",
+    "question_variants": [
+      "When did candidates have to file for the 2026 primary in Wisconsin?",
+      "Declaration of candidacy deadline 2026",
+      "Wisconsin June 1 filing deadline"
+    ],
+    "answer": "The deadline for candidates to file nomination papers and declarations of candidacy for the August 11, 2026 partisan primary was June 1, 2026, at 5:00 p.m.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/8/15/1",
+    "source_name": "Wis. Stat. § 8.15(1)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "federal"],
+    "category": "ballot_access",
+    "question": "How many nomination signatures are required to run for Governor or U.S. Senate in Wisconsin?",
+    "question_variants": [
+      "Signature requirement for WI Governor",
+      "How many signatures to run statewide in WI?",
+      "Statewide petition thresholds Wisconsin"
+    ],
+    "answer": "Candidates seeking major party nomination for statewide offices like Governor or U.S. Senate must collect a minimum of 2,000 and a maximum of 4,000 valid signatures from eligible voters.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/8/15/6/a",
+    "source_name": "Wis. Stat. § 8.15(6)(a)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide and U.S. Senate candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal"],
+    "category": "ballot_access",
+    "question": "How many nomination signatures are required to run for U.S. House in Wisconsin?",
+    "question_variants": [
+      "Signature threshold for Congress WI",
+      "How many signatures to run for US House in Wisconsin?",
+      "Congressional district petition requirements"
+    ],
+    "answer": "Candidates seeking major party nomination for a U.S. House of Representatives seat must collect a minimum of 1,000 and a maximum of 2,000 valid signatures from eligible voters within the congressional district.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/8/15/6/b",
+    "source_name": "Wis. Stat. § 8.15(6)(b)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature requirements for State Senate and State Assembly nomination papers in Wisconsin?",
+    "question_variants": [
+      "Signatures needed for WI State Legislature",
+      "How many signatures to run for State Assembly WI?",
+      "State Senate petition thresholds"
+    ],
+    "answer": "Major party candidates for State Senate must collect between 400 and 800 valid signatures. Candidates for State Assembly must collect between 200 and 400 valid signatures from eligible voters within their respective districts.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/8/15/6/c",
+    "source_name": "Wis. Stat. § 8.15(6)(c)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Are there term limits for the Governor or state legislators in Wisconsin?",
+    "question_variants": [
+      "How long can someone serve as Governor in WI?",
+      "State Representative term limits Wisconsin",
+      "State Senate consecutive terms"
+    ],
+    "answer": "No. While the Wisconsin Constitution Article XIII Section 12 governs recalls, there is no constitutional or statutory provision imposing term limits on the Governor, other statewide executive officers, or members of the State Legislature.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi",
+    "source_name": "Wisconsin Constitution",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide and Legislative candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for Governor in Wisconsin?",
+    "question_variants": [
+      "How old do you have to be to be WI Governor?",
+      "Gubernatorial candidate residency rules",
+      "Do I have to live in Wisconsin for 5 years to run for Governor?"
+    ],
+    "answer": "To be eligible to run for Governor or Lieutenant Governor, a candidate must simply be a citizen of the United States and a qualified elector of the state (which requires being at least 18 years old and a resident for at least 28 consecutive days). Distinctively, there is no 30-year age or 5-year durational residency requirement in Wisconsin.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000230/000002",
+    "source_name": "Wisconsin Constitution Article V § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "recall_rules",
+    "question": "Can voters recall a statewide official or state legislator in Wisconsin?",
+    "question_variants": [
+      "Statewide recall mechanism WI",
+      "How to recall the Governor in Wisconsin",
+      "Recall signature threshold Wisconsin"
+    ],
+    "answer": "Yes. Voters can recall any incumbent elective officer after their first year of their term. Proponents have a 60-day window to gather signatures equal to at least 25% of the vote cast for the office of governor at the last preceding election within the district or state.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000238/000012",
+    "source_name": "Wisconsin Constitution Article XIII § 12",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the 2025-2026 individual contribution limits for Wisconsin state campaigns?",
+    "question_variants": [
+      "How much can an individual give to a Governor candidate in WI?",
+      "Statewide contribution limits Wisconsin",
+      "State Assembly maximum donation"
+    ],
+    "answer": "Under Wis. Stat. § 11.1101, individuals may contribute up to $20,000 per campaign to candidates for ANY statewide office (Governor, Lt. Governor, AG, Secretary of State, Treasurer, Superintendent, Supreme Court). Limits for State Senate are $2,000, and State Assembly are $1,000.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/ci/1101",
+    "source_name": "Wis. Stat. § 11.1101(1)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All state candidates and donors"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits for Wisconsin state campaigns?",
+    "question_variants": [
+      "How much can a PAC give to a candidate in WI?",
+      "PAC contribution limits Wisconsin",
+      "Super PAC direct donation rules"
+    ],
+    "answer": "Political Action Committees (PACs) have different limits than individuals. A PAC may contribute up to $86,000 to a gubernatorial candidate, $44,000 for Attorney General, $26,000 for Lt. Governor, and $18,000 for other statewide offices. Legislative limits remain $2,000 for Senate and $1,000 for Assembly.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/ci/1101",
+    "source_name": "Wis. Stat. § 11.1101(3)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "PACs and Campaign Treasurers"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Are Wisconsin contribution limits applied per election or per election cycle?",
+    "question_variants": [
+      "Primary and general contribution limits WI",
+      "Wisconsin campaign cycle definition",
+      "Can I donate the max limit twice in one year?"
+    ],
+    "answer": "Distinctively, under Wisconsin's 2015 Act 117 reforms, contribution limits apply to the entire campaign cycle, not per election. A candidate cannot receive the maximum limit for the primary and then again for the general; the single limit covers the entire period. The cycle is 4 years for statewide offices and State Senate, 2 years for State Assembly, and 10 years for Supreme Court Justices.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/ci/1101",
+    "source_name": "Wis. Stat. § 11.1101",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers and Donors"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "When does a campaign contribution cycle begin in Wisconsin?",
+    "question_variants": [
+      "When do donation limits reset in WI?",
+      "Act 117 cycle trigger",
+      "Does the campaign cycle start on Election Day?"
+    ],
+    "answer": "For an incumbent, the campaign cycle begins on the day after the general election for that office. For a non-incumbent challenger, the cycle begins on the date they first register their campaign committee or become a candidate under the law.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/ci/1101",
+    "source_name": "Wis. Stat. § 11.1101",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers and Donors"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Can a corporation or union contribute directly to a candidate for state office in Wisconsin?",
+    "question_variants": [
+      "Are corporate contributions legal in WI?",
+      "Can my business donate to a state candidate?",
+      "Labor union donation rules Wisconsin"
+    ],
+    "answer": "No. Wisconsin law strictly prohibits corporations, labor organizations, and federally recognized Indian tribes from making direct contributions to candidates or political parties. They may, however, establish and administer separate segregated PACs to make contributions.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/ci/1112",
+    "source_name": "Wis. Stat. § 11.1112",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Corporations, Unions, and Campaign Treasurers"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the 72-hour reporting rule for late contributions in Wisconsin?",
+    "question_variants": [
+      "When do I have to report late donations in WI?",
+      "15-day pre-election contribution reporting",
+      "Wisconsin late contribution threshold"
+    ],
+    "answer": "Under Wis. Stat. § 11.0204(7), campaigns must report any contribution or cumulative contributions of $1,000 or more from a single contributor received within 15 days before an election. This report applies only to contributions, not expenditures, and must be filed with the Ethics Commission within 72 hours of receipt.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/cii/0204",
+    "source_name": "Wis. Stat. § 11.0204(7)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What are the registration and bank account requirements to run for office in Wisconsin?",
+    "question_variants": [
+      "Campaign treasurer designation WI",
+      "Can I use my personal checking account for donations?",
+      "Wisconsin campaign depository requirements"
+    ],
+    "answer": "Before receiving or spending any funds, a candidate must file a campaign registration statement designating a campaign treasurer. The campaign must also establish a separate depository bank account; commingling campaign funds with personal or business funds is strictly prohibited.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/cii/0201",
+    "source_name": "Wis. Stat. § 11.0201",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers and Candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What are the contribution limits from political parties to candidates in Wisconsin?",
+    "question_variants": [
+      "How much can the state party give to my campaign?",
+      "Political party unlimited contributions WI",
+      "Legislative campaign committee limits"
+    ],
+    "answer": "Under Wisconsin law, political party committees and legislative campaign committees are permitted to make unlimited contributions to their candidates. They are not subject to the monetary caps placed on individuals or PACs.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/ci/1104",
+    "source_name": "Wis. Stat. § 11.1104",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Political Parties and Candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Who enforces campaign finance rules in Wisconsin?",
+    "question_variants": [
+      "Wisconsin Ethics Commission jurisdiction",
+      "Who do I file my campaign finance reports with?",
+      "Does the WEC handle campaign finance?"
+    ],
+    "answer": "Campaign finance, lobbying regulations, and ethics laws are enforced by the Wisconsin Ethics Commission, a six-member bipartisan body. It operates entirely separately from the Wisconsin Elections Commission, which handles ballot access and election administration.",
+    "source_url": "https://ethics.wi.gov/Pages/AboutUs/AboutUs.aspx",
+    "source_name": "Wisconsin Ethics Commission – About Us",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates, Consultants, and Legal Counsel"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the Wisconsin Elections Commission (WEC)?",
+    "question_variants": [
+      "Who administers elections in Wisconsin?",
+      "WEC composition and structure",
+      "Does the Secretary of State run WI elections?"
+    ],
+    "answer": "The WEC is the state agency responsible for administering elections, managing the voter registration database, and providing guidance to the state's 1,922 municipal clerks. Created in 2015 to replace the Government Accountability Board, it is a six-member bipartisan commission with equal Republican and Democratic representation.",
+    "source_url": "https://elections.wi.gov/",
+    "source_name": "Wisconsin Elections Commission",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters, Campaigns, and Legal Counsel"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "What is the status of Wisconsin Elections Commission Administrator Meagan Wolfe?",
+    "question_variants": [
+      "Is Meagan Wolfe still the WEC administrator?",
+      "Wisconsin Elections Commission leadership 2026",
+      "WEC administrator confirmation ruling"
+    ],
+    "answer": "In a February 2025 ruling, the Wisconsin Supreme Court unanimously determined that Meagan Wolfe can legally continue to serve as the WEC Administrator as a holdover appointee, resolving a prolonged partisan dispute over her confirmation and removal by the State Senate.",
+    "source_url": "https://elections.wi.gov/",
+    "source_name": "Wisconsin Elections Commission",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists and Consultants"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Do campaign contribution limits apply during a recall election in Wisconsin?",
+    "question_variants": [
+      "Recall financing limits Wisconsin",
+      "Can a recalled politician raise unlimited money?",
+      "Act 117 recall contribution caps"
+    ],
+    "answer": "Under 2015 Wisconsin Act 117, regular contribution limits are temporarily lifted for incumbent officeholders during the signature collection period of a recall effort against them. The incumbent can accept unlimited contributions to defend against the recall until the petition is officially filed or the window closes.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/ci/1103",
+    "source_name": "Wis. Stat. § 11.1103",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Incumbent officials facing recall"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What forms of photo ID are acceptable to vote in Wisconsin?",
+    "question_variants": [
+      "Wisconsin voter ID list",
+      "Can I use my student ID to vote in WI?",
+      "Acceptable poll ID requirements"
+    ],
+    "answer": "Acceptable IDs under Wis. Stat. § 5.02(6m) include a Wisconsin driver's license or state ID, U.S. passport, military ID, certificate of naturalization, tribal ID, or a specific student ID card (provided it includes an issuance date, expiration date, and signature, and is accompanied by proof of current enrollment).",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/5/02/6m",
+    "source_name": "Wis. Stat. § 5.02(6m)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Who qualifies as an indefinitely confined voter in Wisconsin?",
+    "question_variants": [
+      "Indefinitely confined absentee ballot rules",
+      "Do indefinitely confined voters need a photo ID?",
+      "Trump v. Biden 2020 Wisconsin ruling"
+    ],
+    "answer": "Under Wis. Stat. § 6.86(2), a voter who is indefinitely confined due to age, physical illness, infirmity, or disability may receive absentee ballots automatically without a photo ID, using their witness's signature for verification. The Wisconsin Supreme Court ruled in 2020 that pandemic concerns did not grant blanket exemption; the status requires an individual assessment.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/iv/86/2",
+    "source_name": "Wis. Stat. § 6.86(2)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Get-Out-The-Vote Operations"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What address information must a witness provide on a Wisconsin absentee ballot envelope?",
+    "question_variants": [
+      "Absentee witness address rules WI",
+      "Will my ballot be rejected if the witness leaves off their address?",
+      "Curing a witness address error"
+    ],
+    "answer": "A witness must sign the absentee ballot certificate envelope and provide their printed name and complete address. Following multiple court decisions, if the address is missing, the ballot may be rejected. WEC guidance limits the ability of municipal clerks to cure (add missing information to) witness certificates without the voter.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/iv/87/2",
+    "source_name": "Wis. Stat. § 6.87(2)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Absentee voters and Poll Watchers"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing fee in Wisconsin?",
+    "question_variants": [
+      "How much does it cost to run for office in WI?",
+      "Wisconsin filing fee amount",
+      "Do I have to pay to get on the ballot?"
+    ],
+    "answer": "Wisconsin does not require candidates to pay a filing fee to run for office. Ballot access is achieved exclusively by circulating and submitting the statutorily required number of valid nomination petition signatures.",
+    "source_url": "https://elections.wi.gov/candidates/ballot-access",
+    "source_name": "Wisconsin Elections Commission – Ballot Access",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the nomination paper circulation window for the August 2026 partisan primary?",
+    "question_variants": [
+      "When can I start collecting signatures in WI?",
+      "April 15 to June 1 signature window",
+      "Nomination paper deadlines Wisconsin"
+    ],
+    "answer": "Candidates may begin circulating nomination papers on April 15, 2026. The completed petitions and declaration of candidacy must be filed with the Wisconsin Elections Commission no later than 5:00 p.m. on June 1, 2026.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/8/15/1",
+    "source_name": "Wis. Stat. § 8.15(1)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Which Wisconsin statewide executive offices are up for election in 2026?",
+    "question_variants": [
+      "Who is on the ballot in Wisconsin in 2026?",
+      "Is the Attorney General up for reelection?",
+      "2026 Wisconsin state elections"
+    ],
+    "answer": "The 2026 ballot features elections for Governor (open seat), Lieutenant Governor (Sara Rodriguez, D), Attorney General (Josh Kaul, D), Secretary of State (Sarah Godlewski, D), and State Treasurer (John Leiber, R).",
+    "source_url": "https://elections.wi.gov/elections",
+    "source_name": "Wisconsin Elections Commission",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Why were Wisconsin's state legislative maps redrawn for 2024 and 2026?",
+    "question_variants": [
+      "Did Wisconsin redraw its assembly districts for 2026?",
+      "Clarke v. WEC redistricting maps",
+      "Are we using new maps for the state legislature?"
+    ],
+    "answer": "In December 2023, the Wisconsin Supreme Court ruled in Clarke v. WEC that the existing legislative maps violated the state constitution's 'contiguous territory' requirement. Governor Tony Evers signed new, constitutionally compliant maps in February 2024, which remain stable and active for the 2026 cycle.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/4",
+    "source_name": "Wis. Stat. Chapter 4 (Apportionment)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Are Wisconsin's congressional maps subject to the same state-level redistricting lawsuits as the legislative maps?",
+    "question_variants": [
+      "Did the Wisconsin Supreme Court strike down congressional maps?",
+      "Congressional redistricting status WI",
+      "Rucho v Common Cause effect in Wisconsin"
+    ],
+    "answer": "As of the 2026 cycle, the congressional maps drawn earlier in the decade remain in effect. While the U.S. Supreme Court's Rucho v. Common Cause decision precluded federal courts from hearing partisan gerrymandering claims, the state-level Clarke v. WEC ruling specifically applied only to the state legislative maps.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/3",
+    "source_name": "Wis. Stat. Chapter 3 (Congressional Districts)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are judges selected for the Wisconsin Court of Appeals?",
+    "question_variants": [
+      "Are appellate judges partisan in Wisconsin?",
+      "Court of Appeals selection process",
+      "Court of appeals term length WI"
+    ],
+    "answer": "The 16 judges of the Wisconsin Court of Appeals are elected in nonpartisan spring elections to serve six-year terms. Mid-term vacancies are filled by gubernatorial appointment, and the appointee must stand for election at the next spring election.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000232/000005",
+    "source_name": "Wisconsin Constitution Article VII § 5",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Wisconsin Circuit Court judges elected?",
+    "question_variants": [
+      "Circuit Court selection mechanism",
+      "Are trial judges nonpartisan in Wisconsin?",
+      "Circuit court term lengths WI"
+    ],
+    "answer": "Circuit Court judges in Wisconsin are elected in nonpartisan spring elections to six-year terms. Similar to the appellate courts, vacancies are filled by the Governor until the next available spring election.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000232/000007",
+    "source_name": "Wisconsin Constitution Article VII § 7",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "filing_requirements",
+    "question": "What is the deadline to register as a write-in candidate in Wisconsin?",
+    "question_variants": [
+      "When must write-in candidates file in WI?",
+      "Write-in registration deadline",
+      "How late can I declare a write-in campaign?"
+    ],
+    "answer": "To have their votes officially counted, a write-in candidate must file a registration statement and declaration of candidacy by 12:00 noon on the Friday immediately preceding the election.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/7/ii/50/2/em",
+    "source_name": "Wis. Stat. § 7.50(2)(em)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for U.S. House in Wisconsin?",
+    "question_variants": [
+      "Do I have to live in the district to run for Congress in WI?",
+      "Congressional age limit Wisconsin",
+      "US House qualifications"
+    ],
+    "answer": "Under the U.S. Constitution, a candidate for the U.S. House of Representatives must be at least 25 years old, a U.S. citizen for seven years, and an inhabitant of Wisconsin when elected. District residency is not required.",
+    "source_url": "https://elections.wi.gov/candidates/ballot-access",
+    "source_name": "Wisconsin Elections Commission – Ballot Access",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for the Wisconsin State Legislature?",
+    "question_variants": [
+      "How old to run for State Assembly WI?",
+      "State Senate residency requirements",
+      "Do I have to live in the district to run for the legislature?"
+    ],
+    "answer": "To run for the State Senate or State Assembly, a candidate must be a resident of Wisconsin for one year and a qualified elector (at least 18 years old) of the specific district they seek to represent.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000229/000006",
+    "source_name": "Wisconsin Constitution Article IV § 6",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Wisconsin Supreme Court?",
+    "question_variants": [
+      "Do Supreme Court justices have to be lawyers in WI?",
+      "Wisconsin judicial qualifications",
+      "How long must I practice law to be a judge?"
+    ],
+    "answer": "A candidate for the Wisconsin Supreme Court, Court of Appeals, or Circuit Court must be a qualified elector of the state and must have been licensed to practice law in Wisconsin for at least five years immediately prior to their election or appointment.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000232/000024",
+    "source_name": "Wisconsin Constitution Article VII § 24",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "When does early voting (in-person absentee voting) begin in Wisconsin?",
+    "question_variants": [
+      "When can I vote early in WI?",
+      "In-person absentee voting window",
+      "Wisconsin early voting hours"
+    ],
+    "answer": "In-person absentee voting, often referred to as early voting, begins 14 days before the election. The period ends on the Sunday immediately preceding Election Day, with specific office hours set by individual municipal clerks.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/iv/86/1/b",
+    "source_name": "Wis. Stat. § 6.86(1)(b)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What documents are accepted as proof of residence for same-day voter registration in Wisconsin?",
+    "question_variants": [
+      "How do I prove my address to vote in WI?",
+      "Same-day registration documents Wisconsin",
+      "Election day registration proof"
+    ],
+    "answer": "Voters registering on Election Day must provide proof of residence. Acceptable documents include a utility bill, bank statement, paycheck, or government document issued within the last 90 days that displays the voter's current name and address.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/iii/34/3/a",
+    "source_name": "Wis. Stat. § 6.34(3)(a)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How long must I live in Wisconsin before I can vote?",
+    "question_variants": [
+      "Wisconsin voter residency requirement",
+      "28-day residency rule WI",
+      "When do I have to move to Wisconsin to vote?"
+    ],
+    "answer": "Wisconsin law requires voters to have resided in their current ward or election district for at least 28 consecutive days before the election to be eligible to vote there.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/i/02/1",
+    "source_name": "Wis. Stat. § 6.02(1)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "New residents and Voters"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to cure a provisional ballot in Wisconsin?",
+    "question_variants": [
+      "When do I have to show my ID for my provisional ballot?",
+      "Provisional ballot curing window WI",
+      "Wisconsin absentee ballot cure deadline"
+    ],
+    "answer": "If a voter casts a provisional ballot (such as lacking an acceptable photo ID), they must provide the required documentation to their municipal clerk's office by 4:00 p.m. on the Friday following the election for the ballot to be counted.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/iv/97/3/b",
+    "source_name": "Wis. Stat. § 6.97(3)(b)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Wisconsin law require employers to give time off to vote?",
+    "question_variants": [
+      "Do I get paid time off to vote in WI?",
+      "Employee voting leave Wisconsin",
+      "3 hours off to vote rule"
+    ],
+    "answer": "Yes. Under Wis. Stat. § 6.76, employers must grant employees up to three consecutive hours of unpaid leave to vote while the polls are open, provided the employee requests the time off before Election Day.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/6/iv/76",
+    "source_name": "Wis. Stat. § 6.76",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Employers"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the limit for anonymous campaign contributions in Wisconsin?",
+    "question_variants": [
+      "Can I donate cash anonymously in WI?",
+      "Anonymous contribution cap Wisconsin",
+      "Passing the hat rules campaign finance"
+    ],
+    "answer": "Anonymous campaign contributions are strictly limited to $10 or less per donor. Any anonymous contribution exceeding $10 must be donated to a charitable organization or the Common School Fund.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/ci/1108",
+    "source_name": "Wis. Stat. § 11.1108",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "When must an independent expenditure committee register in Wisconsin?",
+    "question_variants": [
+      "Super PAC registration threshold WI",
+      "Independent expenditure limits Wisconsin",
+      "When do I have to file as an IE committee?"
+    ],
+    "answer": "An independent expenditure committee must register with the Wisconsin Ethics Commission before making disbursements or incurring obligations that aggregate to more than $2,500 in a calendar year.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/cv/0502",
+    "source_name": "Wis. Stat. § 11.0502",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Super PACs and Independent Expenditure Committees"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is a campaign finance conduit in Wisconsin?",
+    "question_variants": [
+      "Conduit reporting mechanism WI",
+      "How do PAC pass-throughs work in Wisconsin?",
+      "Bundling contributions legally"
+    ],
+    "answer": "A conduit is a unique registration type in Wisconsin that receives contributions from individuals and passes them through to candidates. The contribution is attributed directly to the original individual donor, not the conduit, allowing donors to bundle funds without triggering PAC limits.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/cvii/0701",
+    "source_name": "Wis. Stat. § 11.0701",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers and Donors"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What are the standard campaign finance reporting periods in Wisconsin?",
+    "question_variants": [
+      "When are campaign finance reports due in WI?",
+      "Continuing reports schedule Wisconsin",
+      "Wisconsin campaign filing dates"
+    ],
+    "answer": "Registered committees must file Continuing Reports twice a year, on January 15 and July 15. In an election year, candidates on the ballot must additionally file a Pre-Primary Report, a Pre-Election Report, and potentially a Post-Election Report.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/cii/0204",
+    "source_name": "Wis. Stat. § 11.0204",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How are vacancies in the U.S. Senate filled in Wisconsin?",
+    "question_variants": [
+      "Who replaces a US Senator from Wisconsin?",
+      "Does the Governor appoint Senate vacancies in WI?",
+      "Special election for US Senate"
+    ],
+    "answer": "If a U.S. Senate seat becomes vacant, the Governor appoints a replacement to serve temporarily. A special election is then scheduled to fill the remainder of the unexpired term.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/17/18/2",
+    "source_name": "Wis. Stat. § 17.18(2)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How are vacancies in the U.S. House of Representatives filled in Wisconsin?",
+    "question_variants": [
+      "Does the Governor appoint US House vacancies?",
+      "Special election for Congress WI",
+      "Congressional vacancy fill Wisconsin"
+    ],
+    "answer": "Vacancies in the U.S. House can only be filled by a special election called by the Governor. The Governor does not have the authority to appoint an interim Representative.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/8/50",
+    "source_name": "Wis. Stat. § 8.50",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who succeeds the Governor of Wisconsin in the event of a vacancy?",
+    "question_variants": [
+      "What happens if the WI Governor resigns?",
+      "Lieutenant Governor succession Wisconsin",
+      "Gubernatorial vacancy fill"
+    ],
+    "answer": "If the Governor dies, resigns, or is removed, the Lieutenant Governor becomes the Governor for the remainder of the unexpired term.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000230/000007",
+    "source_name": "Wisconsin Constitution Article V § 7",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide officials"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies filled for Wisconsin's Attorney General, Secretary of State, or Treasurer?",
+    "question_variants": [
+      "Does the Governor appoint the AG?",
+      "Vacancy fill for statewide executive offices WI",
+      "Who replaces the State Treasurer?"
+    ],
+    "answer": "If a vacancy occurs in a statewide executive office other than Governor or Lieutenant Governor, the Governor appoints a replacement to serve out the remainder of the unexpired term.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/17/19",
+    "source_name": "Wis. Stat. § 17.19",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide officials"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies in the Wisconsin State Legislature filled?",
+    "question_variants": [
+      "Special election for State Assembly WI",
+      "Does the Governor appoint state senators?",
+      "Legislative vacancy fill Wisconsin"
+    ],
+    "answer": "Legislative vacancies are filled exclusively by special elections called by the Governor. Unlike some states, Wisconsin does not allow the Governor or party committees to appoint interim legislators.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/8/50",
+    "source_name": "Wis. Stat. § 8.50",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "When are county sheriffs and district attorneys elected in Wisconsin?",
+    "question_variants": [
+      "Are sheriff races partisan in WI?",
+      "District Attorney election schedule",
+      "County constitutional officer terms"
+    ],
+    "answer": "Sheriffs, District Attorneys, and other county-level constitutional officers are elected in partisan elections to serve four-year terms.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000231/000004",
+    "source_name": "Wisconsin Constitution Article VI § 4",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County-level candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is the Wisconsin Superintendent of Public Instruction a partisan office?",
+    "question_variants": [
+      "When is the election for Superintendent in WI?",
+      "Nonpartisan statewide elections Wisconsin",
+      "Is the head of schools elected?"
+    ],
+    "answer": "No. The Superintendent of Public Instruction is a statewide, nonpartisan office elected during the spring election to serve a four-year term, entirely separated from the fall partisan cycle.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000235/000001",
+    "source_name": "Wisconsin Constitution Article X § 1",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "When must a recall committee register in Wisconsin?",
+    "question_variants": [
+      "Recall committee registration WI",
+      "Can I raise money for a recall before registering?",
+      "Wisconsin recall finance rules"
+    ],
+    "answer": "A recall committee must formally register with the Wisconsin Ethics Commission and file a registration statement before it begins circulating any recall petitions against an elected official.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/11/cvi/0602",
+    "source_name": "Wis. Stat. § 11.0602",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Recall proponents"
+  },
+  {
+    "state": "WI",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Wisconsin legislature pass a constitutional amendment?",
+    "question_variants": [
+      "Constitutional amendment process WI",
+      "Can the legislature change the constitution without voters?",
+      "Voter approval for state constitution Wisconsin"
+    ],
+    "answer": "A proposed constitutional amendment must be passed by a majority vote in both chambers of the legislature during two consecutive legislative sessions. It is then placed on the ballot for final approval by Wisconsin voters.",
+    "source_url": "https://docs.legis.wisconsin.gov/constitution/wi/000237/000001",
+    "source_name": "Wisconsin Constitution Article XII § 1",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Campaigns"
+  },
+  {
+    "state": "WI",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When can special elections be scheduled in Wisconsin?",
+    "question_variants": [
+      "Special election timing WI",
+      "Can a special election happen any Tuesday?",
+      "Wisconsin election calendar"
+    ],
+    "answer": "Special elections in Wisconsin are generally restricted to standard election dates. They must be held concurrently with the spring primary, spring election, partisan primary, or general election, unless explicitly authorized for another date.",
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/8/50",
+    "source_name": "Wis. Stat. § 8.50",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Local Officials"
+  }
+]
