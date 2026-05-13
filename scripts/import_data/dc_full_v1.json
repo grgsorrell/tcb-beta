@@ -1,0 +1,1298 @@
+[
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "candidate_eligibility",
+    "question": "Is the District of Columbia considered a state for election purposes?",
+    "question_variants": [
+      "Does D.C. operate like a regular U.S. state?",
+      "District of Columbia constitutional status",
+      "Is D.C. subject to federal control?"
+    ],
+    "answer": "No. The District of Columbia is a federal district, not a state. Under Article I, Section 8, Clause 17 of the U.S. Constitution, Congress retains plenary (absolute) authority over D.C., though it was granted limited self-government under the D.C. Home Rule Act of 1973.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/titles/1/chapters/2",
+    "source_name": "D.C. Code § 1-201.01 (Home Rule Act)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "candidate_eligibility",
+    "question": "Does Congress have the authority to block laws passed by the D.C. Council?",
+    "question_variants": [
+      "Congressional review of D.C. laws",
+      "Can the federal government override the Mayor of D.C.?",
+      "30-day congressional review period"
+    ],
+    "answer": "Yes. Under the Home Rule Act, all legislation passed by the D.C. Council and signed by the Mayor is subject to a 30-day congressional review period (60 days for criminal laws). Congress can override D.C. laws via a joint resolution, as it did in 2023 with the Revised Criminal Code Act.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-206.02",
+    "source_name": "D.C. Code § 1-206.02",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many Electoral College votes does Washington, D.C. receive for presidential elections?",
+    "question_variants": [
+      "Does D.C. vote for President?",
+      "23rd Amendment D.C. electoral votes",
+      "Can D.C. residents vote for the president?"
+    ],
+    "answer": "Under the 23rd Amendment to the U.S. Constitution (ratified in 1961), the District of Columbia is allocated 3 Electoral College votes for presidential elections, which is the minimum number granted to any state.",
+    "source_url": "https://constitution.congress.gov/constitution/amendment-23/",
+    "source_name": "U.S. Constitution, 23rd Amendment",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal campaigns and Consultants"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "Is Eleanor Holmes Norton running for re-election as D.C.'s U.S. House Delegate in 2026?",
+    "question_variants": [
+      "Is the D.C. Delegate seat open in 2026?",
+      "Who is replacing Eleanor Holmes Norton?",
+      "2026 D.C. non-voting delegate race"
+    ],
+    "answer": "No. Delegate Eleanor Holmes Norton (D) announced in January 2026 that she will not seek re-election. This makes the non-voting U.S. House Delegate position an open seat for the first time since 1990.",
+    "source_url": "https://dcboe.org/Elections/2026-Elections",
+    "source_name": "D.C. Board of Elections – 2026 Elections",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the Shadow Senator and Shadow Representative positions in D.C.?",
+    "question_variants": [
+      "Does D.C. have real US Senators?",
+      "What does a shadow senator do?",
+      "D.C. statehood advocacy roles"
+    ],
+    "answer": "D.C. voters elect two Shadow Senators and one Shadow Representative. These are unpaid advocacy roles created under D.C. Code § 1-129.01 to lobby Congress for statehood and federal recognition. They are not seated in Congress and hold no federal voting power.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-129.01",
+    "source_name": "D.C. Code § 1-129.01",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is Mayor Muriel Bowser running for re-election in 2026?",
+    "question_variants": [
+      "Is the D.C. Mayor's seat open in 2026?",
+      "Can Muriel Bowser seek a fourth term?",
+      "D.C. 2026 mayoral race status"
+    ],
+    "answer": "No. Mayor Muriel Bowser (D) announced in November 2025 that she will not seek a fourth consecutive term, making the 2026 D.C. mayoral race an open seat.",
+    "source_url": "https://dcboe.org/Elections/2026-Elections",
+    "source_name": "D.C. Board of Elections – 2026 Elections",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "election_dates",
+    "question": "What is the structure of the D.C. Council?",
+    "question_variants": [
+      "How many members are on the D.C. Council?",
+      "Are D.C. Council members elected at large?",
+      "D.C. legislative body composition"
+    ],
+    "answer": "The D.C. Council is a 13-member legislative body consisting of a Chairman elected citywide, four At-Large members, and eight Ward members, all serving four-year terms.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.01",
+    "source_name": "D.C. Code § 1-204.01",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "election_dates",
+    "question": "Which D.C. Council seats are up for election in 2026?",
+    "question_variants": [
+      "Who is on the ballot in D.C. in 2026?",
+      "Is the D.C. Council Chairman up for reelection?",
+      "2026 D.C. ward elections"
+    ],
+    "answer": "Half of the D.C. Council is on the 2026 ballot: the Chairman, two At-Large seats, and Wards 1, 3, 5, and 6. Under the Home Rule Charter, one of the two available At-Large seats must be reserved for a non-majority party or independent candidate.",
+    "source_url": "https://dcboe.org/Elections/2026-Elections",
+    "source_name": "D.C. Board of Elections – 2026 Elections",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is Attorney General Brian Schwalb running for re-election in 2026?",
+    "question_variants": [
+      "Is the D.C. Attorney General's seat open in 2026?",
+      "Who is the Attorney General of D.C.?",
+      "D.C. Attorney General election history"
+    ],
+    "answer": "Yes. Attorney General Brian Schwalb (D), who was elected in 2022, is running for re-election. D.C. has only elected its Attorney General since 2014; the position was previously appointed.",
+    "source_url": "https://dcboe.org/Elections/2026-Elections",
+    "source_name": "D.C. Board of Elections – 2026 Elections",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is the Chief Financial Officer (CFO) an elected position in D.C.?",
+    "question_variants": [
+      "Does D.C. elect a Treasurer or Comptroller?",
+      "Who manages D.C. finances?",
+      "D.C. CFO appointment process"
+    ],
+    "answer": "No. D.C. does not have an elected Treasurer or Comptroller. The Chief Financial Officer (CFO) is an independent position appointed by the Mayor and confirmed by the Council for a five-year term.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.24a",
+    "source_name": "D.C. Code § 1-204.24a",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates and consultants"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When is the 2026 D.C. Primary Election?",
+    "question_variants": [
+      "What date is the D.C. primary in 2026?",
+      "D.C. June primary date",
+      "When do polls open for the D.C. primary?"
+    ],
+    "answer": "The D.C. Primary Election is scheduled for Tuesday, June 16, 2026. Under D.C. Code § 1-1001.05, the primary is held on the third Tuesday in June of non-presidential even-numbered years.",
+    "source_url": "https://dcboe.org/Elections/2026-Elections",
+    "source_name": "D.C. Board of Elections – 2026 Elections",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When is the 2026 D.C. General Election?",
+    "question_variants": [
+      "What date is the D.C. general election in 2026?",
+      "D.C. 2026 midterm election date",
+      "When is Election Day 2026 in Washington, D.C.?"
+    ],
+    "answer": "The general election in the District of Columbia will be held concurrently with federal elections on Tuesday, November 3, 2026.",
+    "source_url": "https://dcboe.org/Elections/2026-Elections",
+    "source_name": "D.C. Board of Elections – 2026 Elections",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal"],
+    "category": "runoff_rules",
+    "question": "Will Ranked-Choice Voting (RCV) be used in the 2026 D.C. elections?",
+    "question_variants": [
+      "Did Initiative 83 pass in D.C.?",
+      "RCV implementation status D.C.",
+      "How does ranked-choice voting work in Washington D.C.?"
+    ],
+    "answer": "The operational status is uncertain. Voters approved Initiative 83 in November 2024 to implement RCV, but the D.C. Council only partially funded it for 2025, and emergency legislation was introduced requiring a comprehensive needs assessment before rollout.",
+    "source_url": "https://dcboe.org/Elections/2024-Elections",
+    "source_name": "D.C. Board of Elections – Initiative 83",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal"],
+    "category": "voter_interaction",
+    "question": "Will D.C. have semi-open primaries for the 2026 election?",
+    "question_variants": [
+      "Can independents vote in the D.C. Democratic primary?",
+      "Initiative 83 open primary status",
+      "Are D.C. primaries closed?"
+    ],
+    "answer": "Although Initiative 83 passed in 2024 to allow unaffiliated voters to participate in partisan primaries, the D.C. Council did not fund the open primaries component for 2025, leaving its implementation for 2026 uncertain. Historically, D.C. primaries have been strictly closed.",
+    "source_url": "https://dcboe.org/Elections/2024-Elections",
+    "source_name": "D.C. Board of Elections – Initiative 83",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Do all D.C. voters automatically receive a mail-in ballot?",
+    "question_variants": [
+      "Universal mail voting D.C.",
+      "Do I have to request an absentee ballot in Washington D.C.?",
+      "D.C. vote-by-mail default rules"
+    ],
+    "answer": "Yes. Under the Election Reform Amendment Act (codified at D.C. Code § 1-1001.05), D.C. uses a universal mail-in voting system where every active registered voter is automatically mailed a ballot unless they explicitly opt out.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.05",
+    "source_name": "D.C. Code § 1-1001.05",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "What is the deadline for a mail-in ballot to be received and counted in D.C.?",
+    "question_variants": [
+      "When is my absentee ballot due in D.C.?",
+      "D.C. mail ballot postmark rule",
+      "10-day receipt deadline for ballots D.C."
+    ],
+    "answer": "Mail-in ballots must be postmarked on or before Election Day and received by the D.C. Board of Elections no later than the 10th day after the election to be counted, providing a distinctively long postmark grace period.",
+    "source_url": "https://dcboe.org/Voters/Absentee-Voting",
+    "source_name": "D.C. Board of Elections – Absentee Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does D.C. allow same-day voter registration at polling places?",
+    "question_variants": [
+      "Can I register to vote at the polls in Washington D.C.?",
+      "Same-day registration rules D.C.",
+      "Election day registration D.C."
+    ],
+    "answer": "Yes. D.C., which was the first jurisdiction in the U.S. to implement same-day voter registration in 1981, allows eligible citizens to register and vote at early voting centers and Election Day polling places using valid proof of residence.",
+    "source_url": "https://dcboe.org/Voters/Register-To-Vote/Same-Day-Voter-Registration",
+    "source_name": "D.C. Board of Elections – Same-Day Voter Registration",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote at the polls in D.C.?",
+    "question_variants": [
+      "D.C. voter ID laws",
+      "Poll ID requirements Washington D.C.",
+      "Do I need my driver's license to vote in D.C.?"
+    ],
+    "answer": "No. D.C. currently does not require voters to show a photo ID at the polls, relying instead on signature matching. Unlike Nevada, D.C. does not have a pending constitutional-style charter amendment (like Question 7) requiring photo ID.",
+    "source_url": "https://dcboe.org/Voters/Election-Day-Voting/ID-Requirements",
+    "source_name": "D.C. Board of Elections – ID Requirements",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "candidate_eligibility",
+    "question": "Can a person with a felony conviction vote in D.C.?",
+    "question_variants": [
+      "Felon voting rights D.C.",
+      "Voting post-incarceration rules Washington D.C.",
+      "Can prisoners vote in D.C.?"
+    ],
+    "answer": "Yes. D.C. is the first and only jurisdiction in the U.S. to pass legislation (the Restore the Vote Amendment Act of 2020) that allows residents incarcerated for felony convictions to retain their voting rights and cast absentee ballots while in prison.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.06",
+    "source_name": "D.C. Code § 1-1001.06",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All eligible citizens"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "Who enforces campaign finance rules in D.C.?",
+    "question_variants": [
+      "Jurisdiction of the OCF in D.C.",
+      "Where do I file campaign finance reports in Washington D.C.?",
+      "D.C. Office of Campaign Finance role"
+    ],
+    "answer": "Campaign finance is administered by the Office of Campaign Finance (OCF), which operates as an independent agency within the D.C. Board of Elections (BOE).",
+    "source_url": "https://ocf.dc.gov/",
+    "source_name": "D.C. Office of Campaign Finance",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Campaign Treasurers"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the Fair Elections Program (FEP) in D.C.?",
+    "question_variants": [
+      "D.C. public financing system",
+      "How does the FEP matching system work?",
+      "Voluntary public campaign funds D.C."
+    ],
+    "answer": "The FEP is a voluntary public financing program. Participating candidates agree to accept lower contribution limits and donations exclusively from individuals (no business or PAC money). In return, they receive a base grant and 5-to-1 matching funds for small-dollar contributions from D.C. residents.",
+    "source_url": "https://ocf.dc.gov/page/fair-elections-program",
+    "source_name": "D.C. Office of Campaign Finance – Fair Elections Program",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the standard individual contribution limits for D.C. local candidates?",
+    "question_variants": [
+      "How much can an individual give to a Mayor candidate in D.C.?",
+      "D.C. contribution limits 2026",
+      "State Board of Education maximum donation D.C."
+    ],
+    "answer": "Under D.C. Code § 1-1163.33, the traditional contribution limits are $2,000 for Mayor, $1,500 for Attorney General and Council Chairman, $1,000 for At-Large Council, $500 for Ward Council and State Board of Education (SBOE) At-Large, $200 for SBOE Ward, and $25 for Advisory Neighborhood Commission.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1163.33",
+    "source_name": "D.C. Code § 1-1163.33",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and donors"
+  },
+  {
+    "state": "DC",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are judges selected for the D.C. Superior Court and Court of Appeals?",
+    "question_variants": [
+      "Are judges elected in Washington D.C.?",
+      "D.C. judicial selection process",
+      "Who appoints judges in the District of Columbia?"
+    ],
+    "answer": "D.C. voters do not elect or retain judges. Under the Home Rule Act, all judges for the D.C. Superior Court and D.C. Court of Appeals are appointed by the President of the United States, with advice and consent of the U.S. Senate, to serve 15-year terms.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.33",
+    "source_name": "D.C. Code § 1-204.33",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates and nominees"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "recall_rules",
+    "question": "Can voters recall the Mayor or Council members in D.C.?",
+    "question_variants": [
+      "D.C. recall mechanism",
+      "How to recall a politician in Washington D.C.",
+      "Does D.C. have a recall by petition?"
+    ],
+    "answer": "Yes. Under D.C. Code § 1-204.111, voters can recall the Mayor, Attorney General, or Council members. A recall petition requires signatures from 10% of the registered voters in the jurisdiction, and the official must have been in office for at least 6 months.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.111",
+    "source_name": "D.C. Code § 1-204.111",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "ballot_access",
+    "question": "Does D.C. have a state constitution?",
+    "question_variants": [
+      "Washington D.C. statehood constitution",
+      "D.C. constitutional status",
+      "Has D.C. adopted a constitution?"
+    ],
+    "answer": "In 2016, D.C. voters overwhelmingly approved an advisory referendum for statehood, adopting a draft constitution for the proposed 'State of Washington, D.C.' However, Congress has not passed legislation (such as H.R. 51) to admit D.C. as a state, so it remains a federal district governed by the Home Rule Charter.",
+    "source_url": "https://statehood.dc.gov/",
+    "source_name": "D.C. Statehood Initiatives",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All Campaigns and Strategists"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for Mayor of D.C.?",
+    "question_variants": [
+      "How old do you have to be to be D.C. Mayor?",
+      "Mayoral candidate residency rules D.C.",
+      "Qualifications for Mayor of Washington D.C."
+    ],
+    "answer": "Under D.C. Code § 1-204.21, a candidate for Mayor must be at least 30 years old, a registered voter in the District, and must have been a resident and domiciled in D.C. for at least three years immediately preceding the election.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.21",
+    "source_name": "D.C. Code § 1-204.21",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial/Mayoral candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for D.C. Council Chairman?",
+    "question_variants": [
+      "How old to run for Council Chairman D.C.?",
+      "District residency for Council Chairman",
+      "Qualifications for Chairman of the D.C. Council"
+    ],
+    "answer": "Under D.C. Code § 1-204.01, a candidate for Chairman of the Council must be at least 30 years old, a registered voter, and a resident of the District of Columbia for at least one year immediately preceding the general election.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.01",
+    "source_name": "D.C. Code § 1-204.01",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for an At-Large seat on the D.C. Council?",
+    "question_variants": [
+      "How old to run for At-Large Council D.C.?",
+      "Residency rules for At-Large Councilmember",
+      "D.C. At-Large candidate requirements"
+    ],
+    "answer": "Under D.C. Code § 1-204.01, a candidate for an At-Large Council seat must be at least 25 years old, a registered voter, and a resident of D.C. for at least one year prior to the election.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.01",
+    "source_name": "D.C. Code § 1-204.01",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for a Ward seat on the D.C. Council?",
+    "question_variants": [
+      "How old to run for Ward Council D.C.?",
+      "Do I have to live in the ward to run for D.C. Council?",
+      "Ward residency rules D.C."
+    ],
+    "answer": "Under D.C. Code § 1-204.01, a candidate for a Ward Council seat must be at least 25 years old, a registered voter, a resident of D.C. for at least one year, and specifically a resident of the ward from which they are nominated at the time of filing.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.01",
+    "source_name": "D.C. Code § 1-204.01",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the specific qualifications to run for Attorney General in D.C.?",
+    "question_variants": [
+      "Do I have to be a lawyer to be AG in D.C.?",
+      "Attorney General residency rules Washington D.C.",
+      "D.C. Bar requirement for Attorney General"
+    ],
+    "answer": "Under D.C. Code § 1-301.81, a candidate for Attorney General must be a registered voter and resident of D.C., and importantly, must have been actively engaged in the practice of law in the District of Columbia for at least the 5 years immediately preceding the election.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-301.81",
+    "source_name": "D.C. Code § 1-301.81",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the D.C. State Board of Education (SBOE)?",
+    "question_variants": [
+      "How old do you have to be to run for D.C. SBOE?",
+      "State Board of Education eligibility D.C.",
+      "Do I have to live in the ward to run for SBOE?"
+    ],
+    "answer": "Under D.C. Code § 1-1001.07, a candidate for the State Board of Education must be at least 18 years old, a registered voter, and a resident of the District (and the specific ward, if running for a ward seat) for at least one year prior to the election.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.07",
+    "source_name": "D.C. Code § 1-1001.07",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for D.C.'s U.S. House Delegate?",
+    "question_variants": [
+      "How old to run for Non-Voting Delegate D.C.?",
+      "Congressional age limit D.C.",
+      "U.S. House qualifications District of Columbia"
+    ],
+    "answer": "The Non-Voting Delegate must meet the qualifications of a U.S. House Representative under the U.S. Constitution (at least 25 years old, a U.S. citizen for seven years) and must be an inhabitant and qualified elector of the District of Columbia.",
+    "source_url": "https://dcboe.org/Elections/Candidates/Running-for-Office",
+    "source_name": "D.C. Board of Elections – Candidate Qualifications",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What is the term length and eligibility requirement for a D.C. Shadow Senator?",
+    "question_variants": [
+      "How long do D.C. Shadow Senators serve?",
+      "Are Shadow Senators elected for 4 or 6 years?",
+      "Shadow Senator qualifications D.C."
+    ],
+    "answer": "Shadow Senators must meet the qualifications of a U.S. Senator (at least 30 years old, a U.S. citizen for nine years, and an inhabitant of D.C.). Distinctively, while sometimes miscited as having 4-year terms, D.C. Code § 1-129.05 explicitly establishes that Shadow Senators serve 6-year terms, mirroring actual U.S. Senators.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-129.05",
+    "source_name": "D.C. Code § 1-129.05",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to serve as an Advisory Neighborhood Commissioner (ANC) in D.C.?",
+    "question_variants": [
+      "How old to run for ANC in Washington D.C.?",
+      "ANC residency rules D.C.",
+      "Single Member District eligibility"
+    ],
+    "answer": "To run for one of the 296 unpaid ANC seats, a candidate must be at least 18 years old, a registered voter, and a continuous resident of the specific Single Member District (SMD) they seek to represent for at least 60 days before the election.",
+    "source_url": "https://anc.dc.gov/page/about-ancs",
+    "source_name": "D.C. Advisory Neighborhood Commissions",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "election_dates",
+    "question": "Who succeeds the Mayor of D.C. in the event of a vacancy?",
+    "question_variants": [
+      "What happens if the D.C. Mayor resigns?",
+      "Acting Mayor D.C. succession",
+      "Mayoral vacancy fill D.C."
+    ],
+    "answer": "Under the Home Rule Act, if the Mayor's office becomes vacant, the Chairman of the D.C. Council automatically becomes the Acting Mayor. A special election must then be held within 114 days to fill the remainder of the unexpired term.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.21",
+    "source_name": "D.C. Code § 1-204.21(c)(2)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide officials and campaigns"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "election_dates",
+    "question": "How are mid-term vacancies filled on the D.C. Council?",
+    "question_variants": [
+      "D.C. Council special elections",
+      "Filling a Council seat in Washington D.C.",
+      "Interim appointment for D.C. Council"
+    ],
+    "answer": "A vacancy on the D.C. Council triggers a special election, which must be held within 114 days. During the interim period, the respective political party's central committee may appoint a temporary replacement for partisan seats, while the Council itself appoints interim replacements for independent at-large seats.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.01",
+    "source_name": "D.C. Code § 1-204.01(b)(3)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are judicial vacancies filled in D.C., and is there a mandatory retirement age?",
+    "question_variants": [
+      "Who appoints judges in Washington D.C.?",
+      "Judicial Nominating Commission D.C.",
+      "D.C. judicial mandatory retirement 74"
+    ],
+    "answer": "Judicial vacancies in D.C. are filled by the President of the United States with U.S. Senate confirmation, based on binding recommendations from the Judicial Nomination Commission. D.C. judges face a strict mandatory retirement age of 74, after which they may apply for senior judge status.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.31",
+    "source_name": "D.C. Code § 1-204.31 (Home Rule Act § 431)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates and nominees"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the pre-election voter registration deadline in Washington D.C.?",
+    "question_variants": [
+      "When is the last day to register online to vote in D.C.?",
+      "21-day registration rule D.C.",
+      "Voter registration deadline prior to same-day D.C."
+    ],
+    "answer": "The deadline to pre-register to vote online or by mail in D.C. is 21 days before the election. However, D.C. offers Same-Day Registration, allowing voters who miss this deadline to register in person during early voting or on Election Day.",
+    "source_url": "https://dcboe.org/Voters/Register-To-Vote/Register-to-Vote",
+    "source_name": "D.C. Board of Elections – Voter Registration",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How long is the early voting window in Washington D.C.?",
+    "question_variants": [
+      "When does early voting start in D.C.?",
+      "14-day early voting rule D.C.",
+      "D.C. in-person early voting duration"
+    ],
+    "answer": "Under D.C. Code § 1-1001.05, D.C. provides a mandatory early voting period of at least 14 days prior to the election. The Board of Elections establishes early voting centers in every ward across the city.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.05",
+    "source_name": "D.C. Code § 1-1001.05",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and GOTV operations"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Can D.C. voters opt out of receiving a universal mail-in ballot?",
+    "question_variants": [
+      "Universal mail voting opt-out D.C.",
+      "How to stop getting mail ballots in D.C.",
+      "D.C. vote-by-mail preferences"
+    ],
+    "answer": "Yes. While D.C. operates a universal mail-in voting system where every active registered voter is automatically mailed a ballot, D.C. Code § 1-1001.05 allows voters to formally submit a request to opt out of the automatic mailing if they prefer to vote exclusively in person.",
+    "source_url": "https://dcboe.org/Voters/Absentee-Voting/Mail-In-Voting",
+    "source_name": "D.C. Board of Elections – Mail-In Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Can 16-year-olds pre-register to vote in D.C.?",
+    "question_variants": [
+      "Teenager voter registration D.C.",
+      "Pre-registration age Washington D.C.",
+      "When can high school students register to vote in D.C.?"
+    ],
+    "answer": "Yes. Under D.C. Code § 1-1001.07, a resident who is 16 or 17 years old may pre-register to vote. Their registration is held in a 'pending' status and becomes fully active automatically when they reach the eligible voting age.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.07",
+    "source_name": "D.C. Code § 1-1001.07",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters and GOTV operations"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does D.C. law require employers to grant paid time off to vote?",
+    "question_variants": [
+      "Do I get paid time off to vote in D.C.?",
+      "Employee voting leave D.C.",
+      "2 hours off to vote rule Washington D.C."
+    ],
+    "answer": "Yes. Under D.C. Code § 1-612.07, employers must grant employees up to two hours of paid leave to vote in a D.C. election (or an election in the jurisdiction where they are eligible to vote), provided the employee requests the leave in advance.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-612.07",
+    "source_name": "D.C. Code § 1-612.07",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Employers"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone at D.C. polling places?",
+    "question_variants": [
+      "How close to the door can I campaign in D.C.?",
+      "50-foot rule D.C. voting",
+      "Campaign signs at polling places Washington D.C."
+    ],
+    "answer": "D.C. enforces a 50-foot electioneering buffer zone measured from the entrance and exit of a polling place. Under D.C. Code § 1-1001.10, no campaign materials, sign distribution, or voter solicitation is permitted within this boundary.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.10",
+    "source_name": "D.C. Code § 1-1001.10",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaigns and Poll Workers"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "voter_interaction",
+    "question": "Can non-citizens vote in Washington D.C. elections?",
+    "question_variants": [
+      "Non-citizen voting rights D.C.",
+      "Can immigrants vote in local D.C. races?",
+      "D.C. Law 24-242 local elections"
+    ],
+    "answer": "Yes, but for local races only. Under the Local Resident Voting Rights Amendment Act of 2022 (D.C. Law 24-242), D.C. allows non-citizen residents of the District to register and vote in local municipal elections, such as those for Mayor, Council, Attorney General, and ANCs.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/laws/24-242",
+    "source_name": "D.C. Law 24-242",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and Get-Out-The-Vote operations"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How many petition signatures are required for a mayoral candidate in the D.C. primary?",
+    "question_variants": [
+      "D.C. Mayor signature requirement",
+      "How many signatures to run for Mayor in D.C.?",
+      "Primary petition threshold Washington D.C."
+    ],
+    "answer": "Under D.C. Code § 1-1001.08, a partisan candidate for Mayor (as well as Council Chairman and Attorney General) must collect valid signatures from at least 2,000 registered voters of their specific political party to qualify for the primary election ballot.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.08",
+    "source_name": "D.C. Code § 1-1001.08",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Mayoral candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["municipal"],
+    "category": "ballot_access",
+    "question": "What is the signature requirement for a Ward Council candidate in the D.C. primary?",
+    "question_variants": [
+      "D.C. Ward Council signature limit",
+      "How many signatures to run for D.C. Council in a ward?",
+      "Ward petition threshold D.C."
+    ],
+    "answer": "To qualify for the primary ballot, a candidate for a Ward seat on the D.C. Council must collect valid signatures from at least 500 registered voters who reside in that specific ward and are affiliated with the candidate's political party.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.08",
+    "source_name": "D.C. Code § 1-1001.08",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the itemized disclosure threshold for campaign expenditures in D.C.?",
+    "question_variants": [
+      "D.C. expenditure reporting limit",
+      "When do I have to list a vendor for my campaign in D.C.?",
+      "D.C. $10 expense rule"
+    ],
+    "answer": "D.C. has a distinctively low expenditure disclosure threshold. Campaigns must itemize and report any campaign expenditure of $10 or more, detailing the payee and the precise purpose of the expense.",
+    "source_url": "https://ocf.dc.gov/page/campaign-finance-guide",
+    "source_name": "D.C. Office of Campaign Finance",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the base payment amount for Fair Elections Program candidates other than Mayor?",
+    "question_variants": [
+      "FEP base grant for D.C. Council",
+      "How much public money does an Attorney General candidate get?",
+      "State Board of Education FEP base amount"
+    ],
+    "answer": "Certified Fair Elections Program (FEP) candidates receive an initial base grant depending on the office: $40,000 for Attorney General, Council Chairman, At-Large Council, and Ward Council. State Board of Education (SBOE) candidates receive $10,000.",
+    "source_url": "https://dcfairelections.org/faq/",
+    "source_name": "D.C. Fair Elections Program FAQ",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "How does a candidate qualify for the Fair Elections Program in D.C.?",
+    "question_variants": [
+      "FEP certification requirements D.C.",
+      "How many donors to get public funds for D.C. Council?",
+      "Attorney General qualifying threshold D.C. Fair Elections"
+    ],
+    "answer": "Candidates must collect small-dollar contributions from unique D.C. residents. Thresholds are: Attorney General (500 donors/$20k), Council Chairman (300/$15k), At-Large Council (250/$12k), Ward Council and SBOE At-Large (150/$5k), and SBOE Ward (50/$1k).",
+    "source_url": "https://dcfairelections.org/faq/",
+    "source_name": "D.C. Fair Elections Program FAQ",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the matching ratio for the D.C. Fair Elections Program?",
+    "question_variants": [
+      "FEP match rate Washington D.C.",
+      "How are small dollar donations matched in D.C.?",
+      "D.C. public financing formula"
+    ],
+    "answer": "D.C. provides a 5-to-1 matching ratio for qualifying small-dollar contributions from District residents. For example, a $50 contribution from a D.C. resident yields $250 in matching public funds, generating $300 total for the campaign.",
+    "source_url": "https://dcfairelections.org/faq/",
+    "source_name": "D.C. Fair Elections Program FAQ",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Participating Candidates and Donors"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the limit on cash contributions for D.C. campaigns?",
+    "question_variants": [
+      "Can I donate cash in Washington D.C.?",
+      "Cash contribution cap D.C. Code",
+      "D.C. $25 cash limit"
+    ],
+    "answer": "Under D.C. Code § 1-1163.33(c), no person shall make a cash contribution to any political committee or candidate in excess of $25. Any contribution over $25 must be made by check, credit card, or other verifiable electronic means.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1163.33",
+    "source_name": "D.C. Code § 1-1163.33(c)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers and Donors"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the maximum aggregate contribution an individual can make to all D.C. candidates combined per election?",
+    "question_variants": [
+      "Total aggregate contribution limit D.C.",
+      "How much total can I donate to local D.C. races?",
+      "D.C. Code 1-1163.33(b) individual cap"
+    ],
+    "answer": "Under D.C. Code § 1-1163.33(b), no individual may contribute more than an aggregate of $8,500 in any one election to all candidates for Mayor, Chairman, Council, and State Board of Education combined.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1163.33",
+    "source_name": "D.C. Code § 1-1163.33(b)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Donors"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are corporate contributions aggregated in D.C. campaign finance?",
+    "question_variants": [
+      "D.C. business contributor affiliation limits",
+      "Do LLCs and parent companies share a contribution limit?",
+      "D.C. Code corporate aggregation rule"
+    ],
+    "answer": "Under D.C. Code § 1-1163.33, all contributions made by a corporation, its subsidiaries, affiliated partnerships, LLCs, and other connected business entities sharing majority ownership or control are aggregated and treated as being made by a single person for the purpose of contribution limits.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1163.33",
+    "source_name": "D.C. Code § 1-1163.33",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Corporations and Campaign Treasurers"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclaimer requirements for political advertising in Washington D.C.?",
+    "question_variants": [
+      "D.C. political ad disclaimer rules",
+      "Who paid for this ad disclaimer D.C.",
+      "Print and broadcast ad attributions D.C."
+    ],
+    "answer": "Under D.C. Code § 1-1163.15, all political advertisements, campaign literature, and electronic communications must include a clear 'Paid for by' attribution stating the name and address of the committee or person funding the ad. D.C. law applies to print, digital, and broadcast, subject to concurrent federal FCC rules.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1163.15",
+    "source_name": "D.C. Code § 1-1163.15",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All Campaigns and Strategists"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing fee in Washington D.C.?",
+    "question_variants": [
+      "How much does it cost to run for office in D.C.?",
+      "D.C. Board of Elections filing fees 2026",
+      "Do I have to pay to get on the ballot in D.C.?"
+    ],
+    "answer": "There is no filing fee to run for public office in the District of Columbia ($0). Ballot access is achieved exclusively by obtaining and filing the required number of valid nominating petition signatures.",
+    "source_url": "https://dcboe.org/Elections/Candidates/Running-for-Office",
+    "source_name": "D.C. Board of Elections – Running for Office",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "ballot_access",
+    "question": "What is the signature requirement for an At-Large Council candidate in the D.C. primary?",
+    "question_variants": [
+      "D.C. At-Large Council signature limit",
+      "How many signatures to run for D.C. Council At-Large?",
+      "1,500 signatures from 5 wards requirement D.C."
+    ],
+    "answer": "To qualify for the primary ballot, a candidate for an At-Large Council seat (as well as Mayor, AG, and Chairman) must collect 2,000 valid signatures or 1% of registered voters in their party, whichever is less. The assertion that 1,500 signatures from 5 wards are required is incorrect under D.C. Code § 1-1001.08.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.08",
+    "source_name": "D.C. Code § 1-1001.08(j)(1)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal"],
+    "category": "ballot_access",
+    "question": "What is the signature requirement for an independent candidate seeking citywide office in D.C.?",
+    "question_variants": [
+      "D.C. independent candidate deadline and signatures",
+      "Nomination by petition general election D.C.",
+      "How to run as an independent for Mayor in D.C."
+    ],
+    "answer": "Independent or minor-party candidates seeking citywide offices (Mayor, AG, Chairman, At-Large Council, or federal Delegate/Shadow roles) directly for the general election must collect valid signatures from 3,000 registered voters, or 1.5% of all registered voters, whichever is less.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.08",
+    "source_name": "D.C. Code § 1-1001.08(j)(1)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal"],
+    "category": "ballot_access",
+    "question": "Which minor political parties are officially recognized for ballot access in D.C.?",
+    "question_variants": [
+      "D.C. Statehood Green Party status",
+      "Minor parties in Washington D.C.",
+      "What parties are on the D.C. ballot?"
+    ],
+    "answer": "In addition to the Democratic and Republican parties, D.C. officially recognizes the D.C. Statehood Green Party (a merged entity of the Statehood Party and Green Party) and the Libertarian Party. Candidates from these parties gain primary ballot access through lower signature thresholds than non-affiliated independents.",
+    "source_url": "https://dcboe.org/Voters/Register-To-Vote/Political-Parties",
+    "source_name": "D.C. Board of Elections – Political Parties",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Minor party candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "ballot_access",
+    "question": "How many signatures are required to qualify a ballot initiative in D.C.?",
+    "question_variants": [
+      "D.C. ballot initiative requirements",
+      "How to put a measure on the ballot in Washington D.C.",
+      "5% ward signature rule D.C."
+    ],
+    "answer": "Under D.C. Code § 1-1001.16, qualifying an initiative or referendum requires valid signatures from at least 5% of all registered voters citywide, and this must include at least 5% of the registered voters in five or more of the eight individual wards.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.16",
+    "source_name": "D.C. Code § 1-1001.16",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "ballot_access",
+    "question": "Are there subject matter restrictions on ballot initiatives in D.C.?",
+    "question_variants": [
+      "What can a D.C. ballot initiative cover?",
+      "Can an initiative appropriate funds in D.C.?",
+      "Federal restrictions on D.C. initiatives"
+    ],
+    "answer": "Yes. The Home Rule Act strictly prohibits D.C. ballot initiatives from authorizing or requiring the appropriation of funds. The D.C. Board of Elections will reject any proposed initiative measure that disrupts the District's congressionally approved budget.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-204.103",
+    "source_name": "D.C. Code § 1-204.103 (Home Rule Act § 4103)",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees and Strategists"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "ballot_access",
+    "question": "Are voter-approved ballot initiatives in D.C. subject to Congressional review?",
+    "question_variants": [
+      "Can Congress block a D.C. initiative?",
+      "30-day review for D.C. ballot measures",
+      "What happens after an initiative passes in D.C.?"
+    ],
+    "answer": "Yes. Even if overwhelmingly approved by D.C. voters, an initiative becomes an act of the D.C. Council and remains subject to the Home Rule Act's mandatory 30-day Congressional review period, during which Congress can override it.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-206.02",
+    "source_name": "D.C. Code § 1-206.02",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "ballot_access",
+    "question": "What is the referendum process in D.C.?",
+    "question_variants": [
+      "Can D.C. voters repeal a Council law?",
+      "D.C. Code § 1-1001.16 referendum",
+      "Voter veto of D.C. legislation"
+    ],
+    "answer": "The referendum process allows voters to suspend and potentially repeal acts recently passed by the D.C. Council. Proponents must submit valid signatures equal to 5% of registered voters (with 5% in at least five wards) before the legislation goes into effect.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.16",
+    "source_name": "D.C. Code § 1-1001.16",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "DC",
+    "office_level": ["municipal"],
+    "category": "redistricting",
+    "question": "How are the ward boundaries drawn in D.C.?",
+    "question_variants": [
+      "D.C. ward redistricting 2022",
+      "Who draws the D.C. ward map?",
+      "Decennial redistricting Washington D.C."
+    ],
+    "answer": "Following each decennial census, the D.C. Council passes legislation to redraw the boundaries of the District's eight wards to ensure population equality. The most recent redistricting was completed in early 2022 for use through the 2030 census cycle.",
+    "source_url": "https://dccouncil.gov/redistricting/",
+    "source_name": "D.C. Council – Redistricting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Municipal candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What is the structure of the D.C. Court of Appeals?",
+    "question_variants": [
+      "Highest court in Washington D.C.",
+      "How many judges on the D.C. Court of Appeals?",
+      "D.C. appellate court composition"
+    ],
+    "answer": "The D.C. Court of Appeals is the highest local court for the District of Columbia. It consists of nine judges (one Chief Judge and eight Associate Judges) who are appointed by the President to 15-year terms.",
+    "source_url": "https://www.dccourts.gov/court-of-appeals",
+    "source_name": "D.C. Courts – Court of Appeals",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates and nominees"
+  },
+  {
+    "state": "DC",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What is the structure of the D.C. Superior Court?",
+    "question_variants": [
+      "D.C. trial court composition",
+      "How many judges on the D.C. Superior Court?",
+      "D.C. court of general jurisdiction"
+    ],
+    "answer": "The D.C. Superior Court serves as the trial court of general jurisdiction. It is composed of 62 judges, appointed by the President to 15-year terms, who handle local civil, criminal, family, and probate matters.",
+    "source_url": "https://www.dccourts.gov/superior-court/superior-court-judges",
+    "source_name": "D.C. Courts – Superior Court",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates and nominees"
+  },
+  {
+    "state": "DC",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What is the composition of the D.C. Judicial Nomination Commission (JNC)?",
+    "question_variants": [
+      "Who is on the JNC in D.C.?",
+      "Who picks the judges in Washington D.C.?",
+      "Judicial selection panel D.C."
+    ],
+    "answer": "The JNC evaluates and recommends judicial nominees to the President. It consists of 7 members: two appointed by the Mayor, two by the D.C. Bar, one by the D.C. Council, one by the President, and one federal judge appointed by the Chief Judge of the U.S. District Court for D.C.",
+    "source_url": "https://jnc.dc.gov/page/about-jnc",
+    "source_name": "D.C. Judicial Nomination Commission",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates and legal counsel"
+  },
+  {
+    "state": "DC",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are the Chief Judges selected for the D.C. courts?",
+    "question_variants": [
+      "Are Chief Judges elected by their peers in D.C.?",
+      "D.C. Chief Judge term length",
+      "Selection of the D.C. Superior Court Chief Judge"
+    ],
+    "answer": "Chief Judges are not elected by the other judges of the court. Under D.C. Code § 11-1503, they are specifically designated and appointed by the Judicial Nomination Commission (JNC) to serve four-year terms as Chief Judge, after which they may be reappointed.",
+    "source_url": "https://jnc.dc.gov/page/judicial-service-district-columbia-courts-frequently-asked-questions",
+    "source_name": "D.C. Code § 11-1503 / JNC FAQ",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "DC",
+    "office_level": ["municipal"],
+    "category": "election_dates",
+    "question": "What is an Advisory Neighborhood Commission (ANC) in D.C.?",
+    "question_variants": [
+      "D.C. ANC role and structure",
+      "How many ANC seats are in Washington D.C.?",
+      "What does an ANC Commissioner do?"
+    ],
+    "answer": "ANCs are hyper-local neighborhood advisory bodies in D.C. consisting of 296 unpaid Commissioners. Elected to two-year terms, ANC Commissioners advise the D.C. government on neighborhood issues such as zoning, liquor licenses, and public safety.",
+    "source_url": "https://anc.dc.gov/page/about-ancs",
+    "source_name": "D.C. Advisory Neighborhood Commissions",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Municipal candidates and strategists"
+  },
+  {
+    "state": "DC",
+    "office_level": ["municipal"],
+    "category": "election_dates",
+    "question": "What is a Single Member District (SMD) in D.C.?",
+    "question_variants": [
+      "ANC election districts D.C.",
+      "Smallest voting district in Washington D.C.",
+      "SMD definition D.C."
+    ],
+    "answer": "A Single Member District (SMD) is the smallest unit of representative government in D.C. Each of the 296 ANC Commissioners is elected by and represents a specific SMD, which is drawn to include approximately 2,000 residents.",
+    "source_url": "https://anc.dc.gov/page/about-ancs",
+    "source_name": "D.C. Advisory Neighborhood Commissions",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Municipal candidates and strategists"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "voter_interaction",
+    "question": "How much authority do Advisory Neighborhood Commissions (ANCs) have in D.C.?",
+    "question_variants": [
+      "ANC 'great weight' statutory requirement",
+      "Does the D.C. government have to listen to the ANC?",
+      "Influence of ANC resolutions"
+    ],
+    "answer": "While ANCs are advisory and cannot pass laws, D.C. Code legally requires that executive agencies, boards, and the D.C. Council give 'great weight' to the formal recommendations of ANCs, requiring written justification if an agency decides to rule contrary to the ANC's advice.",
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-309.10",
+    "source_name": "D.C. Code § 1-309.10",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Municipal candidates and D.C. agencies"
+  },
+  {
+    "state": "DC",
+    "office_level": ["state", "municipal"],
+    "category": "voter_interaction",
+    "question": "Are D.C. government employees restricted from participating in political campaigns?",
+    "question_variants": [
+      "D.C. Local Hatch Act",
+      "Can D.C. government workers volunteer for a campaign?",
+      "D.C. Code 1-612.02 political activity"
+    ],
+    "answer": "Yes. Under the Local Hatch Act (D.C. Code § 1-612.02), D.C. government employees are permitted to engage in political campaigns, but they are strictly prohibited from using government time, resources, email, or their official authority to support or oppose candidates.",
+    "source_url": "https://bega.dc.gov/page/local-hatch-act",
+    "source_name": "D.C. Board of Ethics and Government Accountability (BEGA) – Hatch Act",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaigns and Volunteers"
+  },
+  {
+    "state": "DC",
+    "office_level": ["federal", "state", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Are secure drop boxes available for mail-in ballots in Washington D.C.?",
+    "question_variants": [
+      "Can I put my absentee ballot in a drop box in D.C.?",
+      "Mail ballot drop boxes D.C.",
+      "How many drop boxes are in D.C.?"
+    ],
+    "answer": "Yes. As part of its universal mail-in voting system, the D.C. Board of Elections deploys approximately 55 secure ballot drop boxes citywide, distributed across all 8 wards. They are open 24/7 until 8:00 p.m. on Election Day.",
+    "source_url": "https://dcboe.org/Voters/Absentee-Voting/Mail-In-Voting",
+    "source_name": "D.C. Board of Elections – Mail-In Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  }
+]
