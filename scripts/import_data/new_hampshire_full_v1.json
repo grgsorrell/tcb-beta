@@ -1,0 +1,1244 @@
+[
+  {
+    "state": "NH",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "Is there a U.S. Senate race in New Hampshire for the 2026 cycle?",
+    "question_variants": [
+      "Who is running for Jeanne Shaheen's Senate seat?",
+      "Is the New Hampshire US Senate seat an open race?",
+      "New Hampshire 2026 Senate election status"
+    ],
+    "answer": "Yes. There is an open U.S. Senate race in New Hampshire in 2026. Incumbent Senator Jeanne Shaheen (D) announced on March 12, 2025, that she will not seek a fourth term. Senator Maggie Hassan is not on the ballot until 2028.",
+    "source_url": "https://www.sos.nh.gov/elections/upcoming-elections",
+    "source_name": "New Hampshire Secretary of State – Upcoming Elections",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the term length for the Governor of New Hampshire?",
+    "question_variants": [
+      "How often does New Hampshire elect a Governor?",
+      "New Hampshire gubernatorial term duration",
+      "Is the NH Governor up for election every two years?"
+    ],
+    "answer": "The Governor of New Hampshire serves a two-year term. New Hampshire is one of only two states (with Vermont) that holds gubernatorial elections in every even-numbered year under N.H. Const. Pt. 2, Art. 42.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 42",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is Governor Kelly Ayotte running for re-election in 2026?",
+    "question_variants": [
+      "Is the New Hampshire Governor's seat open in 2026?",
+      "Can Kelly Ayotte seek a second term?",
+      "NH Governor re-election status 2026"
+    ],
+    "answer": "Yes. Governor Kelly Ayotte (R), who was elected to her first term in 2024, is eligible for re-election in 2026. New Hampshire has no term limits for the office of Governor.",
+    "source_url": "https://www.sos.nh.gov/elections/candidates",
+    "source_name": "New Hampshire Secretary of State – Candidates",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the role of the New Hampshire Executive Council in approving appointments?",
+    "question_variants": [
+      "NH Executive Council veto power",
+      "What can the Executive Council approve?",
+      "Checking the power of the NH Governor"
+    ],
+    "answer": "The Executive Council is a five-member elected body that checks the Governor's power. Under N.H. Const. Pt. 2, Art. 47, the Governor and Council have a mutual 'negative' on each other, meaning a 3-2 Council majority is required to approve contracts over $10,000, pardons, and gubernatorial appointments.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 47",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates and Executive Council candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does New Hampshire have a Lieutenant Governor?",
+    "question_variants": [
+      "Who succeeds the NH Governor?",
+      "Is there a Lt. Governor on the NH ballot?",
+      "New Hampshire order of succession"
+    ],
+    "answer": "No. New Hampshire does not have an office of Lieutenant Governor. Under N.H. Const. Pt. 2, Art. 49, the President of the Senate is the first in the line of succession to perform the duties of the Governor.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 49",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide officials and candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "How is the Attorney General selected in New Hampshire?",
+    "question_variants": [
+      "Is the NH Attorney General elected?",
+      "Appointment process for NH AG",
+      "Who picks the Attorney General in New Hampshire?"
+    ],
+    "answer": "The Attorney General of New Hampshire is appointed by the Governor with the advice and consent of the Executive Council. The AG is not popularly elected by the voters and serves a four-year term per N.H. Const. Pt. 2, Art. 46 and RSA 7:1.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/I/7/7-1.htm",
+    "source_name": "RSA 7:1 and N.H. Const. Pt. 2, Art. 46",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive officials"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "How is the New Hampshire Secretary of State chosen?",
+    "question_variants": [
+      "Is the NH Secretary of State an elected office?",
+      "Who chooses the Secretary of State in NH?",
+      "Joint ballot election for NH SoS"
+    ],
+    "answer": "The Secretary of State is elected by a joint ballot of the New Hampshire House and Senate (the General Court) rather than by popular vote. This election occurs at the start of each new legislative session under N.H. Const. Pt. 2, Art. 67.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 67",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive officials"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "How is the New Hampshire State Treasurer selected?",
+    "question_variants": [
+      "Is there an election for State Treasurer in NH?",
+      "Who picks the NH State Treasurer?",
+      "Appointment vs election for NH Treasurer"
+    ],
+    "answer": "Similar to the Secretary of State, the New Hampshire State Treasurer is elected by a joint ballot of the House of Representatives and the Senate under N.H. Const. Pt. 2, Art. 67, and does not appear on the popular ballot for voters.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 67",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive officials"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What is the size of the New Hampshire House of Representatives?",
+    "question_variants": [
+      "How many members are in the NH House?",
+      "Largest state legislative bodies",
+      "Composition of the NH General Court"
+    ],
+    "answer": "The New Hampshire House of Representatives consists of 400 members, making it the third-largest legislative body in the English-speaking world. Under N.H. Const. Pt. 2, Art. 9, all 400 seats are up for election every two years.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 9",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State House candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What is the size of the New Hampshire State Senate?",
+    "question_variants": [
+      "How many state senators does NH have?",
+      "NH Senate composition 2026",
+      "Size of the NH Senate"
+    ],
+    "answer": "The New Hampshire State Senate consists of 24 members representing 24 districts. Under N.H. Const. Pt. 2, Art. 25, senators are elected to two-year terms concurrently with the House.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 25",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Senate candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term lengths for New Hampshire state legislators?",
+    "question_variants": [
+      "How long is a NH House term?",
+      "NH State Senate term length",
+      "Legislative election cycle New Hampshire"
+    ],
+    "answer": "Both New Hampshire State Representatives and State Senators serve two-year terms. Every seat in both the 400-member House and the 24-member Senate is up for election in every even-numbered year.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 9 and Art. 25",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the annual salary for New Hampshire state legislators?",
+    "question_variants": [
+      "How much are NH House members paid?",
+      "Legislative salary New Hampshire",
+      "Is the NH legislature a part-time job?"
+    ],
+    "answer": "New Hampshire legislators are the lowest-paid in the U.S. Under N.H. Const. Pt. 2, Art. 15, members receive $200 per biennial term ($100/year). Presiding officers receive $250. Mileage is limited to 45 legislative days; special sessions add $3/day for up to 15 days.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 15",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When is the 2026 New Hampshire State Primary Election?",
+    "question_variants": [
+      "What date is the NH primary in 2026?",
+      "New Hampshire September primary date",
+      "Late primary elections NH"
+    ],
+    "answer": "The 2026 New Hampshire State Primary Election is scheduled for Tuesday, September 8, 2026. This partisan primary is distinct from the earlier presidential primary and is held on the second Tuesday of September per RSA 653:7.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/653/653-7.htm",
+    "source_name": "RSA 653:7",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "What is the 'First-in-the-Nation' primary mandate in New Hampshire?",
+    "question_variants": [
+      "NH presidential primary date mandate",
+      "RSA 653:9 first in nation",
+      "How is the NH primary date determined?"
+    ],
+    "answer": "Under RSA 653:9, New Hampshire's presidential primary must be held at least seven days before any 'similar election' in any other state. This statutory mandate requires the Secretary of State to set a date that ensures New Hampshire remains the first primary in the nation.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/653/653-9.htm",
+    "source_name": "RSA 653:9",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates and voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who has the authority to set the date for the New Hampshire primary?",
+    "question_variants": [
+      "Can the Secretary of State move the NH primary date?",
+      "Who controls the NH election calendar?",
+      "RSA 653:9 primary scheduling"
+    ],
+    "answer": "The New Hampshire Secretary of State has the sole authority to set the date of the presidential primary to comply with the first-in-the-nation mandate. For the state primary in September, the date is fixed by statute (RSA 653:7) unless a conflict arises with specific holidays.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/653/653-9.htm",
+    "source_name": "RSA 653:9 and RSA 653:7",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Election administration and candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the individual and corporate contribution limits for state candidates in New Hampshire?",
+    "question_variants": [
+      "Max donation for NH Governor 2026",
+      "How much can an individual give to a candidate in NH?",
+      "RSA 664:4 contribution limits"
+    ],
+    "answer": "Under RSA 664:4, individuals and corporations may contribute up to $15,000 per candidate per election cycle. This limit was increased by 2023 legislative reforms (SB 140) and applies uniformly to persons and entities.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-4.htm",
+    "source_name": "RSA 664:4, I",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "State candidates and donors"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the contribution limits for political committees and parties in New Hampshire?",
+    "question_variants": [
+      "PAC donation limits NH",
+      "How much can I give to a political party in New Hampshire?",
+      "NH campaign finance caps 2026"
+    ],
+    "answer": "Individuals and businesses may contribute up to $30,000 per election cycle to a political committee or a political party. These caps are governed by RSA 664:4, V, and are distinct from limits on direct contributions to candidates.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-4.htm",
+    "source_name": "RSA 664:4, V",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Political Committees and Party units"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is a Political Advocacy Organization (PAO) and what are its contribution limits?",
+    "question_variants": [
+      "NH unlimited campaign contributions loophole",
+      "PAO status campaign finance",
+      "Can PAOs give unlimited money to candidates?"
+    ],
+    "answer": "A Political Advocacy Organization (PAO) is a registered entity that can accept unlimited contributions from donors. Under RSA 664:4, V, a PAO may also make unlimited direct contributions to other committees, including candidate committees, effectively allowing for unlimited pass-through fundraising.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-4.htm",
+    "source_name": "RSA 664:2, XIV and RSA 664:4, V",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Super PACs"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Are direct corporate contributions to candidates legal in New Hampshire?",
+    "question_variants": [
+      "Can a business use treasury funds to donate in NH?",
+      "NH corporate treasury donation rules",
+      "Kennedy v Gardner corporate contributions"
+    ],
+    "answer": "Yes. While specific older statutes still contain restrictive language, direct corporate treasury contributions are permitted in New Hampshire up to the individual limit of $15,000 per cycle. This follows federal court rulings and the 2023 consolidation of limits under RSA 664:4.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-4.htm",
+    "source_name": "RSA 664:4",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Corporations and Campaign Treasurers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "Is the Online Campaign Finance System (OCFS) mandatory for candidates in New Hampshire?",
+    "question_variants": [
+      "Do I have to file my NH campaign reports online?",
+      "RSA 664:9-a online filing",
+      "Electronic filing requirements for NH State House"
+    ],
+    "answer": "Online filing is mandatory for Governor, Executive Council, and State Senate candidates under RSA 664:9-a. It will become mandatory for State House and all other elective offices, including county positions, as of November 25, 2026.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-9-a.htm",
+    "source_name": "RSA 664:9-a",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in New Hampshire?",
+    "question_variants": [
+      "New Hampshire voter ID laws",
+      "Poll ID requirements NH",
+      "Can I vote in NH without a driver's license?"
+    ],
+    "answer": "Yes. Voters must present a valid photo ID to vote in person under RSA 659:13. Valid IDs include NH driver's licenses, U.S. passports, military IDs, and student IDs from NH schools that meet specific criteria.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/659/659-13.htm",
+    "source_name": "RSA 659:13",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does New Hampshire allow same-day voter registration?",
+    "question_variants": [
+      "Can I register to vote at the polls in NH?",
+      "Election day registration New Hampshire",
+      "How late can I register to vote in NH?"
+    ],
+    "answer": "Yes. New Hampshire allows eligible citizens to register and vote on the same day at their polling place. Voters must provide proof of identity, citizenship, age, and domicile at the time of registration per RSA 654:7-a.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/654/654-7-a.htm",
+    "source_name": "RSA 654:7-a",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does New Hampshire have no-excuse early voting?",
+    "question_variants": [
+      "When can I vote early in NH?",
+      "Does NH have a general early voting period?",
+      "Absentee vs early voting in New Hampshire"
+    ],
+    "answer": "No. New Hampshire does not offer no-excuse early voting. Voters must cast their ballot in person on Election Day, unless they meet the statutory requirements to request an absentee ballot.",
+    "source_url": "https://www.sos.nh.gov/elections/voters/absentee-ballots",
+    "source_name": "New Hampshire Secretary of State – Absentee Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are judges selected in New Hampshire, and are there retirement rules?",
+    "question_variants": [
+      "NH judicial selection process",
+      "Who appoints Supreme Court justices in NH?",
+      "NH judicial age limit"
+    ],
+    "answer": "NH judges are appointed by the Governor and confirmed by a majority vote of the Executive Council under N.H. Const. Pt. 2, Art. 46. The system includes the 5-justice Supreme Court and Superior/District courts. All judges face mandatory retirement at age 70 per N.H. Const. Pt. 2, Art. 78.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 46 and Art. 78",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates and nominees"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "judicial"],
+    "category": "recall_rules",
+    "question": "Can voters recall state officials or judges in New Hampshire?",
+    "question_variants": [
+      "Recall mechanism NH",
+      "How to remove a NH state legislator",
+      "Does New Hampshire have a recall by petition?"
+    ],
+    "answer": "No. New Hampshire does not have a constitutional or statutory mechanism for the recall of statewide officials, legislators, or judges by voter petition. Removal is only possible via the legislative impeachment process or specific disciplinary actions.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "New Hampshire Constitution",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the residency and age requirements for New Hampshire U.S. Senate candidates?",
+    "question_variants": [
+      "Senate age requirement NH",
+      "How long to live in NH for Senate?",
+      "US Senate inhabitant rule"
+    ],
+    "answer": "Under the U.S. Constitution Article I § 3, a candidate must be at least 30 years old, a U.S. citizen for nine years, and an inhabitant of New Hampshire at the time of the election.",
+    "source_url": "https://www.sos.nh.gov/elections/candidates/running-office",
+    "source_name": "New Hampshire Secretary of State – Running for Office",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the residency and age requirements for New Hampshire U.S. House candidates?",
+    "question_variants": [
+      "House age requirement NH",
+      "How long to live in NH for US House?",
+      "District inhabitant rule NH"
+    ],
+    "answer": "Per the U.S. Constitution Article I § 2, a candidate must be at least 25 years old, a U.S. citizen for seven years, and an inhabitant of New Hampshire when elected. Residency within the specific congressional district is not a constitutional requirement.",
+    "source_url": "https://www.sos.nh.gov/elections/candidates/running-office",
+    "source_name": "New Hampshire Secretary of State – Running for Office",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the inhabitant and age requirements for the New Hampshire State Senate?",
+    "question_variants": [
+      "NH State Senate eligibility",
+      "Senate age threshold NH",
+      "7-year inhabitant rule NH"
+    ],
+    "answer": "Under N.H. Const. Pt. 2, Art. 29, State Senate candidates must be at least 30 years old and have been an inhabitant of New Hampshire for seven years immediately preceding the election. They must also be an inhabitant of the district they represent when elected.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 29",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Senate candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the inhabitant and age requirements for the New Hampshire State House of Representatives?",
+    "question_variants": [
+      "NH State House eligibility",
+      "House age threshold NH",
+      "2-year inhabitant rule NH"
+    ],
+    "answer": "Under N.H. Const. Pt. 2, Art. 14, State House candidates must be at least 18 years old and have been an inhabitant of New Hampshire for two years. They must also be an inhabitant of the town, ward, or district they represent when elected.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 14",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State House candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the residency and age requirements for the New Hampshire Executive Council?",
+    "question_variants": [
+      "Executive Council eligibility NH",
+      "Council age threshold NH",
+      "7-year inhabitant rule Council"
+    ],
+    "answer": "Executive Council candidates must be at least 30 years old, a registered voter, and an inhabitant of New Hampshire for at least seven years preceding the election. They must also be a resident of the district they seek to represent.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 61",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Executive Council candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is Senator Maggie Hassan's seat up for election in 2026?",
+    "question_variants": [
+      "When is Maggie Hassan up for re-election?",
+      "NH Senate seats on the 2026 ballot",
+      "Is both NH Senate seats open in 2026?"
+    ],
+    "answer": "No. Senator Maggie Hassan (D) was re-elected in 2022 to a six-year term. Her seat is not on the ballot for the 2026 cycle; she is next up for re-election in 2028.",
+    "source_url": "https://www.sos.nh.gov/elections/upcoming-elections",
+    "source_name": "New Hampshire Secretary of State – Upcoming Elections",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the order of succession if the Governor of New Hampshire is unable to serve?",
+    "question_variants": [
+      "NH Governor succession rules",
+      "Who takes over if the Governor resigns NH?",
+      "No Lt Gov succession plan"
+    ],
+    "answer": "Under N.H. Const. Pt. 2, Art. 49, if the Governor's office becomes vacant, the President of the Senate assumes the duties. If the Senate President is also unable to serve, the Speaker of the House is next in the line of succession.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 49",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide officials"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county"],
+    "category": "election_dates",
+    "question": "What are the filing deadlines for the 2026 partisan primary in New Hampshire?",
+    "question_variants": [
+      "Filing window NH primary 2026",
+      "When to file for NH office?",
+      "RSA 655 filing dates"
+    ],
+    "answer": "The candidate filing window for the September 8, 2026 partisan primary typically opens on the first Wednesday in June and closes on the second Friday. For the 2026 cycle, this period is approximately June 3 to June 12, 2026, per RSA 655:14.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/655/655-14.htm",
+    "source_name": "RSA 655:14",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All partisan candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "What is the filing deadline for independent candidates in the 2026 New Hampshire general election?",
+    "question_variants": [
+      "NH independent candidate deadline 2026",
+      "When to file nomination papers NH?",
+      "Nomination by petition deadline NH"
+    ],
+    "answer": "Independent or non-party candidates must file their nomination papers and declarations of candidacy no later than 5:00 p.m. on the Wednesday one week before the state primary. For the 2026 cycle, the deadline is September 2, 2026, per RSA 655:43.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/655/655-43.htm",
+    "source_name": "RSA 655:43",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is a 'challenged ballot' in New Hampshire election law?",
+    "question_variants": [
+      "NH provisional ballot equivalent",
+      "Voting if your identity is challenged NH",
+      "RSA 659:12 procedures"
+    ],
+    "answer": "New Hampshire uses a 'challenged ballot' mechanism under RSA 659:12. If a voter's eligibility is questioned, they may still vote after signing a challenged voter affidavit. Their ballot is marked and segregated for potential review if the election result is contested.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/659/659-12.htm",
+    "source_name": "RSA 659:12",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and poll watchers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voter registration lists maintained in New Hampshire?",
+    "question_variants": [
+      "NH voter roll purges",
+      "HAVA list maintenance NH",
+      "Periodic voter list cleaning"
+    ],
+    "answer": "Voter lists are maintained by municipal supervisors of the checklist. Under HAVA and state law, lists are updated following each election. Every ten years, supervisors must conduct a mandatory review and verification of the entire checklist to remove ineligible entries.",
+    "source_url": "https://www.sos.nh.gov/elections/voters/voter-registration-information",
+    "source_name": "New Hampshire Secretary of State – Voter Registration",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Election officials and campaigns"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the rules for college student voting domicile in New Hampshire?",
+    "question_variants": [
+      "Can out-of-state students vote in NH?",
+      "HB 1264 student voting effect",
+      "College student residency requirements NH"
+    ],
+    "answer": "Following the enactment of HB 1264, any person who votes in New Hampshire establishes 'domicile.' For students, this means that while they may vote, they become subject to New Hampshire laws regarding motor vehicle registration and driver's licensing.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/654/654-1.htm",
+    "source_name": "RSA 654:1",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Student voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a witness signature required on New Hampshire absentee ballots?",
+    "question_variants": [
+      "NH absentee witness requirement",
+      "Does someone have to sign my mail ballot envelope?",
+      "Absentee ballot verification NH"
+    ],
+    "answer": "No. New Hampshire does not require a witness signature or a notary for an absentee ballot to be counted. The voter's identity is verified by comparing the signature on the affidavit envelope with the signature on the absentee ballot application.",
+    "source_url": "https://www.sos.nh.gov/elections/voters/absentee-ballots",
+    "source_name": "New Hampshire Secretary of State – Absentee Voting",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Absentee voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the donor itemization threshold for occupation and employer reporting in New Hampshire?",
+    "question_variants": [
+      "NH donor occupation disclosure limit",
+      "When to list employer for campaign gifts NH",
+      "HB 1380 disclosure changes"
+    ],
+    "answer": "Under the 2024 legislative reform (HB 1380), the threshold for disclosing a contributor's occupation and employer was increased. Campaigns must now itemize this information for any individual who contributes more than $1,000 in aggregate during an election cycle.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-6.htm",
+    "source_name": "RSA 664:6, I",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the threshold for public disclosure of contributor identifying information in New Hampshire?",
+    "question_variants": [
+      "NH public donor disclosure limit",
+      "Right-to-Know donor information NH",
+      "RSA 664:6 transparency rules"
+    ],
+    "answer": "Under 2024 reforms and the Right-to-Know exemption (RSA 91-A), the name and address of an individual contributor are subject to public disclosure only if their aggregate contributions exceed $200 during the election cycle.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-6.htm",
+    "source_name": "RSA 664:6, I-a",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the threshold for reporting an independent expenditure in New Hampshire?",
+    "question_variants": [
+      "NH independent expenditure threshold",
+      "When to file an IE report NH",
+      "RSA 664:13 reporting"
+    ],
+    "answer": "Any person or political committee that spends more than $1,000 in aggregate on an independent expenditure must file a disclosure report with the Secretary of State under RSA 664:13. If the expenditure exceeds $5,000 within 24 hours, a report must be filed within 24 hours.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-13.htm",
+    "source_name": "RSA 664:13 and 664:13-a",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "PACs and Super PACs"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the 'Paid for by' attribution requirement for political advertising in New Hampshire?",
+    "question_variants": [
+      "NH political ad disclaimer rules",
+      "Who paid for this ad disclaimer NH",
+      "RSA 664:14 requirements"
+    ],
+    "answer": "Under RSA 664:14, almost all political advertisements—including print, broadcast, and electronic messages—must clearly and conspicuously state the name and address of the person or committee who paid for and authorized the communication.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-14.htm",
+    "source_name": "RSA 664:14",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All Campaigns and Printers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "How do voluntary spending limits work in New Hampshire state elections?",
+    "question_variants": [
+      "NH voluntary spending cap",
+      "RSA 664:5-a spend limit",
+      "Waiving filing fees NH"
+    ],
+    "answer": "Under RSA 664:5-a, candidates for Governor, Executive Council, or State Senate who voluntarily agree to a specific campaign spending cap are exempt from both the filing fee and the signature petition requirements for ballot access.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-5-a.htm",
+    "source_name": "RSA 664:5-a",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide and State Senate candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the anonymous campaign contribution cap in New Hampshire?",
+    "question_variants": [
+      "Can I donate cash anonymously in NH?",
+      "NH anonymous contribution limit",
+      "RSA 664:4-b thresholds"
+    ],
+    "answer": "Under RSA 664:4-b, anonymous campaign contributions are strictly prohibited. Any anonymous contribution received must be delivered within 48 hours to the State Treasurer for deposit into the general fund.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-4-b.htm",
+    "source_name": "RSA 664:4-b",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What are 'floterial districts' in the New Hampshire House of Representatives?",
+    "question_variants": [
+      "NH House floterial districts",
+      "Multi-town legislative seats NH",
+      "How are NH House seats allocated?"
+    ],
+    "answer": "Floterial districts are a unique New Hampshire redistricting feature where a single legislative seat 'floats' over multiple towns or wards to satisfy population equality. This allows for proportional representation in areas where town populations do not neatly align with a single-seat quota.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 11-a",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State House candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "Does New Hampshire have a single-subject rule for state legislation?",
+    "question_variants": [
+      "Omnibus bill rules NH",
+      "NH legislature multi-topic bills",
+      "Constitutional single subject rule NH"
+    ],
+    "answer": "No. New Hampshire is one of the few states that does not have a constitutional or statutory single-subject rule for legislation. This permits the passage of omnibus bills that contain multiple, unrelated topics in a single legislative act.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "New Hampshire Constitution",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators and Lobbyists"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How are constitutional amendments referred to the voters in New Hampshire?",
+    "question_variants": [
+      "NH constitutional amendment process",
+      "2/3 voter ratification threshold",
+      "N.H. Const. Art. 100 requirements"
+    ],
+    "answer": "New Hampshire has the highest ratification threshold in the nation. Under N.H. Const. Pt. 2, Art. 100, an amendment must be passed by a 3/5 majority in both the House and Senate, then ratified by at least 2/3 of the voters in a general election.",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 100",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators and Campaigns"
+  },
+  {
+    "state": "NH",
+    "office_level": ["municipal"],
+    "category": "election_dates",
+    "question": "What is the traditional 'Town Meeting Day' in New Hampshire?",
+    "question_variants": [
+      "When is NH Town Meeting?",
+      "NH local election day",
+      "March town meeting dates"
+    ],
+    "answer": "Annual Town Meeting is traditionally held on the second Tuesday of March for the vast majority of New Hampshire towns. This day is used for direct democracy, where voters approve budgets, tax rates, and elect town officials.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/III/39/39-1.htm",
+    "source_name": "RSA 39:1",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Municipal candidates and voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How often is the question of a constitutional convention put to New Hampshire voters?",
+    "question_variants": [
+      "NH decennial convention vote",
+      "When is the next NH convention question?",
+      "Art. 100 convention rule"
+    ],
+    "answer": "Under N.H. Const. Pt. 2, Art. 100, a question asking voters whether a convention should be called to revise or amend the state constitution must appear on the general election ballot every 10 years (e.g., 2022, 2032).",
+    "source_url": "https://www.gencourt.state.nh.us/constitution/constitution.htm",
+    "source_name": "N.H. Const. Pt. 2, Art. 100",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Strategists"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "When are the pre-election campaign finance reports due in New Hampshire?",
+    "question_variants": [
+      "NH campaign reporting schedule",
+      "20-day pre-election report deadline",
+      "NH periodic filing dates"
+    ],
+    "answer": "Candidates must file primary and general election disclosure reports with the Secretary of State on the 20th day before the election and the 8th day before the election, as well as a post-election report on the 10th day after the election.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-6.htm",
+    "source_name": "RSA 664:6",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does New Hampshire have rules regarding the personal use of campaign funds?",
+    "question_variants": [
+      "Can I use campaign money for my mortgage NH?",
+      "Personal use prohibition NH campaign finance",
+      "RSA 664:4-c restrictions"
+    ],
+    "answer": "Yes. Under RSA 664:4-c, campaign contributions must be used for expenses directly related to the election. Personal use, such as paying for a candidate's personal mortgage, rent, or luxury items, is strictly prohibited.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-4-c.htm",
+    "source_name": "RSA 664:4-c",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Treasurers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How many signatures are required for independent candidates for Governor or U.S. Senator in New Hampshire?",
+    "question_variants": [
+      "NH independent signature requirement",
+      "Nomination paper signatures for statewide office NH",
+      "3,000 signature rule NH"
+    ],
+    "answer": "Under RSA 655:42, an independent (non-party) candidate for Governor or U.S. Senator must collect at least 3,000 valid signatures on nomination papers from registered voters to qualify for the general election ballot.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/655/655-42.htm",
+    "source_name": "RSA 655:42",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the role of the New Hampshire Ballot Law Commission?",
+    "question_variants": [
+      "NH Ballot Law Commission power",
+      "Who decides ballot access disputes in NH?",
+      "RSA 665 review process"
+    ],
+    "answer": "The Ballot Law Commission is a bipartisan body under RSA 665 that hears and decides all disputes regarding candidate qualifications, nomination petitions, and the wording of ballot questions.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/665/665-1.htm",
+    "source_name": "RSA 665:1",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Legal Counsel"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does New Hampshire require inaugural committees to file financial reports?",
+    "question_variants": [
+      "NH Governor inaugural committee rules",
+      "Reporting for Governor party funds",
+      "SoS inaugural committee filing"
+    ],
+    "answer": "Yes. While not candidate committees, gubernatorial inaugural committees must register with the Secretary of State and file a financial disclosure report within 90 days after the inaugural activities are completed.",
+    "source_url": "https://www.sos.nh.gov/elections/campaign-finance",
+    "source_name": "New Hampshire Secretary of State – Campaign Finance",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "Are candidates required to appoint a campaign treasurer in New Hampshire?",
+    "question_variants": [
+      "NH treasurer registration requirement",
+      "Who can be a campaign treasurer in NH?",
+      "RSA 664:6 treasurer rules"
+    ],
+    "answer": "Yes. Under RSA 664:6, every candidate for state or county office who receives or spends funds must appoint a campaign treasurer. The name and address of the treasurer must be filed with the Secretary of State before any financial activity occurs.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-6.htm",
+    "source_name": "RSA 664:6",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the penalty for filing a campaign finance report late in New Hampshire?",
+    "question_variants": [
+      "NH late filing fines",
+      "Campaign finance penalty schedule NH",
+      "RSA 664:20 penalties"
+    ],
+    "answer": "Under RSA 664:20, the Secretary of State can assess a fine of $10 per day for each day a campaign report remains delinquent. Repeated or willful failures to file can result in criminal prosecution.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-20.htm",
+    "source_name": "RSA 664:20",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the rules regarding voter registration deadlines in New Hampshire?",
+    "question_variants": [
+      "Last day to register by mail in NH",
+      "NH voter registration cutoff",
+      "RSA 654:12 deadlines"
+    ],
+    "answer": "Voters can register in person at their town or city clerk's office up to approximately 6 to 13 days before an election (varies by municipality). Additionally, New Hampshire offers Election Day Registration at all polling places.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/654/654-12.htm",
+    "source_name": "RSA 654:12",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does New Hampshire law allow time off for employees to vote?",
+    "question_variants": [
+      "NH voting leave law",
+      "Do I get paid to vote in New Hampshire?",
+      "Employer requirements for Election Day"
+    ],
+    "answer": "No. New Hampshire is one of the few states that does not have a statute requiring employers to grant time off (paid or unpaid) for employees to vote. Employees must generally coordinate with their employers or utilize absentee voting if eligible.",
+    "source_url": "https://www.sos.nh.gov/elections/voters/voting-new-hampshire",
+    "source_name": "New Hampshire Secretary of State",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Employers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the criminal penalties for voter intimidation in New Hampshire?",
+    "question_variants": [
+      "Is voter intimidation illegal in NH?",
+      "NH RSA 659:40 penalties",
+      "Coercing voters in New Hampshire"
+    ],
+    "answer": "Under RSA 659:40, using force, threats, or intimidation to influence a person to vote or refrain from voting, or to interfere with the free exercise of the franchise, is a misdemeanor. If the act involves a public official, it may be elevated.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/659/659-40.htm",
+    "source_name": "RSA 659:40",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and Campaigns"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county"],
+    "category": "election_dates",
+    "question": "How are vacancies in the New Hampshire General Court filled?",
+    "question_variants": [
+      "NH state senate special elections",
+      "Filling legislative seats in NH",
+      "RSA 661 vacancy procedures"
+    ],
+    "answer": "Vacancies in the House of Representatives or State Senate are filled by special election. The Governor and Executive Council must issue a precept for a special election within a specific timeframe after the vacancy occurs under RSA 661:8.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/661/661-8.htm",
+    "source_name": "RSA 661:8",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies in the New Hampshire Executive Council filled?",
+    "question_variants": [
+      "Executive Council special elections",
+      "Filling a Council seat NH",
+      "RSA 661:5 rules"
+    ],
+    "answer": "If an Executive Council seat becomes vacant, a special election must be held. The Governor and the remaining members of the Council issue a precept setting the date for the election to fill the unexpired term per RSA 661:5.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/661/661-5.htm",
+    "source_name": "RSA 661:5",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Executive Council candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "How are vacancies in New Hampshire county offices filled?",
+    "question_variants": [
+      "NH county sheriff vacancy fill",
+      "Who appoints county officials NH?",
+      "County officer succession"
+    ],
+    "answer": "Vacancies in elected county offices (Sheriff, Attorney, Treasurer, etc.) are filled by an appointment from the Superior Court judges for that county. The appointee serves until the next general election.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/661/661-9.htm",
+    "source_name": "RSA 661:9",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County-level candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["municipal"],
+    "category": "election_dates",
+    "question": "What is an 'SB 2' town in New Hampshire?",
+    "question_variants": [
+      "RSA 40:13 ballot voting",
+      "Deliberative session vs Town Meeting",
+      "Official ballot voting towns"
+    ],
+    "answer": "An 'SB 2' town (named after Senate Bill 2) uses the official ballot voting system under RSA 40:13. These towns have a deliberative session to discuss warrant articles, followed by a subsequent day of traditional booth voting on the articles, instead of the traditional open Town Meeting.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/III/40/40-13.htm",
+    "source_name": "RSA 40:13",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Municipal candidates and voters"
+  },
+  {
+    "state": "NH",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What is the term length for elected county officials in New Hampshire?",
+    "question_variants": [
+      "How long is a NH Sheriff's term?",
+      "County Attorney term duration NH",
+      "NH County Commissioner elections"
+    ],
+    "answer": "All elected county officers in New Hampshire—including Sheriff, County Attorney, Treasurer, Register of Deeds, Register of Probate, and County Commissioners—serve two-year terms and are elected in partisan contests in even-numbered years.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/653/653-1.htm",
+    "source_name": "RSA 653:1",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County-level candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is an 'Assent to Candidacy' in New Hampshire ballot access?",
+    "question_variants": [
+      "NH primary petition assent",
+      "Candidate consent form NH",
+      "RSA 655:25 requirements"
+    ],
+    "answer": "When candidates utilize the primary petition signature alternative for ballot access, they must also file an official 'Assent to Candidacy' under RSA 655:25, formally declaring they are qualified for the office and will accept the nomination.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/655/655-25.htm",
+    "source_name": "RSA 655:25",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "What is the 'last day' in-person filing requirement in New Hampshire?",
+    "question_variants": [
+      "Filing on the deadline NH",
+      "RSA 655:43 in person rule",
+      "Can I mail my NH candidate filing on the last day?"
+    ],
+    "answer": "Under RSA 655:43, any candidate or person submitting nomination papers or declarations on the final day of the filing period must deliver them in person to the filing officer by 5:00 p.m. Filings mailed and arriving on the last day may be rejected if not received by the deadline.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/655/655-43.htm",
+    "source_name": "RSA 655:43",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance at New Hampshire polling places?",
+    "question_variants": [
+      "NH 10-foot buffer zone rule",
+      "Where to stand at the polls NH",
+      "Campaigning near poll entrances"
+    ],
+    "answer": "New Hampshire enforces a 10-foot electioneering buffer zone measured from the entrance to the building containing the polling place. Under RSA 659:43, no person may electioneer or distribute campaign materials within this specific corridor.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/659/659-43.htm",
+    "source_name": "RSA 659:43",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaigns and Poll Workers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the rules regarding candidate loans to their own campaigns in New Hampshire?",
+    "question_variants": [
+      "NH candidate loan limits",
+      "Can I lend my campaign money NH?",
+      "Repayment rules for candidate loans"
+    ],
+    "answer": "Candidates may make unlimited personal loans to their own campaigns in New Hampshire. However, these loans must be formally documented as debt in campaign finance reports and must be repaid using legal campaign contributions.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-6.htm",
+    "source_name": "RSA 664:6",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Treasurers"
+  },
+  {
+    "state": "NH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is out-of-state PAC registration required in New Hampshire?",
+    "question_variants": [
+      "NH out of state committee rules",
+      "Reporting for national PACs in NH",
+      "RSA 664 registration for foreign committees"
+    ],
+    "answer": "Yes. Any out-of-state or national political committee that intends to spend more than $1,000 in a New Hampshire election must formally register as a political committee with the Secretary of State and adhere to NH's contribution and reporting rules.",
+    "source_url": "https://www.gencourt.state.nh.us/rsa/html/LXIII/664/664-6.htm",
+    "source_name": "RSA 664:6",
+    "last_verified_date": "2026-05-13",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Out-of-state PACs and Treasurers"
+  }
+]
