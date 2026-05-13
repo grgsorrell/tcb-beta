@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "MN",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "Is there a U.S. Senate race in Minnesota for the 2026 cycle?",
+    "question_variants": [
+      "Are Amy Klobuchar or Tina Smith up for re-election in 2026?",
+      "When is the next US Senate election in MN?",
+      "Is the Minnesota US Senate seat an open race?"
+    ],
+    "answer": "Yes. There is an open U.S. Senate race in Minnesota in 2026. Incumbent Senator Tina Smith announced her retirement in February 2025 and is not seeking re-election. Senator Amy Klobuchar won re-election in 2024 and is not on the 2026 ballot.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State – Elections Calendar",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is Governor Tim Walz running for re-election in 2026?",
+    "question_variants": [
+      "Is the Minnesota Governor's seat open in 2026?",
+      "Can Walz seek a third term?",
+      "Minnesota 2026 gubernatorial race status"
+    ],
+    "answer": "No. Governor Tim Walz announced in January 2026 that he will not seek a third term. Consequently, the 2026 Minnesota gubernatorial election is an open-seat race.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State – Elections Calendar",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "What does the 'DFL' party label mean on a Minnesota ballot?",
+    "question_variants": [
+      "What is the Democratic party called in Minnesota?",
+      "DFL ballot designation MN",
+      "Is DFL the same as Democrat?"
+    ],
+    "answer": "In Minnesota, the Democratic Party is officially named the Democratic-Farmer-Labor Party (DFL), the result of a 1944 merger. Democratic candidates legally appear on the ballot under the 'DFL' designation rather than 'Democrat'.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204B.07",
+    "source_name": "Minn. Stat. § 204B.07",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Who are the prominent declared candidates for the open Minnesota Governor seat in 2026?",
+    "question_variants": [
+      "Is Amy Klobuchar running for Governor?",
+      "Who won the 2026 MN gubernatorial straw polls?",
+      "Frontrunners for MN Governor 2026"
+    ],
+    "answer": "Following Tim Walz's withdrawal, U.S. Senator Amy Klobuchar entered the gubernatorial race and won the DFL precinct caucus straw poll in February 2026 with roughly 72%. On the Republican side, State House Speaker Lisa Demuth won the GOP caucus straw poll with roughly 32%.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State – Candidate Filings",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Campaign strategists and consultants"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Who won the GOP and DFL caucus straw polls for Minnesota Governor in 2026?",
+    "question_variants": [
+      "2026 Minnesota caucus results",
+      "Demuth and Klobuchar straw poll",
+      "Minnesota Republican gubernatorial frontrunner"
+    ],
+    "answer": "In the February 2026 precinct caucuses, Senator Amy Klobuchar won the DFL straw poll with approximately 72%, while State House Speaker Lisa Demuth won the Republican straw poll with approximately 32%.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State – Election Information",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Campaign strategists"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Minnesota in 2026?",
+    "question_variants": [
+      "Who is on the state ballot in MN in 2026?",
+      "Is the Attorney General up for reelection?",
+      "Does Minnesota elect a State Treasurer?"
+    ],
+    "answer": "The statewide executive offices on the 2026 ballot are Governor/Lieutenant Governor (open seat), Attorney General (Keith Ellison, incumbent), Secretary of State (Steve Simon, incumbent), and State Auditor (open seat, Julie Blaha retiring). Minnesota abolished the office of State Treasurer in 2003.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_5",
+    "source_name": "Minnesota Constitution Article V",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What is the partisan composition of the Minnesota House of Representatives for the 2026 cycle?",
+    "question_variants": [
+      "Who controls the state house in Minnesota?",
+      "Minnesota House tied 67-67",
+      "Power sharing agreement MN House 2026"
+    ],
+    "answer": "Going into the 2026 elections, the Minnesota House of Representatives is exactly tied at 67-67 between the DFL and Republicans. This tie was restored after special elections in early 2025, operating under a power-sharing agreement with Republican Lisa Demuth as Speaker.",
+    "source_url": "https://www.house.mn.gov/",
+    "source_name": "Minnesota House of Representatives",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What is the partisan composition of the Minnesota State Senate for the 2026 cycle?",
+    "question_variants": [
+      "Who controls the state senate in Minnesota?",
+      "Minnesota Senate majority 2026",
+      "Are all MN Senate seats up in 2026?"
+    ],
+    "answer": "Going into the 2026 cycle, the DFL holds a minimum majority in the Minnesota State Senate. All 67 State Senate seats will be on the ballot in November 2026.",
+    "source_url": "https://www.senate.mn/",
+    "source_name": "Minnesota State Senate",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "judicial"],
+    "category": "finance_ethics",
+    "question": "Who regulates state-level campaign finance in Minnesota?",
+    "question_variants": [
+      "Does the Secretary of State handle campaign finance in MN?",
+      "Jurisdiction of the CFB in Minnesota",
+      "Where do I file campaign finance reports for State Senate?"
+    ],
+    "answer": "State-level campaign finance (Governor, statewide executives, state legislature, and judicial candidates) is administered and enforced by the Minnesota Campaign Finance and Public Disclosure Board (CFB), an agency wholly separate from the Secretary of State.",
+    "source_url": "https://cfb.mn.gov/",
+    "source_name": "Minnesota Campaign Finance and Public Disclosure Board",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State and Judicial candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the threshold for registering a candidate campaign committee with the Minnesota CFB?",
+    "question_variants": [
+      "When do I have to register a campaign committee in MN?",
+      "CFB registration dollar limit",
+      "How much can I spend before filing a committee?"
+    ],
+    "answer": "A state-level candidate must register a principal campaign committee with the CFB within 14 days after receiving contributions or making disbursements of more than $750 in a calendar year.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.105",
+    "source_name": "Minn. Stat. § 10A.105",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and Judicial candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the 2025-2026 contribution limits for a candidate running for Governor of Minnesota?",
+    "question_variants": [
+      "How much can an individual give to a Governor candidate in MN?",
+      "Statewide contribution limits Minnesota",
+      "Aggregate cycle limit for Governor"
+    ],
+    "answer": "In Minnesota, limits apply per two-year election segment (not per election). For the 2025-2026 election segment, individuals and PACs may contribute up to an aggregate of $4,000 to a candidate for Governor/Lt. Governor.",
+    "source_url": "https://cfb.mn.gov/pdf/publications/handbooks/Candidate_Handbook_State.pdf",
+    "source_name": "Minn. Stat. § 10A.27(1)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates and donors"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the 2025-2026 contribution limits for Attorney General, Secretary of State, and State Auditor in Minnesota?",
+    "question_variants": [
+      "Max donation for MN Attorney General 2026",
+      "State Auditor contribution limits",
+      "How much can I give to the Secretary of State?"
+    ],
+    "answer": "During the 2025-2026 election segment, individuals and PACs may contribute up to $2,500 to a candidate for Attorney General, and up to $2,000 to a candidate for Secretary of State or State Auditor.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.27",
+    "source_name": "Minn. Stat. § 10A.27(1)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates and donors"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the 2025-2026 contribution limits for State Senate and State House candidates in Minnesota?",
+    "question_variants": [
+      "Max donation for MN State Assembly 2026",
+      "MN State Senate contribution limits",
+      "Legislative cycle limits Minnesota"
+    ],
+    "answer": "During the 2025-2026 election segment, individuals and PACs may contribute up to an aggregate of $1,000 to a candidate for the State Senate or the State House of Representatives. This covers the entire two-year segment.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.27",
+    "source_name": "Minn. Stat. § 10A.27(1)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates and donors"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Can a corporation contribute directly to a candidate for office in Minnesota?",
+    "question_variants": [
+      "Are corporate contributions legal in MN?",
+      "Can my business donate to a state candidate?",
+      "Corporate direct prohibition Minnesota"
+    ],
+    "answer": "No. Minnesota law strictly prohibits corporations (including for-profit and nonprofit corporations) and LLCs from using general treasury funds to make direct contributions to candidate campaigns or political party units.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/211B.15",
+    "source_name": "Minn. Stat. § 211B.15",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Corporations and Campaign Treasurers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Can labor unions contribute directly to a candidate from their general treasury in Minnesota?",
+    "question_variants": [
+      "Are union dues contributions legal in MN?",
+      "Labor union donation rules Minnesota",
+      "Do unions have to use a PAC?"
+    ],
+    "answer": "Yes. Unlike corporations, labor unions are not included in the corporate prohibition under Minn. Stat. § 211B.15. Unions may use their general treasury funds to make direct contributions to state candidates, provided they register and report through a political fund with the Campaign Finance Board.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/211B.15",
+    "source_name": "Minn. Stat. § 211B.15",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unions and Campaign Treasurers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the Public Subsidy Program for state candidates in Minnesota?",
+    "question_variants": [
+      "State matching funds MN",
+      "How does the public subsidy agreement work?",
+      "Do Minnesota candidates get public money?"
+    ],
+    "answer": "The Public Subsidy Program provides direct state payments to state-level candidates who sign a Public Subsidy Agreement, obligating them to strict campaign spending limits. Spending limits can increase by 10% for first-time candidates or 20% in closely contested primaries.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.31",
+    "source_name": "Minn. Stat. § 10A.31",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State-level candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the Political Contribution Refund (PCR) Program in Minnesota?",
+    "question_variants": [
+      "Can donors get a refund from the state?",
+      "PCR maximum limit 2026",
+      "Minnesota $75 campaign donation refund"
+    ],
+    "answer": "The PCR program allows individual donors to receive a direct cash refund from the state for contributions made to qualified Minnesota political parties and state candidates who have signed the Public Subsidy Agreement. For 2026, the maximum refund is $75 for an individual and $150 for a married couple filing jointly.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/290.06",
+    "source_name": "Minn. Stat. § 290.06(23)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Donors and participating State Candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the sessional blackout rule for campaign contributions in Minnesota?",
+    "question_variants": [
+      "Lobbyist session ban MN",
+      "When are contributions banned for state reps?",
+      "Sessional blackout campaign finance"
+    ],
+    "answer": "Under Minn. Stat. § 10A.273, candidates for the state legislature AND statewide constitutional offices are strictly prohibited from soliciting or accepting contributions from registered lobbyists, political committees, or political funds (PACs) during a regular legislative session. The blackout does not apply during special legislative sessions.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.273",
+    "source_name": "Minn. Stat. § 10A.273",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State candidates, Lobbyists, and PACs"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the aggregate special source limit for Minnesota campaigns?",
+    "question_variants": [
+      "20% PAC limit rule Minnesota",
+      "How much can I take from lobbyists total?",
+      "Public Subsidy Program funding caps"
+    ],
+    "answer": "Under Minn. Stat. § 10A.27(11), candidates who have signed a Public Subsidy Agreement cannot accept more than 20% of their total spending limit in combined aggregate contributions from lobbyists, political committees, and political funds. Exceeding this cap can result in a civil penalty up to four times the excess amount.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.27",
+    "source_name": "Minn. Stat. § 10A.27(11)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State candidates utilizing Public Subsidy"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the late contribution reporting rule for Minnesota state candidates?",
+    "question_variants": [
+      "24-hour reporting rule Minnesota",
+      "When do I have to report late donations?",
+      "20-day pre-election contribution reporting"
+    ],
+    "answer": "If a candidate receives a contribution or loan of $1,000 or more (for statewide office) or $500 or more (for legislative/judicial office) during the 20 days immediately preceding a primary or general election, it must be reported to the CFB within 24 hours.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.20",
+    "source_name": "Minn. Stat. § 10A.20(5)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the itemized disclosure threshold for individual campaign contributions in Minnesota?",
+    "question_variants": [
+      "When do I have to list a donor's name in MN?",
+      "Campaign contribution disclosure limit",
+      "Minnesota $200 donation rule"
+    ],
+    "answer": "Campaign committees must itemize contributions from individuals that exceed $200 in aggregate during a calendar year. The disclosure filed with the CFB must include the contributor's name, address, and employer or occupation.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.20",
+    "source_name": "Minn. Stat. § 10A.20(3)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the limit for anonymous campaign contributions in Minnesota?",
+    "question_variants": [
+      "Can I donate cash anonymously in MN?",
+      "Anonymous contribution cap Minnesota",
+      "Passing the hat rules campaign finance"
+    ],
+    "answer": "Anonymous campaign contributions in Minnesota are strictly limited to $20 or less. Any anonymous contribution exceeding $20 must be forwarded to the Campaign Finance and Public Disclosure Board for deposit in the state's general account.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.15",
+    "source_name": "Minn. Stat. § 10A.15(1)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are foreign-influenced corporations banned from making campaign contributions in Minnesota?",
+    "question_variants": [
+      "Foreign contribution ban MN",
+      "Minnesota Chamber of Commerce v. Simon",
+      "Can multinational corporations donate in MN?"
+    ],
+    "answer": "In 2023, Minnesota passed a law banning political contributions from foreign-influenced corporations. However, the Minnesota Chamber of Commerce sued, and a federal court issued a preliminary injunction staying the law. It is currently not operationally enforced pending litigation.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/211B.15",
+    "source_name": "Minn. Stat. § 211B.15 (Enforcement Stayed)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "statute_citation",
+    "scope": "Corporations and Campaign Treasurers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Minnesota allow same-day voter registration at polling places?",
+    "question_variants": [
+      "Can I register to vote at the polls in Minnesota?",
+      "Same-day registration rules MN",
+      "Election day registration proof"
+    ],
+    "answer": "Yes. Minnesota has allowed Election Day Registration since 1974 (the first state to do so). Eligible voters can register at their polling place on Election Day by providing authorized proof of residence, such as a valid Minnesota driver's license with current address.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/201.061",
+    "source_name": "Minn. Stat. § 201.061",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote at the polls in Minnesota?",
+    "question_variants": [
+      "Minnesota voter ID laws",
+      "Do I need my driver's license to vote in MN?",
+      "Poll ID requirements Minnesota"
+    ],
+    "answer": "No. Under current law, Minnesota does not require voters to present a photo ID to cast a ballot at the polls, provided their voter registration is already current and active. Identity is verified via signature and identifying information against the poll roster.",
+    "source_url": "https://www.sos.state.mn.us/elections-voting/election-day-voting/",
+    "source_name": "Minnesota Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Did Minnesota voters pass a constitutional amendment requiring voter ID?",
+    "question_variants": [
+      "Question 5 voter ID failure Minnesota",
+      "Does the MN constitution require voter ID?",
+      "2012 voter ID ballot measure"
+    ],
+    "answer": "No. In 2012, Minnesota voters rejected a legislatively referred constitutional amendment (Amendment 2) that would have required a valid photo ID to vote in person and established a system of provisional balloting. The measure failed, maintaining the state's no-ID framework.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State – Election Results",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How long is the early voting (absentee voting) window in Minnesota?",
+    "question_variants": [
+      "When does early voting start in MN?",
+      "46-day absentee voting rule",
+      "Minnesota in-person early voting duration"
+    ],
+    "answer": "Minnesota offers a robust 46-day early voting window. Eligible voters may vote early via no-excuse absentee ballot, either by mail or in person at their local county election office, beginning 46 days prior to both the primary and general elections.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/203B.081",
+    "source_name": "Minn. Stat. § 203B.081",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and Get-Out-The-Vote operations"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Are secure drop boxes for absentee ballots legally mandated in Minnesota?",
+    "question_variants": [
+      "Can I put my absentee ballot in a drop box in MN?",
+      "Mail ballot drop boxes Minnesota",
+      "Does Minnesota require drop boxes for voting?"
+    ],
+    "answer": "Drop boxes are permitted but not legally mandated statewide. Under recent state law, municipalities and counties may choose to establish secure absentee ballot drop boxes, provided they meet strict security, lighting, and retrieval standards outlined by the Secretary of State.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/203B.082",
+    "source_name": "Minn. Stat. § 203B.082",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Election Officials"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the process for curing a rejected absentee ballot in Minnesota?",
+    "question_variants": [
+      "When do I have to fix my signature for my mail ballot?",
+      "Absentee ballot curing window MN",
+      "Minnesota mail ballot rejection notice"
+    ],
+    "answer": "If an absentee ballot envelope is rejected more than five days before the election, the election official must mail a replacement ballot. If rejected within five days of the election, the official must attempt to contact the voter by telephone or email to provide instructions on how to cure the defect or vote in person.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/203B.121",
+    "source_name": "Minn. Stat. § 203B.121",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Absentee voters and Campaigns"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How does the voter registration vouching mechanism work in Minnesota?",
+    "question_variants": [
+      "Can someone vouch for my address to vote?",
+      "Election day registration without utility bill",
+      "Vouching for a voter MN"
+    ],
+    "answer": "During Election Day Registration, if a voter lacks standard proof of residence, a registered voter from the same precinct can sign an oath 'vouching' for the unregistered voter's residence. A single registered voter can vouch for up to eight other voters in the precinct.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/201.061",
+    "source_name": "Minn. Stat. § 201.061",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Can 16-year-olds pre-register to vote in Minnesota?",
+    "question_variants": [
+      "Teenager voter registration MN",
+      "Pre-registration age Minnesota",
+      "When can high school students register to vote?"
+    ],
+    "answer": "Yes. 16- and 17-year-old citizens in Minnesota may submit a voter registration application. Their registration status remains 'pending' until they turn 18, at which point they are automatically activated on the voter rolls.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/201.054",
+    "source_name": "Minn. Stat. § 201.054",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters and GOTV operations"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Can 17-year-olds vote in a partisan primary in Minnesota?",
+    "question_variants": [
+      "Voting in primary if 17 MN",
+      "Underage primary voting rules Minnesota",
+      "Do I have to be 18 to vote in the August primary?"
+    ],
+    "answer": "Yes. Under a 2023 legislative change, a 17-year-old in Minnesota may vote in a primary election if they will turn 18 on or before the date of the subsequent general election.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/201.014",
+    "source_name": "Minn. Stat. § 201.014",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Young voters and Campaigns"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "candidate_eligibility",
+    "question": "Can a person with a felony conviction vote in Minnesota?",
+    "question_variants": [
+      "Felon voting rights MN",
+      "Voting post-incarceration rules Minnesota",
+      "2023 felony voting restoration law"
+    ],
+    "answer": "Yes. Following the 2023 Restore the Vote Act, voting rights in Minnesota are automatically restored to individuals with felony convictions immediately upon their release from incarceration. Individuals do not lose their right to vote while on parole, probation, or supervised release.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/201.014",
+    "source_name": "Minn. Stat. § 201.014",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All eligible citizens"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Minnesota law require employers to give time off to vote?",
+    "question_variants": [
+      "Do I get paid time off to vote in MN?",
+      "Employee voting leave Minnesota",
+      "Any time of day to vote rule"
+    ],
+    "answer": "Yes. Under a 2023 legislative change to Minn. Stat. § 204C.04, every eligible employee has the right to be absent from work for the time necessary to vote at any time during the day (or during early voting) without penalty or loss of pay, eliminating the previous 'morning only' restriction.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204C.04",
+    "source_name": "Minn. Stat. § 204C.04",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Employers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "What are the standard polling place hours in Minnesota?",
+    "question_variants": [
+      "When do polls open and close in MN?",
+      "Minnesota election day voting hours",
+      "What time do polls close on Election Day?"
+    ],
+    "answer": "The standard polling hours across Minnesota are from 7:00 a.m. to 8:00 p.m. Any voter who is in line at the polling place by 8:00 p.m. is legally permitted to cast their ballot.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204C.05",
+    "source_name": "Minn. Stat. § 204C.05",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the polling place electioneering buffer zone in Minnesota?",
+    "question_variants": [
+      "How close to the door can I campaign in MN?",
+      "100-foot rule Minnesota voting",
+      "Campaign signs at polling places"
+    ],
+    "answer": "Minnesota enforces a 100-foot electioneering buffer zone measured from the building containing a polling place. During voting hours, no person may ask, solicit, or persuade a voter, nor distribute campaign materials within this boundary.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/211B.11",
+    "source_name": "Minn. Stat. § 211B.11",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaigns and Poll Workers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What are the criminal penalties for voter intimidation in Minnesota?",
+    "question_variants": [
+      "Is voter intimidation a felony in MN?",
+      "Election interference laws Minnesota",
+      "NRS 211B.075 intimidation rules"
+    ],
+    "answer": "Under Minn. Stat. § 211B.075, using force, coercion, threats, or intimidation to compel a person to vote or refrain from voting, or to interfere with an election official, is a gross misdemeanor, elevated to a felony if the act involves a dangerous weapon or serious injury.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/211B.075",
+    "source_name": "Minn. Stat. § 211B.075",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What are the rules for poll challengers versus observers in Minnesota?",
+    "question_variants": [
+      "Can I watch the vote counting in MN?",
+      "Poll watcher requirements Minnesota",
+      "Do election challengers need to be appointed?"
+    ],
+    "answer": "In Minnesota, major political parties may appoint 'challengers' in writing to be present at the polls. Challengers may only challenge a voter's eligibility based on personal knowledge and are strictly prohibited from conversing directly with voters.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204C.07",
+    "source_name": "Minn. Stat. § 204C.07",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Poll watchers and Campaigns"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When is the 2026 partisan primary election in Minnesota?",
+    "question_variants": [
+      "What date is the MN primary in 2026?",
+      "Minnesota August primary date",
+      "When do polls open for the MN partisan primary?"
+    ],
+    "answer": "The Minnesota partisan primary election is scheduled for Tuesday, August 11, 2026.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204D.03",
+    "source_name": "Minn. Stat. § 204D.03",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When is the 2026 general election in Minnesota?",
+    "question_variants": [
+      "What date is the MN general election in 2026?",
+      "Minnesota 2026 midterm election date",
+      "When is Election Day 2026 in Minnesota?"
+    ],
+    "answer": "The general election in Minnesota will be held on Tuesday, November 3, 2026.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204D.03",
+    "source_name": "Minn. Stat. § 204D.03",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing window for the 2026 elections in Minnesota?",
+    "question_variants": [
+      "When is the deadline to file for office in MN?",
+      "Minnesota candidate filing period 2026",
+      "How long is the filing window in Minnesota?"
+    ],
+    "answer": "For the 2026 election cycle, the official candidate filing period opens on Tuesday, May 19, 2026, and closes at 5:00 p.m. on Tuesday, June 2, 2026, for federal, state, and county offices.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204B.09",
+    "source_name": "Minn. Stat. § 204B.09",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "filing_requirements",
+    "question": "What are the candidate filing fees in Minnesota?",
+    "question_variants": [
+      "How much does it cost to run for office in MN?",
+      "Minnesota filing fee schedule 2026",
+      "Does Minnesota charge a filing fee for candidates?"
+    ],
+    "answer": "Minnesota charges filing fees: $400 for U.S. Senator; $300 for U.S. Representative, Governor, statewide executive offices, and judicial offices; and $100 for State Senator or State Representative.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204B.11",
+    "source_name": "Minn. Stat. § 204B.11",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "filing_requirements",
+    "question": "Can a candidate bypass the filing fee in Minnesota?",
+    "question_variants": [
+      "Petition in place of filing fee MN",
+      "How to waive the ballot fee in Minnesota",
+      "Signature alternative for candidates"
+    ],
+    "answer": "Yes. A candidate may submit a Petition in Place of Filing Fee. For statewide offices, the petition requires 2,000 signatures. For U.S. House, it requires 1,000 signatures. For State Legislature, it requires 500 signatures.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204B.11",
+    "source_name": "Minn. Stat. § 204B.11(2)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "filing_requirements",
+    "question": "What is an Affidavit of Candidacy in Minnesota?",
+    "question_variants": [
+      "How do I declare my candidacy in MN?",
+      "Minnesota candidate paperwork",
+      "Affidavit of candidacy requirement"
+    ],
+    "answer": "The Affidavit of Candidacy is the formal, notarized document a candidate must file during the designated filing period to have their name placed on the ballot. It affirms the candidate's eligibility and intent to serve if elected.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204B.06",
+    "source_name": "Minn. Stat. § 204B.06",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "judicial"],
+    "category": "filing_requirements",
+    "question": "When must a candidate file a Statement of Economic Interest in Minnesota?",
+    "question_variants": [
+      "Financial disclosure form deadline MN",
+      "CFB economic interest filing",
+      "How many days do I have to disclose my assets?"
+    ],
+    "answer": "Candidates for state-level offices must file a Statement of Economic Interest with the Campaign Finance and Public Disclosure Board (CFB) within 14 days after officially filing their Affidavit of Candidacy.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.09",
+    "source_name": "Minn. Stat. § 10A.09",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and Judicial candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for Governor in Minnesota?",
+    "question_variants": [
+      "How old do you have to be to be MN Governor?",
+      "Gubernatorial candidate residency rules",
+      "Lieutenant Governor candidate qualifications"
+    ],
+    "answer": "Under the Minnesota Constitution, a candidate for Governor or Lieutenant Governor must be a qualified voter, at least 25 years of age at the time of the election, and have resided in Minnesota for at least one year prior to the election.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_5",
+    "source_name": "Minnesota Constitution Article V § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for the Minnesota State Legislature?",
+    "question_variants": [
+      "How old to run for State Senate MN?",
+      "Residency rules State Representative Minnesota",
+      "Do I have to live in the district to run for House?"
+    ],
+    "answer": "A candidate for the Minnesota State Senate or State House of Representatives must be a qualified voter, at least 21 years of age, a resident of Minnesota for one year, and a resident of the legislative district for six months immediately preceding the general election.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_4",
+    "source_name": "Minnesota Constitution Article IV § 6",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for U.S. House in Minnesota?",
+    "question_variants": [
+      "Do I have to live in the district to run for Congress in MN?",
+      "Congressional age limit Minnesota",
+      "US House qualifications"
+    ],
+    "answer": "Under the U.S. Constitution, a candidate for the U.S. House of Representatives must be at least 25 years old, a U.S. citizen for seven years, and an inhabitant of Minnesota when elected. District residency is not required.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/become-a-candidate/candidate-qualifications/",
+    "source_name": "Minnesota Secretary of State / U.S. Constitution Art. I § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Minnesota Supreme Court or Court of Appeals?",
+    "question_variants": [
+      "Do Supreme Court justices have to be lawyers in MN?",
+      "Minnesota judicial qualifications",
+      "Learned in the law requirement"
+    ],
+    "answer": "A candidate for the Minnesota Supreme Court, Court of Appeals, or District Court must be 'learned in the law,' meaning they must be licensed to practice law as an attorney in Minnesota.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_6",
+    "source_name": "Minnesota Constitution Article VI § 5",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are judges selected for the Minnesota Supreme Court and Court of Appeals?",
+    "question_variants": [
+      "Are Supreme Court judges elected in MN?",
+      "Minnesota judicial elections contested",
+      "Are there retention elections for judges in Minnesota?"
+    ],
+    "answer": "Minnesota judges are selected in nonpartisan, contested elections for six-year terms. Unlike some states that use yes/no retention elections, Minnesota judges face potential challengers on the ballot, though incumbents are rarely challenged.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_6",
+    "source_name": "Minnesota Constitution Article VI § 7",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How are vacancies in the U.S. Senate filled in Minnesota?",
+    "question_variants": [
+      "Who replaces a US Senator from Minnesota?",
+      "Does the Governor appoint Senate vacancies in MN?",
+      "Special election for US Senate"
+    ],
+    "answer": "If a U.S. Senate seat becomes vacant, the Governor appoints a temporary replacement to serve until a special election is held. The special election occurs at the next November state general election, provided the vacancy occurs at least 11 weeks before the regular primary.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204D.28",
+    "source_name": "Minn. Stat. § 204D.28",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How are vacancies in the U.S. House of Representatives filled in Minnesota?",
+    "question_variants": [
+      "Does the Governor appoint US House vacancies?",
+      "Special election for Congress MN",
+      "Congressional vacancy fill Minnesota"
+    ],
+    "answer": "Vacancies in the U.S. House of Representatives are filled exclusively by a special election called by the Governor. The Governor does not have the authority to appoint an interim U.S. Representative.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204D.17",
+    "source_name": "Minn. Stat. § 204D.17",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who succeeds the Governor of Minnesota in the event of a vacancy?",
+    "question_variants": [
+      "What happens if the MN Governor resigns?",
+      "Lieutenant Governor succession Minnesota",
+      "Gubernatorial vacancy fill"
+    ],
+    "answer": "If the Governor dies, resigns, or is removed, the Lieutenant Governor becomes the Governor for the remainder of the unexpired term.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_5",
+    "source_name": "Minnesota Constitution Article V § 5",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide officials"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are interim vacancies filled for the Minnesota Secretary of State, Attorney General, or State Auditor?",
+    "question_variants": [
+      "Who replaces the Minnesota Auditor if they resign?",
+      "Statewide office vacancy fill procedure",
+      "Does the Governor appoint the Attorney General?"
+    ],
+    "answer": "If a vacancy occurs in the office of Secretary of State, Attorney General, or State Auditor, the Governor appoints an interim replacement who serves out the remainder of the unexpired term until the next scheduled general election.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/351.06",
+    "source_name": "Minn. Stat. § 351.06",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive officials"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies in the Minnesota State Legislature filled?",
+    "question_variants": [
+      "Special election for State Assembly MN",
+      "Does the Governor appoint state senators?",
+      "Legislative vacancy fill Minnesota"
+    ],
+    "answer": "Under Minn. Stat. § 204D.19, legislative vacancies are filled exclusively by a special election called by the Governor. Minnesota has no interim appointment mechanism for the legislature. A primary is held before the special election. If the vacancy occurs near the very end of a term with no regular or special session scheduled, the seat may remain unfilled until the general election.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204D.19",
+    "source_name": "Minn. Stat. § 204D.19",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are mid-term vacancies filled in the Minnesota court system?",
+    "question_variants": [
+      "Who appoints judges in Minnesota?",
+      "Commission on Judicial Selection",
+      "Judicial vacancy fill process MN"
+    ],
+    "answer": "When a mid-term vacancy occurs in the Supreme Court, Court of Appeals, or District Court, the Commission on Judicial Selection evaluates candidates and recommends nominees to the Governor, who then makes the appointment.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/480B.01",
+    "source_name": "Minn. Stat. § 480B.01",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates and Legal Counsel"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who drew the state legislative and congressional maps currently used in Minnesota?",
+    "question_variants": [
+      "Minnesota Special Redistricting Panel",
+      "Who draws the maps in Minnesota?",
+      "Wattson v Simon 2022 maps"
+    ],
+    "answer": "Following a legislative deadlock, the current 2022-2030 redistricting maps were drawn by the Minnesota Special Redistricting Panel, a five-judge panel appointed by the Chief Justice of the Minnesota Supreme Court in the case Wattson v. Simon.",
+    "source_url": "https://www.gis.lcc.mn.gov/html/redistricting.html",
+    "source_name": "Minnesota Legislature – Redistricting",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All federal and state candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "How many congressional districts does Minnesota have for the 2026 cycle?",
+    "question_variants": [
+      "Number of US House seats in MN",
+      "Minnesota congressional apportionment",
+      "How many electoral votes does Minnesota have?"
+    ],
+    "answer": "Based on the post-2020 census apportionment, Minnesota retained its 8 U.S. House districts, granting the state a total of 10 Electoral College votes.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "How do State Senate and State House districts overlap in Minnesota?",
+    "question_variants": [
+      "Nesting requirement Minnesota redistricting",
+      "How many house seats are in a senate district?",
+      "MN legislative district structure"
+    ],
+    "answer": "Minnesota utilizes a strict 'nesting' requirement in its redistricting process. Each of the 67 State Senate districts is divided exactly in half to create two State House districts (e.g., Senate District 1 contains House Districts 1A and 1B), totaling 134 House districts.",
+    "source_url": "https://www.gis.lcc.mn.gov/html/redistricting.html",
+    "source_name": "Minnesota Legislature – Redistricting",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "judicial"],
+    "category": "recall_rules",
+    "question": "Can voters recall a statewide official or state legislator in Minnesota?",
+    "question_variants": [
+      "Statewide recall mechanism MN",
+      "How to recall the Governor in Minnesota",
+      "Recall grounds malfeasance Minnesota"
+    ],
+    "answer": "Yes, but the mechanism is strictly limited. Under Article VIII of the Minnesota Constitution, state executive officers, legislators, and judges may be recalled, but ONLY on specific grounds of serious malfeasance or nonfeasance in the performance of their duties, or conviction of a serious crime.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_8",
+    "source_name": "Minnesota Constitution Article VIII § 6",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the structure of the Minnesota Legislature's session?",
+    "question_variants": [
+      "Does the Minnesota legislature meet every year?",
+      "Biennial legislative session MN",
+      "120-day session limit Minnesota"
+    ],
+    "answer": "The Minnesota Legislature meets annually, but operates within a biennium (e.g., 2025-2026). Typically, the odd year features a long budget session, and the even year features a shorter policy session. Constitutionally, the legislature cannot meet for more than 120 legislative days within the biennium.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_4",
+    "source_name": "Minnesota Constitution Article IV § 12",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators and Consultants"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who can call a special session of the Minnesota Legislature?",
+    "question_variants": [
+      "Special session authority MN",
+      "Can the legislature convene itself?",
+      "Governor proclamation for special session"
+    ],
+    "answer": "Only the Governor of Minnesota has the constitutional authority to call the Legislature into a special session by proclamation. Unlike some states, the Minnesota Legislature cannot unilaterally convene itself into a special session.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_4",
+    "source_name": "Minnesota Constitution Article IV § 12",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How can the Minnesota Legislature place a constitutional amendment on the ballot?",
+    "question_variants": [
+      "Legislative referral for constitutional amendment MN",
+      "How does the legislature change the MN constitution?",
+      "Constitutional amendment passage margin"
+    ],
+    "answer": "The Minnesota Legislature can place a constitutional amendment on the ballot by passing a bill with a simple majority vote in both chambers. To become law, the amendment must then be ratified by a majority of ALL voters casting a ballot at the next general election (not just a majority of those voting on the specific question).",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_9",
+    "source_name": "Minnesota Constitution Article IX § 1",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators and Campaigns"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Minnesota have a statewide citizen initiative or referendum process?",
+    "question_variants": [
+      "Can citizens put a law on the ballot in MN?",
+      "Minnesota ballot initiative rules",
+      "Referendum process Minnesota"
+    ],
+    "answer": "No. Minnesota does not have a statewide initiative or referendum process. Citizens cannot collect signatures to place a statute or constitutional amendment directly on the statewide ballot.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the single-subject rule for legislation in Minnesota?",
+    "question_variants": [
+      "Can an omnibus bill cover multiple topics in MN?",
+      "Single-subject requirement Minnesota",
+      "Minnesota Constitution Article 4 restrictions"
+    ],
+    "answer": "The Minnesota Constitution mandates that no law shall embrace more than one subject, which shall be expressed in its title. This prevents the attachment of unrelated 'riders' to legislation.",
+    "source_url": "https://www.revisor.mn.gov/constitution/#article_4",
+    "source_name": "Minnesota Constitution Article IV § 17",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators and Legal Counsel"
+  },
+  {
+    "state": "MN",
+    "office_level": ["county", "municipal", "special_district"],
+    "category": "election_dates",
+    "question": "How many counties does Minnesota have, and who administers elections locally?",
+    "question_variants": [
+      "How many counties in MN?",
+      "County auditor role in Minnesota elections",
+      "Who runs local elections in MN?"
+    ],
+    "answer": "Minnesota has 87 counties. Election administration is handled at the county level by the County Auditor, often in coordination with municipal (city or town) clerks.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Local Officials"
+  },
+  {
+    "state": "MN",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "Are County Sheriff elections partisan in Minnesota?",
+    "question_variants": [
+      "Is the sheriff race partisan in MN?",
+      "Sheriff nonpartisan election Minnesota",
+      "County executive officer terms"
+    ],
+    "answer": "No. In Minnesota, the office of County Sheriff is a nonpartisan position. Candidates run for four-year terms without a political party label on the ballot.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/382.01",
+    "source_name": "Minn. Stat. § 382.01",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County-level candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["municipal"],
+    "category": "runoff_rules",
+    "question": "Do any cities in Minnesota use Ranked-Choice Voting (RCV)?",
+    "question_variants": [
+      "Is ranked choice voting used for Mayor in Minneapolis?",
+      "RCV rules St. Paul",
+      "Municipal ranked-choice voting MN"
+    ],
+    "answer": "Yes. While RCV is not used statewide, several major municipalities, including Minneapolis and St. Paul, utilize Ranked-Choice Voting for their mayoral, city council, and other municipal elections.",
+    "source_url": "https://www.sos.state.mn.us/elections-voting/how-elections-work/ranked-choice-voting/",
+    "source_name": "Minnesota Secretary of State – Ranked-Choice Voting",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Municipal Candidates in specific cities"
+  },
+  {
+    "state": "MN",
+    "office_level": ["special_district", "municipal"],
+    "category": "election_dates",
+    "question": "Are local school board and township elections partisan in Minnesota?",
+    "question_variants": [
+      "School board trustee elections MN",
+      "Do school board candidates run with a party label?",
+      "Township election structure"
+    ],
+    "answer": "Local school board and township elections in Minnesota are strictly nonpartisan. Candidates do not run with a political party affiliation.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the SVRS in Minnesota?",
+    "question_variants": [
+      "Statewide voter registration system MN",
+      "How are voter rolls managed in MN?",
+      "Secretary of State SVRS database"
+    ],
+    "answer": "The Statewide Voter Registration System (SVRS) is the centralized, top-down voter registration database managed by the Minnesota Secretary of State. It networks with all 87 counties to manage voter rolls, absentee balloting, and Election Day Registration.",
+    "source_url": "https://www.sos.state.mn.us/election-administration-campaigns/elections-calendar/",
+    "source_name": "Minnesota Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Election Officials and Consultants"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state"],
+    "category": "runoff_rules",
+    "question": "What triggers an automatic recount for statewide or federal offices in Minnesota?",
+    "question_variants": [
+      "Automatic recount margin Minnesota",
+      "When is a recount required by law in MN?",
+      "0.25% recount rule"
+    ],
+    "answer": "An automatic, state-funded recount is triggered for a federal, statewide, or judicial office if the margin of victory between the winning and losing candidate is less than one-quarter of one percent (0.25%) of the total votes cast for that office.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204C.35",
+    "source_name": "Minn. Stat. § 204C.35(1)(a)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and Statewide candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state"],
+    "category": "runoff_rules",
+    "question": "What triggers an automatic recount for state legislative offices in Minnesota?",
+    "question_variants": [
+      "State Senate automatic recount margin",
+      "State House recount threshold MN",
+      "0.5% recount rule legislative"
+    ],
+    "answer": "An automatic, state-funded recount is triggered for a State Senate or State House office if the margin of victory between the winning and losing candidate is less than one-half of one percent (0.5%) of the total votes cast for that office.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/204C.35",
+    "source_name": "Minn. Stat. § 204C.35(1)(b)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "runoff_rules",
+    "question": "How are election contests adjudicated in Minnesota?",
+    "question_variants": [
+      "Contesting an election result MN",
+      "Who hears election fraud disputes?",
+      "Minn. Stat. Chapter 209"
+    ],
+    "answer": "Any eligible voter or defeated candidate may contest an election over irregularities, illegal votes, or errors in canvassing. Under Minn. Stat. Chapter 209, a formal notice of contest is filed in district court, which holds a trial without a jury to adjudicate the dispute.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/209",
+    "source_name": "Minn. Stat. Chapter 209",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Legal Counsel"
+  },
+  {
+    "state": "MN",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Minnesota use provisional ballots?",
+    "question_variants": [
+      "Provisional ballot rules Minnesota",
+      "Voting if my name isn't on the roster MN",
+      "How to cast a provisional ballot"
+    ],
+    "answer": "Because Minnesota utilizes widespread Election Day Registration (SDR) and a robust vouching mechanism, it does not use traditional provisional ballots to resolve voter eligibility at the polls. Eligible voters simply register on the spot to cast a regular ballot.",
+    "source_url": "https://www.sos.state.mn.us/elections-voting/election-day-voting/",
+    "source_name": "Minnesota Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and poll watchers"
+  },
+  {
+    "state": "MN",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What are the rules for disposing of surplus campaign funds in Minnesota?",
+    "question_variants": [
+      "Surplus funds disposition MN",
+      "Can I give my leftover campaign money to charity?",
+      "What happens to campaign money when I close my committee?"
+    ],
+    "answer": "Surplus campaign funds cannot be converted to personal use. Upon terminating a committee, remaining funds may be returned to contributors pro-rata, transferred to a political party unit, or donated to the state general fund. Limits exist on transfers to other candidates.",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/10A.241",
+    "source_name": "Minn. Stat. § 10A.241",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates concluding campaigns"
+  }
+]
