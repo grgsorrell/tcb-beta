@@ -1,0 +1,1280 @@
+[
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the 2025-2026 contribution limits for a statewide candidate in Ohio?",
+    "question_variants": [
+      "How much can an individual give to a Governor candidate in OH?",
+      "What is the max donation for statewide office in 2026?",
+      "OH Governor contribution limits 2026"
+    ],
+    "answer": "For the 2025-2026 cycle, individuals and PACs may contribute a maximum of $16,615.67 per election to a candidate for statewide office. This exact figure is the result of a statutory inflation adjustment calculated by the Secretary of State in odd-numbered years under Ohio Rev. Code § 3517.104. The primary and general count as separate elections.",
+    "source_url": "https://www.ohiosos.gov/assets/e-contribution-limits.pdf",
+    "source_name": "Ohio Secretary of State – Campaign Contribution Limits",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates and donors"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the 2025-2026 contribution limits for State Senate and State House candidates in Ohio?",
+    "question_variants": [
+      "Max donation for OH State Assembly 2026",
+      "OH State Senate contribution limits",
+      "Are legislative limits different from statewide in Ohio?"
+    ],
+    "answer": "For the 2025-2026 cycle, the contribution limit for individuals and PACs giving to legislative candidates is identical to the statewide limit: $16,615.67 per election. Ohio uniquely applies this same inflation-adjusted ceiling uniformly across Governor, Attorney General, State Senate, and State House candidates.",
+    "source_url": "https://www.ohiosos.gov/assets/e-contribution-limits.pdf",
+    "source_name": "Ohio Secretary of State – Campaign Contribution Limits",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State Legislative candidates and donors"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "How many petition signatures are required for a candidate running for U.S. House, State Senate, or State House?",
+    "question_variants": [
+      "Signature threshold for Congress OH",
+      "How many signatures to run for State Assembly OH?",
+      "Do independent congressional candidates need more signatures than Republicans?"
+    ],
+    "answer": "For major party candidates seeking a district office (U.S. House, State Senate, State House), the statutory floor is uniquely low: only 50 valid signatures from enrolled party voters within the district. However, Independent candidates face a much steeper hurdle, requiring signatures equal to 1% of the total electors in the district who voted in the preceding gubernatorial election.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3513.05",
+    "source_name": "Ohio Rev. Code § 3513.05",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Congressional and State Legislative candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "filing_requirements",
+    "question": "What is the filing fee for a candidate running for Governor in Ohio?",
+    "question_variants": [
+      "How much does it cost to run for Governor in OH?",
+      "Ohio Governor filing fee amount",
+      "Does the Lt Governor pay a separate filing fee?"
+    ],
+    "answer": "Candidates for Governor and Lieutenant Governor run on a joint ticket and must collectively pay a total filing fee of $150. This consists of a $100 base fee and an additional $50 surcharge that is directed to the newly created Ohio Election Integrity Commission fund.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3513.10",
+    "source_name": "Ohio Rev. Code § 3513.10(A) and (B)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Governor and Lieutenant Governor candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "What is the statutory framework for filling the U.S. Senate vacancy left by JD Vance?",
+    "question_variants": [
+      "How did Jon Husted get the Senate seat?",
+      "Why is the Ohio special election in 2026?",
+      "Senate appointment mechanics Ohio"
+    ],
+    "answer": "Under Ohio Rev. Code § 3521.02, the Governor appoints a replacement who serves until December 15 following the next regular state election that occurs more than 180 days after the vacancy. A special election is held concurrently with that state election (November 3, 2026) to elect a Senator to serve the remainder of the unexpired term.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3521.02",
+    "source_name": "Ohio Rev. Code § 3521.02",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How long will the winner of the 2026 Ohio U.S. Senate special election serve?",
+    "question_variants": [
+      "Is the 2026 Senate race for a full 6-year term?",
+      "When is the next Senate election after 2026?",
+      "Term length for Vance replacement"
+    ],
+    "answer": "The winner of the November 3, 2026 special election will serve the unexpired remainder of the current term, which officially ends on January 3, 2029. The incumbent will have to run again in 2028 if they wish to serve a full six-year term.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3521.02",
+    "source_name": "Ohio Rev. Code § 3521.02",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "U.S. Senate candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Can Governor Mike DeWine run for re-election in 2026?",
+    "question_variants": [
+      "Is the Ohio Governor's seat open in 2026?",
+      "What are the term limits for Ohio Governor?",
+      "Can DeWine seek a third term?"
+    ],
+    "answer": "No. The Ohio Constitution strictly limits the Governor to serving two consecutive four-year terms. Since Governor DeWine served terms from 2019-2023 and 2023-2027, he is term-limited and the seat is open for 2026.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution/section-3.2",
+    "source_name": "Ohio Constitution Article III § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "When was the 2026 Ohio Primary Election?",
+    "question_variants": [
+      "What date was the OH primary in 2026?",
+      "Ohio 2026 primary date",
+      "When do polls open for the OH primary?"
+    ],
+    "answer": "The Ohio Primary Election was held on Tuesday, May 5, 2026. Ohio traditionally holds its partisan primaries early in the year, specifically on the first Tuesday after the first Monday in May.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3501.01",
+    "source_name": "Ohio Rev. Code § 3501.01(E)(1)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "ballot_access",
+    "question": "What was the candidate filing deadline for major party candidates for the 2026 primary?",
+    "question_variants": [
+      "When did candidates have to file for the 2026 primary in Ohio?",
+      "Declaration of candidacy deadline 2026",
+      "Ohio 90-day filing rule"
+    ],
+    "answer": "The deadline for partisan candidates to file their declaration of candidacy and designating petitions for the 2026 primary was February 4, 2026, which aligns with Ohio's requirement to file no later than 4:00 p.m. on the 90th day before the primary election.",
+    "source_url": "https://www.ohiosos.gov/assets/candidate-requirement-guide-2026.pdf",
+    "source_name": "Ohio Secretary of State – 2026 Candidate Requirement Guide",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "When is the 2026 Ohio General Election?",
+    "question_variants": [
+      "What date is the OH general election in 2026?",
+      "OH 2026 midterm election date",
+      "When is Election Day 2026 in Ohio?"
+    ],
+    "answer": "The Ohio General Election is scheduled for Tuesday, November 3, 2026.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3501.01",
+    "source_name": "Ohio Rev. Code § 3501.01(A)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline for the November 2026 General Election?",
+    "question_variants": [
+      "When is the last day to register for the 2026 general election in OH?",
+      "General election registration deadline OH 2026",
+      "Ohio 30-day voter registration rule"
+    ],
+    "answer": "Voter registration in Ohio closes 30 days prior to the election. For the November 3, 2026 General Election, all voter registration applications must be submitted or postmarked by October 5, 2026.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.19",
+    "source_name": "Ohio Rev. Code § 3503.19(A)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All unregistered voters"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Ohio?",
+    "question_variants": [
+      "Ohio voter ID laws",
+      "Do I need my driver's license to vote in OH?",
+      "HB 458 photo ID requirement"
+    ],
+    "answer": "Yes. Under HB 458, Ohio voters must present a valid, unexpired photo ID to vote in person on Election Day or during early voting. Acceptable forms include an Ohio driver's license, an Ohio state ID, a U.S. passport/passport card, or a U.S. military/VA ID card. Utility bills and bank statements are no longer accepted.",
+    "source_url": "https://www.ohiosos.gov/elections/voters/id-requirements/",
+    "source_name": "Ohio Secretary of State – Voter ID Requirements",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "How many days of early voting are available in Ohio?",
+    "question_variants": [
+      "Early voting period Ohio",
+      "When does early voting start in OH?",
+      "Does Ohio have weekend voting?"
+    ],
+    "answer": "Ohio offers a robust 28 days of early in-person voting prior to Election Day, which includes some weekend hours. Early voting begins on the day after the close of the voter registration window.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3509.01",
+    "source_name": "Ohio Rev. Code § 3509.01",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and Get-Out-The-Vote operations"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "Does Ohio have same-day voter registration?",
+    "question_variants": [
+      "Can I register to vote at the polls in Ohio?",
+      "Same-day registration rules OH",
+      "Conditional voter registration Ohio"
+    ],
+    "answer": "No. Ohio does not allow same-day voter registration. Eligible citizens must ensure their registration is processed by the 30-day deadline before an election to be permitted to vote.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.19",
+    "source_name": "Ohio Rev. Code § 3503.19",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unregistered voters"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal", "judicial", "special_district"],
+    "category": "finance_ethics",
+    "question": "Can a corporation contribute directly to a candidate for state office in Ohio?",
+    "question_variants": [
+      "Are corporate contributions legal in OH?",
+      "Can my business donate to a state candidate?",
+      "Ohio corporate donation rules"
+    ],
+    "answer": "No. Ohio law explicitly prohibits corporations, non-profit corporations, and LLCs treated as corporations from using their general treasury funds to make direct contributions to state or local candidates, or to political parties. They may, however, establish and administer an affiliated PAC.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3599.03",
+    "source_name": "Ohio Rev. Code § 3599.03",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Corporations and Campaign Treasurers"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "runoff_rules",
+    "question": "What triggers an automatic recount in Ohio elections?",
+    "question_variants": [
+      "Automatic recount margin Ohio",
+      "When is a recount required by law in OH?",
+      "0.5% recount rule"
+    ],
+    "answer": "An automatic recount is legally triggered in Ohio if the margin of victory between the winning and losing candidate is equal to or less than 0.5% of the total votes cast for that state or federal office. For statewide ballot issues, the automatic trigger is a narrower 0.25%.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3515.011",
+    "source_name": "Ohio Rev. Code § 3515.011",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Which congressional maps are in effect for the 2026 election cycle in Ohio?",
+    "question_variants": [
+      "Did Ohio redraw its congressional districts for 2026?",
+      "Mid-decade redistricting status OH",
+      "Are we using new maps for Congress in 2026?"
+    ],
+    "answer": "The mid-decade congressional maps adopted by the Ohio Redistricting Commission in 2025 are in effect for the 2026 cycle. These maps replaced the previous boundaries drawn earlier in the decade.",
+    "source_url": "https://redistricting.ohio.gov/",
+    "source_name": "Ohio Redistricting Commission",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who is responsible for drawing state legislative and congressional maps in Ohio?",
+    "question_variants": [
+      "Who is on the Ohio Redistricting Commission?",
+      "ORC composition",
+      "Does the legislature draw the maps in OH?"
+    ],
+    "answer": "Redistricting authority lies with the Ohio Redistricting Commission (ORC). The ORC is a 7-member body consisting of the Governor, Auditor of State, Secretary of State, and four legislative appointees (one from the majority and minority leaders of both the State Senate and State House).",
+    "source_url": "https://codes.ohio.gov/ohio-constitution/section-11.1",
+    "source_name": "Ohio Constitution Article XI § 1",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative and Congressional Candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state"],
+    "category": "filing_requirements",
+    "question": "What is the filing fee for a candidate running for U.S. House or the State Legislature?",
+    "question_variants": [
+      "Cost to run for OH State House",
+      "State Senate filing fee OH",
+      "How much is the congressional filing fee in Ohio?"
+    ],
+    "answer": "The total filing fee for a district office, which encompasses the U.S. House of Representatives, the Ohio State Senate, and the Ohio State House, is $85. This includes a $50 base fee and a $35 Elections Integrity Commission surcharge.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3513.10",
+    "source_name": "Ohio Rev. Code § 3513.10(A) and (B)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Congressional and State Legislative candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "When is the filing deadline for Independent candidates in Ohio?",
+    "question_variants": [
+      "Running as an independent in OH",
+      "Independent line ballot access Ohio",
+      "How do unaffiliated candidates get on the ballot?"
+    ],
+    "answer": "Independent candidates who wish to bypass the primary and appear directly on the November general election ballot must file their Nominating Petition and Statement of Candidacy by 4:00 p.m. on the day immediately preceding the primary election. For the 2026 cycle, this deadline was May 4, 2026.",
+    "source_url": "https://www.ohiosos.gov/assets/candidate-requirement-guide-2026.pdf",
+    "source_name": "Ohio Secretary of State – 2026 Candidate Requirement Guide",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Independent and third-party candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "candidate_eligibility",
+    "question": "Can a person with a felony conviction vote in Ohio?",
+    "question_variants": [
+      "Felon voting rights OH",
+      "Can I vote after getting out of prison in Ohio?",
+      "Voting post-incarceration rules OH"
+    ],
+    "answer": "Yes. Ohio law provides that a person's right to vote is automatically restored immediately upon their release from a penal institution. Individuals currently serving time on parole, probation, or under community control are fully eligible to register and vote.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-2961.01",
+    "source_name": "Ohio Rev. Code § 2961.01",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All eligible citizens"
+  },
+  {
+    "state": "OH",
+    "office_level": ["county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How many absentee ballot drop boxes are permitted per county in Ohio?",
+    "question_variants": [
+      "Are ballot drop boxes restricted in OH?",
+      "Where can I drop off my mail ballot?",
+      "County limits for mail ballot boxes"
+    ],
+    "answer": "Under Ohio law and directives issued by the Secretary of State, each county board of elections is restricted to operating a single, centralized secure drop box location. This drop box must be situated on the property of the county board of elections office and monitored continuously.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3509.05",
+    "source_name": "Ohio Rev. Code § 3509.05",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Get-Out-The-Vote operations"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for members of the Ohio State Legislature?",
+    "question_variants": [
+      "How long can someone serve in the OH Assembly?",
+      "State Representative term limits OH",
+      "State Senate consecutive terms"
+    ],
+    "answer": "The Ohio Constitution restricts state legislators to eight consecutive years in a single chamber. State Representatives are limited to four consecutive two-year terms, while State Senators are limited to two consecutive four-year terms. A member may run for the other chamber after hitting their limit.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution/section-2.2",
+    "source_name": "Ohio Constitution Article II § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "ballot_access",
+    "question": "What is the procedure for running as a write-in candidate in Ohio?",
+    "question_variants": [
+      "Do write-in candidates have to register in OH?",
+      "How to legally canvass write-in votes",
+      "Declaration of Intent to be a Write-In Candidate"
+    ],
+    "answer": "Voters can write in names on the ballot, but votes are only tallied for officially registered candidates. A write-in candidate must file a 'Declaration of Intent to be a Write-In Candidate' with the Board of Elections no later than 72 days before the election (February 23, 2026 for the primary, August 24, 2026 for the general).",
+    "source_url": "https://www.boe.ohio.gov/summit/c/upload/ElectionsCalendar.pdf",
+    "source_name": "Ohio Secretary of State – 2026 Elections Calendar",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the periodic and pre-election reporting schedule for campaign committees in Ohio?",
+    "question_variants": [
+      "When are campaign finance reports due in OH?",
+      "12-day pre-primary report deadline",
+      "Ohio periodic campaign filing dates"
+    ],
+    "answer": "Campaign committees must file a Pre-Election report 12 days before the election, and a Post-Election report 38 days after the election. Additionally, committees must file an Annual Report on the last business day of January. During non-election years, a Semiannual Report is also required by the last business day of July.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.10",
+    "source_name": "Ohio Rev. Code § 3517.10(A)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "When must a candidate formally designate a campaign treasurer in Ohio?",
+    "question_variants": [
+      "Designation of Treasurer deadline OH",
+      "When to register a campaign committee in Ohio",
+      "Can I spend money before designating a treasurer?"
+    ],
+    "answer": "A candidate must file a Designation of Treasurer form with the Secretary of State or county board of elections before receiving any contributions or making any expenditures. No campaign activity can legally occur until this form is processed.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.081",
+    "source_name": "Ohio Rev. Code § 3517.081",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "What is the difference between the Ohio Election Integrity Commission (OEIC) and the Election Integrity Unit (EIU)?",
+    "question_variants": [
+      "Are the OEIC and EIU the same thing?",
+      "Who investigates campaign complaints vs voter fraud in OH?",
+      "Ohio Election Integrity Commission vs Unit"
+    ],
+    "answer": "They are separate, parallel bodies. The OEIC (established via SB 293) exclusively handles campaign finance violations, succeeding the OEC. The EIU (established via SB 4) is a separate unit within the Secretary of State's office that exclusively investigates election fraud and voter suppression.",
+    "source_url": "https://www.legislature.ohio.gov/legislation/136/sb293",
+    "source_name": "Ohio SB 293 / SB 4 (136th General Assembly)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates, Consultants, and Legal Counsel"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal", "judicial"],
+    "category": "finance_ethics",
+    "question": "Where do I file a campaign finance complaint versus an election fraud complaint in Ohio?",
+    "question_variants": [
+      "Reporting an opponent for campaign finance violations OH",
+      "Who handles illegal voting complaints vs donor limits?",
+      "Filing process for election crimes Ohio"
+    ],
+    "answer": "Under the 2026 framework, campaign finance complaints must be filed directly with the Ohio Election Integrity Commission (OEIC). Conversely, allegations of voter suppression or election fraud must be filed with the Election Integrity Unit (EIU) within the Secretary of State's office.",
+    "source_url": "https://www.ohiosos.gov/assets/dir2026-17-ohio-election-integrity-commission-and-election-integrity-unit.pdf",
+    "source_name": "Ohio Secretary of State – Directive 2026-17",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters, Opponents, and Election Officials"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for filing a campaign finance report late in Ohio?",
+    "question_variants": [
+      "Late filing fees OH",
+      "How much is the fine for missing a reporting deadline?",
+      "OEIC campaign finance fines"
+    ],
+    "answer": "Under Ohio Rev. Code § 3517.992, the OEIC has the authority to assess civil penalties for late reports. Fines typically range from $15 to $100 per day depending on the specific form, the office level, and the length of the delinquency.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.992",
+    "source_name": "Ohio Rev. Code § 3517.992",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How long must a campaign treasurer retain campaign finance records in Ohio?",
+    "question_variants": [
+      "Campaign record retention requirements OH",
+      "How many years to keep campaign receipts?",
+      "Audit record retention Ohio"
+    ],
+    "answer": "Under Ohio law, a campaign treasurer must preserve all receipted bills, bank statements, and accounts related to their campaign finance disclosure statements for six years following the filing of the statement.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.10",
+    "source_name": "Ohio Rev. Code § 3517.10",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign Treasurers"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the rules for disposing of surplus campaign funds in Ohio?",
+    "question_variants": [
+      "Surplus funds disposition OH",
+      "Can I give my leftover campaign money to charity?",
+      "What happens to campaign money when I close my committee?"
+    ],
+    "answer": "Surplus campaign funds cannot be converted to personal use. They may be refunded pro-rata to contributors, donated to a 501(c)(3) tax-exempt charity, or remitted to the state treasury to the credit of the newly established Ohio Election Integrity Commission fund.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.109",
+    "source_name": "Ohio Rev. Code § 3517.109(C)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates concluding campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are foreign nationals prohibited from contributing to state and local campaigns in Ohio?",
+    "question_variants": [
+      "Can a foreign citizen donate to my city council race?",
+      "Foreign contribution ban OH",
+      "Are non-citizens allowed to fund independent expenditures in Ohio?"
+    ],
+    "answer": "Yes. Ohio law completely mirrors federal restrictions, prohibiting foreign nationals from making contributions, directly or indirectly, to any state or local candidate, or funding any independent expenditures or electioneering communications.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.13",
+    "source_name": "Ohio Rev. Code § 3517.13(W)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All state and local campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What triggers the requirement to report an Independent Expenditure in Ohio?",
+    "question_variants": [
+      "When does an independent group have to file?",
+      "Independent expenditure definition OH",
+      "Reporting threshold for Super PACs Ohio"
+    ],
+    "answer": "Under Ohio Admin. Code 111:2-2 and RC 3517.105, any person or entity making independent expenditures (communications advocating election/defeat without coordination) aggregating in excess of $500 must file disclosure statements with the Secretary of State or county board.",
+    "source_url": "https://codes.ohio.gov/ohio-administrative-code/chapter-111:2-2",
+    "source_name": "Ohio Admin. Code 111:2-2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Super PACs and Independent Expenditure Committees"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the 24-hour reporting rule for Independent Expenditures in Ohio?",
+    "question_variants": [
+      "Late independent expenditure reporting OH",
+      "When do I have to report PAC spending within 24 hours?",
+      "24-hour rule for $10,000 expenditures"
+    ],
+    "answer": "Under Ohio Rev. Code § 3517.105(B), any independent expenditure of $10,000 or more made during the period beginning 90 days before the primary election and ending on the day of the general election must be reported within 24 hours.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.105",
+    "source_name": "Ohio Rev. Code § 3517.105(B)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Super PACs and IECs"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the specific residency requirements to run for the Ohio State Legislature?",
+    "question_variants": [
+      "How long do I have to live in OH to run for State Senate?",
+      "Residency rules State Assembly OH",
+      "Do I have to live in the district to run?"
+    ],
+    "answer": "Under the Ohio Constitution, a candidate for State Senate or State Representative must have resided in their respective district for one year immediately preceding their election.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution/section-2.3",
+    "source_name": "Ohio Constitution Article II § 3",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative Candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the specific residency and age requirements to run for U.S. House in Ohio?",
+    "question_variants": [
+      "Do I have to live in the district to run for Congress in OH?",
+      "Age requirement for Congress Ohio",
+      "Can I run for a congressional seat if I live in a different district?"
+    ],
+    "answer": "A U.S. House candidate must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of Ohio when elected. The U.S. Constitution does not require the candidate to live within the specific congressional district boundaries.",
+    "source_url": "https://www.ohiosos.gov/assets/candidate-requirement-guide-2026.pdf",
+    "source_name": "Ohio Secretary of State / U.S. Constitution Art. I § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "What are the state restrictions on placing campaign signs near highways in Ohio?",
+    "question_variants": [
+      "Can I put political signs on state roads?",
+      "ODOT campaign sign rules",
+      "Where are campaign signs prohibited in OH?"
+    ],
+    "answer": "The Ohio Department of Transportation (ODOT) strictly prohibits the placement of political campaign signs within the state highway right-of-way. Signs placed illegally are subject to immediate removal by ODOT crews without notice.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/chapter-5515",
+    "source_name": "Ohio Rev. Code Chapter 5515",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure requirements for campaign text messages (SMS) and robocalls in Ohio?",
+    "question_variants": [
+      "Do campaign texts need an 'Ad paid for by' disclaimer?",
+      "Robocall disclosure requirements OH",
+      "SMS political rules Ohio"
+    ],
+    "answer": "A readable and/or audible disclaimer identifying who paid for the communication must be included on almost everything created to influence an election in Ohio. This explicitly includes electronic messages, text messages (SMS), and robocalls.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.20",
+    "source_name": "Ohio Rev. Code § 3517.20",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All campaigns utilizing digital communication"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates in Ohio allowed to use campaign funds for personal expenses?",
+    "question_variants": [
+      "Personal use of campaign funds OH",
+      "Can I buy a car with campaign money?",
+      "Ohio rules on spending campaign donations"
+    ],
+    "answer": "No. Ohio Rev. Code § 3517.13 strictly prohibits any beneficiary of a campaign fund from converting anything of value from the fund to personal use. Expenses must be legitimate, verifiable, and ordinarily necessary to the campaign or duties of public office.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.13",
+    "source_name": "Ohio Rev. Code § 3517.13(O)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All state and local candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What was the outcome of the November 2023 constitutional amendment regarding reproductive rights (Issue 1)?",
+    "question_variants": [
+      "Did the Ohio abortion amendment pass?",
+      "Issue 1 November 2023 outcome",
+      "Reproductive rights initiative Ohio"
+    ],
+    "answer": "In November 2023, Ohio voters approved Issue 1, a citizen-initiated constitutional amendment that enshrined a right to reproductive freedom in the state constitution. It passed with roughly 56% of the vote.",
+    "source_url": "https://www.ohiosos.gov/elections/election-results-and-data/2023-official-election-results/",
+    "source_name": "Ohio Secretary of State – 2023 Election Results",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What was the outcome of the August 2023 constitutional amendment regarding the 60% passage threshold (Issue 1)?",
+    "question_variants": [
+      "Did the Ohio 60 percent threshold pass?",
+      "Issue 1 August 2023 outcome",
+      "Does a ballot initiative require a supermajority in OH?"
+    ],
+    "answer": "In an August 2023 special election (Issue 1), Ohio voters decisively rejected a legislative proposal that would have raised the passage threshold for constitutional amendments to a 60% supermajority. Therefore, citizen-initiated constitutional amendments still require only a simple majority to pass.",
+    "source_url": "https://www.ohiosos.gov/elections/election-results-and-data/2023-official-election-results/",
+    "source_name": "Ohio Secretary of State – 2023 Election Results",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees and Campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What was the outcome of the November 2023 statutory initiative regarding recreational cannabis (Issue 2)?",
+    "question_variants": [
+      "Did Ohio legalize weed in 2023?",
+      "Issue 2 November 2023 outcome",
+      "Recreational cannabis statute Ohio"
+    ],
+    "answer": "In November 2023, Ohio voters approved Issue 2, a citizen-initiated statute that legalized the cultivation, processing, sale, and use of recreational cannabis for adults 21 and older. It passed with roughly 57% of the vote.",
+    "source_url": "https://www.ohiosos.gov/elections/election-results-and-data/2023-official-election-results/",
+    "source_name": "Ohio Secretary of State – 2023 Election Results",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What was the outcome of the 'Citizens Not Politicians' redistricting amendment (Issue 1) in 2024?",
+    "question_variants": [
+      "Did the 2024 redistricting amendment pass in Ohio?",
+      "Citizens Not Politicians November 2024 results",
+      "Issue 1 2024 gerrymandering vote"
+    ],
+    "answer": "The 'Citizens Not Politicians' constitutional amendment, which would have replaced the politician-led Ohio Redistricting Commission with an independent 15-member citizen commission, was defeated by Ohio voters in the November 2024 general election by a margin of 53.7% to 46.3%.",
+    "source_url": "https://www.ohiosos.gov/elections/election-results-and-data/",
+    "source_name": "Ohio Secretary of State – 2024 Election Results",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All Campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How many valid signatures are required to qualify a citizen-initiated constitutional amendment in Ohio?",
+    "question_variants": [
+      "Signature requirement for Ohio constitutional amendment",
+      "How many signatures to change the Ohio constitution?",
+      "10% gubernatorial vote rule"
+    ],
+    "answer": "Qualifying a constitutional amendment requires valid signatures equal to at least 10% of the total votes cast for Governor in the previous election. Based on the 2022 turnout of 4,134,877, this strictly translates to 413,488 valid signatures.",
+    "source_url": "https://www.ohioattorneygeneral.gov/Legal/Ballot-Initiatives/Initiative-and-Referendum-Signature-Requirements",
+    "source_name": "Ohio Attorney General – Signature Requirements",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How many valid signatures are required to qualify a citizen-initiated statute in Ohio?",
+    "question_variants": [
+      "Signature requirement for Ohio initiated statute",
+      "How many signatures to pass a law by ballot in OH?",
+      "3% gubernatorial vote rule"
+    ],
+    "answer": "Qualifying an initiated statute requires valid signatures equal to at least 3% of the total votes cast for Governor in the previous election. Based on the 2022 turnout, this translates to 124,046 valid signatures.",
+    "source_url": "https://www.ohioattorneygeneral.gov/Legal/Ballot-Initiatives/Initiative-and-Referendum-Signature-Requirements",
+    "source_name": "Ohio Attorney General – Signature Requirements",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the geographic distribution requirement for ballot initiative signatures in Ohio?",
+    "question_variants": [
+      "Do I need signatures from every county in OH?",
+      "44 county signature rule Ohio",
+      "Geographic distribution constitutional amendment"
+    ],
+    "answer": "For any statewide initiative or referendum, organizers must collect signatures from at least 44 of Ohio's 88 counties. Within each of those 44 counties, the signatures collected must meet a proportional percentage of that specific county's gubernatorial vote (e.g., 5% for an amendment, 1.5% for a statute).",
+    "source_url": "https://www.ohioattorneygeneral.gov/Legal/Ballot-Initiatives/Initiative-and-Referendum-Signature-Requirements",
+    "source_name": "Ohio Attorney General – Signature Requirements",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies in the Ohio State Legislature filled?",
+    "question_variants": [
+      "Special election for State Assembly OH",
+      "How is a vacant state senate seat filled?",
+      "Do special elections have primaries in OH?"
+    ],
+    "answer": "Legislative vacancies are not filled by special elections. Instead, under Article II § 11 of the Ohio Constitution, the vacancy is filled by an appointment voted on by the remaining members of the chamber who are affiliated with the same political party as the former member.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution/section-2.11",
+    "source_name": "Ohio Constitution Article II § 11",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislative Candidates and Party Caucuses"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal", "judicial", "special_district"],
+    "category": "finance_ethics",
+    "question": "Can public funds be used to support or oppose campaigns in Ohio?",
+    "question_variants": [
+      "Can the city council spend tax money on a levy campaign?",
+      "Auditor of State bulletin 2025 public funds",
+      "Charter entity exemption elimination"
+    ],
+    "answer": "No. Ohio Rev. Code § 9.03(C) universally prohibits public funds from supporting or opposing campaigns. Under Am. Sub. H.B. 96, effective September 30, 2025, the previous exemption for charter municipalities and counties was explicitly eliminated, applying the ban uniformly across all 88 counties.",
+    "source_url": "https://ohioauditor.gov/publications/docs/Ohio_Auditor_of_State_Levy_FAQ.pdf",
+    "source_name": "Ohio Auditor of State – Levy FAQ",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local officials and Campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "Under what circumstances is a provisional ballot used at an Ohio polling place?",
+    "question_variants": [
+      "When do I have to cast a provisional ballot?",
+      "Are provisional ballots counted in OH?",
+      "Voting if my ID is rejected"
+    ],
+    "answer": "Provisional ballots are issued to voters whose eligibility cannot be immediately confirmed on Election Day (e.g., lack of strict photo ID, change of address not updated, or name missing from the poll book). These are set aside and counted only after the board of elections verifies the voter's eligibility.",
+    "source_url": "https://www.ohiosos.gov/elections/voters/provisional-voting/",
+    "source_name": "Ohio Secretary of State – Provisional Voting",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the specific residency requirements to run for a statewide executive office in Ohio?",
+    "question_variants": [
+      "How long do I need to live in OH to run for Governor?",
+      "Residency rules for Attorney General",
+      "Do I have to be a resident for 5 years to run for Treasurer?"
+    ],
+    "answer": "Under the Ohio Constitution, candidates for Governor, Attorney General, Secretary of State, Auditor, and Treasurer must be qualified electors and residents of Ohio. Unlike some states, Ohio does not enforce a multi-year durational residency requirement for these executive offices prior to election.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution",
+    "source_name": "Ohio Constitution Article III / Article XV § 4",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the minimum age to run for Governor or other statewide executive offices in Ohio?",
+    "question_variants": [
+      "How old do you have to be to be OH Governor?",
+      "Age requirement for Attorney General",
+      "Gubernatorial candidate age limit Ohio"
+    ],
+    "answer": "A candidate for statewide executive office in Ohio (Governor, Attorney General, Secretary of State, Auditor, Treasurer) must be at least 18 years old, which satisfies the constitutional requirement of being a qualified elector.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution",
+    "source_name": "Ohio Constitution Article XV § 4",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Attorney General, Secretary of State, Auditor, and Treasurer in Ohio?",
+    "question_variants": [
+      "How long can someone serve as Secretary of State in OH?",
+      "State Auditor term limits OH",
+      "Executive office consecutive terms Ohio"
+    ],
+    "answer": "Under the Ohio Constitution, the Attorney General, Secretary of State, Auditor, and Treasurer are strictly limited to serving two consecutive four-year terms, mirroring the Governor's term limit.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution/section-3.2",
+    "source_name": "Ohio Constitution Article III § 2",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "election_dates",
+    "question": "What authority does the Ohio Secretary of State have over elections?",
+    "question_variants": [
+      "Who runs elections in Ohio?",
+      "Secretary of State election powers",
+      "Chief Election Officer OH"
+    ],
+    "answer": "The Ohio Secretary of State is the state's Chief Election Officer, responsible for administering elections, compiling campaign finance reports, certifying ballot access for statewide candidates, and issuing directives to oversee the 88 county boards of elections.",
+    "source_url": "https://www.ohiosos.gov/elections/",
+    "source_name": "Ohio Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All Campaigns and Voters"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the Ohio Auditor's role regarding campaign finance and elections?",
+    "question_variants": [
+      "Who audits the Ohio Election Integrity Commission?",
+      "Auditor of State campaign oversight",
+      "Does the Auditor enforce the public funds ban?"
+    ],
+    "answer": "The Ohio Auditor of State is responsible for auditing public entities to ensure compliance with laws like the RC 9.03 public funds ban, and performs audits of the newly established Ohio Election Integrity Commission fund.",
+    "source_url": "https://ohioauditor.gov/",
+    "source_name": "Ohio Auditor of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Treasurers and Public Officials"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How are vacancies filled for statewide executive offices like Attorney General or Secretary of State?",
+    "question_variants": [
+      "Who replaces the Ohio Auditor if they resign?",
+      "Statewide office vacancy fill procedure",
+      "Does the Governor appoint the Attorney General?"
+    ],
+    "answer": "If a vacancy occurs in the office of Auditor, Treasurer, Secretary of State, or Attorney General, the Governor appoints a replacement to serve until the next general election that occurs more than 40 days after the vacancy.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution/section-3.18",
+    "source_name": "Ohio Constitution Article III § 18",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive officials"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How are vacancies in the U.S. House of Representatives filled in Ohio?",
+    "question_variants": [
+      "Special election for Congress OH",
+      "Does the Governor appoint US House replacements in Ohio?",
+      "Congressional vacancy procedure"
+    ],
+    "answer": "Vacancies in the U.S. House of Representatives are filled exclusively by a special election called by the Governor. Unlike U.S. Senate vacancies, the Governor cannot appoint an interim U.S. Representative.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3521.03",
+    "source_name": "Ohio Rev. Code § 3521.03",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "U.S. House candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "On what dates can special elections be scheduled in Ohio?",
+    "question_variants": [
+      "Special election dates OH",
+      "When can a local levy be voted on?",
+      "Ohio special election calendar"
+    ],
+    "answer": "Under Ohio Rev. Code § 3501.01, special elections can generally only be scheduled on the first Tuesday after the first Monday in February, May, August, or November.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3501.01",
+    "source_name": "Ohio Rev. Code § 3501.01(D)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All Campaigns and Local Officials"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "election_dates",
+    "question": "What is the deadline for a mail-in absentee ballot to be received by the board of elections?",
+    "question_variants": [
+      "When is my absentee ballot due in OH?",
+      "Mail ballot receipt deadline SB 293",
+      "Ohio postmark rules for mail voting"
+    ],
+    "answer": "Under SB 293 (effective March 2026), all regular civilian absentee ballots returned by mail must be physically received by the board of elections by the close of polls (7:30 p.m.) on Election Day. This eliminated the previous four-day postmark grace period.",
+    "source_url": "https://www.legislature.ohio.gov/legislation/136/sb293",
+    "source_name": "Ohio SB 293 (136th General Assembly)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and Campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "How does Ohio verify the citizenship of registered voters?",
+    "question_variants": [
+      "Noncitizen voter removal OH",
+      "SB 293 citizenship verification",
+      "Does Ohio cross check voter rolls with the BMV?"
+    ],
+    "answer": "Under SB 293, the Secretary of State is mandated to conduct regular, monthly cross-checks of voter rolls against Bureau of Motor Vehicles (BMV) and Social Security Administration (SSA) data to identify and remove noncitizens from the registry.",
+    "source_url": "https://www.legislature.ohio.gov/legislation/136/sb293",
+    "source_name": "Ohio SB 293 (136th General Assembly)",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Election Officials"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "How long does a voter have to cure a provisional ballot cast due to a lack of photo ID?",
+    "question_variants": [
+      "Provisional ballot curing window OH",
+      "How many days to show ID after voting provisionally?",
+      "Curing an ID mismatch Ohio"
+    ],
+    "answer": "Voters who cast a provisional ballot because they lacked strict photo ID have until the fourth day after the election to cure their ballot by presenting a qualifying, unexpired photo ID in person at their county board of elections.",
+    "source_url": "https://www.ohiosos.gov/elections/voters/provisional-voting/",
+    "source_name": "Ohio Secretary of State – Provisional Voting",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "OH",
+    "office_level": ["federal", "state", "county", "municipal", "judicial", "special_district"],
+    "category": "voter_interaction",
+    "question": "What is the polling place electioneering buffer zone in Ohio?",
+    "question_variants": [
+      "How close to the door can I campaign in OH?",
+      "100-foot rule Ohio voting",
+      "Campaign signs at polling places"
+    ],
+    "answer": "Ohio enforces a strict 100-foot electioneering buffer zone measured from the entrance of the polling place. No campaign signs, literature distribution, or candidate advocacy can legally occur within this boundary.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3501.35",
+    "source_name": "Ohio Rev. Code § 3501.35",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaigns and Poll Workers"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "federal"],
+    "category": "recall_rules",
+    "question": "Can voters recall a statewide official or state legislator in Ohio?",
+    "question_variants": [
+      "Statewide recall mechanism OH",
+      "How to recall the Governor in Ohio",
+      "Can we recall a state senator?"
+    ],
+    "answer": "Ohio does not have a constitutional or statutory mechanism for the recall of statewide officials, state legislators, or federal representatives. Recall mechanisms only exist at the local level if specifically authorized by a municipal charter.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution",
+    "source_name": "Ohio Constitution",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are justices selected for the Ohio Supreme Court?",
+    "question_variants": [
+      "Are Supreme Court judges elected in OH?",
+      "Supreme court partisan elections Ohio",
+      "How long do OH highest court judges serve?"
+    ],
+    "answer": "The Ohio Supreme Court consists of seven justices elected to six-year terms. Following a 2021 law, candidates for the Supreme Court and appellate courts now run in partisan primaries and appear with their specific party affiliation on the general election ballot.",
+    "source_url": "https://www.supremecourt.ohio.gov/courts/judicial-system/supreme-court-of-ohio/justices-overview/",
+    "source_name": "Supreme Court of Ohio",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial Candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Ohio Court of Appeals judges selected?",
+    "question_variants": [
+      "Appellate court judicial elections OH",
+      "Are appellate judges partisan in Ohio?",
+      "Court of appeals term length"
+    ],
+    "answer": "Ohio Court of Appeals judges are elected to six-year terms in partisan elections. The state is divided into 12 appellate districts, and any vacancies that occur between elections are filled by gubernatorial appointment.",
+    "source_url": "https://www.supremecourt.ohio.gov/courts/judicial-system/ohio-court-of-appeals/",
+    "source_name": "Supreme Court of Ohio",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial Candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are local trial court judges elected in Ohio?",
+    "question_variants": [
+      "Municipal court judge elections OH",
+      "Are trial judges nonpartisan in Ohio?",
+      "Courts of Common Pleas selection"
+    ],
+    "answer": "Candidates for Municipal Courts and Courts of Common Pleas run in partisan primary elections to secure a nomination, but they appear on the November general election ballot without any party affiliation (a nonpartisan general election).",
+    "source_url": "https://pressbooks.ulib.csuohio.edu/statelocalgov/chapter/11-11-judicial-selection/",
+    "source_name": "Ohio Judicial Selection Guide",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local Judicial Candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "When are county prosecutors and sheriffs elected in Ohio?",
+    "question_variants": [
+      "County prosecutor election mechanics",
+      "When do we vote for sheriff in OH?",
+      "Are sheriff races partisan?"
+    ],
+    "answer": "County prosecutors and sheriffs are elected in partisan elections to four-year terms. These county-level executive elections are statutorily scheduled to coincide with the presidential election cycle.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code",
+    "source_name": "Ohio Rev. Code",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County-level Candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["municipal", "special_district"],
+    "category": "election_dates",
+    "question": "When are municipal and local school board elections held in Ohio?",
+    "question_variants": [
+      "Odd-year elections Ohio",
+      "When do we vote for mayor in OH?",
+      "School board election scheduling"
+    ],
+    "answer": "Municipal and local school board elections in Ohio are statutorily scheduled for odd-numbered years (e.g., 2025, 2027). This scheduling intentionally separates local issues and offices from state and federal partisan races.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3501.01",
+    "source_name": "Ohio Rev. Code § 3501.01",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Municipal and School Board Candidates"
+  },
+  {
+    "state": "OH",
+    "office_level": ["municipal"],
+    "category": "election_dates",
+    "question": "How do charter cities in Ohio handle election scheduling differently than statutory cities?",
+    "question_variants": [
+      "Cleveland municipal election rules",
+      "Home Rule Amendment Ohio voting",
+      "Charter city election exemptions"
+    ],
+    "answer": "Under the Home Rule Amendment of the Ohio Constitution, charter cities (like Cleveland, Cincinnati, and Columbus) have the authority to alter their local municipal election dates, runoff mechanics, and nonpartisan structures independently of the state's default statutory city frameworks.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution/section-18.7",
+    "source_name": "Ohio Constitution Article XVIII § 7",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Municipal Candidates in Charter Cities"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How can the Ohio General Assembly place a constitutional amendment on the ballot?",
+    "question_variants": [
+      "Legislative resolution for constitutional amendment OH",
+      "How does the legislature change the Ohio constitution?",
+      "3/5 supermajority rule"
+    ],
+    "answer": "In addition to citizen initiatives, the Ohio General Assembly can place a constitutional amendment directly on the ballot by passing a joint resolution. This requires a three-fifths (60%) supermajority vote in both the State House and State Senate.",
+    "source_url": "https://codes.ohio.gov/ohio-constitution/section-16.1",
+    "source_name": "Ohio Constitution Article XVI § 1",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State Legislators and Campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the digital advertising disclosure rules for Ohio campaigns?",
+    "question_variants": [
+      "Do Facebook ads need disclaimers in Ohio?",
+      "Digital political ad rules OH",
+      "Internet campaign finance disclaimer"
+    ],
+    "answer": "Paid digital and internet political advertising in Ohio must include clear 'Paid for by' disclaimers, mirroring the transparency requirements mandated for print and broadcast media under Ohio Election Law.",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3517.20",
+    "source_name": "Ohio Rev. Code § 3517.20",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Digital Strategists and Campaigns"
+  },
+  {
+    "state": "OH",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Does Ohio have a public matching funds program or 'doing business' contribution limits like New York City?",
+    "question_variants": [
+      "Public campaign financing OH",
+      "Doing business limits Ohio",
+      "Does the state match small donations?"
+    ],
+    "answer": "No. Unlike jurisdictions such as New York City, Ohio does not have a taxpayer-funded public matching funds program, nor does it enforce specific 'doing business' contribution limit reductions for state or local candidates.",
+    "source_url": "https://www.ohiosos.gov/campaign-finance/",
+    "source_name": "Ohio Secretary of State",
+    "last_verified_date": "2026-05-12",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All Campaigns"
+  }
+]
