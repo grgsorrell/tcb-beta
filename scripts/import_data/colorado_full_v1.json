@@ -1,0 +1,1370 @@
+[
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Colorado still allow major party candidates to access the ballot via party assembly?",
+    "question_variants": [
+      "Can a candidate qualify for the Colorado primary without petitions?",
+      "SB23-101 status on party assembly ballot access",
+      "Assembly vs. petition pathway for Colorado major parties"
+    ],
+    "answer": "Yes. While SB23-101 was proposed to reform ballot access, both the party assembly and petition pathways remain operative for 2026. Under CRS 1-4-102 and 1-4-601, a major party candidate qualifies for the primary ballot by receiving at least 30% of the votes at their party's state assembly. Candidates may also choose to qualify by petition, or pursue both simultaneously (the 'dual track' method).",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/vote/primaryCandidates.html",
+    "source_name": "Colorado Secretary of State - Candidate List and Rules",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "federal"],
+    "category": "voter_interaction",
+    "question": "Can unaffiliated voters participate in the Colorado primary election?",
+    "question_variants": [
+      "Colorado semi-closed primary rules for independents",
+      "CRS 1-7-201 unaffiliated primary voting",
+      "Do I have to join a party to vote in the CO primary?"
+    ],
+    "answer": "Yes. Per CRS 1-7-201, unaffiliated voters in Colorado may vote in a major party's primary without affiliating with that party. They receive a packet containing both Democratic and Republican ballots but may only return one. If both are returned, neither will count.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/unaffiliatedVoters.html",
+    "source_name": "Colorado SOS - Unaffiliated Voter FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Unaffiliated voters"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run as a joint ticket in the Colorado primary?",
+    "question_variants": [
+      "When is the Lt. Gov candidate selected in Colorado?",
+      "Joint ticket rules for Colorado Governor primary",
+      "Does the Governor pick a running mate before or after the primary?"
+    ],
+    "answer": "In the primary, candidates for Governor and Lieutenant Governor run separately. Per CRS 1-4-502(2), the gubernatorial nominee of each major party selects their running mate within seven days after the primary election results are certified. They then appear as a joint ticket in the general election under Article IV, Section 3 of the Colorado Constitution.",
+    "source_url": "https://law.justia.com/constitution/colorado/cnart4.html",
+    "source_name": "Colorado Constitution Article IV, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Which statewide executive offices are 'open' seats in the 2026 election?",
+    "question_variants": [
+      "Open statewide seats 2026 Colorado",
+      "Who is term-limited in Colorado statewide offices 2026?",
+      "Candidates for Governor, AG, SOS, and Treasurer in 2026"
+    ],
+    "answer": "All four major statewide executive offices are effectively open in 2026. Governor Jared Polis (D) and State Treasurer Dave Young (D) are term-limited. Attorney General Phil Weiser (D) is vacating his seat to run for Governor, and Secretary of State Jena Griswold (D) is vacating her seat to run for Attorney General.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/vote/primaryCandidates.html",
+    "source_name": "Colorado SOS - 2026 Official Primary Candidate List",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seats are on the 2026 ballot in Colorado?",
+    "question_variants": [
+      "Is John Hickenlooper up for re-election in 2026?",
+      "When is Michael Bennet's next election?",
+      "Colorado US Senate cycle 2026"
+    ],
+    "answer": "Only the Class 2 seat held by Senator John Hickenlooper (D) is up for election in 2026. Senator Michael Bennet (Class 3) was re-elected in 2022 and is not on the ballot for his Senate seat until 2028 (though he is a candidate for Governor in 2026).",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/vote/primaryCandidates.html",
+    "source_name": "Colorado SOS - Elections Division",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "federal", "county"],
+    "category": "election_dates",
+    "question": "What are the primary and general election dates for Colorado in 2026?",
+    "question_variants": [
+      "Colorado primary date 2026",
+      "Election day 2026 Colorado",
+      "When is the next state election in Colorado?"
+    ],
+    "answer": "The Colorado primary election is June 30, 2026. The general election is November 3, 2026. Per CRS 1-4-101, the primary is held on the last Tuesday in June of even-numbered years.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/electionCalendar.html",
+    "source_name": "Colorado SOS - Election Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "federal", "county"],
+    "category": "filing_requirements",
+    "question": "What are the registration deadlines for major party and independent candidates in 2026?",
+    "question_variants": [
+      "Colorado candidate filing deadlines 2026",
+      "Last day to file for office Colorado",
+      "Independent candidate deadline Colorado 2026"
+    ],
+    "answer": "For major party candidates, the deadline to file for the primary was March 18, 2026. Independent (unaffiliated) candidates for the general election must file their petitions by July 9, 2026, at 3:00 PM. Write-in candidates for the general election must file an affidavit of intent by July 16, 2026.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/Candidates/filingForms.html",
+    "source_name": "Colorado SOS - Candidate Filing",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "filing_requirements",
+    "question": "When must a candidate file their candidate affidavit in the TRACER system?",
+    "question_variants": [
+      "TRACER registration deadline Colorado",
+      "How to register a campaign committee in Colorado",
+      "CF-1 affidavit trigger Colorado"
+    ],
+    "answer": "Under CRS 1-45-108(3), all candidates must file a candidate affidavit (Form CF-1) electronically via TRACER within 10 days of becoming a candidate. 'Becoming a candidate' occurs once you publicly announce or receive/spend money to support your candidacy.",
+    "source_url": "https://www.tracer.sos.colorado.gov/PublicSite/Homepage.aspx",
+    "source_name": "Colorado SOS - TRACER System",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "filing_requirements",
+    "question": "Where do I file my nomination paperwork in Colorado?",
+    "question_variants": [
+      "Who is the designated election official for state candidates in CO?",
+      "SOS vs. County Clerk filing Colorado",
+      "Filing officer for Colorado House and Senate"
+    ],
+    "answer": "Candidates for federal and state offices (including Governor, AG, SOS, Treasurer, and multicounty legislative districts) file with the Secretary of State. Candidates for county offices file with their local County Clerk and Recorder. Municipal candidates file with their Municipal Clerk, and school board candidates file with the school district's Designated Election Official (DEO).",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/Candidate.html",
+    "source_name": "Colorado SOS - Candidate FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Colorado?",
+    "question_variants": [
+      "Age and residency for Colorado Governor",
+      "Colorado Constitution Article IV Section 4 Governor qualifications",
+      "Who is eligible to be Governor of Colorado?"
+    ],
+    "answer": "Under Article IV, Section 4 of the Colorado Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States, and a resident of Colorado for at least two years immediately preceding the election.",
+    "source_url": "https://law.justia.com/constitution/colorado/cnart4.html",
+    "source_name": "Colorado Constitution Article IV, Section 4",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for the Colorado General Assembly?",
+    "question_variants": [
+      "Qualifications for Colorado State House and Senate",
+      "Residency requirements for Colorado legislators",
+      "How old to be a Colorado State Senator?"
+    ],
+    "answer": "Per Article V, Section 4 of the Colorado Constitution, a candidate for the General Assembly must be at least 25 years old, a citizen of the United States, and have resided in their district for at least 12 months immediately preceding the election.",
+    "source_url": "https://law.justia.com/constitution/colorado/cnart5.html",
+    "source_name": "Colorado Constitution Article V, Section 4",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Colorado?",
+    "question_variants": [
+      "US Senate residency requirements Colorado",
+      "Age to run for Congress in Colorado",
+      "Federal constitutional requirements for CO candidates"
+    ],
+    "answer": "Federal candidates must meet U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected. Colorado does not require House candidates to live in the district they represent, though it is standard practice.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/Candidates/filingForms.html",
+    "source_name": "Colorado SOS - Federal Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Colorado General Assembly?",
+    "question_variants": [
+      "Colorado legislative term limit formula",
+      "Can a term-limited Colorado representative run for Senate?",
+      "Consecutive vs. lifetime term limits Colorado"
+    ],
+    "answer": "Colorado limits state legislators to 8 consecutive years in a single chamber. Per Article V, Section 3 of the CO Constitution, Representatives may serve four consecutive 2-year terms, and Senators may serve two consecutive 4-year terms. The clock resets if a member is out of office for one full term (4 years). Members may jump chambers (House to Senate or vice versa) to serve a fresh 8-year block.",
+    "source_url": "https://leg.colorado.gov/agencies/legislative-council-staff/term-limits",
+    "source_name": "Colorado Constitution Article V, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is State Treasurer Dave Young term-limited in 2026?",
+    "question_variants": [
+      "Dave Young 2026 re-election eligibility",
+      "Statewide executive term limits Colorado",
+      "How many terms can a CO Treasurer serve?"
+    ],
+    "answer": "Yes. Per Article IV, Section 1 of the Colorado Constitution, statewide executive officers (Governor, SOS, AG, Treasurer) are limited to two consecutive four-year terms. Dave Young was first elected in 2018 and re-elected in 2022, making him ineligible for the 2026 ballot.",
+    "source_url": "https://law.justia.com/constitution/colorado/cnart4.html",
+    "source_name": "Colorado Constitution Article IV, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Colorado State Senate districts are on the 2026 ballot?",
+    "question_variants": [
+      "Staggered Senate terms Colorado 2026",
+      "Is my Senate district up for election in 2026?",
+      "List of Colorado Senate seats up in 2026"
+    ],
+    "answer": "In 2026, roughly half of the 35 Senate seats are up for election. These are the odd-numbered districts (1, 3, 5, etc.) plus any vacancies in even-numbered districts. Senators in even-numbered districts were last elected in 2024 and are next up in 2028.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/vote/primaryCandidates.html",
+    "source_name": "Colorado SOS - Senate Election Cycle",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Are all Colorado House of Representatives seats up for election in 2026?",
+    "question_variants": [
+      "Colorado House term length",
+      "Is the whole CO House on the ballot in 2026?",
+      "House seat cycles Colorado"
+    ],
+    "answer": "Yes. All 65 members of the Colorado House of Representatives serve 2-year terms and are elected every even-numbered year, including 2026.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/vote/primaryCandidates.html",
+    "source_name": "Colorado SOS - Legislative Cycles",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How do judicial retention elections work in Colorado?",
+    "question_variants": [
+      "Appellate judge retention ballot Colorado",
+      "Can a Colorado judge be opposed by a candidate?",
+      "Yes/No judicial votes Colorado 2026"
+    ],
+    "answer": "Colorado uses a merit-selection system rather than contested elections for judges. At the end of their term (varying from 4 to 10 years depending on court level), judges appear on the ballot for a non-partisan 'Yes/No' retention vote. They are not opposed by a candidate. If a majority votes 'No', a vacancy is declared and filled by gubernatorial appointment.",
+    "source_url": "https://coloradojudicialinstitute.org/who-we-are/about-us/frequent-questions.html",
+    "source_name": "Colorado Judicial Institute - Retention FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How are vacancies in the Colorado state legislature filled?",
+    "question_variants": [
+      "Special election for Colorado legislature",
+      "Legislative vacancy committee Colorado",
+      "Who picks a replacement for a CO legislator who resigns?"
+    ],
+    "answer": "Vacancies in the Colorado General Assembly are filled by a vacancy committee of the political party that formerly held the seat. Per CRS 1-12-203, there are no special elections for these vacancies; the committee selects a replacement within 30 days, and the Governor formally appoints them.",
+    "source_url": "https://law.justia.com/constitution/colorado/cnart5.html",
+    "source_name": "Colorado Constitution Article V, Section 2",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal"],
+    "category": "ballot_access",
+    "question": "How is a vacancy in a Colorado U.S. Senate seat filled?",
+    "question_variants": [
+      "Governor appointment US Senate Colorado",
+      "Special election for US Senate Colorado",
+      "Colorado rule for replacing Hickenlooper or Bennet"
+    ],
+    "answer": "Per CRS 1-12-201, if a U.S. Senate vacancy occurs, the Governor appoints a temporary replacement. The appointee serves until the next general election. At that election, a successor is elected to fill the remainder of the original 6-year term.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/Candidates/filingForms.html",
+    "source_name": "CRS 1-12-201",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "federal", "county"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to change party affiliation before a primary in Colorado?",
+    "question_variants": [
+      "Switching parties for primary Colorado deadline",
+      "Can I affiliate on election day in Colorado?",
+      "Colorado primary affiliation cutoff"
+    ],
+    "answer": "Registered party members who wish to switch to a different party must do so no later than 22 days before the primary. Unaffiliated voters, however, can remain unaffiliated and choose a party ballot on election day, or affiliate with a party as late as election day itself.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/unaffiliatedVoters.html",
+    "source_name": "Colorado SOS - Affiliation Rules",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "filing_requirements",
+    "question": "How are nicknames or middle names handled on the official Colorado ballot?",
+    "question_variants": [
+      "Name on ballot rules Colorado",
+      "Can I use a nickname on the Colorado ballot?",
+      "CRS 1-4-101 candidate name format"
+    ],
+    "answer": "Per CRS 1-4-101(3), a candidate's name on the ballot must be their last name and at least one given name (or initial). Nicknames are allowed if they do not imply a professional title (like 'Doc' or 'Judge') and are used in good faith. Candidates must indicate their name preference on their Candidate Acceptance form.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/Candidate.html",
+    "source_name": "CRS 1-4-101",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "federal", "county"],
+    "category": "ballot_access",
+    "question": "How many signatures are required for a major party candidate petition in Colorado?",
+    "question_variants": [
+      "Colorado petition signature requirements by office",
+      "Gubernatorial petition threshold Colorado",
+      "How many signatures for Colorado House or Senate?"
+    ],
+    "answer": "Petition requirements vary by office. Statewide candidates (Governor/Senate) require 1,500 signatures per congressional district (totaling 12,000 for all 8 districts). State Senate candidates require 1,000 signatures or 30% of the last vote cast for the office, whichever is less. State House candidates require 500 signatures or 30% of the last vote cast, whichever is less.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/Candidates/filingForms.html",
+    "source_name": "Colorado SOS - Petition Signature Requirements",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["municipal"],
+    "category": "filing_requirements",
+    "question": "What is the filing process for municipal candidates in home rule vs. statutory cities?",
+    "question_variants": [
+      "Colorado municipal candidate filing",
+      "Running for city council in Colorado",
+      "Statutory city candidate rules Colorado"
+    ],
+    "answer": "In statutory cities and towns, filing is governed by CRS Title 31. Candidates must file a nomination petition with the municipal clerk no later than 71 days before the election. In 'home rule' cities, the city charter dictates the process, which may include different deadlines or signature requirements.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/Candidate.html",
+    "source_name": "CRS Title 31 / Municipal Charters",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Municipal candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "What is the '30% rule' for party assemblies in Colorado?",
+    "question_variants": [
+      "Colorado assembly ballot access threshold",
+      "Designation at party assembly Colorado",
+      "Winning the assembly in Colorado"
+    ],
+    "answer": "Under CRS 1-4-601, a candidate who receives at least 30% of the votes cast by the delegates at a party assembly is designated for the primary ballot. If no candidate reaches 30%, a second ballot is held. If only one candidate receives 30% or more, they are the sole assembly-designated candidate.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/vote/primaryCandidates.html",
+    "source_name": "CRS 1-4-601",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "When does the Colorado Voting Rights Act (SB25-001) take effect?",
+    "question_variants": [
+      "Colorado Voting Rights Act 2026 status",
+      "SB25-001 implementation date",
+      "New voting laws Colorado 2026"
+    ],
+    "answer": "The Colorado Voting Rights Act (SB25-001) applies to all elections and election-related activities occurring on or after January 1, 2026. It establishes statewide protections against voter suppression and vote dilution, expanding the state's ability to monitor local election administration.",
+    "source_url": "https://leg.colorado.gov/bills/sb25-001",
+    "source_name": "Colorado General Assembly - SB25-001",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the individual contribution limits for Colorado candidates in the 2025-2026 cycle?",
+    "question_variants": [
+      "How much can an individual donate to a CO Governor candidate?",
+      "Current campaign contribution limits for state legislature in Colorado",
+      "Colorado individual donation caps 2026 election"
+    ],
+    "answer": "For the 2025-2026 cycle, individual contribution limits are $725 per election for statewide offices (Governor, AG, SOS, Treasurer) and $225 per election for state legislative offices (Senate, House). Because the primary and general elections are considered separate cycles, a donor may contribute the limit twice in one year if the candidate contests both. These figures are inflation-adjusted biennially under Article XXVIII, Section 3 of the Colorado Constitution.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/limits/candidate.html",
+    "source_name": "Colorado Secretary of State - Contribution Acceptance Limits",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All state candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is a 'small donor committee' in Colorado and what are its contribution limits?",
+    "question_variants": [
+      "Enhanced contribution limits for small donor committees Colorado",
+      "Definition of a CO small donor committee",
+      "How much can a small donor committee give to a CO candidate?"
+    ],
+    "answer": "Under Article XXVIII, Section 2(14) of the Colorado Constitution, a 'small donor committee' is a political committee that accepts contributions only from natural persons (humans) in amounts of $50 or less per year. In exchange for this restriction, they enjoy significantly higher contribution limits to candidates: $7,825 per election for statewide offices and $3,100 per election for legislative offices in the 2025-2026 cycle.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/limits/candidate.html",
+    "source_name": "Colorado Constitution Article XXVIII, Section 2(14)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All state candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporations or labor unions allowed to contribute directly to candidate committees in Colorado?",
+    "question_variants": [
+      "Corporate contribution ban Colorado",
+      "Can a union donate to my campaign in Colorado?",
+      "Prohibition on corporate and labor treasury funds CO candidates"
+    ],
+    "answer": "No. Article XXVIII, Section 3(4) of the Colorado Constitution strictly prohibits corporations and labor organizations from making direct contributions to candidate committees or political parties. They may, however, establish and pay for the administrative costs of a separate political committee or independent expenditure committee (IEC).",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Colorado Constitution Article XXVIII, Section 3(4)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "How do voluntary spending limits work for Colorado state candidates?",
+    "question_variants": [
+      "CO voluntary spending limit acceptance benefits",
+      "What happens if I accept spending limits in Colorado?",
+      "Opponent enhanced contribution limits trigger Colorado"
+    ],
+    "answer": "Candidates who accept voluntary spending limits (VSL) receive specific statutory benefits. If a candidate accepts the VSL and their opponent does not, and that opponent subsequently spends or raises more than 10% of the limit, the VSL-accepting candidate's contribution limits from individuals are doubled. Acceptance of VSL must be indicated on the candidate affidavit filed via TRACER under Article XXVIII, Section 4 of the CO Constitution.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Colorado Constitution Article XXVIII, Section 4",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State executive and legislative candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the threshold for anonymous and minor contributions in Colorado?",
+    "question_variants": [
+      "Anonymous donation limit Colorado",
+      "Can minors donate to Colorado campaigns?",
+      "Reporting anonymous contributions CO"
+    ],
+    "answer": "Anonymous contributions are prohibited in any amount over $20 per reporting period. If a candidate receives an anonymous contribution exceeding $20, the excess must be donated to a 501(c)(3) or the state treasury. Contributions from minors (under 18) are permitted but are attributed to their parents or guardians for the purpose of the individual contribution limit under Article XXVIII, Section 3.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Colorado Campaign and Political Finance Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure and itemization thresholds for donor reporting in Colorado?",
+    "question_variants": [
+      "When do I have to list a donor's name in Colorado?",
+      "Itemization threshold campaign finance CO",
+      "Donor employer and occupation disclosure Colorado"
+    ],
+    "answer": "Under CRS 1-45-108, contributions of less than $20 do not need to be itemized but must be reported in aggregate. Contributions of $20 or more must be itemized with the donor's name and address. Contributions of $100 or more must also include the donor's occupation and employer. These are aggregate thresholds within a reporting period.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "CRS 1-45-108",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the 2026 campaign finance reporting schedule for Colorado state candidates?",
+    "question_variants": [
+      "CO campaign finance filing dates 2026",
+      "When are TRACER reports due for Colorado 2026 primary?",
+      "Colorado pre-primary and pre-general report deadlines"
+    ],
+    "answer": "For the 2026 cycle, candidates follow a tiered schedule. Key dates include: Quarter 1 (April 15), Quarter 2 (July 15), and the primary-specific reports: May 4 (biweekly start), May 18, June 1, June 15, and the pre-primary report on June 26. Pre-general reports are due October 13 and October 26, 2026. Major contributions ($1,000+) received between June 25–June 29 (primary) or Oct 29–Nov 2 (general) must be reported within 24 hours.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/filingCalendars/2026.html",
+    "source_name": "Colorado SOS - 2026 Filing Calendar",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and multi-county candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer is required on Colorado campaign advertisements and mailers?",
+    "question_variants": [
+      "Colorado 'Paid for by' requirements",
+      "Campaign ad disclaimer rules CO",
+      "Does a digital ad need a disclaimer in Colorado?"
+    ],
+    "answer": "Under Article XXVIII and CRS 1-45-107.5, any communication that 'expressly advocates' for a candidate or ballot issue must include a 'Paid for by [Committee Name]' disclaimer. For independent expenditures, the disclaimer must also state that the communication was not authorized by any candidate. Specific font size and visibility rules apply to print (12pt), video (4 seconds), and digital ads.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "CRS 1-45-107.5",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidate committee funds prohibited from being used for personal expenses in Colorado?",
+    "question_variants": [
+      "CO personal use prohibition campaign finance",
+      "Can I use campaign money for my mortgage in Colorado?",
+      "Prohibited expenditures Colorado campaign finance"
+    ],
+    "answer": "Yes. Article XXVIII, Section 2(3) and CRS 1-45-103.7 strictly prohibit the use of campaign contributions for 'personal use,' defined as any expense that would exist irrespective of the candidate's campaign. This includes home mortgage payments, personal clothing, and country club dues. Candidates may, however, use funds for reasonable and necessary child care expenses incurred due to campaign activities.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Article XXVIII, Section 2(3)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the rules regarding unexpended campaign funds after an election in Colorado?",
+    "question_variants": [
+      "What can I do with leftover campaign money in Colorado?",
+      "CO surplus campaign funds rules",
+      "Donating remaining campaign funds Colorado"
+    ],
+    "answer": "Unexpended funds may be used in four ways per CRS 1-45-106: (1) contributed to a political party, (2) donated to a 501(c)(3) charitable organization, (3) returned to contributors (pro-rata), or (4) retained for a future campaign for the same office. Funds may also be used for candidate expenses related to being an elected official, such as voter communication or travel, but never for personal benefit.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "CRS 1-45-106",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside group activity constitute 'prohibited coordination' in Colorado?",
+    "question_variants": [
+      "CO campaign coordination rules",
+      "When is a PAC expenditure not independent in Colorado?",
+      "Prohibition on candidate-PAC coordination CO"
+    ],
+    "answer": "An expenditure is 'coordinated' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their agent. Under CRS 1-45-103(7), coordinated expenditures are treated as direct contributions to the candidate and are subject to the same contribution limits. Evidence of coordination includes sharing non-public strategic data or using a common consultant for media placement.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "CRS 1-45-103(7)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the late filing penalties for campaign finance reports in Colorado?",
+    "question_variants": [
+      "CO TRACER late fee",
+      "Penalty for missing a Colorado campaign finance deadline",
+      "Secretary of State fine for late filing CO"
+    ],
+    "answer": "Under Article XXVIII, Section 10, the Secretary of State imposes a mandatory penalty of $50 per day for each day a required report is late. For small donor committees or political committees, this fine can be significant. Candidates can request a waiver or reduction of the fine by demonstrating 'good cause,' such as a medical emergency or TRACER system failure.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Article XXVIII, Section 10",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and committees"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the restrictions on contributions from registered lobbyists to Colorado candidates?",
+    "question_variants": [
+      "CO lobbyist donation ban",
+      "Can a lobbyist give to a Colorado legislator?",
+      "Lobbyist contribution limits Colorado"
+    ],
+    "answer": "Registered lobbyists are prohibited from contributing to, or soliciting contributions for, any member of the General Assembly or a candidate for the General Assembly while the legislature is in session (January through May). Outside of session, lobbyists may contribute but are subject to the standard individual contribution limits per CRS 1-45-105.5.",
+    "source_url": "https://www.coloradosos.gov/pubs/lobby/lobbyManual.html",
+    "source_name": "CRS 1-45-105.5",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislative candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is an 'Independent Expenditure Committee' (IEC) and how does it differ from a PAC?",
+    "question_variants": [
+      "CO IEC definition",
+      "Independent expenditure vs political committee Colorado",
+      "Disclosure for CO independent expenditure groups"
+    ],
+    "answer": "An Independent Expenditure Committee (IEC) is a committee that makes expenditures solely for communications that expressly advocate for or against a candidate but does not coordinate with any candidate or party. Unlike political committees (PACs), IECs can accept unlimited contributions from corporations and labor unions but cannot make any contributions directly to candidates per CRS 1-45-107.5.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "CRS 1-45-107.5",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State and local candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Are Colorado public employees restricted from participating in political activity?",
+    "question_variants": [
+      "Can a Colorado state employee run for office?",
+      "PERA employee political activity rules",
+      "On-duty political activity ban Colorado"
+    ],
+    "answer": "Under the State Personnel System rules and CRS 24-50-132, state employees may participate in political activity and run for office, but they are strictly prohibited from using state resources (time, computers, office space) for campaign purposes while on duty. They must also ensure their candidacy does not create a conflict of interest with their official state duties.",
+    "source_url": "https://spb.colorado.gov/personnel-rules",
+    "source_name": "CRS 24-50-132",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and public employees"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is an 'electioneering communication' and when must it be disclosed in Colorado?",
+    "question_variants": [
+      "Definition of electioneering communication Article XXVIII",
+      "Disclosure window for electioneering ads Colorado",
+      "Dollar threshold for reporting electioneering communications CO"
+    ],
+    "answer": "Under Article XXVIII, Section 2(7) of the CO Constitution, an 'electioneering communication' is any communication unambiguously referring to a candidate that is disseminated within 30 days before a primary or 60 days before a general election. Any person expending $1,000 or more per calendar year on such communications must file a disclosure report with the Secretary of State.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Colorado Constitution Article XXVIII, Section 2(7)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All committees and individuals"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Colorado?",
+    "question_variants": [
+      "Colorado in-kind contribution valuation rules",
+      "Reporting non-monetary donations Colorado campaign",
+      "Fair market value for in-kind gifts CO"
+    ],
+    "answer": "Per CRS 1-45-103(1.5), in-kind contributions must be reported at their fair market value—the price the candidate would have paid for the item or service on the open market. They are subject to the same contribution limits as cash. Campaigns must report the date received, the donor's information, and a description of the goods or services provided.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "CRS 1-45-103(1.5)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the rules for a candidate loaning personal funds to their own campaign in Colorado?",
+    "question_variants": [
+      "Colorado candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in CO?",
+      "Reporting candidate loans in TRACER"
+    ],
+    "answer": "Under Colorado law, candidates may make unlimited personal loans to their committees. Unlike third-party loans, there is no cap on candidate self-funding. However, per CRS 1-45-103.7, any loan must be documented in TRACER and can only be repaid from campaign contributions. Repayments are prohibited if they would result in the personal use of funds.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "CRS 1-45-103.7",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are small campaigns exempt from mandatory electronic filing in TRACER?",
+    "question_variants": [
+      "Colorado campaign finance filing exemptions",
+      "Paper filing for small Colorado campaigns",
+      "TRACER mandatory use CRS 1-45-109"
+    ],
+    "answer": "No. Under CRS 1-45-109, all candidates and committees required to file with the Secretary of State must do so electronically via the TRACER system. There are no exemptions based on campaign size or total funds raised; even a campaign with $0 in activity must file 'No Activity' reports electronically by the deadline.",
+    "source_url": "https://tracer.sos.colorado.gov/",
+    "source_name": "CRS 1-45-109",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a candidate committee be terminated in Colorado?",
+    "question_variants": [
+      "Closing a Colorado campaign committee",
+      "TRACER committee termination requirements",
+      "Final campaign finance report Colorado"
+    ],
+    "answer": "A committee may terminate only when it has a zero balance and no outstanding debts. Under SOS Rule 2.2, the committee must file a final report in TRACER indicating a zero balance and checking the 'Termination' box. This may occur after an election or at any time the committee ceases operation and disposes of all funds.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "SOS Campaign Finance Rule 2.2",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the contribution limits for a standard political committee (PAC) to a Colorado candidate?",
+    "question_variants": [
+      "CO PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Colorado",
+      "Maximum PAC gift to state legislator CO"
+    ],
+    "answer": "For the 2025-2026 cycle, standard political committees (PACs) are subject to the same contribution limits as individuals: $725 per election for statewide candidates and $225 per election for legislative candidates. This differs from 'Small Donor Committees,' which have significantly higher limits.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/limits/candidate.html",
+    "source_name": "Colorado Secretary of State - Contribution Limits",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and PACs"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the restrictions on campaign contributions from foreign nationals in Colorado?",
+    "question_variants": [
+      "Can non-citizens donate to Colorado campaigns?",
+      "Foreign national contribution ban Colorado",
+      "Article XXVIII Section 3 foreign donations"
+    ],
+    "answer": "Under Article XXVIII, Section 3(12) of the CO Constitution and federal law, it is unlawful for any candidate or committee to knowingly accept a contribution from any person who is not a U.S. citizen. This prohibition excludes lawful permanent residents ('Green Card' holders) as defined by federal statute.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Colorado Constitution Article XXVIII, Section 3(12)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the Colorado Campaign and Political Finance Manual and where is it found?",
+    "question_variants": [
+      "Official Colorado campaign finance guidebook",
+      "Latest CPF Manual update Colorado",
+      "SOS guidance for Colorado treasurers"
+    ],
+    "answer": "The Colorado Campaign and Political Finance (CPF) Manual is the official regulatory guidebook published by the Secretary of State's Elections Division. It provides comprehensive guidance on reporting, limits, and compliance. It is available on the SOS website and is typically updated annually; the current version was finalized in early 2026.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Colorado SOS - Campaign Finance Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclosure obligations apply to candidates who are current public officials under the Ethics in Government Act?",
+    "question_variants": [
+      "Colorado Ethics in Government Act candidate requirements",
+      "Public official candidate financial disclosure CO",
+      "CRS 24-6-202 personal financial disclosure"
+    ],
+    "answer": "Under the Colorado Ethics in Government Act (CRS 24-6-202), current public officials running for office must file a Personal Financial Disclosure (PFD) statement. This includes sources of income, business interests, and creditors. This is separate from campaign finance reporting and is filed with the Secretary of State within 30 days of becoming a candidate.",
+    "source_url": "https://www.coloradosos.gov/pubs/lobby/financialDisclosure.html",
+    "source_name": "CRS 24-6-202",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Public official candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Colorado provide public financing for state-level political campaigns?",
+    "question_variants": [
+      "Public matching funds for Colorado Governor",
+      "State funded campaigns Colorado status",
+      "Government campaign grants Colorado"
+    ],
+    "answer": "No. Colorado does not have a system of public financing or matching funds for state-level political campaigns (Governor, AG, SOS, Treasurer, or General Assembly). All candidate funding must come from private contributions within the established constitutional and statutory limits.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Colorado SOS - Campaign Finance FAQ",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Does Colorado's ban on foreign national contributions apply to lawful permanent residents (Green Card holders)?",
+    "question_variants": [
+      "Can Green Card holders donate to Colorado state campaigns?",
+      "Are lawful permanent residents considered foreign nationals in Colorado?",
+      "Article XXVIII Section 3(12) exemptions for non-citizens"
+    ],
+    "answer": "No. While Article XXVIII, Section 3(12) of the Colorado Constitution bans contributions from 'foreign citizens,' Colorado campaign finance law and the Secretary of State defer to the federal definition of a foreign national (52 U.S.C. § 30121). This federal definition explicitly exempts lawful permanent residents (Green Card holders), allowing them to legally contribute to Colorado state and local campaigns.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/CampaignFinance/manual.html",
+    "source_name": "Colorado Campaign and Political Finance Manual",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and donors"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Colorado's universal mail ballot system impact campaign operations?",
+    "question_variants": [
+      "When do voters receive mail ballots in Colorado?",
+      "CRS 1-7.5-104 ballot mailing schedule",
+      "Colorado all-mail election rules"
+    ],
+    "answer": "Colorado is a universal mail ballot state (CRS 1-7.5-104). Every active registered voter is automatically mailed a ballot roughly 22 days before an election. Operationally, campaigns must shift GOTV efforts earlier, as a significant portion of the electorate casts their vote weeks before Election Day.",
+    "source_url": "https://law.justia.com/codes/colorado/2022/title-1/article-7-5/section-1-7-5-104/",
+    "source_name": "CRS 1-7.5-104",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All campaigns"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Colorado allow same-day voter registration?",
+    "question_variants": [
+      "Voter registration deadline Colorado",
+      "Can I register to vote on Election Day in CO?",
+      "Deadline to receive a mail ballot Colorado"
+    ],
+    "answer": "Yes, Colorado allows eligible residents to register to vote up to and on Election Day. However, to automatically receive a ballot by mail, voters must register at least 8 days before the election. Those registering after this deadline must vote in person or request a ballot at a Voter Service and Polling Center (VSPC).",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/VoterRegistrationFAQ.html",
+    "source_name": "Colorado Secretary of State - Voter Registration FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are Voter Service and Polling Centers (VSPCs) in Colorado?",
+    "question_variants": [
+      "Where do I vote in person in Colorado?",
+      "Colorado polling place rules",
+      "Do I have to vote at a specific precinct in CO?"
+    ],
+    "answer": "Voter Service and Polling Centers (VSPCs) replace traditional neighborhood precincts. Registered voters can visit any VSPC within their county to vote in person, drop off a mail ballot, register to vote, or update their registration. They are staffed by bipartisan teams of election judges to ensure security and accessibility.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/VSPCFAQ.html",
+    "source_name": "Colorado Secretary of State - VSPC FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the rules for ballot drop boxes in Colorado?",
+    "question_variants": [
+      "Are ballot drop boxes secure in Colorado?",
+      "CO drop box collection rules",
+      "Bipartisan handling of ballots Colorado"
+    ],
+    "answer": "Colorado mandates 24/7 secure ballot drop boxes for all state elections. Under state law and updated security protocols, drop boxes must be monitored by video surveillance. Ballots must be collected frequently by a bipartisan team of election judges to ensure chain of custody.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/DropBoxFAQ.html",
+    "source_name": "Colorado Secretary of State - Drop Box FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to cure a rejected ballot signature in Colorado?",
+    "question_variants": [
+      "How to fix a ballot signature in Colorado",
+      "Colorado ballot cure process deadline",
+      "TXT2Cure system Colorado"
+    ],
+    "answer": "If a ballot signature is missing or fails verification, the county clerk notifies the voter. The voter has until 8 days after Election Day (by 11:59 PM) to cure the discrepancy. This can be done using a paper form, by email, or via the state's mobile phone cure system (TXT2Cure).",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/SignatureCureFAQ.html",
+    "source_name": "Colorado Secretary of State - Signature Cure FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Colorado?",
+    "question_variants": [
+      "How close can I campaign to a polling place in CO?",
+      "Buffer zone around drop boxes Colorado",
+      "CRS 1-13-714 electioneering rules"
+    ],
+    "answer": "Colorado prohibits electioneering within 100 feet of any building in which a VSPC is located, or within 100 feet of any standalone drop box, per CRS 1-13-714. This prohibition includes displaying campaign signs, distributing literature, and soliciting votes.",
+    "source_url": "https://law.justia.com/codes/colorado/2022/title-1/article-13/part-7/section-1-13-714/",
+    "source_name": "CRS 1-13-714",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Can campaigns purchase the voter file from the state in Colorado?",
+    "question_variants": [
+      "Colorado SCORE database access",
+      "How to get the voter list in Colorado",
+      "Cost of voter registration data CO"
+    ],
+    "answer": "Yes. Campaigns can purchase voter registration data from the Statewide Colorado Registration and Election (SCORE) system. The file contains registration data and voting history (whether they voted, not who they voted for) and is available for a standardized fee from the Secretary of State or individual county clerks.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/SCORE/",
+    "source_name": "Colorado Secretary of State - SCORE System",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Colorado?",
+    "question_variants": [
+      "When are military ballots due in Colorado?",
+      "UOCAVA return deadline CO",
+      "Overseas voting rules Colorado"
+    ],
+    "answer": "Ballots are transmitted to UOCAVA voters 45 days before an election. Unlike domestic mail ballots which must be received by 8:00 PM on Election Day, UOCAVA ballots are counted if they are transmitted by 7:00 PM on Election Day and received by the county clerk by the close of business on the 8th day following the election.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/UOCAVA.html",
+    "source_name": "Colorado Secretary of State - UOCAVA Voters",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Colorado?",
+    "question_variants": [
+      "What is a provisional ballot in CO?",
+      "When do election judges issue provisional ballots?",
+      "Counting provisional votes Colorado"
+    ],
+    "answer": "Provisional ballots are issued when a voter's eligibility cannot be immediately verified at a VSPC (e.g., they do not have acceptable ID or claim to have not received a mail ballot, but the system shows a mail ballot was issued). They are kept securely separate and are only counted if the voter's eligibility is confirmed during the post-election canvass.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/ProvisionalFAQ.html",
+    "source_name": "Colorado Secretary of State - Provisional Ballot FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Colorado restore voting rights to individuals with felony convictions?",
+    "question_variants": [
+      "Can felons vote in Colorado?",
+      "Felony voting rights restoration CO",
+      "Voting on parole in Colorado"
+    ],
+    "answer": "Yes. In Colorado, an individual convicted of a felony regains their right to vote immediately upon release from incarceration. Individuals who are on parole, probation, or who have completed their sentences are fully eligible to register and vote.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/VotingRightsRestoration.html",
+    "source_name": "Colorado Secretary of State - Voting Rights Restoration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is TABOR and what does it restrict in Colorado?",
+    "question_variants": [
+      "Colorado Taxpayer's Bill of Rights definition",
+      "Article X Section 20 of the Colorado Constitution",
+      "What does TABOR do in Colorado?"
+    ],
+    "answer": "The Taxpayer's Bill of Rights (TABOR), Article X, Section 20 of the Colorado Constitution, severely limits the amount of revenue governments can retain and spend. Crucially, it requires explicit voter approval for any new tax, tax rate increase, or creation of multi-year financial debt.",
+    "source_url": "https://law.justia.com/constitution/colorado/cnart10.html",
+    "source_name": "Colorado Constitution Article X, Section 20",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "How is the TABOR revenue cap calculated?",
+    "question_variants": [
+      "Colorado TABOR limit formula",
+      "How fast can Colorado state revenue grow?",
+      "TABOR inflation and population growth cap"
+    ],
+    "answer": "The TABOR revenue cap limits annual state revenue growth to a specific formula: it is calculated based on the prior year's inflation (using the Denver-Aurora-Lakewood Consumer Price Index) plus the percentage change in the state's population.",
+    "source_url": "https://leg.colorado.gov/agencies/legislative-council-staff/tabor",
+    "source_name": "Colorado Legislative Council Staff - TABOR",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and strategists"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What happens if Colorado collects revenue above the TABOR cap?",
+    "question_variants": [
+      "TABOR refund mechanism Colorado",
+      "How are TABOR surpluses handled?",
+      "What is a TABOR refund check?"
+    ],
+    "answer": "Any revenue collected over the TABOR cap is considered a surplus and must be refunded to taxpayers in the following fiscal year. The legislature establishes the refund mechanisms (e.g., income tax reductions, direct checks), unless the legislature refers a ballot measure to the voters and successfully obtains permission to retain the excess funds.",
+    "source_url": "https://leg.colorado.gov/agencies/legislative-council-staff/tabor",
+    "source_name": "Colorado Legislative Council Staff - TABOR",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Does TABOR apply to local governments and what is 'De-Brucing'?",
+    "question_variants": [
+      "Does TABOR affect Colorado cities and school districts?",
+      "What does it mean to De-Bruce in Colorado?",
+      "Waiving TABOR limits locally"
+    ],
+    "answer": "TABOR applies to all levels of Colorado government, including counties, municipalities, and school districts. 'De-Brucing' is the political process where a local government asks its voters to permanently or temporarily waive the TABOR revenue cap, allowing the entity to retain and spend all collected revenues without refunding the surplus.",
+    "source_url": "https://leg.colorado.gov/agencies/legislative-council-staff/tabor-local-governments",
+    "source_name": "Colorado Legislative Council Staff - TABOR and Local Governments",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Can the Colorado legislature unilaterally raise taxes?",
+    "question_variants": [
+      "How are tax increases passed in Colorado?",
+      "TABOR voter approval requirement for taxes",
+      "Can a supermajority raise taxes in CO?"
+    ],
+    "answer": "No. Under TABOR, regardless of legislative supermajorities or executive support, any policy that creates a net tax revenue increase (new tax, tax rate increase, or tax extension) must be placed on the ballot and approved by a majority of Colorado voters.",
+    "source_url": "https://law.justia.com/constitution/colorado/cnart10.html",
+    "source_name": "Colorado Constitution Article X, Section 20",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "How does Colorado handle congressional and legislative redistricting?",
+    "question_variants": [
+      "Who draws the district maps in Colorado?",
+      "Colorado Amendments Y and Z",
+      "Independent redistricting commissions CO"
+    ],
+    "answer": "Following Amendments Y and Z (2018), Colorado utilizes two Independent Redistricting Commissions—one for Congress and one for the legislature. Each commission consists of 12 members (4 Democrats, 4 Republicans, 4 unaffiliated voters), entirely removing map-drawing power from the state legislature.",
+    "source_url": "https://redistricting.colorado.gov/",
+    "source_name": "Colorado Independent Redistricting Commissions",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What criteria must the Colorado independent redistricting commissions follow?",
+    "question_variants": [
+      "Colorado redistricting rules",
+      "Gerrymandering ban Colorado",
+      "How are Colorado maps drawn?"
+    ],
+    "answer": "The commissions must create maps that achieve equal population, comply with the federal Voting Rights Act, preserve communities of interest and political subdivisions, remain compact, and maximize political competitiveness. Partisan gerrymandering is strictly prohibited by the state constitution.",
+    "source_url": "https://redistricting.colorado.gov/",
+    "source_name": "Colorado Independent Redistricting Commissions",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current Colorado redistricting maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Will Colorado get new maps for 2026?",
+      "Legal challenges to Colorado districts",
+      "Status of Colorado maps 2026"
+    ],
+    "answer": "Yes. The current congressional and state legislative maps were adopted by the independent commissions in 2021, approved by the Colorado Supreme Court, and remain fully operative for the 2026 election cycle without any systemic pending legal challenges.",
+    "source_url": "https://redistricting.colorado.gov/",
+    "source_name": "Colorado Independent Redistricting Commissions",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the signature thresholds and grounds for a recall election in Colorado?",
+    "question_variants": [
+      "How to recall a state official in Colorado",
+      "Colorado recall requirements",
+      "Do you need cause to recall a politician in CO?"
+    ],
+    "answer": "Colorado allows the recall of any elected official without requiring specific grounds (like malfeasance). To trigger a state recall, proponents must gather valid signatures equal to 25% of the total votes cast at the last election for that specific office, generally within a 60-day window.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/Recall/",
+    "source_name": "Colorado Secretary of State - Recall Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Have state legislators ever been successfully recalled in Colorado?",
+    "question_variants": [
+      "Colorado 2013 recall history",
+      "Recalled politicians Colorado",
+      "Gun control recall Colorado state senate"
+    ],
+    "answer": "Yes. In 2013, two Democratic state senators (John Morse and Angela Giron) were successfully recalled over their support for gun control legislation. These were the first and only successful state legislative recalls in Colorado history, highlighting the operational viability of the state's recall mechanism.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/Recall/",
+    "source_name": "Colorado Secretary of State - Historical Recall Data",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature and geographic requirements for a citizen initiative in Colorado?",
+    "question_variants": [
+      "How many signatures to put a measure on the Colorado ballot?",
+      "Geographic distribution for Colorado initiatives",
+      "2% senate district rule Colorado"
+    ],
+    "answer": "For 2026, citizen initiatives require 124,238 valid signatures. Additionally, to ensure statewide support rather than localized backing, proponents must gather signatures equal to at least 2% of the registered voters in each of Colorado's 35 state senate districts.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/Initiatives/",
+    "source_name": "Colorado Secretary of State - Initiatives",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass a constitutional amendment in Colorado?",
+    "question_variants": [
+      "Does a constitutional amendment need 55% in Colorado?",
+      "Supermajority requirement for CO ballot measures",
+      "Initiated statute vs constitutional amendment Colorado"
+    ],
+    "answer": "To pass a citizen-initiated constitutional amendment, a 55% supermajority of the public vote is required. However, citizen-initiated state statutes only require a simple majority (50% + 1) of the vote to pass.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/Initiatives/",
+    "source_name": "Colorado Secretary of State - Initiatives",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "federal", "county"],
+    "category": "runoff_rules",
+    "question": "Does Colorado use runoff elections for close races?",
+    "question_variants": [
+      "Are there runoffs in Colorado primaries?",
+      "How are tied elections decided in Colorado?",
+      "Tie-breaker rules Colorado elections"
+    ],
+    "answer": "No, Colorado does not use runoff elections for state or federal offices. If a general or primary election ends in an exact tie after all mandatory recounts are exhausted, the winner is determined by drawing lots (e.g., a coin toss) administered by the Secretary of State or designated election official.",
+    "source_url": "https://law.justia.com/codes/colorado/2022/title-1/article-11/part-1/section-1-11-101/",
+    "source_name": "CRS 1-11-101",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Colorado?",
+    "question_variants": [
+      "Does Colorado use ranked choice voting?",
+      "RCV status in Colorado 2026",
+      "SB24-210 ranked choice voting restrictions"
+    ],
+    "answer": "As of 2026, Ranked Choice Voting is used in select local municipal elections (e.g., Boulder, Telluride). Statewide implementation faces hurdles; recent legislation (SB24-210) imposed strict requirements on uniform voting system capabilities before RCV can be broadly expanded for state or federal races.",
+    "source_url": "https://www.coloradosos.gov/pubs/elections/FAQs/RCVFAQ.html",
+    "source_name": "Colorado Secretary of State - Ranked Choice Voting FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the process for a citizen-led veto referendum in Colorado?",
+    "question_variants": [
+      "How to refer a CO bill to the ballot",
+      "Colorado citizen referendum signature requirement",
+      "Veto referendum deadline Colorado"
+    ],
+    "answer": "Under Article V, Section 1 of the Colorado Constitution, citizens may refer any act (or part of an act) passed by the General Assembly to a vote of the people. Proponents must gather signatures equal to 5% of the total votes cast for Secretary of State in the previous election. The petition must be filed within 90 days after the final adjournment of the legislative session that passed the bill.",
+    "source_url": "https://law.justia.com/constitution/colorado/cnart5.html",
+    "source_name": "Colorado Constitution Article V, Section 1",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  }
+]
