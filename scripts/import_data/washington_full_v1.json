@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the Top-2 primary system in Washington?",
+    "question_variants": [
+      "How does the Washington blanket primary work?",
+      "Do candidates run by party in the WA primary?",
+      "Can two Democrats run against each other in the general election?"
+    ],
+    "answer": "Washington uses a nonpartisan Top-2 primary system. Under RCW 29A.52.112, all candidates for an office appear on a single primary ballot, regardless of party preference. All registered voters can vote for any candidate. The two candidates who receive the most votes advance to the general election, meaning two candidates of the same party (e.g., two Democrats or two Republicans) frequently face each other in November.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.52.112",
+    "source_name": "RCW 29A.52.112",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Is Washington's Top-2 primary system legally established and upheld?",
+    "question_variants": [
+      "When did Washington adopt the jungle primary?",
+      "Initiative 872 history",
+      "Supreme Court ruling on Washington primary system"
+    ],
+    "answer": "Yes. The Top-2 primary was established by citizen Initiative 872 in 2004. After legal challenges by political parties, the United States Supreme Court formally upheld the constitutionality of the system in the 2008 decision Washington State Grange v. Washington State Republican Party, allowing it to become fully operative.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/top-2-primary-answers-frequently-asked-questions",
+    "source_name": "Washington Secretary of State - Top 2 Primary FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign strategists and candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Do voters register by political party in Washington?",
+    "question_variants": [
+      "Washington party registration rules",
+      "How do I target registered Democrats in Washington?",
+      "Closed primary voting in WA"
+    ],
+    "answer": "No. Washington does not have party registration. Voters do not indicate any political party affiliation when they register to vote. Operationally, campaigns cannot pull a voter file of 'registered Democrats' or 'registered Republicans' and must instead rely on past voting history, primary participation, and modeling to identify target voters.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/voter-registration",
+    "source_name": "Washington Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign strategists and GOTV teams"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does a candidate's party preference mean they are nominated by that party?",
+    "question_variants": [
+      "Party nomination vs party preference in Washington",
+      "How do political parties nominate candidates in WA?",
+      "Does the party endorse candidates on the ballot?"
+    ],
+    "answer": "No. In Washington's Top-2 system, a candidate self-declares their 'party preference' when filing for office, which is printed on the ballot (e.g., 'Prefers Democratic Party'). This is strictly for the information of voters and does not imply that the candidate is nominated, endorsed, or approved by that political party. Parties may endorse candidates privately, but they do not nominate them for the general election ballot.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.52.112",
+    "source_name": "RCW 29A.52.112(4)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are on the ballot in Washington in 2026?",
+    "question_variants": [
+      "Washington AG race 2026",
+      "Are there any statewide constitutional officers up for election in 2026?",
+      "Washington Secretary of State election 2026"
+    ],
+    "answer": "There are no regularly scheduled statewide executive elections in Washington in 2026. Washington elects all of its statewide executive officers (Governor, Lt. Governor, Secretary of State, Attorney General, Treasurer, Auditor, Insurance Commissioner, Commissioner of Public Lands, and Superintendent of Public Instruction) concurrently for four-year terms during Presidential election years (e.g., 2024, 2028).",
+    "source_url": "https://www.sos.wa.gov/elections/candidates",
+    "source_name": "Washington Secretary of State - Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "Is there a race for Washington Governor or U.S. Senate in 2026?",
+    "question_variants": [
+      "Bob Ferguson 2026 re-election",
+      "Are Patty Murray or Maria Cantwell on the 2026 ballot?",
+      "Washington top of ticket 2026"
+    ],
+    "answer": "No. Governor Bob Ferguson (D) was elected in 2024 and his term runs until 2028. U.S. Senator Patty Murray (D) was re-elected in 2022 (next up in 2028), and U.S. Senator Maria Cantwell (D) was re-elected in 2024 (next up in 2030). The 2026 ballot is strictly a midterm cycle focused on the U.S. House, state legislature, and local offices.",
+    "source_url": "https://www.sos.wa.gov/elections/candidates",
+    "source_name": "Washington Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and Statewide candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the 2026 election cycle for the Washington State Legislature?",
+    "question_variants": [
+      "Are all Washington House seats up in 2026?",
+      "Washington Senate election cycle 2026",
+      "Which legislative districts are on the ballot in WA?"
+    ],
+    "answer": "All 98 seats in the Washington House of Representatives are up for election in 2026, as members serve two-year terms. The Washington State Senate has 49 members who serve staggered four-year terms; 24 of the 49 Senate districts are on the 2026 ballot. Unlike some states, this is a specific mix of both odd- and even-numbered districts.",
+    "source_url": "https://leg.wa.gov/Senate/Senators/Pages/default.aspx",
+    "source_name": "Washington State Legislature",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Washington for the 2026 election?",
+    "question_variants": [
+      "Washington congressional apportionment",
+      "Are all WA congressional seats up in 2026?",
+      "Number of US Representatives from Washington"
+    ],
+    "answer": "Washington is apportioned 10 U.S. House districts. All 10 seats will be on the 2026 ballot, as Representatives serve two-year terms.",
+    "source_url": "https://www.sos.wa.gov/elections/candidates",
+    "source_name": "Washington Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When is the Washington primary election in 2026?",
+    "question_variants": [
+      "Washington primary date 2026",
+      "When do WA voters cast primary ballots?",
+      "August 2026 primary Washington"
+    ],
+    "answer": "The Washington primary election will be held on Tuesday, August 4, 2026. By statute (RCW 29A.04.311), the primary is held on the first Tuesday in August of even-numbered years.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.04.311",
+    "source_name": "RCW 29A.04.311",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When is the 2026 general election in Washington?",
+    "question_variants": [
+      "Washington general election date 2026",
+      "November election date WA",
+      "When is Election Day 2026 in Washington?"
+    ],
+    "answer": "The 2026 general election in Washington will be held on Tuesday, November 3, 2026.",
+    "source_url": "https://www.sos.wa.gov/elections",
+    "source_name": "Washington Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for Washington in 2026?",
+    "question_variants": [
+      "When do candidates file for office in Washington?",
+      "Washington filing week dates 2026",
+      "May filing deadline WA"
+    ],
+    "answer": "Washington uses a 'filing week' rather than a single deadline. For the 2026 cycle, candidate filing week takes place from Monday, May 4, 2026, through Friday, May 8, 2026. Declarations of candidacy must be submitted electronically or in person to the appropriate filing officer during this specific window per RCW 29A.24.050.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.24.050",
+    "source_name": "RCW 29A.24.050",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Washington a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Washington?",
+      "Washington vote-by-mail system",
+      "Are there traditional polling places in WA?"
+    ],
+    "answer": "Yes. Washington is a universal vote-by-mail state. Under RCW 29A.40.010, every active registered voter is automatically mailed a ballot roughly 18 days before each election. There are no traditional in-person voting precincts, though counties provide voting centers for accessibility devices, same-day registration, and ballot replacement.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.40.010",
+    "source_name": "RCW 29A.40.010",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Washington allow same-day voter registration?",
+    "question_variants": [
+      "Can I register on Election Day in Washington?",
+      "WA voter registration deadlines",
+      "Registering at a voting center WA"
+    ],
+    "answer": "Yes. Washington allows same-day voter registration. While online and mail-in registrations must be received 8 days before the election, voters may register or update their address in person at a county elections office or voting center until 8:00 p.m. on Election Day per RCW 29A.08.140.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.08.140",
+    "source_name": "RCW 29A.08.140",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and GOTV teams"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return a mail ballot in Washington?",
+    "question_variants": [
+      "Washington ballot postmark rule",
+      "When is my WA ballot due?",
+      "Does Washington have a postmark grace period?"
+    ],
+    "answer": "Ballots must either be deposited in an official county drop box by 8:00 p.m. on Election Day, OR postmarked by the USPS no later than Election Day. Because Washington requires a valid Election Day postmark (and not just physical receipt by 8pm), ballots arriving in the mail days after the election are counted as long as the postmark is valid.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/voting-mail",
+    "source_name": "Washington Secretary of State - Voting by Mail",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Washington have term limits for the state legislature?",
+    "question_variants": [
+      "How long can a Washington State Senator serve?",
+      "Legislative term limits WA",
+      "Are there term limits for the WA House of Representatives?"
+    ],
+    "answer": "No. Washington does not have term limits for its state legislature. In 1998, the Washington Supreme Court struck down a statutory term limits measure passed by voters, ruling that term limits for state constitutional offices would require a constitutional amendment. None currently exists.",
+    "source_url": "https://ballotpedia.org/Washington_State_Legislature",
+    "source_name": "Washington State Legislature - Term Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance laws in Washington?",
+    "question_variants": [
+      "Where do I file campaign finance reports in WA?",
+      "What is the Washington PDC?",
+      "Does the WA Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Washington are administered by the Public Disclosure Commission (PDC), an independent state agency. This differs from many states where campaign finance is handled directly by the Secretary of State. All state and local candidates must register and file their contribution and expenditure reports through the PDC's electronic system.",
+    "source_url": "https://www.pdc.wa.gov/",
+    "source_name": "Washington Public Disclosure Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "How do campaign contribution limits work in Washington?",
+    "question_variants": [
+      "Does Washington cap individual donations?",
+      "Washington PDC contribution limits framework",
+      "Are there limits for state legislative races in WA?"
+    ],
+    "answer": "Washington imposes strict contribution limits on individuals, PACs, and corporations giving to state executive, legislative, and some county candidates. The Public Disclosure Commission (PDC) adjusts these limits periodically for inflation. Limits are applied per election, meaning a donor may give the maximum amount for the primary and again for the general election.",
+    "source_url": "https://www.pdc.wa.gov/rules-enforcement/guidelines-manuals/contribution-limits",
+    "source_name": "Washington PDC - Contribution Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "How are district maps drawn in Washington?",
+    "question_variants": [
+      "Washington State Redistricting Commission structure",
+      "Does the WA legislature draw the maps?",
+      "Who draws congressional boundaries in Washington?"
+    ],
+    "answer": "District maps are drawn by the Washington State Redistricting Commission, a bipartisan five-member body established every ten years. The majority and minority leaders of the state House and Senate each appoint one voting commissioner. Those four commissioners then appoint a non-voting, nonpartisan fifth member to serve as the chairperson.",
+    "source_url": "https://www.redistricting.wa.gov/commissioners.html",
+    "source_name": "Washington State Redistricting Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the legal grounds and signature thresholds to recall an elected official in Washington?",
+    "question_variants": [
+      "Can I recall a state senator in Washington without cause?",
+      "Washington recall process and rules",
+      "Misfeasance and malfeasance recall WA"
+    ],
+    "answer": "Unlike states with no-grounds recall, Washington requires specific legal grounds: misfeasance, malfeasance, or a violation of the oath of office (Article I, Section 33, WA Constitution). A superior court must determine the charges are factually and legally sufficient before petitioning begins. Proponents must then gather valid signatures equal to 25% of the total votes cast for that office in the preceding election (35% for certain local offices).",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.56.110",
+    "source_name": "RCW 29A.56.110",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the difference between an Initiative to the People and an Initiative to the Legislature in Washington?",
+    "question_variants": [
+      "Types of ballot initiatives in Washington",
+      "How to propose a law in WA",
+      "Initiative process tracks Washington"
+    ],
+    "answer": "An 'Initiative to the People' goes directly onto the ballot for voters to decide, with signatures typically due in July. An 'Initiative to the Legislature' is submitted to the state legislature first (signatures due in late December); if the legislature rejects, ignores, or amends the proposal, the original measure is then placed on the statewide ballot. Both require signatures from registered voters equal to 8% of the votes cast in the last gubernatorial election.",
+    "source_url": "https://www.sos.wa.gov/elections/initiatives",
+    "source_name": "Washington Secretary of State - Initiatives",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor or statewide executive office in Washington?",
+    "question_variants": [
+      "How old do you have to be to be Governor of WA?",
+      "Washington Governor residency requirements",
+      "Qualifications for statewide office Washington"
+    ],
+    "answer": "Under Article III, Section 25 of the Washington Constitution, the requirements are very minimal: 'No person, except a citizen of the United States and a qualified elector of this state, shall be eligible to hold any state office.' A qualified elector is a registered voter who is at least 18 years old. There are no extended 30-year age minimums or 7-year residency requirements as seen in other states.",
+    "source_url": "https://leg.wa.gov/CodeReviser/Pages/WAConstitution.aspx",
+    "source_name": "Washington Constitution, Article III, Section 25",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for the Washington State Legislature?",
+    "question_variants": [
+      "Qualifications for WA State Representative",
+      "Residency requirement Washington State Senate",
+      "Do I have to live in my district to run in WA?"
+    ],
+    "answer": "Under Article II, Section 7 of the Washington Constitution, a candidate for the state legislature must be a citizen of the United States and a 'qualified voter in the district for which he is chosen.' This means the candidate must be a registered voter living within the boundaries of the specific legislative district they seek to represent.",
+    "source_url": "https://leg.wa.gov/CodeReviser/Pages/WAConstitution.aspx",
+    "source_name": "Washington Constitution, Article II, Section 7",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "How can a write-in candidate advance from the primary to the general election in Washington?",
+    "question_variants": [
+      "Washington Top-2 write-in rules",
+      "Do write-in candidates move on to November in WA?",
+      "RCW 29A.24.311 write-in threshold"
+    ],
+    "answer": "To advance to the general election under the Top-2 system, a write-in candidate must file a formal declaration of candidacy, finish as one of the top two vote-getters in the primary, AND receive a number of votes equal to at least 1% of the total votes cast for that specific position (or equal to the number of signatures required for a filing fee petition), per RCW 29A.24.311.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.24.311",
+    "source_name": "RCW 29A.24.311",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How is a vacancy in the Washington State Legislature filled?",
+    "question_variants": [
+      "Who appoints a replacement State Senator in WA?",
+      "Legislative vacancy committee Washington",
+      "Special election for WA House vacancy"
+    ],
+    "answer": "Under Article II, Section 15 of the Washington Constitution, if a legislative vacancy occurs, the state political party central committee of the vacating member's party submits a list of three nominees. The county legislative authority (e.g., county council or commissioners) then formally appoints one of those three nominees to fill the seat until the next general election.",
+    "source_url": "https://leg.wa.gov/CodeReviser/Pages/WAConstitution.aspx",
+    "source_name": "Washington Constitution, Article II, Section 15",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal"],
+    "category": "ballot_access",
+    "question": "How is a vacancy in a Washington U.S. Senate seat filled?",
+    "question_variants": [
+      "Governor appointment US Senate Washington",
+      "Special election for US Senate WA",
+      "Washington rule for replacing a US Senator"
+    ],
+    "answer": "Under RCW 29A.28.030, if a vacancy occurs in the U.S. Senate from Washington, the Governor immediately makes a temporary appointment to fill the seat. The appointed Senator serves until the people fill the vacancy via a special election, which is generally held at the next state general election.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.28.030",
+    "source_name": "RCW 29A.28.030",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual contribution limits for Washington state candidates in 2026?",
+    "question_variants": [
+      "How much can an individual donate to a Washington Governor candidate?",
+      "Current campaign contribution limits for state legislature in WA",
+      "PDC individual donation caps 2026 election"
+    ],
+    "answer": "For the 2026 cycle, individual contribution limits are $2,400 per election for statewide executive candidates (Governor, Attorney General, etc.) and $1,200 per election for state legislative candidates (Senate and House). Primary and general elections are considered separate, meaning a donor can give the maximum for the primary and again for the general. Limits are periodically adjusted for inflation by the Public Disclosure Commission (PDC).",
+    "source_url": "https://www.pdc.wa.gov/rules-enforcement/guidelines-restrictions/contribution-limits",
+    "source_name": "Washington PDC - Contribution Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and Donors"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "Are corporations allowed to contribute directly to candidate campaigns in Washington?",
+    "question_variants": [
+      "Corporate contribution ban Washington state",
+      "Can a business donate to my campaign in WA?",
+      "Corporate campaign finance rules Washington"
+    ],
+    "answer": "Yes. Unlike the federal government and some states, Washington allows direct corporate contributions to state and local candidate campaigns. Corporations are subject to the exact same contribution limits as individuals ($2,400 per election for statewide offices, $1,200 for legislative offices). Note that some local jurisdictions, like Seattle, ban contributions from foreign-influenced corporations.",
+    "source_url": "https://www.pdc.wa.gov/rules-enforcement/guidelines-restrictions/contribution-limits",
+    "source_name": "Washington PDC - Contribution Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the mandatory electronic filing system used by the Washington PDC?",
+    "question_variants": [
+      "Washington PDC electronic filing portal",
+      "ORCA system Washington campaign finance",
+      "How to file campaign reports in WA"
+    ],
+    "answer": "The Public Disclosure Commission uses a mandatory web-based campaign finance management system called ORCA (Online Reporting of Campaign Activity). All state and local candidates who meet the threshold to file full reports must use ORCA or approved third-party vendor software to electronically submit their C-3 (contributions) and C-4 (expenditures) reports.",
+    "source_url": "https://www.pdc.wa.gov/registration-reporting/candidates-committees/electronic-reporting-tools/online-reporting-campaign-activity-orca",
+    "source_name": "Washington PDC - ORCA System",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the 2026 campaign finance reporting schedule for Washington state candidates?",
+    "question_variants": [
+      "WA campaign finance filing dates 2026",
+      "When are PDC C-4 reports due for Washington 2026 primary?",
+      "Washington pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates must file C-4 summary reports 21 days and 7 days before both the primary and general elections. Post-election reports are due on the 10th of the month following the election (e.g., September 10th for the August primary, December 10th for the November general). In months without an election-specific report, campaigns that exceed $750 in activity must file a C-4 by the 10th of the following month.",
+    "source_url": "https://www.pdc.wa.gov/registration-reporting/candidates-committees/registration-reporting-basics",
+    "source_name": "Washington PDC - Reporting Basics",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is Washington's Last-Minute Contribution (LMC) reporting threshold?",
+    "question_variants": [
+      "WA 48-hour large contribution report threshold",
+      "PDC rapid disclosure rules near elections",
+      "When do I file a 24-hour report in Washington?"
+    ],
+    "answer": "During the 7 days before a primary and 21 days before a general election, candidates must file a special Last-Minute Contribution (LMC) report for any contribution (or aggregate from one source) of $1,500 or more. The candidate must file the report within 48 hours of receiving the contribution. Political committees making the contribution must report it within 24 hours.",
+    "source_url": "https://www.pdc.wa.gov/registration-reporting/candidates-committees/contributions/special-limits-and-reports-last-minute-contributions",
+    "source_name": "Washington PDC - Last-Minute Contributions",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and committees"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Washington state provide public financing or matching funds for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Washington candidates",
+      "State funded campaigns Washington status",
+      "Clean elections program Washington state"
+    ],
+    "answer": "No. Washington state does not have a public financing or matching funds program for state-level candidates (Governor, Legislature, etc.). Campaigns are funded entirely through private contributions. However, at the municipal level, the City of Seattle operates a 'Democracy Voucher' public financing program for local city races.",
+    "source_url": "https://www.pdc.wa.gov/",
+    "source_name": "Washington Public Disclosure Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Washington?",
+    "question_variants": [
+      "WA personal use prohibition campaign finance",
+      "Can I use campaign money for personal expenses in Washington?",
+      "Prohibited expenditures Washington PDC"
+    ],
+    "answer": "Yes. Under RCW 42.17A and PDC rules, it is strictly prohibited to use campaign funds for personal expenses. Expenditures must be directly related to the campaign. Prohibited uses include personal living expenses, gym memberships, and non-campaign travel. Lost earnings due to campaigning may be reimbursed only if strictly documented, and candidates can be reimbursed for childcare that exists solely because of campaign activities.",
+    "source_url": "https://www.pdc.wa.gov/rules-enforcement/guidelines-restrictions/allowable-uses-campaign-funds",
+    "source_name": "Washington PDC - Allowable Uses of Campaign Funds",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Washington?",
+    "question_variants": [
+      "Washington in-kind contribution valuation rules",
+      "Reporting non-monetary donations Washington campaign",
+      "Fair market value for in-kind gifts WA"
+    ],
+    "answer": "In-kind contributions (donated goods or services) must be valued at fair market value—the amount it would cost to purchase the item or service on the open market. They count toward the donor's contribution limit just like cash and must be reported on Schedule B of the C-4 expenditure report.",
+    "source_url": "https://www.pdc.wa.gov/registration-reporting/candidates-committees/contributions",
+    "source_name": "Washington PDC - Contributions",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the rules for a candidate loaning personal funds to their own campaign in Washington?",
+    "question_variants": [
+      "Washington candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in WA?",
+      "Reporting candidate loans in ORCA"
+    ],
+    "answer": "A candidate may contribute unlimited personal funds to their own campaign. However, if the candidate structures the funding as a loan and wishes to be repaid by the campaign committee, repayment is statutorily limited. A campaign may not repay loans to the candidate in excess of $7,500 per election.",
+    "source_url": "https://www.pdc.wa.gov/registration-reporting/candidates-committees/contributions/contributions-candidate",
+    "source_name": "Washington PDC - Contributions by the Candidate",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer is required on Washington campaign advertisements and mailers?",
+    "question_variants": [
+      "Washington 'Paid for by' requirements",
+      "Campaign ad disclaimer rules WA",
+      "Sponsor identification Washington political ads"
+    ],
+    "answer": "Under WAC 390-18, most political advertising must include a 'Sponsor Identification' (disclaimer) stating 'Paid for by [Committee Name]' along with the campaign's address. For independent expenditure ads not sponsored by a candidate, the disclaimer must also explicitly list the committee's top five contributors if they gave over $700 in the past year.",
+    "source_url": "https://www.pdc.wa.gov/rules-enforcement/guidelines-restrictions/political-advertising-guide",
+    "source_name": "Washington PDC - Political Advertising Guide",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Washington?",
+    "question_variants": [
+      "WA campaign coordination rules",
+      "When is a PAC expenditure not independent in Washington?",
+      "Prohibition on candidate-PAC coordination WA"
+    ],
+    "answer": "An expenditure is coordinated (and thus treated as an in-kind contribution subject to limits) if it is made with the candidate's authorization, consent, or at their request or suggestion. Using the same consultants, sharing non-public campaign strategy, or a candidate fundraising for the PAC making the expenditure are strong legal indicators of prohibited coordination under PDC rules.",
+    "source_url": "https://www.pdc.wa.gov/rules-enforcement",
+    "source_name": "Washington PDC - Rules and Enforcement",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Washington?",
+    "question_variants": [
+      "WA PDC late fee",
+      "Penalty for missing a Washington campaign finance deadline",
+      "PDC fine for late filing WA"
+    ],
+    "answer": "The PDC actively enforces filing deadlines. Minor or first-time late filings may result in a formal warning or a brief adjudicative proceeding with civil penalties ranging from $150 to $500. Serious, repeated, or intentional violations can result in formal commission hearings with civil penalties assessed up to $10,000 per violation.",
+    "source_url": "https://www.pdc.wa.gov/rules-enforcement",
+    "source_name": "Washington PDC - Enforcement",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the restrictions on contributions from registered lobbyists to Washington state candidates?",
+    "question_variants": [
+      "WA lobbyist donation ban",
+      "Can a lobbyist give to a Washington legislator?",
+      "Lobbyist contribution session freeze Washington"
+    ],
+    "answer": "Washington imposes a 'session freeze.' State officials and candidates for state office are prohibited from soliciting or accepting campaign contributions from anyone, including registered lobbyists, during the regular legislative session, or during any special session. Outside of session, lobbyists may contribute subject to standard individual limits.",
+    "source_url": "https://www.pdc.wa.gov/registration-reporting/lobbying",
+    "source_name": "Washington PDC - Lobbyist Rules",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and Lobbyists"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a candidate committee be terminated in Washington?",
+    "question_variants": [
+      "Closing a Washington campaign committee",
+      "ORCA committee termination requirements",
+      "Final campaign finance report Washington"
+    ],
+    "answer": "A candidate committee may be formally terminated only after it has resolved all outstanding debts, disposed of all surplus funds in a legally permitted manner (e.g., returned to donors, given to charity, or transferred to a future campaign), and achieved a zero bank balance. A final C-4 report must be filed checking the 'Final Report' box to close the committee.",
+    "source_url": "https://www.pdc.wa.gov/registration-reporting/candidates-committees/registration-reporting-basics",
+    "source_name": "Washington PDC - Registration & Reporting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Washington?",
+    "question_variants": [
+      "WA independent expenditure reporting C-6",
+      "Disclosure for WA independent expenditure groups",
+      "Reporting thresholds for outside spending Washington"
+    ],
+    "answer": "Sponsors making independent expenditures of $1,000 or more must file a C-6 report. If an independent expenditure totals $2,000 or more and is made within 21 days of an election, it must be reported within 24 hours of when the ad is presented to the public. All other independent expenditures must be reported within 5 days.",
+    "source_url": "https://pdc.wa.gov/registration-reporting/independent-expenditures/what-report/reporting-thresholds-c-6",
+    "source_name": "Washington PDC - Reporting Thresholds C-6",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Washington?",
+    "question_variants": [
+      "US Senate residency requirements Washington",
+      "Age to run for Congress in Washington",
+      "Federal constitutional requirements for WA candidates"
+    ],
+    "answer": "Federal candidates must meet U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected. District residency is not required for the U.S. House.",
+    "source_url": "https://www.sos.wa.gov/elections/candidates",
+    "source_name": "Washington Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for elected county officers like Sheriff, Commissioner, and Prosecutor in Washington?",
+    "question_variants": [
+      "Qualifications for WA County Sheriff",
+      "Can anyone run for County Prosecutor in Washington?",
+      "Washington county official requirements"
+    ],
+    "answer": "County candidates must be registered voters in the county. Specific offices have strict professional requirements: a County Prosecutor must be a licensed attorney admitted to the Washington State Bar (RCW 36.27.010). Under recent law (SB 5974), a County Sheriff must have at least five years of law enforcement experience, peace officer certification, and no felony convictions.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=36.27.010",
+    "source_name": "RCW 36.27.010 / SB 5974",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "Are Superior Court judges elected or appointed in Washington, and what are the qualifications?",
+    "question_variants": [
+      "Washington Superior Court judge eligibility",
+      "Do judges run for election in WA?",
+      "Qualifications to run for judge in Washington"
+    ],
+    "answer": "Superior Court judges are elected to four-year terms in nonpartisan elections. Under the Washington Constitution and RCW 2.06.050, a candidate for Superior Court must be admitted to the practice of law in the courts of Washington (a member of the State Bar) and a resident of the state.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=2.06.050",
+    "source_name": "RCW 2.06.050",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for a local school board in Washington?",
+    "question_variants": [
+      "Qualifications for WA school director",
+      "Who can run for school board in Washington state?",
+      "School district residency requirement WA"
+    ],
+    "answer": "To run for the office of school director (school board member), a candidate must be a United States citizen, a resident of Washington, at least 18 years old, and a registered voter residing within the boundaries of the specific school district (and the specific director district, if applicable) they seek to represent.",
+    "source_url": "https://wssda.org/about-us/how-we-are-governed/elections/",
+    "source_name": "Washington State School Directors' Association",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the rules regarding ballot drop boxes in Washington?",
+    "question_variants": [
+      "Are drop boxes secure in WA?",
+      "Washington drop box collection rules",
+      "When do ballot drop boxes close in Washington?"
+    ],
+    "answer": "Washington law requires counties to provide secure ballot drop boxes. There must be at least one drop box per 15,000 registered voters, and at least one in every city, town, and census-designated place. Boxes must be securely locked and bolted, emptied by bipartisan teams of sworn election workers, and locked promptly at 8:00 p.m. on Election Day.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/voting-mail",
+    "source_name": "Washington Secretary of State - Voting by Mail",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process and deadline in Washington?",
+    "question_variants": [
+      "How to fix a rejected signature in WA",
+      "Washington ballot cure process deadline",
+      "Missing signature on WA mail ballot"
+    ],
+    "answer": "If a ballot envelope is missing a signature or the signature does not match the voter registration record, the county auditor contacts the voter. The voter is given an opportunity to 'cure' the issue by signing and returning a cure form. The deadline to cure a signature is the day before the election is officially certified (which is typically 21 days after Election Day).",
+    "source_url": "https://www.sos.wa.gov/elections/voters/voting-mail",
+    "source_name": "Washington Secretary of State - Voting by Mail",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Washington have automatic voter registration at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Washington DOL?",
+      "WA motor voter automatic registration",
+      "Do I have to register to vote if I get a WA driver's license?"
+    ],
+    "answer": "Yes. Washington uses Automatic Voter Registration (AVR). Eligible citizens interacting with the Department of Licensing (DOL) for an enhanced driver's license or ID, or other qualifying state agencies, are automatically registered to vote or have their address updated unless they explicitly opt out.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/voter-registration",
+    "source_name": "Washington Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Can campaigns purchase the voter file from the state in Washington?",
+    "question_variants": [
+      "Washington voter database access",
+      "How to get the voter list in WA",
+      "Cost of voter registration data Washington"
+    ],
+    "answer": "Yes. The Washington statewide voter registration database is public record. Campaigns and political committees can request the voter file from the Secretary of State free of charge via a public data request. The file includes names, addresses, and voting history (which elections they participated in), but not how they voted or their phone numbers/emails.",
+    "source_url": "https://www.sos.wa.gov/elections/data-research/voter-registration-data",
+    "source_name": "Washington Secretary of State - Voter Data",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Washington?",
+    "question_variants": [
+      "When are military ballots due in Washington?",
+      "UOCAVA return deadline WA",
+      "Overseas voting rules Washington state"
+    ],
+    "answer": "Ballots are transmitted to UOCAVA voters at least 45 days prior to the election. To be counted, the ballot declaration must be signed and dated no later than Election Day. Because Washington accepts postmarks, the ballot must be received by the county auditor before the county canvassing board certifies the election results (usually 21 days after the election).",
+    "source_url": "https://www.sos.wa.gov/elections/voters/military-overseas-voters",
+    "source_name": "Washington Secretary of State - Military & Overseas Voters",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Washington restore voting rights to individuals with felony convictions?",
+    "question_variants": [
+      "Can felons vote in Washington state?",
+      "Felony voting rights restoration WA",
+      "Voting on parole in Washington"
+    ],
+    "answer": "Yes. Following a law enacted in 2022, an individual convicted of a felony in Washington automatically regains the right to vote immediately upon their release from total confinement (prison). People on community supervision, parole, or probation are fully eligible to register and vote.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/voter-registration/felony-convictions-voting-rights",
+    "source_name": "Washington Secretary of State - Felony Convictions and Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What criteria must the Washington Redistricting Commission follow when drawing maps?",
+    "question_variants": [
+      "Washington redistricting rules",
+      "Gerrymandering ban Washington state",
+      "How are WA congressional maps drawn?"
+    ],
+    "answer": "Under RCW 44.05.090, the bipartisan Washington Redistricting Commission must create districts that have equal population, are as compact and contiguous as possible, preserve communities of interest and political subdivisions, and provide fair and competitive elections. The commission is strictly prohibited from drawing maps that purposely favor or discriminate against any political party or group.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=44.05.090",
+    "source_name": "RCW 44.05.090",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current Washington redistricting maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Legal challenges to Washington districts",
+      "Soto Palmer v. Hobbs redistricting",
+      "Will WA get new maps for 2026?"
+    ],
+    "answer": "Yes. The current congressional and legislative maps were originally adopted by the Commission in 2021. However, following the federal Soto Palmer v. Hobbs (2023) Voting Rights Act lawsuit, a federal court ordered a redrawn legislative map for the Yakima Valley region (specifically altering Legislative District 15 and surrounding districts) to ensure Hispanic voter representation. These court-altered maps are fully operative for 2026.",
+    "source_url": "https://www.sos.wa.gov/elections/data-research/election-data-and-maps",
+    "source_name": "Washington Secretary of State - Election Maps",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Can the Washington State Legislature amend the maps drawn by the Redistricting Commission?",
+    "question_variants": [
+      "Legislature override of Washington redistricting",
+      "Can WA lawmakers change district boundaries?",
+      "Washington redistricting amendment rules"
+    ],
+    "answer": "Yes, but under highly restricted conditions. According to the Washington Constitution (Article II, Section 43), the legislature can only amend the commission's maps by a two-thirds supermajority vote in both the House and Senate. Furthermore, any legislative amendment cannot alter the population of any given district by more than 2%.",
+    "source_url": "https://leg.wa.gov/CodeReviser/Pages/WAConstitution.aspx",
+    "source_name": "Washington Constitution, Article II, Section 43",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for an Initiative to the People in Washington?",
+    "question_variants": [
+      "How to get an initiative on the WA ballot",
+      "Washington citizen initiative signature requirements",
+      "Initiative to the People deadline WA"
+    ],
+    "answer": "An Initiative to the People bypasses the legislature and goes directly to the voters on the general election ballot. Proponents must gather valid signatures from registered voters equal to 8% of the total votes cast for Governor in the last gubernatorial election. Signatures must be submitted to the Secretary of State by early July.",
+    "source_url": "https://www.sos.wa.gov/elections/initiatives",
+    "source_name": "Washington Secretary of State - Initiatives",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the process for an Initiative to the Legislature in Washington?",
+    "question_variants": [
+      "How does an Initiative to the Legislature work in WA?",
+      "Washington indirect initiative process",
+      "December initiative deadline WA"
+    ],
+    "answer": "An Initiative to the Legislature requires the same signature threshold (8% of the last gubernatorial vote) but signatures are due in late December. The measure is presented to the legislature in January. The legislature can adopt it into law as is, reject or ignore it (which sends it to the November ballot), or propose an alternative version (which sends both the original and the alternative to the November ballot).",
+    "source_url": "https://www.sos.wa.gov/elections/initiatives",
+    "source_name": "Washington Secretary of State - Initiatives",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold and timeline for a veto referendum in Washington?",
+    "question_variants": [
+      "How to refer a WA bill to the ballot",
+      "Washington citizen referendum rules",
+      "Veto referendum deadline Washington state"
+    ],
+    "answer": "Citizens can use a referendum to demand a popular vote on a law recently passed by the legislature. Proponents must gather signatures equal to 4% of the total votes cast for Governor in the last election. The signatures must be filed within 90 days after the final adjournment of the legislative session in which the bill was passed.",
+    "source_url": "https://www.sos.wa.gov/elections/initiatives",
+    "source_name": "Washington Secretary of State - Referenda",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "How does the legislature refer a measure to the voters in Washington?",
+    "question_variants": [
+      "Referendum bill by WA legislature",
+      "Can the Washington legislature put a law on the ballot?",
+      "Legislative referral process WA"
+    ],
+    "answer": "The Washington State Legislature can refer a proposed law to the voters (a Referendum Bill) or propose an amendment to the state constitution. Referendum bills require a simple majority vote in both the House and Senate to be placed on the ballot, whereas constitutional amendments require a two-thirds supermajority vote in both chambers before facing the voters.",
+    "source_url": "https://leg.wa.gov/CodeReviser/Pages/WAConstitution.aspx",
+    "source_name": "Washington Constitution, Article II and Article XXIII",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Washington require a supermajority voter approval to pass an initiative?",
+    "question_variants": [
+      "Washington initiative pass threshold",
+      "Does a ballot measure need 55% in WA?",
+      "Vote percentage to pass a law in Washington"
+    ],
+    "answer": "No. Unlike some states that require a 55% or 60% supermajority, in Washington, all citizen initiatives and referenda—whether creating a statute or amending the constitution—require only a simple majority (50% plus one vote) of the votes cast on that specific measure to pass.",
+    "source_url": "https://www.sos.wa.gov/elections/initiatives",
+    "source_name": "Washington Secretary of State - Initiative FAQ",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Washington still hold advisory votes on tax increases?",
+    "question_variants": [
+      "Washington tax advisory votes 2026",
+      "Are advisory votes required in WA?",
+      "SB 5082 advisory votes repeal"
+    ],
+    "answer": "No. Historically, Washington required non-binding advisory votes on the ballot whenever the legislature raised taxes (stemming from Initiative 960). However, the legislature passed SB 5082 in 2023, which officially abolished the advisory vote requirement. They will no longer appear on Washington ballots.",
+    "source_url": "https://app.leg.wa.gov/billsummary?BillNumber=5082&Year=2023",
+    "source_name": "Washington State Legislature - SB 5082 (2023)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign strategists"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does the Washington legislature require a two-thirds supermajority to raise taxes?",
+    "question_variants": [
+      "Washington tax increase voting rules",
+      "Is the 2/3 tax rule still active in WA?",
+      "Initiative 1053 status"
+    ],
+    "answer": "No. While voters repeatedly passed initiatives (such as I-1053) requiring a two-thirds legislative supermajority to raise taxes, the Washington Supreme Court struck down this requirement in 2013 (League of Education Voters v. State). The Court ruled that altering the simple-majority requirement for passing bills requires a constitutional amendment, not a statutory initiative. Tax increases currently require a simple majority.",
+    "source_url": "https://casetext.com/case/league-of-educ-voters-v-state-3",
+    "source_name": "League of Education Voters v. State (2013)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Washington?",
+    "question_variants": [
+      "How close can I campaign to a drop box in WA?",
+      "Buffer zone around voting centers Washington",
+      "RCW 29A.84.510 electioneering rules"
+    ],
+    "answer": "Under RCW 29A.84.510, it is a gross misdemeanor to electioneer, distribute campaign materials, or solicit votes within 100 feet of an entrance to a voting center or student engagement hub, and within 25 feet of a standalone ballot drop box.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.84.510",
+    "source_name": "RCW 29A.84.510",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Washington's mail ballot system?",
+    "question_variants": [
+      "What is a provisional ballot in WA?",
+      "Voting in person with a lost ballot Washington",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Because Washington is a universal mail-voting state, provisional ballots are less common but are still issued at in-person voting centers. They are used if a voter's registration cannot be immediately verified, if they are challenged by an election worker, or if they need to cast a ballot but the system shows a mail ballot was already returned in their name. They are counted during canvassing once eligibility is confirmed.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/voter-registration/voting-person",
+    "source_name": "Washington Secretary of State - Voting in Person",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Washington maintain its voter registration lists?",
+    "question_variants": [
+      "WA voter list maintenance rules",
+      "How are inactive voters handled in Washington?",
+      "ERIC system Washington state"
+    ],
+    "answer": "Washington conducts active list maintenance using the National Change of Address (NCOA) program, Department of Licensing matching, and vital statistics (death records) per RCW 29A.08.610. Washington is also a founding member of ERIC (Electronic Registration Information Center), which compares voter lists across multiple states to identify voters who have moved or died.",
+    "source_url": "https://www.sos.wa.gov/elections/data-research/voter-registration-data/voter-list-maintenance",
+    "source_name": "Washington Secretary of State - Voter List Maintenance",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "filing_requirements",
+    "question": "Can a candidate file via petition instead of paying a filing fee in Washington?",
+    "question_variants": [
+      "Washington filing fee waiver petition",
+      "How many signatures to waive filing fee WA?",
+      "RCW 29A.24.091 signature equivalent"
+    ],
+    "answer": "Yes. A candidate lacking sufficient funds can file a nominating petition in lieu of a filing fee under RCW 29A.24.091. The requirement is a direct 1-to-1 ratio: the candidate must submit one valid signature of a registered voter in the relevant district for each $1.00 of the required filing fee.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.24.091",
+    "source_name": "RCW 29A.24.091",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "How do minor party or independent candidates qualify for the general election under Washington's Top-2 system?",
+    "question_variants": [
+      "Independent candidate general election access WA",
+      "Minor party rules Washington primary",
+      "Do third parties have a separate ballot in Washington?"
+    ],
+    "answer": "There is no separate ballot access path for minor party or independent candidates in Washington. Under the Top-2 system, all candidates—regardless of whether they prefer a major party, a minor party, or no party—run on the same primary ballot. To reach the general election, an independent or minor party candidate must finish as one of the top two vote-getters in the primary.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/top-2-primary-answers-frequently-asked-questions",
+    "source_name": "Washington Secretary of State - Top-2 Primary FAQ",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Minor party and Independent candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "filing_requirements",
+    "question": "How is the candidate filing fee calculated in Washington?",
+    "question_variants": [
+      "Cost to run for office in Washington",
+      "WA filing fee for State Senate",
+      "1 percent filing fee rule Washington"
+    ],
+    "answer": "For most offices with a fixed annual salary, the filing fee is exactly 1% of the office's annual salary at the time of filing. For offices without a fixed salary, or where the salary is less than $1,000, the fee is either $10 or $20, depending on the specific office level, per RCW 29A.24.091.",
+    "source_url": "https://www.sos.wa.gov/elections/candidates/filing-resources/candidate-filing-faq",
+    "source_name": "Washington Secretary of State - Candidate Filing FAQ",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Washington have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the WA primary?",
+      "Washington sore loser statute",
+      "General election ballot access after primary defeat WA"
+    ],
+    "answer": "Operationally, Washington does not need a traditional sore loser law because of the Top-2 primary. If a candidate runs in the primary and does not finish in the top two, they cannot simply re-file to appear on the general election ballot as an independent, because the general election ballot is strictly limited to the primary's top two finishers. Their only recourse is to mount a write-in campaign.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/top-2-primary-answers-frequently-asked-questions",
+    "source_name": "Washington Secretary of State - Top-2 Primary FAQ",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Does Washington use the Top-2 system for the Presidential Primary?",
+    "question_variants": [
+      "Washington presidential primary rules",
+      "Do I have to pick a party for the WA presidential primary?",
+      "Partisan primary Washington president"
+    ],
+    "answer": "No. The Presidential Primary in Washington is entirely separate from the state Top-2 primary. Held in March of presidential election years, it is a partisan process. Voters must sign a declaration on the ballot envelope swearing affiliation to either the Democratic or Republican party in order for their vote to be counted and allocated to delegates.",
+    "source_url": "https://www.sos.wa.gov/elections/voters/presidential-primary-faqs",
+    "source_name": "Washington Secretary of State - Presidential Primary FAQ",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements and duties for the Lieutenant Governor of Washington?",
+    "question_variants": [
+      "Role of the Washington Lt. Governor",
+      "Qualifications to run for Lt. Governor WA",
+      "Does the Lt Gov preside over the WA Senate?"
+    ],
+    "answer": "To run for Lieutenant Governor, a candidate must simply be a qualified elector (US citizen, 18+, WA resident) under Article III, Section 25. The Lieutenant Governor serves as the President of the Washington State Senate, casting tie-breaking votes, and serves as acting Governor when the Governor leaves the state or is incapacitated.",
+    "source_url": "https://ltgov.wa.gov/about-the-office/",
+    "source_name": "Washington State Lieutenant Governor's Office",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Washington Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in WA",
+      "Do I need to be a member of the bar to be WA AG?",
+      "Legal requirements for Washington Attorney General"
+    ],
+    "answer": "While the Washington Constitution (Article III, Sec 25) only explicitly requires statewide executives to be qualified electors, RCW 43.10 outlines the AG's duties as the state's chief legal adviser. Practically and historically, candidates must be licensed to practice law in Washington, as the State Supreme Court has ruled that prosecuting attorneys must be admitted to the bar to fulfill their statutory duties.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=43.10",
+    "source_name": "RCW 43.10",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Washington Supreme Court and Court of Appeals judges selected?",
+    "question_variants": [
+      "Are judges elected in Washington state?",
+      "WA Supreme Court terms and elections",
+      "Partisan vs nonpartisan judicial races WA"
+    ],
+    "answer": "Justices of the Washington Supreme Court and judges of the Court of Appeals are elected by the voters in nonpartisan elections. Supreme Court Justices (9 members) and Court of Appeals judges both serve six-year terms. If a midterm vacancy occurs, the Governor appoints a replacement who must then stand for election at the next general election.",
+    "source_url": "https://www.courts.wa.gov/appellate_trial_courts/",
+    "source_name": "Washington State Courts",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for Washington State Treasurer and Auditor?",
+    "question_variants": [
+      "Requirements to run for WA Treasurer",
+      "Eligibility for Washington State Auditor",
+      "Financial background needed for WA Auditor?"
+    ],
+    "answer": "Under Article III, Section 25 of the Washington Constitution, candidates for Treasurer and Auditor face the same minimal requirements as the Governor: they must be a citizen of the United States and a qualified elector (registered voter) of the state. There are no constitutional requirements for specific financial degrees or CPA certifications.",
+    "source_url": "https://leg.wa.gov/CodeReviser/Pages/WAConstitution.aspx",
+    "source_name": "Washington Constitution, Article III, Section 25",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Washington?",
+    "question_variants": [
+      "When are county sheriffs elected in WA?",
+      "Washington county official term lengths",
+      "Are county prosecutors on the 2026 ballot?"
+    ],
+    "answer": "Most elected county officials in Washington—including Sheriffs, Prosecuting Attorneys, Auditors, Assessors, Treasurers, and Clerks—serve four-year terms. The vast majority of these 39 county offices are elected during the midterm election cycle, meaning they will be heavily featured on the 2026 ballot.",
+    "source_url": "https://www.sos.wa.gov/elections/candidates",
+    "source_name": "Washington Secretary of State",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "When are special elections held and certified in Washington?",
+    "question_variants": [
+      "Washington special election dates 2026",
+      "Canvassing timeline Washington elections",
+      "When are WA election results official?"
+    ],
+    "answer": "By statute (RCW 29A.04.321), special elections may only be called in February, April, August (primary date), or November (general election date). Under Washington's mail voting system, election results take weeks to finalize; counties have 21 days to certify primary and general election results, meaning final winners may not be known until late November.",
+    "source_url": "https://www.sos.wa.gov/elections/candidates/election-calendar",
+    "source_name": "Washington Secretary of State - Election Calendar",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "recall_rules",
+    "question": "Does a court review Washington recall petitions before signatures are gathered?",
+    "question_variants": [
+      "Washington recall court sufficiency hearing",
+      "Are federal officers subject to WA recall?",
+      "How to start a recall against a Washington mayor"
+    ],
+    "answer": "Yes. Washington has a unique 'sufficiency review' process. Before proponents can gather a single signature, a Superior Court judge must review the recall charges to determine if they meet the legal threshold of misfeasance, malfeasance, or violating the oath of office (RCW 29A.56.140). Note: Members of the U.S. Congress representing Washington cannot be recalled, as federal courts have ruled state recall laws cannot apply to federal officers.",
+    "source_url": "https://app.leg.wa.gov/rcw/default.aspx?cite=29A.56.140",
+    "source_name": "RCW 29A.56.140",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  }
+]
