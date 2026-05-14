@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Oregon have an open or closed primary system?",
+    "question_variants": [
+      "How does the Oregon partisan primary work?",
+      "Can I vote in the Democratic primary if I am not registered as a Democrat?",
+      "Oregon closed primary rules 2026"
+    ],
+    "answer": "Oregon uses a strictly closed primary system for partisan offices. Under ORS 254.365, only voters who are registered as members of a major political party may vote in that party's primary. For the 2026 elections, the Democratic and Republican parties have opted to keep their primaries closed, meaning cross-party voting is prohibited.",
+    "source_url": "https://sos.oregon.gov/voting/Pages/voteinor.aspx",
+    "source_name": "Oregon Secretary of State - Voting in Oregon",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county"],
+    "category": "voter_interaction",
+    "question": "Can unaffiliated (NAV) voters participate in the Oregon primary?",
+    "question_variants": [
+      "What do Non-Affiliated Voters get on their ballot in Oregon?",
+      "Oregon primary voting for independents",
+      "NAV voter primary ballot Oregon"
+    ],
+    "answer": "Non-Affiliated Voters (NAV)—Oregon's term for independents—cannot vote in the Democratic or Republican partisan primaries. However, they do receive a primary ballot. The NAV ballot contains only nonpartisan races (such as judicial elections and the BOLI Commissioner) and local or state ballot measures.",
+    "source_url": "https://sos.oregon.gov/voting/Pages/voteinor.aspx",
+    "source_name": "Oregon Secretary of State - Voting in Oregon",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Unaffiliated voters"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "How does Oregon's closed primary contrast with Washington's Top-2 system?",
+    "question_variants": [
+      "Oregon vs Washington primary election differences",
+      "Do the top two vote getters advance in Oregon?",
+      "Partisan nomination process Oregon"
+    ],
+    "answer": "Unlike Washington's Top-2 primary—where all candidates run on one ballot and the top two advance regardless of party—Oregon's closed partisan primaries strictly select party nominees. The winner of the Democratic primary advances to the general election to face the winner of the Republican primary, ensuring a partisan matchup in November.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/election-laws-rules-publications.aspx",
+    "source_name": "Oregon Secretary of State - Election Laws",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign strategists"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "How do minor parties nominate candidates in Oregon?",
+    "question_variants": [
+      "Minor party ballot access Oregon",
+      "Do third parties have a primary in Oregon?",
+      "Nominating conventions for Oregon minor parties"
+    ],
+    "answer": "Minor political parties in Oregon do not participate in the state-funded primary election. Instead, they nominate their candidates according to their own internal party bylaws, which typically involves a nominating convention. Once nominated, the party certifies the candidate's name to the Secretary of State for placement on the November general election ballot.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/minor-political-parties.aspx",
+    "source_name": "Oregon Secretary of State - Minor Political Parties",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Minor party candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "Which statewide and federal executive offices are on the 2026 Oregon ballot?",
+    "question_variants": [
+      "Is Tina Kotek running for re-election in 2026?",
+      "Oregon U.S. Senate race 2026",
+      "Who is top of the ticket in Oregon 2026?"
+    ],
+    "answer": "In 2026, incumbent Governor Tina Kotek (D) is up for re-election for her second term. At the federal level, incumbent U.S. Senator Jeff Merkley (D) is defending his Class 2 seat. Additionally, the nonpartisan Bureau of Labor and Industries (BOLI) Commissioner is on the 2026 ballot.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/candidates.aspx",
+    "source_name": "Oregon Secretary of State - Candidates",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide and federal candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "Which statewide and federal offices are NOT on the 2026 Oregon ballot?",
+    "question_variants": [
+      "Is Ron Wyden on the ballot in 2026?",
+      "When is the next Oregon Attorney General election?",
+      "Are the SOS and Treasurer up for election in 2026?"
+    ],
+    "answer": "U.S. Senator Ron Wyden (Class 3) is not on the 2026 ballot; his term runs through 2028. Furthermore, Oregon elects its other statewide executive officers—Secretary of State, Attorney General, and State Treasurer—on the presidential election cycle. Having just been elected in 2024, they will not be on the ballot again until 2028.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/candidates.aspx",
+    "source_name": "Oregon Secretary of State - Candidates",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide and federal candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "What is the 2026 election cycle for the Oregon State Legislature and U.S. House?",
+    "question_variants": [
+      "Are all Oregon House seats up in 2026?",
+      "Oregon Senate election cycle 2026",
+      "How many US House districts does Oregon have?"
+    ],
+    "answer": "All 60 seats in the Oregon House of Representatives (2-year terms) are up for election in 2026. The Oregon State Senate (30 members, 4-year terms) will have approximately half of its districts on the ballot. Federally, all 6 of Oregon's U.S. House of Representatives districts are up for election.",
+    "source_url": "https://www.oregonlegislature.gov/",
+    "source_name": "Oregon State Legislature",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and legislative candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Oregon for 2026?",
+    "question_variants": [
+      "Oregon primary date 2026",
+      "When is Election Day 2026 in Oregon?",
+      "May primary Oregon"
+    ],
+    "answer": "The Oregon primary election will be held on Tuesday, May 19, 2026. The general election will be held on Tuesday, November 3, 2026.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/election-calendar.aspx",
+    "source_name": "Oregon Secretary of State - Election Calendar",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Oregon allow same-day voter registration?",
+    "question_variants": [
+      "Can I register to vote on Election Day in Oregon?",
+      "Voter registration deadline Oregon 2026",
+      "Oregon 21-day registration cutoff"
+    ],
+    "answer": "No. Oregon does not offer same-day or Election Day voter registration. Under ORS 247.025, the strict deadline to register to vote or to change party affiliation is 21 days before the election. For the May 19, 2026 primary, the registration cutoff is April 28, 2026.",
+    "source_url": "https://sos.oregon.gov/voting/Pages/registration.aspx",
+    "source_name": "ORS 247.025",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and GOTV teams"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Oregon Motor Voter assign party affiliation?",
+    "question_variants": [
+      "Automatic voter registration Oregon DMV",
+      "Do I get a party if I am registered at the DMV in Oregon?",
+      "Oregon Motor Voter defaults"
+    ],
+    "answer": "Under the Oregon Motor Voter program, eligible citizens are automatically registered to vote when they obtain or renew a driver's license at the DMV. By default, they are registered as Non-Affiliated Voters (NAV). They receive a mailer allowing them to opt out of registration entirely or to select a major political party to vote in closed primaries.",
+    "source_url": "https://sos.oregon.gov/voting/Pages/motor-voter-faq.aspx",
+    "source_name": "Oregon Secretary of State - Motor Voter FAQ",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are mail ballots sent out in Oregon?",
+    "question_variants": [
+      "Universal mail voting timeline Oregon",
+      "When do I get my ballot in the mail in OR?",
+      "Oregon vote-by-mail schedule"
+    ],
+    "answer": "As a universal vote-by-mail state, Oregon automatically mails ballots to all active registered voters. Under ORS 254.470, county clerks must mail ballots between 14 and 18 days before the election. For the 2026 primary, ballots will begin arriving in early May.",
+    "source_url": "https://sos.oregon.gov/voting/Pages/voteinor.aspx",
+    "source_name": "ORS 254.470",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return a mail ballot in Oregon, and is there a postmark grace period?",
+    "question_variants": [
+      "Oregon ballot postmark rule",
+      "When is my Oregon ballot due?",
+      "HB 3291 ballot receipt deadline Oregon"
+    ],
+    "answer": "Ballots must either be deposited in an official drop box by 8:00 p.m. on Election Day OR postmarked by the USPS by Election Day. Following the passage of HB 3291 (2021), Oregon now has a 7-day postmark grace period. Mailed ballots with a valid Election Day postmark will be counted if received by the county elections office within 7 days after the election.",
+    "source_url": "https://sos.oregon.gov/voting/Pages/voteinor.aspx",
+    "source_name": "Oregon Secretary of State - Vote in Oregon",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is ORESTAR in Oregon campaign finance?",
+    "question_variants": [
+      "Oregon campaign finance electronic filing system",
+      "Where do I report campaign donations in Oregon?",
+      "SOS ORESTAR portal"
+    ],
+    "answer": "ORESTAR (Oregon Elections System for Tracking and Reporting) is the mandatory electronic filing system administered by the Oregon Secretary of State. All state and local candidates must use ORESTAR to register their campaign committees, file statements of organization, and disclose campaign contributions and expenditures.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/orestar.aspx",
+    "source_name": "Oregon Secretary of State - ORESTAR",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "Are there campaign contribution limits for Oregon state candidates in 2026?",
+    "question_variants": [
+      "Oregon individual donation caps 2026",
+      "HB 4024 effective date campaign finance",
+      "Can corporations donate to Oregon candidates?"
+    ],
+    "answer": "No. For the 2026 election cycle, Oregon remains one of the few states with completely unlimited campaign contributions for state-level candidates, allowing unlimited donations from individuals, PACs, and corporations. However, under HB 4024 (passed in 2024), new strict contribution limits will become operative on January 1, 2027.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/campaign-finance-legislation.aspx",
+    "source_name": "Oregon Secretary of State - HB 4024 Implementation",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and Donors"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Can state officials be recalled in Oregon?",
+    "question_variants": [
+      "Does Oregon have a recall for the Governor?",
+      "How to recall an Oregon state senator",
+      "Article II Section 18 recall Oregon"
+    ],
+    "answer": "Yes. Oregon has a robust recall mechanism for state officials under Article II, Section 18 of the Oregon Constitution. Any public officer is subject to recall. Proponents must gather valid signatures equal to 15% of the total votes cast for Governor in the officer's electoral district during the last gubernatorial election.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/recall.aspx",
+    "source_name": "Oregon Constitution, Article II, Section 18",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "How does Measure 113 penalize legislative walkouts in Oregon?",
+    "question_variants": [
+      "Oregon unexcused absence penalty legislators",
+      "Are the 10 Republican senators barred from the 2026 ballot?",
+      "Article IV Section 15 Oregon Constitution"
+    ],
+    "answer": "Under Measure 113 (Article IV, Section 15 of the OR Constitution), any state legislator who accumulates 10 or more unexcused absences from floor sessions is disqualified from holding office for the term immediately following their current term. The Oregon Supreme Court upheld this in 2024, barring multiple senators who walked out in 2023 from running for re-election when their current terms expire.",
+    "source_url": "https://ballotpedia.org/Oregon_Measure_113,_Exclusion_from_Re-election_for_Legislative_Absenteeism_Initiative_(2022)",
+    "source_name": "Oregon Constitution, Article IV, Section 15",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Oregon have legislative term limits?",
+    "question_variants": [
+      "How many terms can an Oregon state senator serve?",
+      "Are there term limits for the Oregon House?",
+      "Oregon term limit laws"
+    ],
+    "answer": "No. Currently, Oregon does not have legislative term limits. Voters passed term limits in 1992, but the Oregon Supreme Court struck them down in 2002 on technical grounds. Attempts to reinstate them have not succeeded, meaning incumbents can serve indefinitely.",
+    "source_url": "https://ballotpedia.org/Oregon_State_Legislature",
+    "source_name": "Oregon State Legislature - Ballotpedia",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state"],
+    "category": "runoff_rules",
+    "question": "Does Oregon use Ranked Choice Voting (RCV) statewide?",
+    "question_variants": [
+      "Did Measure 117 pass in Oregon?",
+      "Ranked Choice Voting Oregon 2026",
+      "Does the state of Oregon use RCV?"
+    ],
+    "answer": "No. While voters in some local jurisdictions (like Portland, Multnomah County, and Benton County) use Ranked Choice Voting, a statewide measure to adopt RCV for federal and state executive races (Measure 117) was defeated by voters in November 2024 (57.7% voted No). Plurality voting remains standard statewide.",
+    "source_url": "https://ballotpedia.org/Oregon_Measure_117,_Ranked-Choice_Voting_for_Federal_and_State_Elections_Measure_(2024)",
+    "source_name": "Oregon Measure 117 (2024)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "All statewide and federal candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature thresholds for citizen initiatives in Oregon for 2026?",
+    "question_variants": [
+      "How many signatures to get on the Oregon ballot?",
+      "Oregon initiative signature requirement 2026",
+      "Constitutional amendment vs statute signature count Oregon"
+    ],
+    "answer": "In Oregon, signature requirements are based on the total votes cast in the 2022 gubernatorial election. For 2026, an initiated state statute requires signatures equal to 6% of that vote (117,173 valid signatures). A constitutional amendment requires 8% (156,231 valid signatures). Referendums require 4% (78,116 signatures).",
+    "source_url": "https://sos.oregon.gov/elections/documents/stateir.pdf",
+    "source_name": "Oregon Secretary of State - State Initiative and Referendum Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for Governor of Oregon?",
+    "question_variants": [
+      "How old do you have to be to be Governor of OR?",
+      "Oregon Governor residency requirements",
+      "Qualifications for Oregon Governor"
+    ],
+    "answer": "Under Article V, Section 2 of the Oregon Constitution, a candidate for Governor must be a citizen of the United States, at least 30 years of age, and a resident of Oregon for at least three years immediately preceding the election.",
+    "source_url": "https://www.oregonlegislature.gov/bills_laws/Pages/OrConst.aspx",
+    "source_name": "Oregon Constitution, Article V, Section 2",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for the Oregon State Legislature?",
+    "question_variants": [
+      "Qualifications for OR State Representative",
+      "Residency requirement Oregon State Senate",
+      "Do I have to live in my district to run in OR?"
+    ],
+    "answer": "Under Article IV, Section 8 of the Oregon Constitution, a candidate for the state legislature must be a citizen of the United States, at least 21 years of age, and a resident of the legislative district they seek to represent for at least one year immediately prior to the election.",
+    "source_url": "https://www.oregonlegislature.gov/bills_laws/Pages/OrConst.aspx",
+    "source_name": "Oregon Constitution, Article IV, Section 8",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How is a vacancy in the Oregon State Legislature filled?",
+    "question_variants": [
+      "Who appoints a replacement State Senator in OR?",
+      "Legislative vacancy committee Oregon",
+      "Special election for OR House vacancy"
+    ],
+    "answer": "Under ORS 171.051, a state legislative vacancy is filled by appointment, not a special election. The political party of the vacating member submits a list of 3 to 5 nominees. The county commissioners of the affected district then appoint one of those nominees to serve out the remainder of the term (or until the next general election).",
+    "source_url": "https://oregon.public.law/statutes/ors_171.051",
+    "source_name": "ORS 171.051",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal"],
+    "category": "ballot_access",
+    "question": "How is a vacancy in an Oregon U.S. Senate seat filled?",
+    "question_variants": [
+      "Governor appointment US Senate Oregon",
+      "Special election for US Senate OR",
+      "Oregon rule for replacing a US Senator"
+    ],
+    "answer": "Under ORS 188.120, the Governor of Oregon fills a U.S. Senate vacancy by appointment. The appointee must be from the same political party as the vacating senator and must have been affiliated with that party for at least 180 days prior to the vacancy. The appointee serves until a special election is held.",
+    "source_url": "https://law.justia.com/codes/oregon/volume-05/chapter-188/section-188-120/",
+    "source_name": "ORS 188.120",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the BOLI Commissioner and why is it on all Oregon primary ballots?",
+    "question_variants": [
+      "Bureau of Labor and Industries election Oregon",
+      "Is the Oregon BOLI race partisan?",
+      "Can a candidate win the BOLI race outright in the primary?"
+    ],
+    "answer": "The Bureau of Labor and Industries (BOLI) Commissioner is a nonpartisan statewide executive office in Oregon. Because it is nonpartisan, all registered voters—including unaffiliated (NAV) voters—can vote in this primary race. Under ORS 249.088, if a candidate wins a majority (over 50%) of the vote in the May primary, they win the election outright; otherwise, the top two advance to November.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/candidates.aspx",
+    "source_name": "ORS 249.088",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is Oregon Ballot Measure 120 on the 2026 primary ballot?",
+    "question_variants": [
+      "Gas tax referendum Oregon 2026",
+      "HB 3991 veto referendum",
+      "What is the transportation tax measure on the May ballot?"
+    ],
+    "answer": "Measure 120 is a citizen veto referendum on House Bill 3991, which increases the state gas tax and vehicle registration fees. Placed on the May 19, 2026 primary ballot, a 'yes' vote upholds the tax increases to fund transportation, while a 'no' vote repeals them. Because it is a ballot measure, all voters (including unaffiliated voters) may vote on it.",
+    "source_url": "https://ballotpedia.org/Oregon_Referendum_120,_Increase_to_Gas_Tax,_Payroll_Tax,_and_Vehicle_Registration_Fees_Referendum_(May_2026)",
+    "source_name": "Oregon Referendum 120 (2026)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees and Voters"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When must an Oregon candidate register a campaign committee in ORESTAR?",
+    "question_variants": [
+      "Oregon campaign committee registration threshold",
+      "When do I have to file a Statement of Organization in OR?",
+      "ORESTAR $750 registration limit"
+    ],
+    "answer": "A candidate must form a candidate committee and file a Statement of Organization with the Elections Division via ORESTAR within three business days of first receiving a contribution or making an expenditure, UNLESS they elect to serve as their own treasurer and do not expect to receive or spend more than $750 during the calendar year (including personal funds).",
+    "source_url": "https://sos.oregon.gov/elections/Pages/orestar.aspx",
+    "source_name": "Oregon Secretary of State - ORESTAR",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidate committee funds prohibited from being used for personal expenses in Oregon?",
+    "question_variants": [
+      "OR personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in Oregon?",
+      "Prohibited expenditures Oregon campaign finance ORS 260.407"
+    ],
+    "answer": "Yes. Under ORS 260.407, campaign funds may not be converted by any person to any personal use. They must be used to defray expenses incurred in connection with the candidate's campaign or duties as a public official. Exceptions allow for the repayment of personal campaign loans, charitable donations, and transfers to political parties.",
+    "source_url": "https://oregon.public.law/statutes/ors_260.407",
+    "source_name": "ORS 260.407",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the 2026 campaign finance reporting schedule for Oregon candidates?",
+    "question_variants": [
+      "OR campaign finance filing dates 2026",
+      "When are ORESTAR reports due for Oregon 2026 primary?",
+      "Oregon pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Oregon operates a continuous transaction-based reporting system via ORESTAR rather than just filing broad quarterly summaries. Standard transactions must be filed within 30 days. However, during the specific election windows (starting 42 days before the May primary and 42 days before the November general election), the deadline accelerates, and transactions must be filed within 7 calendar days.",
+    "source_url": "https://sos.oregon.gov/elections/Documents/current-elections-calendar.pdf",
+    "source_name": "Oregon Secretary of State - Elections Calendar",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the rules for a candidate loaning personal funds to their own campaign in Oregon?",
+    "question_variants": [
+      "Oregon candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in OR?",
+      "Reporting candidate loans in ORESTAR"
+    ],
+    "answer": "Candidates may loan their own personal funds to their campaign. Because Oregon currently has no contribution limits for state campaigns, there is no cap on self-funding or personal loans. Loans must be properly disclosed as such in ORESTAR, and candidates may use future campaign contributions to repay the loan under ORS 260.407.",
+    "source_url": "https://oregon.public.law/statutes/ors_260.407",
+    "source_name": "ORS 260.407",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Oregon's ORESTAR system?",
+    "question_variants": [
+      "Oregon in-kind contribution valuation rules",
+      "Reporting non-monetary donations Oregon campaign",
+      "Fair market value for in-kind gifts ORS 260.064"
+    ],
+    "answer": "In-kind contributions must be reported in ORESTAR at their fair market value—the price the candidate would have paid for the item or service. If a candidate or committee receives updated information that an in-kind contribution's value differs from what was initially reported, they must update the filing under ORS 260.064.",
+    "source_url": "https://oregon.public.law/statutes/ors_260.064",
+    "source_name": "ORS 260.064",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Oregon?",
+    "question_variants": [
+      "OR campaign coordination rules",
+      "When is a PAC expenditure not independent in Oregon?",
+      "Prohibition on candidate-PAC coordination ORS 260.005"
+    ],
+    "answer": "Under ORS 260.005, an expenditure is considered 'coordinated' (and thus a controlled contribution rather than an independent expenditure) if it is made with the cooperation, prior consent, consultation, or at the request or suggestion of a candidate or their agent. A 'controlled committee' is one whose actions are directly or indirectly influenced by the candidate.",
+    "source_url": "https://oregon.public.law/statutes/ors_260.005",
+    "source_name": "ORS 260.005",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the late filing penalties for campaign finance reports in Oregon?",
+    "question_variants": [
+      "OR ORESTAR late fee",
+      "Penalty for missing an Oregon campaign finance deadline",
+      "Secretary of State fine for late filing ORS 260.232"
+    ],
+    "answer": "The Secretary of State may impose civil penalties for failing to file or late filing of transactions in ORESTAR under ORS 260.232. The penalty is typically up to 10% of the late transaction amount per violation, though the Secretary has the authority to reduce penalties upon a showing of mitigating circumstances after a hearing request.",
+    "source_url": "https://oregon.public.law/statutes/ors_260.232",
+    "source_name": "ORS 260.232",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a candidate committee be terminated in Oregon?",
+    "question_variants": [
+      "Closing a Oregon campaign committee",
+      "ORESTAR committee termination requirements",
+      "Final campaign finance report Oregon"
+    ],
+    "answer": "A committee may be discontinued in ORESTAR only when it has achieved a zero balance and has no outstanding debts or obligations. To officially close the committee, the treasurer or candidate must file a final transaction to zero out the account and formally discontinue the Statement of Organization within the ORESTAR portal.",
+    "source_url": "https://sos.oregon.gov/elections/documents/orestartransfiling.pdf",
+    "source_name": "Oregon Secretary of State - ORESTAR Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Oregon?",
+    "question_variants": [
+      "OR independent expenditure reporting ORS 260.044",
+      "Disclosure for OR independent expenditure groups",
+      "Reporting thresholds for outside spending Oregon"
+    ],
+    "answer": "Under ORS 260.044, if a person or entity makes independent expenditures totaling more than $250 in a calendar year, they must report it in ORESTAR within 7 days. If the expenditure occurs within the 42-day window prior to a primary or general election, it must be reported within 7 days; if filed very close to the election, special tight deadlines apply to ensure voters are informed before voting.",
+    "source_url": "https://oregon.public.law/statutes/ors_260.044",
+    "source_name": "ORS 260.044",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What new contribution limits will take effect in Oregon under HB 4024 on January 1, 2027?",
+    "question_variants": [
+      "Oregon HB 4024 limits 2027",
+      "How much can an individual donate under the new Oregon law?",
+      "Future campaign finance limits Oregon"
+    ],
+    "answer": "While the 2026 cycle remains unlimited, HB 4024 imposes strict limits starting January 1, 2027. Under the new law, individuals and corporations will be capped at giving $3,300 per election to statewide candidates, state senators, state representatives, circuit court judges, and district attorneys.",
+    "source_url": "https://olis.oregonlegislature.gov/liz/2024R1/Downloads/MeasureAnalysisDocument/82649",
+    "source_name": "Oregon Legislative Information System - HB 4024 Summary",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "Does Oregon state provide public financing or matching funds for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Oregon candidates",
+      "State funded campaigns Oregon status",
+      "Clean elections program Oregon state"
+    ],
+    "answer": "No. Oregon state does not have a public financing or matching funds program for state-level candidates (Governor, Legislature, etc.). Campaigns are funded entirely through private contributions. However, at the municipal level, the City of Portland operates the 'Open and Accountable Elections Program' providing a 9-to-1 match for small-dollar donations to qualified city candidates.",
+    "source_url": "https://www.portland.gov/auditor/elections/documents/faq-pcc-chapter-210/download",
+    "source_name": "City of Portland Elections",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State and Municipal candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions allowed to Oregon candidates in 2026?",
+    "question_variants": [
+      "Corporate contribution ban Oregon state",
+      "Can a business donate to my campaign in OR?",
+      "Corporate campaign finance rules Oregon"
+    ],
+    "answer": "Yes. For the 2026 cycle, Oregon allows direct corporate contributions to state and local candidate campaigns in unlimited amounts. However, candidates should be aware that under the newly enacted HB 4024, corporate contributions will be subject to strict caps (e.g., $3,300 per election) beginning on January 1, 2027.",
+    "source_url": "https://sos.oregon.gov/elections/Documents/campaign-finance-manual.pdf",
+    "source_name": "Oregon Secretary of State - Campaign Finance Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the restrictions on contributions from registered lobbyists in Oregon?",
+    "question_variants": [
+      "OR lobbyist donation ban",
+      "Can a lobbyist give to an Oregon legislator?",
+      "Lobbyist contribution session freeze Oregon"
+    ],
+    "answer": "Unlike some states that have a strict 'session freeze,' Oregon does not currently have a blanket prohibition preventing lobbyists from making campaign contributions to state legislators during the legislative session. Lobbyists may contribute just as any other individual or entity in the state.",
+    "source_url": "https://sos.oregon.gov/elections/Documents/campaign-finance-manual.pdf",
+    "source_name": "Oregon Secretary of State - Campaign Finance Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Legislative candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Oregon?",
+    "question_variants": [
+      "US Senate residency requirements Oregon",
+      "Age to run for Congress in Oregon",
+      "Federal constitutional requirements for OR candidates"
+    ],
+    "answer": "Federal candidates must meet U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected. District residency is not required for the U.S. House.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/election-laws-rules-publications.aspx",
+    "source_name": "Oregon Secretary of State - Elections Division",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for the Oregon Secretary of State and Treasurer?",
+    "question_variants": [
+      "Requirements to run for OR Secretary of State",
+      "Eligibility for Oregon State Treasurer",
+      "Who can run for Secretary of State in OR?"
+    ],
+    "answer": "Under Article VI, Section 1 of the Oregon Constitution, the Secretary of State and Treasurer must be elected by the 'qualified electors of the State.' There are no specific professional degrees required; the candidate must simply be a U.S. citizen and an eligible registered voter of Oregon.",
+    "source_url": "https://www.oregonlegislature.gov/bills_laws/Pages/OrConst.aspx",
+    "source_name": "Oregon Constitution, Article VI, Section 1",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Oregon Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in OR",
+      "Do I need to be a member of the bar to be OR AG?",
+      "Legal requirements for Oregon Attorney General"
+    ],
+    "answer": "Yes. To practice law and represent the state in legal matters in Oregon, an individual must be an active member in good standing of the Oregon State Bar. Therefore, the Attorney General must be a licensed attorney who has passed the bar examination approved by the Oregon Supreme Court.",
+    "source_url": "https://www.osbar.org/public/legalinfo/932.htm",
+    "source_name": "Oregon State Bar",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for an elected County Sheriff in Oregon?",
+    "question_variants": [
+      "Qualifications for OR County Sheriff",
+      "Can anyone run for Sheriff in Oregon?",
+      "Oregon county official requirements ORS 206"
+    ],
+    "answer": "Under ORS 204.016 and 206.015, a candidate for Sheriff must be a U.S. citizen, at least 21 years old, and a resident/elector of the county. They must also have at least four years of full-time law enforcement experience (or two years plus post-high school education) and no felony convictions that would prevent state police certification.",
+    "source_url": "https://oregon.public.law/statutes/ors_204.016",
+    "source_name": "ORS 204.016",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "Are Circuit Court judges elected or appointed in Oregon, and what are the qualifications?",
+    "question_variants": [
+      "Oregon Circuit Court judge eligibility",
+      "Do judges run for election in OR?",
+      "Qualifications to run for judge in Oregon"
+    ],
+    "answer": "Oregon Circuit Court judges are elected to six-year terms in nonpartisan elections. To serve, a judge must be a U.S. citizen, a state resident for at least three years, a resident of their judicial district for at least one year, a member of the Oregon State Bar, and under the mandatory retirement age of 75.",
+    "source_url": "https://www.courts.oregon.gov/about/Pages/default.aspx",
+    "source_name": "Oregon Judicial Branch",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance at Oregon ballot drop boxes?",
+    "question_variants": [
+      "How close can I campaign to a drop box in OR?",
+      "Buffer zone around voting centers Oregon",
+      "ORS 260.695 electioneering rules"
+    ],
+    "answer": "Under ORS 260.695, it is illegal to do any electioneering (including circulating cards, handbills, or soliciting signatures) within any building containing a designated official ballot drop box, or within 100 feet measured radially from the entrance to that building or standalone drop box. It is also illegal to obstruct access to a drop box.",
+    "source_url": "https://oregon.public.law/statutes/ors_260.695",
+    "source_name": "ORS 260.695",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process and deadline in Oregon?",
+    "question_variants": [
+      "How to fix a rejected signature in OR",
+      "Oregon ballot cure process deadline",
+      "Missing signature on OR mail ballot"
+    ],
+    "answer": "If a ballot envelope is missing a signature or the signature does not match the voter registration record, the county elections office sends a letter to the voter. The voter has up to 21 days after the election to provide a matching signature or fix the issue so their ballot can be tabulated.",
+    "source_url": "https://sos.oregon.gov/voting/Pages/voteinor.aspx",
+    "source_name": "Oregon Secretary of State",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Can campaigns purchase the voter file from the state in Oregon?",
+    "question_variants": [
+      "Oregon voter database access",
+      "How to get the voter list in OR",
+      "Cost of voter registration data Oregon"
+    ],
+    "answer": "Yes. Campaigns and political committees can request an electronic copy of the statewide voter list from the Secretary of State's Elections Division. Unlike some states where it is free, Oregon charges a setup fee of $25 plus $0.025 per 100 voter records (with a maximum fee of $500).",
+    "source_url": "https://sos.oregon.gov/elections/Pages/data-research.aspx",
+    "source_name": "Oregon Secretary of State - Data and Research",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Oregon?",
+    "question_variants": [
+      "When are military ballots due in Oregon?",
+      "UOCAVA return deadline OR",
+      "Overseas voting rules Oregon state"
+    ],
+    "answer": "Under UOCAVA, ballots are mailed to military and overseas voters at least 45 days before an election. Voters may return their ballots by mail, or they may fax or email a signed ballot if they include a Secret Ballot Waiver Form. Ballots must be received, or mailed with a valid postmark, by 8:00 p.m. on Election Day.",
+    "source_url": "https://sos.oregon.gov/voting/Pages/militaryoverseas.aspx",
+    "source_name": "Oregon Secretary of State - Military & Overseas Voters",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Oregon restore voting rights to individuals with felony convictions?",
+    "question_variants": [
+      "Can felons vote in Oregon state?",
+      "Felony voting rights restoration OR",
+      "Voting on parole in Oregon ORS 137.281"
+    ],
+    "answer": "Yes. Under ORS 137.281, an individual convicted of a felony only loses their right to vote while they are actively incarcerated in a prison or county jail serving their sentence. Their voting rights are automatically restored immediately upon discharge or release to parole/probation, but they must re-register to vote.",
+    "source_url": "https://oregon.public.law/statutes/ors_137.281",
+    "source_name": "ORS 137.281",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Oregon's mail ballot system?",
+    "question_variants": [
+      "What is a provisional ballot in OR?",
+      "Voting in person with a lost ballot Oregon",
+      "When do election workers issue provisional ballots OAR 115?"
+    ],
+    "answer": "Because Oregon is a universal mail-voting state, provisional ballots are rare but exist. If an individual believes they are eligible to vote but did not receive their mail ballot, they may request a provisional ballot at a county elections office. These are securely held and counted only if the voter's registration and eligibility are confirmed post-election.",
+    "source_url": "https://sos.oregon.gov/voting/Pages/voteinor.aspx",
+    "source_name": "Oregon Secretary of State",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Oregon maintain its voter registration lists?",
+    "question_variants": [
+      "OR voter list maintenance rules",
+      "How are inactive voters handled in Oregon?",
+      "ERIC system Oregon state NVRA"
+    ],
+    "answer": "The Oregon Secretary of State maintains the Oregon Centralized Voter Registration (OCVR) database. Under NVRA requirements, the state updates addresses using USPS Change of Address data and DMV records. If a voter moves out of state or mail is returned undeliverable, the state sends a forwardable Confirmation Notice. If unreturned, the voter is marked 'inactive' and will be canceled if they do not vote in the next two federal elections.",
+    "source_url": "https://sos.oregon.gov/elections/Documents/Directive-2026-01-List-Maintenance.pdf",
+    "source_name": "Oregon SOS Directive 2026-01 (Voter List Maintenance)",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who is responsible for drawing Oregon's legislative and congressional maps?",
+    "question_variants": [
+      "Does Oregon use an independent redistricting commission?",
+      "Who has the authority to draw district lines in Oregon?",
+      "Redistricting process Oregon"
+    ],
+    "answer": "In Oregon, the state legislature has the primary authority to draw both congressional and state legislative districts. If the legislature fails to pass state legislative maps by the statutory deadline, the responsibility falls to the Secretary of State. Congressional maps, however, must be passed by the legislature or potentially resolved by the courts. Maps are subject to gubernatorial veto and judicial review.",
+    "source_url": "https://www.oregonlegislature.gov/redistricting",
+    "source_name": "Oregon State Legislature - Redistricting",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All federal and state candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Oregon?",
+    "question_variants": [
+      "Standards for drawing Oregon district lines",
+      "ORS 188.010 redistricting criteria",
+      "Oregon gerrymandering rules"
+    ],
+    "answer": "Under ORS 188.010, maps must be drawn to: (1) be contiguous, (2) utilize existing geographic or political boundaries, (3) be as compact as possible, and (4) not divide communities of common interest. Furthermore, maps cannot be drawn for the purpose of favoring a political party, incumbent, or other person, nor can they be drawn to dilute the voting strength of any language or ethnic minority group.",
+    "source_url": "https://oregon.public.law/statutes/ors_188.010",
+    "source_name": "ORS 188.010",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All federal and state candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current Oregon district maps operative for the 2026 election cycle?",
+    "question_variants": [
+      "Status of 2021 Oregon redistricting maps",
+      "Are there pending redistricting lawsuits in Oregon?",
+      "Oregon 2026 district boundaries"
+    ],
+    "answer": "Yes. The maps passed by the legislature during the 2021 special session and upheld by the Oregon Supreme Court in early 2022 (following challenges to both congressional and state legislative lines) remain in effect and are fully operative for the 2026 election cycle.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/maps.aspx",
+    "source_name": "Oregon Secretary of State - Maps",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All federal and state candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass a citizen initiative in Oregon?",
+    "question_variants": [
+      "Oregon initiative pass threshold",
+      "Does a measure need a supermajority in Oregon?",
+      "Majority vote requirements Oregon ballot measures"
+    ],
+    "answer": "Generally, Oregon requires only a simple majority (50% plus one vote) to pass both initiated state statutes and constitutional amendments. Unlike Colorado, there is no general 55% supermajority requirement for constitutional changes. However, any measure that itself creates a new supermajority requirement for future actions must be passed by that same supermajority percentage.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/statemanual.aspx",
+    "source_name": "Oregon State Initiative and Referendum Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Oregon legislature refer measures to the voters?",
+    "question_variants": [
+      "Legislative referral process Oregon",
+      "Referendum by legislature ORS",
+      "Can the OR legislature put a law on the ballot?"
+    ],
+    "answer": "The Oregon Legislature may refer a proposed law or constitutional amendment to the voters by passing a joint resolution or a bill with a referral clause. This process, known as a legislative referral, requires a simple majority vote in both the House and Senate and does not require the Governor's signature.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/statemanual.aspx",
+    "source_name": "Oregon Secretary of State - Referrals",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates and strategists"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the Oregon Citizens' Initiative Review (CIR)?",
+    "question_variants": [
+      "CIR process Oregon",
+      "How does the voter guide initiative review work?",
+      "Independent panel review Oregon ballot measures"
+    ],
+    "answer": "The CIR is a unique Oregon process (established by SB 223 in 2011) where an independent, nonpartisan panel of randomly selected voters reviews specific high-profile initiatives. The panel hears from proponents, opponents, and experts, then writes a 'Citizens' Statement' summarizing key facts and arguments, which is published in the official Voters' Pamphlet to assist all voters.",
+    "source_url": "https://www.oregon.gov/circ/Pages/index.aspx",
+    "source_name": "Oregon Citizens' Initiative Review Commission",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees and Voters"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Are there geographic distribution requirements for initiative signatures in Oregon?",
+    "question_variants": [
+      "Oregon initiative signature distribution rules",
+      "Can I get all signatures from Portland for an OR initiative?",
+      "Does Oregon have a 2 percent per district rule?"
+    ],
+    "answer": "No. Unlike some states like Colorado or Nevada, Oregon has no geographic distribution requirement for initiative or referendum signatures. All required signatures may legally be collected from a single county or city, provided the signers are registered voters in the state of Oregon.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/statemanual.aspx",
+    "source_name": "Oregon Secretary of State - Initiative Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How long do proponents have to circulate an initiative petition in Oregon?",
+    "question_variants": [
+      "Oregon initiative circulation period",
+      "Deadline to gather signatures for Oregon measures",
+      "Initiative timeline Oregon"
+    ],
+    "answer": "The circulation period for a citizen initiative can last up to approximately two years. Proponents can begin collecting signatures once the petition is approved for circulation by the Secretary of State. All signatures must be filed with the Secretary of State no later than four months before the general election (for 2026, the deadline is July 3, 2026).",
+    "source_url": "https://sos.oregon.gov/elections/Pages/statemanual.aspx",
+    "source_name": "Oregon Secretary of State - Signature Deadlines",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OR",
+    "office_level": ["municipal"],
+    "category": "voter_interaction",
+    "question": "What is the 'double majority' rule for local measures in Oregon?",
+    "question_variants": [
+      "Oregon 50 percent turnout rule",
+      "Double majority tax measures Oregon",
+      "Does Measure 56 affect local elections?"
+    ],
+    "answer": "The 'double majority' rule required certain local property tax measures to receive both a majority of 'yes' votes and at least 50% voter turnout to pass. However, following Measure 56 (2008), this rule now applies only to local elections held in May or November of odd-numbered years, or other special elections. It does not apply to general elections in even-numbered years.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/manuals-forms.aspx",
+    "source_name": "Oregon Secretary of State - County, City and District Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates and measure committees"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "recall_rules",
+    "question": "What is the procedure in Oregon after a recall petition meets the signature threshold?",
+    "question_variants": [
+      "What happens after recall signatures are verified Oregon?",
+      "Recall election timeline Oregon",
+      "Oregon recall 5-day resignation period"
+    ],
+    "answer": "Once the required number of signatures is verified, the targeted official has five days (excluding weekends/holidays) to resign. If they do not resign, a special recall election must be ordered to take place within 35 days. The official remains in office until the results of the recall election are certified.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/recall.aspx",
+    "source_name": "Oregon Constitution, Article II, Section 18",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "recall_rules",
+    "question": "Are specific grounds or 'cause' required to initiate a recall in Oregon?",
+    "question_variants": [
+      "Oregon no-cause recall",
+      "Do I need to prove malfeasance for a recall in OR?",
+      "Reasons for recall in Oregon"
+    ],
+    "answer": "No specific legal grounds (such as malfeasance or incompetence) are required to initiate a recall in Oregon. Under Article II, Section 18, the petition must state the reasons for the recall in 200 words or less, but the 'truth' or 'sufficiency' of those reasons is not subject to court review; the voters are the sole judges of the reasons' validity.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/recall.aspx",
+    "source_name": "Oregon Constitution, Article II, Section 18",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal"],
+    "category": "recall_rules",
+    "question": "Can U.S. Senators or Representatives be recalled in Oregon?",
+    "question_variants": [
+      "Recalling federal officers in Oregon",
+      "Is Jeff Merkley subject to recall?",
+      "Does OR state recall apply to Congress?"
+    ],
+    "answer": "No. While the Oregon Constitution allows the recall of 'all public officers,' federal courts have consistently ruled that state-level recall provisions cannot apply to members of the U.S. Congress, as their qualifications and removal are governed exclusively by the U.S. Constitution.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/recall.aspx",
+    "source_name": "Oregon Secretary of State - Recall FAQ",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for County Commissioner in Oregon?",
+    "question_variants": [
+      "Qualifications for Oregon County Commissioner",
+      "Can I run for county board in OR?",
+      "Residency rules for Oregon commissioners"
+    ],
+    "answer": "Under ORS 204.016, a candidate for County Commissioner must be a citizen of the United States, an elector (registered voter) of the county, and have resided in the county for at least one year prior to the election. Some home-rule counties (like Lane or Multnomah) may have additional requirements in their specific county charters.",
+    "source_url": "https://oregon.public.law/statutes/ors_204.016",
+    "source_name": "ORS 204.016",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "Must a District Attorney in Oregon be a licensed attorney?",
+    "question_variants": [
+      "Oregon DA qualifications",
+      "Do I need to be a bar member to be a prosecutor in OR?",
+      "Eligibility for Oregon District Attorney"
+    ],
+    "answer": "Yes. Per ORS 8.630, a candidate for District Attorney must be a person who has been admitted to practice law in the Supreme Court of Oregon (meaning they must be an active member of the Oregon State Bar) and must be a resident of the state.",
+    "source_url": "https://oregon.public.law/statutes/ors_8.630",
+    "source_name": "ORS 8.630",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for school board candidates in Oregon?",
+    "question_variants": [
+      "Run for school board Oregon requirements",
+      "Who can be a school director in OR?",
+      "School board residency rules Oregon"
+    ],
+    "answer": "Under ORS 332.018, a candidate for a school district board must be a 'qualified voter' (registered voter) and must have resided in the district for at least one year immediately preceding the election. They cannot be an employee of the district in which they are running.",
+    "source_url": "https://www.osba.org/Resources/Article/Board_Operations/Get_on_Board.aspx",
+    "source_name": "Oregon School Boards Association",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are Oregon Supreme Court and Court of Appeals judges selected?",
+    "question_variants": [
+      "Oregon appellate judge elections",
+      "Is the Oregon Supreme Court nonpartisan?",
+      "OR judge term lengths"
+    ],
+    "answer": "Justices of the Oregon Supreme Court and judges of the Court of Appeals are elected by the voters in nonpartisan elections for six-year terms. If a midterm vacancy occurs, the Governor appoints a replacement who must then stand for election at the next general election. All judges face mandatory retirement at age 75.",
+    "source_url": "https://www.courts.oregon.gov/about/Pages/default.aspx",
+    "source_name": "Oregon Judicial Branch",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "federal"],
+    "category": "ballot_access",
+    "question": "How do major party candidates get on the Oregon primary ballot?",
+    "question_variants": [
+      "Oregon primary filing fee vs petition",
+      "Getting on the ballot for Oregon Governor",
+      "SEL 101 filing Oregon"
+    ],
+    "answer": "Candidates for major party nomination (Democratic or Republican) may choose one of two methods: (1) pay a filing fee, or (2) file by petition. For 2026, candidates must file either Form SEL 101 (fee) or Form SEL 102 (petition) with the Secretary of State by the filing deadline in early March.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/candidates.aspx",
+    "source_name": "Oregon Secretary of State - Candidate Filing",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What are the filing fee amounts for Oregon offices?",
+    "question_variants": [
+      "Cost to run for office in Oregon",
+      "Oregon Governor filing fee",
+      "How much is the filing fee for Oregon legislature?"
+    ],
+    "answer": "As of the 2026 cycle, filing fees are: $150 for U.S. Senator or U.S. Representative; $100 for Governor, Secretary of State, State Treasurer, Attorney General, and BOLI Commissioner; $25 for State Senator or State Representative.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/candidates.aspx",
+    "source_name": "Oregon Secretary of State - Candidate Filing Fees",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "How do independent or unaffiliated candidates get on the Oregon general election ballot?",
+    "question_variants": [
+      "Independent candidate petition threshold Oregon",
+      "Oregon individual elector nomination",
+      "How to run for office without a party in Oregon"
+    ],
+    "answer": "Independent (non-affiliated) candidates must use the 'Individual Electors' process. They must gather valid signatures from registered voters equal to 1% of the total votes cast for Governor in that district/state in the last election. Alternatively, they can be nominated by an 'Assembly of Electors'—a physical meeting of voters (1,000 for statewide, smaller for districts) who sign a nominating certificate.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/candidates.aspx",
+    "source_name": "Oregon Secretary of State - Candidate Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "What are the requirements for write-in candidates in Oregon?",
+    "question_variants": [
+      "Do write-in votes count in Oregon?",
+      "Oregon write-in candidate registration",
+      "Declaration of intent write-in Oregon"
+    ],
+    "answer": "Oregon generally does not require write-in candidates to register before an election. However, under ORS 254.507, write-in votes are only counted and reported if the total number of write-in votes for an office is greater than or equal to the number of votes received by the candidate with the most votes on the ballot, OR if a candidate files a request for a tally.",
+    "source_url": "https://oregon.public.law/statutes/ors_254.507",
+    "source_name": "ORS 254.507",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold for a political party to be 'major' in Oregon?",
+    "question_variants": [
+      "Major vs minor party Oregon",
+      "Oregon political party recognition threshold",
+      "How many major parties in Oregon?"
+    ],
+    "answer": "A political party is classified as a 'major' party if its registered voter membership equals at least 5% of the total number of registered voters in the state. Currently, only the Democratic and Republican parties meet this threshold. Major parties are required to nominate candidates via the state-funded primary election.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/minor-political-parties.aspx",
+    "source_name": "Oregon Secretary of State - Major Parties",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Political parties"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Oregon have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the OR primary?",
+      "Oregon primary defeat independent run",
+      "ORS 249.048 sore loser"
+    ],
+    "answer": "Yes. Under ORS 249.048, a person who was a candidate for a major political party in the primary election and was not nominated cannot appear on the general election ballot for the same office as an independent (non-affiliated) candidate or as a nominee of a minor political party.",
+    "source_url": "https://oregon.public.law/statutes/ors_249.048",
+    "source_name": "ORS 249.048",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["county", "municipal"],
+    "category": "election_dates",
+    "question": "How are county office terms and election cycles structured in Oregon?",
+    "question_variants": [
+      "When are Oregon county officials elected?",
+      "Oregon county sheriff term length",
+      "Partisan vs nonpartisan county races Oregon"
+    ],
+    "answer": "Most elected county officials—including Commissioners, Sheriffs, Assessors, and Treasurers—serve four-year terms. The vast majority of these offices are nonpartisan and are elected during the same cycle as the Governor (midterm cycle), meaning they will be on the 2026 ballot.",
+    "source_url": "https://sos.oregon.gov/elections/Pages/candidates.aspx",
+    "source_name": "Oregon Secretary of State - County Elections",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Oregon elections?",
+    "question_variants": [
+      "When are Oregon election results official?",
+      "Oregon certification deadline",
+      "ORS 254.545 certification"
+    ],
+    "answer": "Under ORS 254.545, county clerks must complete their official canvass of results and submit them to the Secretary of State no later than the 27th day after the election. The Secretary of State then has until the 30th day after the election to officially certify the statewide results.",
+    "source_url": "https://oregon.public.law/statutes/ors_254.545",
+    "source_name": "ORS 254.545",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "OR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Oregon campaign materials?",
+    "question_variants": [
+      "Oregon 'Paid for by' rules",
+      "Campaign ad disclaimer requirements Oregon",
+      "ORS 260.432 political taglines"
+    ],
+    "answer": "Oregon generally requires political advertisements to include a disclaimer. For materials identifying a candidate, it must include 'Paid for by' followed by the name of the candidate or committee. For independent expenditures, it must also state that it was not authorized by a candidate or candidate's committee.",
+    "source_url": "https://sos.oregon.gov/elections/Documents/campaign-finance-manual.pdf",
+    "source_name": "Oregon Secretary of State - Campaign Finance Manual",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  }
+]
