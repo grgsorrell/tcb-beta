@@ -1,0 +1,1334 @@
+[
+  {
+    "state": "MA",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Is there a U.S. Senate election in Massachusetts in 2026?",
+    "question_variants": [
+      "When is Ed Markey up for re-election?",
+      "Is Elizabeth Warren on the 2026 ballot?",
+      "Massachusetts U.S. Senate election cycle"
+    ],
+    "answer": "Yes. Incumbent Senator Ed Markey (D) is up for re-election in 2026 for a Class 2 seat. Senator Elizabeth Warren (Class 3) was re-elected in 2024 and is not on the ballot again until 2030.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth of Massachusetts - Elections Division",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Massachusetts have term limits for the Governor?",
+    "question_variants": [
+      "How many terms can Maura Healey serve?",
+      "Gubernatorial term limits in MA",
+      "Is the Governor of Massachusetts term-limited?"
+    ],
+    "answer": "No. Massachusetts does not have term limits for the office of Governor. Incumbents may seek re-election indefinitely. Governor Maura Healey, first elected in 2022, is eligible to run for re-election in 2026.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "Constitution of the Commonwealth of Massachusetts",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How do the Governor and Lieutenant Governor run as a ticket in Massachusetts?",
+    "question_variants": [
+      "Are Governor and Lt. Gov on the same primary ballot in MA?",
+      "When do gubernatorial candidates join their running mates in Massachusetts?",
+      "MA joint ticket rules for Governor"
+    ],
+    "answer": "In Massachusetts, candidates for Governor and Lieutenant Governor run separately in the primary election. The winners of each respective primary are then joined as a single ticket for the general election per M.G.L. ch. 54, § 43A.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter54/Section43A",
+    "source_name": "M.G.L. ch. 54, § 43A",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the 2026 election cycle for the Governor's Council?",
+    "question_variants": [
+      "When are Executive Council seats up for election?",
+      "How many Governor's Council seats are on the 2026 ballot?",
+      "Elections for MA Governor's Council"
+    ],
+    "answer": "All eight seats of the Governor's Council (Executive Council) are up for election in 2026. Members are elected from eight districts for two-year terms that coincide with the biennial state election per M.G.L. ch. 54, § 150.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth - Governor's Council",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Governor's Council candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide constitutional offices are up for election in Massachusetts in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "MA statewide election list 2026",
+      "Is William Galvin running in 2026?"
+    ],
+    "answer": "The 2026 Massachusetts ballot includes the Governor, Lieutenant Governor, Attorney General, Secretary of the Commonwealth, Treasurer and Receiver General, and Auditor. All are four-year terms elected during the midterm cycle.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth - 2026 Candidates' Guide",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What are the term lengths for the Massachusetts General Court?",
+    "question_variants": [
+      "How long is a MA State Representative term?",
+      "Are MA State Senators elected for 2 or 4 years?",
+      "Next election for MA legislature"
+    ],
+    "answer": "Both the Massachusetts House of Representatives (160 seats) and the Massachusetts Senate (40 seats) serve two-year terms. The entire General Court is up for election every even-numbered year, including 2026, per the MA Constitution, Amend. Art. LXIV.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Amend. Art. LXIV, Sec. 1",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House seats are up for election in Massachusetts in 2026?",
+    "question_variants": [
+      "Massachusetts congressional election cycle 2026",
+      "Are all MA Congress members on the 2026 ballot?",
+      "Number of MA congressional districts"
+    ],
+    "answer": "All nine of Massachusetts' U.S. House of Representatives seats are up for election in 2026. Representatives are elected for two-year terms.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth - Congressional Districts",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county"],
+    "category": "election_dates",
+    "question": "When is the 2026 state primary in Massachusetts?",
+    "question_variants": [
+      "MA primary election date 2026",
+      "When do I vote in the MA state primary?",
+      "September 2026 MA election date"
+    ],
+    "answer": "The Massachusetts state primary is scheduled for Tuesday, September 1, 2026. This date follows the statutory formula of the first Tuesday in September per M.G.L. ch. 53, § 28.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter53/Section28",
+    "source_name": "M.G.L. ch. 53, § 28",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county"],
+    "category": "filing_requirements",
+    "question": "What is the 2026 filing deadline for major party candidates in Massachusetts?",
+    "question_variants": [
+      "Last day to file for office in MA 2026",
+      "Nomination paper deadline MA 2026",
+      "When are nomination signatures due for the MA primary?"
+    ],
+    "answer": "For the 2026 primary, the deadline for candidates to file nomination papers with the Secretary of the Commonwealth is June 2, 2026. However, papers must typically be submitted to local registrars for certification by late April or early May.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth - Candidate Filing Deadlines",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and Federal candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Massachusetts allow citizen-led ballot initiatives?",
+    "question_variants": [
+      "How to put a question on the MA ballot",
+      "Massachusetts initiative and referendum process",
+      "Can citizens propose laws in MA?"
+    ],
+    "answer": "Yes. Massachusetts allows citizen-initiated statutes and constitutional amendments through a process requiring two rounds of signatures and a legislative review period as defined in Article 48 of the Amendments to the MA Constitution.",
+    "source_url": "https://www.sec.state.ma.us/ele/elepip/pipidx.htm",
+    "source_name": "MA Constitution, Amend. Art. XLVIII",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates and advocates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is no-excuse mail-in voting permanent in Massachusetts?",
+    "question_variants": [
+      "Can I vote by mail in MA without an excuse?",
+      "Massachusetts universal mail-in ballot laws",
+      "Do I need a reason to vote by mail in MA?"
+    ],
+    "answer": "Yes. No-excuse mail-in voting was made permanent in Massachusetts by the VOTES Act of 2022. All registered voters may request a mail-in ballot for any state election without providing a reason per M.G.L. ch. 54, § 25B.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleev/early-voting-by-mail.htm",
+    "source_name": "M.G.L. ch. 54, § 25B",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does automatic voter registration work in Massachusetts?",
+    "question_variants": [
+      "Is registration automatic at the MA RMV?",
+      "MA automatic voter registration status",
+      "Do I have to register to vote if I have a MA driver's license?"
+    ],
+    "answer": "Massachusetts uses Automatic Voter Registration (AVR). Eligible citizens applying for or renewing a driver's license at the RMV (or MassHealth applicants) are automatically registered to vote unless they opt out per M.G.L. ch. 51, § 42G½.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleavr/avr-idx.htm",
+    "source_name": "M.G.L. ch. 51, § 42G½",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Do I need a photo ID to vote in Massachusetts?",
+    "question_variants": [
+      "MA voter ID requirements",
+      "Is identification required at MA polling places?",
+      "What ID do I need to vote in Massachusetts?"
+    ],
+    "answer": "Generally, no. Massachusetts does not require a photo ID to vote for most voters. Identification may be requested only if you are voting for the first time in a federal election, are on the inactive voter list, or are casting a provisional ballot per 950 CMR 52.03.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleid/ididx.htm",
+    "source_name": "950 CMR 52.03",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Can Massachusetts state officials be recalled?",
+    "question_variants": [
+      "How to recall a MA State Senator",
+      "Is there a recall process for the MA Governor?",
+      "Recall laws in Massachusetts"
+    ],
+    "answer": "No. The Massachusetts Constitution and General Laws do not provide a mechanism for the recall of statewide elected officials or members of the General Court. Recall procedures only exist at the local level in certain cities and towns with specific charters.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth - Election Laws",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are judges selected in Massachusetts?",
+    "question_variants": [
+      "Are judges elected in MA?",
+      "Who appoints MA Supreme Judicial Court justices?",
+      "MA judicial selection process"
+    ],
+    "answer": "All judges in Massachusetts are appointed by the Governor with the advice and consent of the Governor's Council. There are no judicial elections in Massachusetts per Part II, C. 2, § 1, Art. IX of the MA Constitution.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Pt. 2, C. 2, § 1, Art. IX",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What is the mandatory retirement age for judges in Massachusetts?",
+    "question_variants": [
+      "When must MA judges retire?",
+      "Judicial age limits in MA",
+      "Massachusetts judicial tenure"
+    ],
+    "answer": "All Massachusetts judges must retire upon reaching the age of 70. This mandatory retirement age is established by Part II, C. 3, Art. I of the Massachusetts Constitution.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Pt. 2, C. 3, Art. I",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency oversees campaign finance in Massachusetts?",
+    "question_variants": [
+      "Where do I file MA campaign finance reports?",
+      "What is the OCPF?",
+      "MA campaign finance regulator"
+    ],
+    "answer": "The Office of Campaign and Political Finance (OCPF) is the independent state agency that administers and enforces the campaign finance law (M.G.L. ch. 55) for state, county, and municipal candidates in Massachusetts.",
+    "source_url": "https://www.ocpf.us/",
+    "source_name": "M.G.L. ch. 55",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Massachusetts have straight-ticket voting?",
+    "question_variants": [
+      "Can I vote for all Democrats with one mark in MA?",
+      "Straight-party voting in MA",
+      "MA ballot options for party voting"
+    ],
+    "answer": "No. Massachusetts does not have a straight-ticket voting option. Voters must cast individual votes for each office on the ballot.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth - Voter Information",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Maura Healey running for re-election in 2026?",
+    "question_variants": [
+      "Massachusetts Governor election 2026",
+      "Who is running for MA Governor in 2026?",
+      "MA gubernatorial incumbents"
+    ],
+    "answer": "Yes. Incumbent Governor Maura Healey (D) is running for re-election in 2026. She was first elected in 2022.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth - Elections Division",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the primary work if I am an 'unenrolled' voter in Massachusetts?",
+    "question_variants": [
+      "Can independents vote in MA primaries?",
+      "Choosing a party ballot as an unenrolled voter MA",
+      "MA primary rules for non-party members"
+    ],
+    "answer": "Voters registered as 'unenrolled' (commonly called independents) may choose to vote in any one party's primary without changing their registration status. They remain unenrolled after casting their ballot per M.G.L. ch. 53, § 37.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter53/Section37",
+    "source_name": "M.G.L. ch. 53, § 37",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is the Massachusetts Lieutenant Governor up for election in 2026?",
+    "question_variants": [
+      "When is Kim Driscoll up for re-election?",
+      "MA Lt. Governor election cycle",
+      "Is there a separate election for MA Lt. Governor?"
+    ],
+    "answer": "Yes. Incumbent Lieutenant Governor Kim Driscoll (D) is up for election in 2026. She runs separately in the primary and jointly with the gubernatorial nominee in the general election.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the term length for the MA Auditor?",
+    "question_variants": [
+      "Is Diana DiZoglio up for re-election in 2026?",
+      "How long is the MA State Auditor's term?",
+      "Election cycle for MA Auditor"
+    ],
+    "answer": "The Massachusetts State Auditor serves a four-year term. Incumbent Diana DiZoglio (D), first elected in 2022, is up for re-election in 2026.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the residency requirements for MA State Senate candidates?",
+    "question_variants": [
+      "How long must I live in MA to run for State Senate?",
+      "Residency rules for MA legislature",
+      "District residency for MA Senators"
+    ],
+    "answer": "A candidate for the Massachusetts Senate must have been an inhabitant of the Commonwealth for five years immediately preceding the election and must be an inhabitant of the district for which they are chosen per MA Constitution, Pt. 2, C. 1, § 2, Art. V.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Pt. 2, C. 1, § 2, Art. V",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the residency requirements for MA State Representative candidates?",
+    "question_variants": [
+      "Run for MA House residency rules",
+      "Inhabitant requirement MA State Rep",
+      "How long do I need to live in my district to run for MA House?"
+    ],
+    "answer": "A candidate for the Massachusetts House of Representatives must have been an inhabitant of the district for at least one year immediately preceding the election per MA Constitution, Amend. Art. CI.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Amend. Art. CI, Sec. 1",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county"],
+    "category": "election_dates",
+    "question": "When is the 2026 general election in Massachusetts?",
+    "question_variants": [
+      "MA general election date 2026",
+      "When is Election Day in MA 2026?",
+      "November 2026 MA election"
+    ],
+    "answer": "The 2026 Massachusetts general election will be held on Tuesday, November 3, 2026.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for Governor or Lieutenant Governor of Massachusetts?",
+    "question_variants": [
+      "How old do you have to be to run for Governor in MA?",
+      "What is the inhabitant requirement for MA Governor?",
+      "Eligibility for Massachusetts Lieutenant Governor"
+    ],
+    "answer": "Under the Massachusetts Constitution, a candidate for Governor or Lieutenant Governor must be at least 30 years old and have been an inhabitant of the Commonwealth for at least seven years immediately preceding the election per MA Constitution, Pt. 2, C. 2, § 1, Art. II and Pt. 2, C. 2, § 2, Art. I.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "Massachusetts Constitution, Part 2, Chapter 2",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Massachusetts Attorney General have to be a licensed lawyer?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in MA",
+      "Do I need to be a member of the bar to be MA AG?",
+      "Legal requirements for MA Attorney General"
+    ],
+    "answer": "Yes. A candidate for Attorney General must be a member of the Massachusetts Bar in good standing. Additionally, they must be a registered voter in the Commonwealth and meet the five-year inhabitant requirement for statewide constitutional officers per M.G.L. ch. 12, § 1.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleII/Chapter12/Section1",
+    "source_name": "M.G.L. ch. 12, § 1",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for Secretary of the Commonwealth, Treasurer, and Auditor?",
+    "question_variants": [
+      "Requirements to run for MA Secretary of State",
+      "Eligibility for Massachusetts Treasurer",
+      "Who can run for State Auditor in MA?"
+    ],
+    "answer": "Candidates for these constitutional offices must be registered voters and inhabitants of the Commonwealth for at least five years immediately preceding the election. There is no specific age requirement other than being a qualified elector (18+) per MA Constitution, Amend. Art. XVII.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Amend. Art. XVII",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Governor's Council?",
+    "question_variants": [
+      "Eligibility for Massachusetts Executive Council",
+      "Do I have to live in the district to run for Governor's Council?",
+      "MA Councillor residency requirements"
+    ],
+    "answer": "A candidate for the Governor's Council (Executive Council) must have been an inhabitant of the Commonwealth for at least five years immediately preceding the election and must be an inhabitant of the district they represent per MA Constitution, Amend. Art. XVI.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Amend. Art. XVI",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Governor's Council candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Massachusetts?",
+    "question_variants": [
+      "Can felons vote in MA?",
+      "Restoration of voting rights after prison in Massachusetts",
+      "Voting eligibility for formerly incarcerated people in MA"
+    ],
+    "answer": "In Massachusetts, individuals with felony convictions automatically have their voting rights restored immediately upon release from incarceration. Per M.G.L. ch. 51, § 1, only those currently serving a sentence in a correctional facility for a felony conviction are prohibited from voting.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter51/Section1",
+    "source_name": "M.G.L. ch. 51, § 1",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What happens if a vacancy occurs in the Massachusetts State Legislature?",
+    "question_variants": [
+      "Special elections for MA State House",
+      "How are MA State Senate vacancies filled?",
+      "Legislative vacancy process Massachusetts"
+    ],
+    "answer": "Vacancies in the Massachusetts House or Senate are filled via special election. The presiding officer of the chamber issues a precept to the relevant cities and towns to hold an election at a time they designate per M.G.L. ch. 54, § 141.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter54/Section141",
+    "source_name": "M.G.L. ch. 54, § 141",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How is a U.S. Senate vacancy filled in Massachusetts?",
+    "question_variants": [
+      "Massachusetts US Senate vacancy law",
+      "Does the MA Governor appoint a replacement for US Senate?",
+      "Special election for US Senate MA"
+    ],
+    "answer": "When a U.S. Senate vacancy occurs, the Governor makes a temporary appointment. A special election must then be held between 145 and 160 days after the vacancy occurs, unless the vacancy happens close to a biennial state election per M.G.L. ch. 54, § 140.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter54/Section140",
+    "source_name": "M.G.L. ch. 54, § 140",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline in Massachusetts?",
+    "question_variants": [
+      "Last day to register to vote in MA",
+      "MA voter registration cutoff",
+      "2026 registration deadline Massachusetts"
+    ],
+    "answer": "The voter registration deadline is 10 days before any election or primary. For the 2026 state primary on September 1, the deadline is August 22, 2026. For the general election on November 3, the deadline is October 24, 2026 per M.G.L. ch. 51, § 26.",
+    "source_url": "https://www.sec.state.ma.us/divisions/elections/voter-resources/registering-to-vote.htm",
+    "source_name": "M.G.L. ch. 51, § 26",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the polling hours on Election Day in Massachusetts?",
+    "question_variants": [
+      "When do polls open in MA?",
+      "MA polling place hours",
+      "What time do polls close in Massachusetts?"
+    ],
+    "answer": "For state elections, polling places must be open from at least 7:00 a.m. to 8:00 p.m. per M.G.L. ch. 54, § 64. In some municipal elections, towns may open as late as 12:00 p.m., but state primary and general election hours are standardized.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter54/Section64",
+    "source_name": "M.G.L. ch. 54, § 64",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone at Massachusetts polling places?",
+    "question_variants": [
+      "How close can I campaign to the polls in MA?",
+      "MA polling place buffer distance",
+      "Electioneering rules near MA voting sites"
+    ],
+    "answer": "Massachusetts prohibits electioneering, including the display of campaign materials or solicitation of votes, within 150 feet of the entrance to a polling place per M.G.L. ch. 54, § 65.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter54/Section65",
+    "source_name": "M.G.L. ch. 54, § 65",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county"],
+    "category": "ballot_access",
+    "question": "How many signatures are required for a primary candidate in Massachusetts?",
+    "question_variants": [
+      "Nomination paper signature counts MA",
+      "Signatures to run for MA State Senate",
+      "How many signatures for MA Governor?"
+    ],
+    "answer": "For the 2026 primary: Governor, Lt. Gov, and AG require 10,000 certified signatures. Secretary, Treasurer, and Auditor require 5,000. U.S. Senator requires 10,000; U.S. Representative requires 2,000; State Senator requires 300; and State Representative requires 150 per M.G.L. ch. 53, § 6.",
+    "source_url": "https://www.sec.state.ma.us/divisions/elections/getting-on-the-ballot/how-to-run-for-office-2026.htm",
+    "source_name": "Secretary of the Commonwealth - Signature Requirements",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county"],
+    "category": "ballot_access",
+    "question": "Does Massachusetts have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the MA primary?",
+      "Massachusetts sore loser statute",
+      "Independent candidacy after primary loss MA"
+    ],
+    "answer": "Yes. Massachusetts law (M.G.L. ch. 53, § 48) prevents any candidate who has been a candidate for nomination for an office by a political party at the primary from being a candidate for the same office as an independent at the following general election.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter53/Section48",
+    "source_name": "M.G.L. ch. 53, § 48",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the individual contribution limits for Massachusetts candidates in 2026?",
+    "question_variants": [
+      "How much can I donate to a MA Governor campaign?",
+      "MA individual campaign donation caps",
+      "OCPF contribution limits 2026"
+    ],
+    "answer": "Individuals may contribute up to $1,000 per calendar year to any one candidate for state, county, or municipal office in Massachusetts. This limit applies per candidate, not per election (primary and general share the limit) per M.G.L. ch. 55, § 7A.",
+    "source_url": "https://www.ocpf.us/PublicSearch/ViewDocument?id=2729",
+    "source_name": "M.G.L. ch. 55, § 7A",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions allowed in Massachusetts?",
+    "question_variants": [
+      "Can my business donate to a MA candidate?",
+      "Corporate campaign finance rules Massachusetts",
+      "OCPF corporate contribution ban"
+    ],
+    "answer": "No. Massachusetts law (M.G.L. ch. 55, § 8) strictly prohibits direct contributions—both monetary and in-kind—from business corporations, LLCs, LLPs, and partnerships to candidates or political party committees. These entities may only contribute to ballot question committees.",
+    "source_url": "http://files.ocpf.us/pdf/guides/businessguideonepager.pdf",
+    "source_name": "M.G.L. ch. 55, § 8",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Massachusetts offer public financing for campaigns?",
+    "question_variants": [
+      "Clean Elections law status Massachusetts",
+      "Public matching funds for MA candidates",
+      "Public campaign finance current status MA"
+    ],
+    "answer": "Massachusetts has a State Election Campaign Fund that provides public matching funds for statewide candidates (Governor, Lt. Gov, AG, Secretary, Treasurer, Auditor) who agree to spending limits. The 'Clean Elections' law was repealed, but matching funds remain active via M.G.L. ch. 55C.",
+    "source_url": "https://www.ocpf.us/",
+    "source_name": "M.G.L. ch. 55C",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Who draws the congressional and legislative maps in Massachusetts?",
+    "question_variants": [
+      "Massachusetts redistricting authority",
+      "Does MA have an independent redistricting commission?",
+      "Who is responsible for MA district maps?"
+    ],
+    "answer": "The Massachusetts Legislature (General Court) is responsible for drawing both congressional and state legislative districts. There is no independent commission; the maps are passed as legislation subject to the Governor's approval per MA Constitution, Amend. Art. CI.",
+    "source_url": "https://malegislature.gov/Redistricting",
+    "source_name": "Massachusetts General Court - Redistricting",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the two-round signature process for Massachusetts initiatives?",
+    "question_variants": [
+      "How to get an initiative on the MA ballot",
+      "Article 48 signature rounds MA",
+      "MA ballot question petition rounds"
+    ],
+    "answer": "Under Article 48, proponents must first gather a set number of signatures (3% of the total vote for governor). If the legislature does not pass the proposal, a second round of signatures (0.5% of the total vote for governor) is required to place the measure on the ballot.",
+    "source_url": "https://www.sec.state.ma.us/ele/elepip/pipidx.htm",
+    "source_name": "Massachusetts Constitution, Amend. Art. XLVIII",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot question committees"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the proposed ballot questions for the 2026 Massachusetts election?",
+    "question_variants": [
+      "2026 MA ballot measures",
+      "Same-day registration ballot question MA 2026",
+      "Rent control initiative Massachusetts 2026"
+    ],
+    "answer": "As of 2026, notable proposed citizen initiatives include establishing same-day voter registration, reducing the state income tax, and authorizing municipal rent control. These measures follow the Article 48 process and are subject to certification and signature verification.",
+    "source_url": "https://www.sec.state.ma.us/ele/elepip/pipidx.htm",
+    "source_name": "Secretary of the Commonwealth - Ballot Question Information",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Are there subjects excluded from the initiative process in Massachusetts?",
+    "question_variants": [
+      "What cannot be a ballot question in MA?",
+      "Prohibited subjects for MA initiatives",
+      "Religious ballot questions Massachusetts"
+    ],
+    "answer": "Yes. Article 48 of the MA Constitution prohibits initiatives on certain subjects, including religion, religious institutions, specific appropriations, and the powers of courts. The Attorney General must certify that a petition does not contain excluded matter.",
+    "source_url": "https://www.sec.state.ma.us/ele/elepip/pipidx.htm",
+    "source_name": "MA Constitution, Amend. Art. XLVIII",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot question committees"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How long is the early voting period in Massachusetts?",
+    "question_variants": [
+      "MA early voting window dates",
+      "When does early voting start in Massachusetts?",
+      "In-person early voting schedule MA"
+    ],
+    "answer": "Massachusetts provides in-person early voting for two weeks (including weekends) before a biennial state election and one week before a state primary. Specific dates and locations are set by local election officials within these windows per M.G.L. ch. 54, § 25B.",
+    "source_url": "https://www.sec.state.ma.us/divisions/elections/voter-resources/early-voting-information.htm",
+    "source_name": "M.G.L. ch. 54, § 25B",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the reporting threshold for itemized contributions in Massachusetts?",
+    "question_variants": [
+      "When must I report a donor's name in MA?",
+      "MA OCPF disclosure threshold",
+      "Small donation reporting rules Massachusetts"
+    ],
+    "answer": "Campaigns must itemize (list name and address) any contribution from an individual that exceeds $50 in a calendar year. Contributions of $50 or less can be reported as unitemized in aggregate per M.G.L. ch. 55, § 18.",
+    "source_url": "https://www.ocpf.us/Home/GuideList",
+    "source_name": "M.G.L. ch. 55, § 18",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Treasurers"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age requirements for the Massachusetts State Senate and House?",
+    "question_variants": [
+      "How old to be a MA State Rep?",
+      "Age limit for MA State Senate",
+      "Qualifications for General Court candidates"
+    ],
+    "answer": "Under the Massachusetts Constitution, a candidate for the State Senate or House of Representatives must be a 'qualified elector,' meaning they must be at least 18 years of age at the time of the election per MA Constitution, Amend. Art. III.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Amend. Art. III",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How is a vacancy on the Governor's Council filled?",
+    "question_variants": [
+      "MA Governor's Council vacancy process",
+      "Executive Council replacement Massachusetts",
+      "Does the Governor appoint council members?"
+    ],
+    "answer": "Vacancies on the Governor's Council (Executive Council) are filled in the same manner as vacancies in the State Senate. The General Court (Legislature) chooses a replacement from among the residents of the district in which the vacancy exists per MA Constitution, Amend. Art. XXV.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Amend. Art. XXV",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Governor's Council candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Massachusetts?",
+    "question_variants": [
+      "Personal use of campaign money MA",
+      "OCPF personal use ban",
+      "Can I use my campaign funds for non-campaign expenses in MA?"
+    ],
+    "answer": "Yes. Massachusetts law (M.G.L. ch. 55, § 6) and OCPF regulations strictly prohibit the personal use of campaign funds. Expenditures must be for the 'enhancement of the political future' of the candidate and not for the candidate's personal benefit.",
+    "source_url": "https://www.ocpf.us/Home/Regulations",
+    "source_name": "M.G.L. ch. 55, § 6",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Treasurers"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature requirement for an independent candidate in the Massachusetts general election?",
+    "question_variants": [
+      "Independent candidate signature counts MA",
+      "Signatures for non-party candidates MA",
+      "Ballot access for unenrolled candidates Massachusetts"
+    ],
+    "answer": "Independent (unenrolled) candidates for the general election must submit the same number of signatures as party candidates. For 2026: Governor/AG (10,000), Secretary/Treasurer/Auditor (5,000), State Senate (300), and State Representative (150) per M.G.L. ch. 53, § 6.",
+    "source_url": "https://www.sec.state.ma.us/divisions/elections/getting-on-the-ballot/how-to-run-for-office-2026.htm",
+    "source_name": "M.G.L. ch. 53, § 6",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the line of succession for the Governor of Massachusetts?",
+    "question_variants": [
+      "Who becomes Governor if the Governor and Lt. Gov are both incapacitated?",
+      "Gubernatorial succession order MA",
+      "Does the Secretary of the Commonwealth succeed the Governor?"
+    ],
+    "answer": "Under the Massachusetts Constitution, if the Governor's office becomes vacant, the Lieutenant Governor succeeds. If both offices are vacant, the order of succession is the Secretary of the Commonwealth, the Attorney General, the Treasurer and Receiver-General, and the Auditor per MA Constitution, Amend. Art. LV.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Amend. Art. LV",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "Which Massachusetts counties still have functioning county governments?",
+    "question_variants": [
+      "Is county government abolished in MA?",
+      "Functioning counties in Massachusetts",
+      "Does Norfolk County have its own government?"
+    ],
+    "answer": "Most MA county governments were abolished between 1997 and 2000. Only Barnstable, Bristol, Dukes, Norfolk, and Plymouth retain functioning county governments. Nantucket has a consolidated town-county government. In abolished counties (like Middlesex or Suffolk), functions were transferred to the Commonwealth.",
+    "source_url": "https://www.sec.state.ma.us/cis/ciscty/ctyidx.htm",
+    "source_name": "Secretary of the Commonwealth - County Information",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County and local candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What is the Open Town Meeting form of government in Massachusetts?",
+    "question_variants": [
+      "How do MA towns pass local laws?",
+      "Difference between City Council and Town Meeting in MA",
+      "Who can vote at a Massachusetts Town Meeting?"
+    ],
+    "answer": "Open Town Meeting is a form of direct democracy where all registered voters of a town are eligible to vote on the town's budget and bylaws. Larger towns may use a 'Representative Town Meeting' where only elected town meeting members vote. It is the primary legislative body for most MA towns.",
+    "source_url": "https://www.sec.state.ma.us/cis/cistwn/twnidx.htm",
+    "source_name": "Secretary of the Commonwealth - Town Meetings",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates and voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "Which county-level offices are elected in Massachusetts?",
+    "question_variants": [
+      "Is Sheriff an elected office in MA?",
+      "How long is the term for a MA District Attorney?",
+      "Are Registers of Deeds elected in Massachusetts?"
+    ],
+    "answer": "Massachusetts elects Sheriffs, Registers of Deeds, and Clerks of Courts for six-year terms. District Attorneys are elected for four-year terms. These offices remain elective even in counties where the central county government has been abolished per M.G.L. ch. 54, § 153-156.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter54",
+    "source_name": "M.G.L. ch. 54, § 153-156",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for mail-in ballot applications and returns in 2026?",
+    "question_variants": [
+      "Last day to request a mail ballot MA 2026",
+      "Does a MA mail ballot need to be postmarked by election day?",
+      "MA mail ballot return deadline"
+    ],
+    "answer": "For the 2026 primary, mail-in applications must be received by 5 p.m. on August 25. For the general, the deadline is October 27. Ballots must be received by the local election office or a drop box by 8 p.m. on Election Day to be counted per M.G.L. ch. 54, § 25B.",
+    "source_url": "https://www.sec.state.ma.us/divisions/elections/voter-resources/early-voting-information.htm",
+    "source_name": "M.G.L. ch. 54, § 25B",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Massachusetts use the term 'provisional ballot'?",
+    "question_variants": [
+      "Provisional voting in MA",
+      "What is a challenged ballot in Massachusetts?",
+      "MA voter eligibility challenges at the polls"
+    ],
+    "answer": "Yes. Massachusetts uses the term 'provisional ballot' for voters whose names do not appear on the list or whose eligibility is in question. Additionally, 'challenged ballots' may be used if a person's right to vote is formally challenged by a watcher or agent per 950 CMR 52.03.",
+    "source_url": "https://www.sec.state.ma.us/ele/elepro/proidx.htm",
+    "source_name": "950 CMR 52.03",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Can Massachusetts voters register to vote online?",
+    "question_variants": [
+      "MA online voter registration link",
+      "Is there an electronic way to register to vote in MA?",
+      "Secretary of the Commonwealth online registration"
+    ],
+    "answer": "Yes. Massachusetts offers online voter registration for residents with a valid MA driver's license or ID card issued by the RMV. Registrations must be submitted by the 10-day cutoff before an election per M.G.L. ch. 51, § 42G½.",
+    "source_url": "https://www.sec.state.ma.us/ovr/",
+    "source_name": "Secretary of the Commonwealth - Online Voter Registration",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Are Massachusetts voter registration lists updated under NVRA?",
+    "question_variants": [
+      "MA voter list maintenance rules",
+      "How are inactive voters handled in Massachusetts?",
+      "MA voter roll cleaning process"
+    ],
+    "answer": "Yes. Massachusetts complies with the National Voter Registration Act (NVRA). Municipalities conduct an annual town census; voters who fail to respond may be placed on an 'inactive' list, requiring ID to vote in subsequent elections per M.G.L. ch. 51, § 37.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "M.G.L. ch. 51, § 37",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the status of the same-day registration ballot question for 2026?",
+    "question_variants": [
+      "Will MA have same-day registration in 2026?",
+      "Massachusetts same-day voter registration initiative status",
+      "Proposed 2026 MA election law changes"
+    ],
+    "answer": "As of early 2026, an initiative to establish same-day voter registration is a prominent proposed ballot question. If it clears the Article 48 signature and legislative review hurdles, it will appear on the November 2026 ballot for voter approval.",
+    "source_url": "https://www.sec.state.ma.us/ele/elepip/pipidx.htm",
+    "source_name": "Secretary of the Commonwealth - 2026 Ballot Questions",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the return deadline for Massachusetts military and overseas (UOCAVA) ballots?",
+    "question_variants": [
+      "MA overseas ballot deadline",
+      "UOCAVA return rules Massachusetts",
+      "When are military ballots due in MA?"
+    ],
+    "answer": "UOCAVA ballots must be postmarked by Election Day. For the general election, they are counted if received within 10 days of the election; for primaries, they must be received by the close of polls per M.G.L. ch. 54, § 92.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleabsentee/absidx.htm",
+    "source_name": "M.G.L. ch. 54, § 92",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the registration threshold for a PAC in Massachusetts?",
+    "question_variants": [
+      "When must a group register as a PAC in MA?",
+      "MA OCPF PAC registration limit",
+      "Starting a political committee in Massachusetts"
+    ],
+    "answer": "A group must register as a PAC with OCPF as soon as it receives any contribution or makes any expenditure to influence the nomination or election of a candidate. There is no monetary de minimis threshold for registration per M.G.L. ch. 55, § 5.",
+    "source_url": "https://www.ocpf.us/Home/PACInformation",
+    "source_name": "M.G.L. ch. 55, § 5",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "PACs and Treasurers"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Does Massachusetts require disclosure of electioneering communications?",
+    "question_variants": [
+      "MA electioneering communication reporting",
+      "Independent expenditure disclosure Massachusetts",
+      "Reporting campaign ads in MA"
+    ],
+    "answer": "Yes. Any individual or group that spends more than $250 in a calendar year on electioneering communications must file a report with OCPF within seven days of the expenditure per M.G.L. ch. 55, § 18C.",
+    "source_url": "https://www.ocpf.us/PublicSearch/ElectioneeringCommunications",
+    "source_name": "M.G.L. ch. 55, § 18C",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "What are the requirements for write-in candidates in Massachusetts?",
+    "question_variants": [
+      "Do I need to register as a write-in in MA?",
+      "MA write-in candidate rules",
+      "Counting write-in votes in Massachusetts"
+    ],
+    "answer": "Massachusetts does not require formal registration for write-in candidates. However, votes are only counted if the candidate is a 'legally qualified candidate.' To win a primary, a write-in candidate must receive at least as many votes as the required number of signatures for that office per M.G.L. ch. 53, § 34.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "M.G.L. ch. 53, § 34",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "federal"],
+    "category": "ballot_access",
+    "question": "What is the threshold for a political group to be recognized as a 'party' in Massachusetts?",
+    "question_variants": [
+      "MA political party recognition percentage",
+      "Minor party status Massachusetts",
+      "How do groups become official parties in MA?"
+    ],
+    "answer": "A political organization becomes a recognized 'party' if its candidate for Governor or U.S. Secretary receives at least 3% of the total vote in the last biennial state election. Alternatively, a group can qualify by having registered voters equal to 1% of the total number of voters in the Commonwealth per M.G.L. ch. 50, § 1.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter50/Section1",
+    "source_name": "M.G.L. ch. 50, § 1",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Political parties"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Is the Libertarian Party a recognized party in Massachusetts for 2026?",
+    "question_variants": [
+      "MA official political parties 2026",
+      "Libertarian ballot access MA",
+      "Can I register as a Libertarian in Massachusetts?"
+    ],
+    "answer": "Yes. As of early 2026, the Libertarian Party is one of the recognized parties in Massachusetts, alongside the Democratic and Republican parties. This allows voters to enroll in the party and candidates to appear on the primary ballot.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth - Political Parties",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Political parties and voters"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the 2026 OCPF reporting calendar for Massachusetts candidates?",
+    "question_variants": [
+      "MA campaign finance filing dates 2026",
+      "When are OCPF reports due in 2026?",
+      "Massachusetts ethics reporting schedule"
+    ],
+    "answer": "In 2026, candidates must file reports on January 20 (Annual), April 20, July 20, the 8th day before the primary (Aug 24), and the 8th day before the general election (Oct 26). Final year-end reports are due the following January per M.G.L. ch. 55, § 18.",
+    "source_url": "https://www.ocpf.us/Home/FilingDeadlines",
+    "source_name": "M.G.L. ch. 55, § 18",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Massachusetts?",
+    "question_variants": [
+      "MA OCPF late fees",
+      "Penalty for missing OCPF deadline",
+      "OCPF enforcement actions"
+    ],
+    "answer": "The OCPF assesses a mandatory civil penalty of $25 per day for late reports, up to a maximum of $5,000 per report. Continued failure to file can lead to referral to the Attorney General for criminal prosecution per M.G.L. ch. 55, § 3.",
+    "source_url": "https://www.ocpf.us/Legal/LateFilerInformation",
+    "source_name": "M.G.L. ch. 55, § 3",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Treasurers"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the qualifying thresholds for public campaign matching funds in Massachusetts?",
+    "question_variants": [
+      "Qualifying for state matching funds MA",
+      "Chapter 55C public finance limits",
+      "How to get public money for a MA Governor race"
+    ],
+    "answer": "To qualify for matching funds, statewide candidates must raise a minimum amount in 'qualifying contributions' (individual gifts under $250): $750,000 for Governor/Lt. Gov, $312,500 for AG, and $187,500 for other offices per M.G.L. ch. 55C, § 7.",
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter55C/Section7",
+    "source_name": "M.G.L. ch. 55C, § 7",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What specific actions does the Massachusetts Governor's Council confirm?",
+    "question_variants": [
+      "Role of the MA Executive Council",
+      "Does the Governor's Council approve pardons?",
+      "MA Governor's Council spending approval power"
+    ],
+    "answer": "The Governor's Council provides advice and consent on judicial appointments, appointments of notaries and justices of the peace, pardons and commutations, and all warrants for payments from the state treasury (spending) per MA Constitution, Pt. 2, C. 2, § 3.",
+    "source_url": "https://www.mass.gov/orgs/governors-council",
+    "source_name": "MA Constitution, Pt. 2, C. 2, § 3",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates and consultants"
+  },
+  {
+    "state": "MA",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How many justices serve on the Massachusetts Supreme Judicial Court?",
+    "question_variants": [
+      "Composition of the MA SJC",
+      "How many judges are on the highest court in MA?",
+      "MA Supreme Judicial Court structure"
+    ],
+    "answer": "The Massachusetts Supreme Judicial Court consists of one Chief Justice and six Associate Justices, for a total of seven justices. All are appointed by the Governor with Council confirmation per MA Constitution, Pt. 2, C. 3, Art. I.",
+    "source_url": "https://www.mass.gov/orgs/supreme-judicial-court",
+    "source_name": "MA Constitution, Pt. 2, C. 3, Art. I",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial consultants"
+  },
+  {
+    "state": "MA",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the departments of the Massachusetts Trial Court?",
+    "question_variants": [
+      "MA Trial Court structure",
+      "Is there a separate Probate court in MA?",
+      "Divisions of the Massachusetts Superior Court"
+    ],
+    "answer": "The Trial Court is composed of seven departments: Superior, District, Probate and Family, Land, Housing, Juvenile, and the Boston Municipal Court. Each department has its own Chief Justice and specific jurisdiction per M.G.L. ch. 211B, § 1.",
+    "source_url": "https://www.mass.gov/guides/trial-court-departments",
+    "source_name": "M.G.L. ch. 211B, § 1",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial consultants"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "municipal"],
+    "category": "recall_rules",
+    "question": "Do local charters in Massachusetts allow for the recall of local officials?",
+    "question_variants": [
+      "Can a MA Mayor be recalled?",
+      "Local recall process in Massachusetts",
+      "How to recall a Select Board member in MA"
+    ],
+    "answer": "While there is no statewide recall, many cities and towns in Massachusetts have local recall provisions within their municipal charters. The process—including signature thresholds and grounds—is governed entirely by the specific local charter.",
+    "source_url": "https://www.sec.state.ma.us/ele/eleidx.htm",
+    "source_name": "Secretary of the Commonwealth - Election Laws",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "How are Massachusetts state officials removed from office?",
+    "question_variants": [
+      "Impeachment process in Massachusetts",
+      "Can the MA House impeach the Governor?",
+      "Removal of constitutional officers MA"
+    ],
+    "answer": "State officials can be removed through impeachment by the House of Representatives and a subsequent trial by the Senate. Conviction requires a two-thirds majority of the Senate members present per MA Constitution, Pt. 2, C. 1, § 2, Art. VIII.",
+    "source_url": "https://malegislature.gov/Laws/Constitution",
+    "source_name": "MA Constitution, Pt. 2, C. 1, § 2, Art. VIII",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MA",
+    "office_level": ["state", "municipal"],
+    "category": "candidate_eligibility",
+    "question": "What is the difference between a City and a Town in Massachusetts law?",
+    "question_variants": [
+      "MA municipal government types",
+      "Can a MA town become a city?",
+      "Home rule in Massachusetts municipalities"
+    ],
+    "answer": "In MA, a 'Town' traditionally uses Town Meeting, while a 'City' uses a Mayor or City Manager and Council. However, some municipalities use a city form but retain 'Town' in their name. Changes in form require a local charter vote per M.G.L. ch. 43B.",
+    "source_url": "https://www.sec.state.ma.us/cis/cistwn/twnidx.htm",
+    "source_name": "M.G.L. ch. 43B",
+    "last_verified_date": "2026-05-14",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  }
+]
