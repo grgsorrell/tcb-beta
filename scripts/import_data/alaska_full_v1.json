@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "How does Alaska's top-four nonpartisan primary system work?",
+    "question_variants": [
+      "Alaska nonpartisan blanket primary explained",
+      "Do I need a party nomination to run in Alaska?",
+      "How many candidates advance from the Alaska primary?"
+    ],
+    "answer": "Under AS 15.25.010, Alaska uses a nonpartisan top-four blanket primary. All candidates, regardless of party affiliation, appear on a single ballot. Voters cast one vote for their preferred candidate. The four candidates who receive the most votes advance to the general election, even if multiple candidates belong to the same political party.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKVoteByMail.php",
+    "source_name": "Alaska Division of Elections - Primary Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All federal and state candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "How does Ranked Choice Voting (RCV) work in the Alaska general election?",
+    "question_variants": [
+      "How are Alaska election winners determined?",
+      "Alaska RCV round-by-round process",
+      "What is the majority requirement to win in Alaska?"
+    ],
+    "answer": "Alaska uses Ranked Choice Voting (RCV) for general elections (AS 15.15.350). Voters rank the top four candidates in order of preference. If a candidate receives a majority (50% + 1) of first-choice votes, they win. If not, the candidate with the fewest votes is eliminated, and their votes are redistributed to their supporters' next-ranked choices. This continues until a candidate achieves a majority.",
+    "source_url": "https://www.elections.alaska.gov/Core/RCV.php",
+    "source_name": "Alaska Division of Elections - Ranked Choice Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All federal and state candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "Is the initiative to repeal Ranked Choice Voting on the 2026 ballot?",
+    "question_variants": [
+      "Status of Alaska RCV repeal initiative 2026",
+      "Will Alaska use RCV in 2026?",
+      "Is the top-four primary being repealed in AK?"
+    ],
+    "answer": "Yes. A new citizen initiative to repeal the top-four primary and RCV system has qualified for the 2026 general election ballot. While highly volatile, RCV remains the law for the 2026 cycle; if the repeal passes, the system would revert to partisan primaries starting in the 2028 cycle.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKBallotMeasures.php",
+    "source_name": "Alaska Division of Elections - 2026 Ballot Measures",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state"],
+    "category": "filing_requirements",
+    "question": "Does Alaska require petition signatures for state or federal candidates to get on the primary ballot?",
+    "question_variants": [
+      "Alaska petition signature requirements",
+      "How many signatures do I need to run for office in AK?",
+      "Alaska unique filing process"
+    ],
+    "answer": "No. Alaska is unique as the only state that does not require petition signatures for state or federal candidates to access the primary ballot. Under AS 15.25.030, candidates only need to file a Declaration of Candidacy and pay the required filing fee by the June 1 deadline.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "Alaska Division of Elections - Candidate Filing",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All primary candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "What are the requirements for write-in candidates in Alaska?",
+    "question_variants": [
+      "How to register as a write-in in Alaska",
+      "Do write-in votes count in AK?",
+      "Write-in declaration deadline Alaska"
+    ],
+    "answer": "Under AS 15.25.105, write-in candidates for the general election must file a Letter of Intent with the Division of Elections at least five days before the election. Write-in votes are only counted if the total number of write-in votes is high enough to potentially affect the outcome of the RCV rounds.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "Alaska Statute 15.25.105",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Alaska have a sore loser law?",
+    "question_variants": [
+      "Can I run in the general if I lose the Alaska primary?",
+      "Alaska sore loser statute 2026",
+      "Top-four primary defeat general election access"
+    ],
+    "answer": "No. Because Alaska uses a nonpartisan top-four primary rather than partisan primaries, traditional sore loser laws do not apply. If a candidate is not among the top four vote-getters in the primary, they simply do not advance to the general election. They may, however, file to run as a write-in candidate in the general election.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Primary candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Alaska?",
+    "question_variants": [
+      "Alaska joint ticket rules",
+      "How are Lt Gov candidates selected in AK?",
+      "Does the Governor pick a running mate in the primary?"
+    ],
+    "answer": "Under Article III of the Alaska Constitution, candidates for Governor and Lieutenant Governor run separately in the primary election. However, the top-four candidates for Governor and the top-four candidates for Lieutenant Governor are then paired by party (or alliance) into joint tickets for the RCV general election.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "Alaska Constitution Article III",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state"],
+    "category": "filing_requirements",
+    "question": "What are the candidate filing fees for Alaska offices in 2026?",
+    "question_variants": [
+      "Cost to run for office in Alaska",
+      "Alaska candidate filing deadline 2026",
+      "Primary election fee structure AK"
+    ],
+    "answer": "The filing deadline for the 2026 primary is June 1, 2026. Filing fees are $100 for U.S. Senator, U.S. Representative, Governor, and Lieutenant Governor. There is no filing fee for candidates seeking a seat in the Alaska State Legislature (House or Senate) per AS 15.25.050.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "AS 15.25.050",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When are the 2026 primary and general elections in Alaska?",
+    "question_variants": [
+      "Alaska primary date 2026",
+      "Election day in Alaska 2026",
+      "When does RCV voting happen in AK?"
+    ],
+    "answer": "The Alaska primary election is Tuesday, August 18, 2026. The general election is Tuesday, November 3, 2026. Polls are open statewide from 7:00 a.m. to 8:00 p.m. local time.",
+    "source_url": "https://www.elections.alaska.gov/Core/electioncalendar.php",
+    "source_name": "Alaska Division of Elections - Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Mike Dunleavy running for re-election in 2026?",
+    "question_variants": [
+      "Alaska Governor election cycle",
+      "Is Mike Dunleavy term limited?",
+      "Who is running for Governor of Alaska in 2026?"
+    ],
+    "answer": "No. Governor Mike Dunleavy (R) is term-limited and cannot seek a third consecutive term. Under Article III, Section 5 of the Alaska Constitution, a Governor is limited to two consecutive terms. The 2026 gubernatorial election is an open-seat race.",
+    "source_url": "https://ballotpedia.org/Governor_of_Alaska",
+    "source_name": "Alaska Constitution Article III, Section 5",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Alaska in 2026?",
+    "question_variants": [
+      "Is Dan Sullivan up for re-election?",
+      "Alaska US Senate cycle 2026",
+      "When is Lisa Murkowski's next election?"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Dan Sullivan (R) is up for election in 2026. Senator Lisa Murkowski (Class 3) was re-elected in 2022 and is not on the ballot again until 2028.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Is the Alaska U.S. House seat on the 2026 ballot?",
+    "question_variants": [
+      "Alaska at-large congressional district election",
+      "Is Nick Begich III up for re-election?",
+      "How many congressmen does Alaska have?"
+    ],
+    "answer": "Yes. Alaska's single at-large U.S. House seat is up for election in 2026. Incumbent Nick Begich III (R) is defending the seat. U.S. Representatives serve two-year terms and are on the ballot every cycle.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "How many Alaska State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Alaska House seats up in 2026?",
+      "Alaska Senate staggered terms",
+      "Which legislative districts are on the 2026 ballot in AK?"
+    ],
+    "answer": "In 2026, all 40 seats in the Alaska House of Representatives (2-year terms) are up for election. In the Alaska Senate (4-year staggered terms), 10 of the 20 seats are up for election.",
+    "source_url": "https://akleg.gov/index.php",
+    "source_name": "Alaska State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is a 'coalition government' in the Alaska Legislature?",
+    "question_variants": [
+      "Bipartisan coalition Alaska House",
+      "Who controls the Alaska Senate?",
+      "Alaska legislative power sharing"
+    ],
+    "answer": "Alaska has a unique history of 'coalition governments' where members of both major parties (and independents) join together to form a majority caucus. As of 2026, both the Alaska House and Senate are governed by bipartisan majority coalitions, meaning leadership positions and committee chairs are shared across party lines regardless of numerical majority.",
+    "source_url": "https://akleg.gov/index.php",
+    "source_name": "Alaska State Legislature - Leadership",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Legislative candidates and consultants"
+  },
+  {
+    "state": "AK",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "Are Alaska Supreme Court seats on the 2026 ballot?",
+    "question_variants": [
+      "Alaska judicial retention elections 2026",
+      "How are judges selected in Alaska?",
+      "Do Alaska judges run in the primary?"
+    ],
+    "answer": "Alaska judges do not run in partisan or nonpartisan competitive elections. Instead, they face retention elections during general elections. In 2026, specific justices of the Alaska Supreme Court and judges of the Court of Appeals whose terms are concluding will appear on the ballot for a 'Yes/No' retention vote.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKJudicialRetention.php",
+    "source_name": "Alaska Division of Elections - Judicial Retention",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Alaska State Legislature sessions?",
+    "question_variants": [
+      "When does the AK legislature meet?",
+      "Alaska 121 day session limit",
+      "Is the Alaska legislature full time?"
+    ],
+    "answer": "The Alaska Legislature meets in annual sessions beginning in January. Under Article II, Section 8 of the Alaska Constitution, regular sessions are limited to 121 consecutive days, though they can be extended by 10 days with a two-thirds vote. The Governor or the legislature can also call special sessions lasting up to 30 days.",
+    "source_url": "https://akleg.gov/index.php",
+    "source_name": "Alaska Constitution Article II, Section 8",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislative candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Alaska?",
+    "question_variants": [
+      "Age and residency for Alaska Governor",
+      "Alaska Constitution Article III Section 7 qualifications",
+      "Who can be Governor of AK?"
+    ],
+    "answer": "Under Article III, Section 7 of the Alaska Constitution, a candidate for Governor must be a citizen of the United States, at least 30 years of age, and a resident of Alaska for at least seven years immediately preceding the filing for office.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "Alaska Constitution Article III, Section 7",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Alaska State Legislature?",
+    "question_variants": [
+      "Residency for Alaska House and Senate",
+      "How old to be a state senator in AK?",
+      "Alaska Constitution Article II legislative requirements"
+    ],
+    "answer": "Under Article II, Section 2 of the Alaska Constitution, a candidate for the State Senate must be at least 25 years old. A candidate for the State House must be at least 21 years old. Both must be residents of Alaska for at least three years and residents of the specific district they seek to represent for one year prior to filing.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "Alaska Constitution Article II, Section 2",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Alaska?",
+    "question_variants": [
+      "US Senate residency requirements Alaska",
+      "Age to run for Congress in Alaska",
+      "Federal constitutional requirements for AK candidates"
+    ],
+    "answer": "Federal candidates must meet U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the Alaska Attorney General an elected office?",
+    "question_variants": [
+      "Who elects the AG in Alaska?",
+      "Running for Attorney General of Alaska",
+      "Alaska AG appointment process"
+    ],
+    "answer": "No. The Attorney General of Alaska is an appointed position, not an elected one. Under Article III, Section 25 of the Alaska Constitution, the Governor appoints the Attorney General, who must then be confirmed by a majority of the members of the legislature in joint session.",
+    "source_url": "https://law.alaska.gov/department/ag.html",
+    "source_name": "Alaska Department of Law - Attorney General",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Alaska Governor?",
+    "question_variants": [
+      "How many terms can an Alaska Governor serve?",
+      "Dunleavy term limits AK",
+      "Alaska executive term limit law"
+    ],
+    "answer": "Under Article III, Section 5 of the Alaska Constitution, the Governor and Lieutenant Governor are limited to two consecutive four-year terms. They may run again after a four-year break from the office. Incumbent Governor Mike Dunleavy is serving his second consecutive term and is ineligible for the 2026 ballot.",
+    "source_url": "https://ballotpedia.org/Governor_of_Alaska",
+    "source_name": "Alaska Constitution Article III, Section 5",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Alaska have legislative term limits?",
+    "question_variants": [
+      "How many terms can an Alaska state senator serve?",
+      "Are there term limits for the Alaska House?",
+      "Alaska legislature term limit status"
+    ],
+    "answer": "No. Alaska does not have term limits for members of the State House of Representatives or the State Senate. Legislators may serve an unlimited number of terms as long as they are re-elected by their constituents.",
+    "source_url": "https://akleg.gov/index.php",
+    "source_name": "Alaska State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Alaska a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Alaska?",
+      "Alaska vote-by-mail system",
+      "Are there traditional polling places in AK?"
+    ],
+    "answer": "No. Alaska is not a universal mail ballot state. While traditional in-person polling locations exist statewide, many small rural villages in the 'Unorganized Borough' conduct elections entirely by mail due to isolation. For most Alaskans, mail voting requires requesting an absentee ballot.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKVoteByMail.php",
+    "source_name": "Alaska Division of Elections - Voting By Mail",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to request and return an absentee ballot in Alaska?",
+    "question_variants": [
+      "When is the last day to mail my ballot in AK?",
+      "Alaska absentee ballot postmark deadline",
+      "How to return a ballot in Alaska"
+    ],
+    "answer": "Voters must request an absentee ballot at least 10 days before the election (August 8 for the primary). Completed ballots can be returned in person by 8:00 p.m. on Election Day, or returned by mail if postmarked on or before Election Day.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKVoteByMail.php",
+    "source_name": "Alaska Division of Elections - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Alaska have early in-person voting?",
+    "question_variants": [
+      "Can I vote early in AK?",
+      "Alaska early voting dates 2026",
+      "In-person absentee voting Alaska"
+    ],
+    "answer": "Yes. Early in-person voting, often referred to as 'in-person absentee voting' in Alaska, begins 15 days before the election at Division of Elections offices and other designated regional locations across the state.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKVoteByMail.php",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Alaska offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in AK",
+      "Alaska same-day voter registration",
+      "Voter registration deadline 2026 AK"
+    ],
+    "answer": "The deadline to register to vote in Alaska is 30 days before the election. However, Alaska offers 'Same-Day Registration' ONLY for the purpose of voting in U.S. President/Vice President contests. For all 2026 state and federal races, voters must be registered 30 days in advance.",
+    "source_url": "https://www.elections.alaska.gov/Core/voterregistration.php",
+    "source_name": "Alaska Division of Elections - Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in Alaska?",
+    "question_variants": [
+      "Alaska voter ID requirements",
+      "Do I need my license to vote in AK?",
+      "Acceptable ID for Alaska voting"
+    ],
+    "answer": "Yes. Alaska requires voters to present identification at the polls. Acceptable forms include a driver's license, state ID card, U.S. passport, military ID, or tribal ID. If a photo ID is not available, voters may use a birth certificate, hunting/fishing license, or a utility bill.",
+    "source_url": "https://www.elections.alaska.gov/Core/voterid.php",
+    "source_name": "Alaska Division of Elections - Voter ID",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are Alaska Native voting rights and language assistance requirements?",
+    "question_variants": [
+      "Alaska VRA Section 203 coverage",
+      "Native language ballots in AK",
+      "Rural Alaska voting access issues"
+    ],
+    "answer": "Under Section 203 of the Voting Rights Act (VRA), Alaska must provide language assistance and translated election materials for several Alaska Native languages, including Yup'ik, Inupiaq, and Gwich'in. This includes providing oral assistance and translated ballots at polling places.",
+    "source_url": "https://www.elections.alaska.gov/Core/languageassistance.php",
+    "source_name": "Alaska Division of Elections - Language Assistance",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Alaska?",
+    "question_variants": [
+      "How close can I campaign to a polling place in AK?",
+      "Alaska 200 feet electioneering rule",
+      "AK buffer zone around voting centers"
+    ],
+    "answer": "In Alaska, electioneering is strictly prohibited within 200 feet of any entrance to a polling place or Division of Elections office while voting is occurring. This includes the display of campaign signs, distributing literature, or wearing campaign-branded clothing.",
+    "source_url": "https://www.elections.alaska.gov/",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Alaska voter registration list?",
+    "question_variants": [
+      "Alaska voter database access",
+      "Cost of voter list in AK",
+      "How to get the voter file in Alaska"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide or district-specific voter registration list from the Alaska Division of Elections. The list contains names, addresses, and voting history. The cost is standardized by regulation and the data must only be used for election purposes.",
+    "source_url": "https://www.elections.alaska.gov/Core/voterlist.php",
+    "source_name": "Alaska Division of Elections - Voter List",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Alaska?",
+    "question_variants": [
+      "Where do I file campaign finance reports in AK?",
+      "What is the Alaska APOC?",
+      "Does the Alaska SOS handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Alaska are administered by the Alaska Public Offices Commission (APOC), an independent state agency. All state and local candidates must register and file their financial disclosures through the mandatory APOC online portal.",
+    "source_url": "https://doa.alaska.gov/apoc/",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Are there campaign contribution limits for Alaska candidates in the 2026 cycle?",
+    "question_variants": [
+      "How much can an individual donate to an AK Governor candidate?",
+      "Alaska individual donation caps 2026",
+      "Current status of Alaska contribution limits"
+    ],
+    "answer": "Currently, Alaska has NO contribution limits for individuals donating to state-level candidates following a federal court ruling. However, this is highly volatile as a citizen initiative to establish new, strict contribution limits is on the 2026 general election ballot.",
+    "source_url": "https://doa.alaska.gov/apoc/CandidateInformation.html",
+    "source_name": "APOC - Candidate Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and Donors"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the 2026 Alaska campaign contribution limits initiative?",
+    "question_variants": [
+      "Alaska 2026 ballot initiative contribution caps",
+      "Will AK reinstate donation limits in 2026?",
+      "Proposition to cap campaign gifts Alaska"
+    ],
+    "answer": "A citizen initiative qualified for the 2026 general election ballot that seeks to establish new limits on campaign contributions. If passed, it would cap individual contributions at specific amounts per election cycle, moving Alaska away from its current system of unlimited donations.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKBallotMeasures.php",
+    "source_name": "Alaska Division of Elections - 2026 Measures",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the campaign finance reporting schedule for Alaska candidates in 2026?",
+    "question_variants": [
+      "APOC filing dates 2026",
+      "When are campaign finance reports due in AK?",
+      "Alaska pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates must file periodic reports with APOC. Standard filings include a Year-End report, a report 30 days before the primary, a report 7 days before the primary, a report 30 days before the general, and a report 7 days before the general election.",
+    "source_url": "https://doa.alaska.gov/apoc/ReportingCalendar.html",
+    "source_name": "APOC - Reporting Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Alaska provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Alaska Governor",
+      "Alaska clean election laws status",
+      "Government campaign grants AK"
+    ],
+    "answer": "No. Alaska does not have a system of public financing or matching funds for state-level political campaigns. All candidates must fund their campaigns through private contributions from individuals, PACs, and political parties.",
+    "source_url": "https://doa.alaska.gov/apoc/",
+    "source_name": "Alaska Public Offices Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Alaska?",
+    "question_variants": [
+      "AK personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in AK?",
+      "Prohibited expenditures Alaska APOC"
+    ],
+    "answer": "Yes. Alaska law strictly prohibits the personal use of campaign funds. Contributions may only be used for expenses directly related to the campaign or for the ordinary and necessary expenses of holding public office. APOC routinely audits expenditures.",
+    "source_url": "https://doa.alaska.gov/apoc/CandidateInformation.html",
+    "source_name": "APOC - Candidate Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Alaska candidate campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Alaska state",
+      "Can a business donate to my campaign in AK?",
+      "Alaska corporate campaign finance status"
+    ],
+    "answer": "Under current law, since there are no effective contribution limits following court intervention, corporate contributions are generally treated similarly to individuals. However, the 2026 ballot initiative on contribution limits may reimpose a strict ban on direct corporate and union donations.",
+    "source_url": "https://doa.alaska.gov/apoc/CandidateInformation.html",
+    "source_name": "APOC - Candidate Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Alaska Senate districts are up for election in 2026?",
+    "question_variants": [
+      "Alaska State Senate staggering schedule",
+      "Is the entire AK Senate up in 2026?",
+      "Senate Seat A-T Alaska cycle"
+    ],
+    "answer": "The Alaska Senate consists of 20 members serving staggered four-year terms. In 2026, half of the Senate seats (10 districts) are up for election. These typically include the even-numbered seats (District B, D, F, etc.) in a standard cycle.",
+    "source_url": "https://akleg.gov/index.php",
+    "source_name": "Alaska State Legislature - Senate",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Who draws Alaska's state legislative maps?",
+    "question_variants": [
+      "Does Alaska use an independent redistricting commission?",
+      "Who has the authority to draw district lines in Alaska?",
+      "Alaska Redistricting Board composition"
+    ],
+    "answer": "Alaska uses a 5-member Redistricting Board rather than the state legislature to draw maps. Under Article VI of the Alaska Constitution, the Governor appoints two members, the presiding officer of the Senate appoints one, the presiding officer of the House appoints one, and the Chief Justice of the Alaska Supreme Court appoints one.",
+    "source_url": "https://www.akredistricting.org/",
+    "source_name": "Alaska Redistricting Board",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Alaska?",
+    "question_variants": [
+      "Standards for drawing Alaska district lines",
+      "Alaska gerrymandering rules",
+      "Article VI Alaska Constitution redistricting"
+    ],
+    "answer": "Under Article VI, Section 6 of the Alaska Constitution, state legislative districts must be formed of contiguous and compact territory. They must contain as nearly as practicable a relatively integrated socio-economic area, and boundaries must respect local government boundaries to the greatest extent possible.",
+    "source_url": "https://www.akredistricting.org/",
+    "source_name": "Alaska Constitution Article VI, Section 6",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current Alaska state legislative maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of 2022 Alaska redistricting maps",
+      "Are there pending redistricting lawsuits in Alaska?",
+      "Alaska 2026 district boundaries"
+    ],
+    "answer": "Yes. The current maps are operative for 2026. Following the 2020 census, the Redistricting Board produced maps that were challenged. In 2022, the Alaska Supreme Court required revisions to specific Senate pairings (Cantwell v. Alaska Redistricting Board) to remedy partisan gerrymandering. Those revised maps are final for the decade.",
+    "source_url": "https://www.akredistricting.org/",
+    "source_name": "Alaska Redistricting Board - Legal Challenges",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Who draws Alaska's congressional district maps?",
+    "question_variants": [
+      "Alaska US House redistricting",
+      "How is Alaska's congressional map drawn?",
+      "Congressional redistricting commission Alaska"
+    ],
+    "answer": "Because Alaska is apportioned only one U.S. House seat that covers the entire state at-large, no congressional redistricting is necessary. The Alaska Redistricting Board is exclusively tasked with drawing state legislative boundaries.",
+    "source_url": "https://www.elections.alaska.gov/",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Alaska have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Alaska be recalled?",
+      "How to recall a state senator in AK",
+      "Statewide recall election rules Alaska"
+    ],
+    "answer": "Yes. Alaska allows the recall of all state public officials, except judicial officers. Proponents must state specific legal grounds: lack of fitness, incompetence, neglect of duties, or corruption. Proponents must gather signatures equal to 25% of the total votes cast at the last preceding general election for that specific office.",
+    "source_url": "https://www.elections.alaska.gov/Core/recallinformation.php",
+    "source_name": "Alaska Division of Elections - Recall",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Alaska?",
+    "question_variants": [
+      "Alaska borough assembly recall rules",
+      "Signature requirement local recall Alaska",
+      "Recalling a mayor in AK"
+    ],
+    "answer": "Local officials in Alaska (borough assembly, mayors, city council) are subject to recall on the same specific legal grounds as state officials (incompetence, neglect, etc.). The signature threshold is 25% of the total votes cast for that office in the last election.",
+    "source_url": "https://www.elections.alaska.gov/Core/recallinformation.php",
+    "source_name": "Alaska Division of Elections - Recall",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature thresholds for a citizen initiative in Alaska?",
+    "question_variants": [
+      "How to get an initiative on the AK ballot",
+      "Alaska citizen initiative signature requirements",
+      "Geographic distribution rule for AK initiatives"
+    ],
+    "answer": "To qualify an initiative, proponents must gather valid signatures equal to at least 10% of the total votes cast in the previous general election. Furthermore, these signatures must include at least 7% of the total votes cast in each of at least 30 of Alaska's 40 State House districts.",
+    "source_url": "https://www.elections.alaska.gov/Core/initiativepetitionprocess.php",
+    "source_name": "Alaska Division of Elections - Initiatives",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the 2026 Alaska Ranked Choice Voting Repeal Initiative?",
+    "question_variants": [
+      "Alaska Ballot Measure 1 (2026)",
+      "What is the top-four repeal measure on the AK ballot?",
+      "Restoring partisan primaries Alaska ballot measure"
+    ],
+    "answer": "A citizen initiative qualified for the 2026 general election ballot to fully repeal the state's Ranked Choice Voting system and the top-four nonpartisan blanket primary. If passed, it would reinstate the traditional party-controlled primary system for state and federal elections beginning in the 2028 cycle.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKBallotMeasures.php",
+    "source_name": "Alaska Division of Elections - 2026 Ballot Measures",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees and Voters"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "Why did Alaska place a campaign contribution limits initiative on the 2026 ballot?",
+    "question_variants": [
+      "Alaska campaign finance ballot measure 2026 background",
+      "Federal court strike down Alaska donation caps",
+      "APOC limits citizen initiative origin"
+    ],
+    "answer": "Because a federal court struck down Alaska's previous limits, a citizen initiative qualified for the 2026 ballot to establish new individual and PAC contribution limits to candidate campaigns. If passed, it will end the current period of unlimited fundraising in state races.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKBallotMeasures.php",
+    "source_name": "Alaska Division of Elections - 2026 Ballot Measures",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees and Candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Alaska legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Alaska",
+      "Can the AK legislature put a constitutional amendment on the ballot?",
+      "Amending the Alaska Constitution"
+    ],
+    "answer": "The Alaska State Legislature can propose an amendment to the state constitution by passing a joint resolution with a two-thirds supermajority vote in both the House and the Senate. The amendment is then referred directly to the voters without requiring the Governor's signature.",
+    "source_url": "https://ltgov.alaska.gov/services/constitutional-amendments/",
+    "source_name": "Alaska Constitution Article XIII, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Alaska?",
+    "question_variants": [
+      "Alaska ballot measure pass threshold",
+      "Does a measure need a supermajority in AK?",
+      "Majority vote requirements Alaska ballot measures"
+    ],
+    "answer": "In Alaska, all citizen initiatives, veto referenda, and legislatively referred constitutional amendments require only a simple majority (over 50%) of the total votes cast on that specific measure to pass.",
+    "source_url": "https://www.elections.alaska.gov/Core/initiativepetitionprocess.php",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Alaska?",
+    "question_variants": [
+      "Alaska Lt Gov requirements",
+      "Does the Lt Gov run independently in the primary?",
+      "Qualifications for Lieutenant Governor of Alaska"
+    ],
+    "answer": "The constitutional requirements for Lieutenant Governor are identical to those for Governor: at least 30 years old, a U.S. citizen, and a resident of the state for seven years. They file separately for the primary, but the top four pair up with Governor candidates for a joint ticket in the general.",
+    "source_url": "https://www.elections.alaska.gov/Core/candidatefiling.php",
+    "source_name": "Alaska Constitution Article III, Section 7",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Alaska?",
+    "question_variants": [
+      "Requirements to run for AK Secretary of State",
+      "Who can run for Secretary of State in AK?",
+      "Does Alaska have a Secretary of State?"
+    ],
+    "answer": "Alaska DOES NOT have a Secretary of State. It is one of the few states where this office does not exist. All duties typically assigned to a Secretary of State—including administering elections and overseeing business filings—are constitutionally assigned to the Lieutenant Governor.",
+    "source_url": "https://ltgov.alaska.gov/",
+    "source_name": "Alaska Lieutenant Governor's Office",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Alaska?",
+    "question_variants": [
+      "Run for school board Alaska requirements",
+      "Who can be a school trustee in AK?",
+      "School board residency rules Alaska"
+    ],
+    "answer": "To run for a local school district board of education in Alaska, a candidate must be a qualified voter of the state and must have been a resident of the specific school district they seek to represent for at least 30 days immediately preceding the election.",
+    "source_url": "https://aasb.org/school-board-elections/",
+    "source_name": "Association of Alaska School Boards",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are Alaska Supreme Court justices selected and what are the qualifications?",
+    "question_variants": [
+      "Alaska Supreme Court Justice eligibility",
+      "Years of practice required for AK Supreme Court",
+      "Are Alaska judges elected or appointed?"
+    ],
+    "answer": "Alaska uses a 'merit selection' system. The Governor appoints justices from a list provided by the Alaska Judicial Council. After serving at least three years, they face a nonpartisan retention election. Candidates must be U.S. citizens, residents for five years, and active legal practitioners for eight years.",
+    "source_url": "https://ajc.alaska.gov/",
+    "source_name": "Alaska Judicial Council",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["county", "municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for borough assembly members in Alaska?",
+    "question_variants": [
+      "Alaska borough assembly qualifications",
+      "Can I run for county board in AK?",
+      "Borough residency for AK commissioners"
+    ],
+    "answer": "Alaska has boroughs instead of counties. To run for a borough assembly seat, a candidate must be a qualified voter and a resident of the borough (and the specific district, if applicable) for at least one year immediately preceding the election. Note that vast portions of Alaska fall into the 'Unorganized Borough'.",
+    "source_url": "https://www.elections.alaska.gov/",
+    "source_name": "Alaska Division of Elections - Local Government",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Alaska?",
+    "question_variants": [
+      "How to fix a rejected signature in AK",
+      "Alaska ballot cure process deadline",
+      "Missing signature on AK mail ballot"
+    ],
+    "answer": "Under Alaska law, if a mail ballot envelope has a missing signature or missing witness signature (Alaska requires one witness), the Division of Elections contacts the voter. The voter must correct the defect before the State Review Board finalizes certification, within 15 days after Election Day.",
+    "source_url": "https://www.elections.alaska.gov/Core/AKVoteByMail.php",
+    "source_name": "Alaska Division of Elections - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Alaska?",
+    "question_variants": [
+      "When are military ballots due in Alaska?",
+      "UOCAVA return deadline AK",
+      "Overseas voting rules Alaska state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted 45 days before an election. Alaska allows return via mail or a secure portal. Voted ballots must be postmarked by Election Day and received no later than 10 days after the primary or 15 days after the general election.",
+    "source_url": "https://www.elections.alaska.gov/Core/militaryandoversasvoters.php",
+    "source_name": "Alaska Division of Elections - Military & Overseas",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Alaska?",
+    "question_variants": [
+      "What is a questioned ballot in AK?",
+      "Voting without ID Alaska",
+      "When do election workers issue questioned ballots?"
+    ],
+    "answer": "In Alaska, provisional ballots are referred to as 'Questioned Ballots.' They are issued if a voter's name is not on the register, if they fail to provide required identification, or if they lack required proof of address. A bi-partisan review board verifies eligibility before counting.",
+    "source_url": "https://www.elections.alaska.gov/Core/votinginformation.php",
+    "source_name": "Alaska Division of Elections - Questioned Ballots",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Alaska have Automatic Voter Registration (AVR)?",
+    "question_variants": [
+      "Is registration automatic in Alaska?",
+      "AK PFD automatic voter registration",
+      "Do I have to register to vote if I apply for the PFD?"
+    ],
+    "answer": "Yes. Alaska uses a unique Automatic Voter Registration (AVR) system tied to the Permanent Fund Dividend (PFD). When an eligible Alaskan applies for their annual PFD, they are automatically registered to vote or updated unless they explicitly opt out.",
+    "source_url": "https://www.elections.alaska.gov/Core/voterregistration.php",
+    "source_name": "Alaska Division of Elections - Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Alaska offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in AK?",
+      "Alaska electronic voter registration",
+      "AK Division of Elections online registration portal"
+    ],
+    "answer": "Yes. Eligible Alaska residents with a valid state driver's license or ID card can register or update electronically via the Division of Elections portal. The strict online registration deadline is 30 days before an election.",
+    "source_url": "https://voterregistration.alaska.gov/",
+    "source_name": "Alaska Division of Elections - Online Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Alaska maintain its voter registration lists?",
+    "question_variants": [
+      "AK voter list maintenance rules",
+      "How are inactive voters handled in Alaska?",
+      "Alaska voter roll cleaning process"
+    ],
+    "answer": "The Division of Elections conducts list maintenance using NCOA data, death records, and felony conviction reports. Additionally, the annual PFD application process serves as a massive list maintenance tool, updating addresses based on state residency filings.",
+    "source_url": "https://www.elections.alaska.gov/",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AK",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many boroughs are in Alaska, and why does it matter for campaigns?",
+    "question_variants": [
+      "Alaska unorganized borough election administration",
+      "How many county clerks in AK?",
+      "Local election control Alaska"
+    ],
+    "answer": "Alaska has 19 organized boroughs and one vast 'Unorganized Borough' (half the state's landmass). Unlike states with county clerks, the Alaska Division of Elections directly administers all federal and state elections across the entire state due to this unique structure.",
+    "source_url": "https://www.elections.alaska.gov/",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Alaska use runoff elections for close races?",
+    "question_variants": [
+      "Are there runoffs in Alaska?",
+      "How are tied elections decided in Alaska?",
+      "Does RCV eliminate the need for runoffs in AK?"
+    ],
+    "answer": "No. Alaska does not hold separate runoff elections for state or federal offices. The RCV system serves as an 'instant runoff,' redistributing votes until a candidate secures a majority. In the extremely rare event of a final-round tie, the winner is determined by drawing lots.",
+    "source_url": "https://www.elections.alaska.gov/Core/RCV.php",
+    "source_name": "Alaska Division of Elections - Ranked Choice Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Alaska campaign materials?",
+    "question_variants": [
+      "Alaska 'Paid for by' rules",
+      "Campaign ad disclaimer requirements AK",
+      "Political taglines Alaska APOC"
+    ],
+    "answer": "Alaska requires a 'Paid for by' statement identifying the candidate or committee. For independent expenditures, the disclaimer must also explicitly list the top three financial contributors to the group funding the advertisement.",
+    "source_url": "https://doa.alaska.gov/apoc/",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Alaska?",
+    "question_variants": [
+      "AK campaign coordination rules",
+      "When is a PAC expenditure not independent in Alaska?",
+      "Prohibition on candidate-PAC coordination AK"
+    ],
+    "answer": "An expenditure is 'coordinated' if it is made with the cooperation, consultation, or prior consent of the candidate or their committee. Sharing strategy or vendors can compromise independence under APOC regulations and count as a direct in-kind contribution.",
+    "source_url": "https://doa.alaska.gov/apoc/",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Alaska?",
+    "question_variants": [
+      "AK APOC late fee",
+      "Penalty for missing an Alaska campaign finance deadline",
+      "APOC fine for late filing AK"
+    ],
+    "answer": "APOC imposes civil penalties of $50 per day for standard reports and up to $500 per day for late rapid-disclosure (24-hour) reports filed immediately prior to an election. Fines accrue daily until the report is submitted.",
+    "source_url": "https://doa.alaska.gov/apoc/CandidateInformation.html",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must an Alaska campaign committee terminate?",
+    "question_variants": [
+      "Closing an Alaska campaign committee",
+      "APOC committee termination requirements",
+      "Final campaign finance report Alaska"
+    ],
+    "answer": "A committee may terminate once it has a zero balance and no outstanding debts. A final 'Zero Report' marking the committee as closed must be filed with APOC within 90 days of the election.",
+    "source_url": "https://doa.alaska.gov/apoc/CandidateInformation.html",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Alaska?",
+    "question_variants": [
+      "AK independent expenditure reporting APOC",
+      "Disclosure for AK independent expenditure groups",
+      "Reporting thresholds for outside spending Alaska"
+    ],
+    "answer": "Standard independent expenditures exceeding $500 must be reported to APOC within 10 days. If made closely prior to an election, they trigger rapid 24-hour reporting requirements to maintain transparency for voters.",
+    "source_url": "https://doa.alaska.gov/apoc/",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Alaska?",
+    "question_variants": [
+      "Alaska in-kind contribution valuation rules",
+      "Reporting non-monetary donations Alaska campaign",
+      "Fair market value for in-kind gifts AK"
+    ],
+    "answer": "In-kind contributions (donated goods/services) must be reported on APOC disclosures at their fair market value. They are reported simultaneously as both a receipt and an expenditure in the same filing period.",
+    "source_url": "https://doa.alaska.gov/apoc/CandidateInformation.html",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Alaska?",
+    "question_variants": [
+      "Alaska candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in AK?",
+      "Reporting candidate loans in APOC"
+    ],
+    "answer": "A candidate may loan their campaign an unlimited amount of personal funds. However, under Alaska law, a candidate may ONLY repay themselves up to a maximum of $5,000 from campaign contributions after the election.",
+    "source_url": "https://doa.alaska.gov/apoc/CandidateInformation.html",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Alaska candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in AK?",
+      "AK surplus campaign funds rules",
+      "Donating remaining campaign funds Alaska"
+    ],
+    "answer": "Unexpended funds cannot be converted to personal use. They may be retained for a future campaign, returned pro-rata to contributors, donated to an IRS-recognized charity, or transferred to a political party.",
+    "source_url": "https://doa.alaska.gov/apoc/CandidateInformation.html",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for lobbyists in Alaska?",
+    "question_variants": [
+      "Can Alaska legislators raise money during session?",
+      "Lobbyist contribution ban AK legislature",
+      "Legislative session contribution rules Alaska"
+    ],
+    "answer": "Yes. Under AS 15.13.072, Alaska strictly prohibits state legislators and the Governor from soliciting or accepting campaign contributions during a regular or special legislative session to avoid the appearance of quid pro quo.",
+    "source_url": "https://doa.alaska.gov/apoc/",
+    "source_name": "Alaska Statute 15.13.072",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State candidates and Lobbyists"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Alaska's rapid disclosure requirements for large contributions?",
+    "question_variants": [
+      "Alaska 24-hour large contribution report",
+      "Late contribution reporting Alaska",
+      "When do I file a rapid report in AK?"
+    ],
+    "answer": "If a candidate receives a contribution of $250 or more within the final 9 days before an election, they must report that contribution to APOC electronically within 24 hours of receipt for immediate public transparency.",
+    "source_url": "https://doa.alaska.gov/apoc/ReportingCalendar.html",
+    "source_name": "Alaska Public Offices Commission (APOC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "AK",
+    "office_level": ["county", "municipal"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for borough and municipal offices in Alaska?",
+    "question_variants": [
+      "When are borough mayors elected in AK?",
+      "Alaska local official term lengths",
+      "Are municipal elections held in November?"
+    ],
+    "answer": "Unlike state and federal elections, local borough and municipal elections in Alaska are typically held in October (often the first Tuesday). Local assembly members and mayors generally serve three-year terms.",
+    "source_url": "https://www.elections.alaska.gov/",
+    "source_name": "Alaska Division of Elections - Local Government",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "AK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Alaska elections?",
+    "question_variants": [
+      "When are Alaska election results official?",
+      "AK certification deadline RCV",
+      "State Review Board meeting Alaska"
+    ],
+    "answer": "Because Alaska accepts mail ballots up to 15 days post-election and must subsequently tabulate RCV rounds if needed, certification is delayed. The State Review Board officially certifies results approximately 20 to 30 days after Election Day.",
+    "source_url": "https://www.elections.alaska.gov/",
+    "source_name": "Alaska Division of Elections - Canvass",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "AK",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Alaska?",
+    "question_variants": [
+      "Alaska special election timeline",
+      "Who calls a special election to fill a US House vacancy in AK?",
+      "Filling a midterm vacancy Alaska"
+    ],
+    "answer": "Special elections to fill federal or state legislative vacancies are called by a proclamation from the Governor. Under state law, the special election must typically be held no less than 60 days and no more than 90 days after the vacancy occurs.",
+    "source_url": "https://www.elections.alaska.gov/",
+    "source_name": "Alaska Division of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  }
+]
