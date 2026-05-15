@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in Hawaii?",
+    "question_variants": [
+      "Are Hawaii primaries open or closed?",
+      "Do I have to register with a party to vote in the HI primary?",
+      "Hawaii single ballot primary system"
+    ],
+    "answer": "Hawaii has an open primary system. Voters are not required to register with a political party. In the primary, voters receive a single ballot containing the primary races for all recognized parties. The voter must select one, and only one, party's primary to participate in, and can only vote for candidates within that selected party section, per HRS § 12-31.",
+    "source_url": "https://elections.hawaii.gov/voters/voting-in-hawaii/",
+    "source_name": "Hawaii Office of Elections - Voting in Hawaii",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "On what day of the week is the Hawaii primary election held?",
+    "question_variants": [
+      "Is the Hawaii primary on a Saturday?",
+      "What day of the week do Hawaiians vote in the primary?",
+      "Saturday voting Hawaii"
+    ],
+    "answer": "In a major practical distinctive compared to the rest of the nation, Hawaii holds its primary election on a Saturday. By state law (HRS § 12-2), the primary election is held on the second Saturday of August in every even-numbered year.",
+    "source_url": "https://elections.hawaii.gov/candidates/candidate-faqs/",
+    "source_name": "HRS § 12-2",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Hawaii?",
+    "question_variants": [
+      "Do write-in votes count in Hawaii?",
+      "How to register as a write-in candidate in HI",
+      "Blank spaces on Hawaii ballots"
+    ],
+    "answer": "No. Hawaii is one of the very few states that explicitly bans write-in voting. Under HRS § 11-152, no write-in votes are permitted or counted in primary, special, or general elections. Candidates must officially qualify and appear printed on the ballot to receive valid votes.",
+    "source_url": "https://www.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0152.htm",
+    "source_name": "HRS § 11-152",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What are the petition signature requirements to access the primary ballot in Hawaii?",
+    "question_variants": [
+      "How many signatures do I need to run for office in HI?",
+      "Hawaii nomination paper signatures",
+      "Petition thresholds for Hawaii legislature"
+    ],
+    "answer": "Hawaii has exceptionally low signature thresholds for ballot access. Candidates must file nomination papers containing the signatures of registered voters eligible to vote for that office. U.S. Senate, U.S. House, Governor, and Lt. Governor candidates need only 25 signatures. State legislative candidates (House or Senate) need only 15 signatures (HRS § 12-5).",
+    "source_url": "https://elections.hawaii.gov/candidates/candidate-faqs/",
+    "source_name": "HRS § 12-5",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All partisan candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in the Hawaii primary?",
+    "question_variants": [
+      "Hawaii joint ticket rules",
+      "How are Lt Gov candidates selected in HI?",
+      "Does the Governor pick a running mate in the primary?"
+    ],
+    "answer": "No, they do not run jointly in the primary. Under Article V, Section 2 of the Hawaii Constitution, candidates for Governor and Lieutenant Governor run in separate, independent primary elections. The winners of each respective primary are then paired together to run as a single joint ticket representing their party in the November general election.",
+    "source_url": "https://lrb.hawaii.gov/constitution",
+    "source_name": "Hawaii Constitution Article V, Section 2",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "How do nonpartisan candidates get on the general election ballot in Hawaii?",
+    "question_variants": [
+      "Independent candidate ballot access Hawaii",
+      "Running without a party in HI",
+      "Nonpartisan primary advancement rules Hawaii"
+    ],
+    "answer": "Nonpartisan (independent) candidates must run in the state primary on the nonpartisan ballot. To advance to the general election, a nonpartisan candidate must receive votes equal to at least 10% of the total votes cast for that office in the primary, OR receive a vote total equal to or greater than the lowest vote-getting partisan candidate who advanced to the general (HRS § 12-41).",
+    "source_url": "https://elections.hawaii.gov/candidates/candidate-faqs/",
+    "source_name": "HRS § 12-41",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Hawaii have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the HI primary?",
+      "Hawaii sore loser statute",
+      "General election ballot access after primary defeat HI"
+    ],
+    "answer": "Yes. Under HRS § 12-1(b), Hawaii enforces a sore loser law. A candidate who seeks a party's nomination (or runs as a nonpartisan) in the primary election and is defeated cannot subsequently have their name placed on the general election ballot for the same office or any other office in that election cycle.",
+    "source_url": "https://www.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0012/HRS_0012-0001.htm",
+    "source_name": "HRS § 12-1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for Hawaii in 2026?",
+    "question_variants": [
+      "When do candidates file for office in Hawaii?",
+      "Hawaii filing deadline 2026",
+      "Last day to file nomination papers HI"
+    ],
+    "answer": "To appear on the 2026 primary ballot, candidates must file their official nomination papers and signatures by 4:30 p.m. on the first Tuesday in June. For the 2026 cycle, this deadline is June 2, 2026.",
+    "source_url": "https://elections.hawaii.gov/candidates/candidate-faqs/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Hawaii for 2026?",
+    "question_variants": [
+      "Hawaii primary date 2026",
+      "When is Election Day 2026 in Hawaii?",
+      "August Saturday primary Hawaii"
+    ],
+    "answer": "The Hawaii primary election will be held on Saturday, August 8, 2026. The general election will be held on Tuesday, November 3, 2026. Voter Service Centers (for in-person voting) are open from 7:00 a.m. to 7:00 p.m. on Election Day.",
+    "source_url": "https://elections.hawaii.gov/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Josh Green running for re-election in 2026?",
+    "question_variants": [
+      "Hawaii Governor election 2026",
+      "Who is defending the HI Governor seat?",
+      "Is Josh Green term limited?"
+    ],
+    "answer": "Yes, Governor Josh Green (D) is defending his seat in the 2026 election. He was first elected in 2022 and is running for his second term. Since Hawaii Governors are limited to two consecutive terms, he is fully eligible for the 2026 ballot.",
+    "source_url": "https://elections.hawaii.gov/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seats are up for election in Hawaii in 2026?",
+    "question_variants": [
+      "Is Mazie Hirono up for re-election in 2026?",
+      "When is Brian Schatz's next election?",
+      "Hawaii US Senate cycle 2026"
+    ],
+    "answer": "There is no U.S. Senate race in Hawaii in 2026. Senator Brian Schatz (Class 3) was re-elected in 2022 and is not up until 2028. Senator Mazie Hirono (Class 1) was re-elected in 2024 and is not up until 2030.",
+    "source_url": "https://elections.hawaii.gov/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Hawaii for the 2026 election?",
+    "question_variants": [
+      "Hawaii congressional apportionment",
+      "Are all HI congressional seats up in 2026?",
+      "Number of US Representatives from Hawaii"
+    ],
+    "answer": "Hawaii is apportioned 2 U.S. House districts. Both District 1 (which includes urban Honolulu) and District 2 (which includes non-Honolulu Oahu and the neighbor islands) will be on the 2026 ballot, as Representatives serve two-year terms.",
+    "source_url": "https://elections.hawaii.gov/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Hawaii State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Hawaii House seats up in 2026?",
+      "Hawaii Senate election cycle 2026",
+      "Which legislative districts are on the ballot in HI?"
+    ],
+    "answer": "All 51 seats in the Hawaii House of Representatives (2-year terms) are up for election in 2026. The Hawaii Senate has 25 members serving staggered 4-year terms. Due to post-redistricting assignments made in 2022, 13 specific Senate seats will be on the 2026 ballot.",
+    "source_url": "https://www.capitol.hawaii.gov/",
+    "source_name": "Hawaii State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Office of Hawaiian Affairs (OHA) trustee seats are on the 2026 ballot?",
+    "question_variants": [
+      "OHA election cycle 2026",
+      "How many OHA trustees are up for election?",
+      "Hawaii Native elections"
+    ],
+    "answer": "The Office of Hawaiian Affairs (OHA) is governed by a 9-member Board of Trustees serving staggered four-year terms. In 2026, 5 of the 9 trustee seats will be on the statewide ballot. Following the Supreme Court ruling in Rice v. Cayetano (2000), all registered Hawaii voters may vote in these races.",
+    "source_url": "https://elections.hawaii.gov/candidates/candidate-faqs/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "OHA candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are judges retained in Hawaii, and are they on the ballot?",
+    "question_variants": [
+      "Hawaii judicial retention elections",
+      "How are judges selected in Hawaii?",
+      "Do Hawaii judges run in competitive elections?"
+    ],
+    "answer": "Hawaii judges do not run in competitive partisan or nonpartisan elections. They are appointed by the Governor (or Chief Justice) from a list provided by the Judicial Selection Commission and confirmed by the State Senate. To serve subsequent terms, they are subject to retention evaluation by the Judicial Selection Commission, NOT by popular vote on the public ballot.",
+    "source_url": "https://www.courts.state.hi.us/courts/judicial_selection_commission",
+    "source_name": "Hawaii State Judiciary",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Hawaii State Legislature sessions?",
+    "question_variants": [
+      "When does the HI legislature meet?",
+      "Hawaii 60 day legislative session",
+      "Is the Hawaii legislature full time?"
+    ],
+    "answer": "The Hawaii State Legislature is a part-time body. Under Article III, Section 10 of the Hawaii Constitution, regular sessions convene annually on the third Wednesday in January and are strictly limited to 60 legislative days, typically concluding in early May.",
+    "source_url": "https://lrb.hawaii.gov/constitution",
+    "source_name": "Hawaii Constitution Article III, Section 10",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Hawaii?",
+    "question_variants": [
+      "Age and residency for Hawaii Governor",
+      "Hawaii Constitution Article V Governor qualifications",
+      "Who is eligible to be Governor of Hawaii?"
+    ],
+    "answer": "Under Article V, Section 1 of the Hawaii Constitution, a candidate for Governor must be at least 30 years of age and must have been a resident of Hawaii for at least five consecutive years immediately preceding the election.",
+    "source_url": "https://lrb.hawaii.gov/constitution",
+    "source_name": "Hawaii Constitution Article V, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Hawaii?",
+    "question_variants": [
+      "Hawaii Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in HI?",
+      "Qualifications for Lieutenant Governor of Hawaii"
+    ],
+    "answer": "Under Article V, Section 2 of the Hawaii Constitution, the qualifications for Lieutenant Governor are strictly identical to those for Governor: the candidate must be at least 30 years old and a resident of Hawaii for five consecutive years preceding the election.",
+    "source_url": "https://lrb.hawaii.gov/constitution",
+    "source_name": "Hawaii Constitution Article V, Section 2",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Hawaii State Legislature?",
+    "question_variants": [
+      "Qualifications for HI State Representative",
+      "Age requirement Hawaii State Senate",
+      "Do I have to live in my district to run in HI?"
+    ],
+    "answer": "Under Article III, Section 7 of the Hawaii Constitution, a candidate for the State House or State Senate must have attained the age of majority (18 years old), must have been a resident of the state for at least three years, and must be a qualified voter of the representative district from which they seek to be elected prior to filing nomination papers.",
+    "source_url": "https://lrb.hawaii.gov/constitution",
+    "source_name": "Hawaii Constitution Article III, Section 7",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Hawaii?",
+    "question_variants": [
+      "US Senate residency requirements Hawaii",
+      "Age to run for Congress in Hawaii",
+      "Federal constitutional requirements for HI candidates"
+    ],
+    "answer": "Federal candidates must meet U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected. District residency is not required for the House.",
+    "source_url": "https://elections.hawaii.gov/candidates/candidate-faqs/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Hawaii Governor?",
+    "question_variants": [
+      "How many terms can a Hawaii Governor serve?",
+      "Josh Green term limits HI",
+      "Hawaii executive term limit law"
+    ],
+    "answer": "Under Article V, Section 1 of the Hawaii Constitution, the Governor is limited to serving two consecutive four-year terms. After serving two consecutive terms, an individual may run for the office again after a four-year break.",
+    "source_url": "https://lrb.hawaii.gov/constitution",
+    "source_name": "Hawaii Constitution Article V, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Hawaii have legislative term limits?",
+    "question_variants": [
+      "How many terms can a Hawaii state senator serve?",
+      "Are there term limits for the Hawaii House?",
+      "Hawaii legislature term limit status"
+    ],
+    "answer": "No. Hawaii does not impose term limits on members of the State Senate or the State House of Representatives. State legislators may serve an unlimited number of terms.",
+    "source_url": "https://lrb.hawaii.gov/constitution",
+    "source_name": "Hawaii Constitution",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Do Office of Hawaiian Affairs (OHA) trustee candidates have to be Native Hawaiian?",
+    "question_variants": [
+      "Qualifications for OHA trustee",
+      "Can a non-Hawaiian run for OHA in Hawaii?",
+      "Arakaki v. Hawaii OHA restrictions"
+    ],
+    "answer": "No. While OHA was established to manage programs for Native Hawaiians, the 9th Circuit Court of Appeals ruled in Arakaki v. Hawaii (2003) that requiring candidates for OHA to be of Native Hawaiian ancestry violated the 15th Amendment and the Voting Rights Act. Therefore, any qualified voter in Hawaii may run for an OHA trustee seat.",
+    "source_url": "https://caselaw.findlaw.com/court/us-9th-circuit/1126749.html",
+    "source_name": "Arakaki v. Hawaii (9th Cir. 2003)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "OHA candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Hawaii a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Hawaii?",
+      "Hawaii vote-by-mail system",
+      "Does Hawaii automatically send ballots to voters?"
+    ],
+    "answer": "Yes. Following legislation enacted in 2021, Hawaii is a universal mail ballot state. All active registered voters are automatically mailed a ballot packet approximately 18 days prior to every primary and general election.",
+    "source_url": "https://elections.hawaii.gov/voters/voting-in-hawaii/",
+    "source_name": "Hawaii Office of Elections - Voting By Mail",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Hawaii offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in HI?",
+      "Hawaii Voter Service Centers",
+      "Where can I vote in person in Hawaii?"
+    ],
+    "answer": "Yes. While elections are conducted primarily by mail, Hawaii provides 'Voter Service Centers' in each county. These centers open 10 days prior to the election and remain open through Election Day, allowing voters to cast their ballots in person, register to vote, or utilize accessible voting equipment.",
+    "source_url": "https://elections.hawaii.gov/voters/voting-in-hawaii/",
+    "source_name": "Hawaii Office of Elections - Voter Service Centers",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return a mail ballot in Hawaii?",
+    "question_variants": [
+      "When is the last day to mail my ballot in HI?",
+      "Hawaii mail ballot postmark deadline",
+      "What time are ballots due in Hawaii?"
+    ],
+    "answer": "In Hawaii, completed mail ballots must be RECEIVED by the County Clerk's office by 7:00 p.m. on Election Day. Postmarks are not accepted as proof of timely submission; if the ballot is not physically received by the 7:00 p.m. deadline, it will not be counted.",
+    "source_url": "https://elections.hawaii.gov/voters/voting-in-hawaii/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Hawaii allow same-day voter registration?",
+    "question_variants": [
+      "Late registration Hawaii",
+      "Can I register to vote on Election Day in HI?",
+      "Hawaii voter registration deadline"
+    ],
+    "answer": "Yes. While standard mail and online voter registration deadlines fall 10 days before an election, Hawaii offers Same Day Voter Registration. Eligible residents can register and vote in person at any Voter Service Center in their county from 10 days prior to the election up through the close of polls at 7:00 p.m. on Election Day.",
+    "source_url": "https://elections.hawaii.gov/voters/registration/",
+    "source_name": "Hawaii Office of Elections - Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a strict photo ID required to vote in person in Hawaii?",
+    "question_variants": [
+      "Hawaii voter ID requirements",
+      "Do I need my driver's license to vote in HI?",
+      "Acceptable ID for Hawaii in-person voting"
+    ],
+    "answer": "No. Hawaii does not have a strict photo ID law. Under HRS § 11-136, voters at Voter Service Centers must provide proof of identification, but this can be satisfied by a photo ID (like a driver's license) OR non-photo documents that show the voter's name and address, such as a current utility bill, bank statement, or government check.",
+    "source_url": "https://elections.hawaii.gov/voters/voting-in-hawaii/",
+    "source_name": "HRS § 11-136",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Which agency administers elections in Hawaii?",
+    "question_variants": [
+      "Does the Secretary of State run elections in Hawaii?",
+      "Who is the chief election officer in HI?",
+      "Hawaii election administration"
+    ],
+    "answer": "In Hawaii, elections are administered by the State Office of Elections under the direction of the Chief Election Officer, rather than a Secretary of State. The state office works in conjunction with the county clerks from Hawaii's four counties to execute elections.",
+    "source_url": "https://elections.hawaii.gov/about-us/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Hawaii?",
+    "question_variants": [
+      "How close can I campaign to a Voter Service Center in HI?",
+      "Hawaii 200 feet electioneering rule",
+      "HI buffer zone around drop boxes"
+    ],
+    "answer": "Under HRS § 11-132, Hawaii strictly prohibits electioneering within a 200-foot radius of the entrance to any Voter Service Center or place of deposit (ballot drop box). This includes distributing campaign literature, displaying signs, or soliciting votes.",
+    "source_url": "https://www.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0132.htm",
+    "source_name": "HRS § 11-132",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "HI",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Hawaii, and why does it matter for campaigns?",
+    "question_variants": [
+      "Hawaii county election administration",
+      "How many county clerks in HI?",
+      "Local election control Hawaii"
+    ],
+    "answer": "Hawaii has effectively 4 counties (Honolulu, Maui, Hawaii/Big Island, and Kauai). This highly centralized structure means campaigns only need to coordinate with four County Clerks, who manage local Voter Service Centers, absentee ballot counting, and local election execution on behalf of the state.",
+    "source_url": "https://elections.hawaii.gov/resources/county-election-divisions/",
+    "source_name": "Hawaii Office of Elections - County Divisions",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Hawaii?",
+    "question_variants": [
+      "Where do I file campaign finance reports in HI?",
+      "What is the Hawaii CSC?",
+      "Does the Hawaii Office of Elections handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Hawaii are administered by the Campaign Spending Commission (CSC), a separate and independent state agency. All state, legislative, and local candidates must register and file their financial disclosures through the CSC's online portal.",
+    "source_url": "https://ags.hawaii.gov/campaign/",
+    "source_name": "Hawaii Campaign Spending Commission (CSC)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits for Hawaii candidates in the 2026 cycle?",
+    "question_variants": [
+      "How much can an individual donate to an HI Governor candidate?",
+      "Hawaii legislative contribution caps 2026",
+      "HI individual donation limits per election cycle"
+    ],
+    "answer": "In Hawaii, contribution limits are applied per election period (cycle), not per individual primary/general election. Individuals may contribute up to $6,000 to a candidate for a 4-year statewide office (Governor, Lt. Gov); $4,000 to a candidate for a 4-year non-statewide office (State Senate); and $2,000 to a candidate for a 2-year office (State House) per HRS § 11-357.",
+    "source_url": "https://ags.hawaii.gov/campaign/cc/candidate-committee-contribution-limits/",
+    "source_name": "Hawaii CSC - Contribution Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate and union contributions permitted in Hawaii candidate campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Hawaii state",
+      "Can a business donate to my campaign in HI?",
+      "Corporate campaign finance rules Hawaii"
+    ],
+    "answer": "Yes. Hawaii permits direct corporate and labor union contributions to candidate campaigns. Noncandidate committees, corporations, and unions are subject to the exact same contribution limits as individual donors ($6,000 / $4,000 / $2,000 depending on the office's term length).",
+    "source_url": "https://ags.hawaii.gov/campaign/cc/candidate-committee-contribution-limits/",
+    "source_name": "Hawaii CSC - Contribution Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the campaign finance reporting schedule for Hawaii candidates?",
+    "question_variants": [
+      "CSC filing dates 2026",
+      "When are campaign finance reports due in HI?",
+      "Hawaii pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates must file periodic reports with the CSC. Standard filings in an election year include a 1st Preliminary Primary report (due 30 days before the primary), a 2nd Preliminary Primary report (due 10 days before the primary), a Final Primary report, corresponding General election reports, and a Supplemental report due January 31.",
+    "source_url": "https://ags.hawaii.gov/campaign/cc/candidate-committee-reporting-schedules/",
+    "source_name": "Hawaii CSC - Reporting Schedules",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "Does Hawaii provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Hawaii Governor",
+      "Hawaii Election Campaign Fund",
+      "Government campaign grants HI"
+    ],
+    "answer": "Yes. Hawaii operates a partial public financing system through the Hawaii Election Campaign Fund. Candidates who voluntarily agree to abide by strict campaign expenditure limits can receive matching funds from the state, up to a maximum of 10% of the expenditure limit for their specific office, by matching small qualifying contributions.",
+    "source_url": "https://ags.hawaii.gov/campaign/cc/candidate-committee-public-funding/",
+    "source_name": "Hawaii CSC - Public Funding",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Hawaii?",
+    "question_variants": [
+      "HI personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in HI?",
+      "Prohibited expenditures Hawaii CSC"
+    ],
+    "answer": "Yes. Under HRS § 11-381, campaign funds may not be used for personal expenses. Contributions may only be used for expenses directly related to the candidate's campaign, for the ordinary and necessary expenses of holding public office, or returned to donors.",
+    "source_url": "https://www.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0381.htm",
+    "source_name": "HRS § 11-381",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Hawaii's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "Hawaii late contribution report",
+      "Late contribution reporting Hawaii CSC",
+      "When do I file a rapid report in HI?"
+    ],
+    "answer": "Under HRS § 11-332.1, if a candidate receives a 'Late Contribution' aggregating more than $500 from a single source within the period between 14 days and 4 days before an election, they must electronically report that contribution to the CSC within three business days of receipt.",
+    "source_url": "https://www.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0332_0001.htm",
+    "source_name": "HRS § 11-332.1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Who draws Hawaii's legislative and congressional maps?",
+    "question_variants": [
+      "Does Hawaii use an independent redistricting commission?",
+      "Who has the authority to draw district lines in Hawaii?",
+      "Hawaii Reapportionment Commission composition"
+    ],
+    "answer": "Hawaii uses a 9-member Reapportionment Commission to draw its electoral maps. Under Article IV of the state constitution, the Senate President, House Speaker, Senate Minority Leader, and House Minority Leader each select two members. Those eight members then select a ninth member to serve as the chairperson.",
+    "source_url": "https://elections.hawaii.gov/about-us/boards-and-commissions/reapportionment/",
+    "source_name": "Hawaii Office of Elections - Reapportionment",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Hawaii?",
+    "question_variants": [
+      "Standards for drawing Hawaii district lines",
+      "Hawaii gerrymandering rules",
+      "Article IV Hawaii Constitution redistricting"
+    ],
+    "answer": "Under Article IV of the Hawaii Constitution, districts must be contiguous, compact, and adhere to the 'basic island units' (preventing districts from crossing island boundaries unless strictly necessary for population equality). District lines must follow permanent recognized features and must not be drawn to unduly favor a person or political faction.",
+    "source_url": "https://elections.hawaii.gov/wp-content/uploads/2015/03/ArticleIV.pdf",
+    "source_name": "Hawaii Constitution Article IV",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current Hawaii redistricting maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of 2022 Hawaii redistricting maps",
+      "Are there pending redistricting lawsuits in Hawaii?",
+      "Hawaii 2026 district boundaries"
+    ],
+    "answer": "Yes. The legislative and congressional maps adopted by the Hawaii Reapportionment Commission in 2022 are fully operative for the 2026 election cycle and are not currently subject to any systemic legal challenges that would alter boundaries.",
+    "source_url": "https://elections.hawaii.gov/about-us/boards-and-commissions/reapportionment/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Can the Hawaii legislature amend the redistricting commission's maps?",
+    "question_variants": [
+      "Legislature override of Hawaii redistricting",
+      "Can HI lawmakers change district boundaries?",
+      "Hawaii redistricting amendment rules"
+    ],
+    "answer": "No. Once the Reapportionment Commission files its final legislative and congressional reapportionment plans with the Chief Election Officer, those plans become law upon publication. The state legislature has no authority to vote on, amend, or veto the maps.",
+    "source_url": "https://elections.hawaii.gov/about-us/boards-and-commissions/reapportionment/",
+    "source_name": "Hawaii Constitution Article IV",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Hawaii have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Hawaii be recalled?",
+      "How to recall a state senator in HI",
+      "Statewide recall election rules Hawaii"
+    ],
+    "answer": "No. The State of Hawaii does not have any legal mechanism for the recall of state-level elected officials, including the Governor or members of the state legislature.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Hawaii",
+    "source_name": "Laws governing recall in Hawaii",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Hawaii?",
+    "question_variants": [
+      "Hawaii county commissioner recall rules",
+      "Signature requirement local recall Hawaii",
+      "Recalling a mayor in HI"
+    ],
+    "answer": "While state officials cannot be recalled, Hawaii allows for the recall of local elected officials at the county level (mayors and council members), governed entirely by individual county charters. No specific grounds for recall are required. Signature thresholds vary widely, ranging from 10% to 25% of registered voters depending on the county.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Hawaii",
+    "source_name": "Laws governing recall in Hawaii",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature thresholds for a citizen initiative in Hawaii?",
+    "question_variants": [
+      "How to get an initiative on the HI ballot",
+      "Hawaii citizen initiative signature requirements",
+      "Does Hawaii allow citizen initiatives?"
+    ],
+    "answer": "Hawaii is one of the states that does NOT have a statewide citizen initiative process. Citizens cannot draft statutes or constitutional amendments and gather signatures to force them onto the state ballot. All statewide ballot measures must be referred by the legislature.",
+    "source_url": "https://en.wikipedia.org/wiki/List_of_Hawaii_ballot_measures",
+    "source_name": "Initiative and Referendum Institute",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold and process for a veto referendum in Hawaii?",
+    "question_variants": [
+      "How to refer a HI bill to the ballot",
+      "Hawaii citizen referendum rules",
+      "Veto referendum signature threshold Hawaii state"
+    ],
+    "answer": "Hawaii does not have a statewide veto referendum process. Citizens cannot gather signatures to suspend and refer an already-passed legislative act to the ballot for a popular vote of approval or rejection.",
+    "source_url": "https://en.wikipedia.org/wiki/List_of_Hawaii_ballot_measures",
+    "source_name": "Initiative and Referendum Institute",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Hawaii legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Hawaii",
+      "Referendum by legislature HI",
+      "Can the HI legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The Hawaii State Legislature can propose a constitutional amendment by securing a two-thirds supermajority vote in both the House and the Senate during a single session, OR by securing a simple majority vote in both chambers across two successive sessions. The amendment is then referred to the voters and does not require the Governor's signature.",
+    "source_url": "https://ballotpedia.org/Article_XVII,_Hawaii_Constitution",
+    "source_name": "Hawaii Constitution Article XVII",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Hawaii?",
+    "question_variants": [
+      "Hawaii ballot measure pass threshold",
+      "Does a measure need a supermajority in HI?",
+      "Majority vote requirements Hawaii ballot measures"
+    ],
+    "answer": "In Hawaii, a legislatively referred constitutional amendment must be approved by a majority of all the votes tallied upon the question, provided that this 'yes' vote majority constitutes at least 50% of the TOTAL vote cast at the election. If many voters skip the question (blank votes), it essentially counts against the measure.",
+    "source_url": "https://ballotpedia.org/Article_XVII,_Hawaii_Constitution",
+    "source_name": "Hawaii Constitution Article XVII",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the Hawaii Attorney General an elected office?",
+    "question_variants": [
+      "Running for HI Attorney General",
+      "Who elects the Attorney General in Hawaii?",
+      "Legal requirements for Hawaii Attorney General"
+    ],
+    "answer": "No. The Attorney General of Hawaii is not elected by the voters. The Attorney General serves as the state's chief legal officer and is appointed directly by the Governor, subject to confirmation by the State Senate.",
+    "source_url": "https://ag.hawaii.gov/about-us/overview/",
+    "source_name": "Hawaii Department of the Attorney General",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Hawaii?",
+    "question_variants": [
+      "Requirements to run for HI Secretary of State",
+      "Who can run for Secretary of State in HI?",
+      "Does Hawaii have a Secretary of State?"
+    ],
+    "answer": "Hawaii DOES NOT have a Secretary of State. It is one of the few states where this office does not exist. Election administration duties are handled by the Chief Election Officer (overseeing the Office of Elections), and executive duties typically handled by a Secretary of State are assigned to the Lieutenant Governor.",
+    "source_url": "https://elections.hawaii.gov/about-us/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for County Mayor in Hawaii?",
+    "question_variants": [
+      "Qualifications for Hawaii County Mayor",
+      "Can I run for mayor in HI?",
+      "Residency rules for Hawaii mayors"
+    ],
+    "answer": "To hold the office of county mayor in Hawaii, candidates must meet qualifications set by their specific county charter. Generally, a candidate must be at least 30 years of age (or 25 depending on the county), a registered voter, and a resident of the county for at least 1 to 3 years prior to the election.",
+    "source_url": "https://elections.hawaii.gov/candidates/candidate-filing/",
+    "source_name": "Hawaii Office of Elections - Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Hawaii?",
+    "question_variants": [
+      "Run for school board Hawaii requirements",
+      "Who can be a school trustee in HI?",
+      "School board residency rules Hawaii"
+    ],
+    "answer": "Hawaii is unique as the ONLY state with a single statewide public school district. There are no local school boards or elected school trustees. Following a constitutional amendment, the statewide Board of Education members are APPOINTED by the Governor, so there are no school board candidates.",
+    "source_url": "https://elections.hawaii.gov/candidates/candidate-faqs/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are Hawaii Supreme Court justices selected and what are the qualifications?",
+    "question_variants": [
+      "Hawaii Supreme Court Justice eligibility",
+      "Years of practice required for HI Supreme Court",
+      "Are Hawaii judges elected or appointed?"
+    ],
+    "answer": "Hawaii Supreme Court justices are not elected. They are nominated by the Governor from a list of 4 to 6 names submitted by the Judicial Selection Commission and confirmed by the State Senate. To be eligible, a candidate must be a resident, a U.S. citizen, and licensed to practice law by the Hawaii Supreme Court for at least 10 years.",
+    "source_url": "https://www.courts.state.hi.us/courts/supreme/justices/justices",
+    "source_name": "Hawaii State Judiciary",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Hawaii?",
+    "question_variants": [
+      "How to fix a rejected signature in HI",
+      "Hawaii ballot cure process deadline",
+      "Missing signature on HI mail ballot"
+    ],
+    "answer": "Because Hawaii is a universal mail-in state, signature verification is critical. If a return envelope is unsigned or the signature does not match the voter's registration record, the county clerk notifies the voter. The voter has up to 5 days after Election Day (by 5:00 p.m. on the 5th day) to cure the discrepancy for their vote to count.",
+    "source_url": "https://www.voteamerica.org/absentee-mail-ballot/hawaii/",
+    "source_name": "VoteAmerica - Hawaii Voting Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Hawaii?",
+    "question_variants": [
+      "When are military ballots due in Hawaii?",
+      "UOCAVA return deadline HI",
+      "Overseas voting rules Hawaii state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before the election. These voters may return their voted ballots via mail, email, or fax. The voted ballot must be received by the county clerk's office by 7:00 p.m. on Election Day.",
+    "source_url": "https://www.fvap.gov/guide/chapter2/hawaii",
+    "source_name": "FVAP.gov - Hawaii",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Hawaii?",
+    "question_variants": [
+      "What is a provisional ballot in HI?",
+      "Voting without ID Hawaii",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are rarely used in Hawaii because the state operates entirely by mail and offers Same-Day Registration at Voter Service Centers. They are generally only issued in rare edge cases involving federal elections where a voter's eligibility cannot be immediately verified at the service center.",
+    "source_url": "https://elections.hawaii.gov/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Hawaii have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Hawaii MVD?",
+      "HI motor voter automatic registration",
+      "Do I have to register to vote if I get a HI driver's license?"
+    ],
+    "answer": "Yes. Hawaii implemented Automatic Voter Registration (AVR) beginning in 2021. Eligible citizens who apply for or renew a driver's license or state ID card at the Department of Transportation are automatically registered to vote or have their address updated, unless they affirmatively decline (opt-out).",
+    "source_url": "https://elections.hawaii.gov/voters/registration/",
+    "source_name": "Hawaii Office of Elections - Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Hawaii offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in HI?",
+      "Hawaii electronic voter registration",
+      "HI Office of Elections online registration portal"
+    ],
+    "answer": "Yes. Eligible Hawaii residents can register to vote or update their registration using the State of Hawaii Online Voter Registration system. To use the online portal, voters must have a valid Hawaii Driver's License or State ID and their Social Security Number.",
+    "source_url": "https://olvr.hawaii.gov/",
+    "source_name": "Hawaii Online Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Hawaii maintain its voter registration lists?",
+    "question_variants": [
+      "HI voter list maintenance rules",
+      "How are inactive voters handled in Hawaii?",
+      "Hawaii voter roll cleaning process"
+    ],
+    "answer": "Hawaii conducts list maintenance using National Change of Address (NCOA) data and returned mail. If a mail ballot is returned as undeliverable, the voter is flagged as inactive. If an inactive voter does not respond to confirmation notices or vote over subsequent election cycles, their registration is canceled.",
+    "source_url": "https://elections.hawaii.gov/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Hawaii?",
+    "question_variants": [
+      "Can felons vote in Hawaii state?",
+      "Felony voting rights restoration HI",
+      "Voting on parole in Hawaii"
+    ],
+    "answer": "In Hawaii, a person convicted of a felony only loses their right to vote while they are actively incarcerated in a correctional facility serving their sentence. Voting rights are automatically restored immediately upon their final discharge or release. Individuals on probation or parole are fully eligible to vote.",
+    "source_url": "https://ballotpedia.org/Hawaii_Voting_Rights_of_Felons_Amendment_9_1968",
+    "source_name": "Hawaii Constitution Article II, Section 2",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Hawaii use runoff elections for close races?",
+    "question_variants": [
+      "Are there runoffs in Hawaii primaries?",
+      "How are tied elections decided in Hawaii?",
+      "Tie-breaker rules Hawaii elections"
+    ],
+    "answer": "No. Hawaii does not hold runoff elections for state or federal offices. Plurality vote determines the winner. In the rare event of an exact tie between candidates, state law dictates that the chief election officer or county clerk determines the winner by casting lots (e.g., drawing names or flipping a coin).",
+    "source_url": "https://elections.hawaii.gov/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Hawaii?",
+    "question_variants": [
+      "Does Hawaii use ranked choice voting?",
+      "RCV status in Hawaii 2026",
+      "Instant runoff voting HI"
+    ],
+    "answer": "Ranked Choice Voting (RCV) is not used for standard state or federal elections in Hawaii. Plurality voting is the standard. However, the Hawaii legislature has authorized the use of RCV for specific special federal elections (vacancies) to avoid the cost of traditional special primary runoff elections.",
+    "source_url": "https://elections.hawaii.gov/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Hawaii campaign materials?",
+    "question_variants": [
+      "Hawaii 'Paid for by' rules",
+      "Campaign ad disclaimer requirements HI",
+      "Political taglines Hawaii CSC"
+    ],
+    "answer": "Hawaii requires that all campaign advertisements clearly contain a disclaimer identifying who paid for the ad. The disclaimer must include the name and address of the candidate, committee, or individual paying for the communication. If an ad is not authorized by a candidate, it must prominently display a notice that the advertisement is 'without the approval and authority' of the candidate.",
+    "source_url": "https://ags.hawaii.gov/campaign/legal-resources/advisory-opinions/advisory-opinion-04-03/",
+    "source_name": "Hawaii Campaign Spending Commission - Advisory Opinion 04-03",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Hawaii?",
+    "question_variants": [
+      "HI campaign coordination rules",
+      "When is a PAC expenditure not independent in Hawaii?",
+      "Prohibition on candidate-PAC coordination HI"
+    ],
+    "answer": "An expenditure is 'coordinated' (and thus treated as an in-kind contribution subject to statutory limits) if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. Foreign nationals and corporations with significant foreign ownership are strictly prohibited from coordinating or spending money in Hawaii elections.",
+    "source_url": "https://freespeechforpeople.org/hawaii-state-senate-passes-bill-barring-multinational-corporations-from-interfering-in-local-and-state-elections/",
+    "source_name": "Hawaii SB2982",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Hawaii?",
+    "question_variants": [
+      "HI CSC late fee",
+      "Penalty for missing a Hawaii campaign finance deadline",
+      "Campaign Spending Commission fine for late filing HI"
+    ],
+    "answer": "The Campaign Spending Commission assesses fines of $50 per day for the first seven days a report is late, and $200 per day thereafter. The fine is capped at 25% of the total contributions or expenditures for the reporting period, with a minimum fine of $200 if the report is more than four days late.",
+    "source_url": "https://www.c4integrity.org/wp-content/uploads/2022/06/Hawaii-State-Report-FINAL-2022.pdf",
+    "source_name": "HRS § 11-340",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Hawaii campaign committee terminate?",
+    "question_variants": [
+      "Closing a Hawaii campaign committee",
+      "CSC committee termination requirements",
+      "Final campaign finance report Hawaii"
+    ],
+    "answer": "A candidate committee may formally terminate and close its registration with the Campaign Spending Commission only when it has no surplus funds and no outstanding campaign debts or loans. A final closing report must be filed.",
+    "source_url": "https://ags.hawaii.gov/campaign/",
+    "source_name": "Hawaii Campaign Spending Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Hawaii?",
+    "question_variants": [
+      "HI independent expenditure reporting CSC",
+      "Disclosure for HI independent expenditure groups",
+      "Reporting thresholds for outside spending Hawaii"
+    ],
+    "answer": "Noncandidate committees making independent expenditures to advocate for or against a candidate must file regular reports with the CSC. Furthermore, if they make independent expenditures of more than $500 within 14 to 4 days prior to an election, they must file a late expenditure report three days before the election.",
+    "source_url": "https://www.c4integrity.org/wp-content/uploads/2022/06/Hawaii-State-Report-FINAL-2022.pdf",
+    "source_name": "HRS § 11-338",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Hawaii?",
+    "question_variants": [
+      "Hawaii in-kind contribution valuation rules",
+      "Reporting non-monetary donations Hawaii campaign",
+      "Fair market value for in-kind gifts HI"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported to the Campaign Spending Commission at their fair market value—the standard price the campaign would have paid. They count toward the donor's per-cycle contribution limit just like monetary cash gifts.",
+    "source_url": "https://www.ncsl.org/elections-and-campaigns/contribution-disclosure-requirements",
+    "source_name": "NCSL - Contribution Disclosure",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Hawaii?",
+    "question_variants": [
+      "Hawaii candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in HI?",
+      "Reporting candidate loans in CSC"
+    ],
+    "answer": "Candidates may contribute completely unlimited amounts of their personal funds to their own campaign (exempt from limits). However, if the candidate makes a personal loan to the campaign with the intent of repayment, they cannot be repaid more than $50,000 for Governor/Lt. Governor, $25,000 for Mayor, or $10,000 for all other offices from campaign funds.",
+    "source_url": "https://ags.hawaii.gov/campaign/cc/candidate-committee-contribution-limits/",
+    "source_name": "Hawaii Campaign Spending Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Hawaii candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in HI?",
+      "HI surplus campaign funds rules",
+      "Donating remaining campaign funds Hawaii"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. They may be returned pro-rata to contributors, transferred to another candidate committee, donated to a public school or public library, or donated to an IRS-recognized charitable organization.",
+    "source_url": "https://ags.hawaii.gov/campaign/",
+    "source_name": "Hawaii Campaign Spending Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign fundraising for Hawaii legislators?",
+    "question_variants": [
+      "Can Hawaii legislators hold fundraisers during session?",
+      "Lobbyist contribution ban HI legislature",
+      "Legislative session fundraiser rules Hawaii"
+    ],
+    "answer": "Yes. Under HRS § 11-342, Hawaii enforces a 'session freeze' that prohibits the Governor, Lieutenant Governor, and state legislators from holding any political fundraisers during the regular legislative session, ensuring money is not actively solicited at events while bills are moving.",
+    "source_url": "https://ags.hawaii.gov/campaign/",
+    "source_name": "Hawaii Campaign Spending Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and Lobbyists"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What is the expenditure limit trade-off for public financing in Hawaii?",
+    "question_variants": [
+      "Hawaii Election Campaign Fund matching rules",
+      "Why accept expenditure limits in HI?",
+      "How to get public campaign money in Hawaii"
+    ],
+    "answer": "Candidates in Hawaii can voluntarily agree to abide by strict campaign expenditure limits (calculated based on the number of registered voters in their district). In exchange for capping their total spending, these candidates qualify to receive matching funds from the Hawaii Election Campaign Fund, up to 10% of their expenditure limit.",
+    "source_url": "https://ags.hawaii.gov/campaign/cc/candidate-committee-public-funding/",
+    "source_name": "Hawaii CSC - Public Funding",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Hawaii?",
+    "question_variants": [
+      "When are county mayors elected in HI?",
+      "Hawaii county official term lengths",
+      "Are county councils on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Hawaii—including Mayors and County Councilmembers—serve either two-year or four-year terms depending on the specific county charter. They are elected during the standard even-year August primary and November general election cycles.",
+    "source_url": "https://www.elections.hawaiicounty.gov/candidates",
+    "source_name": "Hawaii County Elections Division",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "HI",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Hawaii elections?",
+    "question_variants": [
+      "When are Hawaii election results official?",
+      "HI certification deadline",
+      "State Canvassing Board meeting Hawaii"
+    ],
+    "answer": "Because Hawaii processes mail ballots heavily, canvassing takes a few days. The chief election officer and county clerks must complete the canvass and certify the results within 5 days following the election. The final, official certification occurs after the expiration of the time allowed for bringing an election contest.",
+    "source_url": "https://www.ncsl.org/elections-and-campaigns/canvass-deadlines",
+    "source_name": "NCSL - Canvass Deadlines",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "HI",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Hawaii?",
+    "question_variants": [
+      "Hawaii special election timeline",
+      "Who calls a special election to fill a US House vacancy in HI?",
+      "Filling a midterm vacancy Hawaii"
+    ],
+    "answer": "Special elections to fill federal or certain state vacancies are called by a proclamation from the Governor. For U.S. House vacancies, the Governor must issue a proclamation calling for a special election to be held on a date ensuring at least 60 days notice.",
+    "source_url": "https://elections.hawaii.gov/",
+    "source_name": "Hawaii Office of Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  }
+]
