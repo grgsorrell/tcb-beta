@@ -1,0 +1,1370 @@
+[
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is Utah's dual-path primary system?",
+    "question_variants": [
+      "How does SB54 work in Utah?",
+      "Utah dual-path ballot access explained",
+      "Two ways to get on the ballot in Utah"
+    ],
+    "answer": "Under Utah's SB54 law, candidates in a Qualified Political Party (QPP) have a dual-path system to access the primary ballot. They can choose to: 1) Compete in the traditional caucus-convention system, or 2) Bypass the convention by gathering voter signatures. Candidates may pursue either path, or both simultaneously, to secure a spot on the primary ballot.",
+    "source_url": "https://vote.utah.gov/candidate-information/",
+    "source_name": "Utah Lieutenant Governor - Candidate Resources",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All partisan candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "How does the caucus-convention path work in Utah?",
+    "question_variants": [
+      "Utah convention 60 percent rule",
+      "How do delegates select nominees in Utah?",
+      "Bypassing the primary via convention UT"
+    ],
+    "answer": "In the caucus-convention path, delegates vote on candidates at the state party convention. If a candidate receives 60% or more of the delegate vote, they become the party's nominee and bypass the primary ENTIRELY—provided no other candidate qualified via the signature path. If no candidate reaches 60%, the top two candidates (typically those receiving 40-60%) advance to a primary election.",
+    "source_url": "https://vote.utah.gov/candidate-information/",
+    "source_name": "Utah Lieutenant Governor - Candidate Resources",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All partisan candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "How does the signature gathering path work in Utah?",
+    "question_variants": [
+      "Bypassing the convention with signatures Utah",
+      "How many signatures to get on the primary ballot in UT?",
+      "SB54 signature track"
+    ],
+    "answer": "The signature-gathering path allows a candidate to bypass the convention process and guarantee their name on the primary ballot. If a candidate gathers the statutory number of signatures (e.g., 7,000 for U.S. House, 2,000 for State Senate, 1,000 for State House), they force a primary election, even if a convention opponent receives more than 60% of the delegate vote.",
+    "source_url": "https://vote.utah.gov/candidate-information/",
+    "source_name": "Utah Lieutenant Governor - Candidate Resources",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All partisan candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Is SB54's dual-path primary system operative for 2026?",
+    "question_variants": [
+      "Did the Utah legislature repeal SB54?",
+      "Is the signature path still legal in Utah?",
+      "SB54 political status 2026"
+    ],
+    "answer": "Yes. While SB54 is a highly volatile and intensely debated law—with strong opposition from certain state party delegates and some federal officials advocating for a return to a strict convention-only system—repeal efforts have not succeeded. The dual-path system remains fully operative for the 2026 cycle.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter9/20A-9-P4.html",
+    "source_name": "Utah Code Title 20A, Chapter 9, Part 4",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "statute_citation",
+    "scope": "All partisan candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "How do minor party and independent candidates get on the general election ballot in Utah?",
+    "question_variants": [
+      "Independent candidate ballot access Utah",
+      "Running without a party in UT",
+      "Unaffiliated candidate petition threshold Utah"
+    ],
+    "answer": "Unaffiliated (independent) candidates bypass the primary and petition directly onto the general election ballot. They must declare candidacy between early January and June 15 of the election year. They must submit verified signatures totaling 300 voters or 5% of the registered voters residing in the district, whichever is less.",
+    "source_url": "https://vote.utah.gov/candidate-information/",
+    "source_name": "Utah Lieutenant Governor - Candidate Resources",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What are the requirements for write-in candidates in Utah?",
+    "question_variants": [
+      "Do write-in votes count in UT?",
+      "Utah write-in candidate registration",
+      "Declaration of intent write-in Utah"
+    ],
+    "answer": "To have write-in votes counted in Utah, a candidate must officially file a Declaration of Write-In Candidacy with the appropriate filing officer no later than 65 days before the regular general election. Votes cast for undeclared write-in candidates will not be tabulated.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter9/20A-9-S601.html",
+    "source_name": "Utah Code § 20A-9-601",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Utah have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the UT primary?",
+      "Utah sore loser statute",
+      "General election ballot access after convention defeat UT"
+    ],
+    "answer": "Yes. Under Utah Code § 20A-9-202(6), a person who is defeated as a candidate in a primary election or a party convention may not file a declaration of candidacy as an independent (unaffiliated) candidate or as a write-in candidate for the same office in the same election year.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter9/20A-9-S202.html",
+    "source_name": "Utah Code § 20A-9-202",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is a Qualified Political Party (QPP) in Utah?",
+    "question_variants": [
+      "Registered vs Qualified political party Utah",
+      "QPP status Utah",
+      "Which parties use the dual-path primary in UT?"
+    ],
+    "answer": "In Utah, a Qualified Political Party (QPP) is a recognized political party that explicitly permits delegates to vote in a convention AND allows candidates to bypass the convention via signature gathering (the SB54 dual-path system). Currently, the major parties (Republican and Democratic) operate as QPPs. Non-QPPs are classified as Registered Political Parties and only use the convention path.",
+    "source_url": "https://vote.utah.gov/political-parties/",
+    "source_name": "Utah Lieutenant Governor - Political Parties",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Political parties"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Utah for 2026?",
+    "question_variants": [
+      "Utah primary date 2026",
+      "When is Election Day 2026 in Utah?",
+      "June primary Utah"
+    ],
+    "answer": "The Utah primary election will be held on Tuesday, June 23, 2026. The general election will be held on Tuesday, November 3, 2026. Polls open at 7:00 a.m. and close at 8:00 p.m.",
+    "source_url": "https://vote.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Election Dates",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Spencer Cox running for re-election in 2026?",
+    "question_variants": [
+      "Utah Governor election 2026",
+      "Who is defending the UT Governor seat?",
+      "Is Spencer Cox on the 2026 ballot?"
+    ],
+    "answer": "No. Utah elects its Governor in presidential years. Governor Spencer Cox was re-elected in 2024 and his four-year term runs until early 2029. There is no gubernatorial race in 2026.",
+    "source_url": "https://ballotpedia.org/Governor_of_Utah",
+    "source_name": "Ballotpedia - Governor of Utah",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seats are up for election in Utah in 2026?",
+    "question_variants": [
+      "Is Mike Lee up for re-election in 2026?",
+      "When is John Curtis's next election?",
+      "Utah US Senate cycle 2026"
+    ],
+    "answer": "No U.S. Senate seats are on the 2026 ballot in Utah. Both seats were recently decided: Mike Lee (Class 3) was re-elected in 2022 and will not run again until 2028. John Curtis (Class 1) was elected in 2024 and will not run again until 2030.",
+    "source_url": "https://vote.utah.gov/",
+    "source_name": "Utah Lieutenant Governor",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Utah for the 2026 election?",
+    "question_variants": [
+      "Utah congressional apportionment",
+      "Are all UT congressional seats up in 2026?",
+      "Court ordered redistricting Utah US House"
+    ],
+    "answer": "Utah is apportioned 4 U.S. House districts, and all 4 are up for election in 2026. Significantly, the 2026 midterm races will be contested using a newly implemented court-ordered map resulting from an anti-gerrymandering lawsuit that successfully un-split Salt Lake County.",
+    "source_url": "https://www.democracydocket.com/news-alerts/utah-supreme-court-upholds-fairer-map-for-midterm-elections/",
+    "source_name": "Democracy Docket - Utah Redistricting Case",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Utah State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Utah House seats up in 2026?",
+      "Utah Senate election cycle 2026",
+      "Which legislative districts are on the ballot in UT?"
+    ],
+    "answer": "All 75 seats in the Utah House of Representatives (2-year terms) are up for election in 2026. The Utah State Senate has 29 members who serve staggered 4-year terms; approximately half of the Senate seats (15 districts) will be on the 2026 ballot.",
+    "source_url": "https://le.utah.gov/",
+    "source_name": "Utah State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Utah in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "UT statewide election list 2026",
+      "When is the next State Treasurer election in UT?"
+    ],
+    "answer": "None. Utah elects all of its partisan statewide executive officers—Governor, Lt. Governor, Attorney General, State Auditor, and State Treasurer—on the presidential election cycle (e.g., 2024, 2028). There are no statewide partisan executive offices on the 2026 midterm ballot.",
+    "source_url": "https://ballotpedia.org/State_executive_official_elections,_2026",
+    "source_name": "Ballotpedia - State Executive Elections 2026",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for Utah's part-time legislative sessions?",
+    "question_variants": [
+      "When does the UT legislature meet?",
+      "Utah 45 day legislative session",
+      "Is the Utah legislature full time?"
+    ],
+    "answer": "The Utah Legislature is a part-time 'citizen' legislature. It meets annually for a general session that begins in January and is constitutionally limited to exactly 45 calendar days. The session typically concludes in early March.",
+    "source_url": "https://le.utah.gov/",
+    "source_name": "Utah State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Utah?",
+    "question_variants": [
+      "Age and residency for Utah Governor",
+      "Utah Constitution Article VII Governor qualifications",
+      "Who is eligible to be Governor of Utah?"
+    ],
+    "answer": "Under Article VII, Section 3 of the Utah Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States, and must have been a resident of Utah for at least five years preceding the election.",
+    "source_url": "https://le.utah.gov/xcode/ArticleVII/Article_VII,_Section_3.html",
+    "source_name": "Utah Constitution Article VII, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Utah?",
+    "question_variants": [
+      "Utah Lt Gov requirements",
+      "Does the Lt Gov run on a joint ticket in UT?",
+      "Qualifications for Lieutenant Governor of Utah"
+    ],
+    "answer": "The constitutional requirements for Lieutenant Governor in Utah are identical to those for the Governor: at least 30 years old, a U.S. citizen, and a resident of the state for five years. Furthermore, the Governor and Lieutenant Governor must run on a joint ticket in both the primary and general elections.",
+    "source_url": "https://le.utah.gov/xcode/ArticleVII/Article_VII,_Section_3.html",
+    "source_name": "Utah Constitution Article VII, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Utah State Legislature?",
+    "question_variants": [
+      "Qualifications for UT State Representative",
+      "Residency requirement Utah State Senate",
+      "Do I have to live in my district to run in UT?"
+    ],
+    "answer": "Under Article VI, Section 5 of the Utah Constitution, a candidate for the State Senate or House of Representatives must be at least 25 years old, a U.S. citizen, a resident of Utah for three years, and a resident of the specific district they seek to represent for at least six months prior to the election.",
+    "source_url": "https://le.utah.gov/xcode/ArticleVI/Article_VI,_Section_5.html",
+    "source_name": "Utah Constitution Article VI, Section 5",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Utah?",
+    "question_variants": [
+      "US Senate residency requirements Utah",
+      "Age to run for Congress in Utah",
+      "Federal constitutional requirements for UT candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://vote.utah.gov/candidate-information/",
+    "source_name": "Utah Lieutenant Governor - Candidate Resources",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Utah Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in UT",
+      "Do I need to be a member of the bar to be UT AG?",
+      "Legal requirements for Utah Attorney General"
+    ],
+    "answer": "Yes. Under Article VII, Section 3 of the Utah Constitution, the Attorney General must be at least 25 years of age, a resident of the state for five years, and must be 'admitted to practice before the Supreme Court of the State of Utah' in good standing.",
+    "source_url": "https://le.utah.gov/xcode/ArticleVII/Article_VII,_Section_3.html",
+    "source_name": "Utah Constitution Article VII, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for County Commissioner in Utah?",
+    "question_variants": [
+      "Utah county commissioner qualifications",
+      "Can I run for county board in UT?",
+      "County residency for UT commissioners"
+    ],
+    "answer": "To run for County Commissioner or County Council in Utah, a candidate must be a registered voter and have been a resident of the county (and the specific district, if applicable) for at least one year immediately preceding the date of the election.",
+    "source_url": "https://vote.utah.gov/candidate-information/",
+    "source_name": "Utah Lieutenant Governor - Candidate Resources",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county"],
+    "category": "candidate_eligibility",
+    "question": "Does Utah have term limits for elected officials?",
+    "question_variants": [
+      "Term limits for Utah Governor",
+      "How many terms can a Utah state senator serve?",
+      "Are there term limits for the Utah House?"
+    ],
+    "answer": "No. Utah does not have term limits for the Governor, statewide executive officers, state legislators, or county officials. Candidates may serve an unlimited number of terms as long as they are continually re-elected.",
+    "source_url": "https://ballotpedia.org/Utah_State_Legislature",
+    "source_name": "Ballotpedia - Utah Term Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All state and local candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Utah a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Utah?",
+      "Utah vote-by-mail system",
+      "Are there traditional polling places in UT?"
+    ],
+    "answer": "Yes. Utah is a universal vote-by-mail state. All active registered voters are automatically mailed a ballot approximately three weeks before every election. However, voters maintain the option to vote in person at designated vote centers during early voting or on Election Day.",
+    "source_url": "https://vote.utah.gov/how-to-vote/",
+    "source_name": "Utah Lieutenant Governor - How to Vote",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Utah use traditional polling precincts or vote centers?",
+    "question_variants": [
+      "Where do I vote in person in Utah?",
+      "Utah vote centers vs precincts",
+      "Can I vote anywhere in my county in UT?"
+    ],
+    "answer": "Utah predominantly uses 'vote centers' rather than strictly assigning voters to individual, neighborhood-based polling precincts. Any registered voter in a county can cast their ballot at any authorized vote center within that same county on Election Day.",
+    "source_url": "https://vote.utah.gov/how-to-vote/",
+    "source_name": "Utah Lieutenant Governor - Vote Centers",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return a mail ballot in Utah?",
+    "question_variants": [
+      "When is the last day to mail my ballot in UT?",
+      "Mail ballot postmark deadline Utah",
+      "Utah drop box deadline"
+    ],
+    "answer": "In Utah, a completed mail ballot must either be dropped off at a designated drop box by 8:00 p.m. on Election Day OR, if sent through the USPS, it must be clearly postmarked no later than the day BEFORE Election Day to be counted.",
+    "source_url": "https://vote.utah.gov/how-to-vote/",
+    "source_name": "Utah Lieutenant Governor - Voting by Mail",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Utah allow same-day voter registration?",
+    "question_variants": [
+      "Late registration Utah",
+      "Can I register to vote on Election Day in UT?",
+      "Utah voter registration deadline"
+    ],
+    "answer": "Yes. While the standard voter registration deadline (online or by mail) is 11 days before the election, Utah allows same-day voter registration at early voting locations and at vote centers on Election Day. Voters utilizing this option will cast a provisional ballot and must present a valid photo ID and proof of residency.",
+    "source_url": "https://vote.utah.gov/voter-registration/",
+    "source_name": "Utah Lieutenant Governor - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Utah?",
+    "question_variants": [
+      "Utah voter ID requirements",
+      "Do I need my driver's license to vote in UT?",
+      "In-person voting ID laws Utah"
+    ],
+    "answer": "Yes. Utah requires a valid form of identification to vote in person. Voters must present ONE primary form of ID (such as a Utah driver's license, U.S. passport, or tribal ID) OR TWO forms of secondary ID that, when combined, prove their name and current residential address (such as a utility bill and a bank statement).",
+    "source_url": "https://vote.utah.gov/voter-id-requirements/",
+    "source_name": "Utah Lieutenant Governor - Voter ID Requirements",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Which agency administers elections in Utah?",
+    "question_variants": [
+      "Does the Secretary of State run elections in Utah?",
+      "Who is the chief election officer in UT?",
+      "Utah election administration"
+    ],
+    "answer": "Unlike most states where the Secretary of State serves as the chief election officer, in Utah, elections are administered by the Office of the Lieutenant Governor. The Lieutenant Governor oversees state elections, campaign finance, and county clerks who execute the elections locally.",
+    "source_url": "https://vote.utah.gov/",
+    "source_name": "Utah Lieutenant Governor",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Utah?",
+    "question_variants": [
+      "How close can I campaign to a polling place in UT?",
+      "Buffer zone around voting centers Utah",
+      "UT electioneering rules 150 feet"
+    ],
+    "answer": "Under Utah Code § 20A-3a-501, electioneering is strictly prohibited within 150 feet of any polling location (vote center) or official ballot drop box. This includes distributing campaign literature, wearing campaign apparel, or soliciting votes.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter3A/20A-3a-S501.html",
+    "source_name": "Utah Code § 20A-3a-501",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Utah?",
+    "question_variants": [
+      "Can felons vote in Utah state?",
+      "Felony voting rights restoration UT",
+      "Voting on parole in Utah"
+    ],
+    "answer": "In Utah, an individual with a felony conviction only loses their right to vote while they are actively incarcerated in a prison serving their sentence. Voting rights are automatically restored immediately upon release from incarceration. Individuals on probation or parole are fully eligible to vote.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter2/20A-2-S101.5.html",
+    "source_name": "Utah Code § 20A-2-101.5",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the campaign contribution limits in Utah for the 2026 cycle?",
+    "question_variants": [
+      "How much can an individual donate to a UT Governor candidate?",
+      "Current campaign contribution limits for state legislature in UT",
+      "Utah individual donation caps 2026 election"
+    ],
+    "answer": "Utah has NO contribution limits for candidates running for state or local office. Individuals, PACs, and political parties may contribute completely unlimited amounts of money to state-level campaigns. It is one of the few states in the country with zero contribution caps.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Campaign Finance",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Utah?",
+    "question_variants": [
+      "Where do I file campaign finance reports in UT?",
+      "What is the Utah Disclosures portal?",
+      "Does the UT Lt Gov handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Utah are administered by the Office of the Lieutenant Governor. All state and local candidates must register and file their contribution and expenditure reports through the mandatory online portal called disclosures.utah.gov.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Disclosures Portal",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When must a Utah candidate register their campaign committee?",
+    "question_variants": [
+      "Utah campaign committee registration timeline",
+      "When do I have to select a personal campaign committee in UT?",
+      "Utah statement of organization threshold"
+    ],
+    "answer": "Under Utah Code § 20A-11-201, a state office candidate must select a personal campaign committee and register it with the Lieutenant Governor's office prior to receiving any contributions or making any expenditures. A candidate is permitted to serve as their own campaign committee.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter11/20A-11-S201.html",
+    "source_name": "Utah Code § 20A-11-201",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Utah candidates?",
+    "question_variants": [
+      "UT campaign finance filing dates",
+      "When are disclosure reports due in Utah?",
+      "Utah pre-primary and pre-general report deadlines"
+    ],
+    "answer": "State candidates must file periodic financial disclosure reports. Key reporting deadlines include 7 days before the primary election, 30 days after the primary election, 7 days before the general election, 30 days after the general election, and a year-end summary report due January 10th of every year.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Reporting Dates",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Utah's rapid disclosure requirements for large contributions?",
+    "question_variants": [
+      "Utah 7-day large contribution report",
+      "Late contribution reporting Utah",
+      "When do I file a rapid report in UT?"
+    ],
+    "answer": "Under Utah Code § 20A-11-201, if a state office candidate receives a contribution within the 30-day window immediately preceding a convention, primary election, or general election, they must report that contribution electronically within seven (7) business days of receipt.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter11/20A-11-S201.html",
+    "source_name": "Utah Code § 20A-11-201",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate and union contributions permitted in Utah campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Utah state",
+      "Can a business donate to my campaign in UT?",
+      "Corporate campaign finance rules Utah"
+    ],
+    "answer": "Yes. Utah permits direct corporate and labor union contributions to candidate campaigns. Because Utah has no contribution limits for state-level candidates, these corporate contributions may be made in completely unlimited amounts, provided they are properly disclosed.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Campaign Finance",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Utah provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Utah Governor",
+      "State funded campaigns Utah status",
+      "Government campaign grants Utah"
+    ],
+    "answer": "No. Utah does not have a system of public financing or matching funds for political campaigns. All candidates must fund their campaigns entirely through private contributions from individuals, PACs, corporations, and political parties.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Utah?",
+    "question_variants": [
+      "UT personal use prohibition campaign finance",
+      "Can I use campaign money for personal expenses in Utah?",
+      "Prohibited expenditures Utah Disclosures portal"
+    ],
+    "answer": "Yes. Utah Code § 20A-11-104 explicitly prohibits candidates and officeholders from expending campaign funds for personal use. Funds must be utilized exclusively for political purposes, campaign-related costs, or ordinary and necessary expenses incurred in connection with the duties of holding public office.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter11/20A-11-S104.html",
+    "source_name": "Utah Code § 20A-11-104",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who is responsible for drawing Utah's legislative and congressional maps?",
+    "question_variants": [
+      "Does Utah use an independent redistricting commission?",
+      "Who has the authority to draw district lines in Utah?",
+      "Redistricting process Utah"
+    ],
+    "answer": "Utah uses the Utah Independent Redistricting Commission (UIRC), originally created by citizen initiative (Proposition 4). While the legislature historically attempted to reduce the commission to an advisory role, recent landmark Utah Supreme Court rulings have reinstated the commission's authority, mandating that the legislature cannot simply ignore the commission's anti-gerrymandering maps.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter20/20A-20.html",
+    "source_name": "Utah Code Title 20A, Chapter 20 / Supreme Court Rulings",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Utah?",
+    "question_variants": [
+      "Standards for drawing Utah district lines",
+      "Utah gerrymandering rules",
+      "UIRC map requirements UT"
+    ],
+    "answer": "Under Proposition 4 guidelines, redistricting maps must achieve population equality, be contiguous and reasonably compact, preserve communities of interest, minimize the division of municipalities and counties, and strictly prohibit partisan gerrymandering that intentionally favors or disfavors any political party or candidate.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter20/20A-20-S302.html",
+    "source_name": "Utah Code § 20A-20-302",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Are the current Utah congressional maps operative for the 2026 election cycle?",
+    "question_variants": [
+      "Court ordered redistricting Utah US House",
+      "Are there pending redistricting lawsuits in Utah?",
+      "Utah 2026 district boundaries"
+    ],
+    "answer": "Yes, but they are newly implemented court-ordered maps. Following a prolonged legal battle (League of Women Voters of Utah v. Utah State Legislature), a state trial court in early 2026 struck down the legislature's map as an illegal partisan gerrymander. The court imposed a remedial map operative for 2026, which notably creates a highly competitive congressional district centered around Salt Lake City.",
+    "source_url": "https://statecourtreport.org/case-tracker/league-women-voters-utah-v-utah-state-legislature-lwv-1",
+    "source_name": "League of Women Voters of Utah v. Utah State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Can the Utah legislature override the redistricting commission's maps?",
+    "question_variants": [
+      "Legislature override of Utah redistricting",
+      "Can UT lawmakers change district boundaries?",
+      "Utah redistricting amendment rules"
+    ],
+    "answer": "The legislature's power to override the commission is now strictly limited. In 2025, the Utah Supreme Court ruled that the legislature's prior repeal of the citizen-led Proposition 4 violated voters' fundamental right to reform their government. Consequently, the legislature cannot override the commission's anti-gerrymandering mandates without surviving strict judicial scrutiny.",
+    "source_url": "https://statecourtreport.org/case-tracker/league-women-voters-utah-v-utah-state-legislature-lwv-1",
+    "source_name": "Utah Supreme Court Ruling (2025)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Utah have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Utah be recalled?",
+      "How to recall a state senator in UT",
+      "Statewide recall election rules Utah"
+    ],
+    "answer": "No. The State of Utah does not have any legal mechanism for the recall of state-level elected officials, including the Governor or members of the state legislature.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Utah",
+    "source_name": "Laws governing recall in Utah",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Utah?",
+    "question_variants": [
+      "Utah county commissioner recall rules",
+      "Signature requirement local recall Utah",
+      "Recalling a mayor in UT"
+    ],
+    "answer": "Unlike many western states, Utah does not permit the recall of local, county, or municipal elected officials. Elections or formal impeachment/removal proceedings are the only methods for replacing officials.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Utah",
+    "source_name": "Laws governing recall in Utah",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature thresholds for a citizen initiative in Utah?",
+    "question_variants": [
+      "How to get an initiative on the UT ballot",
+      "Utah citizen initiative signature requirements",
+      "Geographic distribution rule for UT initiatives"
+    ],
+    "answer": "To qualify a citizen initiative for the ballot, proponents must gather valid signatures equal to 8% of the total number of votes cast in the state for all candidates for President at the last regular general election. Additionally, Utah requires strict geographic distribution: this 8% threshold must be met in at least 26 of the state's 29 State Senate districts.",
+    "source_url": "https://vote.utah.gov/initiative-and-referendum-information/",
+    "source_name": "Utah Lieutenant Governor - Initiative Requirements",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Can the Utah legislature amend or veto citizen initiatives?",
+    "question_variants": [
+      "Utah Amendment D initiative veto power",
+      "Does the legislature control ballot measures in UT?",
+      "Can lawmakers repeal voter approved laws in Utah?"
+    ],
+    "answer": "The legislature's power over initiatives has been heavily restricted by recent court rulings. A recent legislative effort (Amendment D) that sought to grant the legislature constitutional veto power to amend or repeal voter-approved initiatives was voided by the courts for deceptive ballot language. Consequently, the Utah Supreme Court has affirmed that voters have a protected, fundamental right to reform government via initiative without absolute legislative interference.",
+    "source_url": "https://statecourtreport.org/case-tracker/league-women-voters-utah-v-utah-state-legislature-lwv-1",
+    "source_name": "Utah Supreme Court Initiative Rulings",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees and Strategists"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is Utah's Proposition 4 (2018) and why is it important for 2026?",
+    "question_variants": [
+      "Utah anti-gerrymandering initiative",
+      "Did voters create the redistricting commission in UT?",
+      "Prop 4 litigation status Utah"
+    ],
+    "answer": "Proposition 4 was a 2018 citizen initiative that created Utah's independent redistricting commission and banned partisan gerrymandering. After the legislature repealed it, a multi-year lawsuit resulted in the Utah Supreme Court reinstating the initiative's core anti-gerrymandering protections, directly resulting in the newly operative, court-ordered congressional map for the 2026 elections.",
+    "source_url": "https://statecourtreport.org/case-tracker/league-women-voters-utah-v-utah-state-legislature-lwv-1",
+    "source_name": "League of Women Voters of Utah v. Utah State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Utah legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Utah",
+      "Referendum by legislature UT",
+      "Can the UT legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The Utah State Legislature can refer a proposed constitutional amendment to the voters by securing a two-thirds supermajority vote of all elected members in both the House of Representatives and the State Senate. The amendment does not require the Governor's signature to appear on the general election ballot.",
+    "source_url": "https://le.utah.gov/xcode/ArticleXX3/Article_XX3,_Section_1.html",
+    "source_name": "Utah Constitution Article XXIII, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Utah?",
+    "question_variants": [
+      "Utah ballot measure pass threshold",
+      "Does a measure need a supermajority in UT?",
+      "Majority vote requirements Utah ballot measures"
+    ],
+    "answer": "Once a citizen initiative or a legislatively referred constitutional amendment qualifies for the general election ballot in Utah, it requires a simple majority (over 50%) of the votes cast on that specific measure to pass.",
+    "source_url": "https://vote.utah.gov/initiative-and-referendum-information/",
+    "source_name": "Utah Lieutenant Governor - Initiative Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Utah?",
+    "question_variants": [
+      "Requirements to run for UT Secretary of State",
+      "Who can run for Secretary of State in UT?",
+      "Does Utah have a Secretary of State?"
+    ],
+    "answer": "Utah DOES NOT have a Secretary of State. It is one of the few states where this office does not exist. All duties typically assigned to a Secretary of State—including administering elections, enforcing campaign finance disclosures, and overseeing business filings—are constitutionally assigned to the Lieutenant Governor.",
+    "source_url": "https://vote.utah.gov/",
+    "source_name": "Utah Lieutenant Governor's Office",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Auditor in Utah?",
+    "question_variants": [
+      "Eligibility for Utah State Auditor",
+      "Who can run for State Auditor in UT?",
+      "Qualifications for UT financial officers"
+    ],
+    "answer": "Under Article VII, Section 3 of the Utah Constitution, a candidate for State Auditor must be at least 25 years old at the time of their election, a U.S. citizen, and must have resided within Utah for at least five years preceding the election. While there is no constitutional CPA requirement, the office must adhere to Government Auditing Standards.",
+    "source_url": "https://le.utah.gov/xcode/ArticleVII/Article_VII,_Section_3.html",
+    "source_name": "Utah Constitution Article VII, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in Utah?",
+    "question_variants": [
+      "Eligibility for Utah State Treasurer",
+      "Who can run for State Treasurer in UT?",
+      "Utah Treasurer residency requirements"
+    ],
+    "answer": "Under Article VII, Section 3 of the Utah Constitution, candidates for State Treasurer share the exact same qualifications as the State Auditor: they must be at least 25 years old at the time of election, a citizen of the United States, and a resident of Utah for at least five years preceding the election.",
+    "source_url": "https://le.utah.gov/xcode/ArticleVII/Article_VII,_Section_3.html",
+    "source_name": "Utah Constitution Article VII, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Utah?",
+    "question_variants": [
+      "Run for school board Utah requirements",
+      "Who can be a school trustee in UT?",
+      "School board residency rules Utah"
+    ],
+    "answer": "To run for a local school district board of education in Utah, a candidate must be a registered voter and physically reside within the specific local school board district they seek to represent at the time of filing and throughout their term.",
+    "source_url": "https://vote.utah.gov/candidate-information/",
+    "source_name": "Utah Lieutenant Governor - Candidate Resources",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are Utah Supreme Court justices selected and what are the qualifications?",
+    "question_variants": [
+      "Utah Supreme Court Justice eligibility",
+      "Years of practice required for UT Supreme Court",
+      "Are Utah judges elected or appointed?"
+    ],
+    "answer": "Utah Supreme Court justices are appointed by the Governor from a list provided by a judicial nominating commission. After serving at least three years, they stand in a nonpartisan retention election. To be eligible, a candidate must be at least 30 years old, a U.S. citizen, an active member of the Utah State Bar, and a resident of Utah for at least five years.",
+    "source_url": "https://le.utah.gov/xcode/ArticleVIII/Article_VIII,_Section_7.html",
+    "source_name": "Utah Constitution Article VIII, Section 7",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Utah?",
+    "question_variants": [
+      "How to fix a rejected signature in UT",
+      "Utah ballot cure process deadline",
+      "Missing signature on UT mail ballot"
+    ],
+    "answer": "If a mail ballot envelope has a missing signature or a signature mismatch, the county clerk is required to notify the voter. The voter is provided an opportunity to 'cure' the defect by submitting a cure affidavit. The deadline for the county clerk to receive the cure affidavit is generally before the conclusion of the county canvass (typically within 1-2 weeks after the election).",
+    "source_url": "https://vote.utah.gov/how-to-vote/",
+    "source_name": "Utah Lieutenant Governor - Voting by Mail",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Utah?",
+    "question_variants": [
+      "When are military ballots due in Utah?",
+      "UOCAVA return deadline UT",
+      "Overseas voting rules Utah state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. Voted ballots must be received by the county election office no later than 8:00 p.m. on Election Day to be tabulated.",
+    "source_url": "https://vote.utah.gov/military-and-overseas-voters/",
+    "source_name": "Utah Lieutenant Governor - Military & Overseas",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Utah?",
+    "question_variants": [
+      "What is a provisional ballot in UT?",
+      "Voting without ID Utah",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are primarily issued in Utah when a voter utilizes Same-Day Registration at an early voting center or on Election Day, or if there is a discrepancy with their ID or registration status in the poll book. The voter must provide valid ID and proof of residence before the county canvass to have the provisional ballot counted.",
+    "source_url": "https://vote.utah.gov/how-to-vote/",
+    "source_name": "Utah Lieutenant Governor - How to Vote",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Utah have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Utah Driver License Division?",
+      "UT motor voter automatic registration",
+      "Do I have to register to vote if I get a UT driver's license?"
+    ],
+    "answer": "Yes. Utah employs a 'front-end opt-out' Automatic Voter Registration (AVR) system at the Driver License Division (DLD). When an eligible citizen interacts with the DLD for a license or ID, they are presented with an electronic prompt asking if they wish to register to vote or update their existing registration. If they consent, the data is automatically transferred to election officials.",
+    "source_url": "https://vote.utah.gov/voter-registration-portal/",
+    "source_name": "Utah Lieutenant Governor - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Utah offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in UT?",
+      "Utah electronic voter registration",
+      "UT Lt Gov online registration portal"
+    ],
+    "answer": "Yes. Eligible Utah residents with a valid state driver's license or state-issued ID card can register to vote or update their registration electronically via the Lieutenant Governor's Vote.Utah.gov portal. The strict online registration deadline is 11 days before an election.",
+    "source_url": "https://vote.utah.gov/voter-registration-portal/",
+    "source_name": "Utah Lieutenant Governor - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Utah maintain its voter registration lists?",
+    "question_variants": [
+      "UT voter list maintenance rules",
+      "How are inactive voters handled in Utah?",
+      "Utah voter roll cleaning process"
+    ],
+    "answer": "County clerks in Utah conduct regular list maintenance by cross-referencing death records, court felony conviction reports, and USPS National Change of Address (NCOA) data. If a voter is marked 'inactive' and subsequently fails to vote in two consecutive regular general elections, their registration is purged.",
+    "source_url": "https://vote.utah.gov/",
+    "source_name": "Utah Lieutenant Governor",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Utah voter file?",
+    "question_variants": [
+      "Utah voter database access cost",
+      "How to get the voter list in UT",
+      "What data is included in the Utah voter file?"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide voter registration list from the Lieutenant Governor's Office for a flat fee of $1,050. The tab-delimited file includes voter names, addresses, and voting history. However, state law strictly restricts the release of voters' full dates of birth.",
+    "source_url": "https://vote.utah.gov/obtain-voter-registration-or-election-data/",
+    "source_name": "Utah Lieutenant Governor - Voter Data",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Utah use runoff elections for close races?",
+    "question_variants": [
+      "Are there runoffs in Utah primaries?",
+      "How are tied elections decided in Utah?",
+      "Tie-breaker rules Utah elections"
+    ],
+    "answer": "No. Utah does not hold traditional runoff elections for state or federal offices; the candidate receiving a plurality of the vote wins. In the event of an exact tie vote after recounts, Utah Code § 20A-1-304 dictates that the winning candidate is determined by drawing lots (e.g., flipping a coin or drawing names) in a public meeting.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter1/20A-1-S304.html",
+    "source_name": "Utah Code § 20A-1-304",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Utah?",
+    "question_variants": [
+      "Does Utah use ranked choice voting?",
+      "RCV status in Utah 2026",
+      "Instant runoff voting UT municipal"
+    ],
+    "answer": "Ranked Choice Voting (RCV) is not used for statewide or federal elections in Utah; plurality voting remains the standard. However, Utah operates a 'Municipal Alternate Voting Methods Pilot Project' which allows certain cities (such as Salt Lake City) to voluntarily opt-in to using RCV exclusively for their local municipal elections.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter4/20A-4-P6.html",
+    "source_name": "Utah Code Title 20A, Chapter 4, Part 6",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Utah campaign materials?",
+    "question_variants": [
+      "Utah 'Paid for by' rules",
+      "Campaign ad disclaimer requirements UT",
+      "Political taglines Utah Disclosures portal"
+    ],
+    "answer": "Utah requires all campaign advertising and political communications to include a clear sponsor identification line. The disclaimer must state 'Paid for by' followed by the name of the candidate, political committee, or individual funding the material.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Campaign Finance",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Utah?",
+    "question_variants": [
+      "UT campaign coordination rules",
+      "When is a PAC expenditure not independent in Utah?",
+      "Prohibition on candidate-PAC coordination UT"
+    ],
+    "answer": "An expenditure is 'coordinated' (and thus treated as an in-kind contribution) if the spending is made with the cooperation, consultation, or at the request or suggestion of a candidate or their committee. Because Utah has no contribution limits, coordinated spending is perfectly legal but must be fully disclosed as an in-kind contribution by the campaign.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Campaign Finance",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Utah?",
+    "question_variants": [
+      "UT Disclosures portal late fee",
+      "Penalty for missing a Utah campaign finance deadline",
+      "Can a candidate be disqualified for late reporting in Utah?"
+    ],
+    "answer": "The Lieutenant Governor rigorously enforces reporting deadlines. Failing to file a required report on the Disclosures portal incurs an immediate $100 fine. Crucially, under Utah Code § 20A-11-1002, failing to file specific pre-election reports on time can result in the candidate being legally disqualified, and their name may be removed from the ballot.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter11/20A-11-S1002.html",
+    "source_name": "Utah Code § 20A-11-1002",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Utah campaign committee terminate?",
+    "question_variants": [
+      "Closing a Utah campaign committee",
+      "Disclosures portal committee termination requirements",
+      "Final campaign finance report Utah"
+    ],
+    "answer": "A candidate committee may formally terminate its registration on the Disclosures portal only when it has achieved a zero cash balance, disposed of all surplus funds legally, and resolved all outstanding debts or loans. A final summary report marking the committee as closed must be filed.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Campaign Finance",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Utah?",
+    "question_variants": [
+      "UT independent expenditure reporting Disclosures portal",
+      "Disclosure for UT independent expenditure groups",
+      "Reporting thresholds for outside spending Utah"
+    ],
+    "answer": "Any person, corporation, or political committee making independent expenditures must file detailed expenditure reports through the Disclosures.utah.gov portal. If expenditures are made within the 30-day window leading up to an election, they trigger rapid disclosure requirements to ensure transparency.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Disclosures Portal",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Utah?",
+    "question_variants": [
+      "Utah in-kind contribution valuation rules",
+      "Reporting non-monetary donations Utah campaign",
+      "Fair market value for in-kind gifts UT"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported on campaign financial disclosures at their fair market value—the standard price the campaign would have paid on the open market. They are reported simultaneously as both a receipt and an expenditure.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Campaign Finance",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Utah?",
+    "question_variants": [
+      "Utah candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in UT?",
+      "Reporting candidate loans in Disclosures portal"
+    ],
+    "answer": "Because Utah has no contribution limits for state and local campaigns, a candidate may loan or contribute completely unlimited amounts of their own personal funds to their campaign. Loans must be properly documented in the Disclosures portal and can be repaid from future contributions.",
+    "source_url": "https://disclosures.utah.gov/",
+    "source_name": "Utah Lieutenant Governor",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Utah candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in UT?",
+      "UT surplus campaign funds rules",
+      "Donating remaining campaign funds Utah"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain the funds for a future campaign, return them pro-rata to contributors, transfer them to a political party or PAC, or donate them to an IRS-recognized charitable organization.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter11/20A-11-S104.html",
+    "source_name": "Utah Code § 20A-11-104",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for lobbyists in Utah?",
+    "question_variants": [
+      "Can Utah legislators raise money during session?",
+      "Lobbyist contribution ban UT legislature",
+      "Legislative session contribution rules Utah"
+    ],
+    "answer": "Yes. Under Utah Code § 36-11-304, it is unlawful for a lobbyist or a principal to make a campaign contribution to a state legislator or the Governor during the time the Legislature is convened in its annual general session, veto override session, or any special session.",
+    "source_url": "https://le.utah.gov/xcode/Title36/Chapter11/C36-11-P3_1800010118000101.pdf",
+    "source_name": "Utah Code § 36-11-304",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State candidates and Lobbyists"
+  },
+  {
+    "state": "UT",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Utah?",
+    "question_variants": [
+      "When are county sheriffs elected in UT?",
+      "Utah county official term lengths",
+      "Are county assessors on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Utah—including Sheriffs, Assessors, Clerks, Treasurers, and Recorders—serve four-year terms. They are generally elected on staggered schedules, meaning specific county executive and County Commission/Council seats will be heavily featured on the 2026 midterm ballot.",
+    "source_url": "https://vote.utah.gov/",
+    "source_name": "Utah Lieutenant Governor",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Utah elections?",
+    "question_variants": [
+      "When are Utah election results official?",
+      "UT certification deadline",
+      "State Board of Canvassers meeting Utah"
+    ],
+    "answer": "County boards of canvassers generally meet to certify local results between 7 and 14 days after the election. The State Board of Canvassers meets to officially canvass and certify the returns for statewide and federal offices no later than the fourth Monday in November.",
+    "source_url": "https://vote.utah.gov/",
+    "source_name": "Utah Lieutenant Governor - Canvass",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Utah?",
+    "question_variants": [
+      "Utah special election timeline",
+      "Who calls a special election to fill a US House vacancy in UT?",
+      "Filling a midterm vacancy Utah"
+    ],
+    "answer": "Special elections to fill federal vacancies (such as for a U.S. House seat) are called by a proclamation from the Governor. Under Utah Code § 20A-1-502, the Governor must issue the proclamation within seven days of the vacancy occurring and schedule the special primary and general elections to align with existing election dates if possible.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter1/20A-1-S502.html",
+    "source_name": "Utah Code § 20A-1-502",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "UT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What are the polling hours on Election Day in Utah?",
+    "question_variants": [
+      "When do polls open in UT?",
+      "UT polling place hours",
+      "What time do polls close in Utah?"
+    ],
+    "answer": "On Election Day, in-person vote centers in Utah are open from 7:00 a.m. to 8:00 p.m. local time. Under Utah Code § 20A-1-302, any qualified elector who is physically in line at the polling place at 8:00 p.m. is legally permitted to cast their ballot.",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter1/20A-1-S302.html",
+    "source_name": "Utah Code § 20A-1-302",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  }
+]
