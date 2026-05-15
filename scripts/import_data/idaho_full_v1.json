@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in Idaho?",
+    "question_variants": [
+      "Are Idaho primaries open or closed?",
+      "How do party primaries work in Idaho?",
+      "Can anyone vote in the Idaho Republican primary?"
+    ],
+    "answer": "Idaho uses a party-controlled primary system where each political party decides who may participate. For the 2026 cycle, the Idaho Republican Party operates a strictly closed primary, meaning only registered Republicans may vote on their ballot. The Idaho Democratic Party has traditionally opted to open its primary to unaffiliated voters, allowing them to choose a Democratic ballot without changing their registration.",
+    "source_url": "https://voteidaho.gov/voter-registration/",
+    "source_name": "Idaho Secretary of State - Vote Idaho",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county"],
+    "category": "voter_interaction",
+    "question": "Can unaffiliated voters participate in the Idaho primary?",
+    "question_variants": [
+      "What do unaffiliated voters get on their ballot in Idaho?",
+      "Idaho primary voting for independents",
+      "Do I have to join a party to vote in Idaho?"
+    ],
+    "answer": "Unaffiliated voters in Idaho receive a nonpartisan ballot containing only judicial races and ballot measures. To vote in a closed primary (like the Republican primary), they must officially affiliate with that party. Idaho allows unaffiliated voters to affiliate with a political party at the polls on Election Day to participate in that party's primary.",
+    "source_url": "https://voteidaho.gov/voter-registration/",
+    "source_name": "Idaho Secretary of State - Vote Idaho",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Unaffiliated voters"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for Idaho in 2026?",
+    "question_variants": [
+      "When do candidates file for office in Idaho?",
+      "Idaho filing deadline 2026",
+      "Last day to file to run in ID"
+    ],
+    "answer": "For federal, statewide, and state legislative offices, the candidate filing deadline for the 2026 primary election was February 27, 2026, at 5:00 p.m. Candidates were required to submit their Declaration of Candidacy and pay the statutory filing fee to the Secretary of State.",
+    "source_url": "https://voteidaho.gov/candidate-filing/",
+    "source_name": "Idaho Secretary of State - Candidate Filing",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What are the requirements for write-in candidates in Idaho?",
+    "question_variants": [
+      "Do write-in votes count in ID?",
+      "Idaho write-in candidate registration",
+      "Declaration of intent write-in Idaho"
+    ],
+    "answer": "To have write-in votes counted in Idaho, a candidate must officially file a Declaration of Intent with the corresponding election office before 5:00 p.m. on the specific filing deadline. For the 2026 primary, this deadline aligned with regular candidate filing on February 27. Votes for undeclared write-in candidates are not tallied.",
+    "source_url": "https://voteidaho.gov/candidate-filing/",
+    "source_name": "Idaho Secretary of State - Write-In Candidates",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Idaho have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the ID primary?",
+      "Idaho sore loser statute",
+      "General election ballot access after primary defeat ID"
+    ],
+    "answer": "Yes. Under Idaho Code § 34-704(4), Idaho enforces a strict 'sore loser' law. A candidate who seeks a party's nomination in the primary election and is defeated cannot subsequently have their name placed on the general election ballot as an independent candidate or the nominee of another party for any office.",
+    "source_url": "https://legislature.idaho.gov/statutesrules/idstat/title34/t34ch7/sect34-704/",
+    "source_name": "Idaho Code § 34-704(4)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Idaho for 2026?",
+    "question_variants": [
+      "Idaho primary date 2026",
+      "When is Election Day 2026 in Idaho?",
+      "May primary Idaho"
+    ],
+    "answer": "The Idaho primary election will be held on Tuesday, May 19, 2026. The general election will be held on Tuesday, November 3, 2026.",
+    "source_url": "https://voteidaho.gov/election-calendar/",
+    "source_name": "Idaho Secretary of State - Election Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Brad Little running for re-election in 2026?",
+    "question_variants": [
+      "Idaho Governor election 2026",
+      "Who is defending the ID Governor seat?",
+      "Is Brad Little term limited?"
+    ],
+    "answer": "Governor Brad Little (R) is defending his seat in the 2026 election, seeking a third term. Because Idaho does not have term limits for any state executive office, he is fully eligible to run again.",
+    "source_url": "https://voteidaho.gov/candidate-filing/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Idaho in 2026?",
+    "question_variants": [
+      "Is Jim Risch up for re-election in 2026?",
+      "When is Mike Crapo's next election?",
+      "Idaho US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat held by Jim Risch (R) is up for election in 2026. Senator Mike Crapo (R) holds the Class 3 seat, was re-elected in 2022, and is not on the ballot again until 2028.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Idaho for the 2026 election?",
+    "question_variants": [
+      "Idaho congressional apportionment",
+      "Are all ID congressional seats up in 2026?",
+      "Number of US Representatives from Idaho"
+    ],
+    "answer": "Idaho is apportioned 2 U.S. House districts (District 1 and District 2). Both seats are on the 2026 ballot, as U.S. Representatives serve two-year terms.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the 2026 election cycle for the Idaho State Legislature?",
+    "question_variants": [
+      "Are all Idaho House seats up in 2026?",
+      "Idaho Senate term length",
+      "Which legislative districts are on the ballot in ID?"
+    ],
+    "answer": "Idaho has a distinctive legislative structure: the state is divided into 35 legislative districts, and each district elects one State Senator and two State Representatives. ALL 105 legislative seats are up for election in 2026 because members of both the Idaho State House and the Idaho State Senate serve two-year terms.",
+    "source_url": "https://ballotpedia.org/Idaho_State_Legislature",
+    "source_name": "Ballotpedia - Idaho State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Idaho in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "ID statewide election list 2026",
+      "When is the next Secretary of State election in ID?"
+    ],
+    "answer": "Idaho elects all of its major statewide executive officers on the midterm cycle. In 2026, the offices of Governor, Lieutenant Governor, Secretary of State, Attorney General, State Controller, State Treasurer, and Superintendent of Public Instruction are all on the ballot for four-year terms.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county"],
+    "category": "candidate_eligibility",
+    "question": "Does Idaho have term limits for elected officials?",
+    "question_variants": [
+      "Term limits for Idaho Governor",
+      "How many terms can an Idaho state senator serve?",
+      "Are there term limits for the Idaho House?"
+    ],
+    "answer": "No. Idaho does not have term limits for the Governor, statewide executive officers, state legislators, or county officials. In 2002, the Idaho Supreme Court struck down a voter-passed initiative that sought to impose term limits, ruling it required a constitutional amendment.",
+    "source_url": "https://ballotpedia.org/Idaho_State_Legislature",
+    "source_name": "Idaho Term Limits Overview",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All state and local candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Idaho?",
+    "question_variants": [
+      "Age and residency for Idaho Governor",
+      "Idaho Constitution Article IV Section 3 Governor qualifications",
+      "Who is eligible to be Governor of Idaho?"
+    ],
+    "answer": "Under Article IV, Section 3 of the Idaho Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States, and must have resided within Idaho for at least two years preceding the general election.",
+    "source_url": "https://sos.idaho.gov/elect/candidat/2018/GovernorInfo.html",
+    "source_name": "Idaho Constitution Article IV, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Idaho State Legislature?",
+    "question_variants": [
+      "Qualifications for ID State Representative",
+      "Residency requirement Idaho State Senate",
+      "Do I have to live in my district to run in ID?"
+    ],
+    "answer": "To run for the Idaho State Senate or House of Representatives, a candidate must be a U.S. citizen and an elector (registered voter) of the state. They must have resided in the specific legislative district they seek to represent for at least one year immediately preceding the election.",
+    "source_url": "https://cvidaho.org/wp-content/uploads/2021/06/ID-Leg-at-a-Glace.pdf",
+    "source_name": "Idaho Legislative Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Idaho?",
+    "question_variants": [
+      "US Senate residency requirements Idaho",
+      "Age to run for Congress in Idaho",
+      "Federal constitutional requirements for ID candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://voteidaho.gov/candidate-filing/",
+    "source_name": "Idaho Secretary of State - Candidate Filing",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Idaho Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in ID",
+      "Do I need to be a member of the bar to be ID AG?",
+      "Legal requirements for Idaho Attorney General"
+    ],
+    "answer": "Yes. Under Idaho law, the Attorney General serves as the state's chief legal officer and must be an attorney admitted to practice law in the state of Idaho in good standing.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Idaho a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Idaho?",
+      "Idaho vote-by-mail system",
+      "Are there traditional polling places in ID?"
+    ],
+    "answer": "No. Idaho is not a universal mail ballot state. Traditional in-person voting is the primary method of casting a ballot. Voters who wish to vote by mail must actively request a no-excuse absentee ballot from their County Clerk.",
+    "source_url": "https://voteidaho.gov/absentee-voting/",
+    "source_name": "Idaho Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to request and return an absentee ballot in Idaho?",
+    "question_variants": [
+      "When is the last day to ask for a mail ballot in ID?",
+      "Absentee ballot application deadline Idaho",
+      "How many days before the election must I request an absentee ballot in ID?"
+    ],
+    "answer": "Voters must submit an absentee ballot request to their County Clerk no later than 11 days before the election (e.g., May 8, 2026, for the primary). To be counted, the completed absentee ballot must be received by the County Clerk—by mail, official drop box, or in person—by 8:00 p.m. on Election Day. Postmarks are not sufficient.",
+    "source_url": "https://voteidaho.gov/absentee-voting/",
+    "source_name": "Idaho Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Idaho allow same-day voter registration?",
+    "question_variants": [
+      "Late registration Idaho",
+      "Can I register to vote on Election Day in ID?",
+      "Idaho voter registration deadline"
+    ],
+    "answer": "Yes. While the standard advance voter registration deadline is roughly 25 days prior to the election, Idaho offers Same Day Registration at the polls. Residents can register to vote on Election Day at their designated polling place by presenting a valid photo ID and proof of residence.",
+    "source_url": "https://voteidaho.gov/voter-registration/",
+    "source_name": "Idaho Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Idaho?",
+    "question_variants": [
+      "Idaho voter ID requirements",
+      "Do I need my driver's license to vote in ID?",
+      "Are student IDs accepted for voting in Idaho?"
+    ],
+    "answer": "Yes. Idaho law (Code § 34-1113) requires voters to present a photo ID. Accepted forms include an Idaho driver's license or ID card, U.S. passport, tribal ID, or a concealed weapons license. Notably, HB 124 (effective 2024) removed student IDs from the list of acceptable voter identification.",
+    "source_url": "https://ballotpedia.org/Voter_ID_in_Idaho",
+    "source_name": "Idaho Code § 34-1113 / HB 124",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What happens if an Idaho voter does not have a photo ID at the polls?",
+    "question_variants": [
+      "Voting without ID Idaho",
+      "Personal Identification Affidavit ID",
+      "Can I vote if I forgot my license in Idaho?"
+    ],
+    "answer": "If a registered voter lacks an acceptable photo ID, they may still vote a regular ballot by signing a Personal Identification Affidavit swearing to their identity under penalty of perjury. However, voters registering for the first time on Election Day cannot use the affidavit and must present physical photo ID and proof of residence.",
+    "source_url": "https://www.acluidaho.org/publications/2024-your-rights-idaho-voter/",
+    "source_name": "Idaho Voter Rights",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Idaho?",
+    "question_variants": [
+      "Can felons vote in Idaho state?",
+      "Felony voting rights restoration ID",
+      "Voting on parole in Idaho"
+    ],
+    "answer": "In Idaho, an individual with a felony conviction loses their right to vote while completing their sentence. Voting rights are automatically restored only after they have completed all sentencing requirements, which includes finishing any period of probation and parole (Idaho Code § 18-310). Once completed, they must re-register to vote.",
+    "source_url": "https://www.acluidaho.org/publications/2024-your-rights-idaho-voter/",
+    "source_name": "Idaho Code § 18-310",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Idaho?",
+    "question_variants": [
+      "How close can I campaign to a polling place in ID?",
+      "Buffer zone around voting centers Idaho",
+      "ID electioneering rules"
+    ],
+    "answer": "Idaho prohibits electioneering—which includes distributing campaign literature, soliciting votes, or wearing visible campaign apparel—within 100 feet of a polling place or official ballot drop box.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "ID",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Idaho, and why does it matter for campaigns?",
+    "question_variants": [
+      "Idaho county election administration",
+      "How many county clerks in ID?",
+      "Local election control Idaho"
+    ],
+    "answer": "Idaho has 44 counties. This decentralization is vital for campaign operations because County Clerks are the primary administrators of elections. They manage early in-person voting availability, process absentee ballot requests, establish drop box locations, and handle same-day voter registrations within their borders.",
+    "source_url": "https://voteidaho.gov/county-clerks/",
+    "source_name": "Idaho Secretary of State - County Clerks",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Idaho?",
+    "question_variants": [
+      "Where do I file campaign finance reports in ID?",
+      "What is the Idaho campaign finance portal?",
+      "Does the ID Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Idaho are administered directly by the Elections Division of the Secretary of State's office. All state and local candidates must register and file their contribution and expenditure reports through the mandatory online portal called SunshineVoteIdaho.gov.",
+    "source_url": "https://sunshine.voteidaho.gov/",
+    "source_name": "Idaho Secretary of State - Sunshine Portal",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When must an Idaho candidate appoint a treasurer and start reporting campaign finances?",
+    "question_variants": [
+      "Idaho campaign committee registration threshold",
+      "When do I have to file a C1 form in ID?",
+      "SunshineVoteIdaho $500 threshold"
+    ],
+    "answer": "A candidate must file a C1 form (Appointment and Certification of Political Treasurer) and begin officially reporting campaign finances once they have raised or spent $500. The candidate's Declaration of Candidacy makes them the default political treasurer until an alternate is appointed.",
+    "source_url": "https://cityofblackfoot.org/DocumentCenter/View/1247/Idaho-Campaign-Finance---Quick-Reference-PDF",
+    "source_name": "Idaho Campaign Finance Reference",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual contribution limits for Idaho candidates in the 2026 cycle?",
+    "question_variants": [
+      "How much can an individual donate to an ID Governor candidate?",
+      "Current campaign contribution limits for state legislature in ID",
+      "Idaho individual donation caps 2026 election"
+    ],
+    "answer": "For the 2026 cycle, individuals may contribute a maximum of $5,000 per election to a statewide candidate (e.g., Governor) and $1,000 per election to a state legislative candidate. The primary and general elections are considered separate, allowing donors to give the limit twice.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Idaho",
+    "source_name": "Idaho Campaign Finance Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Idaho?",
+    "question_variants": [
+      "ID PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Idaho",
+      "Maximum PAC gift to state legislator ID"
+    ],
+    "answer": "In Idaho, Political Action Committees (PACs) are subject to the exact same contribution limits as individuals. A PAC may contribute up to $5,000 per election to a statewide candidate and up to $1,000 per election to a legislative candidate.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Idaho",
+    "source_name": "Idaho Campaign Finance Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State candidates and PACs"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate and union contributions permitted in Idaho campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Idaho state",
+      "Can a business donate to my campaign in ID?",
+      "Corporate campaign finance rules Idaho"
+    ],
+    "answer": "Yes. Unlike many neighboring states, Idaho explicitly permits direct corporate and labor union contributions to candidate campaigns. These entities are treated identically to individuals and PACs, meaning a corporation can give up to $5,000 per election to a statewide candidate and $1,000 per election to a legislative candidate.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Idaho",
+    "source_name": "Idaho Campaign Finance Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the 48-hour rapid disclosure rule for Idaho campaign finance?",
+    "question_variants": [
+      "Idaho 48-hour large contribution report",
+      "Late contribution reporting Idaho",
+      "When do I file a rapid report in ID?"
+    ],
+    "answer": "Under Idaho campaign finance law, any single contribution of $1,000 or more received by a candidate or committee must be reported electronically within 48 hours of receipt. This applies regardless of whether it is an active election year for the candidate.",
+    "source_url": "https://www.kcgov.us/303/Campaign-Finance-Information",
+    "source_name": "Idaho Campaign Finance Guidelines",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Idaho provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Idaho Governor",
+      "State funded campaigns Idaho status",
+      "Government campaign grants Idaho"
+    ],
+    "answer": "No. Idaho does not have a system of public financing or matching funds for political campaigns. All candidates must fund their campaigns through private contributions from individuals, PACs, corporations, and political parties within the statutory limits.",
+    "source_url": "https://sunshine.voteidaho.gov/",
+    "source_name": "Idaho Secretary of State - Sunshine",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Idaho candidates?",
+    "question_variants": [
+      "ID campaign finance filing dates",
+      "When are monthly reports due in Idaho?",
+      "Idaho pre-primary and pre-general report deadlines"
+    ],
+    "answer": "During an active election year, once a candidate meets the $500 activity threshold, they must file monthly reports. These reports are due on the 10th of each month. In non-election years, only an annual report is due (filed by January 10th).",
+    "source_url": "https://www.kcgov.us/303/Campaign-Finance-Information",
+    "source_name": "Idaho Campaign Finance Reporting Dates",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Idaho?",
+    "question_variants": [
+      "ID personal use prohibition campaign finance",
+      "Can I use campaign money for personal expenses in Idaho?",
+      "Prohibited expenditures Idaho Sunshine portal"
+    ],
+    "answer": "Yes. Campaign funds cannot be used for any personal benefit or expense that would exist irrespective of the person being a candidate or officeholder. Funds must be utilized exclusively for campaign-related costs or ordinary expenses incurred as a public official.",
+    "source_url": "https://sunshine.voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the political party contribution limits to candidates in Idaho?",
+    "question_variants": [
+      "How much can the state party give a candidate in ID?",
+      "Idaho state party contribution caps 2026",
+      "Party limits vs individual limits Idaho"
+    ],
+    "answer": "State and local political parties have higher contribution limits than individuals or PACs. In Idaho, a political party may contribute up to $10,000 per election to a gubernatorial or statewide candidate, and up to $2,000 per election to a state legislative candidate.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Idaho",
+    "source_name": "Idaho Campaign Finance Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State candidates and Political parties"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How do minor party candidates access the general election ballot in Idaho?",
+    "question_variants": [
+      "Minor party ballot access Idaho",
+      "Do third parties have a primary in Idaho?",
+      "Nominating conventions for Idaho minor parties"
+    ],
+    "answer": "Depending on their specific recognition status, minor parties in Idaho generally nominate their candidates via a state convention rather than participating in the state-funded primary election. Once nominated by convention, the party certifies its candidates to the Secretary of State for inclusion on the November general election ballot.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Minor party candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Idaho?",
+    "question_variants": [
+      "Idaho Lt Gov requirements",
+      "Is the Lt Gov age requirement the same as the Governor in ID?",
+      "Qualifications for Lieutenant Governor of Idaho"
+    ],
+    "answer": "The constitutional requirements for Lieutenant Governor in Idaho are identical to those for Governor. A candidate must be at least 30 years old, a U.S. citizen, and have resided within Idaho for at least two years immediately preceding the general election.",
+    "source_url": "https://sos.idaho.gov/elect/candidat/2018/GovernorInfo.html",
+    "source_name": "Idaho Constitution Article IV, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for County Commissioner in Idaho?",
+    "question_variants": [
+      "Idaho county commissioner qualifications",
+      "Can I run for county board in ID?",
+      "County residency for ID commissioners"
+    ],
+    "answer": "To run for County Commissioner in Idaho, a candidate must be a qualified elector (registered voter) of the county and must have resided in the specific commissioner district they seek to represent for at least one year immediately preceding the primary election.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for Idaho's part-time legislative sessions?",
+    "question_variants": [
+      "When does the ID legislature meet?",
+      "Idaho 30 day legislative session",
+      "Is the Idaho legislature full time?"
+    ],
+    "answer": "The Idaho Legislature is a part-time citizen body that convenes annually in January. Unlike some states with strict 60- or 90-day constitutional limits, the Idaho Constitution does not set a firm deadline for adjournment; the legislature remains in session until its business is complete and it votes to adjourn 'Sine Die' (typically in late March or April).",
+    "source_url": "https://legislature.idaho.gov/",
+    "source_name": "Idaho State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Idaho's legislative and congressional maps?",
+    "question_variants": [
+      "Does the ID legislature draw district maps?",
+      "Idaho Independent Redistricting Commission",
+      "Who has the authority to draw district lines in Idaho?"
+    ],
+    "answer": "Idaho uses the independent Commission for Reapportionment to draw its maps. It consists of six members evenly balanced between the two major political parties. The majority and minority leaders in both legislative chambers, as well as the chairs of the two largest political parties, each select one commission member.",
+    "source_url": "https://gerrymander.princeton.edu/reforms/id/",
+    "source_name": "Idaho Commission for Reapportionment",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Idaho?",
+    "question_variants": [
+      "Standards for drawing Idaho district lines",
+      "Idaho gerrymandering rules",
+      "Commission map requirements ID"
+    ],
+    "answer": "Under the Idaho Constitution and state statutes, districts must be contiguous, avoid unnecessary county splits, be compact, preserve communities of interest, and specifically must not be drawn to protect a political party or an incumbent.",
+    "source_url": "https://gerrymander.princeton.edu/reforms/id/",
+    "source_name": "Idaho Constitution Article III, Section 5",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current Idaho redistricting maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of 2021 Idaho redistricting maps",
+      "Are there pending redistricting lawsuits in Idaho?",
+      "Idaho 2026 district boundaries"
+    ],
+    "answer": "Yes. The congressional and state legislative maps unanimously adopted by the Idaho Commission for Reapportionment in 2021 remain fully operative for the 2026 election cycle.",
+    "source_url": "https://gerrymander.princeton.edu/reforms/id/",
+    "source_name": "Idaho Commission for Reapportionment",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Can the Idaho legislature amend the redistricting commission's maps?",
+    "question_variants": [
+      "Legislature override of Idaho redistricting",
+      "Can ID lawmakers change district boundaries?",
+      "Idaho redistricting amendment rules"
+    ],
+    "answer": "No. Maps approved by the Idaho Commission for Reapportionment have the force of law and cannot be amended or vetoed by the state legislature. They can only be altered if successfully challenged and struck down by the Idaho Supreme Court.",
+    "source_url": "https://gerrymander.princeton.edu/reforms/id/",
+    "source_name": "Idaho Commission for Reapportionment",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Idaho have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Idaho be recalled?",
+      "How to recall a state senator in ID",
+      "Statewide recall election rules Idaho"
+    ],
+    "answer": "Yes. Idaho law allows for the recall of state officials, including the Governor, legislators, and other statewide executives. Proponents must gather valid signatures equal to at least 20% of the number of electors registered to vote at the last general election in the jurisdiction. Circulation must be completed within 75 days.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Idaho",
+    "source_name": "Laws governing recall in Idaho",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Idaho?",
+    "question_variants": [
+      "Idaho county commissioner recall rules",
+      "Signature requirement local recall Idaho",
+      "Recalling a mayor in ID"
+    ],
+    "answer": "Local officials, including county commissioners, mayors, and city council members, are subject to recall in Idaho. The signature requirement is equal to at least 20% of the number of electors registered to vote at the last election for that specific office.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Idaho",
+    "source_name": "Laws governing recall in Idaho",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature thresholds for a citizen initiative in Idaho?",
+    "question_variants": [
+      "How to get an initiative on the ID ballot",
+      "Idaho citizen initiative signature requirements",
+      "Geographic distribution rule for ID initiatives"
+    ],
+    "answer": "To qualify a citizen initiative for the ballot, proponents must gather valid signatures equal to 6% of the qualified electors at the time of the last general election. Additionally, Idaho requires geographic distribution: this 6% threshold must be met in at least 18 of the state's 35 legislative districts.",
+    "source_url": "https://www.ncsl.org/elections-and-campaigns/initiative-and-referendum-processes",
+    "source_name": "NCSL - Initiative and Referendum Processes",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Idaho have a history of successful citizen initiatives?",
+    "question_variants": [
+      "Idaho ballot measure success rate",
+      "Have voters passed laws directly in ID?",
+      "Medicaid expansion initiative Idaho"
+    ],
+    "answer": "Yes. Idaho has a notable history of utilizing the citizen initiative process to enact major policies that bypass the state legislature, including the successful passage of Medicaid Expansion in 2018 and the original creation of the state's independent redistricting commission.",
+    "source_url": "https://www.ncsl.org/elections-and-campaigns/initiative-and-referendum-processes",
+    "source_name": "NCSL - Initiative and Referendum Processes",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold and deadline for a veto referendum in Idaho?",
+    "question_variants": [
+      "How to refer an ID bill to the ballot",
+      "Idaho citizen referendum rules",
+      "Veto referendum signature threshold Idaho state"
+    ],
+    "answer": "Citizens can refer a legislative act to the ballot via a veto referendum. This requires signatures equal to 6% of the registered voters as of the state's last general election. Signatures must be submitted within 60 days following the final adjournment of the legislative session in which the targeted bill was passed.",
+    "source_url": "https://ballotpedia.org/Idaho_2026_ballot_measures",
+    "source_name": "Idaho 2026 Ballot Measures",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Idaho legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Idaho",
+      "Referendum by legislature ID",
+      "Can the ID legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The Idaho State Legislature can refer a proposed constitutional amendment to the voters by securing a two-thirds supermajority vote in both the House of Representatives (47 votes) and the State Senate (24 votes). The amendment does not require the Governor's signature to appear on the ballot.",
+    "source_url": "https://ballotpedia.org/Idaho_2026_ballot_measures",
+    "source_name": "Idaho Legislative Referral Process",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Idaho?",
+    "question_variants": [
+      "Idaho ballot measure pass threshold",
+      "Does a measure need a supermajority in ID?",
+      "Majority vote requirements Idaho ballot measures"
+    ],
+    "answer": "Once an initiative or constitutional amendment qualifies for the general election ballot in Idaho, the general requirement for passage is a simple majority (over 50%) of the votes cast on that specific measure.",
+    "source_url": "https://www.ncsl.org/elections-and-campaigns/initiative-and-referendum-processes",
+    "source_name": "NCSL - Initiative and Referendum Processes",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Idaho?",
+    "question_variants": [
+      "Requirements to run for ID Secretary of State",
+      "Who can run for Secretary of State in ID?",
+      "Professional requirements for ID SOS"
+    ],
+    "answer": "Under the Idaho Constitution, a candidate for Secretary of State must be at least 30 years old, a citizen of the United States, and must have resided within the state for at least two years immediately preceding their election.",
+    "source_url": "https://voteidaho.gov/how-to-run-for-office/",
+    "source_name": "Idaho Secretary of State - Run for Office",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Controller or State Treasurer in Idaho?",
+    "question_variants": [
+      "Eligibility for Idaho State Treasurer",
+      "Who can run for State Controller in ID?",
+      "Qualifications for ID financial officers"
+    ],
+    "answer": "Candidates for State Controller and State Treasurer must be at least 25 years old at the time of their election. They must be U.S. citizens and have resided within Idaho for at least two years preceding their election.",
+    "source_url": "https://voteidaho.gov/how-to-run-for-office/",
+    "source_name": "Idaho Secretary of State - Run for Office",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the Idaho Superintendent of Public Instruction elected, and what are the qualifications?",
+    "question_variants": [
+      "Running for ID Superintendent of Schools",
+      "Who elects the Superintendent of Public Instruction in Idaho?",
+      "Department of Education leadership ID"
+    ],
+    "answer": "Yes, the Superintendent of Public Instruction is a statewide elected executive. Candidates must be at least 25 years old, U.S. citizens, and residents of Idaho for at least two years preceding the election. Unlike other executive offices, they must also have a bachelor's degree from an accredited college or university.",
+    "source_url": "https://voteidaho.gov/how-to-run-for-office/",
+    "source_name": "Idaho Secretary of State - Run for Office",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Idaho?",
+    "question_variants": [
+      "Run for school board Idaho requirements",
+      "Who can be a school trustee in ID?",
+      "School board residency rules Idaho"
+    ],
+    "answer": "To run for a local school district board of trustees in Idaho, a candidate must be a registered voter physically residing within the specific geographical boundaries of the school district they seek to represent.",
+    "source_url": "https://voteidaho.gov/how-to-run-for-office/",
+    "source_name": "Idaho Secretary of State - Run for Office",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are Idaho Supreme Court justices selected and what are the qualifications?",
+    "question_variants": [
+      "Idaho Supreme Court Justice eligibility",
+      "Years of practice required for ID Supreme Court",
+      "Do I need to be a bar member to be a Supreme Court Justice in ID?"
+    ],
+    "answer": "Idaho Supreme Court justices are elected in nonpartisan elections to serve six-year terms. A candidate must be at least 30 years old, a U.S. citizen, an Idaho resident for at least two years, an active or judicial member of the state bar for at least two years, and must have held a license to practice law or a judicial office for at least 10 continuous years.",
+    "source_url": "https://ballotpedia.org/Idaho_Supreme_Court_elections",
+    "source_name": "Idaho Supreme Court Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Idaho?",
+    "question_variants": [
+      "How to fix a rejected signature in ID",
+      "Idaho ballot cure process",
+      "Missing signature on ID mail ballot"
+    ],
+    "answer": "Idaho law does not mandate a comprehensive statewide signature cure process. However, if an absentee ballot envelope is missing a signature or has a signature mismatch, county clerks may attempt to contact the voter to resolve the issue before the polls close on Election Day.",
+    "source_url": "https://www.vote.org/absentee-ballot/idaho/",
+    "source_name": "Vote.org - Idaho Absentee Ballots",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Idaho?",
+    "question_variants": [
+      "When are military ballots due in Idaho?",
+      "UOCAVA return deadline ID",
+      "Overseas voting rules Idaho state"
+    ],
+    "answer": "Under UOCAVA, military and overseas voters must request their absentee ballot by 5:00 p.m., 11 days prior to Election Day (the same as civilian absentee requests). The voted ballot must be received by the county election office no later than 8:00 p.m. on Election Day to be counted.",
+    "source_url": "https://www.vote.org/absentee-ballot/idaho/",
+    "source_name": "Vote.org - Idaho Absentee Ballots",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Idaho?",
+    "question_variants": [
+      "What is a provisional ballot in ID?",
+      "Voting without ID Idaho",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Because Idaho allows voters without a photo ID to sign a Personal Identification Affidavit, and because the state offers Same Day Registration at the polls, standard provisional ballots are rarely used. They are typically only issued in specific federal election scenarios, such as when court orders extend polling hours.",
+    "source_url": "https://www.acluidaho.org/publications/2024-your-rights-idaho-voter/",
+    "source_name": "ACLU Idaho - Voter Rights",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Idaho have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Idaho DMV?",
+      "ID motor voter automatic registration",
+      "Do I have to register to vote if I get an ID driver's license?"
+    ],
+    "answer": "No. Idaho does not have Automatic Voter Registration (AVR). While eligible citizens are offered the opportunity to register to vote when conducting transactions at the DMV (complying with Motor Voter laws), they must actively choose to submit a registration application.",
+    "source_url": "https://voteidaho.gov/voter-registration/",
+    "source_name": "Idaho Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Idaho offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in ID?",
+      "Idaho electronic voter registration",
+      "ID SOS online registration portal"
+    ],
+    "answer": "Yes. Eligible Idaho residents with a valid state driver's license or ID card can register to vote or update their registration electronically via the Secretary of State's Vote Idaho online portal. The online registration deadline is roughly 25 days before an election.",
+    "source_url": "https://voteidaho.gov/voter-registration/",
+    "source_name": "Idaho Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Idaho maintain its voter registration lists?",
+    "question_variants": [
+      "ID voter list maintenance rules",
+      "How are inactive voters handled in Idaho?",
+      "Idaho voter roll cleaning process"
+    ],
+    "answer": "Idaho county clerks conduct regular voter list maintenance using National Change of Address (NCOA) data. Registered voters who have not voted in any election over a continuous four-year period (spanning two general election cycles) and who fail to respond to confirmation notices are removed from the active voter rolls.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Idaho have early voting?",
+    "question_variants": [
+      "Can I vote early in person in ID?",
+      "Idaho early voting dates 2026",
+      "In-person absentee voting Idaho"
+    ],
+    "answer": "Yes. In-person early voting is available at the discretion of the county clerk. When offered, early voting typically begins on the third Monday before the election (April 27, 2026, for the primary) and runs through the Friday before Election Day (May 15, 2026).",
+    "source_url": "https://ballotpedia.org/Idaho_gubernatorial_election,_2026",
+    "source_name": "Idaho Early Voting Dates",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Idaho use runoff elections for close races?",
+    "question_variants": [
+      "Are there runoffs in Idaho primaries?",
+      "How are tied elections decided in Idaho?",
+      "Tie-breaker rules Idaho elections"
+    ],
+    "answer": "No. Idaho does not hold runoff elections for state or federal offices; the candidate receiving a plurality of the vote wins. In the rare event of an exact tie, the Secretary of State or county clerk resolves the election by drawing lots or flipping a coin.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Idaho?",
+    "question_variants": [
+      "Does Idaho use ranked choice voting?",
+      "RCV status in Idaho 2026",
+      "Instant runoff voting ID"
+    ],
+    "answer": "No. Ranked Choice Voting is not used in Idaho. A 2024 ballot measure (Proposition 1) attempting to implement top-four primaries and RCV was defeated by voters. Furthermore, the legislature explicitly banned the use of RCV in any local, state, or federal election with the passage of HB 179 in 2023.",
+    "source_url": "https://ballotpedia.org/Idaho_Proposition_1_Top-Four_Ranked-Choice_Voting_Initiative_2024",
+    "source_name": "Idaho Proposition 1 (2024) / HB 179",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Idaho campaign materials?",
+    "question_variants": [
+      "Idaho 'Paid for by' rules",
+      "Campaign ad disclaimer requirements ID",
+      "Political taglines Idaho Sunshine portal"
+    ],
+    "answer": "Idaho law requires all campaign advertising and political communications to clearly include a 'Paid for by' statement identifying the candidate, political committee, or individual responsible for funding the material.",
+    "source_url": "https://sos.idaho.gov/elections-division/faq-regarding-contributions-to-committees-candidates-in-idaho/",
+    "source_name": "Idaho Secretary of State - Campaign Finance FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Idaho?",
+    "question_variants": [
+      "ID campaign coordination rules",
+      "When is a PAC expenditure not independent in Idaho?",
+      "Prohibition on candidate-PAC coordination ID"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' (and thus is treated as an in-kind contribution subject to statutory limits) if the spending is made with the cooperation, consultation, or at the request or suggestion of a candidate, their campaign committee, or their agents.",
+    "source_url": "https://sos.idaho.gov/elections-division/faq-regarding-contributions-to-committees-candidates-in-idaho/",
+    "source_name": "Idaho Secretary of State - Campaign Finance FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Idaho?",
+    "question_variants": [
+      "ID Sunshine portal late fee",
+      "Penalty for missing an Idaho campaign finance deadline",
+      "Secretary of State fine for late filing ID"
+    ],
+    "answer": "The Idaho Secretary of State enforces campaign finance reporting deadlines by imposing a fine of $50 per day for any late Campaign Financial Disclosure Report filed via the SunshineVoteIdaho portal. The maximum fine that can accrue is $2,500 per late report.",
+    "source_url": "https://sos.idaho.gov/elections-division/faq-regarding-contributions-to-committees-candidates-in-idaho/",
+    "source_name": "Idaho Secretary of State - Campaign Finance FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must an Idaho campaign committee terminate?",
+    "question_variants": [
+      "Closing an Idaho campaign committee",
+      "Sunshine portal committee termination requirements",
+      "Final campaign finance report Idaho"
+    ],
+    "answer": "A candidate committee may formally terminate only when it has a zero cash balance and no outstanding campaign debts. Even defeated candidates must continue to file annual financial disclosure reports until all debts are paid and the unexpended balance reaches zero.",
+    "source_url": "https://sos.idaho.gov/elections-division/faq-regarding-contributions-to-committees-candidates-in-idaho/",
+    "source_name": "Idaho Secretary of State - Campaign Finance FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Idaho?",
+    "question_variants": [
+      "ID independent expenditure reporting Sunshine portal",
+      "Disclosure for ID independent expenditure groups",
+      "Reporting thresholds for outside spending Idaho"
+    ],
+    "answer": "Any person or political committee making independent expenditures to advocate for or against a candidate must file detailed expenditure reports through the SunshineVoteIdaho portal to ensure transparency in outside spending.",
+    "source_url": "https://sunshine.voteidaho.gov/",
+    "source_name": "Idaho Secretary of State - Sunshine Portal",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Idaho?",
+    "question_variants": [
+      "Idaho in-kind contribution valuation rules",
+      "Reporting non-monetary donations Idaho campaign",
+      "Fair market value for in-kind gifts ID"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or discounts) must be reported on campaign financial disclosures at their fair market value. They are uniquely reported as both a contribution (subject to the donor limit) and as an expenditure in the same reporting period.",
+    "source_url": "https://sos.idaho.gov/elections-division/faq-regarding-contributions-to-committees-candidates-in-idaho/",
+    "source_name": "Idaho Secretary of State - Campaign Finance FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Idaho?",
+    "question_variants": [
+      "Idaho candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in ID?",
+      "Reporting candidate loans in Sunshine portal"
+    ],
+    "answer": "Under Idaho law, a candidate may loan an unlimited amount of their own personal funds to their campaign. While third-party contributions are strictly capped, self-funding is not. Loans must be properly documented in the Sunshine portal and can be repaid from future contributions.",
+    "source_url": "https://sunshine.voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Idaho candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in ID?",
+      "ID surplus campaign funds rules",
+      "Donating remaining campaign funds Idaho"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. They may be retained for a future campaign by the same candidate, returned to contributors, transferred to earn interest as a campaign asset, or donated to a charitable organization.",
+    "source_url": "https://sos.idaho.gov/elections-division/faq-regarding-contributions-to-committees-candidates-in-idaho/",
+    "source_name": "Idaho Secretary of State - Campaign Finance FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for lobbyists in Idaho?",
+    "question_variants": [
+      "Can Idaho legislators raise money during session?",
+      "Lobbyist contribution ban ID legislature",
+      "Legislative session contribution rules Idaho"
+    ],
+    "answer": "Unlike neighboring states, Idaho does not have a strict statutory 'session freeze' that bans lawmakers from raising campaign funds during the legislative session. However, lobbyists must meticulously report any political contributions they make, ensuring transparency.",
+    "source_url": "https://sos.idaho.gov/elections-division/faq-regarding-contributions-to-committees-candidates-in-idaho/",
+    "source_name": "Idaho Secretary of State - Campaign Finance",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and Lobbyists"
+  },
+  {
+    "state": "ID",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Idaho?",
+    "question_variants": [
+      "When are county sheriffs elected in ID?",
+      "Idaho county official term lengths",
+      "Are county assessors on the 2026 ballot?"
+    ],
+    "answer": "Most elected county officials in Idaho—including Sheriffs, Assessors, Coroners, Treasurers, and Clerks—serve four-year terms and are predominantly elected during presidential election cycles. County Commissioners serve staggered two-year or four-year terms, meaning specific commission seats will be on the 2026 ballot.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "ID",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Idaho elections?",
+    "question_variants": [
+      "When are Idaho election results official?",
+      "ID certification deadline",
+      "State Board of Canvassers meeting Idaho"
+    ],
+    "answer": "County commissioners generally meet within 10 days after the election to canvass and certify local results. Following that, the State Board of Canvassers meets within 15 days of the election to officially canvass and certify the returns for state and federal offices.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State - Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "ID",
+    "office_level": ["federal", "state", "municipal"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Idaho?",
+    "question_variants": [
+      "Idaho special election timeline",
+      "Who calls a special election to fill a US House vacancy in ID?",
+      "Filling a midterm vacancy Idaho"
+    ],
+    "answer": "Special elections to fill federal vacancies (like the U.S. House) are called by a proclamation from the Governor. For local measures, Idaho law restricts special elections to specific consolidated dates in March, May, August, and November to ensure adequate voter notice and reduce administrative costs.",
+    "source_url": "https://voteidaho.gov/",
+    "source_name": "Idaho Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and Local candidates"
+  }
+]
