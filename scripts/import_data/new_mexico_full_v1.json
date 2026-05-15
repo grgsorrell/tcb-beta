@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in New Mexico?",
+    "question_variants": [
+      "Are New Mexico primaries open or closed?",
+      "How do Decline to State (DTS) voters participate in the NM primary?",
+      "Can independent voters vote in the New Mexico primary?"
+    ],
+    "answer": "Starting with the 2026 election, New Mexico uses a semi-open primary system. Registered major party voters must vote in their own party's primary. However, independent voters and those registered as 'Decline to State' (DTS) may choose to participate in any major party's primary without officially changing their permanent party registration.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/voter-registration-information/",
+    "source_name": "New Mexico Secretary of State - Voter Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run as a joint ticket in the New Mexico primary?",
+    "question_variants": [
+      "When is the Lt. Gov candidate selected in New Mexico?",
+      "Joint ticket rules for New Mexico Governor primary",
+      "Does the Governor pick a running mate before or after the primary?"
+    ],
+    "answer": "In the primary, candidates for Governor and Lieutenant Governor run in separate, individual elections. The winner of the gubernatorial primary and the winner of the lieutenant gubernatorial primary for each respective party are then joined together to run as a single joint ticket in the November general election per Article V, Section 1 of the New Mexico Constitution.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article V, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "federal"],
+    "category": "ballot_access",
+    "question": "What is the pre-primary convention designation process in New Mexico?",
+    "question_variants": [
+      "How do major party candidates qualify for the NM primary ballot?",
+      "New Mexico party convention endorsement threshold",
+      "Winning the assembly in New Mexico"
+    ],
+    "answer": "Major political parties in New Mexico hold pre-primary conventions to designate candidates for statewide and federal offices. To receive the party's 'designation' and be placed on the primary ballot, a candidate must receive at least 20% of the vote from delegates at the convention. Candidates who fail to receive 20% can still qualify by gathering additional petition signatures.",
+    "source_url": "https://codes.findlaw.com/nm/chapter-1-elections/nm-st-sect-1-8-21/",
+    "source_name": "NMSA 1978 § 1-8-21",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "federal", "county"],
+    "category": "filing_requirements",
+    "question": "What are the filing deadlines for major party and independent candidates in New Mexico for 2026?",
+    "question_variants": [
+      "New Mexico candidate filing deadlines 2026",
+      "Last day to file for office New Mexico",
+      "Independent candidate deadline New Mexico 2026"
+    ],
+    "answer": "For major party candidates seeking statewide or congressional office, the deadline to file declarations of candidacy and petitions for pre-primary designation was February 3, 2026. For independent and minor party candidates seeking to appear on the general election ballot, the filing deadline is Thursday, June 25, 2026.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/how-to-become-a-candidate/2026-elections-candidate-information/",
+    "source_name": "New Mexico Secretary of State - 2026 Candidate Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "federal"],
+    "category": "ballot_access",
+    "question": "What are the petition signature requirements for primary candidates in New Mexico?",
+    "question_variants": [
+      "New Mexico petition signature requirements by office",
+      "Gubernatorial petition threshold New Mexico",
+      "How many signatures to override a convention loss in NM?"
+    ],
+    "answer": "Candidates who receive their party's pre-primary convention designation must file nominating petitions signed by voters equal to at least 2% of the total vote of their party in the state/district. If a candidate fails to receive convention designation, they must collect additional signatures totaling at least 4% of their party's vote to qualify for the primary ballot.",
+    "source_url": "https://codes.findlaw.com/nm/chapter-1-elections/nm-st-sect-1-8-33/",
+    "source_name": "NMSA 1978 § 1-8-33",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "federal", "county"],
+    "category": "ballot_access",
+    "question": "How do minor party candidates get on the general election ballot in New Mexico?",
+    "question_variants": [
+      "Minor party ballot access New Mexico",
+      "Do third parties have a primary in New Mexico?",
+      "Nominating conventions for New Mexico minor parties"
+    ],
+    "answer": "Candidates representing minor political parties do not run in the state-administered primary election. Instead, they are nominated according to their party's own internal rules and conventions. The party must then file declarations of candidacy and a certificate of nomination for its chosen candidates with the proper filing officer by June 25, 2026, to appear on the November general election ballot.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/how-to-become-a-candidate/2026-elections-candidate-information/",
+    "source_name": "New Mexico Secretary of State - Candidate Filing",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Minor party candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "federal", "county"],
+    "category": "ballot_access",
+    "question": "What are the requirements for a write-in candidate in New Mexico?",
+    "question_variants": [
+      "Do write-in votes count in New Mexico?",
+      "New Mexico write-in candidate registration",
+      "Declaration of intent write-in New Mexico"
+    ],
+    "answer": "To have write-in votes counted in New Mexico, a candidate must officially file a declaration of intent to be a write-in candidate. There are separate, specific deadlines for filing as a write-in candidate for the primary election (March) versus the general election (late June). If a declaration is not filed, write-in votes for that person will not be tallied.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/how-to-become-a-candidate/",
+    "source_name": "New Mexico Secretary of State - How to Become a Candidate",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "federal", "county"],
+    "category": "ballot_access",
+    "question": "Does New Mexico have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the NM primary?",
+      "New Mexico sore loser statute",
+      "General election ballot access after primary defeat NM"
+    ],
+    "answer": "Yes. Under NMSA 1978 § 1-8-19, any candidate whose name appeared on the primary election ballot and was defeated is prohibited from having their name printed on the general election ballot as an independent candidate or as the nominee of a different political party for the same office.",
+    "source_url": "https://law.justia.com/codes/new-mexico/chapter-1/article-8/section-1-8-19/",
+    "source_name": "NMSA 1978 § 1-8-19",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "federal", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in New Mexico for 2026?",
+    "question_variants": [
+      "New Mexico primary date 2026",
+      "When is Election Day 2026 in New Mexico?",
+      "June primary New Mexico"
+    ],
+    "answer": "The New Mexico primary election will be held on Tuesday, June 2, 2026. The general election will be held on Tuesday, November 3, 2026.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/how-to-become-a-candidate/2026-elections-candidate-information/",
+    "source_name": "New Mexico Secretary of State - 2026 Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Michelle Lujan Grisham running for re-election in 2026?",
+    "question_variants": [
+      "New Mexico Governor election 2026",
+      "Who is running for NM Governor in 2026?",
+      "NM gubernatorial term limits"
+    ],
+    "answer": "No. Governor Michelle Lujan Grisham (D) is term-limited and cannot run in 2026. Under Article V, Section 1 of the New Mexico Constitution, a Governor may only serve two consecutive four-year terms. The 2026 election is an open-seat race.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article V, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seats are on the 2026 ballot in New Mexico?",
+    "question_variants": [
+      "Is Ben Ray Lujan up for re-election in 2026?",
+      "When is Martin Heinrich's next election?",
+      "New Mexico US Senate cycle 2026"
+    ],
+    "answer": "Only the Class 2 seat held by Senator Ben Ray Lujan (D) is up for election in 2026. Senator Martin Heinrich (Class 3) was recently re-elected in 2024 and will not be on the ballot for his Senate seat again until 2030.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/",
+    "source_name": "New Mexico Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in New Mexico for the 2026 election?",
+    "question_variants": [
+      "New Mexico congressional apportionment",
+      "Are all NM congressional seats up in 2026?",
+      "Number of US Representatives from New Mexico"
+    ],
+    "answer": "New Mexico is apportioned 3 U.S. House districts. All 3 seats will be on the 2026 ballot, as Representatives serve two-year terms.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/",
+    "source_name": "New Mexico Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the 2026 election cycle for the New Mexico State Legislature?",
+    "question_variants": [
+      "Are all New Mexico House seats up in 2026?",
+      "New Mexico Senate election cycle 2026",
+      "Which legislative districts are on the ballot in NM?"
+    ],
+    "answer": "All 70 seats in the New Mexico House of Representatives (2-year terms) are up for election in 2026. However, NO State Senate seats are regularly scheduled for the 2026 ballot. New Mexico State Senators serve 4-year terms and are elected exclusively in Presidential years (e.g., 2024, 2028). Only vacancies would trigger a Senate election in 2026.",
+    "source_url": "https://www.nmlegis.gov/",
+    "source_name": "New Mexico Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the role of the New Mexico Commissioner of Public Lands?",
+    "question_variants": [
+      "Is the Commissioner of Public Lands elected in NM?",
+      "What does the NM Public Lands Commissioner do?",
+      "New Mexico State Land Office responsibilities"
+    ],
+    "answer": "The Commissioner of Public Lands is a statewide elected executive officer on the 2026 ballot. This unique office directs the New Mexico State Land Office, which manages over 9 million acres of surface land and 13 million acres of mineral rights across the state to generate revenue for public schools, universities, and hospitals.",
+    "source_url": "https://www.nmstatelands.org/about/",
+    "source_name": "New Mexico State Land Office",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of New Mexico?",
+    "question_variants": [
+      "Age and residency for New Mexico Governor",
+      "New Mexico Constitution Article V Section 3 Governor qualifications",
+      "Who is eligible to be Governor of New Mexico?"
+    ],
+    "answer": "Under Article V, Section 3 of the New Mexico Constitution, a candidate for Governor must be at least 30 years of age, a citizen of the United States, and have resided continuously in New Mexico for five years next preceding their election.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article V, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in New Mexico?",
+    "question_variants": [
+      "How old do you have to be to be NM Lt Governor?",
+      "Lieutenant Governor residency requirement New Mexico",
+      "Qualifications for Lt Gov NM"
+    ],
+    "answer": "The constitutional requirements to serve as Lieutenant Governor are identical to those for Governor. The candidate must be at least 30 years old, a U.S. citizen, and a resident of New Mexico for five years continuously preceding the election.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article V, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the age and residency requirements to run for the New Mexico State Legislature?",
+    "question_variants": [
+      "Qualifications for NM State Representative",
+      "Residency requirement New Mexico State Senate",
+      "Do I have to live in my district to run in NM?"
+    ],
+    "answer": "Under Article IV, Section 3 of the New Mexico Constitution, a candidate for the State Senate must be at least 25 years old. A candidate for the State House of Representatives must be at least 21 years old. Both must be residents of the specific legislative district they seek to represent.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article IV, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in New Mexico?",
+    "question_variants": [
+      "US Senate residency requirements New Mexico",
+      "Age to run for Congress in New Mexico",
+      "Federal constitutional requirements for NM candidates"
+    ],
+    "answer": "Federal candidates must meet U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected. District residency is not constitutionally required for the U.S. House.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the New Mexico Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in NM",
+      "Do I need to be a member of the bar to be NM AG?",
+      "Legal requirements for New Mexico Attorney General"
+    ],
+    "answer": "While the New Mexico Constitution specifies baseline criteria for statewide executives (30 years old, US citizen, 5 years NM resident), practically and historically, candidates for Attorney General must be admitted to practice law in the state to fulfill their statutory role as chief legal officer.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article V, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for the New Mexico Commissioner of Public Lands?",
+    "question_variants": [
+      "Eligibility for New Mexico Public Lands Commissioner",
+      "Do I need land management experience to run for Commissioner in NM?",
+      "Article V Section 3 NM Constitution"
+    ],
+    "answer": "To serve as the Commissioner of Public Lands, a candidate must meet the same general qualifications as the Governor: they must be at least 30 years old, a U.S. citizen, and have resided continuously in New Mexico for five years prior to the election. No specific degree or professional land management background is constitutionally required.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article V, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for County Commissioner in New Mexico?",
+    "question_variants": [
+      "Qualifications for New Mexico County Commissioner",
+      "Can I run for county board in NM?",
+      "Residency rules for New Mexico commissioners"
+    ],
+    "answer": "To serve as a County Commissioner in New Mexico, a candidate must be at least 18 years of age and a resident of the district (or county) from which they are elected.",
+    "source_url": "https://www.sandovalcountynm.gov/elected-officials/county-clerk/bureau-of-elections/officials-eligibility-requirements/",
+    "source_name": "New Mexico County Election Guidelines",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "County candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "Are District Court judges elected or appointed in New Mexico?",
+    "question_variants": [
+      "New Mexico District Court judge eligibility",
+      "Do judges run for election in NM?",
+      "Qualifications to run for judge in New Mexico"
+    ],
+    "answer": "District Court judges in New Mexico are initially appointed by the Governor from a list of recommended nominees. Following their appointment, they must stand in a partisan election at the next general election. If they win, they serve a six-year term and then face nonpartisan retention elections thereafter. They must be 35 years old and have practiced law for six years.",
+    "source_url": "https://ballotpedia.org/Judicial_selection_in_New_Mexico",
+    "source_name": "Judicial Selection in New Mexico",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is New Mexico a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in New Mexico?",
+      "New Mexico vote-by-mail system",
+      "Are there traditional polling places in NM?"
+    ],
+    "answer": "No. New Mexico is not a universal mail ballot state. Voters who wish to vote by mail must actively request a no-excuse absentee ballot from their county clerk. Otherwise, they must vote in person during early voting or on Election Day at established polling places.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/absentee-and-early-voting/",
+    "source_name": "New Mexico Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How long is the early voting period in New Mexico?",
+    "question_variants": [
+      "NM early voting window dates",
+      "When does early voting start in New Mexico?",
+      "In-person early voting schedule NM"
+    ],
+    "answer": "Early voting in New Mexico generally begins 28 days before the election at county clerk's offices. For the June 2, 2026 primary, early voting begins on May 5, 2026, and expands to additional alternate voting locations in participating counties starting May 16, 2026. Early voting ends the Saturday before Election Day.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/absentee-and-early-voting/",
+    "source_name": "New Mexico Secretary of State - Early Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to request an absentee ballot in New Mexico?",
+    "question_variants": [
+      "When is the last day to ask for a mail ballot in NM?",
+      "Absentee ballot application deadline New Mexico",
+      "How many days before the election must I request an absentee ballot in NM?"
+    ],
+    "answer": "Voters must request an absentee ballot no later than 14 days before the election. For the 2026 primary, the last day to request a mail-in absentee ballot is May 19, 2026. Completed ballots must be received by 7:00 p.m. on Election Day to be counted.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/absentee-and-early-voting/",
+    "source_name": "New Mexico Secretary of State - Absentee Deadlines",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline in New Mexico?",
+    "question_variants": [
+      "Last day to register to vote in NM",
+      "NM voter registration cutoff",
+      "2026 registration deadline New Mexico"
+    ],
+    "answer": "The standard deadline to register to vote online or by mail is 28 days before the election (May 5, 2026, for the primary). However, New Mexico allows Same Day Registration (SDR). Voters can register and cast a ballot in person at their county clerk's office during early voting or at polling locations on Election Day.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/voter-registration-information/",
+    "source_name": "New Mexico Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does New Mexico offer online voter registration?",
+    "question_variants": [
+      "Can I register to vote online in NM?",
+      "New Mexico electronic voter registration",
+      "NM SOS online registration"
+    ],
+    "answer": "Yes. New Mexico provides online voter registration for individuals with a valid state driver's license or ID card issued by the Motor Vehicle Division (MVD). The online portal is administered by the Secretary of State.",
+    "source_url": "https://portal.sos.state.nm.us/OVR/WebPages/DomesticApplication.aspx",
+    "source_name": "New Mexico Secretary of State - Online Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does the New Mexico Voting Rights Act of 2023 affect Native American voters?",
+    "question_variants": [
+      "Native American Voting Rights Act New Mexico",
+      "Tribal polling places NM rules",
+      "Reservation address voting New Mexico"
+    ],
+    "answer": "The New Mexico Voting Rights Act includes specific protections for Native voters, allowing Tribes to designate their own polling places and drop boxes. It mandates collaboration between tribal leaders and election clerks, standardizes early voting on tribal lands, and provides accommodations for voters using non-traditional addresses like tribal headquarters.",
+    "source_url": "https://votingrightsactnm.org/",
+    "source_name": "New Mexico Voting Rights Act (2023)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in New Mexico?",
+    "question_variants": [
+      "How close can I campaign to a polling place in NM?",
+      "Buffer zone around voting centers New Mexico",
+      "NM electioneering rules"
+    ],
+    "answer": "In New Mexico, electioneering is prohibited within 100 feet of the door through which voters enter the polling place. This includes distributing campaign literature, displaying signs, and wearing campaign apparel.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/",
+    "source_name": "New Mexico Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does New Mexico restore voting rights to individuals with felony convictions?",
+    "question_variants": [
+      "Can felons vote in New Mexico state?",
+      "Felony voting rights restoration NM",
+      "Voting on parole in New Mexico"
+    ],
+    "answer": "Yes. Following the 2023 New Mexico Voting Rights Act, an individual convicted of a felony regains their right to vote immediately upon release from incarceration. Individuals who are on probation or parole are fully eligible to register and vote.",
+    "source_url": "https://votingrightsactnm.org/",
+    "source_name": "New Mexico Voting Rights Act (2023)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in New Mexico?",
+    "question_variants": [
+      "Where do I file campaign finance reports in NM?",
+      "What is the New Mexico CFIS?",
+      "Does the NM Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in New Mexico are administered by the Secretary of State via the Campaign Finance Information System (CFIS). All state and local candidates must register and file their contribution and expenditure reports electronically through the CFIS portal.",
+    "source_url": "https://login.cfis.sos.state.nm.us/",
+    "source_name": "New Mexico Secretary of State - CFIS",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the campaign contribution limits in New Mexico for the 2026 cycle?",
+    "question_variants": [
+      "How much can an individual donate to a NM Governor candidate?",
+      "Current campaign contribution limits for state legislature in NM",
+      "NM individual donation caps 2026 election"
+    ],
+    "answer": "For the 2026 cycle, individual contribution limits are capped at $12,400 for gubernatorial candidates and $6,200 for non-gubernatorial candidates (like state legislature). Critically, these limits apply per election cycle (meaning they cover both the primary and general combined), unlike states that apply limits per election.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_New_Mexico",
+    "source_name": "New Mexico Secretary of State limits (as indexed)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in New Mexico campaigns?",
+    "question_variants": [
+      "Corporate contribution ban New Mexico state",
+      "Can a business donate to my campaign in NM?",
+      "Corporate campaign finance rules New Mexico"
+    ],
+    "answer": "Yes. New Mexico permits direct corporate and union contributions to candidate campaigns. These contributions are subject to the same election cycle limits as individuals ($12,400 for Governor, $6,200 for non-gubernatorial offices).",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_New_Mexico",
+    "source_name": "New Mexico Campaign Finance Rules",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What is the legislative session prohibited period (session freeze) in New Mexico?",
+    "question_variants": [
+      "NM lobbyist donation ban",
+      "Can a lobbyist give to a New Mexico legislator during session?",
+      "Legislative contribution freeze New Mexico"
+    ],
+    "answer": "New Mexico prohibits state legislators, statewide candidates, and the Governor from soliciting or accepting any campaign contributions during a legislative session. This applies to all donors, including lobbyists. The 'Prohibited Period' begins on January 1 prior to the session and lasts through adjournment (or 20 days after adjournment for the Governor).",
+    "source_url": "https://www.sos.nm.gov/legislation-and-lobbying/how-to-become-a-lobbyist/legislative-session-prohibited-period/",
+    "source_name": "New Mexico Secretary of State - Prohibited Period",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and Donors"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the 2026 campaign finance reporting schedule for New Mexico candidates?",
+    "question_variants": [
+      "NM campaign finance filing dates 2026",
+      "When are CFIS reports due for New Mexico 2026 primary?",
+      "New Mexico pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates must file periodic reports detailing their activity. For the 2026 primary, standard reports are due in April, May (two reports), and early July. For the general election, reports are due in September, October (two reports), and early January 2027.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/how-to-become-a-candidate/2026-elections-candidate-information/",
+    "source_name": "New Mexico Secretary of State - 2026 Reporting Deadlines",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are New Mexico's rapid disclosure requirements for large contributions?",
+    "question_variants": [
+      "NM 48-hour large contribution report threshold",
+      "CFIS rapid disclosure rules near elections",
+      "When do I file a 24-hour report in New Mexico?"
+    ],
+    "answer": "Outside of the standard reporting schedule, if a candidate receives a contribution of $500 or more in the immediate weeks leading up to an election, it must be reported rapidly (usually within 24 hours of receipt). This ensures transparency for major cash influxes right before voters head to the polls.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and committees"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "judicial"],
+    "category": "finance_ethics",
+    "question": "Does New Mexico provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for New Mexico candidates",
+      "State funded campaigns New Mexico status",
+      "Voter Action Act New Mexico"
+    ],
+    "answer": "Yes, but it is limited. New Mexico operates a public financing program under the Voter Action Act, which provides public funds to qualifying candidates for statewide appellate judicial offices (Supreme Court and Court of Appeals) and the Public Education Commission. It does not provide public financing for Governor or the state legislature.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/2026-new-mexico-public-financing-information/",
+    "source_name": "New Mexico Secretary of State - Public Financing",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial and PEC candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in New Mexico?",
+    "question_variants": [
+      "NM personal use prohibition campaign finance",
+      "Can I use campaign money for personal expenses in New Mexico?",
+      "Prohibited expenditures New Mexico CFIS"
+    ],
+    "answer": "Yes. Under the New Mexico Campaign Reporting Act, it is strictly prohibited to use campaign funds for personal living expenses or for any purpose that would exist irrespective of the candidate's campaign or duties as a public official.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws New Mexico's legislative and congressional maps?",
+    "question_variants": [
+      "Does New Mexico use an independent redistricting commission?",
+      "Who has the authority to draw district lines in New Mexico?",
+      "Redistricting process New Mexico"
+    ],
+    "answer": "In New Mexico, the state legislature has the final authority to draw both congressional and state legislative districts, subject to gubernatorial veto. While the Citizen Redistricting Committee (CRC) was established to draft and recommend maps, the legislature is not legally bound to adopt them and can pass its own maps per NMSA 1978 § 1-3A.",
+    "source_url": "https://www.nmlegis.gov/Redistricting",
+    "source_name": "New Mexico Legislature - Redistricting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the redistricting criteria under New Mexico law?",
+    "question_variants": [
+      "Standards for drawing New Mexico district lines",
+      "New Mexico gerrymandering rules",
+      "CRC map requirements NM"
+    ],
+    "answer": "District maps in New Mexico must achieve equal population, comply with the federal Voting Rights Act, be contiguous and reasonably compact, and preserve communities of interest and political subdivisions. The guidelines also stipulate that partisan data may be considered, but maps should not be drawn to egregiously favor or disfavor a political party.",
+    "source_url": "https://www.nmlegis.gov/Redistricting",
+    "source_name": "New Mexico Citizen Redistricting Committee Guidelines",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current New Mexico district maps operative for the 2026 election cycle?",
+    "question_variants": [
+      "Status of 2021 New Mexico redistricting maps",
+      "Are there pending redistricting lawsuits in New Mexico?",
+      "New Mexico 2026 district boundaries"
+    ],
+    "answer": "Yes. The maps enacted by the legislature in late 2021 are fully operative for the 2026 cycle. In November 2023, the New Mexico Supreme Court upheld the state's congressional map against a partisan gerrymandering challenge in the case Republican Party of New Mexico v. Oliver, cementing the boundaries for the remainder of the decade.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_New_Mexico",
+    "source_name": "Republican Party of New Mexico v. Oliver (2023)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does New Mexico have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of New Mexico be recalled?",
+      "How to recall a state senator in NM",
+      "Statewide recall election rules New Mexico"
+    ],
+    "answer": "No. Under the New Mexico Constitution, there is no recall mechanism available for state-level executive or legislative officers. Recall provisions in New Mexico are strictly limited to local, county, and school board officials.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_New_Mexico",
+    "source_name": "Laws governing recall in New Mexico",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the grounds and signature thresholds for recalling a local official in New Mexico?",
+    "question_variants": [
+      "New Mexico county commissioner recall rules",
+      "Do I need to prove malfeasance for a recall in NM?",
+      "Signature requirement local recall New Mexico"
+    ],
+    "answer": "Under Article X, Section 9 of the New Mexico Constitution, local and county officials can be recalled. Proponents must allege specific grounds: malfeasance, misfeasance, or a violation of the oath of office. If approved by a court, proponents must gather valid signatures equal to 33.3% of the total votes cast for that office at the last preceding election.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article X, Section 9",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What is the court sufficiency review process for local recalls in New Mexico?",
+    "question_variants": [
+      "New Mexico recall court probable cause hearing",
+      "Before gathering recall signatures in NM",
+      "Judicial review of recall petitions New Mexico"
+    ],
+    "answer": "New Mexico has a unique safeguard for local recalls: before any signatures can be gathered, proponents must present their factual allegations to a District Court. The judge holds a hearing to determine if there is 'probable cause' that the official committed malfeasance, misfeasance, or violated their oath. Petitions can only circulate if the court explicitly finds probable cause.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article X, Section 9",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does New Mexico have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the NM ballot",
+      "New Mexico citizen initiative signature requirements",
+      "Can voters propose laws in New Mexico?"
+    ],
+    "answer": "No. New Mexico is one of the states that does not have a direct citizen initiative process for proposing statutes or constitutional amendments. All statewide ballot measures, including constitutional amendments, must originate in the state legislature.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/",
+    "source_name": "New Mexico Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the New Mexico legislature refer constitutional amendments to the voters?",
+    "question_variants": [
+      "Legislative referral process New Mexico",
+      "Can the NM legislature put a law on the ballot?",
+      "Amending the New Mexico Constitution"
+    ],
+    "answer": "The New Mexico State Legislature can propose an amendment to the state constitution by passing a joint resolution with a simple majority vote in both the House and the Senate. The proposed amendment is then referred directly to the voters on the next general election ballot without requiring the Governor's signature.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article XIX, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the voter approval threshold for constitutional amendments in New Mexico?",
+    "question_variants": [
+      "New Mexico ballot measure pass threshold",
+      "Does a measure need a supermajority in NM?",
+      "Majority vote requirements New Mexico ballot measures"
+    ],
+    "answer": "Generally, New Mexico requires only a simple majority (over 50%) of the popular vote to pass a constitutional amendment referred by the legislature. (Exceptions exist for amendments altering voting rights or education funding, which require a 3/4 supermajority statewide and a 2/3 supermajority in each county, but standard amendments require a simple majority).",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article XIX, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for New Mexico Secretary of State, Treasurer, and Auditor?",
+    "question_variants": [
+      "Requirements to run for NM Secretary of State",
+      "Eligibility for New Mexico State Treasurer",
+      "Who can run for State Auditor in NM?"
+    ],
+    "answer": "Under Article V, Section 3 of the New Mexico Constitution, candidates for Secretary of State, Treasurer, and Auditor share the same qualifications as the Governor: they must be at least 30 years old, a citizen of the United States, and have resided continuously in New Mexico for five years preceding the election. There are no professional degree requirements.",
+    "source_url": "https://nmonesource.com/nmos/c/en/item/5916/index.do",
+    "source_name": "New Mexico Constitution Article V, Section 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are New Mexico Supreme Court and Court of Appeals judges selected?",
+    "question_variants": [
+      "New Mexico appellate judge elections",
+      "Is the NM Supreme Court nonpartisan?",
+      "NM judge term lengths"
+    ],
+    "answer": "Appellate judges in New Mexico are initially appointed by the Governor. For their first election, they must run in a partisan competitive election. If they win, they serve an 8-year term. For all subsequent terms, they stand in a nonpartisan retention election and must receive at least 57% 'Yes' votes to remain on the bench.",
+    "source_url": "https://ballotpedia.org/Judicial_selection_in_New_Mexico",
+    "source_name": "Judicial Selection in New Mexico",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in New Mexico?",
+    "question_variants": [
+      "Run for school board New Mexico requirements",
+      "Who can be a school director in NM?",
+      "School board residency rules New Mexico"
+    ],
+    "answer": "To run for a local school board in New Mexico, a candidate must be a registered voter physically residing within the specific geographical boundaries of the school board district they seek to represent. School board elections in New Mexico are nonpartisan.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/local-election-information/",
+    "source_name": "New Mexico Secretary of State - Local Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the New Mexico Superintendent of Public Instruction an elected office?",
+    "question_variants": [
+      "Running for NM Superintendent of Schools",
+      "Who elects the Secretary of Education in New Mexico?",
+      "Public Education Department leadership NM"
+    ],
+    "answer": "No. The elected position of Superintendent of Public Instruction was abolished by a constitutional amendment in 2003. Currently, the New Mexico Public Education Department is led by the Secretary of Education, who is appointed directly by the Governor and confirmed by the State Senate.",
+    "source_url": "https://webnew.ped.state.nm.us/about-us/",
+    "source_name": "New Mexico Public Education Department",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process and deadline in New Mexico?",
+    "question_variants": [
+      "How to fix a rejected signature in NM",
+      "New Mexico ballot cure process deadline",
+      "Missing signature on NM absentee ballot"
+    ],
+    "answer": "Under SB 180 (2023), if an absentee ballot envelope has a missing or mismatched signature, the county clerk must notify the voter. The voter is given the opportunity to 'cure' the defect using a provided form. The deadline to cure a signature is prior to the conclusion of the county canvass, which typically occurs within the week following Election Day.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/absentee-and-early-voting/",
+    "source_name": "New Mexico Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the New Mexico voter registration list?",
+    "question_variants": [
+      "New Mexico voter database access",
+      "How to get the voter list in NM",
+      "Cost of voter registration data New Mexico"
+    ],
+    "answer": "Campaigns and political committees can purchase electronic copies of the statewide or district voter registration file from the Secretary of State. A standard fee applies based on the data requested (often over $100 for statewide files). By law, this data may only be used for governmental or election campaign purposes; commercial use is strictly prohibited and carries severe penalties.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/data-and-maps/voter-registration-data/",
+    "source_name": "New Mexico Secretary of State - Voter Data",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in New Mexico?",
+    "question_variants": [
+      "When are military ballots due in New Mexico?",
+      "UOCAVA return deadline NM",
+      "Overseas voting rules New Mexico state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters 45 days before the election. New Mexico allows these voters to return ballots electronically (via a secure portal) or by mail. All UOCAVA ballots must be received by the county clerk no later than 7:00 p.m. on Election Day to be counted; a late postmark does not extend this deadline.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/military-and-overseas-voters/",
+    "source_name": "New Mexico Secretary of State - UOCAVA Voters",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the voter ID requirements and when are provisional ballots issued in New Mexico?",
+    "question_variants": [
+      "Does New Mexico require photo ID to vote?",
+      "What is a provisional ballot in NM?",
+      "Voting without ID New Mexico"
+    ],
+    "answer": "New Mexico does not require strict photo ID for most voters at the polls; voters generally only need to provide their name, year of birth, and registered address. Provisional ballots are issued if a voter's name is not on the roster, if they registered by mail for the first time and fail to provide required federal identification, or if records show they already requested an absentee ballot.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/voter-id-requirements/",
+    "source_name": "New Mexico Secretary of State - Voter ID",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does New Mexico have Automatic Voter Registration (AVR) at the MVD?",
+    "question_variants": [
+      "Is registration automatic at the New Mexico MVD?",
+      "NM motor voter automatic registration",
+      "Do I have to register to vote if I get a NM driver's license?"
+    ],
+    "answer": "Yes. New Mexico enacted Automatic Voter Registration (AVR) via the Motor Vehicle Division (MVD). Eligible citizens who apply for or renew a driver's license or state ID card are automatically registered to vote or have their address updated, unless they explicitly opt out of the process during the transaction.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/voter-registration-information/",
+    "source_name": "New Mexico Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does New Mexico maintain its voter registration lists?",
+    "question_variants": [
+      "NM voter list maintenance rules",
+      "How are inactive voters handled in New Mexico?",
+      "ERIC system New Mexico state NVRA"
+    ],
+    "answer": "New Mexico conducts voter list maintenance in compliance with the NVRA. The Secretary of State utilizes the Electronic Registration Information Center (ERIC) to identify voters who have moved out of state or died, and runs National Change of Address (NCOA) checks. Voters who do not respond to confirmation notices and fail to vote in two consecutive federal general elections are moved to an inactive status and eventually canceled.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/data-and-maps/voter-registration-data/",
+    "source_name": "New Mexico Secretary of State - List Maintenance",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the polling hours on Election Day in New Mexico?",
+    "question_variants": [
+      "When do polls open in NM?",
+      "NM polling place hours",
+      "What time do polls close in New Mexico?"
+    ],
+    "answer": "On Election Day, all polling places in New Mexico open at 7:00 a.m. and close exactly at 7:00 p.m. Any voter who is physically in line at 7:00 p.m. will be allowed to cast their ballot.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/",
+    "source_name": "New Mexico Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for independent candidates in the New Mexico general election?",
+    "question_variants": [
+      "Independent candidate petition threshold New Mexico",
+      "New Mexico independent elector nomination",
+      "How to run for office without a party in NM"
+    ],
+    "answer": "Independent candidates must submit a nominating petition signed by registered voters equal to at least 3% of the total number of votes cast for Governor in the respective state, district, or county during the last general election in which the Governor was elected (NMSA 1978 § 1-8-51).",
+    "source_url": "https://law.justia.com/codes/new-mexico/chapter-1/article-8/section-1-8-51/",
+    "source_name": "NMSA 1978 § 1-8-51",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold for a political party to be recognized as a 'major party' in New Mexico?",
+    "question_variants": [
+      "Major vs minor party New Mexico",
+      "New Mexico political party recognition threshold",
+      "How many major parties in NM?"
+    ],
+    "answer": "A political party achieves and maintains 'major party' status in New Mexico if its candidate for Governor or President of the United States received at least 5% of the total number of votes cast for that office at the last preceding general election (NMSA 1978 § 1-1-9).",
+    "source_url": "https://law.justia.com/codes/new-mexico/chapter-1/article-1/section-1-1-9/",
+    "source_name": "NMSA 1978 § 1-1-9",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "statute_citation",
+    "scope": "Political parties"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does New Mexico hold runoff elections for close races?",
+    "question_variants": [
+      "Are there runoffs in New Mexico primaries?",
+      "How are tied elections decided in NM?",
+      "Tie-breaker rules New Mexico elections"
+    ],
+    "answer": "No, New Mexico does not use runoff elections for state or federal offices. A plurality of the vote (whoever gets the most votes, even if under 50%) determines the winner. In the rare event of an exact tie after all recounts are exhausted, the winner is determined by drawing lots (e.g., drawing cards or a coin toss) administered by the canvassing board.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/",
+    "source_name": "New Mexico Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in New Mexico?",
+    "question_variants": [
+      "Does New Mexico use ranked choice voting?",
+      "RCV status in New Mexico 2026",
+      "Instant runoff voting NM"
+    ],
+    "answer": "Ranked Choice Voting (RCV) is not used for statewide or federal elections in New Mexico. However, it is utilized in certain local municipal elections for home-rule cities that have independently adopted it, such as Santa Fe and Las Cruces.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/voter-information/local-election-information/",
+    "source_name": "New Mexico Secretary of State - Local Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on New Mexico campaign materials?",
+    "question_variants": [
+      "New Mexico 'Paid for by' rules",
+      "Campaign ad disclaimer requirements NM",
+      "Political taglines New Mexico CFIS"
+    ],
+    "answer": "Under the New Mexico Campaign Reporting Act, printed, digital, and broadcast campaign materials must clearly state 'Paid for by' followed by the name of the candidate, committee, or individual sponsoring the material. Independent expenditure communications must also include similar disclaimers to ensure voters know who is funding the ad.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in New Mexico?",
+    "question_variants": [
+      "NM campaign coordination rules",
+      "When is a PAC expenditure not independent in New Mexico?",
+      "Prohibition on candidate-PAC coordination NM"
+    ],
+    "answer": "An expenditure is 'coordinated' (and thus treated as an in-kind contribution subject to limits) if it is made in cooperation with, at the request of, or with the prior consent of the candidate or their agents. Sharing non-public campaign strategy, overlapping strategic consultants, or a candidate fundraising for the specific outside ad are considered strong indicators of coordination.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in New Mexico?",
+    "question_variants": [
+      "NM CFIS late fee",
+      "Penalty for missing a New Mexico campaign finance deadline",
+      "Secretary of State fine for late filing NM"
+    ],
+    "answer": "The New Mexico Secretary of State rigorously enforces reporting deadlines. A candidate or committee that files a late CFIS report is subject to a fine of $50 per working day until the report is filed. The maximum accrued penalty per late report is $5,000.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a New Mexico campaign committee terminate?",
+    "question_variants": [
+      "Closing a New Mexico campaign committee",
+      "CFIS committee termination requirements",
+      "Final campaign finance report New Mexico"
+    ],
+    "answer": "A candidate committee may officially terminate and close its CFIS account only when it has achieved a zero cash balance, disposed of all surplus funds legally, and resolved all outstanding debts or loans. A final report must be filed marking the committee as terminated.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in New Mexico?",
+    "question_variants": [
+      "NM independent expenditure reporting CFIS",
+      "Disclosure for NM independent expenditure groups",
+      "Reporting thresholds for outside spending New Mexico"
+    ],
+    "answer": "Any person or entity making independent expenditures (IE) that total more than $1,000 in an election cycle to advocate for or against a candidate must file IE reports with the Secretary of State via CFIS. Additional reports are required if spending continues past the initial threshold.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in New Mexico?",
+    "question_variants": [
+      "New Mexico in-kind contribution valuation rules",
+      "Reporting non-monetary donations New Mexico campaign",
+      "Fair market value for in-kind gifts NM"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or discounts not available to the general public) must be reported on CFIS at their fair market value—the standard price the campaign would have paid on the open market. They count toward the donor's election cycle contribution limit just like monetary cash gifts.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in New Mexico?",
+    "question_variants": [
+      "New Mexico candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in NM?",
+      "Reporting candidate loans in CFIS"
+    ],
+    "answer": "Under New Mexico law, a candidate may loan an unlimited amount of their own personal funds to their campaign. While third-party contributions are strictly capped, self-funding is not. The loan must be properly documented in CFIS, and the campaign may use future contributions to repay the candidate.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can New Mexico candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in NM?",
+      "NM surplus campaign funds rules",
+      "Donating remaining campaign funds New Mexico"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. They may be returned to contributors on a pro-rata basis, donated to an IRS-recognized 501(c)(3) charity, transferred to a political party, or retained for a future campaign for public office by the same candidate.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/",
+    "source_name": "New Mexico Campaign Reporting Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What financial disclosure obligations apply to public officials running for office in New Mexico?",
+    "question_variants": [
+      "New Mexico Financial Disclosure Act candidate requirements",
+      "Public official candidate financial disclosure NM",
+      "Ethics Act personal financial disclosure New Mexico"
+    ],
+    "answer": "Under the New Mexico Financial Disclosure Act, certain public officials and candidates must file a Personal Financial Disclosure (PFD) statement with the Secretary of State. This statement discloses sources of income, real estate holdings, and business interests. Candidates must file the statement within 30 days of filing their declaration of candidacy.",
+    "source_url": "https://www.sos.nm.gov/candidate-and-campaigns/financial-disclosure/",
+    "source_name": "New Mexico Financial Disclosure Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Public official candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in New Mexico?",
+    "question_variants": [
+      "When are county sheriffs elected in NM?",
+      "New Mexico county official term lengths",
+      "Are county assessors on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in New Mexico—including County Commissioners, Sheriffs, Assessors, Clerks, and Treasurers—serve four-year terms. The 2026 midterm election cycle will feature specific staggered County Commission districts and, depending on the specific county's staggering schedule, may feature elections for Sheriff or Assessor.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/",
+    "source_name": "New Mexico Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for New Mexico elections?",
+    "question_variants": [
+      "When are New Mexico election results official?",
+      "NM certification deadline",
+      "State Canvassing Board meeting New Mexico"
+    ],
+    "answer": "County canvassing boards meet within 3 days of the election to certify local results and must conclude within 10 days. The State Canvassing Board meets on the third Tuesday after the election to officially certify statewide and federal election results.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/",
+    "source_name": "New Mexico Secretary of State - Canvass",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "NM",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for New Mexico's part-time legislative sessions?",
+    "question_variants": [
+      "When does the NM legislature meet?",
+      "New Mexico 30 day vs 60 day legislative session",
+      "Is the New Mexico legislature full time?"
+    ],
+    "answer": "New Mexico has a part-time 'citizen legislature.' The legislature meets for 60-day sessions in odd-numbered years to consider broad general legislation. In even-numbered years (e.g., 2026), it meets for short 30-day sessions strictly restricted to budgets, revenue, and items specifically placed on the agenda by the Governor.",
+    "source_url": "https://www.nmlegis.gov/Publications/Citizen_Guide",
+    "source_name": "New Mexico Legislature - Citizen Guide",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NM",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in New Mexico?",
+    "question_variants": [
+      "New Mexico special election timeline",
+      "Who calls a special election to fill a US House vacancy in NM?",
+      "Filling a midterm vacancy New Mexico"
+    ],
+    "answer": "Special elections to fill vacancies (such as for a U.S. House seat) are called by a proclamation from the Governor. The proclamation dictates the precise timeline, including when major party state central committees must nominate their candidates and the actual date the special election will be held.",
+    "source_url": "https://www.sos.nm.gov/voting-and-elections/",
+    "source_name": "New Mexico Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  }
+]
