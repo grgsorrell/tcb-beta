@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "How does the open primary system work in Montana?",
+    "question_variants": [
+      "Do I have to register with a party to vote in the MT primary?",
+      "Can I switch parties on primary day in Montana?",
+      "Montana crossover voting rules"
+    ],
+    "answer": "Montana has an open primary system under MCA 13-10-301. Voters do not register by political party. When arriving at the polls or receiving a mail ballot, a voter is provided with ballots for all qualified parties but may only vote and return one. This allows crossover voting, as any registered voter can choose any party's primary ballot to cast in private.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0100/part_0030/section_0010/0130-0100-0030-0010.html",
+    "source_name": "MCA 13-10-301",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and primary candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["judicial"],
+    "category": "ballot_access",
+    "question": "How are Montana Supreme Court candidates selected in the primary?",
+    "question_variants": [
+      "Is the Montana Supreme Court race partisan?",
+      "Top two judicial primary Montana",
+      "How many judicial candidates advance to the general election in MT?"
+    ],
+    "answer": "Montana Supreme Court and District Court elections are nonpartisan. Under MCA 13-14-111, all candidates for a judicial office appear on a single nonpartisan primary ballot. The top two vote-getters for each seat advance to the general election, regardless of their personal political leanings.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0140/part_0010/section_0110/0130-0140-0010-0110.html",
+    "source_name": "MCA 13-14-111",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal"],
+    "category": "ballot_access",
+    "question": "What happened with the 2026 U.S. Senate filing in Montana?",
+    "question_variants": [
+      "Why is the Montana Senate seat open in 2026?",
+      "Steve Daines 2026 withdrawal",
+      "Who did Steve Daines endorse for Senate?"
+    ],
+    "answer": "The 2026 U.S. Senate race became an open-seat contest after incumbent Senator Steve Daines (R) withdrew his re-election bid at 4:55 PM on March 5, 2026, just five minutes before the filing deadline. Daines endorsed former U.S. Attorney Kurt Alme to succeed him. This is Montana's first open U.S. Senate seat since 1976.",
+    "source_url": "https://sosmt.gov/elections/filing/",
+    "source_name": "Montana Secretary of State - Candidate Filing Records",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and consultants"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What were the candidate filing dates for the 2026 Montana election?",
+    "question_variants": [
+      "Montana 2026 filing window",
+      "HB 207 impact on Montana filing period",
+      "When was the deadline to run for office in MT 2026?"
+    ],
+    "answer": "Under HB 207 (passed 2023), the filing period for the 2026 election was shortened to a two-week window. Candidates were required to file between February 19, 2026, and 5:00 PM on March 5, 2026. This deadline applied to all partisan, nonpartisan, and judicial candidates seeking to appear on the primary ballot.",
+    "source_url": "https://sosmt.gov/elections/calendar/",
+    "source_name": "Montana SOS - Election Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Can a candidate get on the Montana primary ballot without paying a filing fee?",
+    "question_variants": [
+      "Montana filing fee waiver",
+      "Petition in lieu of filing fee MT",
+      "How many signatures to waive the filing fee in Montana?"
+    ],
+    "answer": "Yes. Under MCA 13-10-203, a candidate may submit a 'petition in lieu of filing fee.' The petition must contain signatures of registered voters equal in number to 5% of the total votes cast for the successful candidate for that same office in the last general election, or a specific lower number for certain legislative offices.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0100/part_0020/section_0030/0130-0100-0020-0030.html",
+    "source_name": "MCA 13-10-203",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the deadline for independent candidates to file for the 2026 Montana general election?",
+    "question_variants": [
+      "Independent candidate filing deadline MT 2026",
+      "How to run as an independent in Montana",
+      "Montana non-party candidate petition deadline"
+    ],
+    "answer": "Independent (non-party) candidates must file their nominating petitions by 5:00 PM on the same day as the primary election filing deadline, which for 2026 was March 5, 2026. Under MCA 13-10-503, they must submit signatures equal to 5% of the total votes cast for the successful candidate for the same office in the last general election.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0100/part_0050/section_0030/0130-0100-0050-0030.html",
+    "source_name": "MCA 13-10-503",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What are the requirements for write-in candidates in Montana?",
+    "question_variants": [
+      "Do write-in votes count in MT?",
+      "Montana write-in declaration deadline",
+      "How to register as a write-in in Montana"
+    ],
+    "answer": "Write-in votes are only counted if the candidate files a 'Declaration of Intent' with the filing officer. For the primary, the deadline is 10 days before the election. For the general election, the deadline is 60 days before the election (late August) per MCA 13-10-211. If the declaration is not filed, the votes are ignored during the canvass.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0100/part_0020/section_0110/0130-0100-0020-0110.html",
+    "source_name": "MCA 13-10-211",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the 2026 primary and general elections in Montana?",
+    "question_variants": [
+      "Montana election day 2026",
+      "When is the MT primary?",
+      "MT November election date 2026"
+    ],
+    "answer": "The Montana primary election is Tuesday, June 2, 2026. The general election is Tuesday, November 3, 2026. Polls are generally open from 7:00 AM to 8:00 PM, though smaller precincts may open later.",
+    "source_url": "https://sosmt.gov/elections/calendar/",
+    "source_name": "Montana SOS - Election Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "What U.S. Senate seat is up for election in Montana in 2026?",
+    "question_variants": [
+      "Montana US Senate class",
+      "Who is the incumbent for the 2026 MT Senate race?",
+      "Next US Senate election Montana"
+    ],
+    "answer": "The Class 2 U.S. Senate seat is up for election in Montana in 2026. This seat was held by Steve Daines (R) since 2014. Senator Jon Tester (D) holds the Class 1 seat and is not up for re-election until 2030.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is the Montana Governor on the 2026 ballot?",
+    "question_variants": [
+      "When is Greg Gianforte up for re-election?",
+      "Next Montana Governor election",
+      "Is there a gubernatorial race in MT in 2026?"
+    ],
+    "answer": "No. The Montana Governor is elected to four-year terms during presidential election years. Incumbent Greg Gianforte (R) was re-elected in 2024 and his term runs through early 2029. The next gubernatorial election will be in 2028.",
+    "source_url": "https://sosmt.gov/elections/results/",
+    "source_name": "Montana SOS - Past Results",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Montana State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Montana Senate seats up in 2026?",
+      "MT legislative election cycle",
+      "Which cohort of the MT Senate is on the 2026 ballot?"
+    ],
+    "answer": "All 100 seats in the Montana House of Representatives (2-year terms) are up for election in 2026. The Montana Senate has 50 members serving staggered 4-year terms; the even-numbered districts (2, 4, 6... 50) are on the 2026 ballot, while odd-numbered districts were elected in 2024.",
+    "source_url": "https://leg.mt.gov/legislator-information/",
+    "source_name": "Montana State Legislature - Roster",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House seats are up in Montana for 2026?",
+    "question_variants": [
+      "Montana congressional districts 2026",
+      "MT Eastern and Western districts",
+      "How many congressmen does Montana have?"
+    ],
+    "answer": "Montana has two U.S. House districts, both of which are up for election in 2026. The 1st District (Western) is currently held by Ryan Zinke (R) and the 2nd District (Eastern) is currently held by Matt Rosendale (R).",
+    "source_url": "https://sosmt.gov/elections/candidates/",
+    "source_name": "Montana SOS - Candidate Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "Which Montana Supreme Court seat is on the 2026 ballot?",
+    "question_variants": [
+      "Montana Supreme Court election 2026",
+      "Is Beth Baker running for re-election in 2026?",
+      "Next nonpartisan judicial election MT"
+    ],
+    "answer": "The seat currently held by Justice Beth Baker (Position #4) is scheduled for election in 2026. Montana Supreme Court justices serve eight-year terms and are elected in nonpartisan statewide contests.",
+    "source_url": "https://courts.mt.gov/supreme/justices/",
+    "source_name": "Montana Judicial Branch - Justices",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Public Service Commission (PSC) seats are on the 2026 Montana ballot?",
+    "question_variants": [
+      "MT PSC election cycle",
+      "PSC District 1 and 5 election 2026",
+      "When do Montana utility regulators run for office?"
+    ],
+    "answer": "In 2026, the Public Service Commission seats for District 1 and District 5 are up for election. The PSC consists of five commissioners elected to staggered four-year terms. Districts 2, 3, and 4 were elected in 2024.",
+    "source_url": "https://psc.mt.gov/About-Us/Commissioners",
+    "source_name": "Montana Public Service Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide and regional candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Montana?",
+    "question_variants": [
+      "How old to be Governor in MT?",
+      "Montana Governor residency rules",
+      "Art VI Sec 3 Montana Constitution"
+    ],
+    "answer": "Under Article VI, Section 3 of the Montana Constitution, a candidate for Governor must be a citizen of the United States, at least 30 years of age, and a resident of Montana for at least two years immediately preceding the election.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0000/constitution/article_006/section_0030/0000-constitution-article_006-section_0030.html",
+    "source_name": "Montana Constitution Art. VI, Sec. 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Montana?",
+    "question_variants": [
+      "Montana Lt Gov requirements",
+      "Is the Lt Gov age requirement the same as the Governor in MT?",
+      "Qualifications for Lieutenant Governor of Montana"
+    ],
+    "answer": "The qualifications for Lieutenant Governor are identical to those for the Governor: the candidate must be a U.S. citizen, at least 30 years old, and a resident of the state for at least two years prior to the election (Art. VI, Sec. 3).",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0000/constitution/article_006/section_0030/0000-constitution-article_006-section_0030.html",
+    "source_name": "Montana Constitution Art. VI, Sec. 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for the Montana State Legislature?",
+    "question_variants": [
+      "Qualifications for Montana State Representative",
+      "Residency requirement MT State Senate",
+      "Do I have to live in my district to run in MT?"
+    ],
+    "answer": "Under Article V, Section 4 of the Montana Constitution, a candidate for the state legislature must be a citizen of the United States, have resided in Montana for at least one year, and have resided in the county and district from which they are to be elected for at least six months preceding the election. The minimum age is 18.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0000/constitution/article_005/section_0040/0000-constitution-article_005-section_0040.html",
+    "source_name": "Montana Constitution Art. V, Sec. 4",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Montana?",
+    "question_variants": [
+      "US Senate residency requirements Montana",
+      "Age to run for Congress in MT",
+      "Federal constitutional requirements for Montana candidates"
+    ],
+    "answer": "Candidates must meet federal U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected. District residency is not required for the House.",
+    "source_url": "https://sosmt.gov/elections/candidates/",
+    "source_name": "Montana Secretary of State - Candidate FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Montana Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications for MT Attorney General",
+      "Do I need to be a bar member to be AG in Montana?",
+      "Professional requirements for MT AG"
+    ],
+    "answer": "Yes. Under MCA 2-15-501, the Attorney General must be an attorney in good standing admitted to practice before the Montana Supreme Court. Additionally, they must have practiced law for at least five years before taking office.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0020/chapter_0150/part_0050/section_0010/0020-0150-0050-0010.html",
+    "source_name": "MCA 2-15-501",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for District Court Judge in Montana?",
+    "question_variants": [
+      "Montana District Court judge requirements",
+      "Is a MT judge elected or appointed?",
+      "Qualifications for judicial office Montana"
+    ],
+    "answer": "District Court judges are elected in nonpartisan elections for six-year terms. Candidates must be U.S. citizens, residents of the state for at least two years, admitted to practice law in Montana for at least five years, and residents of the district in which they are elected per MCA 3-5-202.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0030/chapter_0050/part_0020/section_0020/0030-0050-0020-0020.html",
+    "source_name": "MCA 3-5-202",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for County Commissioner in Montana?",
+    "question_variants": [
+      "Montana county commissioner qualifications",
+      "Can I run for county board in MT?",
+      "County residency for MT commissioners"
+    ],
+    "answer": "To run for County Commissioner, a candidate must be a registered voter and a resident of the county for at least two years. They must also be a resident of the specific commission district they seek to represent at the time they are elected per MCA 7-4-2104.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0070/chapter_0040/part_0210/section_0040/0070-0040-0210-0040.html",
+    "source_name": "MCA 7-4-2104",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for Montana executive and legislative offices?",
+    "question_variants": [
+      "8 in 16 term limit Montana",
+      "How long can I serve in the Montana House?",
+      "Can a term-limited senator run for the House in MT?"
+    ],
+    "answer": "Under Article IV, Section 8 of the Montana Constitution, term limits are based on an '8 in 16' year rule. No person can serve in the House or Senate for more than 8 years in any 16-year period. Similarly, statewide executive officers (Governor, SOS, AG, etc.) are limited to 8 years in any 16-year period. Many legislators switch chambers to extend their service.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0000/constitution/article_004/section_0080/0000-constitution-article_004-section_0080.html",
+    "source_name": "Montana Constitution Art. IV, Sec. 8",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State executive and legislative candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What are the photo ID requirements to vote in person in Montana?",
+    "question_variants": [
+      "Acceptable ID for Montana voting",
+      "Do I need my driver's license to vote in MT?",
+      "SB 169 voter ID status Montana"
+    ],
+    "answer": "Voters must provide a government-issued photo ID at the polls. Acceptable primary IDs include a Montana driver's license, state ID, U.S. passport, military ID, or tribal ID. If these are not available, a voter must provide two secondary IDs (one with a photo and name, and another with name and current address) per MCA 13-13-114.",
+    "source_url": "https://sosmt.gov/elections/id/",
+    "source_name": "Montana Secretary of State - Voter ID",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the year of birth requirement for mail ballots in Montana?",
+    "question_variants": [
+      "Signing a Montana mail ballot envelope",
+      "New birth year rule MT ballot",
+      "Common reasons Montana ballots are rejected"
+    ],
+    "answer": "A new administrative and statutory requirement mandates that voters write their year of birth on the mail ballot return envelope, in addition to providing their signature. Failure to provide the birth year or a mismatch with voter records can trigger a cure process or result in ballot rejection.",
+    "source_url": "https://sosmt.gov/elections/voting-by-mail/",
+    "source_name": "Montana SOS - Voting by Mail",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Mail voters and Campaigns"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Is Montana a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Montana automatically?",
+      "MT county option mail ballot",
+      "How to request an absentee ballot in Montana"
+    ],
+    "answer": "No. Montana is not a universal mail ballot state. Under MCA 13-1-402, counties have the option to run certain local or special elections primarily by mail, but for statewide primary and general elections, voters must apply for an absentee ballot or vote in person. Many Montanans are on the 'Permanent Absentee' list.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0010/part_0040/section_0020/0130-0010-0040-0020.html",
+    "source_name": "MCA 13-1-402",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the timeline for absentee and early voting in Montana?",
+    "question_variants": [
+      "When do mail ballots arrive in MT?",
+      "Montana early voting dates 2026",
+      "How long do I have to vote in Montana?"
+    ],
+    "answer": "Absentee ballots are typically mailed 25 days before an election (roughly May 8 for the primary and October 9 for the general). Voters may also vote in person at the county elections office as soon as ballots are available, serving as Montana's version of early voting.",
+    "source_url": "https://sosmt.gov/elections/absentee/",
+    "source_name": "Montana SOS - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "Does Montana allow same-day voter registration?",
+    "question_variants": [
+      "Late registration Montana",
+      "Can I register to vote on Election Day in MT?",
+      "Montana voter registration deadline"
+    ],
+    "answer": "Yes. Montana offers 'Late Registration' which allows eligible citizens to register to vote or update their registration after the standard 30-day cutoff. This includes the ability to register and vote at the county elections office up to and on Election Day until the close of polls per MCA 13-2-304.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0020/part_0030/section_0040/0130-0020-0030-0040.html",
+    "source_name": "MCA 13-2-304",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone in Montana?",
+    "question_variants": [
+      "How close can I campaign to a polling place in MT?",
+      "Montana poll watcher rules",
+      "Soliciting votes near an MT drop box"
+    ],
+    "answer": "In Montana, electioneering is prohibited within 100 feet of any entrance to a building where voting is taking place. This includes distributing campaign literature, wearing campaign apparel, or soliciting votes per MCA 13-35-211.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0350/part_0020/section_0110/0130-0350-0020-0110.html",
+    "source_name": "MCA 13-35-211",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Montana?",
+    "question_variants": [
+      "Can felons vote in Montana?",
+      "Felony voting rights restoration MT",
+      "Voting on parole in MT"
+    ],
+    "answer": "In Montana, voting rights are automatically restored to an individual with a felony conviction immediately upon their release from incarceration. Individuals who are on probation or parole are fully eligible to register and vote in all state and federal elections per Article II, Section 28 of the Montana Constitution.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0000/constitution/article_002/section_0280/0000-constitution-article_002-section_0280.html",
+    "source_name": "Montana Constitution Art. II, Sec. 28",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Formerly incarcerated individuals"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the voter file in Montana?",
+    "question_variants": [
+      "Montana voter list cost",
+      "How to get the voter file in MT",
+      "MT SCORE database access"
+    ],
+    "answer": "Campaigns and political committees can purchase a statewide or district-specific voter file from the Secretary of State. The list includes name, address, and voting history (whether they voted, not who they voted for). The fee varies based on the size of the request but is capped by administrative rule.",
+    "source_url": "https://sosmt.gov/elections/data/",
+    "source_name": "Montana Secretary of State - Election Data",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Montana?",
+    "question_variants": [
+      "Where do I file campaign finance reports in MT?",
+      "What is the Montana COPP?",
+      "Does the MT Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Montana are administered by the Commissioner of Political Practices (COPP), an independent state agency. This is a major distinction from many states where the SOS handles finance. All candidates must register and file their financial reports through the COPP portal.",
+    "source_url": "https://politicalpractices.mt.gov/",
+    "source_name": "Montana Commissioner of Political Practices",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the mandatory electronic filing system for Montana campaign finance?",
+    "question_variants": [
+      "Montana CERS system",
+      "How to file campaign reports in MT",
+      "Electronic filing portal for MT candidates"
+    ],
+    "answer": "The Campaign Electronic Reporting System (CERS) is the mandatory online platform used by Montana candidates and committees to file Statements of Organization, contribution reports (C-5), and expenditure reports. Manual paper filings are generally no longer accepted for most candidates.",
+    "source_url": "https://politicalpractices.mt.gov/CERS/",
+    "source_name": "Montana COPP - CERS Portal",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual contribution limits for Montana candidates in the 2026 cycle?",
+    "question_variants": [
+      "How much can an individual donate to a MT Governor candidate?",
+      "Montana legislative contribution caps 2026",
+      "MT individual donation limits 2026 election"
+    ],
+    "answer": "For the 2026 cycle, individual contribution limits are $1,120 per election for Governor/Lt. Gov; $790 per election for other statewide offices (SOS, AG, Auditor); and $450 per election for state legislative and county candidates. These limits are per election (primary and general are separate).",
+    "source_url": "https://politicalpractices.mt.gov/Home/Contribution-Limits",
+    "source_name": "Montana COPP - Contribution Limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Montana candidate campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Montana state",
+      "Can a business donate to my campaign in MT?",
+      "MCA 13-35-227 corporate prohibition"
+    ],
+    "answer": "No. Under MCA 13-35-227, direct corporate and union contributions to candidate campaigns are strictly prohibited. However, corporations and unions may contribute in unlimited amounts to committees solely focused on ballot issues (initiatives/referenda).",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0350/part_0020/section_0270/0130-0350-0270-0270.html",
+    "source_name": "MCA 13-35-227",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the C-7 rapid disclosure rule for Montana campaign finance?",
+    "question_variants": [
+      "Montana 48-hour contribution report",
+      "Form C-7 rapid disclosure trigger",
+      "Late contribution reporting Montana"
+    ],
+    "answer": "Under COPP rules, any contribution of $100 or more received within 15 days of an election must be reported on Form C-7 within 2 business days of receipt. This 'rapid disclosure' ensures transparency for high-dollar influxes in the final weeks of a campaign.",
+    "source_url": "https://politicalpractices.mt.gov/Registration-and-Reporting/Reporting-Calendar",
+    "source_name": "Montana COPP - Reporting Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Montana provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Montana Governor",
+      "Montana clean election laws status",
+      "Government campaign grants Montana"
+    ],
+    "answer": "No. Montana does not have a system of public financing or matching funds for state-level political campaigns. All candidates must fund their campaigns through private contributions from individuals and political committees within the statutory limits.",
+    "source_url": "https://politicalpractices.mt.gov/",
+    "source_name": "Montana COPP - FAQ",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Montana?",
+    "question_variants": [
+      "MT personal use prohibition campaign finance",
+      "Can I use campaign money for personal expenses in Montana?",
+      "Prohibited expenditures Montana COPP"
+    ],
+    "answer": "Yes. Campaign funds cannot be used for any personal benefit or expense that would occur regardless of the person being a candidate or officeholder. Prohibited uses include personal travel, club dues, and home repairs, though child care for campaign events is generally permitted.",
+    "source_url": "https://politicalpractices.mt.gov/",
+    "source_name": "Montana Commissioner of Political Practices",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions in Montana?",
+    "question_variants": [
+      "Can Montana legislators raise money during session?",
+      "Lobbyist contribution ban MT legislature",
+      "MCA 5-7-310 session freeze"
+    ],
+    "answer": "Yes. Under MCA 5-7-310, it is a crime for a registered lobbyist to make a contribution to a legislator, or for a legislator to accept one, during a regular or special legislative session. This freeze applies specifically to members of the legislature to avoid the appearance of quid pro quo during lawmaking.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0050/chapter_0070/part_0030/section_0100/0050-0070-0030-0110.html",
+    "source_name": "MCA 5-7-310",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislative candidates and Lobbyists"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Montana's legislative and congressional maps and what criteria must they follow?",
+    "question_variants": [
+      "Does the MT legislature draw district maps?",
+      "Montana Districting and Apportionment Commission",
+      "Gerrymandering rules in Montana"
+    ],
+    "answer": "In Montana, the independent Districting and Apportionment Commission (5 members) draws the maps, not the legislature. Under the Montana Constitution, maps must achieve equal population, comply with the Voting Rights Act, be contiguous and compact, and preserve communities of interest. Partisan gerrymandering is prohibited.",
+    "source_url": "https://archive.legmt.gov/districting/",
+    "source_name": "Montana Districting and Apportionment Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "When did Montana gain a 2nd congressional district?",
+    "question_variants": [
+      "Why does Montana have two US House seats?",
+      "Montana reapportionment 2020 census",
+      "Eastern and Western congressional districts MT"
+    ],
+    "answer": "Montana regained a 2nd congressional district following the 2020 census, having operated as a single at-large district since 1990. The Districting and Apportionment Commission finalized the new Eastern and Western district boundaries in late 2021.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Montana",
+    "source_name": "Redistricting in Montana",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current Montana redistricting maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Legal challenges to Montana districts",
+      "Montana 2026 district boundaries",
+      "Will MT get new maps for 2026?"
+    ],
+    "answer": "Yes. The congressional and state legislative maps adopted by the Montana Districting and Apportionment Commission following the 2020 census remain fully operative for the 2026 election cycle, with no pending systemic legal challenges.",
+    "source_url": "https://archive.legmt.gov/districting/",
+    "source_name": "Montana Districting and Apportionment Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Montana have a recall mechanism for state officials, and what are the requirements?",
+    "question_variants": [
+      "Can the Governor of Montana be recalled?",
+      "How to recall a state senator in MT",
+      "Statewide recall election rules Montana"
+    ],
+    "answer": "Yes. Under MCA 2-16-603, state officials are subject to recall. Proponents must prove specific grounds: physical or mental lack of fitness, incompetence, violation of oath, official misconduct, or a felony conviction. For state officers, the signature threshold is 10% of the number of registered voters at the preceding general election.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0020/chapter_0160/part_0060/section_0030/0020-0160-0060-0030.html",
+    "source_name": "MCA 2-16-603",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Montana?",
+    "question_variants": [
+      "Montana county commissioner recall rules",
+      "Signature requirement local recall Montana",
+      "Recalling a mayor in MT"
+    ],
+    "answer": "Local, county, and municipal officials in Montana are subject to recall on the same grounds as state officials (incompetence, misconduct, etc.). However, under MCA 2-16-614, the signature threshold is higher: 15% of the registered voters in the respective jurisdiction.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0020/chapter_0160/part_0060/section_0140/0020-0160-0060-0140.html",
+    "source_name": "MCA 2-16-614",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature thresholds for citizen initiatives in Montana?",
+    "question_variants": [
+      "How to get an initiative on the MT ballot",
+      "Montana citizen initiative signature requirements",
+      "Constitutional amendment vs statute signature count Montana"
+    ],
+    "answer": "An initiated state statute requires valid signatures from 5% of the qualified electors, including at least 5% of the voters in each of 34 legislative house districts. A constitutional amendment by initiative requires signatures from 10% of qualified electors, including 10% in at least 40 house districts.",
+    "source_url": "https://sosmt.gov/elections/ballot-issues/",
+    "source_name": "Montana Secretary of State - Ballot Issues",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold and process for a veto referendum in Montana?",
+    "question_variants": [
+      "How to refer a MT bill to the ballot",
+      "Montana citizen referendum rules",
+      "Veto referendum signature threshold Montana state"
+    ],
+    "answer": "Citizens can refer a legislative act to the ballot via a veto referendum. This requires signatures from 5% of the qualified electors, including 5% in each of 34 house districts. Signatures must generally be filed within 90 days of the legislature's adjournment.",
+    "source_url": "https://sosmt.gov/elections/ballot-issues/",
+    "source_name": "Montana Secretary of State - Ballot Issues",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Montana?",
+    "question_variants": [
+      "Montana ballot measure pass threshold",
+      "Does a measure need a supermajority in MT?",
+      "Majority vote requirements Montana ballot measures"
+    ],
+    "answer": "In Montana, all citizen initiatives and referenda—whether creating a state statute or amending the state constitution—require only a simple majority (50% plus one vote) of the total votes cast on that specific measure to pass.",
+    "source_url": "https://sosmt.gov/elections/ballot-issues/",
+    "source_name": "Montana Secretary of State - Ballot Issues",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the CI-129 and CI-132 ballot measures proposed for 2026 in Montana?",
+    "question_variants": [
+      "Montana 2026 ballot initiatives",
+      "CI-129 property tax cap",
+      "CI-132 nonpartisan judicial elections Montana"
+    ],
+    "answer": "CI-129 and CI-132 are high-profile citizen initiatives targeted for the 2026 ballot. CI-129 proposes capping property taxes, while CI-132 seeks to constitutionally protect and mandate nonpartisan judicial elections, limiting legislative interference.",
+    "source_url": "https://sosmt.gov/elections/ballot-issues/",
+    "source_name": "Montana Secretary of State - 2026 Ballot Issues",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees and Voters"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State or State Auditor in Montana?",
+    "question_variants": [
+      "Requirements to run for MT Secretary of State",
+      "Eligibility for Montana State Auditor",
+      "Who can run for State Auditor in MT?"
+    ],
+    "answer": "Under Article VI, Section 3 of the Montana Constitution, candidates for Secretary of State and State Auditor must be at least 25 years old, a citizen of the United States, and a resident of Montana for at least two years immediately preceding the election.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0000/constitution/article_006/section_0030/0000-constitution-article_006-section_0030.html",
+    "source_name": "Montana Constitution Art. VI, Sec. 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the Superintendent of Public Instruction elected or appointed in Montana?",
+    "question_variants": [
+      "Running for MT Superintendent of Schools",
+      "Who elects the Superintendent of Public Instruction in Montana?",
+      "OPI leadership MT"
+    ],
+    "answer": "The Superintendent of Public Instruction is a statewide elected executive officer in Montana. A candidate must be at least 25 years old, a U.S. citizen, and a Montana resident for two years prior to the election, with a term of four years.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0000/constitution/article_006/section_0030/0000-constitution-article_006-section_0030.html",
+    "source_name": "Montana Constitution Art. VI, Sec. 3",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Montana?",
+    "question_variants": [
+      "Run for school board Montana requirements",
+      "Who can be a school trustee in MT?",
+      "School board residency rules Montana"
+    ],
+    "answer": "To run for a local school district board of trustees in Montana, a candidate must be at least 18 years old, a citizen of the United States, a registered voter, and a resident of the school district they seek to represent.",
+    "source_url": "https://sosmt.gov/elections/filing/",
+    "source_name": "Montana Secretary of State - Candidate Filing",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Montana Supreme Court?",
+    "question_variants": [
+      "Montana Supreme Court Justice eligibility",
+      "Years of practice required for MT Supreme Court",
+      "Do I need to be a bar member to be a Supreme Court Justice in MT?"
+    ],
+    "answer": "Under Article VII, Section 9 of the Montana Constitution, candidates for the Montana Supreme Court must be U.S. citizens, state residents for at least two years, and admitted to the practice of law in Montana for at least five years before the election.",
+    "source_url": "https://www.umt.edu/montana-constitution/articles/article-vii/vii-9.php",
+    "source_name": "Montana Constitution Art. VII, Sec. 9",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process and deadline in Montana?",
+    "question_variants": [
+      "How to fix a rejected signature in MT",
+      "Montana ballot cure process deadline",
+      "Missing signature on MT mail ballot"
+    ],
+    "answer": "If a mail ballot envelope has a missing or mismatched signature (or is missing the newly required year of birth), the county election administrator notifies the voter. The voter has until 8:00 p.m. on Election Day to cure the discrepancy for their vote to count.",
+    "source_url": "https://sosmt.gov/elections/voting-by-mail/",
+    "source_name": "Montana Secretary of State - Voting by Mail",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Montana?",
+    "question_variants": [
+      "When are military ballots due in Montana?",
+      "UOCAVA return deadline MT",
+      "Overseas voting rules Montana state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters 45 days before an election. Montana offers the Electronic Absentee System (EAS) for seamless access. Voted ballots must be received by the county election office by 8:00 p.m. on Election Day to be counted.",
+    "source_url": "https://sosmt.gov/elections/military-overseas/",
+    "source_name": "Montana Secretary of State - Military & Overseas Voters",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal", "judicial"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Montana?",
+    "question_variants": [
+      "What is a provisional ballot in MT?",
+      "Voting without ID Montana",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued to voters whose eligibility is in question, such as those lacking acceptable photo ID or whose names are missing from the register. The voter has until 5:00 p.m. on the day after the election to provide the necessary identification or verification to the election office.",
+    "source_url": "https://sosmt.gov/elections/",
+    "source_name": "Montana Secretary of State - Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Montana have Automatic Voter Registration (AVR) or Online Voter Registration (OVR)?",
+    "question_variants": [
+      "Is registration automatic at the Montana MVD?",
+      "Can I register to vote online in MT?",
+      "MT motor voter automatic registration"
+    ],
+    "answer": "No. Montana does not have Automatic Voter Registration (AVR) at the DMV, nor does it offer Online Voter Registration (OVR). Eligible citizens must submit a paper voter registration application by mail, in person, or via a voter registration drive.",
+    "source_url": "https://sosmt.gov/elections/vote/",
+    "source_name": "Montana Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Montana maintain its voter registration lists?",
+    "question_variants": [
+      "MT voter list maintenance rules",
+      "How are inactive voters handled in Montana?",
+      "Montana voter roll cleaning process"
+    ],
+    "answer": "Montana conducts routine voter list maintenance using National Change of Address (NCOA) data. Voters whose mail is returned undeliverable or who fail to vote in two consecutive federal general elections are placed on an 'inactive' list and ultimately canceled if they do not respond to confirmation notices.",
+    "source_url": "https://sosmt.gov/elections/",
+    "source_name": "Montana Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Montana voter file?",
+    "question_variants": [
+      "Montana voter database access",
+      "How to get the voter list in MT",
+      "Cost of voter registration data Montana SCORE"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide or county voter registration file (from the SCORE database) through the Secretary of State or local county clerks. The file includes names, addresses, and voting history, but commercial use is strictly prohibited.",
+    "source_url": "https://sosmt.gov/elections/data/",
+    "source_name": "Montana Secretary of State - Election Data",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "MT",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Montana, and why does it matter for campaigns?",
+    "question_variants": [
+      "Montana county election administration",
+      "How many county clerks in MT?",
+      "Local election control Montana"
+    ],
+    "answer": "Montana has 56 counties. This is operationally critical for campaigns because elections are decentralized; county election administrators manage absentee ballot processing, early voting logistics, and polling place operations within their respective jurisdictions.",
+    "source_url": "https://sosmt.gov/elections/officials/",
+    "source_name": "Montana Secretary of State - Election Officials",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Montana have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the MT primary?",
+      "Montana sore loser statute",
+      "General election ballot access after primary defeat MT"
+    ],
+    "answer": "Yes. Under MCA 13-10-505, a candidate whose name appeared on the primary election ballot for a political party and who was defeated in that primary is prohibited from running as an independent candidate for the same office in the subsequent general election.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0130/chapter_0100/part_0050/section_0050/0130-0100-0050-0050.html",
+    "source_name": "MCA 13-10-505",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold for a political party to be recognized as a 'major party' in Montana?",
+    "question_variants": [
+      "Major vs minor party Montana",
+      "Montana political party recognition threshold",
+      "How many major parties in MT?"
+    ],
+    "answer": "In Montana, a political party maintains recognized ballot status if its candidate for Governor or President received at least 5% of the total votes cast for that office in either of the last two general elections.",
+    "source_url": "https://sosmt.gov/elections/",
+    "source_name": "Montana Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Political parties"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Montana use runoff elections for close races?",
+    "question_variants": [
+      "Are there runoffs in Montana primaries?",
+      "How are tied elections decided in Montana?",
+      "Tie-breaker rules Montana elections"
+    ],
+    "answer": "No. Montana does not hold runoff elections for state or federal offices. Elections are decided by a plurality of the vote. In the rare event of an exact tie, the winner is determined by drawing lots (e.g., a coin toss) administered by the election official.",
+    "source_url": "https://sosmt.gov/elections/",
+    "source_name": "Montana Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Montana?",
+    "question_variants": [
+      "Does Montana use ranked choice voting?",
+      "RCV status in Montana 2026",
+      "Instant runoff voting MT"
+    ],
+    "answer": "No. Ranked Choice Voting is not used in Montana. In 2023, the Montana legislature explicitly passed HB 598, which bans the use of ranked choice voting in all local, state, and federal elections across the state.",
+    "source_url": "https://leg.mt.gov/bills/2023/billpdf/HB0598.pdf",
+    "source_name": "Montana Legislature - HB 598 (2023)",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Montana campaign materials?",
+    "question_variants": [
+      "Montana 'Paid for by' rules",
+      "Campaign ad disclaimer requirements MT",
+      "Political taglines Montana COPP"
+    ],
+    "answer": "Under COPP rules, all campaign advertising (print, digital, and broadcast) must clearly state 'Paid for by' followed by the name and address of the candidate, committee, or individual sponsoring the material. If it is a PAC, the treasurer's name must also be included.",
+    "source_url": "https://politicalpractices.mt.gov/Home/Campaign-Finance-and-Practices/Expenditures-Paid-Communications",
+    "source_name": "Montana COPP - Paid Communications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Montana?",
+    "question_variants": [
+      "MT campaign coordination rules",
+      "When is a PAC expenditure not independent in Montana?",
+      "Prohibition on candidate-PAC coordination MT"
+    ],
+    "answer": "An expenditure is 'coordinated' (and thus treated as an in-kind contribution subject to limits) if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their agent. Independent expenditures must remain entirely separate from the candidate's campaign.",
+    "source_url": "https://politicalpractices.mt.gov/",
+    "source_name": "Montana Commissioner of Political Practices",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Montana?",
+    "question_variants": [
+      "MT COPP late fee",
+      "Penalty for missing a Montana campaign finance deadline",
+      "COPP fine for late filing MT"
+    ],
+    "answer": "The Commissioner of Political Practices (COPP) enforces reporting deadlines. Under MCA 13-37-130, a candidate or committee that files a late CERS report is subject to a mandatory fine of $50 per day for each day the report is late.",
+    "source_url": "https://politicalpractices.mt.gov/",
+    "source_name": "MCA 13-37-130",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Montana campaign committee terminate and dispose of unexpended funds?",
+    "question_variants": [
+      "Closing a Montana campaign committee",
+      "CERS committee termination requirements",
+      "What can I do with leftover campaign money in MT?"
+    ],
+    "answer": "A committee may terminate by filing a closing report in CERS once it achieves a zero balance and resolves all debts. Unexpended funds may be donated to charity, transferred to a political party, returned to donors pro-rata, or retained for a future campaign. Personal use is strictly prohibited.",
+    "source_url": "https://politicalpractices.mt.gov/",
+    "source_name": "Montana COPP",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Montana?",
+    "question_variants": [
+      "MT independent expenditure reporting CERS",
+      "Disclosure for MT independent expenditure groups",
+      "Reporting thresholds for outside spending Montana"
+    ],
+    "answer": "Any person or committee making an independent expenditure to advocate for or against a candidate must report it to the COPP. Standard reporting follows the CERS calendar, but independent expenditures made within the rapid disclosure window (close to the election) must be reported within 2 business days.",
+    "source_url": "https://politicalpractices.mt.gov/",
+    "source_name": "Montana COPP",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Montana?",
+    "question_variants": [
+      "Montana in-kind contribution valuation rules",
+      "Reporting non-monetary donations Montana campaign",
+      "Fair market value for in-kind gifts MT"
+    ],
+    "answer": "In-kind contributions (donated goods or services) must be reported on CERS at their fair market value—the price the campaign would have paid on the open market. They count against the donor's per-election contribution limit just like monetary cash gifts.",
+    "source_url": "https://politicalpractices.mt.gov/",
+    "source_name": "Montana COPP",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Montana?",
+    "question_variants": [
+      "Montana candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in MT?",
+      "Reporting candidate loans in CERS"
+    ],
+    "answer": "Under Montana law, a candidate may loan an unlimited amount of their own personal funds to their campaign. While contributions from third parties are strictly capped, self-funding is exempt. The loan must be properly reported in CERS and can be repaid from future contributions.",
+    "source_url": "https://politicalpractices.mt.gov/",
+    "source_name": "Montana COPP",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "How does Montana's biennial legislative session affect campaign finance reporting?",
+    "question_variants": [
+      "Can Montana legislators raise money during session?",
+      "Lobbyist contribution ban MT legislature",
+      "Does the session freeze apply in 2026?"
+    ],
+    "answer": "Montana's legislature only meets in odd-numbered years. Therefore, the 'session freeze'—which bans lobbyists from making contributions to state legislators during the session—only applies during odd years and does not disrupt standard fundraising during even-numbered election years like 2026.",
+    "source_url": "https://leg.mt.gov/bills/mca/title_0050/chapter_0070/part_0030/section_0100/0050-0070-0030-0110.html",
+    "source_name": "MCA 5-7-310",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislative candidates and Lobbyists"
+  },
+  {
+    "state": "MT",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Montana?",
+    "question_variants": [
+      "When are county sheriffs elected in MT?",
+      "Montana county official term lengths",
+      "Are county treasurers on the 2026 ballot?"
+    ],
+    "answer": "Most elected county officials in Montana—including County Commissioners, Sheriffs, Assessors, and Treasurers—serve four-year terms. The vast majority of these offices are elected during the midterm election cycle, meaning they will be on the 2026 ballot.",
+    "source_url": "https://sosmt.gov/elections/",
+    "source_name": "Montana Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Montana elections?",
+    "question_variants": [
+      "When are Montana election results official?",
+      "MT certification deadline",
+      "State Board of Canvassers meeting Montana"
+    ],
+    "answer": "County canvassing boards must meet to certify local results within 14 days after the election. The state Board of Canvassers must then meet within 27 days after the election to officially certify statewide and federal election results.",
+    "source_url": "https://sosmt.gov/elections/",
+    "source_name": "Montana Secretary of State - Canvass",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "MT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for Montana's biennial legislative sessions?",
+    "question_variants": [
+      "When does the MT legislature meet?",
+      "Montana 90 day legislative session",
+      "Is the Montana legislature full time?"
+    ],
+    "answer": "The Montana Legislature meets biennially. Regular sessions convene in January of odd-numbered years and are strictly limited by the state constitution to 90 legislative days. There is no regularly scheduled legislative session during even-numbered election years like 2026.",
+    "source_url": "https://leg.mt.gov/",
+    "source_name": "Montana Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Montana?",
+    "question_variants": [
+      "Montana special election timeline",
+      "Who calls a special election to fill a US House vacancy in MT?",
+      "Filling a midterm vacancy Montana"
+    ],
+    "answer": "Special elections to fill federal vacancies (such as for the U.S. House) are called by a writ of election issued by the Governor. Under state law, the special election must typically be held no less than 85 days and no more than 100 days after the writ is issued.",
+    "source_url": "https://sosmt.gov/elections/",
+    "source_name": "Montana Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "MT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What are the polling hours on Election Day in Montana?",
+    "question_variants": [
+      "When do polls open in MT?",
+      "MT polling place hours",
+      "What time do polls close in Montana?"
+    ],
+    "answer": "Polling places in Montana generally open at 7:00 a.m. and close at 8:00 p.m. on Election Day. However, state law permits smaller precincts with fewer than 400 registered voters to open as late as noon, provided they remain open until 8:00 p.m.",
+    "source_url": "https://sosmt.gov/elections/",
+    "source_name": "Montana Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  }
+]
