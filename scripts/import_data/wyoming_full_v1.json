@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Wyoming have an open or closed primary?",
+    "question_variants": [
+      "Wyoming closed primary rules",
+      "Do I have to register with a party to vote in the WY primary?",
+      "Can unaffiliated voters participate in the Wyoming primary?"
+    ],
+    "answer": "Wyoming has a closed primary system. Under W.S. 22-5-212, voters must be registered with a political party to vote in that party's primary. Voters who wish to change their party affiliation must do so no later than 96 days before the primary election. For the August 18, 2026 primary, the strict affiliation change deadline is May 13, 2026.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State - Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold to be a recognized major or minor party in Wyoming?",
+    "question_variants": [
+      "Major vs minor party Wyoming",
+      "Wyoming political party recognition threshold",
+      "How many major parties in WY?"
+    ],
+    "answer": "Under W.S. 22-1-102, a 'Major party' is one whose candidate for U.S. House, Governor, or Secretary of State received at least 10% of the total votes cast for that office in the last general election. A 'Minor party' must have received between 2% and 10%. A 'Provisional party' receives under 2% but filed a valid petition. Minor and provisional parties nominate candidates by convention, not via the state primary.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/PoliticalParties.pdf",
+    "source_name": "W.S. 22-1-102",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Political parties"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for Wyoming in 2026?",
+    "question_variants": [
+      "When do candidates file for office in Wyoming?",
+      "Wyoming filing week dates 2026",
+      "May filing deadline WY"
+    ],
+    "answer": "For major party candidates seeking nomination in the 2026 primary, the filing period runs from May 14 to May 29, 2026. Candidates must file an application for nomination and pay the required filing fee (e.g., $750 for federal, $300 for statewide, $100 for legislative) with the Secretary of State or County Clerk by 5:00 p.m. on May 29.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "Can a candidate file by petition to waive the filing fee in Wyoming?",
+    "question_variants": [
+      "Wyoming filing fee waiver petition",
+      "Petition in lieu of filing fee WY",
+      "Does Wyoming allow you to bypass the filing fee?"
+    ],
+    "answer": "No. Wyoming law requires all major party candidates to pay the statutory filing fee (W.S. 22-5-208) when submitting their application for nomination. There is no standard 'petition in lieu of filing fee' option to access the major party primary ballot in Wyoming.",
+    "source_url": "https://sos.wyo.gov/Elections/CandidateFiling.aspx",
+    "source_name": "Wyoming Secretary of State - Candidate Filing",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "How do independent candidates access the general election ballot in Wyoming?",
+    "question_variants": [
+      "Independent candidate petition threshold Wyoming",
+      "Wyoming non-party candidate petition deadline",
+      "How to run for office without a party in WY"
+    ],
+    "answer": "Independent candidates must file a petition for nomination by the day before the primary election (August 17, 2026). Under W.S. 22-5-304, the petition must contain signatures from registered voters equal to at least 2% of the total number of votes cast for the office of U.S. Representative in the last general election in the applicable district or state.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/Independent_Candidates.pdf",
+    "source_name": "W.S. 22-5-304",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What are the rules for write-in candidates in Wyoming?",
+    "question_variants": [
+      "Do write-in votes count in WY?",
+      "Wyoming write-in candidate registration",
+      "Declaration of intent write-in Wyoming"
+    ],
+    "answer": "A write-in candidate can win a partisan primary if they receive at least 25 write-in votes and the write-in votes equal at least the number of signatures that would have been required on a petition for that office. The winning write-in candidate must accept the nomination and pay the standard filing fee within 5 days of certification to appear on the general election ballot.",
+    "source_url": "https://sos.wyo.gov/Elections/CandidateFiling.aspx",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Wyoming have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the WY primary?",
+      "Wyoming sore loser statute",
+      "General election ballot access after primary defeat WY"
+    ],
+    "answer": "Yes. Under W.S. 22-5-301, a candidate who ran unsuccessfully for a major party's nomination in the primary election is prohibited from running as an independent candidate for the same office in the subsequent general election.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/Independent_Candidates.pdf",
+    "source_name": "W.S. 22-5-301",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Wyoming for 2026?",
+    "question_variants": [
+      "Wyoming primary date 2026",
+      "When is Election Day 2026 in Wyoming?",
+      "August primary Wyoming"
+    ],
+    "answer": "The Wyoming primary election will be held on Tuesday, August 18, 2026 (the third Tuesday in August per W.S. 22-2-104), making it the latest primary election in the cycle. The general election will be held on Tuesday, November 3, 2026.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State - Election Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Mark Gordon running for re-election in 2026?",
+    "question_variants": [
+      "Wyoming Governor election 2026",
+      "Who is running for WY Governor in 2026?",
+      "NM gubernatorial term limits"
+    ],
+    "answer": "No. Governor Mark Gordon (R) is term-limited and cannot run in 2026, leaving an open seat. The Wyoming Constitution (Article 4, Section 1) restricts the Governor to serving no more than 8 years in any 16-year period.",
+    "source_url": "https://ballotpedia.org/Governor_of_Wyoming",
+    "source_name": "Wyoming Constitution Article 4, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Wyoming in 2026?",
+    "question_variants": [
+      "Is Cynthia Lummis up for re-election in 2026?",
+      "When is John Barrasso's next election?",
+      "Wyoming US Senate cycle 2026"
+    ],
+    "answer": "The Class 3 U.S. Senate seat currently held by Cynthia Lummis (R) is up for election in 2026. Senator John Barrasso (R) holds the Class 2 seat, was re-elected in 2024, and will not be on the ballot again until 2030.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Wyoming for the 2026 election?",
+    "question_variants": [
+      "Wyoming congressional apportionment",
+      "Are all WY congressional seats up in 2026?",
+      "Number of US Representatives from Wyoming"
+    ],
+    "answer": "Wyoming has exactly one at-large U.S. House district representing the entire state, due to its small population. This single seat will be up for election in 2026.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Wyoming state legislature seats are on the 2026 ballot?",
+    "question_variants": [
+      "Are all Wyoming House seats up in 2026?",
+      "Wyoming Senate election cycle 2026",
+      "Which legislative districts are on the ballot in WY?"
+    ],
+    "answer": "Following 2022 redistricting (HB 100), Wyoming has 62 House seats and 31 Senate seats. All 62 House members (2-year terms) are up for election in 2026. In the Senate (4-year terms), the 16 odd-numbered districts are on the 2026 ballot, along with any necessary special elections for vacancies in even-numbered districts.",
+    "source_url": "https://wyoleg.gov/Legislation/2022/HB0100",
+    "source_name": "Wyoming Legislature - HB 100",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Wyoming in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "WY statewide election list 2026",
+      "When is the next Secretary of State election in WY?"
+    ],
+    "answer": "In addition to the Governor, the offices of Secretary of State, State Auditor, State Treasurer, and Superintendent of Public Instruction are all on the 2026 ballot. They serve four-year terms on the midterm cycle.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "Which Wyoming Supreme Court seats are on the 2026 ballot?",
+    "question_variants": [
+      "Wyoming Supreme Court election 2026",
+      "Are WY judges elected?",
+      "Next nonpartisan judicial election WY"
+    ],
+    "answer": "Wyoming Supreme Court Justices do not run in contested elections. Instead, after being appointed by the Governor, they stand for nonpartisan 'Yes/No' retention elections. In 2026, the seat currently held by Justice Robert Jarosh (and any others concluding their terms) will appear on the general election ballot for a retention vote.",
+    "source_url": "https://www.wyocourts.gov/supreme-court/",
+    "source_name": "Wyoming Judicial Branch",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for Wyoming's part-time legislative sessions?",
+    "question_variants": [
+      "When does the WY legislature meet?",
+      "Wyoming 20 day vs 40 day legislative session",
+      "Is the Wyoming legislature full time?"
+    ],
+    "answer": "The Wyoming Legislature meets for a maximum of 40 legislative days in odd-numbered years for a General Session. In even-numbered years (like 2026), they meet for a shorter 20-day Budget Session focused primarily on the state budget, requiring a two-thirds vote to introduce non-budget bills.",
+    "source_url": "https://wyoleg.gov/",
+    "source_name": "Wyoming Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Wyoming?",
+    "question_variants": [
+      "Age and residency for Wyoming Governor",
+      "Wyoming Constitution Article 4 Section 2 Governor qualifications",
+      "Who is eligible to be Governor of Wyoming?"
+    ],
+    "answer": "Under Article 4, Section 2 of the Wyoming Constitution, a candidate for Governor must be a citizen of the United States, at least 30 years old, and a resident of Wyoming for at least five years preceding the election.",
+    "source_url": "https://ballotpedia.org/Governor_of_Wyoming",
+    "source_name": "Wyoming Constitution Article 4, Section 2",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Wyoming State Legislature?",
+    "question_variants": [
+      "Qualifications for WY State Representative",
+      "Residency requirement Wyoming State Senate",
+      "Do I have to live in my district to run in WY?"
+    ],
+    "answer": "Under Article 3, Section 2 of the Wyoming Constitution, a candidate for State Senate must be at least 25 years old, and a candidate for State House must be at least 21 years old. Both must be U.S. citizens and must have resided in the county or district they wish to represent for at least 12 months next preceding their election.",
+    "source_url": "https://sos.wyo.gov/Elections/CandidateFiling.aspx",
+    "source_name": "Wyoming Constitution Article 3, Section 2",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Wyoming?",
+    "question_variants": [
+      "US Senate residency requirements Wyoming",
+      "Age to run for Congress in Wyoming",
+      "Federal constitutional requirements for WY candidates"
+    ],
+    "answer": "Federal candidates must meet U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://sos.wyo.gov/Elections/CandidateFiling.aspx",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the Wyoming Attorney General an elected office?",
+    "question_variants": [
+      "Running for WY Attorney General",
+      "Who elects the Attorney General in Wyoming?",
+      "Legal requirements for Wyoming Attorney General"
+    ],
+    "answer": "No. Unlike most states, the Wyoming Attorney General is not elected by the voters. Under W.S. 9-1-601, the Attorney General is appointed by the Governor, with the advice and consent of the State Senate, and serves at the pleasure of the Governor.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "W.S. 9-1-601",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "Are District Court judges elected or appointed in Wyoming?",
+    "question_variants": [
+      "Wyoming District Court judge eligibility",
+      "Do judges run for election in WY?",
+      "Qualifications to run for judge in Wyoming"
+    ],
+    "answer": "District Court judges in Wyoming are appointed by the Governor from a list of nominees provided by the Judicial Nominating Commission. After serving at least one year, they stand for a nonpartisan retention election. If retained, they serve six-year terms.",
+    "source_url": "https://www.wyocourts.gov/",
+    "source_name": "Wyoming Judicial Branch",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for County Commissioner in Wyoming?",
+    "question_variants": [
+      "Qualifications for Wyoming County Commissioner",
+      "Can I run for county board in WY?",
+      "Residency rules for Wyoming commissioners"
+    ],
+    "answer": "To serve as a County Commissioner, a candidate must be a qualified elector (registered voter) and a resident of the county they seek to represent. They must reside in the county throughout their four-year term per W.S. 18-3-501.",
+    "source_url": "https://sos.wyo.gov/Elections/CandidateFiling.aspx",
+    "source_name": "W.S. 18-3-501",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "County candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for Wyoming's statewide executive officers?",
+    "question_variants": [
+      "Statewide executive term limits Wyoming",
+      "How many terms can a WY Treasurer serve?",
+      "Wyoming term limit laws"
+    ],
+    "answer": "Under Article 4, Section 1 of the Wyoming Constitution, the Governor is limited to serving 8 years in any 16-year period. However, a 2004 Wyoming Supreme Court ruling struck down statutory term limits, meaning other statewide executive offices—such as State Treasurer, Auditor, Secretary of State, and Superintendent—currently face no term limits.",
+    "source_url": "https://ballotpedia.org/Governor_of_Wyoming",
+    "source_name": "Wyoming Constitution Article 4, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Wyoming have legislative term limits?",
+    "question_variants": [
+      "How many terms can a Wyoming state senator serve?",
+      "Are there term limits for the Wyoming House?",
+      "Wyoming legislature 8 in 16 term limit"
+    ],
+    "answer": "No. Wyoming currently has no term limits for state legislators. While voters passed a ballot initiative in 1992 enacting term limits, the Wyoming Supreme Court struck them down in 2004, ruling that establishing term limits requires a constitutional amendment, not just a statutory change.",
+    "source_url": "https://www.ncsl.org/about-state-legislatures/legislative-term-limits-an-overview",
+    "source_name": "National Conference of State Legislatures - Term Limits Overview",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Wyoming a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Wyoming?",
+      "Wyoming vote-by-mail system",
+      "Are there traditional polling places in WY?"
+    ],
+    "answer": "No. Wyoming is not a universal mail-out state. While some jurisdictions may use mail ballots for specific local elections, the primary method for statewide and federal elections is in-person voting. Voters who wish to vote by mail must request an absentee ballot from their county clerk.",
+    "source_url": "https://sos.wyo.gov/Elections/State/RegisteringToVote.aspx",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to request and return an absentee ballot in Wyoming?",
+    "question_variants": [
+      "When is the last day to ask for a mail ballot in WY?",
+      "Absentee ballot application deadline Wyoming",
+      "How many days before the election must I request an absentee ballot in WY?"
+    ],
+    "answer": "Any registered voter may request an absentee ballot without providing an excuse. The request must be made no later than the day before the election (August 17, 2026, for the primary). To be counted, the completed absentee ballot must be received in the county clerk's office by 7:00 p.m. on Election Day.",
+    "source_url": "https://sos.wyo.gov/Elections/State/AbsenteeVoting.aspx",
+    "source_name": "Wyoming Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Wyoming offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in WY",
+      "WY voter registration cutoff",
+      "Can I register to vote on Election Day in Wyoming?"
+    ],
+    "answer": "The deadline to register to vote by mail or standard advance in-person registration is 14 days before an election (August 3, 2026, for the primary). However, Wyoming allows same-day registration; eligible voters may register to vote and cast a ballot in person at their polling place on Election Day.",
+    "source_url": "https://sos.wyo.gov/Elections/State/RegisteringToVote.aspx",
+    "source_name": "Wyoming Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Wyoming?",
+    "question_variants": [
+      "Wyoming voter ID requirements",
+      "Do I need my driver's license to vote in WY?",
+      "Safe voting photo ID Wyoming"
+    ],
+    "answer": "Yes. Under a law enacted in 2021 (W.S. 22-1-102), Wyoming voters must present a valid, acceptable photo ID (such as a Wyoming driver's license, tribal ID, U.S. passport, or military ID) to vote in person at a polling place.",
+    "source_url": "https://sos.wyo.gov/Elections/State/VoterID.aspx",
+    "source_name": "Wyoming Secretary of State - Voter ID",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Wyoming?",
+    "question_variants": [
+      "How close can I campaign to a polling place in WY?",
+      "Buffer zone around voting centers Wyoming",
+      "WY electioneering rules"
+    ],
+    "answer": "Under W.S. 22-26-113, electioneering—which includes distributing campaign literature, wearing campaign apparel, or soliciting votes—is strictly prohibited within 100 yards (300 feet) of the building in which a polling place is located.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "W.S. 22-26-113",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Wyoming?",
+    "question_variants": [
+      "Can felons vote in Wyoming state?",
+      "Felony voting rights restoration WY",
+      "Voting on parole in Wyoming"
+    ],
+    "answer": "Under W.S. 7-13-105, a person convicted of a non-violent felony automatically has their voting rights restored upon completion of their entire sentence, including probation and parole. Those convicted of violent felonies must individually petition the Governor for a restoration of rights.",
+    "source_url": "https://sos.wyo.gov/Elections/State/RegisteringToVote.aspx",
+    "source_name": "W.S. 7-13-105",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Wyoming voter registration list?",
+    "question_variants": [
+      "Wyoming voter database access",
+      "How to get the voter list in WY",
+      "Cost of voter registration data Wyoming"
+    ],
+    "answer": "Campaigns and political committees can request the voter registration list from the Wyoming Secretary of State. The list contains names, addresses, and party affiliations, and is provided for political purposes only. It is typically distributed electronically upon payment of a fee.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "WY",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Wyoming, and why does it matter for campaigns?",
+    "question_variants": [
+      "Wyoming county election administration",
+      "How many county clerks in WY?",
+      "Local election control Wyoming"
+    ],
+    "answer": "Wyoming has 23 counties. This is operationally critical for campaigns because elections are decentralized; county clerks manage absentee ballot processing, early voting logistics, and polling place operations within their respective jurisdictions.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual contribution limits for Wyoming candidates in 2026?",
+    "question_variants": [
+      "How much can an individual donate to a WY Governor candidate?",
+      "Current campaign contribution limits for state legislature in WY",
+      "Wyoming individual donation caps 2026 election"
+    ],
+    "answer": "Contrary to common belief, Wyoming DOES have individual contribution limits. For the 2026 election cycle, an individual may contribute up to $2,500 per election to a statewide candidate, and up to $1,500 per election to a State Senate or State House candidate. Primary and general elections are treated as separate elections.",
+    "source_url": "https://www.wycampaignfinance.gov/WYCFWebApplication/Docs/WY%20HTML%20FILES/FILER%20HTML/filer_manage_contributions.html",
+    "source_name": "Wyoming Campaign Finance limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Wyoming?",
+    "question_variants": [
+      "WY PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Wyoming",
+      "Maximum PAC gift to state legislator WY"
+    ],
+    "answer": "Political Action Committees (PACs) in Wyoming have varying limits depending on the office. A PAC may contribute an UNLIMITED amount to a statewide candidate per election. However, a PAC is limited to contributing a maximum of $5,000 per election to a State Senate or State House candidate.",
+    "source_url": "https://www.wycampaignfinance.gov/WYCFWebApplication/Docs/WY%20HTML%20FILES/FILER%20HTML/filer_manage_contributions.html",
+    "source_name": "Wyoming Campaign Finance limits",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and PACs"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Wyoming campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Wyoming state",
+      "Can a business donate to my campaign in WY?",
+      "Corporate campaign finance rules Wyoming"
+    ],
+    "answer": "No. Under W.S. 22-25-102, direct contributions from the treasury of any corporation, partnership, or labor union to a candidate's campaign committee or a political party are strictly prohibited in Wyoming.",
+    "source_url": "https://www.wycampaignfinance.gov/WYCFWebApplication/Docs/WY%20HTML%20FILES/FILER%20HTML/filer_manage_contributions.html",
+    "source_name": "W.S. 22-25-102",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Wyoming?",
+    "question_variants": [
+      "Where do I file campaign finance reports in WY?",
+      "What is the Wyoming CFIS?",
+      "Does the WY Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance reporting in Wyoming is administered by the Secretary of State's office through the Wyoming Campaign Finance Information System (WYCFIS). All candidates for state, legislative, and statewide judicial offices must electronically file their reports via this portal.",
+    "source_url": "https://www.wycampaignfinance.gov/",
+    "source_name": "Wyoming Secretary of State - WYCFIS",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the threshold for itemizing campaign contributions in Wyoming?",
+    "question_variants": [
+      "When do I have to list a donor's name in Wyoming?",
+      "Itemization threshold campaign finance WY",
+      "Small donation reporting rules Wyoming"
+    ],
+    "answer": "Under W.S. 22-25-106, candidates must itemize any contribution (including the donor's name, address, and date) that exceeds $100. Contributions of $100 or less may be reported in the aggregate as unitemized contributions.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/WY_Campaign_Finance_Guide.pdf",
+    "source_name": "W.S. 22-25-106",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Wyoming candidates?",
+    "question_variants": [
+      "WY campaign finance filing dates",
+      "When are WYCFIS reports due for Wyoming primary?",
+      "Wyoming pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates must file an itemized statement of contributions and expenditures at least 7 days, but not more than 14 days, before any primary or general election. Additionally, any contribution received or expenditure made after this report through the date of the election must be reported as an amendment within 10 days after the election.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/WY_Campaign_Finance_Guide.pdf",
+    "source_name": "Wyoming Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Wyoming provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Wyoming Governor",
+      "State funded campaigns Wyoming status",
+      "Government campaign grants Wyoming"
+    ],
+    "answer": "No. Wyoming does not have a system of public financing or matching funds for political campaigns. All candidates must fund their campaigns through private contributions from individuals, PACs, and political parties within the statutory limits.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who is responsible for drawing Wyoming's legislative and congressional maps?",
+    "question_variants": [
+      "Does Wyoming use an independent redistricting commission?",
+      "Who has the authority to draw district lines in Wyoming?",
+      "Redistricting process Wyoming"
+    ],
+    "answer": "In Wyoming, the state legislature has the exclusive authority to draw state legislative district maps. Because Wyoming only has one at-large congressional district, there is no congressional redistricting required. Maps are passed as standard legislation and are subject to the Governor's veto.",
+    "source_url": "https://wyoleg.gov/Committees/2021/J10",
+    "source_name": "Wyoming Legislature - Joint Corporations, Elections & Political Subdivisions Committee",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Wyoming?",
+    "question_variants": [
+      "Standards for drawing Wyoming district lines",
+      "Wyoming redistricting principles",
+      "Are county lines preserved in WY redistricting?"
+    ],
+    "answer": "Under Wyoming law and legislative committee principles, districts must achieve population equality, be contiguous and compact, and preserve existing political subdivision boundaries (like county lines) and communities of interest as much as reasonably possible.",
+    "source_url": "https://wyoleg.gov/Committees/2021/J10",
+    "source_name": "Wyoming Legislature - Redistricting Principles",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Did Wyoming add legislative seats in its current district maps?",
+    "question_variants": [
+      "HB 100 Wyoming redistricting 2022",
+      "How many state senators does Wyoming have?",
+      "Are the current Wyoming maps operative for 2026?"
+    ],
+    "answer": "Yes. Following the 2020 census, the legislature passed HB 100 (2022), which expanded the legislature from 60 House seats to 62 House seats, and from 30 Senate seats to 31 Senate seats. These maps are fully operative for the 2026 election cycle and currently face no systemic legal challenges.",
+    "source_url": "https://wyoleg.gov/Legislation/2022/HB0100",
+    "source_name": "Wyoming Legislature - HB 100",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Wyoming have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Wyoming be recalled?",
+      "How to recall a state senator in WY",
+      "Statewide recall election rules New Mexico"
+    ],
+    "answer": "No. Wyoming law does not provide a recall mechanism for statewide executive officers or state legislators. Recall procedures in Wyoming are extremely limited and do not apply to state-level offices.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Wyoming",
+    "source_name": "Laws governing recall in Wyoming",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Wyoming?",
+    "question_variants": [
+      "Wyoming county commissioner recall rules",
+      "Signature requirement local recall Wyoming",
+      "Recalling a mayor in WY"
+    ],
+    "answer": "Wyoming does not generally permit the recall of county officials. Recall is statutorily restricted almost exclusively to municipal officials in cities operating under a commission form of government, making it one of the most restrictive recall states in the country.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Wyoming",
+    "source_name": "Laws governing recall in Wyoming",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the signature thresholds for a citizen initiative in Wyoming?",
+    "question_variants": [
+      "How to get an initiative on the WY ballot",
+      "Wyoming citizen initiative signature requirements",
+      "Geographic distribution rule for WY initiatives"
+    ],
+    "answer": "Wyoming has one of the strictest initiative thresholds in the nation. Proponents must gather valid signatures equal to 15% of the total ballots cast in the previous general election. Furthermore, a strict geographic distribution is required: signatures must meet the 15% threshold in at least two-thirds (16) of Wyoming's 23 counties.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/2024/Signature_requirement_2025-26.pdf",
+    "source_name": "Wyoming Secretary of State - Signature Requirements",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the 2026 Wyoming property tax limit initiative?",
+    "question_variants": [
+      "Wyoming Property Tax Exemption Initiative 2026",
+      "What is the homeowner property tax measure on the WY ballot?",
+      "25% property tax cut Wyoming ballot measure"
+    ],
+    "answer": "The 'People's Initiative to Limit Property Tax in Wyoming through a Homeowner's Property Exemption' officially qualified for the 2026 ballot after gathering over 30,000 valid signatures. It is the first citizen initiative to make the Wyoming ballot in nearly 30 years. If passed, it would exempt 25% of the first $1,000,000 of fair market value of primary residential properties from property taxes.",
+    "source_url": "https://sos.wyo.gov/Elections/Initiatives.aspx",
+    "source_name": "Wyoming Secretary of State - Initiatives",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees and Voters"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold and process for a veto referendum in Wyoming?",
+    "question_variants": [
+      "How to refer a WY bill to the ballot",
+      "Wyoming citizen referendum rules",
+      "Veto referendum signature threshold Wyoming state"
+    ],
+    "answer": "Citizens can refer a legislative act to the ballot via a veto referendum. Like an initiative, it requires signatures equal to 15% of the total ballots cast in the last general election, distributed across at least 16 counties. Signatures must be submitted within 90 days after the adjournment of the legislative session in which the bill was passed.",
+    "source_url": "https://sos.wyo.gov/Elections/Initiatives.aspx",
+    "source_name": "Wyoming Secretary of State - Initiatives & Referenda",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Wyoming legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Wyoming",
+      "Referendum by legislature WY",
+      "Can the WY legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The Wyoming Legislature can refer a proposed constitutional amendment to the voters by passing a joint resolution with a two-thirds supermajority vote of all elected members in both the House and the Senate. The Governor's signature is not required.",
+    "source_url": "https://ballotpedia.org/Amending_the_Wyoming_Constitution",
+    "source_name": "Wyoming Constitution Article 20, Section 1",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Wyoming?",
+    "question_variants": [
+      "Wyoming ballot measure pass threshold",
+      "Quorum rule Wyoming initiatives",
+      "Why is it hard to pass a ballot measure in WY?"
+    ],
+    "answer": "Wyoming utilizes a strict 'quorum rule' for citizen initiatives and constitutional amendments. To pass, a measure must receive a majority of 'Yes' votes out of the total number of ballots cast in the entire election. This means a voter who casts a ballot for Governor but leaves the initiative question blank is effectively counted as a 'No' vote against the measure.",
+    "source_url": "https://sos.wyo.gov/Elections/Initiatives.aspx",
+    "source_name": "Wyoming Secretary of State - Initiatives",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Wyoming?",
+    "question_variants": [
+      "Requirements to run for WY Secretary of State",
+      "Who can run for Secretary of State in WY?",
+      "Professional requirements for WY SOS"
+    ],
+    "answer": "Under Article 4, Section 11 of the Wyoming Constitution, candidates for Secretary of State must be at least 25 years old, a citizen of the United States, and a qualified elector (registered voter) of Wyoming. There are no professional degree requirements.",
+    "source_url": "https://sos.wyo.gov/Elections/CandidateFiling.aspx",
+    "source_name": "Wyoming Constitution Article 4, Section 11",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for State Treasurer or State Auditor in Wyoming?",
+    "question_variants": [
+      "Eligibility for Wyoming State Treasurer",
+      "Who can run for State Auditor in WY?",
+      "Qualifications for WY financial officers"
+    ],
+    "answer": "Candidates for State Treasurer and State Auditor share the same constitutional requirements as the Secretary of State: they must be at least 25 years old, U.S. citizens, and qualified electors of Wyoming. No specific financial or CPA certifications are constitutionally mandated.",
+    "source_url": "https://sos.wyo.gov/Elections/CandidateFiling.aspx",
+    "source_name": "Wyoming Constitution Article 4, Section 11",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the Wyoming Superintendent of Public Instruction elected, and what are the qualifications?",
+    "question_variants": [
+      "Running for WY Superintendent of Schools",
+      "Who elects the Superintendent of Public Instruction in Wyoming?",
+      "Department of Education leadership WY"
+    ],
+    "answer": "Yes, the Superintendent of Public Instruction is one of five statewide elected executives in Wyoming. Under W.S. 22-5-204, candidates must be at least 25 years old, a U.S. citizen, and a registered voter. Statutory law also specifies they must possess academic and professional education equivalent to graduation from a standard university or college.",
+    "source_url": "https://sos.wyo.gov/Elections/CandidateFiling.aspx",
+    "source_name": "Wyoming Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Wyoming?",
+    "question_variants": [
+      "Run for school board Wyoming requirements",
+      "Who can be a school trustee in WY?",
+      "School board residency rules Wyoming"
+    ],
+    "answer": "To run for a local school district board of trustees in Wyoming, a candidate must be a qualified elector (registered voter) and a resident of the specific school district they seek to represent at the time of the election.",
+    "source_url": "https://sos.wyo.gov/Elections/CandidateFiling.aspx",
+    "source_name": "Wyoming Secretary of State - Local Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Wyoming?",
+    "question_variants": [
+      "How to fix a rejected signature in WY",
+      "Wyoming ballot cure process",
+      "Missing signature on WY mail ballot"
+    ],
+    "answer": "Wyoming is one of the few states that does not have a statutory absentee ballot signature curing process. If an absentee ballot envelope is missing a signature or is otherwise defective, election officials are not required to provide the voter an opportunity to 'cure' or fix the ballot before it is rejected.",
+    "source_url": "https://www.vote411.org/wyoming",
+    "source_name": "Vote411 - Wyoming Voting Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Wyoming?",
+    "question_variants": [
+      "When are military ballots due in Wyoming?",
+      "UOCAVA return deadline WY",
+      "Overseas voting rules Wyoming state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters 45 days before an election. Voted ballots must be received by the county clerk's office no later than 7:00 p.m. on Election Day to be counted.",
+    "source_url": "https://sos.wyo.gov/Elections/State/AbsenteeVoting.aspx",
+    "source_name": "Wyoming Secretary of State - Military & Overseas Voters",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Wyoming?",
+    "question_variants": [
+      "What is a provisional ballot in WY?",
+      "Voting without ID Wyoming",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter's name is not in the poll book, if they fail to produce required identification, or if records show they were issued an absentee ballot but wish to vote in person. To be counted, the voter must provide the required information/ID to the county clerk by the close of business on the day following the election.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State - Elections",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Wyoming have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Wyoming MVD?",
+      "WY motor voter automatic registration",
+      "Do I have to register to vote if I get a WY driver's license?"
+    ],
+    "answer": "No. Wyoming is historically exempt from the federal National Voter Registration Act (Motor Voter law) because it offers Election Day registration. Therefore, it does not offer Automatic Voter Registration (AVR) at the Department of Transportation.",
+    "source_url": "https://sos.wyo.gov/Elections/State/RegisteringToVote.aspx",
+    "source_name": "Wyoming Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Wyoming offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in WY?",
+      "Wyoming electronic voter registration",
+      "WY SOS online registration portal"
+    ],
+    "answer": "No. Wyoming does not have an online voter registration system. Voters must register in person at their county clerk's office, by mail (with a notarized form), or at the polls on Election Day.",
+    "source_url": "https://sos.wyo.gov/Elections/State/RegisteringToVote.aspx",
+    "source_name": "Wyoming Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Wyoming maintain its voter registration lists?",
+    "question_variants": [
+      "WY voter list maintenance rules",
+      "How are inactive voters handled in Wyoming?",
+      "Wyoming voter roll cleaning process"
+    ],
+    "answer": "Wyoming maintains its voter registry (WyoReg) primarily through a post-election purge process. Under state law, any registered voter who fails to vote in a general election is sent a notice and, if they do not respond, has their registration canceled (purged) and must re-register to vote in future elections.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Wyoming have early voting?",
+    "question_variants": [
+      "Can I vote early in person in WY?",
+      "Wyoming early voting dates 2026",
+      "In-person absentee voting Wyoming"
+    ],
+    "answer": "Wyoming does not have separate, dedicated 'early voting' polling locations. Instead, it offers 'in-person absentee voting.' Voters may go to their county clerk's office during standard business hours beginning 28 days before the election to cast an absentee ballot in person. This period ends the day before Election Day.",
+    "source_url": "https://sos.wyo.gov/Elections/State/AbsenteeVoting.aspx",
+    "source_name": "Wyoming Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Wyoming use runoff elections for close races?",
+    "question_variants": [
+      "Are there runoffs in Wyoming primaries?",
+      "How are tied elections decided in Wyoming?",
+      "Tie-breaker rules Wyoming elections"
+    ],
+    "answer": "No. Wyoming does not hold runoff elections for state or federal offices. The candidate with a plurality of the vote wins. In the event of an exact tie, under W.S. 22-16-119, the canvassing board determines the winner by casting lots (e.g., drawing names or a coin toss).",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "W.S. 22-16-119",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Wyoming?",
+    "question_variants": [
+      "Does Wyoming use ranked choice voting?",
+      "RCV status in Wyoming 2026",
+      "Instant runoff voting WY"
+    ],
+    "answer": "No. Ranked Choice Voting is not used in Wyoming for any state or local public elections. Plurality voting is the standard across the state.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Wyoming?",
+    "question_variants": [
+      "WY personal use prohibition campaign finance",
+      "Can I use campaign money for personal expenses in Wyoming?",
+      "Prohibited expenditures Wyoming WYCFIS"
+    ],
+    "answer": "Yes. Under W.S. 22-25-102, campaign contributions may not be converted to the personal use of the candidate or any other person. Funds must be strictly used for campaign activities or duties related to holding office.",
+    "source_url": "https://law.justia.com/codes/wyoming/title-22/chapter-25/section-22-25-102/",
+    "source_name": "W.S. 22-25-102",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Wyoming campaign materials?",
+    "question_variants": [
+      "Wyoming 'Paid for by' rules",
+      "Campaign ad disclaimer requirements WY",
+      "Political taglines Wyoming WYCFIS"
+    ],
+    "answer": "Wyoming law requires that election literature and campaign advertising display a sponsor identification line. The disclaimer must clearly state 'Paid for by' followed by the name of the candidate, organization, or committee funding the material.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/WY_Campaign_Finance_Guide.pdf",
+    "source_name": "Wyoming Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Wyoming?",
+    "question_variants": [
+      "WY campaign coordination rules",
+      "When is a PAC expenditure not independent in Wyoming?",
+      "Prohibition on candidate-PAC coordination WY"
+    ],
+    "answer": "An expenditure is 'coordinated' (and thus treated as an in-kind contribution subject to limits and corporate bans) if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their campaign committee. The Secretary of State's rules strictly define independent expenditures as those made entirely without the candidate's involvement.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/WY_Campaign_Finance_Guide.pdf",
+    "source_name": "Wyoming Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Wyoming?",
+    "question_variants": [
+      "WY WYCFIS late fee",
+      "Penalty for missing a Wyoming campaign finance deadline",
+      "Secretary of State fine for late filing WY"
+    ],
+    "answer": "Under W.S. 22-25-108, failing to file a required campaign finance report on time results in a civil penalty. The fine is up to $500 per day for reports filed with the Secretary of State, and up to $200 per day for reports filed with a county clerk, accruing until the report is successfully submitted.",
+    "source_url": "https://law.justia.com/codes/wyoming/title-22/chapter-25/section-22-25-108/",
+    "source_name": "W.S. 22-25-108",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Wyoming campaign committee terminate?",
+    "question_variants": [
+      "Closing a Wyoming campaign committee",
+      "WYCFIS committee termination requirements",
+      "Final campaign finance report Wyoming"
+    ],
+    "answer": "A candidate committee may terminate its WYCFIS account only when it has achieved a zero cash balance, disposed of all surplus funds legally, and resolved all outstanding debts. The committee must file a final termination report to officially close.",
+    "source_url": "https://www.wycampaignfinance.gov/",
+    "source_name": "Wyoming Secretary of State - WYCFIS",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Wyoming?",
+    "question_variants": [
+      "WY independent expenditure reporting WYCFIS",
+      "Disclosure for WY independent expenditure groups",
+      "Reporting thresholds for outside spending Wyoming"
+    ],
+    "answer": "Any organization or person making an independent expenditure to advocate for or against a candidate must report the expenditure in WYCFIS. These must be filed on the same schedule as candidate reports (7 days before the election).",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/WY_Campaign_Finance_Guide.pdf",
+    "source_name": "Wyoming Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Wyoming?",
+    "question_variants": [
+      "Wyoming in-kind contribution valuation rules",
+      "Reporting non-monetary donations Wyoming campaign",
+      "Fair market value for in-kind gifts WY"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported in WYCFIS at their fair market value—the standard price the campaign would have paid on the open market. They must be itemized if their value exceeds the $100 reporting threshold.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/WY_Campaign_Finance_Guide.pdf",
+    "source_name": "Wyoming Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Wyoming?",
+    "question_variants": [
+      "Wyoming candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in WY?",
+      "Reporting candidate loans in WYCFIS"
+    ],
+    "answer": "Under Wyoming law, a candidate may loan or contribute an unlimited amount of their own personal funds to their campaign. Self-funding is not subject to the individual contribution limits that apply to third parties. Loans must be properly documented in WYCFIS.",
+    "source_url": "https://www.wycampaignfinance.gov/",
+    "source_name": "Wyoming Campaign Finance Information System",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Wyoming candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in WY?",
+      "WY surplus campaign funds rules",
+      "Donating remaining campaign funds Wyoming"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. They may be retained for a future campaign by the same candidate, returned pro-rata to contributors, donated to a political party, or given to a charitable organization.",
+    "source_url": "https://sos.wyo.gov/Elections/Docs/WY_Campaign_Finance_Guide.pdf",
+    "source_name": "Wyoming Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for lobbyists in Wyoming?",
+    "question_variants": [
+      "Can Wyoming legislators raise money during session?",
+      "Lobbyist contribution ban WY legislature",
+      "Legislative session contribution rules Wyoming"
+    ],
+    "answer": "Unlike neighboring Montana, Wyoming does not have a statutory 'session freeze' that broadly bans legislative candidates from raising money from lobbyists during the session. However, Governor Mark Gordon issued an Executive Order in 2026 banning campaign contributions within any state buildings used by the Executive Branch.",
+    "source_url": "https://stateandfed.com/state/wyoming/wyoming-governor-issues-executive-order-banning-campaign-contributions-in-state-buildings/",
+    "source_name": "Wyoming Executive Order 2026-01",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State candidates and Lobbyists"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What are the polling hours on Election Day in Wyoming?",
+    "question_variants": [
+      "When do polls open in WY?",
+      "WY polling place hours",
+      "What time do polls close in Wyoming?"
+    ],
+    "answer": "On Election Day, all polling places in Wyoming are open from 7:00 a.m. to 7:00 p.m. Under W.S. 22-13-101, any qualified elector who is physically in line at the polling place at 7:00 p.m. is legally permitted to cast their ballot.",
+    "source_url": "https://sos.wyo.gov/Elections/State/VotingInformation.aspx",
+    "source_name": "Wyoming Secretary of State - Voting Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WY",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Wyoming?",
+    "question_variants": [
+      "When are county sheriffs elected in WY?",
+      "Wyoming county official term lengths",
+      "Are county assessors on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Wyoming—including County Commissioners, Sheriffs, Assessors, Clerks, Coroners, and Treasurers—serve four-year terms. The vast majority of these offices are elected during the midterm election cycle, meaning they will be on the 2026 ballot.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "WY",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Wyoming elections?",
+    "question_variants": [
+      "When are Wyoming election results official?",
+      "WY certification deadline",
+      "State Canvassing Board meeting Wyoming"
+    ],
+    "answer": "County canvassing boards meet shortly after the election to certify local results. The State Canvassing Board meets to officially certify statewide and federal election results no later than the second Wednesday following the general election.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "WY",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Wyoming?",
+    "question_variants": [
+      "Wyoming special election timeline",
+      "Who calls a special election to fill a US House vacancy in WY?",
+      "Filling a midterm vacancy Wyoming"
+    ],
+    "answer": "Special elections to fill vacancies (such as for a U.S. House seat) are called by a proclamation from the Governor. The proclamation sets the timeline and date for the election, and major parties typically nominate their candidates via central committee selection rather than a primary.",
+    "source_url": "https://sos.wyo.gov/Elections/",
+    "source_name": "Wyoming Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  }
+]
