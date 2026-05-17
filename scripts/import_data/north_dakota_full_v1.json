@@ -1,0 +1,1334 @@
+[
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in North Dakota?",
+    "question_variants": [
+      "Are North Dakota primaries open or closed?",
+      "Do I have to register with a party to vote in the ND primary?",
+      "Can unaffiliated voters participate in the North Dakota primary?"
+    ],
+    "answer": "North Dakota has an open primary system, which is a direct result of the state not having a voter registration system. Since voters do not register to vote, there is no official party affiliation on file. Any qualified North Dakota resident can show up on Primary Day, request the ballot of the political party of their choice, and participate in that party's primary.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/elections-currentpast",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does North Dakota hold primary runoff elections?",
+    "question_variants": [
+      "What is the threshold to win a primary in ND?",
+      "Does North Dakota require a majority to win a primary?",
+      "North Dakota primary runoff rules"
+    ],
+    "answer": "No. North Dakota does not hold primary runoff elections. A candidate does not need to secure a 50%+1 majority to win a party's nomination; the candidate who receives a simple plurality (the most votes) in the primary election advances directly to the general election.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All primary candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in North Dakota?",
+    "question_variants": [
+      "Do write-in votes count in ND?",
+      "How to register as a write-in candidate in North Dakota",
+      "Write-in filing deadline North Dakota"
+    ],
+    "answer": "Yes, but they must officially declare their candidacy. To have their votes tabulated, a write-in candidate must file a Certificate of Write-in Candidacy with the Secretary of State or relevant election officer. For the 2026 general election, this certificate must be filed by 4:00 p.m. on October 13, 2026 (the 21st day before the general election).",
+    "source_url": "https://www.sos.nd.gov/elections/candidate/candidate-calendar",
+    "source_name": "North Dakota Secretary of State - Candidate Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for major party candidates in North Dakota for 2026?",
+    "question_variants": [
+      "When do candidates file for office in North Dakota?",
+      "North Dakota filing deadline 2026",
+      "April filing deadline ND"
+    ],
+    "answer": "For major party candidates participating in the 2026 primary election, the filing deadline to submit petitions or certificates of endorsement is 4:00 p.m. on Monday, April 6, 2026.",
+    "source_url": "https://www.sos.nd.gov/elections/candidate/candidate-calendar",
+    "source_name": "North Dakota Secretary of State - Candidate Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the filing deadline for independent candidates in North Dakota?",
+    "question_variants": [
+      "Independent candidate ballot access North Dakota",
+      "Running without a party in ND 2026",
+      "Independent filing deadline North Dakota"
+    ],
+    "answer": "Independent candidates bypass the primary and petition directly onto the general election ballot. The deadline for independent candidates to file their nominating petitions with the Secretary of State is 4:00 p.m. on Monday, August 31, 2026 (the 64th day before the general election).",
+    "source_url": "https://www.sos.nd.gov/elections/candidate/candidate-calendar",
+    "source_name": "North Dakota Secretary of State - Candidate Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does North Dakota have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the ND primary?",
+      "North Dakota sore loser statute",
+      "General election ballot access after primary defeat ND"
+    ],
+    "answer": "Yes. Under North Dakota Century Code (NDCC) § 16.1-12-01, an individual who sought the nomination of a political party in the primary election and was defeated cannot subsequently have their name placed on the general election ballot as an independent candidate for the same office.",
+    "source_url": "https://ndlegis.gov/cencode/t16-1c12.pdf",
+    "source_name": "North Dakota Century Code § 16.1-12-01",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in North Dakota?",
+    "question_variants": [
+      "North Dakota joint ticket rules",
+      "How are Lt Gov candidates selected in ND?",
+      "Does the Governor pick a running mate in North Dakota?"
+    ],
+    "answer": "Yes. Under the North Dakota Constitution, the Governor and Lieutenant Governor run on a joint ticket. Candidates for these two offices are paired together on the ballot in both the primary and the general elections, meaning voters cast a single vote for the joint team.",
+    "source_url": "https://ndlegis.gov/constit/a05.pdf",
+    "source_name": "North Dakota Constitution Article V",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in North Dakota for 2026?",
+    "question_variants": [
+      "North Dakota primary date 2026",
+      "When is Election Day 2026 in North Dakota?",
+      "June primary North Dakota"
+    ],
+    "answer": "The North Dakota primary election will be held on Tuesday, June 9, 2026. The general election will be held on Tuesday, November 3, 2026. Polling hours vary by county and municipality, but state law requires all polls to open between 7:00 a.m. and 12:00 noon, and remain open until at least 7:00 p.m. but no later than 9:00 p.m.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/elections-currentpast",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Kelly Armstrong running for election in 2026?",
+    "question_variants": [
+      "North Dakota Governor election 2026",
+      "Who is defending the ND Governor seat?",
+      "Is Kelly Armstrong on the 2026 ballot?"
+    ],
+    "answer": "No. Governor Kelly Armstrong (R) was elected in 2024 to a four-year term (after Doug Burgum joined the Trump cabinet). His current term runs through 2028, so the North Dakota gubernatorial seat is NOT on the 2026 midterm ballot.",
+    "source_url": "https://www.thegreenpapers.com/G26/ND",
+    "source_name": "The Green Papers - North Dakota 2026",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in North Dakota in 2026?",
+    "question_variants": [
+      "Is John Hoeven up for re-election in 2026?",
+      "When is Kevin Cramer's next election?",
+      "North Dakota US Senate cycle 2026"
+    ],
+    "answer": "Neither U.S. Senate seat in North Dakota is on the ballot in 2026. Senator John Hoeven (Class 3) was re-elected in 2022 and is next up in 2028. Senator Kevin Cramer (Class 1) was re-elected in 2024 and is next up in 2030.",
+    "source_url": "https://www.senate.gov/senators/Class_I.htm",
+    "source_name": "U.S. Senate",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in North Dakota for the 2026 election?",
+    "question_variants": [
+      "North Dakota congressional apportionment",
+      "Are all ND congressional seats up in 2026?",
+      "Number of US Representatives from North Dakota"
+    ],
+    "answer": "North Dakota is apportioned exactly 1 U.S. House district. The entire state is represented by a single At-Large district, which is on the 2026 ballot for a two-year term.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which North Dakota State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all North Dakota House seats up in 2026?",
+      "North Dakota Senate election cycle 2026",
+      "Which legislative districts are on the ballot in ND?"
+    ],
+    "answer": "All 94 seats in the North Dakota House of Representatives (2-year terms) are up for election in 2026. The North Dakota State Senate has 47 members serving 4-year staggered terms; in 2026, roughly half of those seats (approximately 24) are on the ballot.",
+    "source_url": "https://ndlegis.gov/",
+    "source_name": "North Dakota Legislative Branch",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in North Dakota in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "ND statewide election list 2026",
+      "When is the Secretary of State election in ND?"
+    ],
+    "answer": "While the Governor is not on the ballot, North Dakota elects several key statewide executive officers on the midterm cycle (4-year terms). In 2026, the offices of Secretary of State, Attorney General, Agriculture Commissioner, and Tax Commissioner are on the ballot.",
+    "source_url": "https://www.thegreenpapers.com/G26/ND",
+    "source_name": "The Green Papers - North Dakota 2026",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are North Dakota Supreme Court justices selected and are they on the ballot?",
+    "question_variants": [
+      "North Dakota judicial elections 2026",
+      "Are ND judges elected or appointed?",
+      "Supreme Court elections North Dakota"
+    ],
+    "answer": "North Dakota Supreme Court justices are elected to 10-year terms in nonpartisan elections. Justices run for election during the regular primary and general election cycles rather than via retention 'Yes/No' votes.",
+    "source_url": "https://www.ndcourts.gov/",
+    "source_name": "North Dakota Court System",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the North Dakota Legislative Assembly sessions?",
+    "question_variants": [
+      "When does the ND legislature meet?",
+      "North Dakota legislative session length",
+      "Is the North Dakota legislature full time?"
+    ],
+    "answer": "The North Dakota Legislative Assembly is a part-time body that meets biennially (only in odd-numbered years). Under the state constitution, the legislature may meet for up to 80 legislative days per biennium. It convenes in early January of the odd-numbered year following an election.",
+    "source_url": "https://ndlegis.gov/",
+    "source_name": "North Dakota Legislative Branch",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of North Dakota?",
+    "question_variants": [
+      "Age and residency for North Dakota Governor",
+      "North Dakota Constitution Governor qualifications",
+      "Who is eligible to be Governor of ND?"
+    ],
+    "answer": "Under Article V, Section 4 of the North Dakota Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States, a qualified elector of the state, and must have been a resident of North Dakota for the five years preceding the election.",
+    "source_url": "https://ndlegis.gov/constit/a05.pdf",
+    "source_name": "North Dakota Constitution Article V",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the North Dakota State Legislature?",
+    "question_variants": [
+      "Qualifications for ND State Representative",
+      "Age requirement North Dakota State Senate",
+      "Do I have to live in my district to run in ND?"
+    ],
+    "answer": "Under Article IV of the North Dakota Constitution, a candidate for the State Senate or House of Representatives must be at least 18 years old, a qualified elector of the state, and a resident of North Dakota for at least one year prior to the election.",
+    "source_url": "https://ndlegis.gov/constit/a04.pdf",
+    "source_name": "North Dakota Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House candidates in North Dakota?",
+    "question_variants": [
+      "US House residency requirements North Dakota",
+      "Age to run for Congress in North Dakota",
+      "Federal constitutional requirements for ND candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the North Dakota Governor?",
+    "question_variants": [
+      "How many terms can a North Dakota Governor serve?",
+      "North Dakota executive term limit law",
+      "Did ND pass term limits?"
+    ],
+    "answer": "In a major recent change (Constitutional Measure 1 passed in 2022), North Dakota imposed term limits on its executive and legislative branches. The Governor is now strictly limited to serving two four-year terms (8 years total).",
+    "source_url": "https://ballotpedia.org/North_Dakota_Constitutional_Measure_1,_Term_Limits_for_Governor_and_State_Legislators_Initiative_(2022)",
+    "source_name": "North Dakota Constitutional Measure 1 (2022)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does North Dakota have legislative term limits?",
+    "question_variants": [
+      "How many terms can a North Dakota state senator serve?",
+      "Are there term limits for the North Dakota House?",
+      "North Dakota legislature term limit status"
+    ],
+    "answer": "Yes. Following the passage of Constitutional Measure 1 in 2022, North Dakota now imposes strict legislative term limits. A state legislator is limited to serving a maximum of 8 cumulative years in the State House and 8 cumulative years in the State Senate (for a maximum total of 16 years in the Legislative Assembly).",
+    "source_url": "https://ballotpedia.org/North_Dakota_Constitutional_Measure_1,_Term_Limits_for_Governor_and_State_Legislators_Initiative_(2022)",
+    "source_name": "North Dakota Constitutional Measure 1 (2022)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General in North Dakota?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in ND",
+      "Do I need to be a member of the bar to be ND AG?",
+      "Legal requirements for North Dakota Attorney General"
+    ],
+    "answer": "The Attorney General is an elected statewide constitutional officer. To be eligible, an individual must be at least 25 years old, a qualified elector, and notably, a licensed attorney who is admitted to practice law in the state of North Dakota.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in North Dakota?",
+    "question_variants": [
+      "North Dakota county commissioner qualifications",
+      "Can I run for county board in ND?",
+      "County residency for ND officials"
+    ],
+    "answer": "To run for a typical county office (such as County Commissioner, Auditor, or Sheriff), a candidate must be a qualified elector (resident) of the county, and if running for a specific districted seat, a resident of that specific district.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State - Candidate Info",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is voter registration required in North Dakota?",
+    "question_variants": [
+      "How to register to vote in ND",
+      "North Dakota voter registration deadline",
+      "Do I have to register before voting in North Dakota?"
+    ],
+    "answer": "No. In a major and unique distinctive, North Dakota is the ONLY state in the nation that DOES NOT require voter registration. Any qualified citizen can show up to vote on Election Day by simply presenting an approved form of identification showing a valid North Dakota residential address.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/voter-registration",
+    "source_name": "North Dakota Secretary of State - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in North Dakota?",
+    "question_variants": [
+      "North Dakota voter ID requirements",
+      "Do I need my driver's license to vote in ND?",
+      "Acceptable ID for North Dakota voting"
+    ],
+    "answer": "Yes. Because there is no voter registration, North Dakota utilizes a strict voter ID system. Voters must present a valid form of identification (like an ND Driver's License, ND Non-driver's ID, Tribal ID, or Long Term Care Certificate) that includes their name, date of birth, and a current North Dakota residential address.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/id-requirements",
+    "source_name": "North Dakota Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is North Dakota a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in North Dakota?",
+      "North Dakota vote-by-mail system",
+      "Do I need an excuse to vote absentee in ND?"
+    ],
+    "answer": "North Dakota is NOT a universal mail ballot state (ballots are not mailed out automatically). However, the state does offer full NO-EXCUSE absentee voting. Any qualified voter can request an absentee ballot through the Secretary of State's portal or their County Auditor without needing to provide a specific reason.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/absentee-voting",
+    "source_name": "North Dakota Secretary of State - Absentee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does North Dakota offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in ND?",
+      "North Dakota early voting dates 2026",
+      "When does early voting start in North Dakota?"
+    ],
+    "answer": "Yes, but it is at the discretion of the county. In North Dakota, early voting is managed individually by County Auditors. If a county chooses to offer early voting, they generally open voting centers 15 days before the election.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/early-voting",
+    "source_name": "North Dakota Secretary of State - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in North Dakota?",
+    "question_variants": [
+      "How close can I campaign to a polling place in ND?",
+      "North Dakota 100 feet electioneering rule",
+      "ND buffer zone around voting centers"
+    ],
+    "answer": "Under North Dakota law, electioneering is strictly prohibited within the polling place and within 100 feet from the entrance to the room where voting is taking place. This includes distributing campaign literature, displaying signs, and soliciting votes.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in North Dakota?",
+    "question_variants": [
+      "Can felons vote in North Dakota state?",
+      "Felony voting rights restoration ND",
+      "Voting on parole in North Dakota"
+    ],
+    "answer": "In North Dakota, individuals convicted of a felony lose their right to vote only while they are actively incarcerated. Voting rights are automatically restored immediately upon their release from a correctional facility. Individuals on probation or parole are fully eligible to vote.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/voter-eligibility",
+    "source_name": "North Dakota Secretary of State - Voter Eligibility",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "ND",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How is election administration structured across North Dakota jurisdictions?",
+    "question_variants": [
+      "North Dakota county election administration",
+      "How many county auditors in ND?",
+      "Local election control North Dakota"
+    ],
+    "answer": "North Dakota has 53 counties. Election administration is handled at the local level by elected County Auditors. Statewide campaigns must coordinate heavily with these 53 auditors regarding early voting availability, absentee ballot processing, and polling place logistics.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/county-auditors",
+    "source_name": "North Dakota Secretary of State - County Auditors",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the North Dakota voter file?",
+    "question_variants": [
+      "North Dakota voter database access cost",
+      "How to get the voter list in ND",
+      "What data is included in the North Dakota voter file?"
+    ],
+    "answer": "Although North Dakota has no voter registration, campaigns can still purchase the state's Central Voter File (which records individuals who have previously voted). The file can be requested from the Secretary of State for a fee and includes names, addresses, and voting history (but no party affiliation). It is legally restricted to political and election-related use.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/request-voter-lists",
+    "source_name": "North Dakota Secretary of State - Request Voter Lists",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in North Dakota?",
+    "question_variants": [
+      "Where do I file campaign finance reports in ND?",
+      "What is the North Dakota campaign finance system?",
+      "Does the ND Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in North Dakota are administered exclusively by the Secretary of State's Office. Candidates and committees must file their contribution and expenditure reports using the state's online Campaign Finance system.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State - Campaign Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual and PAC campaign contribution limits in North Dakota for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in North Dakota?",
+      "ND individual donation caps 2026 election",
+      "Maximum donation to state legislature North Dakota"
+    ],
+    "answer": "In a major campaign finance distinctive, North Dakota imposes NO limits on the amount of money an individual, PAC, or state political party can contribute to a candidate for statewide or legislative office. Contributions are unlimited.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_North_Dakota",
+    "source_name": "Ballotpedia / North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in North Dakota campaigns?",
+    "question_variants": [
+      "Corporate contribution ban North Dakota state",
+      "Can a business donate to my campaign in ND?",
+      "Corporate campaign finance rules North Dakota"
+    ],
+    "answer": "No. Despite the lack of limits on individuals and PACs, North Dakota strictly PROHIBITS direct contributions from the general treasury of a corporation or labor union to a candidate's political committee. Corporate funds can only be used to establish a separate PAC.",
+    "source_url": "https://www.bolderadvocacy.org/wp-content/uploads/2018/06/northdakota.campaign-1.pdf",
+    "source_name": "Bolder Advocacy - ND Campaign Rules",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for North Dakota candidates?",
+    "question_variants": [
+      "ND SOS filing dates 2026",
+      "When are campaign finance reports due in ND?",
+      "North Dakota pre-primary and pre-general report deadlines"
+    ],
+    "answer": "North Dakota candidate committees must file periodic reports during an election year. This includes a Pre-Primary Report (due one month before the primary), a Pre-General Report (due one month before the general election), and a comprehensive Year-End Statement (due January 31st of the following year).",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests/reporting-due-dates",
+    "source_name": "North Dakota Secretary of State - Reporting Due Dates",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are North Dakota's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "North Dakota 48-hour large contribution report",
+      "Late contribution reporting North Dakota SOS",
+      "When do I file a rapid report in ND?"
+    ],
+    "answer": "North Dakota imposes rapid reporting requirements immediately preceding an election. If a candidate committee receives a contribution of $500 or more in the 39-day period before an election, they must file a 48-hour report detailing the contribution with the Secretary of State.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State - Campaign Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does North Dakota provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for North Dakota Governor",
+      "State funded campaigns North Dakota status",
+      "Government campaign grants ND"
+    ],
+    "answer": "No. North Dakota does not provide any system of public financing or matching funds for state-level political campaigns. Candidates must rely entirely on private contributions.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in North Dakota?",
+    "question_variants": [
+      "ND personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in ND?",
+      "Prohibited expenditures North Dakota SOS"
+    ],
+    "answer": "Yes. Under North Dakota campaign finance laws, campaign funds are strictly prohibited from being converted to personal use. Expenditures must bear a direct relationship to the candidate's campaign or the execution of their public office.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for North Dakota legislators?",
+    "question_variants": [
+      "Can North Dakota legislators raise money during session?",
+      "Lobbyist contribution ban ND legislature",
+      "Legislative session contribution rules North Dakota"
+    ],
+    "answer": "No. Unlike some other states, North Dakota does NOT have a statutory 'session freeze' that prohibits legislators or statewide officials from accepting campaign contributions while the state legislature is actively in session.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does North Dakota have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the ND ballot",
+      "North Dakota citizen initiative signature requirements",
+      "Can citizens propose laws in North Dakota?"
+    ],
+    "answer": "Yes. North Dakota has a robust citizen initiative process allowing citizens to propose both statutory laws and constitutional amendments. For a statutory initiative, proponents must gather signatures equal to 2% of the resident population. For a constitutional amendment initiative, signatures must equal 4% of the resident population.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/ballot-measures",
+    "source_name": "North Dakota Secretary of State - Ballot Measures",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does North Dakota have a veto referendum process?",
+    "question_variants": [
+      "How to refer a ND bill to the ballot",
+      "North Dakota citizen referendum rules",
+      "Veto referendum signature threshold North Dakota state"
+    ],
+    "answer": "Yes. Citizens of North Dakota can repeal legislative acts via a veto referendum. To qualify, proponents must gather valid signatures equal to 2% of the resident population. The petition must be filed within 90 days after the legislation is filed with the Secretary of State.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/ballot-measures",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the North Dakota legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process North Dakota",
+      "Referendum by legislature ND",
+      "Can the ND legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The North Dakota Legislative Assembly can refer a constitutional amendment to the ballot by passing the proposed amendment with a simple majority vote in both the State House and State Senate during a single legislative session. It is then placed on the ballot for voter ratification.",
+    "source_url": "https://ndlegis.gov/constit/a03.pdf",
+    "source_name": "North Dakota Constitution Article III",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in North Dakota?",
+    "question_variants": [
+      "North Dakota ballot measure pass threshold",
+      "Does a measure need a supermajority in ND?",
+      "Majority vote requirements North Dakota ballot measures"
+    ],
+    "answer": "In North Dakota, a statutory initiative, veto referendum, or legislatively referred constitutional amendment requires only a simple majority (over 50%) of the total votes cast on that specific measure by voters to pass.",
+    "source_url": "https://ndlegis.gov/constit/a03.pdf",
+    "source_name": "North Dakota Constitution Article III",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws North Dakota's state legislative maps?",
+    "question_variants": [
+      "Does the ND legislature draw district maps?",
+      "Who has the authority to draw district lines in North Dakota?",
+      "North Dakota redistricting commission"
+    ],
+    "answer": "In North Dakota, the Legislative Assembly (the state legislature) holds the exclusive authority to draw and enact state legislative district boundaries. The maps are passed as regular legislation and are subject to the Governor's signature or veto.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_North_Dakota",
+    "source_name": "Ballotpedia - Redistricting in North Dakota",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in North Dakota?",
+    "question_variants": [
+      "Standards for drawing North Dakota district lines",
+      "North Dakota gerrymandering rules",
+      "Map requirements ND"
+    ],
+    "answer": "Under the North Dakota Constitution and state guidelines, legislative districts must be contiguous and compact, as nearly equal in population as is practicable, and must adhere to the federal Voting Rights Act, specifically ensuring protections for Native American populations in certain areas.",
+    "source_url": "https://ndlegis.gov/constit/a04.pdf",
+    "source_name": "North Dakota Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current North Dakota state legislative maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Turtle Mountain Band redistricting lawsuit North Dakota",
+      "Are there pending redistricting lawsuits in North Dakota?",
+      "North Dakota 2026 state legislative boundaries"
+    ],
+    "answer": "Yes. The 2021 legislative maps are fully operative for the 2026 elections following a major appellate reversal. Although a lower federal court previously struck down Districts 9 and 15 (and subdistricts) based on a Voting Rights Act challenge by the Turtle Mountain Band of Chippewa Indians, a federal appeals court OVERTURNED that lower court ruling in May 2025, reinstating the original 2021 maps.",
+    "source_url": "https://ndlegis.gov/",
+    "source_name": "North Dakota Legislative Branch",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does North Dakota have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of North Dakota be recalled?",
+      "How to recall a state senator in ND",
+      "Statewide recall election rules North Dakota"
+    ],
+    "answer": "Yes. Under Article III, Section 10 of the North Dakota Constitution, any elected official of the state may be recalled. Proponents must file a petition with signatures equal to 25% of the voters who voted for governor in the preceding election within the official's district or state.",
+    "source_url": "https://ndlegis.gov/constit/a03.pdf",
+    "source_name": "North Dakota Constitution Article III",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in North Dakota?",
+    "question_variants": [
+      "North Dakota county commissioner recall rules",
+      "Signature requirement local recall North Dakota",
+      "Recalling a mayor in ND"
+    ],
+    "answer": "The same constitutional provision (Article III, Section 10) that applies to state officials also applies to county and municipal officials. Citizens can recall a local official by gathering signatures equal to 25% of the voters in that jurisdiction who voted for governor in the last election.",
+    "source_url": "https://ndlegis.gov/constit/a03.pdf",
+    "source_name": "North Dakota Constitution Article III",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in North Dakota?",
+    "question_variants": [
+      "Requirements to run for ND Secretary of State",
+      "Who can run for Secretary of State in ND?",
+      "Residency rules for North Dakota SOS"
+    ],
+    "answer": "Under Article V, Section 4 of the North Dakota Constitution, a candidate for Secretary of State must be at least 25 years old, a citizen of the United States, and a qualified elector (resident) of the state.",
+    "source_url": "https://ndlegis.gov/constit/a05.pdf",
+    "source_name": "North Dakota Constitution Article V",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer or Agriculture Commissioner in North Dakota?",
+    "question_variants": [
+      "Eligibility for North Dakota State Treasurer",
+      "Who can run for Ag Commissioner in ND?",
+      "North Dakota executive residency requirements"
+    ],
+    "answer": "The constitutional requirements for State Treasurer, Agriculture Commissioner, and most other statewide executive offices are identical to those for the Secretary of State: a candidate must be at least 25 years old, a U.S. citizen, and a qualified elector of North Dakota.",
+    "source_url": "https://ndlegis.gov/constit/a05.pdf",
+    "source_name": "North Dakota Constitution Article V",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in North Dakota?",
+    "question_variants": [
+      "North Dakota Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in ND?",
+      "Qualifications for Lieutenant Governor of North Dakota"
+    ],
+    "answer": "Because the Lieutenant Governor runs on a joint ticket with the Governor, the qualifications are identical. Under Article V, Section 4 of the North Dakota Constitution, a candidate for Lieutenant Governor must be at least 30 years old, a U.S. citizen, a qualified elector, and a state resident for five years.",
+    "source_url": "https://ndlegis.gov/constit/a05.pdf",
+    "source_name": "North Dakota Constitution Article V",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in North Dakota?",
+    "question_variants": [
+      "Run for school board North Dakota requirements",
+      "Who can be a school board member in ND?",
+      "School board residency rules North Dakota"
+    ],
+    "answer": "To run for a local school board in North Dakota, candidates must be qualified electors (residents) of the specific school district they seek to represent at the time of the election.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for North Dakota Supreme Court justices?",
+    "question_variants": [
+      "North Dakota Supreme Court Justice eligibility",
+      "Years of practice required for ND Supreme Court",
+      "Are North Dakota judges elected or appointed?"
+    ],
+    "answer": "To run for a seat on the North Dakota Supreme Court, a candidate must be a citizen of the United States, a resident of North Dakota, and a licensed attorney who is admitted to practice law in the state.",
+    "source_url": "https://www.ndcourts.gov/",
+    "source_name": "North Dakota Court System",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in North Dakota?",
+    "question_variants": [
+      "How to fix a rejected signature in ND",
+      "North Dakota ballot cure process deadline",
+      "Missing signature on ND mail ballot"
+    ],
+    "answer": "North Dakota allows voters to cure signature discrepancies or missing signatures on their absentee ballot return envelopes. If election officials spot an issue, they notify the voter, who then has until the close of business on the sixth day after the election (the day before the county canvassing board meets) to cure the defect.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/absentee-voting",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in North Dakota?",
+    "question_variants": [
+      "When are military ballots due in North Dakota?",
+      "UOCAVA return deadline ND",
+      "Overseas voting rules North Dakota state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. Voted ballots must be postmarked by the day before the election and received by the County Auditor prior to the meeting of the county canvassing board (six days after the election).",
+    "source_url": "https://www.sos.nd.gov/elections/voter/military-and-overseas",
+    "source_name": "North Dakota Secretary of State - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in North Dakota and how are they cured?",
+    "question_variants": [
+      "What is a set-aside ballot in ND?",
+      "Voting without ID North Dakota",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Because North Dakota does not have voter registration, it uses 'set-aside' ballots rather than traditional provisional ballots. If a voter cannot produce acceptable ID at the polls, their ballot is set aside. The voter has until the end of the sixth day after the election to provide valid ID to the County Auditor for the ballot to be counted.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/id-requirements",
+    "source_name": "North Dakota Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How do North Dakota voters update their address if there is no voter registration?",
+    "question_variants": [
+      "Changing address to vote in North Dakota",
+      "ND Central Voter File address update",
+      "Do I need to update my voter registration in ND?"
+    ],
+    "answer": "Since there is no formal voter registration process, a voter's address in the Central Voter File is primarily tied to their North Dakota driver's license or state ID. Voters must update their residential address with the ND Department of Transportation (NDDOT) within 30 days of moving, which automatically updates their record for voting purposes.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/voter-registration",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does North Dakota maintain its Central Voter File without a registration system?",
+    "question_variants": [
+      "ND voter list maintenance rules",
+      "How are inactive voters handled in North Dakota?",
+      "North Dakota voter roll cleaning process"
+    ],
+    "answer": "The Secretary of State maintains the Central Voter File automatically by syncing it with NDDOT driver's license and non-driver ID data, state vital statistics (death records), and National Change of Address (NCOA) registries. The file records individuals who have previously voted or hold a valid state ID.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/request-voter-lists",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee mail-in ballot in North Dakota?",
+    "question_variants": [
+      "When is the last day to mail my ballot in ND?",
+      "North Dakota mail ballot postmark deadline",
+      "What time are ballots due in North Dakota?"
+    ],
+    "answer": "In North Dakota, an absentee ballot returned by mail must be postmarked no later than the day BEFORE the election and received by the County Auditor prior to the meeting of the county canvassing board (which occurs on the 6th day after the election). Hand-delivered ballots must be received by 5:00 p.m. on the day before the election.",
+    "source_url": "https://www.sos.nd.gov/elections/voter/absentee-voting",
+    "source_name": "North Dakota Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in North Dakota?",
+    "question_variants": [
+      "Does North Dakota use ranked choice voting?",
+      "RCV status in North Dakota 2026",
+      "Instant runoff voting ND"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is not used for statewide or federal elections in North Dakota. Elections are decided strictly by a traditional plurality voting system. While the city of Fargo previously used a form of approval voting, statewide RCV has not been adopted.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in North Dakota elections?",
+    "question_variants": [
+      "How are tied elections decided in North Dakota?",
+      "Tie-breaker rules North Dakota elections",
+      "What happens if a race is tied in ND?"
+    ],
+    "answer": "Under North Dakota Century Code § 16.1-15-29, if a general or primary election results in an exact tie, the tie is broken by a drawing of lots (such as a coin toss or drawing names) conducted by the appropriate canvassing board or the Secretary of State, depending on the office.",
+    "source_url": "https://ndlegis.gov/cencode/t16-1c15.pdf",
+    "source_name": "North Dakota Century Code § 16.1-15-29",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on North Dakota campaign materials?",
+    "question_variants": [
+      "North Dakota 'Paid for by' rules",
+      "Campaign ad disclaimer requirements ND",
+      "Political taglines North Dakota SOS"
+    ],
+    "answer": "North Dakota campaign finance law requires that political advertisements (including print, broadcast, and digital media) clearly state 'Paid for by' followed by the name of the candidate, committee, or individual who financed the communication.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in North Dakota?",
+    "question_variants": [
+      "ND campaign coordination rules",
+      "When is a PAC expenditure not independent in North Dakota?",
+      "Prohibition on candidate-PAC coordination ND"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if it is made with the cooperation, prior consent, or in consultation with a candidate or their committee. In North Dakota, a coordinated expenditure is legally treated as an in-kind contribution to the candidate (though individual and PAC contribution limits are unlimited).",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in North Dakota?",
+    "question_variants": [
+      "ND SOS late fee",
+      "Penalty for missing a North Dakota campaign finance deadline",
+      "Secretary of State fine for late filing ND"
+    ],
+    "answer": "The North Dakota Secretary of State assesses administrative penalties for late campaign finance reports. Fines are tiered: filing an amendment within 6 days is a $25 fine, while filing 12 or more days late incurs a $100 fine.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a North Dakota campaign committee terminate?",
+    "question_variants": [
+      "Closing a North Dakota campaign committee",
+      "SOS committee termination requirements",
+      "Final campaign finance report North Dakota"
+    ],
+    "answer": "A candidate committee may formally terminate by rolling over any surplus funds (to a future campaign or charity), bringing the committee's account balance to exactly zero, resolving all debts, and submitting a final termination statement to the Secretary of State.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in North Dakota?",
+    "question_variants": [
+      "ND independent expenditure reporting SOS",
+      "Disclosure for ND independent expenditure groups",
+      "Reporting thresholds for outside spending North Dakota"
+    ],
+    "answer": "Any person, PAC, or entity that spends $1,000 or more to make an independent expenditure advocating for or against a candidate must file an independent expenditure report with the Secretary of State within 48 hours of exceeding the threshold.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in North Dakota?",
+    "question_variants": [
+      "North Dakota in-kind contribution valuation rules",
+      "Reporting non-monetary donations North Dakota campaign",
+      "Fair market value for in-kind gifts ND"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment not available to the general public) must be reported on campaign finance disclosures at their fair market value as of the time the contribution is made.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in North Dakota?",
+    "question_variants": [
+      "North Dakota candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in ND?",
+      "Reporting candidate loans in SOS"
+    ],
+    "answer": "No. Consistent with North Dakota's unlimited contribution framework for individuals, a candidate may loan or contribute an UNLIMITED amount of their own personal funds to their own campaign committee. Loans must be properly documented on disclosures.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can North Dakota candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in ND?",
+      "ND surplus campaign funds rules",
+      "Donating remaining campaign funds North Dakota"
+    ],
+    "answer": "Surplus campaign funds cannot be converted to personal use. Candidates may carry them forward to a future campaign, return them pro-rata to contributors, transfer them to a recognized political party or another candidate committee, or donate them to an IRS-recognized charity.",
+    "source_url": "https://www.sos.nd.gov/elections/campaign-finance-statement-interests",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are foreign contributions permitted in North Dakota elections?",
+    "question_variants": [
+      "North Dakota foreign contribution ban",
+      "Measure 1 foreign money ND",
+      "Can non-citizens donate to campaigns in North Dakota?"
+    ],
+    "answer": "No. In 2024, North Dakota voters overwhelmingly passed Measure 1, which amended the state constitution to explicitly prohibit foreign individuals, governments, and foreign-influenced entities from contributing money to state or local political candidates and ballot measure campaigns.",
+    "source_url": "https://ballotpedia.org/North_Dakota_Measure_1,_Prohibit_Foreign_Funding_of_Elections_and_Initiatives_Amendment_(2024)",
+    "source_name": "North Dakota Measure 1 (2024)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates and Ballot measure committees"
+  },
+  {
+    "state": "ND",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in North Dakota?",
+    "question_variants": [
+      "When are county sheriffs elected in ND?",
+      "North Dakota county official term lengths",
+      "Are county auditors on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in North Dakota—including County Commissioners, Auditors, Treasurers, and Sheriffs—serve four-year terms. They are elected on alternating, staggered cycles, meaning many county offices will be on the 2026 midterm ballot.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for North Dakota elections?",
+    "question_variants": [
+      "When are North Dakota election results official?",
+      "ND certification deadline",
+      "State Canvassing Board meeting North Dakota"
+    ],
+    "answer": "County canvassing boards meet exactly six days after the election to certify local returns. The State Canvassing Board subsequently meets 17 days after the election to officially certify the statewide and federal election returns.",
+    "source_url": "https://ndlegis.gov/cencode/t16-1c15.pdf",
+    "source_name": "North Dakota Century Code § 16.1-15",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "ND",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in North Dakota?",
+    "question_variants": [
+      "North Dakota special election timeline",
+      "Who calls a special election to fill a US House vacancy in ND?",
+      "Filling a midterm vacancy North Dakota"
+    ],
+    "answer": "Special elections to fill a vacancy in a federal office (like the U.S. House) or the state legislature are called by a writ of election issued by the Governor. The Governor sets the date for the special election, which is managed by the Secretary of State.",
+    "source_url": "https://www.sos.nd.gov/elections",
+    "source_name": "North Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What is the election cycle for North Dakota Supreme Court justices?",
+    "question_variants": [
+      "When do ND Supreme Court justices run?",
+      "North Dakota judicial nonpartisan elections",
+      "Terms for North Dakota Supreme Court"
+    ],
+    "answer": "North Dakota Supreme Court justices are elected to 10-year terms in nonpartisan elections. Justices run during the regular primary and general election cycles, not through retention votes, and one justice is typically elected every two years.",
+    "source_url": "https://www.ndcourts.gov/",
+    "source_name": "North Dakota Court System",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "ND",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "Are District Court judges elected or appointed in North Dakota?",
+    "question_variants": [
+      "North Dakota district court judicial selection",
+      "Are ND trial judges on the ballot?",
+      "Term lengths for North Dakota District Court"
+    ],
+    "answer": "North Dakota District Court judges are elected by the voters. They serve six-year terms and are chosen in nonpartisan elections held during the regular primary and general election cycles.",
+    "source_url": "https://www.ndcourts.gov/",
+    "source_name": "North Dakota Court System",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  }
+]
