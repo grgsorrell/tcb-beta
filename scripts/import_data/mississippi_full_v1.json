@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Mississippi have an open or closed primary system?",
+    "question_variants": [
+      "Mississippi primary voting rules",
+      "Do I have to register with a party to vote in the MS primary?",
+      "Can unaffiliated voters participate in the Mississippi primary?"
+    ],
+    "answer": "Mississippi operates an open primary system. Voters are not required to register with a specific political party in advance. On Election Day, any registered voter may choose to vote in either the Democratic or Republican primary, but they cannot vote in both.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "What is the threshold to win an election outright in Mississippi?",
+    "question_variants": [
+      "Mississippi 50 percent plus one rule",
+      "Do candidates need a majority to win in MS?",
+      "Mississippi general election runoff requirement"
+    ],
+    "answer": "Mississippi enforces a strict majority threshold (50% plus one vote) to win an election. Crucially, this applies to BOTH primary elections AND general elections. If no candidate receives a majority of the vote in either election, the top two vote-getters automatically advance to a runoff election.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary, general, and runoff elections in Mississippi for 2026?",
+    "question_variants": [
+      "Mississippi primary date 2026",
+      "When is Election Day 2026 in Mississippi?",
+      "MS runoff dates 2026"
+    ],
+    "answer": "For the 2026 cycle, the Mississippi primary is Tuesday, March 10, 2026. If necessary, a primary runoff will be held on April 7, 2026. The general election is Tuesday, November 3, 2026. If no candidate reaches 50%+1 in the general, a general election runoff will be held on December 1, 2026.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Are there any state legislative or statewide executive races on the Mississippi ballot in 2026?",
+    "question_variants": [
+      "Mississippi Governor election 2026",
+      "Are all Mississippi House seats up in 2026?",
+      "Which state offices are on the 2026 ballot in MS?"
+    ],
+    "answer": "No. Mississippi elects its Governor, all statewide executive officers, and all 174 members of the state legislature entirely on an odd-year election cycle (e.g., 2023, 2027) for four-year terms. Therefore, there are zero state legislative or statewide executive races on the 2026 midterm ballot.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for an independent federal candidate in Mississippi?",
+    "question_variants": [
+      "Independent candidate ballot access Mississippi",
+      "Running without a party in MS 2026",
+      "How many signatures for independent US Senate MS"
+    ],
+    "answer": "To appear on the general election ballot as an independent, candidates for the U.S. Senate must submit a qualifying petition containing the certified signatures of at least 1,000 qualified electors of the state. Candidates for the U.S. House must submit a petition containing the signatures of at least 200 qualified electors of the respective congressional district.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Secretary of State - Candidate Qualifying Forms",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Mississippi have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the MS primary?",
+      "Mississippi sore loser statute",
+      "General election ballot access after primary defeat MS"
+    ],
+    "answer": "Yes. Mississippi enforces a sore loser law via a cross-filing ban under Miss. Code Ann. § 23-15-905. A candidate who seeks a party's nomination in the primary election and is defeated cannot subsequently have their name placed on the general election ballot as an independent candidate for the same office.",
+    "source_url": "https://ballotpedia.org/Sore_loser_laws_by_state",
+    "source_name": "Ballotpedia - Sore Loser Laws",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Mississippi?",
+    "question_variants": [
+      "Do write-in votes count in MS?",
+      "How to register as a write-in candidate in Mississippi",
+      "Blank spaces on Mississippi ballots"
+    ],
+    "answer": "Generally, no. Under Miss. Code § 23-15-365, write-in votes are strictly limited. A blank space is only left on the ballot to allow voters to write in a name if a candidate whose name was already printed on the official ballot dies, resigns, withdraws, or is removed. Standard write-in candidacies to bypass normal filing processes are not permitted.",
+    "source_url": "https://law.justia.com/codes/mississippi/title-23/chapter-15/article-13/subarticle-b/section-23-15-365/",
+    "source_name": "Miss. Code § 23-15-365",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Mississippi in 2026?",
+    "question_variants": [
+      "Is Cindy Hyde-Smith up for re-election in 2026?",
+      "When is Roger Wicker's next election?",
+      "Mississippi US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Cindy Hyde-Smith (R) is up for election in 2026. Senator Roger Wicker (Class 1) was re-elected in 2024 and will not appear on the ballot again until 2030.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Tate Reeves running for re-election in 2026?",
+    "question_variants": [
+      "Mississippi Governor election 2026",
+      "Who is defending the MS Governor seat?",
+      "Is Tate Reeves on the 2026 ballot?"
+    ],
+    "answer": "No. Mississippi elects its Governor and all statewide executive officers entirely on odd-year election cycles. Governor Tate Reeves (R) was re-elected in 2023, and his four-year term runs through early 2028. There is no gubernatorial race on the 2026 midterm ballot.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Mississippi State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Mississippi House seats up in 2026?",
+      "Mississippi Senate election cycle 2026",
+      "Which legislative districts are on the ballot in MS?"
+    ],
+    "answer": "None. The Mississippi State Legislature (122 House members and 52 Senate members) is elected entirely on a four-year, odd-year cycle (e.g., 2023, 2027). There are zero state legislative races on the 2026 ballot.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Mississippi for the 2026 election?",
+    "question_variants": [
+      "Mississippi congressional apportionment",
+      "Are all MS congressional seats up in 2026?",
+      "Number of US Representatives from Mississippi"
+    ],
+    "answer": "Mississippi is apportioned 4 U.S. House districts. All four seats are on the 2026 ballot, as U.S. Representatives serve two-year terms.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for federal offices in Mississippi for 2026?",
+    "question_variants": [
+      "When do candidates file for Congress in Mississippi?",
+      "Mississippi filing deadline 2026 federal",
+      "December filing deadline MS"
+    ],
+    "answer": "Because Mississippi's federal primary is held early in March, the filing deadline is similarly early. Candidates seeking major party nominations for the U.S. House or U.S. Senate in 2026 must file their qualifying paperwork and pay the filing fee by 5:00 p.m. on December 26, 2025.",
+    "source_url": "https://www.sos.ms.gov/news/2026-election-qualifying-deadline-us-house-representatives-and-us-senate",
+    "source_name": "Mississippi Secretary of State - Election Dates",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "When are Mississippi Supreme Court elections held?",
+    "question_variants": [
+      "Mississippi judicial elections 2026",
+      "Are MS judges elected?",
+      "Next nonpartisan judicial election Mississippi"
+    ],
+    "answer": "Mississippi Supreme Court Justices are elected to eight-year staggered terms in nonpartisan elections. These judicial elections appear on the November general election ballot alongside federal and local races. A candidate must receive a majority of votes to win; otherwise, a runoff is held.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Mississippi State Legislature sessions?",
+    "question_variants": [
+      "When does the MS legislature meet?",
+      "Mississippi 90 day legislative session",
+      "Is the Mississippi legislature full time?"
+    ],
+    "answer": "The Mississippi Legislature is a part-time body that meets annually starting in January. Regular sessions are limited to 90 days. However, in the first year of a new term (e.g., following the 2023 or 2027 state elections), the session is extended to 125 days to allow new members to acclimate.",
+    "source_url": "https://legislature.ms.gov/",
+    "source_name": "Mississippi Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Mississippi?",
+    "question_variants": [
+      "Age and residency for Mississippi Governor",
+      "Mississippi Constitution Article 5 Governor qualifications",
+      "Who is eligible to be Governor of Mississippi?"
+    ],
+    "answer": "Under Article 5, Section 117 of the Mississippi Constitution, a candidate for Governor must be at least 30 years old, have been a citizen of the United States for at least 20 years, and a resident of Mississippi for at least five years preceding the election.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Constitution Article 5, Section 117",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Mississippi State Legislature?",
+    "question_variants": [
+      "Qualifications for MS State Representative",
+      "Age requirement Mississippi State Senate",
+      "Do I have to live in my district to run in MS?"
+    ],
+    "answer": "A candidate for the Mississippi State Senate must be at least 25 years old. A candidate for the State House must be at least 21 years old. Both must be qualified electors, residents of the state for four years, and residents of their specific district for at least two years prior to the election.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Secretary of State - Candidate Forms",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Mississippi?",
+    "question_variants": [
+      "US Senate residency requirements Mississippi",
+      "Age to run for Congress in Mississippi",
+      "Federal constitutional requirements for MS candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Mississippi State Legislature and Governor?",
+    "question_variants": [
+      "How many terms can a Mississippi state senator serve?",
+      "Are there term limits for the Mississippi House?",
+      "Mississippi executive term limit law"
+    ],
+    "answer": "Mississippi does not impose any term limits on members of the State Legislature (House or Senate). However, under Article 5, Section 116 of the Mississippi Constitution, the Governor is strictly limited to serving two consecutive four-year terms.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Mississippi Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in MS",
+      "Do I need to be a member of the bar to be MS AG?",
+      "Legal requirements for Mississippi Attorney General"
+    ],
+    "answer": "Yes. Under Article 6, Section 173 of the Mississippi Constitution, the Attorney General must be a qualified elector, at least 26 years of age, a practicing attorney for five years, and a citizen of the state for five years preceding the election.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Constitution Article 6, Section 173",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Mississippi?",
+    "question_variants": [
+      "Mississippi Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in MS?",
+      "Qualifications for Lieutenant Governor of Mississippi"
+    ],
+    "answer": "Under the Mississippi Constitution, the qualifications for Lieutenant Governor are identical to those for Governor. A candidate must be at least 30 years old, a U.S. citizen for 20 years, and a Mississippi resident for 5 years.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Mississippi?",
+    "question_variants": [
+      "Mississippi county supervisor qualifications",
+      "Can I run for county board in MS?",
+      "County residency for MS officials"
+    ],
+    "answer": "To run for a county office (such as County Supervisor, Sheriff, or Circuit Clerk), a candidate must be a qualified elector (registered voter) of the state and a resident of the county (and the specific district, if applicable) from which they are elected.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Mississippi?",
+    "question_variants": [
+      "Mississippi voter ID requirements",
+      "Do I need my driver's license to vote in MS?",
+      "Acceptable ID for Mississippi voting"
+    ],
+    "answer": "Yes. Mississippi has a strict photo ID requirement. Voters must present a valid, unexpired photo ID at the polls. Acceptable forms include a Mississippi driver's license, U.S. passport, U.S. military ID, or a tribal ID. Voters without ID may cast an affidavit ballot but must return to the Circuit Clerk's office within five days to show an ID.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/voter-id",
+    "source_name": "Mississippi Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Mississippi a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Mississippi?",
+      "Mississippi vote-by-mail system",
+      "Do I need an excuse to vote absentee in MS?"
+    ],
+    "answer": "No. Mississippi is not a universal mail ballot state and strictly prohibits no-excuse absentee voting by mail. To vote absentee by mail, a voter must meet specific statutory criteria (e.g., being temporarily out of the county, over 65, or having a temporary or permanent physical disability).",
+    "source_url": "https://www.sos.ms.gov/elections-voting/absentee-voting",
+    "source_name": "Mississippi Secretary of State - Absentee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Mississippi offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in MS?",
+      "Mississippi early voting dates 2026",
+      "When does early voting start in Mississippi?"
+    ],
+    "answer": "No. Mississippi is one of the few states that does not have true 'early voting' open to all voters. Instead, it offers 'in-person absentee voting' at the local Circuit Clerk's office for several weeks prior to the election, but voters must still supply a valid statutory excuse (such as being out of town on Election Day) to utilize it.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/absentee-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Mississippi offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in MS",
+      "Mississippi same day voter registration",
+      "Voter registration deadline 2026 Mississippi"
+    ],
+    "answer": "The deadline to register to vote in Mississippi is 30 days prior to the election (e.g., October 5 for the 2026 general election). Mississippi DOES NOT offer same-day voter registration at the polls.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State - Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Mississippi?",
+    "question_variants": [
+      "How close can I campaign to a polling place in MS?",
+      "Mississippi 150 feet electioneering rule",
+      "MS buffer zone around voting centers"
+    ],
+    "answer": "Under Mississippi law, electioneering is strictly prohibited within 150 feet of any entrance to a building where a polling place is located. This includes distributing campaign literature, displaying signs, and soliciting votes.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Mississippi?",
+    "question_variants": [
+      "Can felons vote in Mississippi state?",
+      "Felony voting rights restoration MS",
+      "Voting on parole in Mississippi"
+    ],
+    "answer": "Mississippi has among the strictest felony disenfranchisement laws in the nation. Individuals convicted of specific disenfranchising crimes (such as murder, rape, bribery, theft, arson, or forgery) lose their voting rights permanently. These rights can only be restored through a pardon by the Governor or a specific bill passed by a two-thirds vote of both chambers of the state legislature.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MS",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Mississippi, and why does it matter for campaigns?",
+    "question_variants": [
+      "Mississippi county election administration",
+      "How many circuit clerks in MS?",
+      "Local election control Mississippi"
+    ],
+    "answer": "Mississippi has 82 counties. This decentralization requires statewide campaigns to coordinate with 82 distinct Circuit Clerks, who are the primary administrators of elections at the local level, managing absentee voting, voter registration rolls, and polling place logistics.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/circuit-clerks",
+    "source_name": "Mississippi Secretary of State - Circuit Clerks",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Mississippi voter file?",
+    "question_variants": [
+      "Mississippi voter database access cost",
+      "How to get the voter list in MS",
+      "What data is included in the Mississippi voter file?"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide voter registration list from the Secretary of State's office. Alternatively, specific county files can be purchased directly from the local Circuit Clerks. The list includes voter names, addresses, and voting history, and its use is restricted to political and election purposes.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in Mississippi for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Mississippi?",
+      "MS individual donation caps 2026 election",
+      "Maximum donation to state legislature Mississippi"
+    ],
+    "answer": "Mississippi is highly distinctive for having NO limits on individual campaign contributions. Individuals and Political Action Committees (PACs) may contribute completely unlimited amounts of money to candidates for state and local office.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Mississippi",
+    "source_name": "Ballotpedia / Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Mississippi?",
+    "question_variants": [
+      "Where do I file campaign finance reports in MS?",
+      "Does the MS Secretary of State handle campaign finance?",
+      "Who oversees Mississippi political donations?"
+    ],
+    "answer": "Campaign finance disclosure in Mississippi is administered by the Secretary of State's Office. All candidates, political committees, and PACs must file their contribution and expenditure reports with the SOS.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/campaign-finance",
+    "source_name": "Mississippi Secretary of State - Campaign Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Mississippi campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Mississippi state",
+      "Can a business donate to my campaign in MS?",
+      "Corporate campaign finance rules Mississippi"
+    ],
+    "answer": "Yes, direct corporate contributions are permitted, but they are uniquely capped. Under Miss. Code § 97-13-15, corporations are prohibited from contributing in excess of $1,000 per calendar year to any candidate, political party, or committee. In contrast, unions and individuals can donate unlimited amounts.",
+    "source_url": "https://law.justia.com/codes/mississippi/title-97/chapter-13/section-97-13-15/",
+    "source_name": "Miss. Code § 97-13-15",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Mississippi candidates?",
+    "question_variants": [
+      "MS filing dates 2026",
+      "When are campaign finance reports due in MS?",
+      "Mississippi pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates must file periodic reports with the Secretary of State. A pre-election report is due by the 7th day before any election (complete through the 10th day before). Additionally, an annual report covering the entire calendar year is due by January 31 of the following year.",
+    "source_url": "https://www.c4integrity.org/wp-content/uploads/2022/06/Mississippi-State-Report-FINAL-2022.pdf",
+    "source_name": "Miss. Code § 23-15-807",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Mississippi provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Mississippi Governor",
+      "State funded campaigns Mississippi status",
+      "Government campaign grants MS"
+    ],
+    "answer": "No. Mississippi does not have a system of public financing or matching funds for state-level political campaigns. Candidates must rely entirely on private contributions.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/campaign-finance",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Mississippi?",
+    "question_variants": [
+      "MS personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in MS?",
+      "Prohibited expenditures Mississippi"
+    ],
+    "answer": "Yes. Legislation enacted in 2017 defines and strictly prohibits the 'personal use' of campaign funds by candidates or officeholders. The Mississippi Ethics Commission enforces this prohibition and can assess penalties for violations.",
+    "source_url": "https://www.ethics.ms.gov/campaignfinance",
+    "source_name": "Mississippi Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Does Mississippi require campaigns to file their finance reports online?",
+    "question_variants": [
+      "Mississippi mandatory online campaign finance filing",
+      "How to file campaign reports in MS",
+      "Can I mail a paper finance report to the SOS in Mississippi?"
+    ],
+    "answer": "While the Secretary of State heavily encourages online filing through their portal, Mississippi's campaign finance laws have historically been lax regarding format, often allowing candidates to file scanned, handwritten paper reports. Legislative reform efforts have repeatedly attempted to mandate electronic filing to improve public transparency.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/campaign-finance",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Mississippi's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "Mississippi 48-hour large contribution report",
+      "Late contribution reporting Mississippi SOS",
+      "When do I file a rapid report in MS?"
+    ],
+    "answer": "Under Miss. Code § 23-15-807(f)(i), candidates who receive a contribution exceeding $200 between the 10th day and the 2nd day prior to an election must disclose the date, amount, and contributor identification within 48 hours of receipt.",
+    "source_url": "https://www.c4integrity.org/wp-content/uploads/2022/06/Mississippi-State-Report-FINAL-2022.pdf",
+    "source_name": "Miss. Code § 23-15-807",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Mississippi maintain its voter registration lists?",
+    "question_variants": [
+      "MS voter list maintenance rules",
+      "How are inactive voters handled in Mississippi?",
+      "Mississippi voter roll cleaning process"
+    ],
+    "answer": "Mississippi election commissioners conduct voter list maintenance using NCOA data, death records, and felony conviction reports. Under legislation passed in 2023 (HB 1310), voters who fail to vote in an election cycle may be sent a confirmation notice and moved to 'inactive' status. If an inactive voter does not respond or vote in any election over the next four years (spanning two general federal elections), their registration is purged from the rolls.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State - Voter Roll Maintenance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Mississippi's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the MS legislature draw district maps?",
+      "Who has the authority to draw district lines in Mississippi?",
+      "Mississippi redistricting commission"
+    ],
+    "answer": "In Mississippi, the state legislature holds the primary authority to draw both congressional and state legislative districts, subject to the Governor's veto. If the legislature fails to reapportion state legislative districts, a five-member backup commission (Chief Justice, Attorney General, Secretary of State, Speaker of the House, and President Pro Tempore) assumes the responsibility.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Mississippi",
+    "source_name": "Ballotpedia - Redistricting in Mississippi",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Mississippi?",
+    "question_variants": [
+      "Standards for drawing Mississippi district lines",
+      "Mississippi gerrymandering rules",
+      "Map requirements MS"
+    ],
+    "answer": "Under the Mississippi Constitution and federal law, state legislative and congressional districts must be contiguous, compact, and adhere to strict population equality standards. They must also strictly comply with the federal Voting Rights Act to ensure minority voting strength is not diluted.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Mississippi",
+    "source_name": "Mississippi Constitution Article 13",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are there any special state legislative elections in Mississippi for 2025 or 2026 due to redistricting?",
+    "question_variants": [
+      "Mississippi court-ordered redistricting 2025",
+      "Are there pending redistricting lawsuits in Mississippi?",
+      "MS Senate majority-Black districts litigation"
+    ],
+    "answer": "Yes. Following a successful federal lawsuit under the Voting Rights Act alleging the dilution of Black voting power, a federal court struck down portions of the 2022 state legislative maps. The court ordered the creation of two new majority-Black Senate districts and one new majority-Black House district, with special elections for these specific districts mandated for November 2025.",
+    "source_url": "https://www.democracydocket.com/news-alerts/federal-court-orders-new-black-opportunity-districts-in-mississippi/",
+    "source_name": "Democracy Docket - Mississippi Redistricting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Is the Mississippi congressional map subject to ongoing litigation?",
+    "question_variants": [
+      "Mississippi US House map lawsuits",
+      "Is the MS congressional map operative for 2026?",
+      "VRA challenges to Mississippi congressional districts"
+    ],
+    "answer": "Yes. The congressional map enacted by the legislature after the 2020 census has faced ongoing federal litigation under the Voting Rights Act. Plaintiffs argue the map dilutes Black voting strength and seek the creation of a second majority-Black or strong influence district. The outcome of this litigation may affect the operative maps for the 2026 cycle.",
+    "source_url": "https://www.democracydocket.com/cases/mississippi-congressional-redistricting-challenge/",
+    "source_name": "Democracy Docket - MS Congressional Map",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Mississippi have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Mississippi be recalled?",
+      "How to recall a state senator in MS",
+      "Statewide recall election rules Mississippi"
+    ],
+    "answer": "No. The State of Mississippi does not have any legal or constitutional mechanism for the recall of state-level elected officials, including the Governor, statewide executives, or members of the state legislature.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Mississippi",
+    "source_name": "Laws governing recall in Mississippi",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Mississippi?",
+    "question_variants": [
+      "Mississippi county supervisor recall rules",
+      "Signature requirement local recall Mississippi",
+      "Recalling a mayor in MS"
+    ],
+    "answer": "Mississippi does not have a statutory recall process for any local, county, or municipal elected officials. Impeachment, resignation, or criminal conviction are the only methods for removal from local office outside of a scheduled election.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Mississippi",
+    "source_name": "Laws governing recall in Mississippi",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Mississippi have a functional citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the MS ballot",
+      "Mississippi citizen initiative signature requirements",
+      "Why is the Mississippi initiative process defunct?"
+    ],
+    "answer": "No. Mississippi's citizen initiative process is effectively defunct. In the 2021 case Harness v. Watson, the Mississippi Supreme Court ruled the initiative process unconstitutional because the constitutional signature requirements were based on having five congressional districts, while Mississippi currently only has four. The legislature has subsequently failed to pass a constitutional amendment to fix this mathematical discrepancy.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Mississippi",
+    "source_name": "Harness v. Watson (2021) / Ballotpedia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Has the Mississippi legislature restored the citizen initiative process?",
+    "question_variants": [
+      "Did the MS legislature fix the ballot initiative?",
+      "Current status of citizen initiatives in Mississippi",
+      "Will there be citizen initiatives on the 2026 MS ballot?"
+    ],
+    "answer": "No. Following the 2021 Supreme Court ruling that invalidated the initiative process, the Mississippi legislature has failed in every subsequent session to pass a compromise bill or constitutional amendment to restore it. As of the 2026 cycle, citizens still lack the ability to place measures on the statewide ballot.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Mississippi",
+    "source_name": "Mississippi Legislative Updates",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Mississippi legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Mississippi",
+      "Referendum by legislature MS",
+      "Can the MS legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The Mississippi State Legislature can propose a constitutional amendment by securing a two-thirds supermajority vote in both the House of Representatives and the State Senate. The amendment is then referred directly to the voters on the general election ballot without requiring the Governor's signature.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Constitution Article 15",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Mississippi?",
+    "question_variants": [
+      "Mississippi ballot measure pass threshold",
+      "Does a measure need a supermajority in MS?",
+      "Majority vote requirements Mississippi ballot measures"
+    ],
+    "answer": "In Mississippi, legislatively referred constitutional amendments require only a simple majority (over 50%) of the total votes cast on that specific measure to pass.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Mississippi?",
+    "question_variants": [
+      "Requirements to run for MS Secretary of State",
+      "Who can run for Secretary of State in MS?",
+      "Residency rules for Mississippi SOS"
+    ],
+    "answer": "Under Article 5, Section 133 of the Mississippi Constitution, a candidate for Secretary of State must be at least 25 years old and a citizen of the state for at least five years preceding the election.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Constitution Article 5, Section 133",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in Mississippi?",
+    "question_variants": [
+      "Eligibility for Mississippi State Treasurer",
+      "Who can run for State Treasurer in MS?",
+      "Mississippi Treasurer residency requirements"
+    ],
+    "answer": "Under Article 5, Section 134 of the Mississippi Constitution, a candidate for State Treasurer must be at least 25 years old and a citizen of the state for at least five years preceding the election.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Constitution Article 5, Section 134",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the Commissioner of Agriculture and Commerce in Mississippi, and what are the qualifications?",
+    "question_variants": [
+      "What does the MS Agriculture Commissioner do?",
+      "Qualifications for Mississippi Ag Commissioner",
+      "Is the Ag Commissioner elected in MS?"
+    ],
+    "answer": "The Commissioner of Agriculture and Commerce is a statewide elected executive officer in Mississippi. By statute, candidates must possess a general knowledge of agriculture, mining, and manufacturing. They must also meet the standard age requirement of 25 years old and be a state citizen for five years.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Mississippi?",
+    "question_variants": [
+      "Run for school board Mississippi requirements",
+      "Who can be a school board member in MS?",
+      "School board residency rules Mississippi"
+    ],
+    "answer": "To run for a local school board in Mississippi, a candidate must be a qualified elector (registered voter) of the state and a resident of the specific school district they seek to represent at the time they assume office.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Secretary of State - Candidate Forms",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for Mississippi Supreme Court justices?",
+    "question_variants": [
+      "Mississippi Supreme Court Justice eligibility",
+      "Years of practice required for MS Supreme Court",
+      "Are Mississippi judges elected or appointed?"
+    ],
+    "answer": "Mississippi Supreme Court Justices are elected in nonpartisan elections. Candidates must be at least 30 years of age, a practicing attorney in Mississippi for at least five years, and a citizen of the state for at least five years preceding the election.",
+    "source_url": "https://www.sos.ms.gov/elections-and-voting/candidate-referenda-information/candidate-qualifying-forms",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Mississippi?",
+    "question_variants": [
+      "How to fix a rejected signature in MS",
+      "Mississippi ballot cure process deadline",
+      "Missing signature on MS mail ballot"
+    ],
+    "answer": "Following a 2020 legal settlement, Mississippi enacted a signature cure process. If a voter's signature on an absentee ballot envelope is missing or does not match the signature on their absentee application, the Circuit Clerk must notify the voter. The voter then has until five (5) business days after the election to cure the discrepancy for the ballot to be counted.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/absentee-voting",
+    "source_name": "Mississippi Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Mississippi?",
+    "question_variants": [
+      "When are military ballots due in Mississippi?",
+      "UOCAVA return deadline MS",
+      "Overseas voting rules Mississippi state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. They may return their ballots via mail, email, or fax. If returned by mail, the ballot must be postmarked by Election Day and received by the Circuit Clerk within five (5) business days following the election.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/uocava",
+    "source_name": "Mississippi Secretary of State - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Mississippi?",
+    "question_variants": [
+      "What is an affidavit ballot in MS?",
+      "Voting without ID Mississippi",
+      "When do election workers issue affidavit ballots?"
+    ],
+    "answer": "In Mississippi, provisional ballots are officially termed 'Affidavit Ballots.' They are issued if a voter's name is not on the poll book or if the voter fails to present an acceptable government-issued photo ID. The voter casts the ballot and signs an affidavit affirming their eligibility.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State - Affidavit Ballots",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ID cure process for affidavit ballots in Mississippi?",
+    "question_variants": [
+      "How to fix a rejected affidavit ballot in MS",
+      "Mississippi ID cure deadline",
+      "Bringing ID after election day MS"
+    ],
+    "answer": "If a voter casts an Affidavit Ballot because they lacked an acceptable photo ID at the polls, they have a strict five (5) business day window following Election Day to visit the local Circuit Clerk's office and present a valid photo ID to ensure their vote is counted.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/voter-id",
+    "source_name": "Mississippi Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Mississippi have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Mississippi DMV?",
+      "MS motor voter automatic registration",
+      "Do I have to register to vote if I get an MS driver's license?"
+    ],
+    "answer": "No. Mississippi does not have Automatic Voter Registration (AVR). While the Department of Public Safety (DPS) offers eligible citizens the opportunity to register to vote when applying for a license (in compliance with federal Motor Voter laws), voters must actively opt-in and complete the registration paperwork.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Mississippi offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in MS?",
+      "Mississippi electronic voter registration",
+      "Y'all Vote MS online registration portal"
+    ],
+    "answer": "No. Mississippi is one of the few remaining states that DOES NOT offer full online voter registration for new voters. The Secretary of State's 'Y'all Vote' online portal only allows *existing* registered voters to update their address or information; new registrations must be submitted via paper form.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State - Y'all Vote",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return a non-UOCAVA absentee ballot in Mississippi?",
+    "question_variants": [
+      "When is the last day to mail my ballot in MS?",
+      "Mississippi mail ballot postmark deadline",
+      "What time are absentee ballots due in Mississippi?"
+    ],
+    "answer": "For civilian absentee voters using the mail (who have a valid excuse), the voted ballot must be postmarked on or before Election Day and received by the Circuit Clerk's office no later than five (5) business days after the election.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/absentee-voting",
+    "source_name": "Mississippi Secretary of State - Absentee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Mississippi?",
+    "question_variants": [
+      "Does Mississippi use ranked choice voting?",
+      "RCV status in Mississippi 2026",
+      "Instant runoff voting MS"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is not used in Mississippi. The state relies entirely on a traditional primary and general election runoff system, requiring a 50%+1 majority to win outright, rather than utilizing instant runoff tabulations.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in Mississippi elections?",
+    "question_variants": [
+      "How are tied elections decided in Mississippi?",
+      "Tie-breaker rules Mississippi elections",
+      "What happens if a race is tied in MS?"
+    ],
+    "answer": "In the extremely rare event of an exact tie in a general election or a runoff, Mississippi law dictates that the winner is determined by drawing lots (e.g., flipping a coin or drawing straws). This process is overseen by the relevant election commissioners.",
+    "source_url": "https://law.justia.com/codes/mississippi/title-23/chapter-15/article-19/subarticle-e/section-23-15-605/",
+    "source_name": "Miss. Code § 23-15-605",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Mississippi campaign materials?",
+    "question_variants": [
+      "Mississippi 'Paid for by' rules",
+      "Campaign ad disclaimer requirements MS",
+      "Political taglines Mississippi SOS"
+    ],
+    "answer": "Mississippi campaign finance law requires that all printed political materials, broadcast advertisements, and digital ads clearly indicate the individual or committee responsible for funding the communication. Disclaimers must prominently feature a 'Paid for by' statement.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/campaign-finance",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Mississippi?",
+    "question_variants": [
+      "MS campaign coordination rules",
+      "When is a PAC expenditure not independent in Mississippi?",
+      "Prohibition on candidate-PAC coordination MS"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if the spending is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. While coordinated expenditures are legal due to the lack of individual contribution limits, they must be fully disclosed by the campaign as in-kind contributions.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/campaign-finance",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Mississippi?",
+    "question_variants": [
+      "MS Ethics Commission late fee",
+      "Penalty for missing a Mississippi campaign finance deadline",
+      "SOS fine for late filing MS"
+    ],
+    "answer": "The Mississippi Ethics Commission assesses mandatory civil penalties for late reports. Beginning on the 10th calendar day after a report is due, the delinquent candidate or committee is assessed a civil penalty of $50 per day until a valid report is delivered, subject to statutory maximums.",
+    "source_url": "https://www.ethics.ms.gov/campaignfinance",
+    "source_name": "Mississippi Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Mississippi campaign committee terminate?",
+    "question_variants": [
+      "Closing a Mississippi campaign committee",
+      "SOS committee termination requirements",
+      "Final campaign finance report Mississippi"
+    ],
+    "answer": "A candidate committee may formally terminate its registration when it will no longer receive contributions or make expenditures. The committee must disburse all remaining funds legally, achieve a zero cash balance, and file a formal Termination Report with the Secretary of State.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/campaign-finance",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Mississippi?",
+    "question_variants": [
+      "MS independent expenditure reporting SOS",
+      "Disclosure for MS independent expenditure groups",
+      "Reporting thresholds for outside spending Mississippi"
+    ],
+    "answer": "Any person or committee making independent expenditures exceeding $200 must file detailed disclosure reports. If the expenditure is made after the 10th day, but more than 48 hours before an election, it triggers rapid 48-hour reporting requirements to the Secretary of State.",
+    "source_url": "https://www.c4integrity.org/wp-content/uploads/2022/06/Mississippi-State-Report-FINAL-2022.pdf",
+    "source_name": "Miss. Code § 23-15-809",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Mississippi?",
+    "question_variants": [
+      "Mississippi in-kind contribution valuation rules",
+      "Reporting non-monetary donations Mississippi campaign",
+      "Fair market value for in-kind gifts MS"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported on campaign finance disclosures at their reasonable fair market value. They are reported simultaneously as both a receipt and an expenditure in the applicable reporting period.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/campaign-finance",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Mississippi?",
+    "question_variants": [
+      "Mississippi candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in MS?",
+      "Reporting candidate loans in SOS"
+    ],
+    "answer": "Because Mississippi has no individual contribution limits, a candidate may loan or contribute completely unlimited amounts of their own personal funds to their campaign. Loans must be properly documented on disclosure reports and can be repaid from future campaign contributions.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/campaign-finance",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Mississippi candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in MS?",
+      "MS surplus campaign funds rules",
+      "Donating remaining campaign funds Mississippi"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain surplus funds for a future campaign, return them pro-rata to contributors, transfer them to a recognized political party, or donate them to an IRS-recognized tax-exempt charitable organization.",
+    "source_url": "https://www.ethics.ms.gov/campaignfinance",
+    "source_name": "Mississippi Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Mississippi legislators?",
+    "question_variants": [
+      "Can Mississippi legislators raise money during session?",
+      "Lobbyist contribution ban MS legislature",
+      "Legislative session contribution rules Mississippi"
+    ],
+    "answer": "No. Unlike some states, Mississippi DOES NOT have a statutory 'session freeze' that broadly prohibits legislators from accepting campaign contributions while the legislature is in regular session.",
+    "source_url": "https://www.sos.ms.gov/elections-voting/campaign-finance",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "MS",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Mississippi?",
+    "question_variants": [
+      "When are county sheriffs elected in MS?",
+      "Mississippi county official term lengths",
+      "Are county supervisors on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Mississippi—including Sheriffs, Chancery Clerks, Circuit Clerks, and County Supervisors—serve four-year terms and are elected entirely on the odd-year cycle (e.g., 2023, 2027). Therefore, there are NO regular county executive elections on the 2026 midterm ballot.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Mississippi elections?",
+    "question_variants": [
+      "When are Mississippi election results official?",
+      "MS certification deadline",
+      "State Board of Election Commissioners meeting Mississippi"
+    ],
+    "answer": "County Election Commissioners must complete their canvass and transmit certified local results to the Secretary of State within 10 days of the election. The State Board of Election Commissioners must then meet to officially certify statewide and federal election returns within 30 days of the election.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State - Canvass",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "MS",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Mississippi?",
+    "question_variants": [
+      "Mississippi special election timeline",
+      "Who calls a special election to fill a US House vacancy in MS?",
+      "Filling a midterm vacancy Mississippi"
+    ],
+    "answer": "Special elections to fill federal or state legislative vacancies are called by a writ of election from the Governor. These elections are conducted as nonpartisan blanket elections where all candidates appear on a single ballot without party labels. If no candidate secures 50%+1, a runoff is held.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "MS",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who sits on the Mississippi State Board of Election Commissioners?",
+    "question_variants": [
+      "Who certifies statewide elections in MS?",
+      "Mississippi Board of Election Commissioners composition",
+      "Who oversees the Secretary of State in MS elections?"
+    ],
+    "answer": "The Mississippi State Board of Election Commissioners is a three-member executive body responsible for ruling on candidate qualifications, ballot access, and certifying statewide election results. It is composed of the Governor, the Secretary of State, and the Attorney General.",
+    "source_url": "https://www.sos.ms.gov/elections-voting",
+    "source_name": "Mississippi Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  }
+]
