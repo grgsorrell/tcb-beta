@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Tennessee have an open or closed primary system?",
+    "question_variants": [
+      "Tennessee primary voting rules",
+      "Do I have to register with a party to vote in the TN primary?",
+      "Can unaffiliated voters participate in the Tennessee primary?"
+    ],
+    "answer": "Tennessee operates an open primary system. Voters are not required to register with a specific political party. Under state law, any registered voter may request the primary ballot of their choice at the polling place, provided they declare their allegiance to the party's principles at the time of voting.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Secretary of State - Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Tennessee hold primary runoff elections?",
+    "question_variants": [
+      "What is the threshold to win a primary in TN?",
+      "Does Tennessee require a majority to win a primary?",
+      "Tennessee primary runoff rules"
+    ],
+    "answer": "No. Tennessee does not hold primary runoff elections. A candidate does not need to secure a 50%+1 majority to win the party's nomination; the candidate who receives a simple plurality of the votes in the primary advances directly to the general election.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Secretary of State - Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All primary candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Tennessee?",
+    "question_variants": [
+      "Do write-in votes count in TN?",
+      "How to register as a write-in candidate in Tennessee",
+      "Write-in filing deadline Tennessee"
+    ],
+    "answer": "Yes, but they must meet strict filing requirements. To have their votes tabulated in the general election, a write-in candidate must file a formal Certificate of Write-In Candidacy with the Coordinator of Elections (for state/federal offices) or the local county election commission no later than noon on the 50th day before the general election.",
+    "source_url": "https://sos.tn.gov/elections/guides/where-to-file-candidate-nominating-petitions",
+    "source_name": "Tennessee Secretary of State - Candidate Guides",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for Tennessee in 2026?",
+    "question_variants": [
+      "When do candidates file for office in Tennessee?",
+      "Tennessee filing deadline 2026",
+      "Last day to file nominating petitions TN"
+    ],
+    "answer": "To appear on the 2026 primary or general election ballot, all major party and independent candidates must file their original nominating petitions by noon on April 2, 2026 (the first Thursday in April). Note that historically the deadline is strictly enforced with no grace period.",
+    "source_url": "https://sos.tn.gov/elections/calendar",
+    "source_name": "Tennessee Secretary of State - Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for independent candidates in Tennessee?",
+    "question_variants": [
+      "Independent candidate ballot access Tennessee",
+      "Running without a party in TN 2026",
+      "How many signatures for independent US Senate TN"
+    ],
+    "answer": "Tennessee has one of the lowest signature thresholds in the nation. Independent candidates for most state and federal offices (including U.S. Senate, Governor, U.S. House, and state legislature) need only gather 25 valid signatures from registered voters in their district to qualify for the general election ballot.",
+    "source_url": "https://sos.tn.gov/elections/guides/how-to-run-for-tennessee-governor",
+    "source_name": "Tennessee Secretary of State - Candidate Guides",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Tennessee have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the TN primary?",
+      "Tennessee sore loser statute",
+      "General election ballot access after primary defeat TN"
+    ],
+    "answer": "Yes. Tennessee strictly enforces a sore loser law under T.C.A. § 2-5-101(f)(4). A candidate who seeks a party's nomination in a primary election and is defeated cannot subsequently have their name placed on the general election ballot as an independent candidate or as a write-in candidate for the same office.",
+    "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-5/part-1/section-2-5-101/",
+    "source_name": "Tennessee Code Annotated § 2-5-101",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Which statewide executive officers are elected by Tennessee voters?",
+    "question_variants": [
+      "Are the Secretary of State and Treasurer elected in TN?",
+      "Tennessee statewide executive elections",
+      "Does the Governor run alone on the TN ballot?"
+    ],
+    "answer": "In a major constitutional distinctive, the Governor is the ONLY statewide executive officer elected by the voters of Tennessee. The Secretary of State, State Treasurer, and Comptroller of the Treasury are all appointed by a joint vote of the General Assembly. The Attorney General is appointed by the State Supreme Court.",
+    "source_url": "https://sos.tn.gov/about-the-office",
+    "source_name": "Tennessee Secretary of State - About the Office",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Tennessee?",
+    "question_variants": [
+      "Tennessee joint ticket rules",
+      "How are Lt Gov candidates selected in TN?",
+      "Does the Governor pick a running mate in Tennessee?"
+    ],
+    "answer": "No. Tennessee does not hold elections for Lieutenant Governor. By statute and constitutional tradition, the presiding Speaker of the State Senate automatically assumes the title and duties of the Lieutenant Governor. Therefore, the position is chosen internally by the State Senate, not by the state's voters.",
+    "source_url": "https://www.capitol.tn.gov/senate/speaker.html",
+    "source_name": "Tennessee General Assembly - Speaker of the Senate",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Tennessee for 2026?",
+    "question_variants": [
+      "Tennessee primary date 2026",
+      "When is Election Day 2026 in Tennessee?",
+      "August primary Tennessee"
+    ],
+    "answer": "The Tennessee state and federal primary election is Thursday, August 6, 2026 (Tennessee traditionally holds its primary on the first Thursday in August). The general election is Tuesday, November 3, 2026. Polls open at varying times by county but universally close at 8:00 p.m. Eastern Time (7:00 p.m. Central Time).",
+    "source_url": "https://sos.tn.gov/elections/calendar",
+    "source_name": "Tennessee Secretary of State - Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Bill Lee running for re-election in 2026?",
+    "question_variants": [
+      "Tennessee Governor election 2026",
+      "Who is defending the TN Governor seat?",
+      "Is Bill Lee term limited?"
+    ],
+    "answer": "No. Governor Bill Lee (R) is term-limited and cannot seek a third consecutive term. Under the Tennessee Constitution, Governors are restricted to two consecutive four-year terms. The 2026 gubernatorial election is an open-seat race.",
+    "source_url": "https://ballotpedia.org/Governor_of_Tennessee",
+    "source_name": "Ballotpedia - Governor of Tennessee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Tennessee in 2026?",
+    "question_variants": [
+      "Is Marsha Blackburn up for re-election in 2026?",
+      "When is Bill Hagerty's next election?",
+      "Tennessee US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Bill Hagerty (R) is up for election in 2026. Senator Marsha Blackburn (Class 1) completed her term through 2024; the Class 1 seat will not appear on the ballot again until 2030.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Tennessee for the 2026 election?",
+    "question_variants": [
+      "Tennessee congressional apportionment",
+      "Are all TN congressional seats up in 2026?",
+      "Number of US Representatives from Tennessee"
+    ],
+    "answer": "Tennessee is apportioned 9 U.S. House districts. All nine seats are on the 2026 ballot, as U.S. Representatives serve two-year terms. Note that the congressional maps faced significant volatility in May 2026 due to mid-decade redistricting.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Tennessee State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Tennessee House seats up in 2026?",
+      "Tennessee Senate election cycle 2026",
+      "Which legislative districts are on the ballot in TN?"
+    ],
+    "answer": "All 99 seats in the Tennessee House of Representatives (2-year terms) are up for election in 2026. The Tennessee State Senate has 33 members serving 4-year staggered terms; in 2026, the 17 odd-numbered districts are on the ballot.",
+    "source_url": "https://www.capitol.tn.gov/",
+    "source_name": "Tennessee General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Tennessee Supreme Court justices selected and are they on the ballot?",
+    "question_variants": [
+      "Tennessee Plan judicial retention elections",
+      "How are judges selected in Tennessee?",
+      "Do TN Supreme Court judges run in partisan elections?"
+    ],
+    "answer": "Tennessee utilizes a modified Missouri Plan (known as the 'Tennessee Plan'). Supreme Court justices are appointed by the Governor, confirmed by the General Assembly, and subsequently face a statewide 'Yes/No' retention election every eight years. They do not run in competitive partisan elections.",
+    "source_url": "https://www.tncourts.gov/about/judicial-selection",
+    "source_name": "Tennessee State Courts - Judicial Selection",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Tennessee State Legislature sessions?",
+    "question_variants": [
+      "When does the TN legislature meet?",
+      "Tennessee 90 day legislative session",
+      "Is the Tennessee legislature full time?"
+    ],
+    "answer": "The Tennessee General Assembly is a part-time legislature. It convenes annually on the second Tuesday in January. By the state constitution, legislators are limited to 90 'legislative days' (days when the chambers actually meet in formal session) across a two-year General Assembly period.",
+    "source_url": "https://www.capitol.tn.gov/about/legislature.html",
+    "source_name": "Tennessee General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Tennessee?",
+    "question_variants": [
+      "Age and residency for Tennessee Governor",
+      "Tennessee Constitution Article III Governor qualifications",
+      "Who is eligible to be Governor of TN?"
+    ],
+    "answer": "Under Article III, Section 3 of the Tennessee Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States, and a citizen of Tennessee for at least seven years continuously preceding their election.",
+    "source_url": "https://sos.tn.gov/elections/guides/how-to-run-for-tennessee-governor",
+    "source_name": "Tennessee Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Tennessee State Legislature?",
+    "question_variants": [
+      "Qualifications for TN State Representative",
+      "Age requirement Tennessee State Senate",
+      "Do I have to live in my district to run in TN?"
+    ],
+    "answer": "Under Article II of the Tennessee Constitution, a candidate for the State Senate must be at least 30 years old. A candidate for the State House must be at least 21 years old. Both must be U.S. citizens, residents of Tennessee for three years, and residents of their specific district for at least one year immediately preceding the election.",
+    "source_url": "https://sos.tn.gov/elections/guides/qualifications-for-all-elected-offices",
+    "source_name": "Tennessee Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Tennessee?",
+    "question_variants": [
+      "US Senate residency requirements Tennessee",
+      "Age to run for Congress in Tennessee",
+      "Federal constitutional requirements for TN candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://sos.tn.gov/elections/guides/qualifications-for-all-elected-offices",
+    "source_name": "Tennessee Secretary of State - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Tennessee Governor?",
+    "question_variants": [
+      "How many terms can a Tennessee Governor serve?",
+      "Bill Lee term limits TN",
+      "Tennessee executive term limit law"
+    ],
+    "answer": "Under Article III, Section 4 of the Tennessee Constitution, the Governor is limited to serving two consecutive four-year terms. After serving two consecutive terms, an individual may run for the office again after a four-year break.",
+    "source_url": "https://ballotpedia.org/Governor_of_Tennessee",
+    "source_name": "Ballotpedia - Governor of Tennessee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Tennessee have legislative term limits?",
+    "question_variants": [
+      "How many terms can a Tennessee state senator serve?",
+      "Are there term limits for the Tennessee House?",
+      "Tennessee legislature term limit status"
+    ],
+    "answer": "No. Tennessee does not impose term limits on members of the State Senate or the State House of Representatives. State legislators may serve an unlimited number of terms as long as they continue to win re-election.",
+    "source_url": "https://www.capitol.tn.gov/",
+    "source_name": "Tennessee General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Tennessee?",
+    "question_variants": [
+      "Tennessee county commissioner qualifications",
+      "Can I run for county board in TN?",
+      "County residency for TN officials"
+    ],
+    "answer": "To run for a county office (such as County Mayor or County Commissioner) in Tennessee, a candidate must be a qualified voter of the county and a resident of the county for at least one full year prior to the date of the qualifying deadline. They must also maintain residency throughout the term.",
+    "source_url": "https://sos.tn.gov/elections/guides/qualifications-for-all-elected-offices",
+    "source_name": "Tennessee Secretary of State - Local Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Tennessee?",
+    "question_variants": [
+      "Tennessee voter ID requirements",
+      "Do I need my driver's license to vote in TN?",
+      "Acceptable ID for Tennessee in-person voting"
+    ],
+    "answer": "Yes. Tennessee maintains a strict photo ID requirement. Voters must present a state or federally issued photo ID, such as a Tennessee driver's license, U.S. passport, or military ID. Student IDs and out-of-state driver's licenses are NOT acceptable forms of identification for voting.",
+    "source_url": "https://sos.tn.gov/elections/services/photo-id-requirements",
+    "source_name": "Tennessee Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Tennessee a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Tennessee?",
+      "Tennessee vote-by-mail system",
+      "Do I need an excuse to vote absentee in TN?"
+    ],
+    "answer": "No. Tennessee is NOT a universal mail ballot state, and it expressly prohibits no-excuse absentee voting. A registered voter must satisfy a specific statutory excuse to request a mail-in absentee ballot, such as being over 60 years old, hospitalized, disabled, or observing a religious holiday.",
+    "source_url": "https://sos.tn.gov/elections/guides/guide-to-absentee-voting",
+    "source_name": "Tennessee Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Tennessee offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in TN?",
+      "Tennessee early voting dates 2026",
+      "How long is early voting in Tennessee?"
+    ],
+    "answer": "Yes. Tennessee offers a robust early voting period for all registered voters without requiring an excuse. Early in-person voting typically begins 20 days before an election and ends five days prior to Election Day, providing approximately a 14-day window for voters to cast ballots at designated locations.",
+    "source_url": "https://sos.tn.gov/elections/voter-information",
+    "source_name": "Tennessee Secretary of State - Voter Information",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee ballot in Tennessee?",
+    "question_variants": [
+      "When is the last day to mail my ballot in TN?",
+      "Tennessee mail ballot postmark deadline",
+      "What time are ballots due in Tennessee?"
+    ],
+    "answer": "Tennessee strictly requires that all absentee mail-in ballots be RECEIVED by the county election commission by the close of polls (8:00 p.m. ET / 7:00 p.m. CT) on Election Day. A postmark on Election Day is not sufficient; ballots arriving late are rejected. Furthermore, ballots must be returned by mail or commercial carrier; hand delivery is explicitly prohibited by law.",
+    "source_url": "https://sos.tn.gov/elections/guides/guide-to-absentee-voting",
+    "source_name": "Tennessee Secretary of State - Absentee Guidelines",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Tennessee offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in TN",
+      "Tennessee same day voter registration",
+      "Voter registration deadline 2026 Tennessee"
+    ],
+    "answer": "The deadline to register to vote in Tennessee is 30 days before the election. Registration can be completed online, by mail, or in person. Tennessee DOES NOT offer same-day voter registration at the polls.",
+    "source_url": "https://sos.tn.gov/elections/voter-information",
+    "source_name": "Tennessee Secretary of State - Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Tennessee?",
+    "question_variants": [
+      "How close can I campaign to a polling place in TN?",
+      "Tennessee 100 feet electioneering rule",
+      "TN buffer zone around voting centers"
+    ],
+    "answer": "Under Tennessee law, a 'campaign free zone' is established 100 feet from the exterior entrance of any polling place. Distributing campaign literature, displaying signs, and soliciting votes within this boundary is prohibited while the polls are open.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Tennessee?",
+    "question_variants": [
+      "Can felons vote in Tennessee state?",
+      "Felony voting rights restoration TN",
+      "Voting on parole in Tennessee"
+    ],
+    "answer": "Tennessee maintains one of the most complex and restrictive felony disenfranchisement laws in the country. Restoration of voting rights requires the individual to complete their sentence, pay all court-ordered restitution and court costs, and importantly, remain current on all child support payments. Some specific felonies result in a permanent loss of voting rights.",
+    "source_url": "https://sos.tn.gov/elections/guides/restoration-of-voting-rights",
+    "source_name": "Tennessee Secretary of State - Restoration of Rights",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "TN",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Tennessee, and why does it matter for campaigns?",
+    "question_variants": [
+      "Tennessee county election administration",
+      "How many county election commissions in TN?",
+      "Local election control Tennessee"
+    ],
+    "answer": "Tennessee has 95 counties. Statewide campaigns must coordinate heavily with 95 separate, bipartisan County Election Commissions. These local bodies appoint the Administrator of Elections and manage early voting sites, Election Day logistics, and the processing of absentee ballots.",
+    "source_url": "https://sos.tn.gov/elections/county-election-commissions",
+    "source_name": "Tennessee Secretary of State - County Commissions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Tennessee voter file?",
+    "question_variants": [
+      "Tennessee voter database access cost",
+      "How to get the voter list in TN",
+      "What data is included in the Tennessee voter file?"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide voter registration list directly from the Secretary of State's Division of Elections. The file includes voter names, addresses, and voting history, and requires submission of an order form with an administrative fee.",
+    "source_url": "https://sos.tn.gov/elections/services/purchasing-voter-lists",
+    "source_name": "Tennessee Secretary of State - Voter Lists",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in Tennessee for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Tennessee?",
+      "TN individual donation caps 2026 election",
+      "Maximum donation to state legislature Tennessee"
+    ],
+    "answer": "Tennessee imposes strict contribution limits that are periodically adjusted for inflation. For the 2025-2026 cycle, individuals are capped at donating $5,300 per election to a candidate for statewide office (like Governor), and $1,900 per election to a candidate for State Senate or State House. Primary and general elections are counted separately.",
+    "source_url": "https://www.tn.gov/content/dam/tn/tref/documents/2025%202026%20contribution%20limits%20changes.June2025.pdf",
+    "source_name": "Tennessee Registry of Election Finance - Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Tennessee campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Tennessee state",
+      "Can a business donate to my campaign in TN?",
+      "Corporate campaign finance rules Tennessee"
+    ],
+    "answer": "No. Direct contributions to candidates from corporate general treasuries are explicitly PROHIBITED under T.C.A. § 2-19-132. To participate financially in Tennessee state elections, corporations must establish and register a separate Political Action Committee (PAC).",
+    "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-19/part-1/section-2-19-132/",
+    "source_name": "Tennessee Code Annotated § 2-19-132",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Tennessee?",
+    "question_variants": [
+      "Where do I file campaign finance reports in TN?",
+      "What is the Tennessee Registry of Election Finance?",
+      "Does the TN Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Tennessee are administered by the Tennessee Bureau of Ethics and Campaign Finance, specifically through its Registry of Election Finance. It is an independent entity separate from the Secretary of State's Division of Elections.",
+    "source_url": "https://www.tn.gov/tref.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Tennessee candidates?",
+    "question_variants": [
+      "TREF filing dates 2026",
+      "When are campaign finance reports due in TN?",
+      "Tennessee pre-primary and pre-general report deadlines"
+    ],
+    "answer": "During an election year, state and local candidates must file regular periodic reports (First, Second, Third, and Fourth Quarter reports). Additionally, a Pre-Primary report and a Pre-General report must be filed seven days prior to each respective election.",
+    "source_url": "https://www.tn.gov/tref/tref-candidates/tref-candidate-faqs.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Tennessee's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "Tennessee 10-day large contribution report",
+      "Late contribution reporting Tennessee TREF",
+      "When do I file a rapid report in TN?"
+    ],
+    "answer": "Tennessee mandates a strict rapid-disclosure period. During the 10-day period immediately prior to a primary, general, or special election, a candidate who receives a contribution, loan, or transfer from a single source must report it within telegram, fax, hand delivery, or overnight mail if it meets certain thresholds.",
+    "source_url": "https://www.tncourts.gov/sites/default/files/docs/election_ethics_update_-_handout.pdf",
+    "source_name": "Tennessee Courts - Election Update",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Tennessee provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Tennessee Governor",
+      "State funded campaigns Tennessee status",
+      "Government campaign grants TN"
+    ],
+    "answer": "No. Tennessee does not provide a system of public financing or matching funds for state-level political campaigns. Candidates must rely entirely on private contributions raised within the statutory limits.",
+    "source_url": "https://www.tn.gov/tref.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Tennessee?",
+    "question_variants": [
+      "TN personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in TN?",
+      "Prohibited expenditures Tennessee TREF"
+    ],
+    "answer": "Yes. Under T.C.A. § 2-10-114(b)(1), campaign funds cannot be converted to personal use. Expenditures must be directly related to and support the selection, nomination, or election of that individual to public office, or for ordinary officeholder expenses.",
+    "source_url": "https://www.tn.gov/tref/tref-candidates/tref-candidate-faqs.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Tennessee legislators?",
+    "question_variants": [
+      "Can Tennessee legislators raise money during session?",
+      "Lobbyist contribution ban TN legislature",
+      "Legislative session contribution rules Tennessee"
+    ],
+    "answer": "Yes. Tennessee enforces a fundraising blackout during the legislative session. From the convening of the regular session through the earlier of May 15 (even years) or June 1 (odd years), or the conclusion of the session, candidates for the General Assembly and Governor are prohibited from holding fundraisers or accepting campaign contributions.",
+    "source_url": "https://www.bolderadvocacy.org/wp-content/uploads/2018/06/TN-Campaign-Finance.pdf",
+    "source_name": "Tennessee Campaign Finance Rules",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Tennessee's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the TN legislature draw district maps?",
+      "Who has the authority to draw district lines in Tennessee?",
+      "Tennessee redistricting commission"
+    ],
+    "answer": "In Tennessee, the state legislature holds the exclusive authority to draw both congressional and state legislative district boundaries. The maps are passed as standard legislation and are subject to the Governor's signature or veto.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Tennessee",
+    "source_name": "Ballotpedia - Redistricting in Tennessee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Tennessee?",
+    "question_variants": [
+      "Standards for drawing Tennessee district lines",
+      "Tennessee gerrymandering rules",
+      "Map requirements TN"
+    ],
+    "answer": "Under the Tennessee Constitution, state legislative districts must be contiguous and apportioned according to population. Crucially, the constitution mandates that counties cannot be divided to form a district unless strictly required to meet federal equal population standards. There are no state-level mandates regarding partisan fairness or compactness.",
+    "source_url": "https://law.justia.com/constitution/tennessee/article-ii/",
+    "source_name": "Tennessee Constitution Article II",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "What is the status of Tennessee's congressional map for the 2026 cycle?",
+    "question_variants": [
+      "Is the TN congressional map operative for 2026?",
+      "VRA challenges to Tennessee congressional districts",
+      "Nashville split redistricting Tennessee"
+    ],
+    "answer": "The congressional map is currently highly volatile. The post-2020 map uniquely split Nashville (Davidson County) across three districts, triggering significant legal challenges under the Voting Rights Act and Equal Protection Clause. With SCOTUS actions in May 2026 lifting previous injunctions and shifting racial gerrymandering standards, the state legislature may engage in mid-decade redistricting, meaning the operative boundaries for the 2026 midterms remain in flux.",
+    "source_url": "https://time.com/article/2026/05/05/republicans-redistricting-supreme-court-voting-rights-act-louisiana-alabama-tennessee/",
+    "source_name": "TIME / SCOTUS Rulings - Redistricting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current Tennessee state legislative maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of 2022 Tennessee redistricting maps",
+      "Are there pending state legislative redistricting lawsuits in TN?",
+      "Tennessee 2026 state legislative boundaries"
+    ],
+    "answer": "Yes. While the state Senate map originally faced legal challenges regarding the splitting of Davidson County and alleged racial gerrymandering, state courts ultimately upheld the maps as constitutional. The state legislative maps enacted in 2022 remain fully operative for the 2026 election cycle.",
+    "source_url": "https://www.tncourts.gov/",
+    "source_name": "Tennessee State Courts - Redistricting Rulings",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Tennessee have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Tennessee be recalled?",
+      "How to recall a state senator in TN",
+      "Statewide recall election rules Tennessee"
+    ],
+    "answer": "No. The State of Tennessee does not have any constitutional or statutory provision allowing for the recall of state-level elected officials, including the Governor or members of the General Assembly.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Tennessee",
+    "source_name": "Laws governing recall in Tennessee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Tennessee?",
+    "question_variants": [
+      "Tennessee county commissioner recall rules",
+      "Signature requirement local recall Tennessee",
+      "Recalling a mayor in TN"
+    ],
+    "answer": "There is no statewide, general statutory right to recall local officials in Tennessee. Recall is only permitted in specific municipalities or counties if their individual, state-approved local charter explicitly authorizes the recall process.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Tennessee",
+    "source_name": "Laws governing recall in Tennessee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Tennessee have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the TN ballot",
+      "Tennessee citizen initiative signature requirements",
+      "Can citizens propose laws in Tennessee?"
+    ],
+    "answer": "No. Tennessee is one of the states that does NOT have any statewide citizen initiative process. Citizens cannot draft statutes or constitutional amendments and gather signatures to place them on the ballot. All statewide ballot measures must be initiated by the state legislature.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Tennessee",
+    "source_name": "Ballotpedia - Initiative and Referendum in Tennessee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Tennessee legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Tennessee",
+      "Referendum by legislature TN",
+      "Can the TN legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "Tennessee has one of the nation's most complex constitutional amendment processes. An amendment must first pass the General Assembly with a simple majority in both chambers. It must then be passed a SECOND time by the next, subsequently elected General Assembly with a two-thirds (2/3) supermajority in both chambers. Only then is it referred to the voters on the general election ballot.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Constitution Article XI",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Tennessee have a veto referendum process?",
+    "question_variants": [
+      "How to refer a TN bill to the ballot",
+      "Tennessee citizen referendum rules",
+      "Veto referendum signature threshold Tennessee state"
+    ],
+    "answer": "No. Tennessee does not have a statewide veto referendum process. Citizens cannot gather signatures to suspend and refer an already-passed legislative act to the ballot for a popular vote of approval or rejection.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Tennessee",
+    "source_name": "Ballotpedia - Initiative and Referendum in Tennessee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Tennessee?",
+    "question_variants": [
+      "Tennessee ballot measure pass threshold",
+      "Does a measure need a supermajority in TN?",
+      "Majority vote requirements Tennessee ballot measures"
+    ],
+    "answer": "To pass a constitutional amendment in Tennessee, the measure must not only receive more 'yes' votes than 'no' votes, but the number of 'yes' votes must be a majority of the total number of votes cast *in the gubernatorial election*. Because amendments only appear on gubernatorial ballots, voters who cast a vote for Governor but skip the amendment question effectively count as 'no' votes.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Constitution Article XI",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "TN",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for Tennessee Supreme Court justices?",
+    "question_variants": [
+      "Tennessee Supreme Court Justice eligibility",
+      "Years of practice required for TN Supreme Court",
+      "Tennessee Plan judicial requirements"
+    ],
+    "answer": "To be appointed to the Tennessee Supreme Court, a candidate must be at least 35 years of age, a resident of the state for five years preceding their appointment, and must be a licensed attorney authorized to practice law in Tennessee. They are subsequently retained via 'Yes/No' elections under the Tennessee Plan.",
+    "source_url": "https://www.tncourts.gov/about/judicial-selection",
+    "source_name": "Tennessee State Courts",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Tennessee?",
+    "question_variants": [
+      "Run for school board Tennessee requirements",
+      "Who can be a school board member in TN?",
+      "School board age rules Tennessee"
+    ],
+    "answer": "To run for a local school board in Tennessee, a candidate must be a qualified voter and resident of the specific school district they seek to represent. Additionally, under state law, the candidate must possess a high school diploma or a GED.",
+    "source_url": "https://sos.tn.gov/elections/guides/qualifications-for-all-elected-offices",
+    "source_name": "Tennessee Secretary of State - Local Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the Commissioner of Agriculture an elected office in Tennessee?",
+    "question_variants": [
+      "What does the TN Agriculture Commissioner do?",
+      "Qualifications for Tennessee Ag Commissioner",
+      "Running for Ag Commissioner in TN"
+    ],
+    "answer": "No. Unlike some Southern states, the Commissioner of Agriculture in Tennessee is NOT an elected constitutional officer. The Commissioner is appointed directly by the Governor, serves as a member of the Governor's cabinet, and manages the Department of Agriculture.",
+    "source_url": "https://www.tn.gov/agriculture/about/ag-commissioner.html",
+    "source_name": "Tennessee Department of Agriculture",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Are the State Auditor or Comptroller elected offices in Tennessee?",
+    "question_variants": [
+      "Running for State Auditor in TN",
+      "Who elects the Comptroller in Tennessee?",
+      "Legal requirements for Tennessee Comptroller"
+    ],
+    "answer": "No. The Comptroller of the Treasury (who performs the state audit functions) is not elected by the voters. Like the Secretary of State and State Treasurer, the Comptroller is appointed by a joint vote of the Tennessee General Assembly for a two-year term.",
+    "source_url": "https://sos.tn.gov/about-the-office",
+    "source_name": "Tennessee Secretary of State / State Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for County Mayor in Tennessee?",
+    "question_variants": [
+      "Qualifications for Tennessee County Mayor",
+      "Can I run for county executive in TN?",
+      "Residency rules for Tennessee mayors"
+    ],
+    "answer": "To hold the office of County Mayor (formerly known as County Executive), a candidate must be at least 25 years old, a qualified voter of the county, and a resident of the county for at least one full year immediately prior to the date of the qualifying deadline.",
+    "source_url": "https://sos.tn.gov/elections/guides/qualifications-for-all-elected-offices",
+    "source_name": "Tennessee Secretary of State - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Tennessee?",
+    "question_variants": [
+      "How to fix a rejected signature in TN",
+      "Tennessee ballot cure process deadline",
+      "Missing signature on TN mail ballot"
+    ],
+    "answer": "Following a 2020 court order that established new procedures, if a county election commission identifies a signature mismatch on an absentee ballot affidavit envelope, they must promptly notify the voter. The voter is then granted an opportunity to cure the signature discrepancy before the close of polls on Election Day so the ballot can be counted.",
+    "source_url": "https://sos.tn.gov/elections/guides/guide-to-absentee-voting",
+    "source_name": "Tennessee Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Tennessee?",
+    "question_variants": [
+      "When are military ballots due in Tennessee?",
+      "UOCAVA return deadline TN",
+      "Overseas voting rules Tennessee state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. Voted ballots must be received by the county election commission by the close of polls (8:00 p.m. ET / 7:00 p.m. CT) on Election Day to be counted.",
+    "source_url": "https://sos.tn.gov/elections/guides/military-and-overseas-voting",
+    "source_name": "Tennessee Secretary of State - Military/Overseas",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Tennessee?",
+    "question_variants": [
+      "What is a provisional ballot in TN?",
+      "Voting without ID Tennessee",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter's name is not on the registration rolls or if they fail to present a valid photo ID. If a voter casts a provisional ballot because they lacked an acceptable photo ID, they must return to their county election commission office by the close of business on the second business day after the election to show their ID and cure the ballot.",
+    "source_url": "https://sos.tn.gov/elections/guides/provisional-voting",
+    "source_name": "Tennessee Secretary of State - Provisional Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Tennessee have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Tennessee DMV?",
+      "TN motor voter automatic registration",
+      "Do I have to register to vote if I get a TN driver's license?"
+    ],
+    "answer": "No. Tennessee does not have Automatic Voter Registration (AVR). While the Department of Safety and Homeland Security offers eligible citizens the opportunity to register to vote when applying for a license (in compliance with federal Motor Voter laws), voters must actively opt-in.",
+    "source_url": "https://sos.tn.gov/elections/voter-information",
+    "source_name": "Tennessee Secretary of State - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Tennessee offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in TN?",
+      "Tennessee electronic voter registration",
+      "GoVoteTN online registration portal"
+    ],
+    "answer": "Yes. Eligible Tennessee residents with a valid state driver's license or state-issued ID card can register to vote or update their registration securely using the Secretary of State's GoVoteTN online voter registration system. The deadline is 30 days prior to the election.",
+    "source_url": "https://ovr.govote.tn.gov/",
+    "source_name": "Tennessee Secretary of State - GoVoteTN",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Tennessee maintain its voter registration lists?",
+    "question_variants": [
+      "TN voter list maintenance rules",
+      "How are inactive voters handled in Tennessee?",
+      "Tennessee voter roll cleaning process"
+    ],
+    "answer": "Tennessee county election commissions maintain voter lists using National Change of Address (NCOA) data, returned undeliverable mail, and death records. If a voter's mail is returned, they are sent a forwardable confirmation notice. If they fail to respond and do not vote in two consecutive federal general elections, their registration is purged.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Can absentee ballots be hand-delivered in Tennessee?",
+    "question_variants": [
+      "Dropping off mail ballot Tennessee",
+      "Tennessee ballot drop boxes",
+      "How to return an absentee ballot in TN"
+    ],
+    "answer": "No. Under strict Tennessee law (T.C.A. § 2-6-202(e)), an absentee by-mail ballot MUST be returned by mail via the United States Postal Service or a commercial carrier (like FedEx or UPS) requiring a signature. Hand delivery of absentee ballots to the county election commission or a polling place is strictly prohibited.",
+    "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-6/part-2/section-2-6-202/",
+    "source_name": "Tennessee Code Annotated § 2-6-202",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Tennessee?",
+    "question_variants": [
+      "Does Tennessee use ranked choice voting?",
+      "RCV status in Tennessee 2026",
+      "Instant runoff voting TN"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is strictly prohibited in Tennessee. In 2022, the Tennessee General Assembly passed a law explicitly banning the use of Ranked Choice Voting or instant runoff voting for any local, state, or federal election in the state.",
+    "source_url": "https://wpln.org/post/tennessee-lawmakers-pass-a-ban-on-ranked-choice-voting-system/",
+    "source_name": "Tennessee General Assembly (2022 Legislation)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in Tennessee elections?",
+    "question_variants": [
+      "How are tied elections decided in Tennessee?",
+      "Tie-breaker rules Tennessee elections",
+      "What happens if a race is tied in TN?"
+    ],
+    "answer": "In the extremely rare event of an exact tie in a general election for the Governor, the tie is broken by a joint vote of the General Assembly. For ties in most other state or county elections, state law dictates that the winner is determined by casting lots (e.g., flipping a coin) administered by the relevant election commission.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Tennessee campaign materials?",
+    "question_variants": [
+      "Tennessee 'Paid for by' rules",
+      "Campaign ad disclaimer requirements TN",
+      "Political taglines Tennessee TREF"
+    ],
+    "answer": "Under the Tennessee Campaign Financial Disclosure Act, all printed political materials and broadcast advertisements must clearly display a 'Paid for by' disclaimer. The disclaimer must identify the candidate, committee, or individual that authorized and paid for the communication.",
+    "source_url": "https://www.tn.gov/tref/tref-candidates/tref-candidate-faqs.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Tennessee?",
+    "question_variants": [
+      "TN campaign coordination rules",
+      "When is a PAC expenditure not independent in Tennessee?",
+      "Prohibition on candidate-PAC coordination TN"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. Once coordinated, the expenditure is legally treated as an in-kind contribution and is subject to the strict per-election contribution limits.",
+    "source_url": "https://www.tn.gov/tref/tref-candidates/tref-candidate-faqs.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Tennessee?",
+    "question_variants": [
+      "TN TREF late fee",
+      "Penalty for missing a Tennessee campaign finance deadline",
+      "Registry of Election Finance fine for late filing TN"
+    ],
+    "answer": "The Tennessee Registry of Election Finance (TREF) enforces strict penalties. For 'Class 1' offenses (late up to 35 days), the fine is up to $25 per day. For 'Class 2' offenses (more than 35 days late), the fine can escalate to $10,000 or 15% of the total amount of the required disclosures, whichever is less.",
+    "source_url": "https://www.tn.gov/tref/tref-candidates/tref-candidate-faqs.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Tennessee campaign committee terminate?",
+    "question_variants": [
+      "Closing a Tennessee campaign committee",
+      "TREF committee termination requirements",
+      "Final campaign finance report Tennessee"
+    ],
+    "answer": "A candidate committee may formally terminate when it has achieved a zero cash balance, legally disposed of all unexpended funds, and resolved all outstanding debts or loans. A formal Termination Report marking the campaign account as closed must be filed with TREF.",
+    "source_url": "https://www.tn.gov/tref/tref-candidates/tref-candidate-faqs.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Tennessee?",
+    "question_variants": [
+      "TN independent expenditure reporting TREF",
+      "Disclosure for TN independent expenditure groups",
+      "Reporting thresholds for outside spending Tennessee"
+    ],
+    "answer": "PACs and groups making independent expenditures to advocate for or against a candidate must file detailed disclosure reports with TREF. If significant independent expenditures are made within the 10 days prior to an election, they trigger rapid disclosure requirements similar to candidate contributions.",
+    "source_url": "https://www.tn.gov/tref.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Tennessee?",
+    "question_variants": [
+      "Tennessee in-kind contribution valuation rules",
+      "Reporting non-monetary donations Tennessee campaign",
+      "Fair market value for in-kind gifts TN"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported to TREF at their fair market value. Crucially, the value of in-kind contributions counts directly toward the donor's per-election monetary contribution limits.",
+    "source_url": "https://www.tn.gov/tref/tref-candidates/tref-candidate-faqs.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Tennessee?",
+    "question_variants": [
+      "Tennessee candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in TN?",
+      "Reporting candidate loans in TREF"
+    ],
+    "answer": "A candidate may loan or contribute an unlimited amount of their own personal funds to their campaign committee; these funds are not subject to contribution limits. Loans must be properly documented on TREF disclosures and may be repaid from campaign contributions raised during the cycle.",
+    "source_url": "https://www.tn.gov/tref/tref-candidates/tref-candidate-faqs.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Tennessee candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in TN?",
+      "TN surplus campaign funds rules",
+      "Donating remaining campaign funds Tennessee"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain surplus funds for a future campaign, return them pro-rata to contributors, transfer them to a recognized political party, or donate them to an IRS-recognized tax-exempt charitable organization.",
+    "source_url": "https://www.tn.gov/tref/tref-candidates/tref-candidate-faqs.html",
+    "source_name": "Tennessee Registry of Election Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Tennessee?",
+    "question_variants": [
+      "TN PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Tennessee",
+      "Maximum PAC gift to state legislator TN"
+    ],
+    "answer": "In Tennessee, Political Action Committees (PACs) have significantly higher contribution limits than individuals. For the 2025-2026 cycle, a multi-candidate PAC is capped at donating $14,200 per election to a candidate for statewide office, and $9,500 per election to a candidate for State Senate or State House.",
+    "source_url": "https://www.tn.gov/content/dam/tn/tref/documents/2025%202026%20contribution%20limits%20changes.June2025.pdf",
+    "source_name": "Tennessee Registry of Election Finance - Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Tennessee?",
+    "question_variants": [
+      "When are county sheriffs elected in TN?",
+      "Tennessee county official term lengths",
+      "Are county mayors on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Tennessee—including County Mayors, Sheriffs, and County Commissioners—typically serve four-year terms. Uniquely, Tennessee holds its local county general elections in AUGUST concurrently with the state/federal primary, rather than in November.",
+    "source_url": "https://sos.tn.gov/elections/calendar",
+    "source_name": "Tennessee Secretary of State - Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Tennessee elections?",
+    "question_variants": [
+      "When are Tennessee election results official?",
+      "TN certification deadline",
+      "State Election Commission meeting Tennessee"
+    ],
+    "answer": "County election commissions must meet to officially certify local results no later than the third Monday following the election. The State Election Commission and the Governor subsequently certify statewide and federal election returns.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "TN",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Tennessee?",
+    "question_variants": [
+      "Tennessee special election timeline",
+      "Who calls a special election to fill a US House vacancy in TN?",
+      "Filling a midterm vacancy Tennessee"
+    ],
+    "answer": "Special elections to fill federal or state legislative vacancies are called by a writ of election from the Governor. By statute, the Governor must schedule the special primary and general election to provide sufficient notice (typically 55-60 days before the primary) and to comply with federal UOCAVA mailing deadlines.",
+    "source_url": "https://sos.tn.gov/elections",
+    "source_name": "Tennessee Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "TN",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who sits on the Tennessee State Election Commission?",
+    "question_variants": [
+      "Who certifies statewide elections in TN?",
+      "Tennessee Election Commission composition",
+      "Who oversees the county election commissions in TN?"
+    ],
+    "answer": "The State Election Commission is a seven-member body appointed by the General Assembly. By law, it must be bipartisan (four members from the majority party, three from the minority party). It appoints all 95 county election commissions and assists the Coordinator of Elections in maintaining uniformity.",
+    "source_url": "https://sos.tn.gov/elections/state-election-commission",
+    "source_name": "Tennessee Secretary of State - Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  }
+]
