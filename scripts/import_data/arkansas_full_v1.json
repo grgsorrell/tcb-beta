@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Arkansas have an open or closed primary system?",
+    "question_variants": [
+      "Arkansas primary voting rules",
+      "Do I have to register with a party to vote in the AR primary?",
+      "Can unaffiliated voters participate in the Arkansas primary?"
+    ],
+    "answer": "Arkansas operates a partially open primary system. Voters do not register by political party in advance and may select whichever party's ballot they wish to vote on at the polls. However, the Republican Party of Arkansas recently instituted a rule closing their primary to individuals explicitly registered as Democrats, though unaffiliated and optional voters can still choose either ballot.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information",
+    "source_name": "Arkansas Secretary of State - Voter Information",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When is the 2026 primary election in Arkansas?",
+    "question_variants": [
+      "Arkansas primary date 2026",
+      "When is Election Day for the AR primary?",
+      "March primary Arkansas"
+    ],
+    "answer": "Following a recent law that moved nonpresidential primaries from May to March, the Arkansas Preferential Primary Election will be held on Tuesday, March 3, 2026. This makes it one of the earliest primaries in the nation.",
+    "source_url": "https://www.sos.arkansas.gov/uploads/elections/2026_Election_Calendar_Rev._6-2025_.pdf",
+    "source_name": "Arkansas Secretary of State - 2026 Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "When are primary runoffs held in Arkansas?",
+    "question_variants": [
+      "Arkansas primary runoff date 2026",
+      "What is the threshold to avoid a runoff in AR?",
+      "50 percent plus one rule Arkansas primary"
+    ],
+    "answer": "In Arkansas, a candidate must secure a strict majority (50% plus one vote) to win a primary election outright. If no candidate reaches this threshold, the top two candidates advance to a General Primary Election (Runoff). For the 2026 cycle, the primary runoff is scheduled for Tuesday, March 31, 2026.",
+    "source_url": "https://www.sos.arkansas.gov/uploads/elections/2026_Election_Calendar_Rev._6-2025_.pdf",
+    "source_name": "Arkansas Secretary of State - 2026 Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Does Arkansas have runoff elections for the general election?",
+    "question_variants": [
+      "Arkansas general election runoff rules",
+      "Do state candidates face a general runoff in AR?",
+      "December 1 runoff Arkansas"
+    ],
+    "answer": "Yes, but strictly limited by office level. Under Arkansas Code § 7-5-106, general election runoffs (scheduled for December 1, 2026) apply ONLY to county and municipal offices where no candidate receives a required threshold (majority or 40% plus 20% margin). State and federal candidates are elected by a simple plurality in the general election and DO NOT face general election runoffs.",
+    "source_url": "https://codes.findlaw.com/ar/title-7-elections/ar-code-sect-7-5-106/",
+    "source_name": "Arkansas Code § 7-5-106",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Arkansas?",
+    "question_variants": [
+      "Do write-in votes count in AR?",
+      "How to register as a write-in candidate in Arkansas",
+      "SB 254 write-in ban Arkansas"
+    ],
+    "answer": "No. In a major and highly distinctive policy shift, the Arkansas legislature passed SB 254 in 2023, which completely eliminated the write-in candidate portion on all ballots. Write-in candidacies and write-in votes are no longer permitted or counted in any Arkansas election.",
+    "source_url": "https://arkansashouse.org/news/post/20206/week-10-of-the-2023-regular-session",
+    "source_name": "Arkansas House of Representatives - 2023 Enactments",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for major party candidates in Arkansas for 2026?",
+    "question_variants": [
+      "When do candidates file for office in Arkansas?",
+      "Arkansas filing week dates 2026",
+      "November filing deadline AR"
+    ],
+    "answer": "Because Arkansas moved its primary to March, the filing period for major party candidates is extraordinarily early. Under Arkansas Code § 7-7-203(c)(1), the one-week party filing period begins at 12:00 noon on the first Monday in November preceding the primary. For the 2026 cycle, candidates must file in early November 2025.",
+    "source_url": "https://codes.findlaw.com/ar/title-7-elections/ar-code-sect-7-7-203/",
+    "source_name": "Arkansas Code § 7-7-203",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the filing deadline for independent candidates in Arkansas?",
+    "question_variants": [
+      "Independent candidate petition deadline Arkansas",
+      "Running without a party in AR 2026",
+      "May 1 independent deadline Arkansas"
+    ],
+    "answer": "Independent candidates who wish to appear on the general election ballot must file a political practices pledge, affidavit of eligibility, and a petition containing the required number of verified registered voter signatures by 12:00 noon on May 1 of the election year (May 1, 2026).",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Arkansas?",
+    "question_variants": [
+      "Arkansas joint ticket rules",
+      "How are Lt Gov candidates selected in AR?",
+      "Does the Governor pick a running mate in Arkansas?"
+    ],
+    "answer": "No. In Arkansas, the Governor and Lieutenant Governor are elected completely separately. They run in separate primaries and appear as separate items on the general election ballot, meaning it is possible for voters to elect a Governor and Lieutenant Governor from two different political parties.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When is the general election in Arkansas for 2026?",
+    "question_variants": [
+      "Arkansas general election date 2026",
+      "When is Election Day 2026 in Arkansas?",
+      "November election Arkansas"
+    ],
+    "answer": "The Arkansas general election will be held on Tuesday, November 3, 2026. Polls are open statewide from 7:30 a.m. to 7:30 p.m. local time.",
+    "source_url": "https://www.sos.arkansas.gov/uploads/elections/2026_Election_Calendar_Rev._6-2025_.pdf",
+    "source_name": "Arkansas Secretary of State - 2026 Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Sarah Huckabee Sanders running for re-election in 2026?",
+    "question_variants": [
+      "Arkansas Governor election 2026",
+      "Who is defending the AR Governor seat?",
+      "Is Sarah Huckabee Sanders term limited?"
+    ],
+    "answer": "Yes. Governor Sarah Huckabee Sanders (R) is defending her seat in the 2026 election, seeking her second term. Under the Arkansas Constitution, Governors are limited to two four-year terms, making her fully eligible for the 2026 ballot.",
+    "source_url": "https://en.wikipedia.org/wiki/2026_Arkansas_elections",
+    "source_name": "Wikipedia - 2026 Arkansas Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Arkansas in 2026?",
+    "question_variants": [
+      "Is Tom Cotton up for re-election in 2026?",
+      "When is John Boozman's next election?",
+      "Arkansas US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat held by Tom Cotton (R) is up for election in 2026. Senator John Boozman (Class 3) was re-elected in 2022 and will not appear on the ballot again until 2028.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Arkansas for the 2026 election?",
+    "question_variants": [
+      "Arkansas congressional apportionment",
+      "Are all AR congressional seats up in 2026?",
+      "Number of US Representatives from Arkansas"
+    ],
+    "answer": "Arkansas is apportioned 4 U.S. House districts. All four seats are on the 2026 ballot, as U.S. Representatives serve two-year terms.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Arkansas State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Arkansas House seats up in 2026?",
+      "Arkansas Senate election cycle 2026",
+      "Which legislative districts are on the ballot in AR?"
+    ],
+    "answer": "All 100 seats in the Arkansas House of Representatives (2-year terms) are up for election in 2026. The Arkansas State Senate has 35 members who serve staggered 4-year terms; approximately half (17 or 18 districts, depending on cohort) will be on the 2026 ballot.",
+    "source_url": "https://www.arkleg.state.ar.us/",
+    "source_name": "Arkansas State Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Arkansas in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "AR statewide election list 2026",
+      "When is the next Secretary of State election in AR?"
+    ],
+    "answer": "Arkansas elects its statewide executive officers on the midterm cycle. In 2026, the offices of Governor, Lieutenant Governor, Attorney General, Secretary of State, State Treasurer, State Auditor, and Commissioner of State Lands are all on the ballot.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "When are Arkansas Supreme Court and judicial elections held?",
+    "question_variants": [
+      "Arkansas judicial elections 2026",
+      "Are AR judges elected?",
+      "Next nonpartisan judicial election Arkansas"
+    ],
+    "answer": "Arkansas judges, including Supreme Court Justices, are elected in nonpartisan elections. Crucially, the nonpartisan general election for judicial candidates is held CONCURRENTLY with the preferential primary election on March 3, 2026. If no candidate wins a majority in March, a runoff is held during the November general election.",
+    "source_url": "https://www.sos.arkansas.gov/uploads/elections/2026_Election_Calendar_Rev._6-2025_.pdf",
+    "source_name": "Arkansas Secretary of State - 2026 Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Arkansas State Legislature sessions?",
+    "question_variants": [
+      "When does the AR legislature meet?",
+      "Arkansas fiscal vs regular legislative session",
+      "Is the Arkansas legislature full time?"
+    ],
+    "answer": "The Arkansas General Assembly is part-time and meets annually but alternating in scope. In odd-numbered years, it convenes for a Regular Session on the second Monday in January. In even-numbered years (like 2026), it convenes for a Fiscal Session, which recent legislation shifted to begin on the second Wednesday in April.",
+    "source_url": "https://www.5newsonline.com/article/news/local/new-law-moves-arkansas-primary-elections-may-march/527-30d83557-0517-4f87-b88e-fd81affbb823",
+    "source_name": "Arkansas Act 405 (SB 353)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Arkansas?",
+    "question_variants": [
+      "Age and residency for Arkansas Governor",
+      "Arkansas Constitution Article 6 Governor qualifications",
+      "Who is eligible to be Governor of Arkansas?"
+    ],
+    "answer": "Under Article 6, Section 5 of the Arkansas Constitution, a candidate for Governor must be a citizen of the United States, at least 30 years of age, and must have resided within the state of Arkansas for at least seven years continuously preceding their election.",
+    "source_url": "https://www.sos.arkansas.gov/elections/candidate-information",
+    "source_name": "Arkansas Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Arkansas State Legislature?",
+    "question_variants": [
+      "Qualifications for AR State Representative",
+      "Age requirement Arkansas State Senate",
+      "Do I have to live in my district to run in AR?"
+    ],
+    "answer": "Under Article 5 of the Arkansas Constitution, a candidate for the State Senate must be at least 25 years old. A candidate for the State House must be at least 21 years old. Both must be U.S. citizens, residents of Arkansas for at least two years, and residents of their specific district for at least one year prior to the election.",
+    "source_url": "https://www.sos.arkansas.gov/elections/candidate-information",
+    "source_name": "Arkansas Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Arkansas?",
+    "question_variants": [
+      "US Senate residency requirements Arkansas",
+      "Age to run for Congress in Arkansas",
+      "Federal constitutional requirements for AR candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://www.sos.arkansas.gov/elections/candidate-information",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Arkansas State Legislature?",
+    "question_variants": [
+      "How many terms can an Arkansas state senator serve?",
+      "Are there term limits for the Arkansas House?",
+      "Arkansas Issue 2 term limit law 12 years"
+    ],
+    "answer": "Arkansas enforces strict legislative term limits, recently updated by Issue 2 (2020). Legislators are currently limited to serving a maximum of 12 consecutive years in the General Assembly, in any combination of House and Senate service. Once the 12-year limit is reached, they must take a four-year break before becoming eligible to run again.",
+    "source_url": "https://en.wikipedia.org/wiki/Arkansas_General_Assembly",
+    "source_name": "Arkansas Constitution Amendment 100 (via Issue 2)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Arkansas Governor?",
+    "question_variants": [
+      "How many terms can an Arkansas Governor serve?",
+      "Sarah Huckabee Sanders term limits AR",
+      "Arkansas executive term limit law"
+    ],
+    "answer": "Under Amendment 73 of the Arkansas Constitution, the Governor, Lieutenant Governor, Secretary of State, Treasurer, Auditor, and Attorney General are limited to serving two four-year terms in their respective offices.",
+    "source_url": "https://ballotpedia.org/Governor_of_Arkansas",
+    "source_name": "Arkansas Constitution Amendment 73",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Arkansas?",
+    "question_variants": [
+      "Arkansas county judge qualifications",
+      "Can I run for county board in AR?",
+      "County residency for AR officials"
+    ],
+    "answer": "To run for a county office (such as County Judge, Sheriff, or Quorum Court Justice of the Peace), a candidate must generally be a qualified elector (registered voter) and a resident of the county or specific district they seek to represent at the time they assume office.",
+    "source_url": "https://www.sos.arkansas.gov/elections/candidate-information",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Arkansas Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in AR",
+      "Do I need to be a member of the bar to be AR AG?",
+      "Legal requirements for Arkansas Attorney General"
+    ],
+    "answer": "Yes. Statutory law requires the Attorney General of Arkansas to be a licensed attorney in good standing and admitted to practice before the Arkansas Supreme Court to fulfill their duties as the state's chief legal officer.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Arkansas?",
+    "question_variants": [
+      "Arkansas voter ID requirements",
+      "Do I need my driver's license to vote in AR?",
+      "Acceptable ID for Arkansas voting"
+    ],
+    "answer": "Yes. Arkansas has a strict photo ID requirement. Voters must present a valid document containing their photograph issued by the United States, the State of Arkansas, or an accredited postsecondary educational institution in Arkansas. If a voter fails to produce ID, they may cast a provisional ballot, but must return with an ID by the Monday following the election.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information/voter-id-requirements",
+    "source_name": "Arkansas Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Arkansas a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Arkansas?",
+      "Arkansas vote-by-mail system",
+      "Do I need an excuse to vote absentee in AR?"
+    ],
+    "answer": "No. Arkansas is not a universal mail ballot state, and it does not allow no-excuse absentee voting. To vote by mail, a voter must submit an application certifying a valid excuse, such as being unavoidably absent from their polling site, illness, physical disability, or residing in a long-term care facility.",
+    "source_url": "https://sbec.arkansas.gov/election-information/absentee-voting/",
+    "source_name": "Arkansas Board of Election Commissioners",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the timeline for early in-person voting in Arkansas?",
+    "question_variants": [
+      "Can I vote early in person in AR?",
+      "Arkansas early voting dates 2026",
+      "When does early voting start in Arkansas?"
+    ],
+    "answer": "Arkansas offers 15 days of early in-person voting prior to an election. Early voting is available between 8:00 a.m. and 6:00 p.m., Monday through Friday, and 10:00 a.m. to 4:00 p.m. on Saturdays. It ends at 5:00 p.m. on the Monday immediately preceding Election Day.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information/voter-registration-information/voting-in-arkansas",
+    "source_name": "Arkansas Secretary of State - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Arkansas offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in AR",
+      "Arkansas same day voter registration",
+      "Voter registration deadline 2026 Arkansas"
+    ],
+    "answer": "The deadline to register to vote in Arkansas is 30 days prior to the election. Arkansas DOES NOT offer same-day voter registration. Residents must be registered in advance of the deadline to vote early or on Election Day.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information",
+    "source_name": "Arkansas Secretary of State - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Arkansas?",
+    "question_variants": [
+      "How close can I campaign to a polling place in AR?",
+      "Arkansas 100 feet electioneering rule",
+      "AR buffer zone around voting centers"
+    ],
+    "answer": "Under Arkansas law, electioneering is strictly prohibited within 100 feet of the primary exterior entrance to any building where voting is taking place. This bans distributing campaign literature, displaying signs, and soliciting votes.",
+    "source_url": "https://sbec.arkansas.gov/",
+    "source_name": "Arkansas Board of Election Commissioners",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Arkansas?",
+    "question_variants": [
+      "Can felons vote in Arkansas state?",
+      "Felony voting rights restoration AR",
+      "Voting on parole in Arkansas"
+    ],
+    "answer": "In Arkansas, individuals convicted of a felony lose their voting rights. To have them restored, they must completely discharge their entire sentence, which includes completing all prison time, probation, and parole, AND paying all associated legal fees, fines, and restitution. Only upon full discharge can they re-register to vote.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AR",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Arkansas, and why does it matter for campaigns?",
+    "question_variants": [
+      "Arkansas county election administration",
+      "How many county clerks in AR?",
+      "Local election control Arkansas"
+    ],
+    "answer": "Arkansas has 75 counties. This operational footprint requires statewide campaigns to coordinate heavily with 75 distinct County Clerks and County Election Commissions, who directly administer polling places, process early voting, and tabulate paper ballots locally.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Arkansas?",
+    "question_variants": [
+      "Where do I file campaign finance reports in AR?",
+      "What is the Arkansas Ethics Commission?",
+      "Does the AR Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and ethics laws in Arkansas are jointly administered. The Arkansas Secretary of State serves as the primary filing repository for financial disclosure reports, but the Arkansas Ethics Commission (AEC) enforces the laws, issues advisory opinions, and investigates violations.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in Arkansas for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Arkansas?",
+      "AR individual donation caps 2026 election",
+      "Maximum donation to state legislature Arkansas"
+    ],
+    "answer": "Arkansas DOES enforce contribution limits, indexed for inflation. Under Arkansas Code § 7-6-203, individuals may contribute up to $3,500 per election to a candidate for statewide or legislative office. Primary, primary runoff, general, and general runoff elections are all considered separate elections, allowing donors to give the limit multiple times.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Arkansas",
+    "source_name": "Arkansas Ethics Commission / Ballotpedia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Arkansas campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Arkansas state",
+      "Can a business donate to my campaign in AR?",
+      "Corporate campaign finance rules Arkansas"
+    ],
+    "answer": "No. Under Arkansas law, direct contributions from the treasury of a corporation or labor union to a candidate's campaign committee are strictly PROHIBITED. Corporations may only make contributions through legally established and approved Political Action Committees (PACs), or give unlimited funds to ballot measure groups.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Arkansas",
+    "source_name": "Arkansas Campaign Finance Rules",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Arkansas?",
+    "question_variants": [
+      "AR PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Arkansas",
+      "Maximum PAC gift to state legislator AR"
+    ],
+    "answer": "In Arkansas, approved Political Action Committees (PACs) are subject to the same contribution limits as individuals. A PAC is limited to contributing a maximum of $3,500 per election to a candidate for state or legislative office.",
+    "source_url": "https://codes.findlaw.com/ar/title-7-elections/ar-code-sect-7-6-203/",
+    "source_name": "Arkansas Code § 7-6-203",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "State candidates and PACs"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Arkansas?",
+    "question_variants": [
+      "AR personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in AR?",
+      "Prohibited expenditures Arkansas AEC"
+    ],
+    "answer": "Yes. Under Arkansas Code § 7-6-203(f)(1), a candidate shall not take any campaign funds as personal income. Using campaign funds for personal enrichment is classified as a felony or misdemeanor depending on the financial amount converted.",
+    "source_url": "https://codes.findlaw.com/ar/title-7-elections/ar-code-sect-7-6-203/",
+    "source_name": "Arkansas Code § 7-6-203",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Arkansas legislators?",
+    "question_variants": [
+      "Can Arkansas legislators raise money during session?",
+      "Lobbyist contribution ban AR legislature",
+      "Legislative session contribution rules Arkansas"
+    ],
+    "answer": "Yes. Arkansas enforces a strict 'session freeze.' State lawmakers, statewide elected officials, and the Governor are prohibited from accepting campaign contributions from any person during a regular legislative session, during any extended session, or during a special session. The freeze also applies to 30 days before and after a regular session.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Arkansas provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Arkansas Governor",
+      "State funded campaigns Arkansas status",
+      "Government campaign grants AR"
+    ],
+    "answer": "No. Arkansas does not have a system of public financing or matching funds for state-level political campaigns. Candidates must rely entirely on private contributions within the statutory limits set by the Arkansas Ethics Commission.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Arkansas candidates?",
+    "question_variants": [
+      "AEC filing dates 2026",
+      "When are campaign finance reports due in AR?",
+      "Arkansas pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates in Arkansas must file regular Contributions and Expenditure (C&E) Reports. In an election year, a candidate must file a pre-election report 7 days before any election, monthly reports for the months they raise over $500, and a final campaign report no later than 30 days after the election.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State - Candidate Filing",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Arkansas congressional and legislative maps?",
+    "question_variants": [
+      "Does the AR legislature draw district maps?",
+      "Who has the authority to draw district lines in Arkansas?",
+      "Arkansas Board of Apportionment"
+    ],
+    "answer": "Arkansas has a bifurcated redistricting process. The state legislature draws congressional district maps, which are subject to gubernatorial veto. However, state legislative districts are drawn by the Board of Apportionment, an executive-led body composed of the Governor, Secretary of State, and Attorney General.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Arkansas",
+    "source_name": "Ballotpedia - Redistricting in Arkansas",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Arkansas?",
+    "question_variants": [
+      "Standards for drawing Arkansas district lines",
+      "Arkansas gerrymandering rules",
+      "Board of Apportionment criteria AR"
+    ],
+    "answer": "Under the Arkansas Constitution, state legislative districts must be contiguous, compact, and as nearly equal in population as practicable. Congressional districts must meet federal equal population standards. There are no state-level mandates prohibiting partisan gerrymandering.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Arkansas",
+    "source_name": "Arkansas Constitution Article 8",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current Arkansas redistricting maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of 2021 Arkansas redistricting maps",
+      "Are there pending redistricting lawsuits in Arkansas?",
+      "Arkansas 2026 district boundaries"
+    ],
+    "answer": "Yes. The congressional map enacted by the legislature in 2021 and the state legislative maps adopted by the Board of Apportionment in 2021 remain fully operative for the 2026 election cycle. Early litigation regarding partisan gerrymandering and the Voting Rights Act did not result in systemic map alterations.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Arkansas",
+    "source_name": "Ballotpedia - Redistricting in Arkansas",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "What is the Arkansas Board of Apportionment?",
+    "question_variants": [
+      "Arkansas executive redistricting commission",
+      "Who sits on the Board of Apportionment AR?",
+      "How are state legislative maps drawn in Arkansas?"
+    ],
+    "answer": "The Board of Apportionment is a unique, three-member executive body tasked solely with drawing Arkansas state legislative districts. It is composed of the Governor, the Secretary of State, and the Attorney General.",
+    "source_url": "https://arkansasag.gov/resources/board-of-apportionment/",
+    "source_name": "Arkansas Attorney General - Board of Apportionment",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Arkansas have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Arkansas be recalled?",
+      "How to recall a state senator in AR",
+      "Statewide recall election rules Arkansas"
+    ],
+    "answer": "No. The State of Arkansas does not have any legal or constitutional mechanism for the recall of state-level elected officials, including the Governor or members of the state legislature.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Arkansas",
+    "source_name": "Laws governing recall in Arkansas",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Arkansas?",
+    "question_variants": [
+      "Arkansas county commissioner recall rules",
+      "Signature requirement local recall Arkansas",
+      "Recalling a mayor in AR"
+    ],
+    "answer": "Arkansas law is highly restrictive regarding local recall. It is explicitly authorized ONLY for the mayor and directors in cities featuring a city manager form of government (requiring signatures equal to 35% of the votes cast for that office). It is not broadly available for most municipal or county officials.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Arkansas",
+    "source_name": "Laws governing recall in Arkansas",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for a constitutional amendment by initiative in Arkansas?",
+    "question_variants": [
+      "How to amend the AR constitution by initiative",
+      "Arkansas citizen initiative signature requirements",
+      "Geographic distribution rule for AR constitutional initiatives"
+    ],
+    "answer": "To qualify a constitutional amendment initiative, proponents must gather valid signatures equal to at least 10% of the total votes cast for Governor in the preceding election. Furthermore, signatures must meet a geographic distribution threshold: a minimum number of signatures from at least 50 of the state's 75 counties.",
+    "source_url": "https://www.sos.arkansas.gov/elections/initiatives-and-referenda",
+    "source_name": "Arkansas Secretary of State - Initiatives",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for a statutory initiative in Arkansas?",
+    "question_variants": [
+      "How to pass a state law by initiative in AR",
+      "Arkansas statutory initiative signature count",
+      "Difference between constitutional and statutory initiative Arkansas"
+    ],
+    "answer": "To qualify a statutory (state law) initiative for the ballot, proponents must gather valid signatures equal to at least 8% of the total votes cast for Governor in the preceding election. Like constitutional amendments, they must also meet the geographic distribution requirement across 50 of 75 counties.",
+    "source_url": "https://www.sos.arkansas.gov/elections/initiatives-and-referenda",
+    "source_name": "Arkansas Secretary of State - Initiatives",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold and deadline for a veto referendum in Arkansas?",
+    "question_variants": [
+      "How to refer an AR bill to the ballot",
+      "Arkansas citizen referendum rules",
+      "Veto referendum signature threshold Arkansas state"
+    ],
+    "answer": "Citizens can refer a passed legislative act to the ballot via a veto referendum. This requires signatures equal to 6% of the votes cast for Governor in the previous election, including the 50-county geographic distribution requirement. Signatures must be submitted within 90 days following the final adjournment of the legislative session.",
+    "source_url": "https://www.sos.arkansas.gov/elections/initiatives-and-referenda",
+    "source_name": "Arkansas Secretary of State - Initiatives",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the legislatively referred ballot measures in Arkansas for 2026?",
+    "question_variants": [
+      "Arkansas 2026 constitutional amendments",
+      "What is on the Arkansas ballot in 2026?",
+      "Major ballot measures Arkansas 2026"
+    ],
+    "answer": "The Arkansas legislature has referred four constitutional amendments to the 2026 general election ballot. These measures address: 1) Clarifying that only U.S. citizens may vote in elections; 2) Affirming the right to keep and bear arms; 3) Provisions regarding economic development districts; and 4) Regulations concerning municipal and county bond issuance.",
+    "source_url": "https://ballotpedia.org/Arkansas_2026_ballot_measures",
+    "source_name": "Ballotpedia - Arkansas 2026 Ballot Measures",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees and Strategists"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Arkansas?",
+    "question_variants": [
+      "Arkansas ballot measure pass threshold",
+      "Does a measure need a supermajority in AR?",
+      "Majority vote requirements Arkansas ballot measures"
+    ],
+    "answer": "In Arkansas, all citizen initiatives (both statutory and constitutional) and legislatively referred constitutional amendments require only a simple majority (over 50%) of the total votes cast on that specific measure to pass.",
+    "source_url": "https://www.sos.arkansas.gov/elections/initiatives-and-referenda",
+    "source_name": "Arkansas Secretary of State - Initiatives",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Arkansas?",
+    "question_variants": [
+      "Requirements to run for AR Secretary of State",
+      "Who can run for Secretary of State in AR?",
+      "Residency rules for Arkansas SOS"
+    ],
+    "answer": "Under the Arkansas Constitution, a candidate for Secretary of State must be a citizen of the United States, at least 21 years old, and a resident of the state.",
+    "source_url": "https://www.sos.arkansas.gov/elections/candidate-information",
+    "source_name": "Arkansas Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in Arkansas?",
+    "question_variants": [
+      "Eligibility for Arkansas State Treasurer",
+      "Who can run for State Treasurer in AR?",
+      "Arkansas Treasurer residency requirements"
+    ],
+    "answer": "Under the Arkansas Constitution, candidates for State Treasurer share the standard constitutional requirements for most executive officers: they must be a U.S. citizen, at least 21 years old, and a resident of Arkansas.",
+    "source_url": "https://www.sos.arkansas.gov/elections/candidate-information",
+    "source_name": "Arkansas Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the Commissioner of State Lands in Arkansas, and what are the qualifications?",
+    "question_variants": [
+      "What does the Commissioner of State Lands do?",
+      "Qualifications for Arkansas Land Commissioner",
+      "Is the Land Commissioner elected in AR?"
+    ],
+    "answer": "The Commissioner of State Lands is a statewide elected constitutional officer in Arkansas primarily responsible for managing state-owned land, mineral rights, and handling tax-delinquent properties. Candidates must meet the standard executive qualifications: U.S. citizen, at least 21 years old, and a resident of the state.",
+    "source_url": "https://www.sos.arkansas.gov/elections/candidate-information",
+    "source_name": "Arkansas Secretary of State / Commissioner of State Lands",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Arkansas?",
+    "question_variants": [
+      "Run for school board Arkansas requirements",
+      "Who can be a school board member in AR?",
+      "School board age rules Arkansas"
+    ],
+    "answer": "To run for a local school board in Arkansas, a candidate must be a registered voter and a resident of the specific school district (and the specific election zone within the district, if applicable) they seek to represent.",
+    "source_url": "https://www.sos.arkansas.gov/elections/candidate-information",
+    "source_name": "Arkansas Secretary of State - Local Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for Arkansas Supreme Court justices?",
+    "question_variants": [
+      "Arkansas Supreme Court Justice eligibility",
+      "Years of practice required for AR Supreme Court",
+      "Are Arkansas judges elected or appointed?"
+    ],
+    "answer": "Arkansas Supreme Court Justices are elected in statewide nonpartisan elections. Candidates must be at least 30 years old, a citizen of the United States, a resident of Arkansas for at least two years preceding election, and a licensed attorney with at least eight years of active practice.",
+    "source_url": "https://www.arcourts.gov/",
+    "source_name": "Arkansas Judiciary",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Arkansas?",
+    "question_variants": [
+      "How to fix a rejected signature in AR",
+      "Arkansas ballot cure process deadline",
+      "Missing signature on AR mail ballot"
+    ],
+    "answer": "Arkansas law does not currently provide a statutory signature cure process. If an absentee ballot return envelope is missing a signature or fails signature verification against the voter's application/registration, the county election commission is generally authorized to reject the ballot without offering the voter an opportunity to cure the defect after Election Day.",
+    "source_url": "https://sbec.arkansas.gov/election-information/absentee-voting/",
+    "source_name": "Arkansas Board of Election Commissioners - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Arkansas?",
+    "question_variants": [
+      "When are military ballots due in Arkansas?",
+      "UOCAVA return deadline AR",
+      "Overseas voting rules Arkansas state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. Voted ballots returned by mail must be postmarked by Election Day and received no later than 10 days after the election to be counted.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information/military-overseas-citizens",
+    "source_name": "Arkansas Secretary of State - Military & Overseas",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Arkansas?",
+    "question_variants": [
+      "What is a provisional ballot in AR?",
+      "Voting without ID Arkansas",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued when a voter's eligibility is in question (e.g., name not on roster) or if the voter fails to present a required government-issued photo ID. To have the ID-related provisional ballot counted, the voter must return to the county clerk or election commission with an acceptable photo ID by 12:00 noon on the Monday following the election.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information/voter-id-requirements",
+    "source_name": "Arkansas Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Arkansas have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Arkansas DMV?",
+      "AR motor voter automatic registration",
+      "Do I have to register to vote if I get an AR driver's license?"
+    ],
+    "answer": "No. Arkansas does not have Automatic Voter Registration (AVR). While the Department of Finance and Administration (DFA) offers eligible citizens the opportunity to register to vote when applying for a license (compliance with federal Motor Voter laws), voters must actively opt-in to complete the registration process.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information/voter-registration-information",
+    "source_name": "Arkansas Secretary of State - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Arkansas offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in AR?",
+      "Arkansas electronic voter registration",
+      "AR SOS online registration portal"
+    ],
+    "answer": "Yes. Eligible Arkansas residents with a valid state driver's license or ID card can register to vote or update their registration securely using the Secretary of State's online voter registration portal. The deadline is 30 days prior to the election.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information/voter-registration-information",
+    "source_name": "Arkansas Secretary of State - Online Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Arkansas maintain its voter registration lists?",
+    "question_variants": [
+      "AR voter list maintenance rules",
+      "How are inactive voters handled in Arkansas?",
+      "Arkansas voter roll cleaning process"
+    ],
+    "answer": "The Secretary of State and county clerks conduct regular list maintenance utilizing the National Change of Address (NCOA) system and death records. If a voter is placed on the inactive list (e.g., mail is returned) and fails to vote or update their record over two consecutive federal general elections, their registration is canceled.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Arkansas voter file?",
+    "question_variants": [
+      "Arkansas voter database access cost",
+      "How to get the voter list in AR",
+      "What data is included in the Arkansas voter file?"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide voter registration list from the Secretary of State. The file includes voter names, addresses, and voting history, and requires submission of a request form and payment of an administrative fee. Its use is restricted to political and election-related purposes.",
+    "source_url": "https://www.sos.arkansas.gov/elections/voter-information",
+    "source_name": "Arkansas Secretary of State - Voter Information",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Arkansas have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the AR primary?",
+      "Arkansas sore loser statute",
+      "General election ballot access after primary defeat AR"
+    ],
+    "answer": "Yes. Arkansas enforces a sore loser law. A candidate who runs unsuccessfully for a political party's nomination in the primary election is prohibited from subsequently running as an independent candidate for the same office in that year's general election.",
+    "source_url": "https://www.sos.arkansas.gov/elections/candidate-information",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Arkansas?",
+    "question_variants": [
+      "Does Arkansas use ranked choice voting?",
+      "RCV status in Arkansas 2026",
+      "Instant runoff voting AR"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is generally not used in Arkansas. The state relies on the traditional primary and general runoff system (requiring a 50%+1 majority) rather than utilizing instant runoff tabulations. However, overseas and military (UOCAVA) voters receive a ranked-choice absentee ballot for primary and general elections to ensure their votes can be tabulated in the event of a runoff election without needing to mail a second ballot.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Arkansas campaign materials?",
+    "question_variants": [
+      "Arkansas 'Paid for by' rules",
+      "Campaign ad disclaimer requirements AR",
+      "Political taglines Arkansas AEC"
+    ],
+    "answer": "Arkansas campaign finance law requires that printed political materials and broadcast advertisements clearly indicate the individual or committee responsible for funding the communication. Disclaimers must prominently feature a 'Paid for by' statement.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Arkansas?",
+    "question_variants": [
+      "AR campaign coordination rules",
+      "When is a PAC expenditure not independent in Arkansas?",
+      "Prohibition on candidate-PAC coordination AR"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' (and thus is treated as an in-kind contribution subject to the $3,500 statutory limit) if the spending is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their authorized campaign committee.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Arkansas?",
+    "question_variants": [
+      "AR AEC late fee",
+      "Penalty for missing an Arkansas campaign finance deadline",
+      "Ethics Commission fine for late filing AR"
+    ],
+    "answer": "The Arkansas Ethics Commission aggressively enforces reporting deadlines. A candidate or committee that files a report late is typically subject to a civil fine. Fines can reach $50 per day for the first 10 days, and up to $100 per day thereafter, depending on the severity and history of violations.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission - Rules",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must an Arkansas campaign committee terminate?",
+    "question_variants": [
+      "Closing an Arkansas campaign committee",
+      "AEC committee termination requirements",
+      "Final campaign finance report Arkansas"
+    ],
+    "answer": "A candidate committee may formally terminate when it has achieved a zero cash balance, legally disposed of all surplus funds, and resolved all outstanding debts or loans. A formal Final Report marking the campaign account as closed must be filed.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Arkansas?",
+    "question_variants": [
+      "AR independent expenditure reporting AEC",
+      "Disclosure for AR independent expenditure groups",
+      "Reporting thresholds for outside spending Arkansas"
+    ],
+    "answer": "Any person or committee making an independent expenditure exceeding $500 to expressly advocate for the election or defeat of a clearly identified candidate must file an independent expenditure report with the Secretary of State, maintaining transparency in outside spending. Due to recent changes, the report is due within 15 days of crossing the $500 threshold.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Arkansas?",
+    "question_variants": [
+      "Arkansas in-kind contribution valuation rules",
+      "Reporting non-monetary donations Arkansas campaign",
+      "Fair market value for in-kind gifts AR"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported at their reasonable fair market value. They count directly toward the donor's per-election contribution limit ($3,500) and must be itemized if the value exceeds $50.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Arkansas?",
+    "question_variants": [
+      "Arkansas candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in AR?",
+      "Reporting candidate loans in AEC"
+    ],
+    "answer": "A candidate may loan an unlimited amount of their own personal funds to their candidate committee; it is not subject to contribution limits. However, the loan must be formally executed and reported. Candidates may repay these personal loans from campaign contributions raised during the cycle.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Arkansas candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in AR?",
+      "AR surplus campaign funds rules",
+      "Donating remaining campaign funds Arkansas"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain surplus funds for a future campaign, return them pro-rata to contributors, donate them to an organized political party, or donate them to an IRS-recognized charitable organization.",
+    "source_url": "https://arkansasethics.com/",
+    "source_name": "Arkansas Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Arkansas's rapid disclosure requirements for large contributions?",
+    "question_variants": [
+      "Arkansas 72-hour large contribution report",
+      "Late contribution reporting Arkansas AEC",
+      "When do I file a rapid report in AR?"
+    ],
+    "answer": "Arkansas campaign finance law requires rapid reporting prior to elections. Any contribution of $500 or more received in the days immediately preceding an election must be reported within 48 to 72 hours of receipt depending on the specific reporting schedule calendar provided by the AEC.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State - Reporting Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "AR",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Arkansas?",
+    "question_variants": [
+      "When are county sheriffs elected in AR?",
+      "Arkansas county official term lengths",
+      "Are county assessors on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Arkansas—including County Judges, Sheriffs, Assessors, and Quorum Court members—typically serve four-year or two-year terms depending on the office. Because Quorum Court Justices of the Peace serve two-year terms, they are heavily featured on the 2026 midterm ballot.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "AR",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Arkansas elections?",
+    "question_variants": [
+      "When are Arkansas election results official?",
+      "AR certification deadline",
+      "State Board of Election Commissioners meeting Arkansas"
+    ],
+    "answer": "County election commissions must meet to officially certify local results no later than 15 days following the election. Following this, the Secretary of State compiles the results, and the State Board of Election Commissioners typically certifies statewide and federal election returns shortly thereafter.",
+    "source_url": "https://sbec.arkansas.gov/",
+    "source_name": "Arkansas Board of Election Commissioners",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "AR",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Arkansas?",
+    "question_variants": [
+      "Arkansas special election timeline",
+      "Who calls a special election to fill a US House vacancy in AR?",
+      "Filling a midterm vacancy Arkansas"
+    ],
+    "answer": "Special elections to fill federal or state legislative vacancies are called by a proclamation from the Governor. Under state law, special elections are generally scheduled on specific consolidated dates (such as the second Tuesday in February, May, or August, or the November general date) to manage administrative efficiency.",
+    "source_url": "https://www.sos.arkansas.gov/elections",
+    "source_name": "Arkansas Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  }
+]
