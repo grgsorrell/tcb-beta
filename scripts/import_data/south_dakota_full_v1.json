@@ -1,0 +1,1370 @@
+[
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in South Dakota?",
+    "question_variants": [
+      "Are South Dakota primaries open or closed?",
+      "Can unaffiliated voters participate in the South Dakota primary?",
+      "South Dakota primary voting rules"
+    ],
+    "answer": "South Dakota officially has a closed primary system, meaning voters must be registered with a specific political party to vote in that party's primary. However, state law allows political parties to optionally open their primaries to unaffiliated (independent) voters. In recent cycles, the Democratic Party has opened its primary to unaffiliated voters, while the Republican primary has remained strictly closed to registered Republicans only.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does South Dakota hold primary runoff elections?",
+    "question_variants": [
+      "What is the threshold to win a primary in SD?",
+      "Does South Dakota require a majority to win a primary?",
+      "South Dakota primary runoff rules 35 percent"
+    ],
+    "answer": "Yes, under highly distinctive specific circumstances. For the offices of Governor, U.S. Senate, and U.S. House, a candidate must receive at least 35% of the primary vote to win the nomination outright. If a race has three or more candidates and no candidate reaches 35%, a runoff election is held between the top two vote-getters eight weeks after the primary. For state legislative and local races, a simple plurality wins and no runoff is held.",
+    "source_url": "https://sdlegislature.gov/Statutes/12-6-51.1",
+    "source_name": "South Dakota Codified Law 12-6-51.1",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and Gubernatorial candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in South Dakota?",
+    "question_variants": [
+      "Do write-in votes count in SD?",
+      "How to register as a write-in candidate in South Dakota",
+      "Write-in filing deadline South Dakota"
+    ],
+    "answer": "No. Write-in candidates and write-in voting are explicitly prohibited in South Dakota for virtually all state, federal, and local offices. Under SDCL 12-20-21.2, if a name is written on a ballot in an attempt to cast a write-in vote, that specific vote will not be counted by election officials.",
+    "source_url": "https://sdlegislature.gov/Statutes/12-20-21.2",
+    "source_name": "South Dakota Codified Law 12-20-21.2",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for major party candidates in South Dakota for 2026?",
+    "question_variants": [
+      "When do candidates file for office in South Dakota?",
+      "South Dakota filing deadline 2026",
+      "March filing deadline SD"
+    ],
+    "answer": "For major party candidates participating in the 2026 primary election, the filing deadline to submit nominating petitions and declarations of candidacy is 5:00 p.m. local time on the last Tuesday of March. For the 2026 cycle, this deadline is March 31, 2026.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold and filing deadline for independent candidates in South Dakota?",
+    "question_variants": [
+      "Independent candidate ballot access South Dakota",
+      "Running without a party in SD 2026",
+      "How many signatures for independent US Senate SD"
+    ],
+    "answer": "Independent candidates must submit a certificate of nomination signed by registered voters within their district. The signature threshold is equal to at least 1% of the total combined vote cast for Governor at the last certified gubernatorial election within that district. The filing deadline for independent candidates is 5:00 p.m. on the last Tuesday of April (April 28, 2026).",
+    "source_url": "https://ballotpedia.org/Ballot_access_requirements_for_political_candidates_in_South_Dakota",
+    "source_name": "Ballotpedia / South Dakota Codified Laws",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does South Dakota have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the SD primary?",
+      "South Dakota sore loser statute",
+      "General election ballot access after primary defeat SD"
+    ],
+    "answer": "Yes. South Dakota explicitly enforces a sore loser law. A candidate who runs unsuccessfully for a political party's nomination in the primary election is prohibited by statute from subsequently filing a certificate of nomination to run as an independent candidate for the same office in that year's general election.",
+    "source_url": "https://ballotpedia.org/Sore_loser_laws_by_state",
+    "source_name": "Ballotpedia - Sore Loser Laws",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How are candidates for statewide executive offices (other than Governor) nominated in South Dakota?",
+    "question_variants": [
+      "Are the AG and SOS nominated in the SD primary?",
+      "South Dakota convention nomination system",
+      "Statewide executive nominations SD"
+    ],
+    "answer": "In a major electoral distinctive, South Dakota DOES NOT use primary elections to nominate candidates for most statewide executive offices. The Attorney General, Secretary of State, State Auditor, State Treasurer, and Public Utilities Commissioner are nominated strictly by delegates at state party conventions held during the summer. Only the Governor and federal offices are nominated via the public primary.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in South Dakota for 2026?",
+    "question_variants": [
+      "South Dakota primary date 2026",
+      "When is Election Day 2026 in South Dakota?",
+      "June primary South Dakota"
+    ],
+    "answer": "The South Dakota primary election will be held on Tuesday, June 2, 2026. The general election will be held on Tuesday, November 3, 2026. If a runoff is required for Governor or federal office (due to no candidate hitting 35%), it will be held eight weeks after the primary on July 28, 2026. Polls are open from 7:00 a.m. to 7:00 p.m. local time.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is the South Dakota Governor running for election in 2026?",
+    "question_variants": [
+      "South Dakota Governor election 2026",
+      "Who is defending the SD Governor seat?",
+      "Is Kristi Noem on the 2026 ballot?"
+    ],
+    "answer": "Yes. Following former Governor Kristi Noem's resignation in January 2025 to become DHS Secretary, Lieutenant Governor Larry Rhoden ascended to the governorship. Governor Rhoden is eligible to seek his first full elected term on the 2026 ballot, creating a highly competitive primary dynamic.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State / Recent Executive Changes",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in South Dakota in 2026?",
+    "question_variants": [
+      "Is Mike Rounds up for re-election in 2026?",
+      "When is John Thune's next election?",
+      "South Dakota US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Mike Rounds (R) is up for election in 2026. Senator John Thune (Class 3) was re-elected in 2022 and will not appear on the ballot again until 2028.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in South Dakota for the 2026 election?",
+    "question_variants": [
+      "South Dakota congressional apportionment",
+      "Are all SD congressional seats up in 2026?",
+      "Number of US Representatives from South Dakota"
+    ],
+    "answer": "South Dakota is apportioned exactly 1 U.S. House district. The entire state is represented by a single At-Large district, which is on the 2026 ballot for a two-year term.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which South Dakota State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all South Dakota House seats up in 2026?",
+      "South Dakota Senate election cycle 2026",
+      "Which legislative districts are on the ballot in SD?"
+    ],
+    "answer": "In South Dakota, all members of the Legislature serve concurrent two-year terms. Therefore, all 70 seats in the South Dakota House of Representatives and all 35 seats in the South Dakota State Senate are on the 2026 ballot.",
+    "source_url": "https://sdlegislature.gov/",
+    "source_name": "South Dakota Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in South Dakota?",
+    "question_variants": [
+      "South Dakota joint ticket rules",
+      "How are Lt Gov candidates selected in SD?",
+      "Does the Governor pick a running mate in South Dakota?"
+    ],
+    "answer": "Yes, but only in the general election. The gubernatorial nominee is chosen in the primary election. After winning the primary, the gubernatorial nominee selects their Lieutenant Governor running mate, who is then formally nominated at the state party convention. They run on a single joint ticket in the November general election.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "When are the state party conventions held in South Dakota?",
+    "question_variants": [
+      "South Dakota convention dates 2026",
+      "When do parties nominate AG and SOS in SD?",
+      "GOP convention schedule South Dakota"
+    ],
+    "answer": "State party conventions, which are critical in South Dakota for nominating the AG, SOS, Auditor, Treasurer, and formalizing the Lt. Governor, are held in the summer following the primary. For 2026, the Democratic convention is slated for early June (approx. June 6) and the Republican convention for late June (approx. June 27).",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the South Dakota State Legislature sessions?",
+    "question_variants": [
+      "When does the SD legislature meet?",
+      "South Dakota 40 day legislative session",
+      "Is the South Dakota legislature full time?"
+    ],
+    "answer": "The South Dakota State Legislature is a part-time body that meets annually. The regular session convenes on the second Tuesday in January and is constitutionally limited to a maximum of 40 legislative days. Sessions typically adjourn in March.",
+    "source_url": "https://sdlegislature.gov/",
+    "source_name": "South Dakota Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of South Dakota?",
+    "question_variants": [
+      "Age and residency for South Dakota Governor",
+      "South Dakota Constitution Governor qualifications",
+      "Who is eligible to be Governor of SD?"
+    ],
+    "answer": "Under Article IV, Section 2 of the South Dakota Constitution, a candidate for Governor or Lieutenant Governor must be a citizen of the United States, at least 21 years of age, and a resident of South Dakota for at least two years immediately preceding the election.",
+    "source_url": "https://sdlegislature.gov/Constitution/4",
+    "source_name": "South Dakota Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the South Dakota State Legislature?",
+    "question_variants": [
+      "Qualifications for SD State Representative",
+      "Age requirement South Dakota State Senate",
+      "Do I have to live in my district to run in SD?"
+    ],
+    "answer": "To run for the State Senate or House of Representatives in South Dakota, a candidate must be at least 21 years old, a citizen of the United States, a resident of the state for two years, and a resident of the district they seek to represent. Conviction of bribery, perjury, or other infamous crimes disqualifies a candidate.",
+    "source_url": "https://sdsos.gov/elections-voting/upcoming-elections/general-information/qualifications-office-term-limits.aspx",
+    "source_name": "South Dakota Secretary of State - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in South Dakota?",
+    "question_variants": [
+      "US Senate residency requirements South Dakota",
+      "Age to run for Congress in South Dakota",
+      "Federal constitutional requirements for SD candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://sdsos.gov/elections-voting/upcoming-elections/general-information/qualifications-office-term-limits.aspx",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the South Dakota Governor?",
+    "question_variants": [
+      "How many terms can a South Dakota Governor serve?",
+      "South Dakota executive term limit law",
+      "Larry Rhoden term limits SD"
+    ],
+    "answer": "Under Article IV, Section 2 of the South Dakota Constitution, the Governor is limited to serving two consecutive four-year terms. After serving two consecutive terms, an individual is ineligible to run for the office again without an intervening term.",
+    "source_url": "https://sdlegislature.gov/Constitution/4",
+    "source_name": "South Dakota Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does South Dakota have legislative term limits?",
+    "question_variants": [
+      "How many terms can a South Dakota state senator serve?",
+      "Are there term limits for the South Dakota House?",
+      "South Dakota legislature term limit status"
+    ],
+    "answer": "Yes. South Dakota imposes strict legislative term limits. Under Article III, Section 6 of the State Constitution, an individual may not serve more than four consecutive terms (eight consecutive years) in the State Senate, nor more than four consecutive terms (eight consecutive years) in the State House. Lawmakers frequently switch between chambers to extend their tenure.",
+    "source_url": "https://sdlegislature.gov/Session/Bill/26319/291298",
+    "source_name": "South Dakota Legislature - Article III",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General in South Dakota?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in SD",
+      "Do I need to be a member of the bar to be SD AG?",
+      "Legal requirements for South Dakota Attorney General"
+    ],
+    "answer": "The Attorney General is an elected statewide constitutional officer (nominated at convention). Under South Dakota Codified Law 1-11-1.1, the Attorney General is required to be licensed to practice law in the state of South Dakota. They are also subject to a limit of two consecutive terms.",
+    "source_url": "https://ballotpedia.org/Attorney_General_of_South_Dakota",
+    "source_name": "South Dakota Codified Law 1-11-1.1",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in South Dakota?",
+    "question_variants": [
+      "South Dakota Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in SD?",
+      "Qualifications for Lieutenant Governor of South Dakota"
+    ],
+    "answer": "Under Article IV, Section 2 of the South Dakota Constitution, the qualifications for Lieutenant Governor are identical to those for Governor. A candidate must be at least 21 years of age, a U.S. citizen, and a state resident for two years.",
+    "source_url": "https://sdlegislature.gov/Constitution/4",
+    "source_name": "South Dakota Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in South Dakota?",
+    "question_variants": [
+      "South Dakota county commissioner qualifications",
+      "Can I run for county board in SD?",
+      "County residency for SD officials"
+    ],
+    "answer": "To run for a county office (such as County Commissioner, Auditor, or Sheriff), a candidate must generally be a qualified voter of the county and reside within the specific district they seek to represent at the time they sign the declaration of candidacy. Candidates for Sheriff must also meet Law Enforcement Officers Standards.",
+    "source_url": "https://sdsos.gov/elections-voting/upcoming-elections/general-information/qualifications-office-term-limits.aspx",
+    "source_name": "South Dakota Secretary of State - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in South Dakota?",
+    "question_variants": [
+      "South Dakota voter ID requirements",
+      "Do I need my driver's license to vote in SD?",
+      "Acceptable ID for South Dakota voting"
+    ],
+    "answer": "Yes, but it is considered a non-strict photo ID state. Voters are asked to present an approved photo ID (such as a South Dakota driver's license, passport, or tribal ID). If a voter does not possess an acceptable photo ID, they are permitted to sign a personal identification affidavit attesting to their identity under penalty of perjury and cast a regular ballot.",
+    "source_url": "https://sdsos.gov/elections-voting/voting/absentee-voting.aspx",
+    "source_name": "South Dakota Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is South Dakota a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in South Dakota?",
+      "South Dakota vote-by-mail system",
+      "Do I need an excuse to vote absentee in SD?"
+    ],
+    "answer": "South Dakota is NOT a universal mail ballot state (ballots are not mailed automatically). However, the state does allow for NO-EXCUSE absentee voting. Any registered voter may request an absentee ballot by mail or vote an in-person absentee ballot without needing to provide a specific reason.",
+    "source_url": "https://sdsos.gov/elections-voting/voting/absentee-voting.aspx",
+    "source_name": "South Dakota Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does South Dakota offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in SD?",
+      "South Dakota early voting dates 2026",
+      "When does early voting start in South Dakota?"
+    ],
+    "answer": "Yes. South Dakota refers to this as 'In-Person Absentee Voting.' Any registered voter may go to their County Auditor's office to cast a ballot beginning a robust 46 days before the primary or general election. The early voting period concludes at 5:00 p.m. on the day before Election Day.",
+    "source_url": "https://www.vote411.org/south-dakota",
+    "source_name": "VOTE411 / South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does South Dakota offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in SD",
+      "South Dakota same day voter registration",
+      "Voter registration deadline 2026 South Dakota"
+    ],
+    "answer": "The deadline to register to vote in South Dakota is strictly 15 days before the election. The original paper registration form must be physically received by the County Auditor by this deadline. South Dakota DOES NOT offer same-day voter registration or online voter registration.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in South Dakota?",
+    "question_variants": [
+      "How close can I campaign to a polling place in SD?",
+      "South Dakota 100 feet electioneering rule",
+      "SD buffer zone around voting centers"
+    ],
+    "answer": "Under South Dakota Codified Law 12-18-3, electioneering is strictly prohibited within the polling place, within the building housing the polling place, or within 100 feet of any entrance leading into the polling place. This ban includes both campaign advocacy and the circulation of any petitions.",
+    "source_url": "https://sdlegislature.gov/Statutes/12-18-3",
+    "source_name": "South Dakota Codified Law 12-18-3",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in South Dakota?",
+    "question_variants": [
+      "Can felons vote in South Dakota state?",
+      "Felony voting rights restoration SD",
+      "Voting on parole in South Dakota"
+    ],
+    "answer": "In South Dakota, individuals convicted of a felony lose their voting rights while serving their sentence. Voting rights are automatically restored upon the full completion of their entire sentence, which includes serving all prison time as well as completing all periods of probation and parole.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "SD",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in South Dakota, and who administers elections locally?",
+    "question_variants": [
+      "South Dakota county election administration",
+      "How many county auditors in SD?",
+      "Local election control South Dakota"
+    ],
+    "answer": "South Dakota is divided into 66 counties. Election administration is handled at the local level primarily by elected County Auditors. Statewide campaigns must coordinate heavily with these 66 auditors to manage voter registration files, early voting logistics, and absentee ballot processing.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the South Dakota voter file?",
+    "question_variants": [
+      "South Dakota voter database access cost",
+      "How to get the voter list in SD",
+      "What data is included in the South Dakota voter file?"
+    ],
+    "answer": "Campaigns and political committees can request the statewide or county-specific voter registration file from the Secretary of State or respective County Auditors for a fee. The file contains voter names, addresses, party affiliations, and election history. The data may only be used for election or political purposes.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in South Dakota?",
+    "question_variants": [
+      "Where do I file campaign finance reports in SD?",
+      "What is the South Dakota campaign finance system?",
+      "Does the SD Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in South Dakota are administered and enforced directly by the Secretary of State's Office. State and legislative candidates file their reports electronically using the Secretary of State's Campaign Finance Reporting System.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State - Campaign Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in South Dakota for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in South Dakota?",
+      "SD individual donation caps 2026 election",
+      "Maximum donation to state legislature South Dakota"
+    ],
+    "answer": "In South Dakota, contribution limits are uniquely capped per CALENDAR YEAR, not per election cycle. For 2025 and 2026, an individual may contribute up to $4,000 per calendar year to a gubernatorial or statewide executive candidate, and up to $1,000 per calendar year to a state legislative candidate.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_South_Dakota",
+    "source_name": "Ballotpedia / South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in South Dakota campaigns?",
+    "question_variants": [
+      "Corporate contribution ban South Dakota state",
+      "Can a business donate to my campaign in SD?",
+      "Corporate campaign finance rules South Dakota"
+    ],
+    "answer": "Yes. Direct contributions from the general treasury of a corporation or labor union to a candidate's campaign committee are PERMITTED in South Dakota. They are subject to the exact same calendar year limits as individual donors ($4,000 for Governor, $1,000 for Legislature).",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_South_Dakota",
+    "source_name": "Ballotpedia / South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for South Dakota candidates?",
+    "question_variants": [
+      "SD SOS filing dates 2026",
+      "When are campaign finance reports due in SD?",
+      "South Dakota pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Active state-level candidate committees must file comprehensive periodic reports. In an election year, this includes a pre-primary report (due roughly two weeks before the primary), a pre-general report (due roughly two weeks before the general election), and a Year-End report (due by the last Friday in January).",
+    "source_url": "https://sdlegislature.gov/Session/Bill/25791/280577",
+    "source_name": "South Dakota Legislature (SB 17)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are South Dakota's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "South Dakota 48-hour large contribution report",
+      "Late contribution reporting South Dakota SOS",
+      "When do I file a rapid report in SD?"
+    ],
+    "answer": "South Dakota mandates rapid disclosure during the critical window before an election. If a candidate committee receives a contribution of $500 or more within the 14 days immediately prior to an election, it must be reported electronically to the Secretary of State within 48 hours of receipt.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does South Dakota provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for South Dakota Governor",
+      "State funded campaigns South Dakota status",
+      "Government campaign grants SD"
+    ],
+    "answer": "No. South Dakota does not provide any system of public financing or matching funds for state-level political campaigns. Candidates must rely entirely on private contributions raised within the statutory limits.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in South Dakota?",
+    "question_variants": [
+      "SD personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in SD?",
+      "Prohibited expenditures South Dakota SOS"
+    ],
+    "answer": "Yes. Under South Dakota campaign finance laws, campaign funds are strictly prohibited from being converted to personal use. Expenditures must bear a direct relationship to the candidate's campaign or the execution of their public office.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for South Dakota legislators?",
+    "question_variants": [
+      "Can South Dakota legislators raise money during session?",
+      "Lobbyist contribution ban SD legislature",
+      "Legislative session contribution rules South Dakota"
+    ],
+    "answer": "No. Unlike some other states, South Dakota DOES NOT have a statutory 'session freeze' that prohibits legislators or statewide officials from accepting campaign contributions while the state legislature is actively in session.",
+    "source_url": "https://www.multistate.us/",
+    "source_name": "MultiState - State Campaign Finance Rules",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does South Dakota have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the SD ballot",
+      "South Dakota citizen initiative signature requirements",
+      "Can citizens propose laws in South Dakota?"
+    ],
+    "answer": "Yes. South Dakota maintains a robust citizen initiative process. In fact, it was the first state in the nation to adopt the initiative process. Citizens can draft and refer both regular statutes (requiring signatures equal to 5% of the total votes cast for governor) and constitutional amendments (requiring 10%).",
+    "source_url": "https://sdsos.gov/elections-voting/upcoming-elections/general-information/about-ballot-questions.aspx",
+    "source_name": "South Dakota Secretary of State - Ballot Questions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does South Dakota have a veto referendum process?",
+    "question_variants": [
+      "How to refer a SD bill to the ballot",
+      "South Dakota citizen referendum rules",
+      "Veto referendum signature threshold South Dakota state"
+    ],
+    "answer": "Yes. Citizens of South Dakota may repeal legislative acts via a veto referendum. To qualify a referendum for the ballot and suspend the law, proponents must submit valid signatures equal to 5% of the total votes cast for Governor in the preceding election within 90 days of the legislative session's adjournment.",
+    "source_url": "https://sdsos.gov/elections-voting/upcoming-elections/general-information/about-ballot-questions.aspx",
+    "source_name": "South Dakota Secretary of State - Ballot Questions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Are out-of-state contributions to ballot question committees banned in South Dakota?",
+    "question_variants": [
+      "South Dakota IM 24 out of state money ban",
+      "Can non-residents donate to SD ballot measures?",
+      "Restrictions on funding South Dakota initiatives"
+    ],
+    "answer": "Yes, but with significant legal caveats. In 2018, voters passed Initiated Measure 24, which banned out-of-state contributions to ballot question committees. While portions of the law faced constitutional challenges in federal court, the state legislature subsequently passed SB 180 to refine the restrictions, maintaining limits on out-of-state money for ballot initiatives.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State - Campaign Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in South Dakota?",
+    "question_variants": [
+      "South Dakota ballot measure pass threshold",
+      "Does a measure need a supermajority in SD?",
+      "Majority vote requirements South Dakota ballot measures"
+    ],
+    "answer": "In South Dakota, statutory initiatives, veto referendums, and constitutional amendments require a simple majority (over 50%) of the total votes cast on that specific measure by voters during a general election to pass.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws South Dakota's state legislative maps?",
+    "question_variants": [
+      "Does the SD legislature draw district maps?",
+      "Who has the authority to draw district lines in South Dakota?",
+      "South Dakota redistricting commission"
+    ],
+    "answer": "In South Dakota, the state legislature holds the primary authority to draw and enact state legislative district boundaries. The maps are passed as regular legislation and are subject to the Governor's signature or veto. (South Dakota only has one U.S. House seat, so congressional redistricting is not applicable).",
+    "source_url": "https://sdlegislature.gov/",
+    "source_name": "South Dakota Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in South Dakota?",
+    "question_variants": [
+      "Standards for drawing South Dakota district lines",
+      "South Dakota gerrymandering rules",
+      "Map requirements SD"
+    ],
+    "answer": "Under the South Dakota Constitution and state statutes, legislative districts must be contiguous, compact, and as nearly equal in population as practicable. The state is also required to protect minority voting rights, specifically concerning the state's significant Native American population.",
+    "source_url": "https://sdlegislature.gov/Constitution/3",
+    "source_name": "South Dakota Constitution Article III",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current South Dakota state legislative maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of South Dakota Senate redistricting maps",
+      "Are there pending redistricting lawsuits in South Dakota?",
+      "South Dakota 2026 state legislative boundaries"
+    ],
+    "answer": "Yes. The redistricting maps enacted by the South Dakota Legislature in late 2021 (the 'Sparrow' map framework) following the 2020 census remain fully operative for the 2026 election cycle. While there was initial litigation regarding Native American voting districts, the maps were ultimately upheld and implemented.",
+    "source_url": "https://sdlegislature.gov/",
+    "source_name": "South Dakota Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does South Dakota have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of South Dakota be recalled?",
+      "How to recall a state senator in SD",
+      "Statewide recall election rules South Dakota"
+    ],
+    "answer": "No. The State of South Dakota does not have any constitutional or statutory provision allowing for the recall of state-level elected officials, including the Governor, statewide executives, or members of the state legislature.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_South_Dakota",
+    "source_name": "Laws governing recall in South Dakota",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in South Dakota?",
+    "question_variants": [
+      "South Dakota city council recall rules",
+      "Signature requirement local recall South Dakota",
+      "Recalling a mayor in SD"
+    ],
+    "answer": "South Dakota statutorily allows for the recall of municipal officials (such as mayors or city council members). To trigger a recall election, proponents must gather valid signatures from registered voters equal to 15% of the registered voters in the municipality.",
+    "source_url": "https://sdlegislature.gov/Statutes/9-13-16",
+    "source_name": "South Dakota Codified Law 9-13-16",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in South Dakota?",
+    "question_variants": [
+      "Requirements to run for SD Secretary of State",
+      "Who can run for Secretary of State in SD?",
+      "Residency rules for South Dakota SOS"
+    ],
+    "answer": "Under Article IV, Section 7 of the South Dakota Constitution, a candidate for Secretary of State must be at least 18 years old, a citizen of the United States, and a qualified elector (registered voter) of the state. They are nominated at a state party convention rather than through a primary.",
+    "source_url": "https://sdlegislature.gov/Constitution/4",
+    "source_name": "South Dakota Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in South Dakota?",
+    "question_variants": [
+      "Eligibility for South Dakota State Treasurer",
+      "Who can run for Treasurer in SD?",
+      "South Dakota Treasurer residency requirements"
+    ],
+    "answer": "The qualifications for State Treasurer in South Dakota mirror those for the Secretary of State. A candidate must be a citizen of the United States, a qualified elector of the state, and at least 18 years old. They are also nominated at a state party convention.",
+    "source_url": "https://sdlegislature.gov/Constitution/4",
+    "source_name": "South Dakota Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Auditor in South Dakota?",
+    "question_variants": [
+      "Eligibility for South Dakota State Auditor",
+      "Who can run for Auditor in SD?",
+      "Is a CPA license required for South Dakota Auditor?"
+    ],
+    "answer": "The State Auditor is a statewide elected office nominated at convention. The constitutional requirements are simply that the candidate must be a citizen of the United States, a qualified elector of the state, and at least 18 years old. There is no constitutional requirement for the candidate to hold a CPA license or specific financial degree.",
+    "source_url": "https://sdlegislature.gov/Constitution/4",
+    "source_name": "South Dakota Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in South Dakota?",
+    "question_variants": [
+      "Run for school board South Dakota requirements",
+      "Who can be a school board member in SD?",
+      "School board residency rules South Dakota"
+    ],
+    "answer": "To run for a local school board in South Dakota, candidates must be legally qualified voters and residents of the specific school district they seek to represent at the time they are elected.",
+    "source_url": "https://sdsos.gov/elections-voting/upcoming-elections/general-information/qualifications-office-term-limits.aspx",
+    "source_name": "South Dakota Secretary of State - Local Offices",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for South Dakota Supreme Court justices?",
+    "question_variants": [
+      "South Dakota Supreme Court Justice eligibility",
+      "Years of practice required for SD Supreme Court",
+      "Are South Dakota judges elected or appointed?"
+    ],
+    "answer": "South Dakota Supreme Court justices are initially appointed, not elected. Candidates must be citizens of the United States, residents of South Dakota, and licensed attorneys authorized to practice law in the state. They are chosen by the Governor from a Judicial Qualifications Commission list, and subsequently face retention elections.",
+    "source_url": "https://ujs.sd.gov/Supreme_Court/",
+    "source_name": "South Dakota Unified Judicial System",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in South Dakota?",
+    "question_variants": [
+      "How to fix a rejected signature in SD",
+      "South Dakota ballot cure process deadline",
+      "Missing signature on SD mail ballot"
+    ],
+    "answer": "South Dakota law does not provide a statewide, statutory signature cure process. If a county auditor determines an absentee ballot return envelope is missing a signature or the signature does not match the registration record, the ballot may be rejected without guaranteeing the voter a formal post-election window to fix the error.",
+    "source_url": "https://sdsos.gov/elections-voting/voting/absentee-voting.aspx",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in South Dakota?",
+    "question_variants": [
+      "When are military ballots due in South Dakota?",
+      "UOCAVA return deadline SD",
+      "Overseas voting rules South Dakota state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. In South Dakota, voted ballots must be received by the County Auditor by the close of polls (7:00 p.m.) on Election Day to be counted.",
+    "source_url": "https://sdsos.gov/elections-voting/voting/military-overseas-voting.aspx",
+    "source_name": "South Dakota Secretary of State - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in South Dakota?",
+    "question_variants": [
+      "What is a provisional ballot in SD?",
+      "Voting without ID South Dakota",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued in South Dakota if a voter's name is not on the official registration list but the voter affirms they registered before the deadline. The voter casts the ballot, which is sealed, and election officials determine its validity during the canvassing process.",
+    "source_url": "https://sdsos.gov/elections-voting/voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does South Dakota have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the South Dakota DMV?",
+      "SD motor voter automatic registration",
+      "Do I have to register to vote if I get a SD driver's license?"
+    ],
+    "answer": "No. South Dakota does NOT have Automatic Voter Registration (AVR). While the state complies with federal Motor Voter laws by offering individuals the opportunity to register to vote when applying for a driver's license, voters must actively fill out the registration portion (opt-in).",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does South Dakota offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in SD?",
+      "South Dakota electronic voter registration",
+      "SD online registration portal"
+    ],
+    "answer": "No. As confirmed by recent legislative cycles, South Dakota does NOT offer online voter registration. Voters must submit a physical, signed paper voter registration form to their County Auditor by the 15-day deadline.",
+    "source_url": "https://sdsos.gov/elections-voting/voting/register-to-vote/default.aspx",
+    "source_name": "South Dakota Secretary of State - Register to Vote",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does South Dakota maintain its voter registration lists?",
+    "question_variants": [
+      "SD voter list maintenance rules",
+      "How are inactive voters handled in South Dakota?",
+      "South Dakota voter roll cleaning process"
+    ],
+    "answer": "South Dakota conducts regular list maintenance using National Change of Address (NCOA) data and death records. County Auditors mail confirmation notices to voters whose addresses are flagged. If a voter fails to respond to the notice and does not vote in two consecutive federal general elections, their registration is canceled per NVRA guidelines.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee mail-in ballot in South Dakota?",
+    "question_variants": [
+      "When is the last day to mail my ballot in SD?",
+      "South Dakota mail ballot postmark deadline",
+      "What time are ballots due in South Dakota?"
+    ],
+    "answer": "Voted absentee ballots must be physically received by the County Auditor's office by the close of polls (7:00 p.m. local time) on Election Day. South Dakota does NOT accept ballots arriving late based on postmark dates.",
+    "source_url": "https://sdsos.gov/elections-voting/voting/absentee-voting.aspx",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in South Dakota?",
+    "question_variants": [
+      "Does South Dakota use ranked choice voting?",
+      "RCV status in South Dakota 2026",
+      "Instant runoff voting SD"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is explicitly banned in South Dakota. During the 2024 legislative session, Governor Kristi Noem signed SB 59 into law, which prohibits the use of ranked-choice voting methods in all state, county, and municipal elections.",
+    "source_url": "https://sdlegislature.gov/Session/Bill/24716",
+    "source_name": "South Dakota Legislature (SB 59)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in South Dakota elections?",
+    "question_variants": [
+      "How are tied elections decided in South Dakota?",
+      "Tie-breaker rules South Dakota elections",
+      "What happens if a race is tied in SD?"
+    ],
+    "answer": "In the rare event of an exact tie in a general or primary election (where no runoff is applicable), South Dakota law (SDCL 12-21-43) dictates that the tie is broken by the casting of lots (such as drawing straws or a coin toss). The process is overseen by the relevant election board or the Secretary of State.",
+    "source_url": "https://sdlegislature.gov/Statutes/12-21-43",
+    "source_name": "South Dakota Codified Law 12-21-43",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on South Dakota campaign materials?",
+    "question_variants": [
+      "South Dakota 'Paid for by' rules",
+      "Campaign ad disclaimer requirements SD",
+      "Political taglines South Dakota SOS"
+    ],
+    "answer": "Under South Dakota campaign finance law, all political advertising, mass media, and printed campaign materials must clearly contain the statement 'Paid for by' followed by the name of the candidate, committee, or person that paid for the communication.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in South Dakota?",
+    "question_variants": [
+      "SD campaign coordination rules",
+      "When is a PAC expenditure not independent in South Dakota?",
+      "Prohibition on candidate-PAC coordination SD"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if it is made under the control, direction, or request of a candidate or their committee. Once coordinated, the expenditure is treated legally as an in-kind contribution and is strictly applied against the donor's per-calendar-year contribution limit.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in South Dakota?",
+    "question_variants": [
+      "SD SOS late fee",
+      "Penalty for missing a South Dakota campaign finance deadline",
+      "Secretary of State fine for late filing SD"
+    ],
+    "answer": "The South Dakota Secretary of State imposes administrative penalties for late campaign finance reports. Filers who miss a deadline are subject to a flat penalty of $200 for each violation. Continued failure to file can result in additional fines and referral for prosecution.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a South Dakota campaign committee terminate?",
+    "question_variants": [
+      "Closing a South Dakota campaign committee",
+      "SOS committee termination requirements",
+      "Final campaign finance report South Dakota"
+    ],
+    "answer": "A candidate committee may formally terminate by rolling over any surplus funds (to a future campaign or charity), bringing the committee's account balance to exactly zero, resolving all debts, and filing a 'Termination Report' through the online campaign finance system.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in South Dakota?",
+    "question_variants": [
+      "SD independent expenditure reporting SOS",
+      "Disclosure for SD independent expenditure groups",
+      "Reporting thresholds for outside spending South Dakota"
+    ],
+    "answer": "Any person, PAC, or entity that makes an independent expenditure advocating for or against a candidate must disclose it. If an independent expenditure exceeds $500 within the 20 days prior to an election, a supplemental report must be filed within 48 hours.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in South Dakota?",
+    "question_variants": [
+      "South Dakota in-kind contribution valuation rules",
+      "Reporting non-monetary donations South Dakota campaign",
+      "Fair market value for in-kind gifts SD"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment not available to the general public) must be reported on campaign finance disclosures at their fair market value. Their value is counted directly against the donor's per-calendar-year monetary contribution limits.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in South Dakota?",
+    "question_variants": [
+      "South Dakota candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in SD?",
+      "Reporting candidate loans in SOS"
+    ],
+    "answer": "No. In South Dakota, standard per-calendar-year contribution limits only apply to external donors. A candidate may loan or contribute an UNLIMITED amount of their own personal funds to their own campaign committee.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can South Dakota candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in SD?",
+      "SD surplus campaign funds rules",
+      "Donating remaining campaign funds South Dakota"
+    ],
+    "answer": "Surplus campaign funds cannot be converted to personal use. Candidates may carry them forward to a future campaign, return them pro-rata to contributors, transfer them to a recognized political party or another candidate committee (subject to limits), or donate them to an IRS-recognized charity.",
+    "source_url": "https://sdsos.gov/elections-voting/campaign-finance/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in South Dakota?",
+    "question_variants": [
+      "SD PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit South Dakota",
+      "Maximum PAC gift to state legislator SD"
+    ],
+    "answer": "In South Dakota, Political Action Committees (PACs) have significantly higher contribution limits than individuals. A PAC may contribute up to $10,000 per calendar year to a gubernatorial or statewide executive candidate, and up to $2,500 per calendar year to a state legislative candidate.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_South_Dakota",
+    "source_name": "Ballotpedia / South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["county", "municipal"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in South Dakota?",
+    "question_variants": [
+      "When are county sheriffs elected in SD?",
+      "South Dakota county official term lengths",
+      "Are county auditors on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in South Dakota—including County Auditors, Treasurers, Sheriffs, and State's Attorneys—serve four-year terms. They are elected during the general election in even-numbered years, so many county executive offices will be on the 2026 ballot.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for South Dakota elections?",
+    "question_variants": [
+      "When are South Dakota election results official?",
+      "SD certification deadline",
+      "State Canvassing Board meeting South Dakota"
+    ],
+    "answer": "County boards of canvassers must meet to certify local results within six days after the election. The State Board of Canvassers then officially convenes at the Secretary of State's office within seven days of receiving all county abstracts to certify the final statewide and federal returns.",
+    "source_url": "https://sdlegislature.gov/Statutes/12-20-46",
+    "source_name": "South Dakota Codified Law 12-20-46",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "SD",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in South Dakota?",
+    "question_variants": [
+      "South Dakota special election timeline",
+      "Who calls a special election to fill a US House vacancy in SD?",
+      "Filling a midterm vacancy South Dakota"
+    ],
+    "answer": "Special elections to fill a vacancy in a federal office (like the U.S. House) are called by a writ of election issued by the Governor. Conversely, for state legislative vacancies, the Governor generally appoints a replacement of the same political party to serve out the remainder of the term without a special election.",
+    "source_url": "https://sdsos.gov/elections-voting/",
+    "source_name": "South Dakota Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What is the election cycle for South Dakota Supreme Court justices?",
+    "question_variants": [
+      "When do SD Supreme Court justices run?",
+      "South Dakota judicial retention elections",
+      "Terms for South Dakota Supreme Court"
+    ],
+    "answer": "After being appointed by the Governor, a South Dakota Supreme Court justice must face a retention election ('Yes' or 'No' vote) during the first general election held more than three years after their appointment. If retained by the voters, they serve an eight-year term before facing another retention election.",
+    "source_url": "https://ujs.sd.gov/Supreme_Court/",
+    "source_name": "South Dakota Unified Judicial System",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "SD",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are judges selected in South Dakota?",
+    "question_variants": [
+      "South Dakota judicial selection process",
+      "Are judges elected or appointed in SD?",
+      "Judicial Qualifications Commission South Dakota"
+    ],
+    "answer": "South Dakota uses a merit selection system for its highest court. The Judicial Qualifications Commission reviews applicants and sends a shortlist to the Governor, who appoints a justice to the Supreme Court. Circuit Court judges, however, are elected in nonpartisan elections for eight-year terms.",
+    "source_url": "https://ujs.sd.gov/",
+    "source_name": "South Dakota Unified Judicial System",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  }
+]
