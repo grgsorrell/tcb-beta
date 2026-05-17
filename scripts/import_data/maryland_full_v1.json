@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in Maryland?",
+    "question_variants": [
+      "Are Maryland primaries open or closed?",
+      "Do I have to register with a party to vote in the MD primary?",
+      "Can unaffiliated voters participate in the Maryland primary?"
+    ],
+    "answer": "Maryland operates a closed primary system for partisan offices. Voters must be registered as affiliated with the Democratic or Republican party to vote in that respective party's primary election. Unaffiliated voters generally cannot vote in partisan primaries, though they can vote in nonpartisan primaries (like school board races) held on the same day.",
+    "source_url": "https://elections.maryland.gov/elections/2026/index.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When is the 2026 primary election in Maryland?",
+    "question_variants": [
+      "Maryland primary date 2026",
+      "When is Election Day for the MD primary?",
+      "June primary Maryland"
+    ],
+    "answer": "The Maryland primary election is scheduled quite late in the cycle, falling on Tuesday, June 23, 2026. Polls are open from 7:00 a.m. to 8:00 p.m.",
+    "source_url": "https://elections.maryland.gov/elections/2026/index.html",
+    "source_name": "Maryland State Board of Elections - 2026 Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Maryland?",
+    "question_variants": [
+      "Do write-in votes count in MD?",
+      "How to register as a write-in candidate in Maryland",
+      "Write-in filing deadline Maryland"
+    ],
+    "answer": "Write-in candidates are NOT permitted in primary elections. They are allowed in the general election, but they must officially file a Certificate of Candidacy. The filing deadline is typically the 7th day before the start of early voting for the general election (or within 7 days of spending over $51 on the campaign).",
+    "source_url": "https://elections.maryland.gov/candidacy/index.html",
+    "source_name": "Maryland State Board of Elections - Candidacy",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for major party candidates in Maryland for 2026?",
+    "question_variants": [
+      "When do candidates file for office in Maryland?",
+      "Maryland filing deadline 2026",
+      "February filing deadline MD"
+    ],
+    "answer": "Candidates seeking a major party nomination for the 2026 primary election must file their Certificate of Candidacy with the appropriate election board by February 24, 2026.",
+    "source_url": "https://elections.maryland.gov/candidacy/index.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for independent candidates in Maryland?",
+    "question_variants": [
+      "Independent candidate ballot access Maryland",
+      "Running without a party in MD 2026",
+      "How many signatures for independent US Senate MD"
+    ],
+    "answer": "Unaffiliated (independent) petition candidates seeking statewide office must submit a petition containing at least 10,000 valid signatures from eligible Maryland voters. For all other offices (such as U.S. House or State Legislature), independent candidates must gather signatures equaling at least 1% of the eligible voters in the district they seek to represent.",
+    "source_url": "https://elections.maryland.gov/candidacy/index.html",
+    "source_name": "Maryland State Board of Elections - Petition Candidates",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Maryland have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the MD primary?",
+      "Maryland sore loser statute",
+      "General election ballot access after primary defeat MD"
+    ],
+    "answer": "Yes. Maryland explicitly enforces a sore loser law under Md. Code, Election Law, §5-706(b). A candidate who was defeated in a political party's primary election may not appear on the general election ballot for the same office as an independent, nominee of another party, or a write-in candidate.",
+    "source_url": "https://ballotpedia.org/Sore_loser_laws_by_state",
+    "source_name": "Md. Code, Election Law, § 5-706",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Maryland?",
+    "question_variants": [
+      "Maryland joint ticket rules",
+      "How are Lt Gov candidates selected in MD?",
+      "Does the Governor pick a running mate in Maryland?"
+    ],
+    "answer": "Yes. In Maryland, candidates for Governor and Lieutenant Governor run together on a single, joint ticket in both the primary and the general election. A vote for the gubernatorial candidate is automatically a vote for their designated running mate.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When is the general election in Maryland for 2026?",
+    "question_variants": [
+      "Maryland general election date 2026",
+      "When is Election Day 2026 in Maryland?",
+      "November election Maryland"
+    ],
+    "answer": "The Maryland general election will be held on Tuesday, November 3, 2026. Polls are open statewide from 7:00 a.m. to 8:00 p.m.",
+    "source_url": "https://elections.maryland.gov/elections/2026/index.html",
+    "source_name": "Maryland State Board of Elections - 2026 Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Wes Moore running for re-election in 2026?",
+    "question_variants": [
+      "Maryland Governor election 2026",
+      "Who is defending the MD Governor seat?",
+      "Is Wes Moore term limited?"
+    ],
+    "answer": "Yes. Governor Wes Moore (D) is currently serving his first term and is eligible to defend his seat in the 2026 election, as Maryland governors are limited to two consecutive terms.",
+    "source_url": "https://ballotpedia.org/Maryland_elections,_2026",
+    "source_name": "Ballotpedia - Maryland Elections 2026",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seats are up for election in Maryland in 2026?",
+    "question_variants": [
+      "Is Chris Van Hollen up for re-election in 2026?",
+      "When is Angela Alsobrooks's next election?",
+      "Maryland US Senate cycle 2026"
+    ],
+    "answer": "Neither U.S. Senate seat in Maryland is on the ballot in 2026. Senator Angela Alsobrooks (Class 1) was elected in 2024 and is next up in 2030. Senator Chris Van Hollen (Class 3) was re-elected in 2022 and is next up in 2028.",
+    "source_url": "https://ballotpedia.org/Maryland_elections,_2026",
+    "source_name": "Ballotpedia - Maryland Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Maryland for the 2026 election?",
+    "question_variants": [
+      "Maryland congressional apportionment",
+      "Are all MD congressional seats up in 2026?",
+      "Number of US Representatives from Maryland"
+    ],
+    "answer": "Maryland is apportioned 8 U.S. House districts. All eight seats are on the 2026 ballot, as U.S. Representatives serve two-year terms.",
+    "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections_in_Maryland",
+    "source_name": "Wikipedia - 2026 US House Elections in Maryland",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Maryland State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Maryland House seats up in 2026?",
+      "Maryland Senate election cycle 2026",
+      "Which legislative districts are on the ballot in MD?"
+    ],
+    "answer": "In Maryland, ALL legislative seats are elected concurrently every four years, aligning with the gubernatorial cycle. Therefore, all 141 seats in the Maryland House of Delegates and all 47 seats in the Maryland State Senate will be on the 2026 ballot.",
+    "source_url": "https://mgaleg.maryland.gov/mgawebsite/Members/About",
+    "source_name": "Maryland General Assembly - About Members",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Maryland in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "MD statewide election list 2026",
+      "When is the Comptroller election in MD?"
+    ],
+    "answer": "Maryland elects its key statewide executive officers concurrently on a four-year midterm cycle. In 2026, the offices of Governor, Lieutenant Governor, Attorney General, and Comptroller are all on the ballot. (Note: The State Treasurer is elected separately by the General Assembly, not by voters).",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Maryland Circuit Court judges selected and are they on the ballot?",
+    "question_variants": [
+      "Maryland judicial elections 2026",
+      "Are MD judges elected or appointed?",
+      "Nonpartisan judicial elections Maryland"
+    ],
+    "answer": "Maryland Circuit Court judges are initially appointed by the Governor. However, they must then stand for a competitive, nonpartisan election at the next general election following their appointment. Once elected by the voters, they serve a 15-year term.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Maryland General Assembly regular session?",
+    "question_variants": [
+      "When does the MD legislature meet?",
+      "Maryland 90 day legislative session",
+      "Is the Maryland legislature full time?"
+    ],
+    "answer": "The Maryland General Assembly meets annually for exactly 90 consecutive days. The session convenes on the second Wednesday in January. For the 2026 cycle, the session runs from January 14, 2026, through Sine Die on April 13, 2026.",
+    "source_url": "https://msa.maryland.gov/msa/mdmanual/07leg/html/gaf.html",
+    "source_name": "Maryland Manual On-Line - General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Maryland?",
+    "question_variants": [
+      "Age and residency for Maryland Governor",
+      "Maryland Constitution Governor qualifications",
+      "Who is eligible to be Governor of MD?"
+    ],
+    "answer": "Under the Maryland Constitution, a candidate for Governor or Lieutenant Governor must be at least 30 years old and must have been a resident and a registered voter of Maryland for at least five years immediately preceding the election.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Maryland State Legislature?",
+    "question_variants": [
+      "Qualifications for MD State Delegate",
+      "Age requirement Maryland State Senate",
+      "Do I have to live in my district to run in MD?"
+    ],
+    "answer": "A candidate for the Maryland State Senate must be at least 25 years old. A candidate for the House of Delegates must be at least 21 years old. Both must be citizens of Maryland for at least one year and residents of their respective district for at least six months prior to the election.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Maryland?",
+    "question_variants": [
+      "US Senate residency requirements Maryland",
+      "Age to run for Congress in Maryland",
+      "Federal constitutional requirements for MD candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Maryland Governor?",
+    "question_variants": [
+      "How many terms can a Maryland Governor serve?",
+      "Wes Moore term limits MD",
+      "Maryland executive term limit law"
+    ],
+    "answer": "Under the Maryland Constitution, the Governor is limited to serving two consecutive four-year terms. After serving two consecutive terms, an individual is ineligible to hold the office again until a full term has intervened.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Maryland have legislative term limits?",
+    "question_variants": [
+      "How many terms can a Maryland state senator serve?",
+      "Are there term limits for the Maryland House?",
+      "Maryland legislature term limit status"
+    ],
+    "answer": "No. Maryland does not currently impose term limits on members of the State Senate or the House of Delegates. Legislators may serve an unlimited number of terms as long as they continue to win re-election.",
+    "source_url": "https://msa.maryland.gov/msa/mdmanual/07leg/html/gaf.html",
+    "source_name": "Maryland Manual On-Line - General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General in Maryland?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in MD",
+      "Do I need to be a member of the bar to be MD AG?",
+      "Legal requirements for Maryland Attorney General"
+    ],
+    "answer": "The Maryland Constitution requires the Attorney General to be a qualified voter who has resided and practiced law in the State of Maryland for at least 10 years prior to their election.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["county", "municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for local officeholders in Baltimore City?",
+    "question_variants": [
+      "Maryland Baltimore Mayor qualifications",
+      "Can I run for City Council in Baltimore?",
+      "Baltimore residency for MD officials"
+    ],
+    "answer": "To run for Mayor, Comptroller, or City Council President in Baltimore City, a candidate must be at least 25 years old and a resident and qualified voter of the city for at least one year preceding the election. District City Council members must be at least 18 and meet the same residency requirement.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Maryland a universal mail ballot state where all voters are automatically sent ballots?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Maryland?",
+      "Maryland vote-by-mail system",
+      "Does Maryland automatically mail ballots to active voters?"
+    ],
+    "answer": "No, Maryland is NOT a strictly universal mail ballot state that automatically sends ballots to all registered voters without permission. Instead, any voter can opt-in to the 'Permanent Mail-in Ballot List.' Once a voter actively signs up for this list, they will automatically be mailed a ballot for all future elections they are eligible for.",
+    "source_url": "https://elections.maryland.gov/voting/absentee.html",
+    "source_name": "Maryland State Board of Elections - Mail-in Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Maryland?",
+    "question_variants": [
+      "Maryland voter ID requirements",
+      "Do I need my driver's license to vote in MD?",
+      "Acceptable ID for Maryland voting"
+    ],
+    "answer": "No. Maryland DOES NOT require a photo ID to vote in person at the polls. Instead, Maryland utilizes a signature verification and verbal confirmation system. (The only exception is for first-time voters who registered by mail without providing a driver's license number or the last four digits of their SSN).",
+    "source_url": "https://www.peoples-law.org/voting-rights",
+    "source_name": "Maryland People's Law Library - Voting Rights",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Maryland offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in MD?",
+      "Maryland early voting dates 2026",
+      "When does early voting start in Maryland?"
+    ],
+    "answer": "Yes. Maryland offers a comprehensive early in-person voting period. Early voting centers are open for eight days, running from Thursday through the following Thursday, including weekends. For the 2026 primary, early voting runs from June 11 to June 18. Polls are open from 7:00 a.m. to 8:00 p.m.",
+    "source_url": "https://elections.maryland.gov/elections/2026/index.html",
+    "source_name": "Maryland State Board of Elections - 2026 Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee mail-in ballot in Maryland?",
+    "question_variants": [
+      "When is the last day to mail my ballot in MD?",
+      "Maryland mail ballot postmark deadline",
+      "What time are ballots due in Maryland?"
+    ],
+    "answer": "If returning a ballot by mail, it must be postmarked on or before Election Day and physically received by the local board of elections by 10:00 a.m. on the 10th day after the election. If using a drop box or hand-delivering it, the ballot must be deposited by 8:00 p.m. on Election Day.",
+    "source_url": "https://www.vote.org/absentee-ballot/maryland/",
+    "source_name": "Vote.org - Maryland Absentee Ballots",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Maryland offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in MD",
+      "Maryland same day voter registration",
+      "Voter registration deadline 2026 Maryland"
+    ],
+    "answer": "The advance deadline to register to vote in Maryland is 21 days before the election. However, Maryland DOES offer Same-Day Voter Registration. Unregistered individuals can register and vote on the same day during the Early Voting period or on Election Day by bringing a document that proves their residency.",
+    "source_url": "https://elections.maryland.gov/elections/2026/index.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Maryland?",
+    "question_variants": [
+      "How close can I campaign to a polling place in MD?",
+      "Maryland 100 feet electioneering rule",
+      "MD buffer zone around voting centers"
+    ],
+    "answer": "Under Maryland Election Law, an electioneering boundary line is drawn as near as practicable to 100 feet from the entrance/exit of the polling place. Campaigning is prohibited inside this line. (Note: In Montgomery and Carroll Counties, local boards may set the line between 25 and 100 feet).",
+    "source_url": "https://www3.montgomerycountymd.gov/311/Solutions.aspx?SolutionId=1-9K46TT",
+    "source_name": "Montgomery County Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Maryland?",
+    "question_variants": [
+      "Can felons vote in Maryland state?",
+      "Felony voting rights restoration MD",
+      "Voting on parole in Maryland"
+    ],
+    "answer": "In Maryland, an individual convicted of a felony loses their voting rights only while they are actively incarcerated. Voting rights are automatically restored upon their release from prison. Individuals who are on probation or parole are eligible to register and vote.",
+    "source_url": "https://www.peoples-law.org/voting-rights",
+    "source_name": "Maryland People's Law Library - Voting Rights",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MD",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How is election administration structured across Maryland jurisdictions?",
+    "question_variants": [
+      "Maryland county election administration",
+      "How many local boards of election in MD?",
+      "Local election control Maryland Baltimore"
+    ],
+    "answer": "Maryland elections are administered by 24 local Boards of Elections. This represents the state's 23 counties plus the independent City of Baltimore, which operates its own board separate from Baltimore County.",
+    "source_url": "https://elections.maryland.gov/about/index.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in Maryland for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Maryland?",
+      "MD individual donation caps 2026 election",
+      "Maximum donation to state legislature Maryland"
+    ],
+    "answer": "Maryland enforces a $6,000 contribution limit per four-year election cycle. An individual may not contribute more than $6,000 to any one campaign finance entity (such as a candidate committee) during the four-year cycle, and may not exceed $24,000 in aggregate contributions to all entities combined.",
+    "source_url": "https://codes.findlaw.com/md/election-law/md-code-elec-law-sect-13-226/",
+    "source_name": "Maryland Code, Election Law § 13-226",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Maryland campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Maryland state",
+      "Can a business donate to my campaign in MD?",
+      "Corporate campaign finance rules Maryland"
+    ],
+    "answer": "Yes. Direct corporate contributions to candidates are permitted in Maryland and are subject to the same $6,000 per four-year cycle limit as individuals. However, contributions by two or more affiliated business entities (such as a parent and a wholly owned subsidiary) are treated as being made by a single contributor.",
+    "source_url": "https://govt.westlaw.com/mdc/Document/N2C609BF0F0B211E287538FE6867B56CD",
+    "source_name": "Maryland Code § 13-226",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Maryland provide public financing for gubernatorial campaigns?",
+    "question_variants": [
+      "Public matching funds for Maryland Governor",
+      "State funded campaigns Maryland status",
+      "Government campaign grants MD"
+    ],
+    "answer": "Yes. Maryland offers a distinctive Gubernatorial Public Funding program. To qualify for public matching funds, a ticket must collect at least 1,500 'eligible private contributions' (from MD residents, capped at $250 each) totaling at least $120,000. Public funds match smaller contributions at varying ratios (e.g., $8 for every $1 for the first $50).",
+    "source_url": "https://elections.maryland.gov/campaign_finance/public_funding.html",
+    "source_name": "Maryland State Board of Elections - Public Funding",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agencies administer and enforce campaign finance laws in Maryland?",
+    "question_variants": [
+      "Where do I file campaign finance reports in MD?",
+      "Who investigates campaign finance violations in Maryland?",
+      "Does the MD Secretary of State handle campaign finance?"
+    ],
+    "answer": "In Maryland, the State Board of Elections (SBE) Candidacy & Campaign Finance Division administers the laws, receives electronic disclosures (via MD CRIS), and assesses late fees. The Maryland Office of the State Prosecutor is responsible for investigating and prosecuting criminal violations of state election and campaign finance laws.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Full.pdf",
+    "source_name": "Maryland State Board of Elections - Summary Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Maryland candidates?",
+    "question_variants": [
+      "MD SBE filing dates 2026",
+      "When are campaign finance reports due in MD?",
+      "Maryland pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Maryland requires active campaign committees to file an Annual Report every January. During an election year (such as 2026), candidates must also file a Spring Report, two Pre-Primary Reports, a Pre-General Report (two if requested/designated), and a Post-General Report.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/reporting_schedule.html",
+    "source_name": "Maryland State Board of Elections - Reporting Schedule",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Maryland officials?",
+    "question_variants": [
+      "Can Maryland legislators raise money during session?",
+      "Lobbyist contribution ban MD legislature",
+      "Legislative session contribution rules Maryland"
+    ],
+    "answer": "Yes. Maryland strictly enforces a session freeze. The Governor, Lieutenant Governor, Attorney General, Comptroller, and members of the General Assembly are prohibited from soliciting or receiving campaign contributions during the 90-day regular legislative session (which runs January through April).",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Full.pdf",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates and Lobbyists"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Maryland?",
+    "question_variants": [
+      "MD personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in MD?",
+      "Prohibited expenditures Maryland SBE"
+    ],
+    "answer": "Yes. Under Maryland Election Law Article § 1-101(aa), campaign funds cannot be converted to personal use. All expenditures must have a direct 'electoral purpose'—meaning they enhance the candidate's election chances and would not have been incurred if there had been no candidacy.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Chapter_9.pdf",
+    "source_name": "Maryland State Board of Elections - Expenditures",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Maryland's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "Maryland 48-hour large contribution report",
+      "Late contribution reporting Maryland SBE",
+      "When do I file a rapid report in MD?"
+    ],
+    "answer": "In Maryland, rapid disclosure is required close to the election. Committees that receive a contribution or transfer of $1,000 or more in the final days preceding an election must file a 48-hour report detailing the receipt. Failure to file these timely incurs escalating daily fines.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Full.pdf",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Maryland's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the MD legislature draw district maps?",
+      "Who has the authority to draw district lines in Maryland?",
+      "Maryland redistricting commission"
+    ],
+    "answer": "In Maryland, the state legislature (General Assembly) holds the primary authority to draw both congressional and state legislative district boundaries. The maps are passed as regular legislation and are subject to the Governor's signature or veto.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Maryland",
+    "source_name": "Ballotpedia - Redistricting in Maryland",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "What is the operative status of Maryland's congressional map for the 2026 cycle?",
+    "question_variants": [
+      "Benisek v. Lamone Maryland impact",
+      "Is the MD congressional map operative for 2026?",
+      "Partisan gerrymandering challenges to Maryland congressional districts"
+    ],
+    "answer": "Maryland's congressional map is highly litigated and has historically been the subject of landmark Supreme Court cases regarding partisan gerrymandering (such as Benisek v. Lamone). Following the 2020 census, a state court struck down the legislature's initial map as an extreme partisan gerrymander. The legislature passed a revised, court-approved map in April 2022, which remains the operative map for the 2026 elections.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Maryland_after_the_2020_census",
+    "source_name": "Ballotpedia - Redistricting in Maryland",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current Maryland state legislative maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of Maryland legislative redistricting maps",
+      "Are there pending redistricting lawsuits in Maryland?",
+      "Maryland 2026 state legislative boundaries"
+    ],
+    "answer": "Yes. The state legislative maps enacted by the Maryland General Assembly in 2022 were upheld by the state's highest court following legal challenges. They remain fully operative for the 2026 election cycle.",
+    "source_url": "https://mgaleg.maryland.gov/",
+    "source_name": "Maryland General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Maryland?",
+    "question_variants": [
+      "Standards for drawing Maryland district lines",
+      "Maryland gerrymandering rules",
+      "Map requirements MD"
+    ],
+    "answer": "Under the Maryland Constitution, state legislative districts must be contiguous, compact, and of substantially equal population. They must also respect natural boundaries and political subdivision lines where possible. Congressional districts are subject to federal equal population standards and the Voting Rights Act.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Maryland",
+    "source_name": "Maryland Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Maryland have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Maryland be recalled?",
+      "How to recall a state senator in MD",
+      "Statewide recall election rules Maryland"
+    ],
+    "answer": "No. The State of Maryland does not have any legal or constitutional mechanism for the recall of state-level elected officials, including the Governor, statewide executives, or members of the General Assembly.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Maryland",
+    "source_name": "Laws governing recall in Maryland",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Maryland?",
+    "question_variants": [
+      "Maryland county executive recall rules",
+      "Signature requirement local recall Maryland",
+      "Recalling a mayor in MD"
+    ],
+    "answer": "Maryland does not have a general statutory recall process for all county or municipal officials. Recall is highly restricted and is only permitted in a subset of counties and municipalities if their specific, state-approved local charter explicitly authorizes the recall process (e.g., Calvert and Harford counties).",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Maryland",
+    "source_name": "Laws governing recall in Maryland",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Maryland have a veto referendum process?",
+    "question_variants": [
+      "How to refer an MD bill to the ballot",
+      "Maryland citizen referendum rules",
+      "Veto referendum signature threshold Maryland state"
+    ],
+    "answer": "Yes. Citizens of Maryland may repeal legislative acts via a veto referendum. To qualify a referendum for the ballot and suspend the law, proponents must submit valid signatures equal to 3% of the total votes cast for Governor in the preceding election. Signatures must be submitted by June 1 following the legislative session.",
+    "source_url": "https://ballotpedia.org/Laws_governing_the_referendum_process_in_Maryland",
+    "source_name": "Maryland Constitution Article XVI",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Maryland legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Maryland",
+      "Referendum by legislature MD",
+      "Can the MD legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The Maryland General Assembly can refer a constitutional amendment to the ballot by securing a three-fifths (60%) supermajority vote in both the House of Delegates and the State Senate. The amendment is then referred to the voters for ratification and does not require the Governor's signature.",
+    "source_url": "https://ballotpedia.org/Amending_the_Maryland_Constitution",
+    "source_name": "Maryland Constitution Article XIV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Maryland have a citizen initiative process for constitutional amendments?",
+    "question_variants": [
+      "How to amend the MD constitution by initiative",
+      "Maryland citizen initiative signature requirements",
+      "Can citizens propose constitutional amendments in Maryland?"
+    ],
+    "answer": "No. Maryland is one of the states that does NOT have a citizen initiative process for proposing statutes or constitutional amendments. While citizens can use a veto referendum to strike down laws, they cannot proactively draft and qualify new laws or constitutional amendments for the ballot.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Maryland",
+    "source_name": "Ballotpedia - Initiative and Referendum in Maryland",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Maryland?",
+    "question_variants": [
+      "Maryland ballot measure pass threshold",
+      "Does a measure need a supermajority in MD?",
+      "Majority vote requirements Maryland ballot measures"
+    ],
+    "answer": "In Maryland, legislatively referred constitutional amendments and citizen-led veto referendums require only a simple majority (over 50%) of the total votes cast on that specific measure to pass.",
+    "source_url": "https://elections.maryland.gov/",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Comptroller in Maryland?",
+    "question_variants": [
+      "Requirements to run for MD Comptroller",
+      "Who can run for Comptroller in MD?",
+      "Maryland Comptroller qualifications"
+    ],
+    "answer": "Under Article VI, Section 1 of the Maryland Constitution, a candidate for Comptroller must be a qualified voter (registered to vote in the state). There are no specific constitutional age or residency requirements explicitly enumerated for this office beyond being a qualified elector.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the State Treasurer an elected office in Maryland?",
+    "question_variants": [
+      "Qualifications for Maryland State Treasurer",
+      "Running for Treasurer in MD",
+      "Who elects the State Treasurer in Maryland?"
+    ],
+    "answer": "No. The Maryland State Treasurer is NOT elected by the voters. Under Article VI, Section 1 of the Maryland Constitution, the Treasurer is appointed by a joint ballot of both houses of the General Assembly at the beginning of each gubernatorial term.",
+    "source_url": "https://msa.maryland.gov/msa/mdmanual/08conoff/html/04treasf.html",
+    "source_name": "Maryland Manual On-Line - State Treasurer",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Maryland?",
+    "question_variants": [
+      "Run for school board Maryland requirements",
+      "Who can be a school board member in MD?",
+      "School board residency rules Maryland"
+    ],
+    "answer": "Eligibility requirements for local boards of education in Maryland vary significantly by county. Generally, candidates must be registered voters and residents of the specific county or district they seek to represent. Some counties utilize entirely elected boards, while others use a hybrid system of elected and appointed members.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for justices of the Supreme Court of Maryland?",
+    "question_variants": [
+      "Maryland Court of Appeals Justice eligibility",
+      "Years of practice required for MD Supreme Court",
+      "Are Maryland high court judges elected or appointed?"
+    ],
+    "answer": "To serve on the Supreme Court of Maryland (formerly named the Court of Appeals until 2022), an individual must be at least 30 years old, a citizen and registered voter of Maryland, a resident of the state for five years, and a member of the Maryland Bar. Justices are appointed by the Governor and confirmed by the Senate, followed by a retention election.",
+    "source_url": "https://msa.maryland.gov/msa/mdmanual/43const/html/04art4.html",
+    "source_name": "Maryland Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Maryland?",
+    "question_variants": [
+      "Maryland county executive qualifications",
+      "Can I run for county council in MD?",
+      "County residency for MD officials"
+    ],
+    "answer": "To run for a county office such as County Executive or County Council, candidates generally must be registered voters, at least 25 years of age (varies by specific county charter), and residents of the county (and the specific district, if applicable) for a minimum period preceding the election.",
+    "source_url": "https://elections.maryland.gov/candidacy/qualifications.html",
+    "source_name": "Maryland State Board of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in Maryland?",
+    "question_variants": [
+      "How to fix a rejected signature in MD",
+      "Maryland ballot cure process deadline",
+      "Missing signature on MD mail ballot"
+    ],
+    "answer": "Maryland allows voters to cure signature discrepancies or omissions on their mail-in ballot return envelopes. If a signature is missing, the local board of elections must notify the voter within three business days. The voter then has until 10:00 a.m. on the 10th day after Election Day to provide the missing signature to have the ballot counted.",
+    "source_url": "https://www.vote411.org/maryland",
+    "source_name": "VOTE411 - Maryland",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Maryland?",
+    "question_variants": [
+      "When are military ballots due in Maryland?",
+      "UOCAVA return deadline MD",
+      "Overseas voting rules Maryland state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. Voted ballots returned by mail must be postmarked by Election Day and physically received by the local board of elections by 10:00 a.m. on the 10th day following the election.",
+    "source_url": "https://elections.maryland.gov/voting/military.html",
+    "source_name": "Maryland State Board of Elections - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Maryland and how are they cured?",
+    "question_variants": [
+      "What is a provisional ballot in MD?",
+      "Voting without ID Maryland",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter's eligibility is in question, if they moved without updating their address, or if they failed to provide required ID (only applicable to certain first-time voters). If cast due to lack of ID, the voter must present valid identification to their local board of elections before 10:00 a.m. on the second Wednesday after Election Day to cure the ballot.",
+    "source_url": "https://elections.maryland.gov/voting/provisional_voting.html",
+    "source_name": "Maryland State Board of Elections - Provisional Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Maryland have Automatic Voter Registration (AVR)?",
+    "question_variants": [
+      "Is registration automatic at the Maryland DMV?",
+      "MD motor voter automatic registration",
+      "Do I have to register to vote if I get an MD driver's license?"
+    ],
+    "answer": "Yes. Maryland has Automatic Voter Registration (AVR). Eligible individuals interacting with the Motor Vehicle Administration (MVA), the Maryland Health Benefit Exchange, and other designated state agencies are automatically registered to vote or have their voter registration updated, unless they actively opt-out of the process.",
+    "source_url": "https://elections.maryland.gov/voter_registration/index.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Maryland offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in MD?",
+      "Maryland electronic voter registration",
+      "MD online registration portal"
+    ],
+    "answer": "Yes. Eligible Maryland residents who possess a Maryland-issued driver's license or MVA-issued ID card can securely register to vote or update their registration using the State Board of Elections' online voter registration system.",
+    "source_url": "https://voterservices.elections.maryland.gov/OnlineVoterRegistration",
+    "source_name": "Maryland State Board of Elections - Online Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Maryland maintain its voter registration lists?",
+    "question_variants": [
+      "MD voter list maintenance rules",
+      "How are inactive voters handled in Maryland?",
+      "Maryland voter roll cleaning process"
+    ],
+    "answer": "Maryland maintains its voter rolls using the Electronic Registration Information Center (ERIC) to identify voters who have moved or died. The State Board of Elections also utilizes National Change of Address (NCOA) data. Voters who are mailed confirmation notices and fail to respond or vote over two consecutive federal election cycles are removed from the active rolls.",
+    "source_url": "https://elections.maryland.gov/",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Maryland voter file?",
+    "question_variants": [
+      "Maryland voter database access cost",
+      "How to get the voter list in MD",
+      "What data is included in the Maryland voter file?"
+    ],
+    "answer": "Registered political committees and candidates can purchase the statewide voter registration list from the State Board of Elections. The list contains voter names, addresses, party affiliations, and voting history. The data is legally restricted to electoral and political purposes and may not be used for commercial solicitation.",
+    "source_url": "https://elections.maryland.gov/voter_registration/voter_registration_data.html",
+    "source_name": "Maryland State Board of Elections - Data",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Maryland?",
+    "question_variants": [
+      "Does Maryland use ranked choice voting?",
+      "RCV status in Maryland 2026",
+      "Instant runoff voting MD"
+    ],
+    "answer": "Ranked Choice Voting (RCV) is not used for statewide or federal elections in Maryland. However, state law permits municipalities to adopt it for local elections. Currently, the city of Takoma Park utilizes RCV for its local municipal elections.",
+    "source_url": "https://fairvote.org/our-reforms/ranked-choice-voting-information/",
+    "source_name": "FairVote - Ranked Choice Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in Maryland elections?",
+    "question_variants": [
+      "How are tied elections decided in Maryland?",
+      "Tie-breaker rules Maryland elections",
+      "What happens if a race is tied in MD?"
+    ],
+    "answer": "Under Article 17, Section 8 of the Maryland Constitution, in the event of an exact tie for state legislative or federal offices, the result is resolved by calling a special election. However, for a tie in the gubernatorial election, the Maryland General Assembly breaks the tie via a joint vote.",
+    "source_url": "https://www.ncsl.org/elections-and-campaigns/resolving-tied-elections-for-legislative-offices",
+    "source_name": "NCSL - Resolving Tied Elections / Maryland Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Maryland campaign materials?",
+    "question_variants": [
+      "Maryland 'Paid for by' rules",
+      "Campaign ad disclaimer requirements MD",
+      "Political taglines Maryland Authority Line"
+    ],
+    "answer": "Maryland campaign finance law requires all political advertising and campaign material to include an 'Authority Line.' The disclaimer must state 'By Authority of' followed by the name of the campaign finance entity and the name of its registered treasurer.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Full.pdf",
+    "source_name": "Maryland State Board of Elections - Summary Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Maryland?",
+    "question_variants": [
+      "MD campaign coordination rules",
+      "When is a PAC expenditure not independent in Maryland?",
+      "Prohibition on candidate-PAC coordination MD"
+    ],
+    "answer": "An expenditure is considered 'coordinated' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. Once coordinated, the expenditure constitutes an in-kind contribution and is subject to the strict $6,000 per-cycle limit. Unlawful receipt of excess coordinated expenditures can trigger civil and criminal penalties.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Chapter_8.pdf",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Maryland?",
+    "question_variants": [
+      "MD SBE late fee",
+      "Penalty for missing a Maryland campaign finance deadline",
+      "State Board of Elections fine for late filing MD"
+    ],
+    "answer": "The Maryland State Board of Elections assesses mandatory late fees for missed filing deadlines. The penalty accrues at $20 per day for the first seven days, and $10 per day thereafter, up to a maximum of $1,000 per report. Habitual failure to file can result in the committee being referred to the State Prosecutor.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Full.pdf",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Maryland campaign committee terminate?",
+    "question_variants": [
+      "Closing a Maryland campaign committee",
+      "SBE committee termination requirements",
+      "Final campaign finance report Maryland"
+    ],
+    "answer": "A candidate committee may formally terminate when it has achieved a zero cash balance, legally disposed of all unexpended funds, and resolved all outstanding debts or loans. A formal Final Report marking the campaign account as closed must be filed via the MD CRIS portal.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Full.pdf",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Maryland?",
+    "question_variants": [
+      "MD independent expenditure reporting SBE",
+      "Disclosure for MD independent expenditure groups",
+      "Reporting thresholds for outside spending Maryland"
+    ],
+    "answer": "Any person or entity that makes independent expenditures of $5,000 or more in an election cycle on campaign material that is a public communication must register with the State Board within 48 hours. Furthermore, within 48 hours of making cumulative disbursements of $10,000 or more, an independent expenditure report must be filed.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Chapter_8.pdf",
+    "source_name": "Maryland State Board of Elections - Summary Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Maryland?",
+    "question_variants": [
+      "Maryland in-kind contribution valuation rules",
+      "Reporting non-monetary donations Maryland campaign",
+      "Fair market value for in-kind gifts MD"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported to the SBE at their fair market value. The value of in-kind contributions counts directly toward the donor's $6,000 per four-year cycle monetary contribution limit.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Chapter_8.pdf",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Maryland?",
+    "question_variants": [
+      "Maryland candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in MD?",
+      "Reporting candidate loans in SBE"
+    ],
+    "answer": "A candidate may loan or contribute an UNLIMITED amount of their own personal funds to their campaign committee; these funds are completely exempt from the $6,000 contribution limit. Loans must be properly documented on disclosures and may be repaid from campaign contributions raised during the cycle.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Chapter_8.pdf",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Maryland candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in MD?",
+      "MD surplus campaign funds rules",
+      "Donating remaining campaign funds Maryland"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain surplus funds for a future campaign, return them pro-rata to contributors, transfer them to a recognized political party, donate them to an IRS-recognized tax-exempt charitable organization, or return them to the Fair Campaign Financing Fund.",
+    "source_url": "https://elections.maryland.gov/campaign_finance/summaryguide/Summary_Guide_Full.pdf",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Maryland?",
+    "question_variants": [
+      "MD PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Maryland",
+      "Maximum PAC gift to state legislator MD"
+    ],
+    "answer": "In Maryland, Political Action Committees (PACs) are subject to the EXACT SAME contribution limits as individuals and corporations. For the current cycle, a PAC is capped at donating $6,000 per four-year election cycle to a candidate for statewide or legislative office.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Maryland",
+    "source_name": "Ballotpedia / Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Maryland?",
+    "question_variants": [
+      "When are county executives elected in MD?",
+      "Maryland county official term lengths",
+      "Are county councils on the 2026 ballot?"
+    ],
+    "answer": "In Maryland, almost all elected county officials—including County Executives and County Council members—serve four-year terms that are strictly aligned with the state's gubernatorial election cycle. Therefore, these county offices will be heavily featured on the 2026 midterm ballot.",
+    "source_url": "https://elections.maryland.gov/elections/2026/index.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Maryland elections?",
+    "question_variants": [
+      "When are Maryland election results official?",
+      "MD certification deadline",
+      "State Board of State Canvassers meeting Maryland"
+    ],
+    "answer": "Local boards of elections process and canvass absentee and provisional ballots in the days following Election Day, with final certification typically occurring roughly two weeks later. The State Board of Canvassers then meets to officially certify the statewide and federal election returns, officially declaring the winners within roughly a month of the election.",
+    "source_url": "https://elections.maryland.gov/",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "MD",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Maryland?",
+    "question_variants": [
+      "Maryland special election timeline",
+      "Who calls a special election to fill a US House vacancy in MD?",
+      "Filling a midterm vacancy Maryland"
+    ],
+    "answer": "Special elections to fill federal vacancies (like the U.S. House) are called by a proclamation from the Governor. For the state legislature, vacancies are generally filled by appointment by the Governor (who must select a candidate nominated by the state central committee of the vacating member's party) rather than through a special election.",
+    "source_url": "https://elections.maryland.gov/",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "MD",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who sits on the Maryland State Board of Elections?",
+    "question_variants": [
+      "Who certifies statewide elections in MD?",
+      "Maryland Board of Elections composition",
+      "Who oversees the county boards of elections in MD?"
+    ],
+    "answer": "The Maryland State Board of Elections is composed of five members appointed by the Governor, subject to the advice and consent of the State Senate. By law, the board must be bipartisan, consisting of three members from the majority party and two members from the minority party, serving four-year terms.",
+    "source_url": "https://elections.maryland.gov/about/index.html",
+    "source_name": "Maryland State Board of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  }
+]
