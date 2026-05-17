@@ -1,0 +1,1316 @@
+[
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in West Virginia?",
+    "question_variants": [
+      "Are West Virginia primaries open or closed?",
+      "Can unaffiliated voters participate in the WV primary?",
+      "West Virginia primary voting rules"
+    ],
+    "answer": "West Virginia utilizes a semi-closed primary system. By default, a voter must be registered with a political party to vote in that party's primary. However, state law allows each recognized political party's state executive committee to decide whether to permit unaffiliated voters to request their ballot. In recent cycles, the Democratic Party has allowed unaffiliated voters to participate, while the Republican Party has kept its primary strictly closed.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State - Primary Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does West Virginia hold primary runoff elections?",
+    "question_variants": [
+      "What is the threshold to win a primary in WV?",
+      "Does West Virginia require a majority to win a primary?",
+      "West Virginia primary runoff rules"
+    ],
+    "answer": "No. West Virginia does not hold primary runoff elections. A candidate does not need to secure a 50%+1 majority to win the party's nomination; the candidate who receives a simple plurality of the votes in the primary advances directly to the general election.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All primary candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in West Virginia?",
+    "question_variants": [
+      "Do write-in votes count in WV?",
+      "How to register as a write-in candidate in West Virginia",
+      "Write-in filing deadline WV"
+    ],
+    "answer": "Yes, but they must officially register. To have their votes tabulated in the general election, a write-in candidate must file a formal Write-in Candidate's Certificate of Announcement with the Secretary of State (for state/federal) or County Clerk (for local) no later than 49 days before the election.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State - Candidate Guides",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for West Virginia in 2026?",
+    "question_variants": [
+      "When do candidates file for office in West Virginia?",
+      "West Virginia filing deadline 2026",
+      "January filing deadline WV"
+    ],
+    "answer": "To appear on the 2026 primary ballot, all major party candidates must file their Certificate of Announcement during the official filing period, which runs from the second Monday in January to midnight on the last Saturday in January. For the 2026 cycle, the deadline was January 31, 2026.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State - Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for independent candidates in West Virginia?",
+    "question_variants": [
+      "Independent candidate ballot access West Virginia",
+      "Running without a party in WV 2026",
+      "How many signatures for independent US Senate WV"
+    ],
+    "answer": "Independent candidates must submit a petition to appear on the general election ballot. By statute, the petition must contain valid signatures of registered voters equal to at least 1% of the total number of votes cast for that specific office in the last preceding election, but no less than 25 signatures. The deadline to file is August 1.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does West Virginia have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the WV primary?",
+      "West Virginia sore loser statute",
+      "General election ballot access after primary defeat WV"
+    ],
+    "answer": "Yes. West Virginia strictly enforces a sore loser law under W.Va. Code § 3-5-23. A candidate who seeks a party's nomination in a primary election and is defeated cannot subsequently have their name placed on the general election ballot as an independent candidate or as a write-in candidate for the same office.",
+    "source_url": "https://code.wvlegislature.gov/3-5-23/",
+    "source_name": "West Virginia Code § 3-5-23",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in West Virginia?",
+    "question_variants": [
+      "West Virginia joint ticket rules",
+      "How are Lt Gov candidates selected in WV?",
+      "Does the Governor pick a running mate in West Virginia?"
+    ],
+    "answer": "No, because West Virginia does not elect a Lieutenant Governor. By state statute, the President of the State Senate automatically holds the title of Lieutenant Governor and is first in the line of succession to the governorship. The position is chosen internally by the State Senate, not by the voters.",
+    "source_url": "https://www.wvlegislature.gov/",
+    "source_name": "West Virginia Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in West Virginia for 2026?",
+    "question_variants": [
+      "West Virginia primary date 2026",
+      "When is Election Day 2026 in West Virginia?",
+      "May primary West Virginia"
+    ],
+    "answer": "The West Virginia primary election will be held on Tuesday, May 12, 2026. The general election will be held on Tuesday, November 3, 2026. Polls are open from 6:30 a.m. to 7:30 p.m. local time.",
+    "source_url": "https://sos.wv.gov/govotewv",
+    "source_name": "West Virginia Secretary of State - Election Dates",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Patrick Morrisey running for re-election in 2026?",
+    "question_variants": [
+      "West Virginia Governor election 2026",
+      "Who is defending the WV Governor seat?",
+      "Is Patrick Morrisey on the 2026 ballot?"
+    ],
+    "answer": "No. West Virginia elects its Governor strictly on the presidential election cycle. Governor Patrick Morrisey (R) was elected in 2024, and his four-year term runs through early 2029. There is no gubernatorial race on the 2026 midterm ballot.",
+    "source_url": "https://sos.wv.gov/",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in West Virginia in 2026?",
+    "question_variants": [
+      "Is Shelley Moore Capito up for re-election in 2026?",
+      "When is Jim Justice's next election?",
+      "West Virginia US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Shelley Moore Capito (R) is up for election in 2026. Senator Jim Justice (Class 1) was elected in 2024 and will not appear on the ballot again until 2030.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in West Virginia for the 2026 election?",
+    "question_variants": [
+      "West Virginia congressional apportionment",
+      "Are all WV congressional seats up in 2026?",
+      "Number of US Representatives from West Virginia"
+    ],
+    "answer": "West Virginia is apportioned 2 U.S. House districts. Both seats are on the 2026 ballot. The state's delegation was reduced from 3 to 2 districts following the 2020 census reapportionment.",
+    "source_url": "https://sos.wv.gov/",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which West Virginia State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all West Virginia House seats up in 2026?",
+      "West Virginia Senate election cycle 2026",
+      "Which legislative districts are on the ballot in WV?"
+    ],
+    "answer": "All 100 seats in the West Virginia House of Delegates (2-year terms) are up for election in 2026. The West Virginia State Senate has 34 members serving 4-year staggered terms; in 2026, 17 of those seats (half the chamber) will be on the ballot.",
+    "source_url": "https://www.wvlegislature.gov/",
+    "source_name": "West Virginia Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in West Virginia in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "WV statewide election list 2026",
+      "When is the Secretary of State election in WV?"
+    ],
+    "answer": "None. West Virginia elects all of its statewide executive officers (including Governor, Attorney General, Secretary of State, Treasurer, Auditor, and Commissioner of Agriculture) concurrently on the presidential election cycle (e.g., 2024, 2028). There are no statewide executive races on the 2026 midterm ballot.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are West Virginia Supreme Court justices selected and when are they elected?",
+    "question_variants": [
+      "West Virginia judicial elections 2026",
+      "Are WV judges elected or appointed?",
+      "Nonpartisan judicial elections West Virginia"
+    ],
+    "answer": "West Virginia Supreme Court of Appeals Justices are elected to 12-year terms in nonpartisan elections. Crucially, these nonpartisan judicial elections are held during the May primary election, not the November general election. The candidate who receives the most votes in May wins the seat outright.",
+    "source_url": "http://www.courtswv.gov/",
+    "source_name": "West Virginia Judiciary",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the West Virginia State Legislature sessions?",
+    "question_variants": [
+      "When does the WV legislature meet?",
+      "West Virginia 60 day legislative session",
+      "Is the West Virginia legislature full time?"
+    ],
+    "answer": "The West Virginia Legislature is a part-time body that meets annually for 60 consecutive days. In standard years, the session begins on the second Wednesday in January. However, in the year following a gubernatorial election (e.g., 2025, 2029), the regular 60-day session begins later, on the second Wednesday in February.",
+    "source_url": "https://www.wvlegislature.gov/",
+    "source_name": "West Virginia Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of West Virginia?",
+    "question_variants": [
+      "Age and residency for West Virginia Governor",
+      "West Virginia Constitution Governor qualifications",
+      "Who is eligible to be Governor of WV?"
+    ],
+    "answer": "Under Article IV, Section 4 of the West Virginia Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States, and a resident of West Virginia for at least five years preceding the election.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications and term limits for the West Virginia State Legislature?",
+    "question_variants": [
+      "Qualifications for WV State Delegate",
+      "Age requirement West Virginia State Senate",
+      "West Virginia legislature term limit status"
+    ],
+    "answer": "A candidate for the State Senate must be at least 25 years old. A candidate for the House of Delegates must be at least 18 years old. Both must be citizens of West Virginia and residents of their district for at least one year prior to the election. West Virginia does NOT impose term limits on state legislators.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in West Virginia?",
+    "question_variants": [
+      "US Senate residency requirements West Virginia",
+      "Age to run for Congress in West Virginia",
+      "Federal constitutional requirements for WV candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the West Virginia Governor?",
+    "question_variants": [
+      "How many terms can a West Virginia Governor serve?",
+      "Patrick Morrisey term limits WV",
+      "West Virginia executive term limit law"
+    ],
+    "answer": "Under the West Virginia Constitution, the Governor is limited to serving two consecutive four-year terms. After serving two consecutive terms, an individual is ineligible to run for the office again until a full four-year term has intervened.",
+    "source_url": "https://ballotpedia.org/Governor_of_West_Virginia",
+    "source_name": "West Virginia Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General in West Virginia?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in WV",
+      "Do I need to be a member of the bar to be WV AG?",
+      "Legal requirements for West Virginia Attorney General"
+    ],
+    "answer": "Under Article IV, Section 4 of the West Virginia Constitution, the Attorney General must be at least 25 years old at the beginning of their term, a citizen of the state for five years preceding the election, and a licensed attorney authorized to practice law in West Virginia.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Constitution Article IV, Section 4",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in West Virginia?",
+    "question_variants": [
+      "West Virginia county clerk qualifications",
+      "Can I run for county commissioner in WV?",
+      "County residency for WV officials"
+    ],
+    "answer": "To run for a county office (such as County Commissioner, Assessor, or Sheriff) in West Virginia, a candidate must be a qualified voter (at least 18 years old) and a resident of the county (and the specific magisterial district, if applicable) prior to the election.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State - Local Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in West Virginia?",
+    "question_variants": [
+      "West Virginia voter ID requirements",
+      "Do I need my driver's license to vote in WV?",
+      "Acceptable ID for West Virginia voting"
+    ],
+    "answer": "Yes, but it is not a strict photo ID state. West Virginia law requires voters to show a valid form of identification, which includes photo IDs (like a driver's license) AND non-photo IDs (like a utility bill, bank statement, or Medicare card). Alternatively, a voter can be identified by an election official or cast a provisional ballot if they sign an affidavit.",
+    "source_url": "https://sos.wv.gov/elections/Pages/BeReg.aspx",
+    "source_name": "West Virginia Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is West Virginia a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in West Virginia?",
+      "West Virginia vote-by-mail system",
+      "Do I need an excuse to vote absentee in WV?"
+    ],
+    "answer": "No. West Virginia is NOT a universal mail ballot state and strictly prohibits no-excuse mail-in absentee voting. A registered voter must satisfy a specific statutory excuse to request a mail-in ballot, such as illness, physical disability, being out of the county for work/travel during early voting and Election Day, or working long hours.",
+    "source_url": "https://sos.wv.gov/elections/Pages/AbsenteeVoting.aspx",
+    "source_name": "West Virginia Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does West Virginia offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in WV?",
+      "West Virginia early voting dates 2026",
+      "When does early voting start in West Virginia?"
+    ],
+    "answer": "Yes. West Virginia offers a robust no-excuse early in-person voting period. All registered voters may cast a ballot early beginning on the 13th day before the election and ending on the 3rd day before the election (the Saturday prior to Election Day).",
+    "source_url": "https://sos.wv.gov/govotewv",
+    "source_name": "West Virginia Secretary of State - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does West Virginia offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in WV",
+      "West Virginia same day voter registration",
+      "Voter registration deadline 2026 West Virginia"
+    ],
+    "answer": "The deadline to register to vote in West Virginia is 21 days before the election. Registration can be completed online, by mail, or in person. West Virginia DOES NOT offer same-day voter registration at the polls.",
+    "source_url": "https://sos.wv.gov/elections/Pages/GoVoteWV.aspx",
+    "source_name": "West Virginia Secretary of State - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in West Virginia?",
+    "question_variants": [
+      "How close can I campaign to a polling place in WV?",
+      "West Virginia 100 feet electioneering rule",
+      "WV buffer zone around voting centers"
+    ],
+    "answer": "Under West Virginia law (W.Va. Code § 3-9-9), electioneering is strictly prohibited within 100 feet of the outside entrance of the building housing a polling place. This bans distributing campaign literature, displaying signs, or soliciting votes within this zone.",
+    "source_url": "https://code.wvlegislature.gov/3-9-9/",
+    "source_name": "West Virginia Code § 3-9-9",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in West Virginia?",
+    "question_variants": [
+      "Can felons vote in West Virginia state?",
+      "Felony voting rights restoration WV",
+      "Voting on parole in West Virginia"
+    ],
+    "answer": "In West Virginia, individuals convicted of a felony lose their voting rights. To have them restored automatically, they must fully complete their sentence, which includes serving any prison time and completing all periods of probation and parole. Once completed, they may re-register to vote.",
+    "source_url": "https://sos.wv.gov/elections/Pages/BeReg.aspx",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "WV",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in West Virginia, and why does it matter for campaigns?",
+    "question_variants": [
+      "West Virginia county election administration",
+      "How many county clerks in WV?",
+      "Local election control West Virginia"
+    ],
+    "answer": "West Virginia has 55 counties. Election administration is handled at the county level by County Clerks, who manage voter registration, early voting sites, and absentee ballot processing. Statewide campaigns must coordinate logistics across these 55 separate administrative jurisdictions.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the West Virginia voter file?",
+    "question_variants": [
+      "West Virginia voter database access cost",
+      "How to get the voter list in WV",
+      "What data is included in the West Virginia voter file?"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide voter registration list from the Secretary of State. The data request requires a fee, and the file includes voter names, addresses, and voting history, but its use is legally restricted to political and election-related purposes.",
+    "source_url": "https://sos.wv.gov/elections",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in West Virginia for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in West Virginia?",
+      "WV individual donation caps 2026 election",
+      "How much can I donate to a candidate in West Virginia?"
+    ],
+    "answer": "West Virginia enforces contribution limits that are periodically adjusted for inflation. For the current 2025-2026 cycle, individuals may contribute up to $2,800 per election to a candidate for statewide or legislative office. The primary and general elections are considered separate, allowing a donor to give $2,800 for each.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State - Campaign Finance FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in West Virginia campaigns?",
+    "question_variants": [
+      "Corporate contribution ban West Virginia state",
+      "Can a business donate to my campaign in WV?",
+      "Corporate campaign finance rules West Virginia"
+    ],
+    "answer": "No. Under West Virginia law, direct contributions from the general treasury of a corporation or labor union to a candidate's campaign committee are strictly PROHIBITED. Corporations and unions may only participate by establishing and administering a separate Political Action Committee (PAC) funded by voluntary employee donations.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in West Virginia?",
+    "question_variants": [
+      "Where do I file campaign finance reports in WV?",
+      "What is the West Virginia Ethics Commission?",
+      "Does the WV Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in West Virginia are administered directly by the West Virginia Secretary of State's Office. All state and legislative candidates must register their committees and file their contribution and expenditure reports electronically through the Secretary's online Campaign Finance Reporting System (CFRS).",
+    "source_url": "https://sos.wv.gov/elections/Pages/CampaignFinance.aspx",
+    "source_name": "West Virginia Secretary of State - Campaign Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for West Virginia candidates?",
+    "question_variants": [
+      "WV SOS filing dates 2026",
+      "When are campaign finance reports due in WV?",
+      "West Virginia pre-primary and pre-general report deadlines"
+    ],
+    "answer": "In an election year, candidate committees must file quarterly reports. Additionally, candidates participating in an election must file critical pre-election reports due 15 days before the primary and 15 days before the general election.",
+    "source_url": "https://sos.wv.gov/elections/Pages/CampaignFinance.aspx",
+    "source_name": "West Virginia Secretary of State - Reporting Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are West Virginia's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "West Virginia 48-hour large contribution report",
+      "Late contribution reporting West Virginia SOS",
+      "When do I file a rapid report in WV?"
+    ],
+    "answer": "West Virginia imposes rapid reporting requirements on outside spending rather than candidate contributions. Under SB 622, independent expenditures of $1,000 or more made near an election trigger immediate reporting requirements to the Secretary of State.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in West Virginia?",
+    "question_variants": [
+      "WV personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in WV?",
+      "Prohibited expenditures West Virginia"
+    ],
+    "answer": "Yes. Under West Virginia law, campaign funds cannot be converted to personal use. Expenditures must bear a direct relationship to the candidate's campaign or the ordinary and necessary expenses of holding public office.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for West Virginia legislators?",
+    "question_variants": [
+      "Can West Virginia legislators raise money during session?",
+      "Lobbyist contribution ban WV legislature",
+      "Legislative session contribution rules West Virginia"
+    ],
+    "answer": "No. West Virginia DOES NOT impose a strict 'session freeze' banning legislators from accepting campaign contributions during the regular session. However, W.Va. Code § 3-8-15 does impose a rapid disclosure requirement: any legislator holding a fundraising event during the session must disclose the event and all received contributions within 48 hours to the Secretary of State.",
+    "source_url": "https://code.wvlegislature.gov/3-8-15/",
+    "source_name": "West Virginia Code § 3-8-15",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws West Virginia's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the WV legislature draw district maps?",
+      "Who has the authority to draw district lines in West Virginia?",
+      "West Virginia redistricting commission"
+    ],
+    "answer": "In West Virginia, the state legislature holds the exclusive authority to draw and enact both congressional and state legislative district boundaries. The maps are passed as regular legislation and are subject to the Governor's signature or veto.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_West_Virginia",
+    "source_name": "Ballotpedia - Redistricting in West Virginia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in West Virginia?",
+    "question_variants": [
+      "Standards for drawing West Virginia district lines",
+      "West Virginia gerrymandering rules",
+      "Map requirements WV"
+    ],
+    "answer": "Under the West Virginia Constitution, state legislative districts must be formed of contiguous territory, be compact, and be as nearly equal in population as possible. The state constitution also requires that county boundaries be respected and counties not be split when forming districts to the extent practicable.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_West_Virginia",
+    "source_name": "West Virginia Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current West Virginia state legislative maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of West Virginia Senate redistricting maps",
+      "Are there pending redistricting lawsuits in West Virginia?",
+      "West Virginia 2026 state legislative boundaries"
+    ],
+    "answer": "Yes. The redistricting maps enacted by the West Virginia legislature following the 2020 census remain fully operative for the 2026 election cycle. There are no ongoing systemic legal challenges preventing their use.",
+    "source_url": "https://www.wvlegislature.gov/",
+    "source_name": "West Virginia Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "What is the status of West Virginia's congressional map for the 2026 cycle?",
+    "question_variants": [
+      "Is the WV congressional map operative for 2026?",
+      "West Virginia congressional redistricting controversy",
+      "How many districts did WV lose?"
+    ],
+    "answer": "The congressional map enacted by the legislature is fully operative for the 2026 cycle. Following the 2020 census, West Virginia lost one congressional seat due to slow population growth, reducing its U.S. House delegation from three to two districts. The resulting two-district map faces no active litigation.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_West_Virginia",
+    "source_name": "Ballotpedia - Redistricting in West Virginia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does West Virginia have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of West Virginia be recalled?",
+      "How to recall a state senator in WV",
+      "Statewide recall election rules West Virginia"
+    ],
+    "answer": "No. The State of West Virginia does not have any legal or constitutional mechanism for the recall of state-level elected officials, including the Governor, statewide executives, or members of the state legislature.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_West_Virginia",
+    "source_name": "Laws governing recall in West Virginia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in West Virginia?",
+    "question_variants": [
+      "West Virginia county commissioner recall rules",
+      "Signature requirement local recall West Virginia",
+      "Recalling a mayor in WV"
+    ],
+    "answer": "West Virginia does not have a general statutory recall process for county or municipal officials. Recall is highly restricted and is only permitted in a narrow subset of municipalities if their specific, state-approved local city charter explicitly authorizes the recall process.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_West_Virginia",
+    "source_name": "Laws governing recall in West Virginia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does West Virginia have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the WV ballot",
+      "West Virginia citizen initiative signature requirements",
+      "Can citizens propose laws in West Virginia?"
+    ],
+    "answer": "No. West Virginia is one of the states that does NOT have a statewide citizen initiative process. Citizens cannot draft statutes or constitutional amendments and gather signatures to force them onto the ballot. All statewide ballot measures must be referred by the state legislature.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_West_Virginia",
+    "source_name": "Ballotpedia - Initiative and Referendum in West Virginia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the West Virginia legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process West Virginia",
+      "Referendum by legislature WV",
+      "Can the WV legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The West Virginia State Legislature can refer a constitutional amendment to the ballot by securing a two-thirds (66.67%) supermajority vote in both the House of Delegates and the State Senate during a single legislative session. It does not require the Governor's signature to appear on the general election ballot.",
+    "source_url": "https://ballotpedia.org/Amending_the_West_Virginia_Constitution",
+    "source_name": "West Virginia Constitution Article XIV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does West Virginia have a veto referendum process?",
+    "question_variants": [
+      "How to refer a WV bill to the ballot",
+      "West Virginia citizen referendum rules",
+      "Veto referendum signature threshold West Virginia state"
+    ],
+    "answer": "No. West Virginia does not have a statewide veto referendum process. Citizens cannot gather signatures to suspend and refer an already-passed legislative act to the ballot for a popular vote of approval or rejection.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_West_Virginia",
+    "source_name": "Ballotpedia - Initiative and Referendum in West Virginia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in West Virginia?",
+    "question_variants": [
+      "West Virginia ballot measure pass threshold",
+      "Does a measure need a supermajority in WV?",
+      "Majority vote requirements West Virginia ballot measures"
+    ],
+    "answer": "In West Virginia, a legislatively referred constitutional amendment requires only a simple majority (over 50%) of the total votes cast on that specific measure to pass and become part of the state constitution.",
+    "source_url": "https://ballotpedia.org/Amending_the_West_Virginia_Constitution",
+    "source_name": "West Virginia Constitution Article XIV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in West Virginia?",
+    "question_variants": [
+      "Requirements to run for WV Secretary of State",
+      "Who can run for Secretary of State in WV?",
+      "Residency rules for West Virginia SOS"
+    ],
+    "answer": "Under Article IV, Section 4 of the West Virginia Constitution, a candidate for Secretary of State must be a citizen entitled to vote, meaning they must be at least 18 years of age. Additionally, they must have been a resident of West Virginia for at least five years preceding the election.",
+    "source_url": "https://ballotpedia.org/West_Virginia_Secretary_of_State",
+    "source_name": "West Virginia Constitution Article IV, Section 4",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in West Virginia?",
+    "question_variants": [
+      "Eligibility for West Virginia State Treasurer",
+      "Who can run for State Treasurer in WV?",
+      "West Virginia Treasurer residency requirements"
+    ],
+    "answer": "Under the West Virginia Constitution, the qualifications for State Treasurer are identical to those for the Secretary of State: a candidate must be a citizen entitled to vote (at least 18 years old) and a resident of West Virginia for at least five years preceding the election.",
+    "source_url": "https://sos.wv.gov/",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the State Auditor an elected office in West Virginia, and what are the qualifications?",
+    "question_variants": [
+      "What does the WV Auditor do?",
+      "Qualifications for West Virginia Auditor",
+      "Is the Auditor elected in WV?"
+    ],
+    "answer": "Yes. The State Auditor is a statewide elected constitutional officer. Under Article IV, Section 4 of the West Virginia Constitution, candidates must be citizens entitled to vote (at least 18 years of age) and residents of the state for at least five years preceding the election.",
+    "source_url": "https://sos.wv.gov/",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in West Virginia?",
+    "question_variants": [
+      "Run for school board West Virginia requirements",
+      "Who can be a school board member in WV?",
+      "School board residency rules West Virginia"
+    ],
+    "answer": "To run for a local school board in West Virginia, candidates must be at least 18 years old, a qualified voter, and a resident of the district they seek to represent. Additionally, they must possess a high school diploma or a GED, and they must undergo mandatory training prior to taking office.",
+    "source_url": "https://www.berkeleywv.org/DocumentCenter/View/11754/Running-for-Office-in-Berkeley-County-PDF",
+    "source_name": "West Virginia Local Candidate Guides",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for West Virginia Supreme Court justices?",
+    "question_variants": [
+      "West Virginia Supreme Court Justice eligibility",
+      "Years of practice required for WV Supreme Court",
+      "Are West Virginia judges elected or appointed?"
+    ],
+    "answer": "West Virginia Supreme Court of Appeals Justices are elected in statewide nonpartisan elections. Candidates must be at least 30 years old, a citizen of West Virginia for five years prior to the election, in good standing with the state bar, and admitted to practice law for at least 10 years prior to the election.",
+    "source_url": "https://sos.wv.gov/media/407/download?inline=",
+    "source_name": "West Virginia Secretary of State - Candidate Certificate of Announcement",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in West Virginia?",
+    "question_variants": [
+      "How to fix a rejected signature in WV",
+      "West Virginia ballot cure process deadline",
+      "Missing signature on WV mail ballot"
+    ],
+    "answer": "West Virginia law does not currently provide a statutory signature cure process. If an absentee ballot return envelope is missing a signature or the signature is rejected during the verification process, the ballot is generally challenged and rejected without guaranteeing the voter a post-election window to fix the error.",
+    "source_url": "https://www.vote411.org/west-virginia",
+    "source_name": "VOTE411 - West Virginia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in West Virginia?",
+    "question_variants": [
+      "When are military ballots due in West Virginia?",
+      "UOCAVA return deadline WV",
+      "Overseas voting rules West Virginia state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. West Virginia provides a secure electronic portal for returning these ballots. If submitted electronically, they must be received by the close of polls on Election Day. If mailed, they must be postmarked by Election Day and received by the start of the canvass (6 days later).",
+    "source_url": "https://sos.wv.gov/govotewv",
+    "source_name": "West Virginia Secretary of State - GoVoteWV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in West Virginia?",
+    "question_variants": [
+      "What is a provisional ballot in WV?",
+      "Voting without ID West Virginia",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter's eligibility is in question, such as their name not appearing in the poll book, their signature not matching the registration record, or if they fail to present an acceptable form of identification at the polls.",
+    "source_url": "https://www.vote411.org/west-virginia",
+    "source_name": "VOTE411 - West Virginia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does West Virginia have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the West Virginia DMV?",
+      "WV motor voter automatic registration",
+      "Do I have to register to vote if I get a WV driver's license?"
+    ],
+    "answer": "Yes. West Virginia implemented Automatic Voter Registration (AVR) following legislation passed in 2016 (effective in 2021). Eligible citizens who apply for or renew a driver's license or state ID card at the DMV are automatically registered to vote or have their address updated, unless they affirmatively decline (opt-out) via a back-end post-transaction mailer.",
+    "source_url": "https://www.ncsl.org/elections-and-campaigns/automatic-voter-registration",
+    "source_name": "NCSL - Automatic Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does West Virginia offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in WV?",
+      "West Virginia electronic voter registration",
+      "GoVoteWV online registration portal"
+    ],
+    "answer": "Yes. Eligible West Virginia residents with a valid state driver's license or non-driver ID card can register to vote or update their registration securely using the Secretary of State's GoVoteWV online voter registration portal. The deadline is 21 days prior to an election.",
+    "source_url": "https://sos.wv.gov/govotewv",
+    "source_name": "West Virginia Secretary of State - GoVoteWV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does West Virginia maintain its voter registration lists?",
+    "question_variants": [
+      "WV voter list maintenance rules",
+      "How are inactive voters handled in West Virginia?",
+      "West Virginia voter roll cleaning process"
+    ],
+    "answer": "West Virginia conducts list maintenance using National Change of Address (NCOA) data, returned undeliverable mail, and death records. The state has also recently engaged in pilot programs using commercial credit data (like Experian) to identify 'Best Addresses'. Voters who fail to respond to confirmation notices and do not vote in two consecutive federal general elections are purged from the rolls under NVRA guidelines.",
+    "source_url": "https://www.eac.gov/sites/default/files/2025-08/Voter_List_Maintenance_Study_508.pdf",
+    "source_name": "U.S. Election Assistance Commission - Voter List Maintenance Report",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee ballot in West Virginia?",
+    "question_variants": [
+      "When is the last day to mail my ballot in WV?",
+      "West Virginia mail ballot postmark deadline",
+      "What time are ballots due in West Virginia?"
+    ],
+    "answer": "West Virginia provides two deadlines depending on the return method. If hand-delivered to the County Clerk's office, the ballot must be received by the day BEFORE Election Day. If returned by mail, the ballot must be postmarked by Election Day and received no later than the start of the canvass, which is 6 days following the election.",
+    "source_url": "https://sos.wv.gov/govotewv",
+    "source_name": "West Virginia Secretary of State - Election Dates",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in West Virginia?",
+    "question_variants": [
+      "Does West Virginia use ranked choice voting?",
+      "RCV status in West Virginia 2026",
+      "Instant runoff voting WV"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is strictly prohibited in West Virginia. During the 2025 legislative session, the state legislature passed SB 500, which officially banned the use of Ranked Choice Voting for any local, state, or federal election in the state.",
+    "source_url": "https://www.wvlegislature.gov/",
+    "source_name": "West Virginia Legislature (SB 500 - 2025)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in West Virginia elections?",
+    "question_variants": [
+      "How are tied elections decided in West Virginia?",
+      "Tie-breaker rules West Virginia elections",
+      "What happens if a race is tied in WV?"
+    ],
+    "answer": "In the rare event of an exact tie in a West Virginia election, state law (W.Va. Code § 3-6-12) dictates that the tie is broken by the casting of lots. The process is overseen by the Governor (for statewide/district offices) or the county board of canvassers (for local offices).",
+    "source_url": "https://code.wvlegislature.gov/3-6-12/",
+    "source_name": "West Virginia Code § 3-6-12",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on West Virginia campaign materials?",
+    "question_variants": [
+      "West Virginia 'Paid for by' rules",
+      "Campaign ad disclaimer requirements WV",
+      "Political taglines West Virginia SOS"
+    ],
+    "answer": "West Virginia campaign finance law requires that all political advertising (print, broadcast, and digital) clearly display a 'Paid for by' disclaimer. The disclaimer must identify the candidate, committee, or individual that authorized and financed the communication.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in West Virginia?",
+    "question_variants": [
+      "WV campaign coordination rules",
+      "When is a PAC expenditure not independent in West Virginia?",
+      "Prohibition on candidate-PAC coordination WV"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. Once coordinated, the expenditure is treated as an in-kind contribution and is subject to the strict $2,800 contribution limit.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in West Virginia?",
+    "question_variants": [
+      "WV SOS late fee",
+      "Penalty for missing a West Virginia campaign finance deadline",
+      "Secretary of State fine for late filing WV"
+    ],
+    "answer": "The West Virginia Secretary of State assesses civil penalties for late campaign finance reports. Campaigns that miss filing deadlines are subject to a fine of $10 per day, which accrues for each day the report remains unfiled, up to the statutory maximum.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a West Virginia campaign committee terminate?",
+    "question_variants": [
+      "Closing a West Virginia campaign committee",
+      "SOS committee termination requirements",
+      "Final campaign finance report West Virginia"
+    ],
+    "answer": "A candidate committee may formally terminate when it has achieved a zero cash balance, legally disposed of all unexpended funds, and resolved all outstanding debts or loans. A formal Final Report marking the campaign account as closed must be filed with the Secretary of State.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in West Virginia?",
+    "question_variants": [
+      "WV independent expenditure reporting SOS",
+      "Disclosure for WV independent expenditure groups",
+      "Reporting thresholds for outside spending West Virginia"
+    ],
+    "answer": "Any person, PAC, or organization making an independent expenditure of more than $1,000 for electioneering communications must file an independent expenditure report with the Secretary of State. Due to a 2019 law (SB 622), this applies widely to political broadcasts and advertising.",
+    "source_url": "https://www.wvlegislature.gov/",
+    "source_name": "West Virginia Legislature (SB 622)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in West Virginia?",
+    "question_variants": [
+      "West Virginia in-kind contribution valuation rules",
+      "Reporting non-monetary donations West Virginia campaign",
+      "Fair market value for in-kind gifts WV"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported at their reasonable fair market value. They count directly toward the donor's $2,800 per-election monetary contribution limits.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in West Virginia?",
+    "question_variants": [
+      "West Virginia candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in WV?",
+      "Reporting candidate loans in SOS"
+    ],
+    "answer": "No. A candidate may loan or contribute an UNLIMITED amount of their own personal funds to their campaign committee; these funds are exempt from contribution limits. Loans must be properly documented on disclosures and may be repaid from campaign contributions raised during the cycle.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State - Campaign Finance FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can West Virginia candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in WV?",
+      "WV surplus campaign funds rules",
+      "Donating remaining campaign funds West Virginia"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain surplus funds for a future campaign, return them pro-rata to contributors, transfer them to a recognized political party, or donate them to an IRS-recognized tax-exempt charitable organization.",
+    "source_url": "https://sos.wv.gov/campaign-finance-frequently-asked-questions",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in West Virginia?",
+    "question_variants": [
+      "WV PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit West Virginia",
+      "Maximum PAC gift to state legislator WV"
+    ],
+    "answer": "In West Virginia, Political Action Committees (PACs) are subject to the EXACT SAME contribution limits as individuals. For the 2026 cycle, a PAC is capped at donating $2,800 per election to a candidate for statewide or legislative office.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_West_Virginia",
+    "source_name": "Ballotpedia / West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["judicial"],
+    "category": "finance_ethics",
+    "question": "Does West Virginia provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for West Virginia Governor",
+      "State funded campaigns West Virginia status",
+      "Government campaign grants WV Supreme Court"
+    ],
+    "answer": "West Virginia generally does not provide public financing for standard state or legislative campaigns. However, it does operate the West Virginia Supreme Court of Appeals Public Campaign Financing Pilot Program (W.Va. Code § 3-12), offering public funds to participating judicial candidates who agree to strict contribution limits.",
+    "source_url": "https://code.wvlegislature.gov/pdf/3-12/",
+    "source_name": "West Virginia Code § 3-12",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in West Virginia?",
+    "question_variants": [
+      "When are county sheriffs elected in WV?",
+      "West Virginia county official term lengths",
+      "Are county commissions on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in West Virginia—including County Commissioners, Sheriffs, Assessors, and Prosecuting Attorneys—serve four-year or six-year terms depending on the specific office. Most county executive offices are elected concurrently with the presidential election cycle (2024, 2028), while County Commission seats are staggered.",
+    "source_url": "https://sos.wv.gov/govotewv",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "WV",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for West Virginia elections?",
+    "question_variants": [
+      "When are West Virginia election results official?",
+      "WV certification deadline",
+      "County canvass start date West Virginia"
+    ],
+    "answer": "By law, the county board of canvassers must convene on the 6th day following the election (the Monday after a Tuesday election) to begin canvassing the returns. This allows the inclusion of mail ballots postmarked by Election Day. Once completed, the results are certified and sent to the Secretary of State.",
+    "source_url": "https://sos.wv.gov/govotewv",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "WV",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in West Virginia?",
+    "question_variants": [
+      "West Virginia special election timeline",
+      "Who calls a special election to fill a US House vacancy in WV?",
+      "Filling a midterm vacancy West Virginia"
+    ],
+    "answer": "Special elections to fill federal or certain state legislative vacancies are called by a proclamation from the Governor. The Governor sets the exact dates for the special primary and general election to ensure adequate time for candidate filing, ballot printing, and absentee voting.",
+    "source_url": "https://sos.wv.gov/",
+    "source_name": "West Virginia Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  }
+]
