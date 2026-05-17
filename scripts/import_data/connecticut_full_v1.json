@@ -1,0 +1,1370 @@
+[
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in Connecticut?",
+    "question_variants": [
+      "Are Connecticut primaries open or closed?",
+      "Do I have to register with a party to vote in the CT primary?",
+      "Can unaffiliated voters participate in the Connecticut primary?"
+    ],
+    "answer": "Connecticut utilizes a strictly closed primary system. Voters must be formally registered as a member of a political party (Democratic or Republican) to participate in that party's primary election. Unaffiliated voters cannot vote in partisan primaries.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Voter-Information/Voter-Registration-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county"],
+    "category": "voter_interaction",
+    "question": "What is the party change deadline for Connecticut primary elections?",
+    "question_variants": [
+      "When do I have to switch parties to vote in the CT primary?",
+      "Connecticut party registration deadline",
+      "May party switch deadline Connecticut"
+    ],
+    "answer": "Under Connecticut law, voters who are registered with a minor party or wish to switch between major parties must do so exactly three months before the primary. For the August 11, 2026 primary, the deadline to switch party affiliation is May 11, 2026. (Unaffiliated voters can enroll in a party up until the day before the primary).",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Voter-Information/Voter-Registration-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the convention delegate threshold to qualify for the Connecticut primary ballot?",
+    "question_variants": [
+      "Connecticut 15 percent rule primary",
+      "How do candidates get on the ballot in CT?",
+      "Party convention rules Connecticut primary"
+    ],
+    "answer": "Connecticut has a highly distinctive ballot access process. Major party candidates must first go through a party convention. A candidate automatically qualifies for the primary ballot if they receive at least 15% of the delegate votes at the convention. If a candidate fails to reach the 15% threshold, they must collect petition signatures from 2% of enrolled party members in their district to force a primary.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for Connecticut in 2026?",
+    "question_variants": [
+      "When do candidates file for office in Connecticut?",
+      "Connecticut filing deadline 2026",
+      "June filing deadline CT"
+    ],
+    "answer": "For major party candidates attempting to petition onto the primary ballot (if they did not receive the convention endorsement or the 15% threshold), the primary petition filing deadline is June 9, 2026.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Calendars/Election-Calendars",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Connecticut?",
+    "question_variants": [
+      "Do write-in votes count in CT?",
+      "How to register as a write-in candidate in Connecticut",
+      "Write-in filing deadline Connecticut"
+    ],
+    "answer": "Yes. Write-in candidates are permitted in the general election, but write-in votes are only tabulated if the candidate has officially registered their candidacy. The candidate must file a registration of write-in candidacy with the Secretary of the State no later than 14 days prior to the election.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Connecticut have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the CT primary?",
+      "Connecticut sore loser statute",
+      "General election ballot access after primary defeat CT"
+    ],
+    "answer": "Yes. Connecticut enforces a sore loser law. A candidate who runs and loses in a major party's primary election cannot subsequently appear on the general election ballot as an independent or minor party candidate for the same office.",
+    "source_url": "https://ballotpedia.org/Sore_loser_laws_by_state",
+    "source_name": "Ballotpedia - Sore Loser Laws",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Connecticut?",
+    "question_variants": [
+      "Connecticut joint ticket rules",
+      "How are Lt Gov candidates selected in CT?",
+      "Does the Governor pick a running mate in Connecticut?"
+    ],
+    "answer": "In Connecticut, candidates for Governor and Lieutenant Governor run in separate primary elections but run on a joint, single ticket in the general election. Voters cast a single vote for the combined ticket in November.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Connecticut for 2026?",
+    "question_variants": [
+      "Connecticut primary date 2026",
+      "When is Election Day 2026 in Connecticut?",
+      "August primary Connecticut"
+    ],
+    "answer": "The Connecticut primary election is scheduled for Tuesday, August 11, 2026. The general election will be held on Tuesday, November 3, 2026. Plurality wins the primary, so there are no primary runoffs.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Calendars/Election-Calendars",
+    "source_name": "Connecticut Secretary of the State - Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Ned Lamont running for re-election in 2026?",
+    "question_variants": [
+      "Connecticut Governor election 2026",
+      "Who is defending the CT Governor seat?",
+      "Is Ned Lamont term limited?"
+    ],
+    "answer": "Yes. Governor Ned Lamont (D) is eligible to defend his seat in the 2026 election, seeking a third term. Connecticut is one of a minority of states that does NOT impose term limits on its Governor.",
+    "source_url": "https://ballotpedia.org/Governor_of_Connecticut",
+    "source_name": "Ballotpedia - Governor of Connecticut",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Connecticut in 2026?",
+    "question_variants": [
+      "Is Chris Murphy up for re-election in 2026?",
+      "When is Richard Blumenthal's next election?",
+      "Connecticut US Senate cycle 2026"
+    ],
+    "answer": "Neither U.S. Senate seat in Connecticut is on the ballot in 2026. Senator Chris Murphy (Class 1) was re-elected in 2024 and is next up in 2030. Senator Richard Blumenthal (Class 3) was re-elected in 2022 and is next up in 2028.",
+    "source_url": "https://www.senate.gov/senators/Class_I.htm",
+    "source_name": "U.S. Senate - Class I Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Connecticut for the 2026 election?",
+    "question_variants": [
+      "Connecticut congressional apportionment",
+      "Are all CT congressional seats up in 2026?",
+      "Number of US Representatives from Connecticut"
+    ],
+    "answer": "Connecticut is apportioned 5 U.S. House districts. All five seats are on the 2026 ballot, as U.S. Representatives serve two-year terms.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Connecticut State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Connecticut House seats up in 2026?",
+      "Connecticut Senate election cycle 2026",
+      "Which legislative districts are on the ballot in CT?"
+    ],
+    "answer": "In Connecticut, all members of the General Assembly serve two-year terms. Therefore, all 151 seats in the Connecticut House of Representatives and all 36 seats in the Connecticut State Senate are on the 2026 ballot.",
+    "source_url": "https://www.cga.ct.gov/",
+    "source_name": "Connecticut General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Connecticut in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "CT statewide election list 2026",
+      "When is the Secretary of State election in CT?"
+    ],
+    "answer": "Connecticut elects all of its statewide executive officers concurrently on a four-year midterm cycle. In 2026, the offices of Governor, Lieutenant Governor, Attorney General, Secretary of the State, State Treasurer, and State Comptroller are all on the ballot.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Connecticut Supreme Court justices selected and are they on the ballot?",
+    "question_variants": [
+      "Connecticut judicial elections 2026",
+      "Are CT judges elected or appointed?",
+      "Supreme Court elections Connecticut"
+    ],
+    "answer": "Connecticut does NOT hold judicial elections. Supreme Court justices are nominated by the Governor from a list provided by a judicial selection commission, and must be approved by the General Assembly for an eight-year term. They never appear on a public ballot.",
+    "source_url": "https://www.jud.ct.gov/",
+    "source_name": "State of Connecticut Judicial Branch",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Connecticut General Assembly sessions?",
+    "question_variants": [
+      "When does the CT legislature meet?",
+      "Connecticut short session length",
+      "Is the Connecticut legislature full time?"
+    ],
+    "answer": "The Connecticut General Assembly is a part-time legislature. In odd-numbered years, it holds a 'long session' (January to June). In even-numbered election years (like 2026), it holds a 'short session' running from early February to early May. For 2026, the session convenes on February 4 and adjourns on May 6.",
+    "source_url": "https://www.cga.ct.gov/",
+    "source_name": "Connecticut General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Connecticut?",
+    "question_variants": [
+      "Age and residency for Connecticut Governor",
+      "Connecticut Constitution Governor qualifications",
+      "Who is eligible to be Governor of CT?"
+    ],
+    "answer": "Under Article IV of the Connecticut Constitution, a candidate for Governor must be at least 30 years old and must have been a registered voter (elector) in the state of Connecticut for at least one year immediately preceding the election.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Connecticut State Legislature?",
+    "question_variants": [
+      "Qualifications for CT State Representative",
+      "Age requirement Connecticut State Senate",
+      "Do I have to live in my district to run in CT?"
+    ],
+    "answer": "A candidate for the State Senate or House of Representatives in Connecticut must be at least 18 years old and a registered voter in the state. Candidates must reside in the district they are elected to represent by the time they take office.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House candidates in Connecticut?",
+    "question_variants": [
+      "US House residency requirements Connecticut",
+      "Age to run for Congress in Connecticut",
+      "Federal constitutional requirements for CT candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Connecticut Governor?",
+    "question_variants": [
+      "How many terms can a Connecticut Governor serve?",
+      "Ned Lamont term limits CT",
+      "Connecticut executive term limit law"
+    ],
+    "answer": "Connecticut does not impose term limits on its Governor or any of its statewide executive officers. Governor Ned Lamont is fully eligible to seek a third consecutive term in 2026.",
+    "source_url": "https://ballotpedia.org/Governor_of_Connecticut",
+    "source_name": "Ballotpedia - Governor of Connecticut",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Connecticut have legislative term limits?",
+    "question_variants": [
+      "How many terms can a Connecticut state senator serve?",
+      "Are there term limits for the Connecticut House?",
+      "Connecticut legislature term limit status"
+    ],
+    "answer": "No. Connecticut does not impose term limits on members of the State Senate or the House of Representatives. State legislators may serve an unlimited number of two-year terms as long as they continue to win re-election.",
+    "source_url": "https://www.cga.ct.gov/",
+    "source_name": "Connecticut General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Connecticut?",
+    "question_variants": [
+      "Connecticut Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in CT?",
+      "Qualifications for Lieutenant Governor of Connecticut"
+    ],
+    "answer": "Under Article IV of the Connecticut Constitution, the qualifications for Lieutenant Governor are identical to those for Governor. A candidate must be at least 30 years old and a registered voter in Connecticut for at least one year immediately preceding the election.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Connecticut?",
+    "question_variants": [
+      "Connecticut county executive qualifications",
+      "Can I run for county council in CT?",
+      "County residency for CT officials"
+    ],
+    "answer": "In a major distinctive feature, Connecticut completely abolished county government in 1960. There are no county elections, county executives, or county councils. All local government is conducted at the town and city level across the state's 169 municipalities.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a strict photo ID required to vote in person in Connecticut?",
+    "question_variants": [
+      "Connecticut voter ID requirements",
+      "Do I need my driver's license to vote in CT?",
+      "Acceptable ID for Connecticut voting"
+    ],
+    "answer": "No. Connecticut is not a strict photo ID state. Voters are asked to present ID, but a photo is not required. Acceptable ID includes any document bearing the voter's pre-printed name and address, signature, or photograph (such as a utility bill, paycheck, or Social Security card). If a voter has no ID, they can sign an affidavit attesting to their identity under penalty of false statement.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/FAQ/FAQ---Voter-Identification",
+    "source_name": "Connecticut Secretary of the State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Connecticut a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Connecticut?",
+      "Connecticut vote-by-mail system",
+      "Do I need an excuse to vote absentee in CT?"
+    ],
+    "answer": "Connecticut is not a universal mail ballot state, but as of May 2026, it is officially a NO-EXCUSE absentee voting state. Following a constitutional amendment ratified by voters in 2024, the legislature passed HB 5001, effectively removing all specific excuse requirements to cast an absentee mail ballot. Any registered voter may now request one.",
+    "source_url": "https://www.senatedems.ct.gov/sen-maher-votes-for-more-democracy-in-connecticut-with-new-absentee-voter-bill",
+    "source_name": "Connecticut General Assembly (HB 5001)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Connecticut offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in CT?",
+      "Connecticut early voting dates 2026",
+      "When does early voting start in Connecticut?"
+    ],
+    "answer": "Yes. Connecticut instituted in-person Early Voting beginning in 2024. For the 2026 primary elections, early voting is held for 7 days (August 3 to August 9). For the general election, early voting is held for 14 days (typically October 19 to November 1).",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Early-Voting/Early-Voting",
+    "source_name": "Connecticut Secretary of the State - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Connecticut offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in CT",
+      "Connecticut same day voter registration",
+      "Voter registration deadline 2026 Connecticut"
+    ],
+    "answer": "The standard advance deadline to register to vote in Connecticut is 7 days before Election Day (online, by mail, or in person). However, Connecticut DOES offer Same-Day Registration (SDR). Eligible voters can register and vote on the same day during the entire Early Voting period and on Election Day at designated SDR locations in their town.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Voter-Information/Voter-Registration-Information",
+    "source_name": "Connecticut Secretary of the State - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Connecticut?",
+    "question_variants": [
+      "How close can I campaign to a polling place in CT?",
+      "Connecticut 75 feet electioneering rule",
+      "CT buffer zone around voting centers"
+    ],
+    "answer": "Under Connecticut law, electioneering is strictly prohibited within 75 feet of any outside entrance to the polling place. Campaigning, distributing literature, and placing signs are not allowed within this zone on Election Day or during Early Voting.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/FAQ/FAQ---Voter-Rights",
+    "source_name": "Connecticut Secretary of the State - Election Day Rules",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Connecticut?",
+    "question_variants": [
+      "Can felons vote in Connecticut state?",
+      "Felony voting rights restoration CT",
+      "Voting on parole in Connecticut"
+    ],
+    "answer": "In Connecticut, individuals with felony convictions lose their voting rights only while they are incarcerated. Following a 2021 law signed by Gov. Lamont, voting rights are automatically restored immediately upon release from prison. Individuals on probation or parole are fully eligible to vote.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Voter-Information/Voter-Registration-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "CT",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Connecticut, and how does this affect election administration?",
+    "question_variants": [
+      "Connecticut county election administration",
+      "How many county clerks in CT?",
+      "Local election control Connecticut towns"
+    ],
+    "answer": "While Connecticut has 8 geographic counties, it has NO county government. Election administration is handled entirely at the municipal level by the Registrars of Voters and Town Clerks across the state's 169 towns and cities. Statewide campaigns must coordinate logistics across 169 separate local jurisdictions.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Connecticut voter file?",
+    "question_variants": [
+      "Connecticut voter database access cost",
+      "How to get the voter list in CT",
+      "What data is included in the Connecticut voter file?"
+    ],
+    "answer": "Campaigns and political committees can request the statewide voter registration list from the Secretary of the State's office. The file includes voter names, addresses, party affiliation, and voting history. It requires an application and payment, and its use is legally restricted to political and election purposes.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Voter-Information/Voter-Registration-Data",
+    "source_name": "Connecticut Secretary of the State - Voter Data",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Connecticut provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Connecticut Governor",
+      "Citizens Election Program CT status",
+      "Government campaign grants Connecticut Legislature"
+    ],
+    "answer": "Yes. Connecticut runs the Citizens' Election Program (CEP), a highly comprehensive public financing system. Candidates for statewide offices and the General Assembly who gather a required threshold of small-dollar qualifying contributions agree to strict spending limits in exchange for full public grant funding for their primary and general campaigns.",
+    "source_url": "https://seec.ct.gov/Portal/CEP",
+    "source_name": "Connecticut State Elections Enforcement Commission - CEP",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits for non-participating candidates in Connecticut?",
+    "question_variants": [
+      "Are there contribution limits in Connecticut?",
+      "CT individual donation caps 2026 election",
+      "Maximum donation to state legislature Connecticut"
+    ],
+    "answer": "For candidates who do NOT participate in the public financing CEP, contribution limits are very low. For the 2026 cycle, individuals may contribute up to $3,500 to a gubernatorial candidate, $1,000 to a State Senate candidate, and $250 to a State Representative candidate. These limits apply separately to the primary and general elections.",
+    "source_url": "https://www.cga.ct.gov/2008/rpt/2008-R-0316.htm",
+    "source_name": "Connecticut General Assembly - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Connecticut campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Connecticut state",
+      "Can a business donate to my campaign in CT?",
+      "Corporate campaign finance rules Connecticut"
+    ],
+    "answer": "No. In a major distinctive feature of state law, Connecticut strictly PROHIBITS direct contributions from corporations and labor unions to state candidate committees, exploratory committees, and political party committees. They may only establish separate PACs funded by voluntary employee donations.",
+    "source_url": "https://publicintegrity.org/politics/state-bans-on-soft-money/",
+    "source_name": "Connecticut Campaign Finance Law",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Connecticut?",
+    "question_variants": [
+      "Where do I file campaign finance reports in CT?",
+      "What is the Connecticut SEEC?",
+      "Does the CT Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Connecticut are administered by the State Elections Enforcement Commission (SEEC). The SEEC manages the eCRIS online reporting system, audits campaigns, manages the Citizens' Election Program (CEP), and investigates election law violations.",
+    "source_url": "https://seec.ct.gov/",
+    "source_name": "Connecticut State Elections Enforcement Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Connecticut candidates?",
+    "question_variants": [
+      "CT SEEC filing dates 2026",
+      "When are campaign finance reports due in CT?",
+      "Connecticut pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates use the eCRIS system to file standard quarterly reports (January, April, July, October). During an election year, candidates on the ballot must also file critical pre-election reports due on the 7th day preceding a primary and the 7th day preceding the general election.",
+    "source_url": "https://seec.ct.gov/Portal/eCRIS/eCRISHome",
+    "source_name": "Connecticut SEEC - eCRIS",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Connecticut?",
+    "question_variants": [
+      "CT personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in CT?",
+      "Prohibited expenditures Connecticut SEEC"
+    ],
+    "answer": "Yes. Connecticut law strictly prohibits the use of campaign funds for the personal use of the candidate or any other individual. Expenditures must be directly related to the campaign. Candidates participating in the public financing CEP program face even stricter scrutiny and exhaustive audits on all expenditures.",
+    "source_url": "https://seec.ct.gov/Portal/data/CEP/news/2026CEPOverview.pdf",
+    "source_name": "Connecticut SEEC - 2026 CEP Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Connecticut legislators?",
+    "question_variants": [
+      "Can Connecticut legislators raise money during session?",
+      "Lobbyist contribution ban CT legislature",
+      "Legislative session contribution rules Connecticut"
+    ],
+    "answer": "Yes. Connecticut enforces a strict 'session freeze' on lobbyist contributions. During regular legislative sessions (and certain special sessions), lobbyist contributions to candidates for the General Assembly and statewide office are completely banned. Recent 2025 legislation (HB 6320) also expanded this freeze to prohibit lobbyist donations to state legislators who are running for municipal offices during the session.",
+    "source_url": "https://www.cga.ct.gov/2025/ba/pdf/2025HB-06320-R000682-BA.pdf",
+    "source_name": "Connecticut General Assembly (HB 6320)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Connecticut's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "Connecticut 48-hour large contribution report",
+      "Late contribution reporting Connecticut SEEC",
+      "When do I file a rapid report in CT?"
+    ],
+    "answer": "Connecticut requires rapid disclosure for late contributions. Candidates and committees receiving a contribution of $1,000 or more during the final days before an election (between the cut-off for the last pre-election report and Election Day) must report the contribution to the SEEC within 48 hours of receipt.",
+    "source_url": "https://seec.ct.gov/Portal/eCRIS/eCRISHome",
+    "source_name": "Connecticut SEEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What are the qualifying thresholds for Connecticut's Citizens' Election Program (CEP)?",
+    "question_variants": [
+      "How do I qualify for public financing in Connecticut?",
+      "CEP qualifying contributions CT",
+      "Connecticut CEP threshold amounts"
+    ],
+    "answer": "To qualify for the Citizens' Election Program (CEP), candidates must raise an aggregate threshold of small-dollar contributions (between $5 and $320) from a minimum number of unique in-district or in-state contributors. For 2026, a gubernatorial candidate must raise $290,000; a State Senate candidate $17,300; and a State House candidate $5,800 from these small-dollar donors.",
+    "source_url": "https://seec.ct.gov/Portal/data/CEP/news/2026CEPOverview.pdf",
+    "source_name": "Connecticut SEEC - 2026 CEP Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "What grant amounts do candidates receive under Connecticut's Citizens' Election Program (CEP)?",
+    "question_variants": [
+      "How much money do candidates get from public financing in CT?",
+      "CEP grant amounts Connecticut",
+      "Connecticut campaign spending limits CEP"
+    ],
+    "answer": "Once qualified for the CEP, candidates receive a public grant and must abide by strict spending limits. For the 2026 general election, gubernatorial candidates receive approximately $7.7 million, State Senate candidates receive roughly $112,000, and State House candidates receive approximately $33,000.",
+    "source_url": "https://seec.ct.gov/Portal/data/CEP/news/2026CEPOverview.pdf",
+    "source_name": "Connecticut SEEC - 2026 CEP Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Connecticut's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the CT legislature draw district maps?",
+      "Who has the authority to draw district lines in Connecticut?",
+      "Connecticut redistricting commission"
+    ],
+    "answer": "In Connecticut, the state legislature does NOT draw district maps directly. Instead, redistricting is handled by a bipartisan, 9-member Reapportionment Commission. The commission consists of eight members appointed by legislative leaders (four Democrats, four Republicans), who then select a ninth member to serve as the tie-breaking chair.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Connecticut",
+    "source_name": "Ballotpedia - Redistricting in Connecticut",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Connecticut?",
+    "question_variants": [
+      "Standards for drawing Connecticut district lines",
+      "Connecticut gerrymandering rules",
+      "Map requirements CT"
+    ],
+    "answer": "Under the Connecticut Constitution, redistricting maps must comply with federal equal population standards, the Voting Rights Act, and ensure districts are contiguous. Furthermore, town boundaries must be preserved to the extent possible, meaning towns cannot be divided to form districts unless absolutely necessary for population equality.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Connecticut",
+    "source_name": "Connecticut Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current Connecticut redistricting maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of Connecticut legislative redistricting maps",
+      "Are there pending redistricting lawsuits in Connecticut?",
+      "Connecticut 2026 state legislative boundaries"
+    ],
+    "answer": "Yes. The state legislative and congressional maps adopted by the Reapportionment Commission in early 2022 (following the 2020 census) remain fully operative for the 2026 election cycle without any overriding legal injunctions.",
+    "source_url": "https://www.cga.ct.gov/red2021/",
+    "source_name": "Connecticut General Assembly - Reapportionment",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for independent candidates in Connecticut?",
+    "question_variants": [
+      "Independent candidate ballot access Connecticut",
+      "Running without a party in CT 2026",
+      "How many signatures for independent US Senate CT"
+    ],
+    "answer": "Independent (petitioning) candidates can qualify for the general election ballot by gathering signatures equal to 1% of all votes cast for the same office at the preceding election, or 7,500 signatures, whichever is less. The deadline to submit these petitions is typically early August.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State - Nominating Petitions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Connecticut have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Connecticut be recalled?",
+      "How to recall a state senator in CT",
+      "Statewide recall election rules Connecticut"
+    ],
+    "answer": "No. The State of Connecticut does not have any legal or constitutional mechanism for the recall of state-level elected officials, including the Governor, statewide executives, or members of the General Assembly.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Connecticut",
+    "source_name": "Laws governing recall in Connecticut",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Connecticut?",
+    "question_variants": [
+      "Connecticut town council recall rules",
+      "Signature requirement local recall Connecticut",
+      "Recalling a mayor in CT"
+    ],
+    "answer": "There is no statewide statutory right to local recall in Connecticut. Recall is only permitted in a few specific municipalities if their local town or city charter explicitly authorizes it (e.g., Stratford or Westport), meaning most local officials cannot be recalled.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Connecticut",
+    "source_name": "Laws governing recall in Connecticut",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Connecticut have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the CT ballot",
+      "Connecticut citizen initiative signature requirements",
+      "Can citizens propose laws in Connecticut?"
+    ],
+    "answer": "No. Connecticut is one of the states that does NOT have a statewide citizen initiative process. Citizens cannot draft statutes or constitutional amendments and gather signatures to place them on the ballot. All statewide ballot measures must be referred by the legislature.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Connecticut",
+    "source_name": "Ballotpedia - Initiative and Referendum in Connecticut",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Connecticut legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Connecticut",
+      "Referendum by legislature CT",
+      "Can the CT legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The Connecticut General Assembly can refer a constitutional amendment to the ballot in two ways: by passing it with a 75% (3/4) supermajority in one legislative session, OR by passing it with a simple majority (over 50%) in two consecutive legislative sessions. After either path, it goes to the voters for ratification.",
+    "source_url": "https://ballotpedia.org/Amending_the_Connecticut_Constitution",
+    "source_name": "Connecticut Constitution Article XII",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Connecticut have a veto referendum process?",
+    "question_variants": [
+      "How to refer a CT bill to the ballot",
+      "Connecticut citizen referendum rules",
+      "Veto referendum signature threshold Connecticut state"
+    ],
+    "answer": "No. Connecticut does not have a statewide veto referendum process. Citizens cannot gather signatures to suspend and refer legislative acts to the ballot for a popular vote of approval or rejection.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Connecticut",
+    "source_name": "Ballotpedia - Initiative and Referendum in Connecticut",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Connecticut?",
+    "question_variants": [
+      "Connecticut ballot measure pass threshold",
+      "Does a measure need a supermajority in CT?",
+      "Majority vote requirements Connecticut ballot measures"
+    ],
+    "answer": "In Connecticut, a legislatively referred constitutional amendment requires only a simple majority (over 50%) of the total votes cast on that specific measure by the voters during a general election to pass.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General in Connecticut?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in CT",
+      "Do I need to be a member of the bar to be CT AG?",
+      "Legal requirements for Connecticut Attorney General"
+    ],
+    "answer": "The Connecticut Attorney General must be a qualified elector and an attorney at law who has maintained an active practice at the bar of the State of Connecticut for at least 10 years immediately preceding the election.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of the State in Connecticut?",
+    "question_variants": [
+      "Requirements to run for CT Secretary of State",
+      "Who can run for Secretary of State in CT?",
+      "Residency rules for Connecticut SOS"
+    ],
+    "answer": "To run for Secretary of the State in Connecticut, a candidate must be at least 18 years old and a registered voter (elector) in the state. There are no specialized professional qualifications required.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Comptroller in Connecticut?",
+    "question_variants": [
+      "Eligibility for Connecticut State Comptroller",
+      "Who can run for Comptroller in CT?",
+      "Connecticut Comptroller residency requirements"
+    ],
+    "answer": "To run for State Comptroller in Connecticut, a candidate must be at least 18 years old and a registered voter (elector) in the state. No specific financial or accounting licensure (such as a CPA) is constitutionally required.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Connecticut?",
+    "question_variants": [
+      "Run for school board Connecticut requirements",
+      "Who can be a school board member in CT?",
+      "School board residency rules Connecticut"
+    ],
+    "answer": "To run for a local Board of Education in Connecticut, candidates must be at least 18 years old, a registered voter, and a resident of the town or regional school district they seek to represent. Employees of a school board may not serve as board members for the district where they are employed.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Candidate-Information/Candidate-Information",
+    "source_name": "Connecticut Secretary of the State - Local Offices",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for Connecticut Supreme Court justices?",
+    "question_variants": [
+      "Connecticut Supreme Court Justice eligibility",
+      "Years of practice required for CT Supreme Court",
+      "Are Connecticut judges elected or appointed?"
+    ],
+    "answer": "To be appointed to the Connecticut Supreme Court, an individual must be a licensed attorney. They are nominated by the Governor from a list of candidates approved by the Judicial Selection Commission and must be confirmed by the General Assembly. They must retire at age 70.",
+    "source_url": "https://www.jud.ct.gov/",
+    "source_name": "State of Connecticut Judicial Branch",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in Connecticut?",
+    "question_variants": [
+      "How to fix a rejected signature in CT",
+      "Connecticut ballot cure process deadline",
+      "Missing signature on CT mail ballot"
+    ],
+    "answer": "Yes. Following legislation passed in 2023, Connecticut instituted a signature cure process. If a town clerk determines an absentee ballot has a missing signature or missing inner envelope, they must notify the voter within 48 hours. The voter then has until Election Day to cure the defect to have the ballot counted.",
+    "source_url": "https://cga.ct.gov/2023/ACT/PA/PDF/2023PA-00205-R00HB-06826-PA.PDF",
+    "source_name": "Connecticut General Assembly (PA 23-205)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Connecticut?",
+    "question_variants": [
+      "When are military ballots due in Connecticut?",
+      "UOCAVA return deadline CT",
+      "Overseas voting rules Connecticut state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. Voted ballots must be received by the local town clerk by the close of polls (8:00 p.m.) on Election Day to be counted. Connecticut does not accept postmarks for late-arriving ballots.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Voter-Information/Military-and-Overseas-Voters",
+    "source_name": "Connecticut Secretary of the State - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Connecticut?",
+    "question_variants": [
+      "What is a provisional ballot in CT?",
+      "Voting without ID Connecticut",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are used in Connecticut but typically only for federal elections if a voter's name does not appear on the official registry list. The voter must sign a sworn affidavit. For state and local races, voters generally must resolve their registration status at a Same-Day Registration (SDR) location rather than casting a provisional ballot.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/FAQ/FAQ---Voter-Rights",
+    "source_name": "Connecticut Secretary of the State - Voter Rights",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Connecticut have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Connecticut DMV?",
+      "CT motor voter automatic registration",
+      "Do I have to register to vote if I get a CT driver's license?"
+    ],
+    "answer": "Yes. Connecticut operates an Automatic Voter Registration (AVR) system. Eligible citizens interacting with the DMV or other designated state agencies (like the Department of Social Services) are automatically registered to vote or have their records updated, unless they actively decline (opt out).",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Voter-Information/Voter-Registration-Information",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Connecticut offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in CT?",
+      "Connecticut electronic voter registration",
+      "CT online registration portal"
+    ],
+    "answer": "Yes. Eligible Connecticut residents with a valid state driver's license or DMV-issued ID card can register to vote or update their registration using the state's online portal up to 7 days before an election.",
+    "source_url": "https://voterregistration.ct.gov/OLVR",
+    "source_name": "Connecticut Secretary of the State - Online Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Connecticut maintain its voter registration lists?",
+    "question_variants": [
+      "CT voter list maintenance rules",
+      "How are inactive voters handled in Connecticut?",
+      "Connecticut voter roll cleaning process"
+    ],
+    "answer": "Connecticut maintains its voter rolls using the Electronic Registration Information Center (ERIC) and National Change of Address (NCOA) data. Town registrars conduct annual canvasses. Voters who do not respond to confirmation notices and fail to vote in two consecutive federal general elections are moved to inactive status and eventually purged.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee ballot in Connecticut?",
+    "question_variants": [
+      "When is the last day to mail my ballot in CT?",
+      "Connecticut mail ballot postmark deadline",
+      "What time are ballots due in Connecticut?"
+    ],
+    "answer": "Voted absentee ballots must be physically received by the municipal town clerk by the close of polls (8:00 p.m.) on Election Day. They can be mailed, deposited in a secure local drop box, or hand-delivered to the clerk's office. Connecticut does NOT accept late-arriving ballots based on postmark dates.",
+    "source_url": "https://portal.ct.gov/SOTS/Election-Services/Voter-Information/Absentee-Voting",
+    "source_name": "Connecticut Secretary of the State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Connecticut?",
+    "question_variants": [
+      "Does Connecticut use ranked choice voting?",
+      "RCV status in Connecticut 2026",
+      "Instant runoff voting CT"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is not used for any state, federal, or municipal elections in Connecticut. Elections are decided strictly by a traditional plurality voting system.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in Connecticut elections?",
+    "question_variants": [
+      "How are tied elections decided in Connecticut?",
+      "Tie-breaker rules Connecticut elections",
+      "What happens if a race is tied in CT?"
+    ],
+    "answer": "In the event of an exact tie for a state or federal office in Connecticut, state law requires a special election to be held to determine the winner, rather than breaking the tie by casting lots (drawing straws) as is common in many other states.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Connecticut campaign materials?",
+    "question_variants": [
+      "Connecticut 'Paid for by' rules",
+      "Campaign ad disclaimer requirements CT",
+      "Political taglines Connecticut SEEC"
+    ],
+    "answer": "Connecticut campaign finance law requires political advertisements to include 'Paid for by' disclaimers identifying the entity funding the communication. For candidate-sponsored ads, it must also include a clear 'Approved by [Candidate Name]' statement. Participants in the Citizens' Election Program (CEP) must explicitly note their participation in the program.",
+    "source_url": "https://seec.ct.gov/",
+    "source_name": "Connecticut SEEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Connecticut?",
+    "question_variants": [
+      "CT campaign coordination rules",
+      "When is a PAC expenditure not independent in Connecticut?",
+      "Prohibition on candidate-PAC coordination CT"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if made with the consent, coordination, or consultation of a candidate. Coordinated expenditures are treated as in-kind contributions, subject to strict limits, and accepting them can critically disqualify a candidate from participating in the Citizens' Election Program (CEP).",
+    "source_url": "https://seec.ct.gov/Portal/data/CEP/news/2026CEPOverview.pdf",
+    "source_name": "Connecticut SEEC - CEP Guidelines",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Connecticut?",
+    "question_variants": [
+      "CT SEEC late fee",
+      "Penalty for missing a Connecticut campaign finance deadline",
+      "Elections Enforcement Commission fine for late filing CT"
+    ],
+    "answer": "The SEEC imposes a mandatory $100 late fee for failing to file a campaign finance report on time. Further failure can trigger significantly higher civil penalties. Additionally, candidates seeking public funds via the CEP can forfeit their eligibility if their qualifying reports are chronically late or flawed.",
+    "source_url": "https://seec.ct.gov/Portal/eCRIS/eCRISHome",
+    "source_name": "Connecticut SEEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Connecticut campaign committee terminate?",
+    "question_variants": [
+      "Closing a Connecticut campaign committee",
+      "SEEC committee termination requirements",
+      "Final campaign finance report Connecticut"
+    ],
+    "answer": "A candidate committee may formally terminate when it achieves a zero cash balance, legally disposes of all unexpended funds, and resolves all outstanding debts. A formal Termination Report must be filed with the SEEC through the eCRIS portal.",
+    "source_url": "https://seec.ct.gov/",
+    "source_name": "Connecticut SEEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Connecticut?",
+    "question_variants": [
+      "CT independent expenditure reporting SEEC",
+      "Disclosure for CT independent expenditure groups",
+      "Reporting thresholds for outside spending Connecticut"
+    ],
+    "answer": "Entities making independent expenditures of more than $1,000 must file long-form disclosure reports with the SEEC. In the 90 days before a primary or general election, they trigger a 24-hour rapid disclosure requirement for expenditures exceeding the $1,000 threshold.",
+    "source_url": "https://seec.ct.gov/",
+    "source_name": "Connecticut SEEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Connecticut?",
+    "question_variants": [
+      "Connecticut in-kind contribution valuation rules",
+      "Reporting non-monetary donations Connecticut campaign",
+      "Fair market value for in-kind gifts CT"
+    ],
+    "answer": "In-kind contributions must be reported to the SEEC at their fair market value. They count directly against the donor's per-election monetary contribution limit. For CEP candidates, receiving in-kind contributions beyond strict limits can jeopardize their public financing grant.",
+    "source_url": "https://seec.ct.gov/",
+    "source_name": "Connecticut SEEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Connecticut?",
+    "question_variants": [
+      "Connecticut candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in CT?",
+      "Reporting candidate loans in SEEC"
+    ],
+    "answer": "For traditionally funded candidates, personal loans are unlimited. However, for candidates participating in the Citizens' Election Program (CEP), strict limits apply (e.g., gubernatorial candidates can only self-fund up to $20,000) because they must rely on small-dollar donors and public grants.",
+    "source_url": "https://seec.ct.gov/Portal/data/CEP/news/2026CEPOverview.pdf",
+    "source_name": "Connecticut SEEC - 2026 CEP Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Connecticut candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in CT?",
+      "CT surplus campaign funds rules",
+      "Donating remaining campaign funds Connecticut"
+    ],
+    "answer": "Candidates participating in the CEP MUST return all unexpended surplus grant funds directly to the Citizens' Election Fund. Non-CEP candidates can donate surplus funds to an IRS-recognized tax-exempt charitable organization or specific political town committees, but they cannot convert the funds to personal use.",
+    "source_url": "https://seec.ct.gov/",
+    "source_name": "Connecticut SEEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["municipal"],
+    "category": "election_dates",
+    "question": "When are municipal elections held in Connecticut?",
+    "question_variants": [
+      "Connecticut local election dates",
+      "When are mayors elected in CT?",
+      "Town council election cycle Connecticut"
+    ],
+    "answer": "Municipal elections in Connecticut are completely disjointed from federal elections. The vast majority of the 169 towns hold their local elections in November of odd-numbered years, though a small number hold them in May of odd-numbered years.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Connecticut elections?",
+    "question_variants": [
+      "When are Connecticut election results official?",
+      "CT certification deadline",
+      "State Board of Canvassers meeting Connecticut"
+    ],
+    "answer": "Local Head Moderators compile and certify results on election night. Town clerks submit official returns within 48 hours. The State Board of Canvassers officially declares the state/federal results by the last day of November.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "CT",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Connecticut?",
+    "question_variants": [
+      "Connecticut special election timeline",
+      "Who calls a special election to fill a US House vacancy in CT?",
+      "Filling a midterm vacancy Connecticut"
+    ],
+    "answer": "Special elections for legislative vacancies are called by a Writ of Election issued by the Governor. The election is generally held exactly 46 days after the writ is issued.",
+    "source_url": "https://portal.ct.gov/SOTS",
+    "source_name": "Connecticut Secretary of the State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "CT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Who sits on the Connecticut State Elections Enforcement Commission (SEEC)?",
+    "question_variants": [
+      "Who oversees campaign finance in CT?",
+      "Connecticut SEEC composition",
+      "Who appoints the State Elections Enforcement Commission?"
+    ],
+    "answer": "The State Elections Enforcement Commission (SEEC) is an independent, bipartisan body consisting of five members. They are appointed by the Governor and the four highest-ranking leaders of the General Assembly.",
+    "source_url": "https://seec.ct.gov/Portal/AboutUs",
+    "source_name": "Connecticut SEEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  }
+]
