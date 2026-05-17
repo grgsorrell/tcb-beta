@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in Alabama?",
+    "question_variants": [
+      "Are Alabama primaries open or closed?",
+      "Do I have to register with a party to vote in the AL primary?",
+      "How do voters choose a ballot in the Alabama primary?"
+    ],
+    "answer": "Alabama utilizes an open primary system. Voters are not required to register with a political party in advance. On Election Day, any registered voter may request either the Republican or Democratic primary ballot. However, if a primary runoff occurs, a voter may only participate in the runoff of the same party they selected in the initial primary.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/election-information",
+    "source_name": "Alabama Secretary of State - Election Information",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "When are primary runoffs held in Alabama?",
+    "question_variants": [
+      "Alabama primary runoff date 2026",
+      "What is the threshold to avoid a runoff in AL?",
+      "50 percent plus one rule Alabama primary"
+    ],
+    "answer": "In Alabama primary elections, a candidate must receive a strict majority (50% plus one vote) to secure the nomination. If no candidate reaches this threshold, the top two vote-getters advance to a primary runoff election. For the 2026 cycle, the primary runoff is scheduled for June 16, 2026.",
+    "source_url": "https://www.sos.alabama.gov/",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Alabama have runoff elections for the general election?",
+    "question_variants": [
+      "Alabama general election runoff rules",
+      "Do state candidates face a general runoff in AL?",
+      "General election majority requirement Alabama"
+    ],
+    "answer": "No. Unlike the primary elections, general elections for state and federal offices in Alabama do not require a majority to win. The candidate who receives a simple plurality of the votes in the general election is declared the winner, and no general election runoff is held.",
+    "source_url": "https://www.sos.alabama.gov/",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Alabama?",
+    "question_variants": [
+      "Do write-in votes count in AL?",
+      "How to register as a write-in candidate in Alabama",
+      "Write-in filing deadline Alabama"
+    ],
+    "answer": "Yes, and Alabama's system is highly distinctive: the state permits write-in votes in general elections without requiring the write-in candidate to file any pre-election paperwork or declaration of intent. Write-in votes cast on the ballot are valid and tabulated, although they are not permitted in primary elections.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/election-information",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for major party candidates in Alabama for 2026?",
+    "question_variants": [
+      "When do candidates file for office in Alabama?",
+      "Alabama filing deadline 2026",
+      "January filing deadline AL"
+    ],
+    "answer": "Major party candidates seeking to appear on the 2026 primary ballot must file their declaration of candidacy with the state or county party chair by the statutory deadline, which is 116 days before the primary. For 2026, the filing deadline is January 23, 2026.",
+    "source_url": "https://ballotpedia.org/Alabama_gubernatorial_election,_2026",
+    "source_name": "Ballotpedia / Alabama Election Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the petition threshold and deadline for independent candidates in Alabama?",
+    "question_variants": [
+      "Independent candidate petition deadline Alabama",
+      "Running without a party in AL 2026",
+      "Independent signature requirements Alabama"
+    ],
+    "answer": "Independent candidates must submit a petition containing signatures of registered voters equal to at least 3% of the total votes cast for Governor in the respective district/state in the last general election. The petition must be filed by 5:00 p.m. on the date of the primary election (May 19, 2026).",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/candidates/independent-candidates",
+    "source_name": "Alabama Secretary of State - Independent Candidates",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Alabama have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the AL primary?",
+      "Alabama sore loser statute",
+      "General election ballot access after primary defeat AL"
+    ],
+    "answer": "Yes. Alabama enforces a sore loser law. A candidate who participates in a political party's primary election and is defeated cannot subsequently qualify to have their name placed on the general election ballot as an independent candidate or the nominee of another party for the same election cycle.",
+    "source_url": "https://www.sos.alabama.gov/",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Alabama?",
+    "question_variants": [
+      "Alabama joint ticket rules",
+      "How are Lt Gov candidates selected in AL?",
+      "Does the Governor pick a running mate in Alabama?"
+    ],
+    "answer": "No. In Alabama, the Governor and Lieutenant Governor are elected separately. They run in distinct primary and general elections and appear as separate items on the ballot, meaning voters can elect a Governor and Lieutenant Governor from two different political parties.",
+    "source_url": "https://www.sos.alabama.gov/",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Alabama for 2026?",
+    "question_variants": [
+      "Alabama primary date 2026",
+      "When is Election Day 2026 in Alabama?",
+      "May primary Alabama"
+    ],
+    "answer": "The Alabama primary election will be held on Tuesday, May 19, 2026 (with a runoff, if needed, on June 16, 2026). The general election will be held on Tuesday, November 3, 2026. Polls are open from 7:00 a.m. to 7:00 p.m.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/election-information",
+    "source_name": "Alabama Secretary of State - Election Dates",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Kay Ivey running for re-election in 2026?",
+    "question_variants": [
+      "Alabama Governor election 2026",
+      "Who is defending the AL Governor seat?",
+      "Is Kay Ivey term limited?"
+    ],
+    "answer": "No. Governor Kay Ivey (R) is term-limited and cannot seek re-election. The 2026 Alabama gubernatorial election is an open-seat race. U.S. Senator Tommy Tuberville (R) is vacating his federal seat to run for the office.",
+    "source_url": "https://ballotpedia.org/Alabama_gubernatorial_election,_2026",
+    "source_name": "Ballotpedia - Alabama Gubernatorial Election 2026",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Alabama in 2026?",
+    "question_variants": [
+      "Is Tommy Tuberville up for re-election in 2026?",
+      "When is Katie Britt's next election?",
+      "Alabama US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat is up for election in 2026. Incumbent Tommy Tuberville (R) is vacating the seat to run for Governor, making it an open-seat race. Senator Katie Britt (Class 3) was elected in 2022 and will not appear on the ballot again until 2028.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Alabama for the 2026 election?",
+    "question_variants": [
+      "Alabama congressional apportionment",
+      "Are all AL congressional seats up in 2026?",
+      "Number of US Representatives from Alabama"
+    ],
+    "answer": "Alabama is apportioned 7 U.S. House districts. All seven seats are on the 2026 ballot, as U.S. Representatives serve two-year terms.",
+    "source_url": "https://www.sos.alabama.gov/",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Alabama State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Alabama House seats up in 2026?",
+      "Alabama Senate election cycle 2026",
+      "Which legislative districts are on the ballot in AL?"
+    ],
+    "answer": "In Alabama, ALL legislative seats are up for election concurrently every four years, aligning with the gubernatorial cycle. Therefore, all 105 seats in the Alabama House of Representatives and all 35 seats in the Alabama State Senate will be on the 2026 ballot.",
+    "source_url": "https://legislature.state.al.us/",
+    "source_name": "Alabama State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Alabama in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "AL statewide election list 2026",
+      "When is the Secretary of State election in AL?"
+    ],
+    "answer": "Alabama elects all of its statewide executive officers concurrently every four years during the midterm cycle. In 2026, the offices of Governor, Lieutenant Governor, Attorney General, Secretary of State, State Treasurer, State Auditor, and Commissioner of Agriculture and Industries are all on the ballot.",
+    "source_url": "https://www.sos.alabama.gov/",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Alabama Supreme Court justices elected?",
+    "question_variants": [
+      "Alabama judicial elections 2026",
+      "Are AL judges elected or appointed?",
+      "Partisan judicial elections Alabama"
+    ],
+    "answer": "Alabama Supreme Court justices are elected in statewide, partisan elections. They serve six-year terms, meaning seats are staggered across election cycles. Judicial candidates run in the standard May primary and November general elections alongside other partisan candidates.",
+    "source_url": "https://judicial.alabama.gov/",
+    "source_name": "Alabama Judicial System",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Alabama State Legislature's sessions?",
+    "question_variants": [
+      "When does the AL legislature meet?",
+      "Alabama legislative session length",
+      "Is the Alabama legislature full time?"
+    ],
+    "answer": "The Alabama Legislature is a part-time body that meets annually. Regular sessions are limited to 30 legislative days within a 105-calendar-day period. The session generally convenes on the first Tuesday in February, except in the first year of a new quadrennium (e.g., 2027 following the 2026 election), when it convenes in early March.",
+    "source_url": "https://legislature.state.al.us/",
+    "source_name": "Alabama State Legislature",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Alabama?",
+    "question_variants": [
+      "Age and residency for Alabama Governor",
+      "Alabama Constitution Article V Governor qualifications",
+      "Who is eligible to be Governor of AL?"
+    ],
+    "answer": "Under Article V, Section 117 of the Alabama Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States for at least 10 years, and a resident of Alabama for at least 7 years immediately preceding the election.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/candidates/qualifications-public-office",
+    "source_name": "Alabama Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Alabama State Legislature?",
+    "question_variants": [
+      "Qualifications for AL State Representative",
+      "Age requirement Alabama State Senate",
+      "Do I have to live in my district to run in AL?"
+    ],
+    "answer": "Under Article IV, Section 47 of the Alabama Constitution, a candidate for the State Senate must be at least 25 years old, and a candidate for the State House must be at least 21 years old. Both must be Alabama residents for at least 3 years and residents of their specific district for at least 1 year prior to the election.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/candidates/qualifications-public-office",
+    "source_name": "Alabama Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Alabama?",
+    "question_variants": [
+      "US Senate residency requirements Alabama",
+      "Age to run for Congress in Alabama",
+      "Federal constitutional requirements for AL candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/candidates/qualifications-public-office",
+    "source_name": "Alabama Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for Alabama state officials?",
+    "question_variants": [
+      "How many terms can an Alabama Governor serve?",
+      "Are there term limits for the Alabama legislature?",
+      "Alabama executive term limit law"
+    ],
+    "answer": "In Alabama, statewide executive officers (including the Governor, Lt. Governor, Attorney General, and Secretary of State) are limited to two consecutive four-year terms. However, there are NO term limits for members of the Alabama State Legislature (House or Senate).",
+    "source_url": "https://www.sos.alabama.gov/",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Alabama Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in AL",
+      "Do I need to be a member of the bar to be AL AG?",
+      "Legal requirements for Alabama Attorney General"
+    ],
+    "answer": "Yes. Beyond the standard residency and age requirements, statutory law mandates that the Attorney General of Alabama must be learned in the law and must have been admitted to practice law in the state of Alabama.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/candidates/qualifications-public-office",
+    "source_name": "Alabama Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Alabama?",
+    "question_variants": [
+      "Alabama Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in AL?",
+      "Qualifications for Lieutenant Governor of Alabama"
+    ],
+    "answer": "Under Article V of the Alabama Constitution, the qualifications for Lieutenant Governor are strictly identical to those for Governor: a candidate must be at least 30 years old, a U.S. citizen for 10 years, and an Alabama resident for 7 years.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/candidates/qualifications-public-office",
+    "source_name": "Alabama Secretary of State - Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Alabama?",
+    "question_variants": [
+      "Alabama county commissioner qualifications",
+      "Can I run for county board in AL?",
+      "County residency for AL officials"
+    ],
+    "answer": "To run for a county office (such as County Commissioner, Sheriff, or Probate Judge), a candidate must generally be a qualified elector (registered voter) of the county and must have resided in the county (or specific district) for at least one year immediately prior to the election.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/candidates/qualifications-public-office",
+    "source_name": "Alabama Secretary of State - Local Candidate Qualifications",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Alabama?",
+    "question_variants": [
+      "Alabama voter ID requirements",
+      "Do I need my driver's license to vote in AL?",
+      "Acceptable ID for Alabama voting"
+    ],
+    "answer": "Yes. Alabama has a strict photo ID requirement. Voters must present a valid photo ID at the polls. Acceptable forms include an Alabama driver's license, U.S. passport, military ID, or a free Alabama Photo Voter ID card issued by the Secretary of State.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/photo-voter-id/valid-ids",
+    "source_name": "Alabama Secretary of State - Voter ID",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Alabama a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Alabama?",
+      "Alabama vote-by-mail system",
+      "Do I need an excuse to vote absentee in AL?"
+    ],
+    "answer": "No. Alabama is NOT a universal mail ballot state and strictly prohibits no-excuse absentee voting. Voters must provide a legally valid excuse to request an absentee ballot, such as illness, physical disability, being out of the county on Election Day, or working a shift of 10 or more hours that coincides with polling hours.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/absentee-voting",
+    "source_name": "Alabama Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee ballot in Alabama?",
+    "question_variants": [
+      "When is the last day to mail my ballot in AL?",
+      "Alabama mail ballot postmark deadline",
+      "What time are ballots due in Alabama?"
+    ],
+    "answer": "Alabama has strict absentee deadlines. If returned by mail, the ballot must be RECEIVED by the Absentee Election Manager no later than Noon on Election Day (postmarks do not extend the deadline). If hand-delivered by the voter, it must be received by the close of business (5:00 p.m.) on the day prior to the election.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/absentee-voting",
+    "source_name": "Alabama Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Alabama offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in AL",
+      "Alabama same day voter registration",
+      "Voter registration deadline 2026 Alabama"
+    ],
+    "answer": "The deadline to register to vote in Alabama is 15 days before the election. Registration can be completed online, by mail, or in person. Alabama DOES NOT offer same-day voter registration at the polls.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/register-to-vote",
+    "source_name": "Alabama Secretary of State - Voter Registration",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Alabama?",
+    "question_variants": [
+      "How close can I campaign to a polling place in AL?",
+      "Alabama 30 feet electioneering rule",
+      "AL buffer zone around voting centers"
+    ],
+    "answer": "Under Alabama Code § 17-9-50, electioneering is strictly prohibited within 30 feet of the door of the building in which the polling place is located. Loitering, handing out campaign materials, or soliciting votes inside this zone is illegal on Election Day.",
+    "source_url": "https://codes.findlaw.com/al/title-17-elections/al-code-sect-17-9-50/",
+    "source_name": "Alabama Code § 17-9-50",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Alabama?",
+    "question_variants": [
+      "Can felons vote in Alabama state?",
+      "Felony voting rights restoration AL",
+      "Voting on parole in Alabama"
+    ],
+    "answer": "In Alabama, an individual loses their voting rights if convicted of a felony involving 'moral turpitude' (e.g., murder, kidnapping, treason). To restore voting rights, the individual must complete their sentence, pay all fines and restitution, and apply to the Board of Pardons and Paroles for a Certificate of Eligibility to Register to Vote (CERV).",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/election-information",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AL",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Alabama, and why does it matter for campaigns?",
+    "question_variants": [
+      "Alabama county election administration",
+      "How many probate judges in AL?",
+      "Local election control Alabama"
+    ],
+    "answer": "Alabama has 67 counties. Election administration is handled at the county level by a combination of Probate Judges, Circuit Clerks, and Absentee Election Managers, requiring statewide campaigns to coordinate logistics across 67 separate administrative jurisdictions.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/board-of-registrars-all-counties",
+    "source_name": "Alabama Secretary of State - Local Administrators",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the campaign contribution limits in Alabama for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Alabama?",
+      "AL individual donation caps 2026 election",
+      "How much can I donate to a candidate in Alabama?"
+    ],
+    "answer": "Alabama has NO contribution limits for candidates running for state or local office. Individuals, PACs, and political parties may contribute completely unlimited amounts of money to campaigns. The legislature eliminated the previous $500 cap on corporate contributions with the passage of SB 445 in 2013.",
+    "source_url": "https://ethics.alabama.gov/",
+    "source_name": "Alabama Ethics Commission / FCPA",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Alabama campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Alabama state",
+      "Can a business donate to my campaign in AL?",
+      "Corporate campaign finance rules Alabama"
+    ],
+    "answer": "Yes. Direct corporate and labor union contributions to candidate campaigns are completely permitted in Alabama. Following the passage of SB 445 in 2013, these contributions can be made in unlimited amounts, making Alabama one of the most permissive states for corporate campaign finance.",
+    "source_url": "https://ethics.alabama.gov/",
+    "source_name": "Alabama Ethics Commission / Fair Campaign Practices Act",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Alabama?",
+    "question_variants": [
+      "Where do I file campaign finance reports in AL?",
+      "What is the Alabama Ethics Commission?",
+      "Does the AL Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance reporting and enforcement is jointly administered by the Alabama Secretary of State (who manages the electronic FCPA reporting system) and the Alabama Ethics Commission (which interprets and enforces the Fair Campaign Practices Act).",
+    "source_url": "https://fcpa.alabamavotes.gov/",
+    "source_name": "Alabama Secretary of State - FCPA Reporting",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Alabama candidates?",
+    "question_variants": [
+      "AL filing dates 2026",
+      "When are campaign finance reports due in AL?",
+      "Alabama FCPA reporting deadlines"
+    ],
+    "answer": "In an election year, the reporting schedule intensifies. Candidates file monthly reports initially. Beginning four weeks before an election, they transition to filing weekly reports. For 2026 candidates, daily reporting may be triggered immediately prior to the election for large contributions.",
+    "source_url": "https://fcpa.alabamavotes.gov/PublicSite/Resources/ElectionCycle2026.pdf",
+    "source_name": "Alabama Secretary of State - FCPA Calendar",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Alabama's rapid disclosure requirements for large contributions?",
+    "question_variants": [
+      "Alabama daily large contribution report",
+      "Late contribution reporting Alabama FCPA",
+      "When do I file a rapid report in AL?"
+    ],
+    "answer": "Under the FCPA, a 'major contribution' report must be filed within two (2) business days if a candidate receives a single contribution of $20,000 or more at any time. Furthermore, if a candidate receives $5,000 or more in a single day during the eight (8) days prior to the election, it triggers daily reporting.",
+    "source_url": "https://fcpa.alabamavotes.gov/",
+    "source_name": "Alabama Secretary of State - FCPA Guide",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Alabama provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Alabama Governor",
+      "State funded campaigns Alabama status",
+      "Government campaign grants AL"
+    ],
+    "answer": "No. Alabama does not have a system of public financing or matching funds for political campaigns. All candidates must fund their campaigns entirely through private contributions.",
+    "source_url": "https://ethics.alabama.gov/",
+    "source_name": "Alabama Ethics Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Alabama?",
+    "question_variants": [
+      "AL personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in AL?",
+      "Prohibited expenditures Alabama Ethics Commission"
+    ],
+    "answer": "Yes. Under the Alabama Fair Campaign Practices Act (FCPA), campaign funds cannot be converted to personal use. Expenditures must be reasonably related to an election campaign or to the ordinary and necessary expenses of holding public office.",
+    "source_url": "https://ethics.alabama.gov/",
+    "source_name": "Alabama Ethics Commission",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Alabama legislators?",
+    "question_variants": [
+      "Can Alabama legislators raise money during session?",
+      "Lobbyist contribution ban AL legislature",
+      "Legislative session contribution rules Alabama"
+    ],
+    "answer": "Yes. Under Alabama Code § 17-5-7(b)(2), state lawmakers, statewide elected officials, and candidates for those offices are strictly prohibited from soliciting or accepting campaign contributions while the legislature is convened in a regular legislative session. The freeze applies for the duration of the session.",
+    "source_url": "https://codes.findlaw.com/al/title-17-elections/al-code-sect-17-5-7/",
+    "source_name": "Alabama Code § 17-5-7",
+    "last_verified_date": "2026-04-21",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Alabama's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the AL legislature draw district maps?",
+      "Who has the authority to draw district lines in Alabama?",
+      "Alabama redistricting commission"
+    ],
+    "answer": "In Alabama, the state legislature holds the exclusive authority to draw and enact both congressional and state legislative district boundaries. The maps are passed as regular legislation and are subject to the Governor's signature or veto.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Alabama",
+    "source_name": "Ballotpedia - Redistricting in Alabama",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Alabama?",
+    "question_variants": [
+      "Standards for drawing Alabama district lines",
+      "Alabama gerrymandering rules",
+      "Map requirements AL"
+    ],
+    "answer": "Under the Alabama Constitution and legislative guidelines, districts must be contiguous, reasonably compact, and adhere to strict population equality (one person, one vote). They must comply with the federal Voting Rights Act to ensure minority voting strength is not diluted, and should minimize the splitting of counties and precincts where possible.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Alabama",
+    "source_name": "Alabama Legislative Reapportionment Committee Guidelines",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current Alabama State Senate maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of Alabama Senate redistricting maps",
+      "Are there pending redistricting lawsuits in Alabama?",
+      "Alabama 2026 state legislative boundaries"
+    ],
+    "answer": "Yes, but they are newly court-imposed. On August 22, 2025, a federal district court struck down Alabama's state senate map as a violation of Section 2 of the Voting Rights Act. On November 17, 2025, the court imposed a remedial map, ordering the state to use these new boundaries for the 2026 and 2030 state legislative elections.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Alabama_after_the_2020_census",
+    "source_name": "Ballotpedia - Redistricting in Alabama",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "What is the status of Alabama's congressional map for the 2026 cycle?",
+    "question_variants": [
+      "Allen v. Milligan Alabama impact",
+      "Is the AL congressional map operative for 2026?",
+      "VRA challenges to Alabama congressional districts"
+    ],
+    "answer": "The congressional map is currently highly volatile. Following the 2023 Supreme Court decision in Allen v. Milligan, a federal court imposed a map with two opportunity districts for Black voters. However, following the May 2026 Supreme Court ruling in Louisiana v. Callais (which altered standards for racial gerrymandering), injunctions blocking the state's prior map were lifted. The legislature has called special sessions to revert to maps that could eliminate the second majority-Black district, meaning the operative boundaries for the 2026 midterms are in flux.",
+    "source_url": "https://time.com/article/2026/05/05/republicans-redistricting-supreme-court-voting-rights-act-louisiana-alabama-tennessee/",
+    "source_name": "TIME / SCOTUS Rulings",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Can the Alabama legislature easily conduct mid-decade redistricting?",
+    "question_variants": [
+      "Alabama mid-decade redistricting restrictions",
+      "Can the AL legislature redraw maps before 2030?",
+      "Federal injunctions against Alabama redistricting"
+    ],
+    "answer": "Generally, mid-decade redistricting is restricted by both state constitutional principles and federal court injunctions (which previously barred Alabama from redrawing its maps until after the 2030 census). However, the recent May 2026 Supreme Court actions lifting those injunctions have opened the door for the legislature to legally conduct mid-decade redistricting if authorized by the courts.",
+    "source_url": "https://www.ncsl.org/redistricting-and-census/changing-the-maps-tracking-mid-decade-redistricting",
+    "source_name": "NCSL - Mid-Decade Redistricting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Alabama have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Alabama be recalled?",
+      "How to recall a state senator in AL",
+      "Statewide recall election rules Alabama"
+    ],
+    "answer": "No. The State of Alabama does not have any legal or constitutional mechanism for the recall of state-level elected officials, including the Governor, statewide executives, or members of the state legislature.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Alabama",
+    "source_name": "Laws governing recall in Alabama",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Alabama?",
+    "question_variants": [
+      "Alabama county commissioner recall rules",
+      "Signature requirement local recall Alabama",
+      "Recalling a mayor in AL"
+    ],
+    "answer": "Alabama does not have a general statutory recall process for county or municipal officials. Recall is only permitted in an extremely narrow subset of municipalities if explicitly authorized by a local act passed by the state legislature, meaning the vast majority of local officials cannot be recalled.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Alabama",
+    "source_name": "Laws governing recall in Alabama",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Alabama have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the AL ballot",
+      "Alabama citizen initiative signature requirements",
+      "Can citizens propose laws in Alabama?"
+    ],
+    "answer": "No. Alabama is one of the states that does NOT have a statewide citizen initiative process. Citizens cannot draft statutes or constitutional amendments and gather signatures to place them on the ballot. All statewide ballot measures must be referred by the state legislature.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Alabama",
+    "source_name": "Ballotpedia - Initiative and Referendum in Alabama",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Alabama legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Alabama",
+      "Referendum by legislature AL",
+      "Can the AL legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The Alabama State Legislature can propose a constitutional amendment by securing a three-fifths (60%) supermajority vote in both the House of Representatives and the State Senate. The proposed amendment is then referred directly to the voters on the next general election ballot and does not require the Governor's signature.",
+    "source_url": "https://ballotpedia.org/Article_XVIII,_Alabama_Constitution",
+    "source_name": "Alabama Constitution Article XVIII",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Alabama?",
+    "question_variants": [
+      "Alabama ballot measure pass threshold",
+      "Does a measure need a supermajority in AL?",
+      "Majority vote requirements Alabama ballot measures"
+    ],
+    "answer": "In Alabama, a legislatively referred constitutional amendment requires only a simple majority (over 50%) of the total votes cast on that specific measure to pass and become part of the state constitution.",
+    "source_url": "https://ballotpedia.org/Article_XVIII,_Alabama_Constitution",
+    "source_name": "Alabama Constitution Article XVIII",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold and deadline for a veto referendum in Alabama?",
+    "question_variants": [
+      "How to refer an AL bill to the ballot",
+      "Alabama citizen referendum rules",
+      "Veto referendum signature threshold Alabama state"
+    ],
+    "answer": "Alabama does not have a statewide veto referendum process. Citizens cannot gather signatures to suspend and refer an already-passed legislative act to the ballot for a popular vote of approval or rejection.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Alabama",
+    "source_name": "Ballotpedia - Initiative and Referendum in Alabama",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Alabama?",
+    "question_variants": [
+      "Requirements to run for AL Secretary of State",
+      "Who can run for Secretary of State in AL?",
+      "Residency rules for Alabama SOS"
+    ],
+    "answer": "Under Article V, Section 132 of the Alabama Constitution, a candidate for Secretary of State must be at least 25 years old, a citizen of the United States for at least seven years, and a resident of Alabama for at least five years preceding the election.",
+    "source_url": "https://law.justia.com/constitution/alabama/CA-245669.html",
+    "source_name": "Alabama Constitution Article V, Section 132",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in Alabama?",
+    "question_variants": [
+      "Eligibility for Alabama State Treasurer",
+      "Who can run for State Treasurer in AL?",
+      "Alabama Treasurer residency requirements"
+    ],
+    "answer": "Under Article V, Section 132 of the Alabama Constitution, the qualifications for State Treasurer are identical to those for the Secretary of State: a candidate must be at least 25 years old, a U.S. citizen for seven years, and a resident of Alabama for five years preceding the election.",
+    "source_url": "https://law.justia.com/constitution/alabama/CA-245669.html",
+    "source_name": "Alabama Constitution Article V, Section 132",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What is the Commissioner of Agriculture and Industries in Alabama, and what are the qualifications?",
+    "question_variants": [
+      "What does the AL Agriculture Commissioner do?",
+      "Qualifications for Alabama Ag Commissioner",
+      "Is the Ag Commissioner elected in AL?"
+    ],
+    "answer": "The Commissioner of Agriculture and Industries is a statewide elected executive officer. The Alabama Constitution requires the candidate to be 25 years old, a US citizen for 7 years, and a state resident for 5 years. Furthermore, Alabama Code § 2-2-2 requires the Commissioner to be 'a person of good moral character of recognized executive ability and trained in the practice and science of agriculture.'",
+    "source_url": "https://law.justia.com/codes/alabama/title-2/chapter-2/article-1/section-2-2-2/",
+    "source_name": "Alabama Code § 2-2-2",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Alabama?",
+    "question_variants": [
+      "Run for school board Alabama requirements",
+      "Who can be a school board member in AL?",
+      "School board residency rules Alabama"
+    ],
+    "answer": "To run for a local school board in Alabama, candidates must be of good moral character, hold a high school diploma (or equivalent), not be a convicted felon or on the Sex Offender Registry, and be a resident of the district (for county boards) or city (for city boards) they seek to represent.",
+    "source_url": "https://www.alabamaschoolboards.org/get-on-board/item-03",
+    "source_name": "Alabama Association of School Boards",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for Alabama Supreme Court justices?",
+    "question_variants": [
+      "Alabama Supreme Court Justice eligibility",
+      "Years of practice required for AL Supreme Court",
+      "Are Alabama judges elected or appointed?"
+    ],
+    "answer": "Alabama Supreme Court Justices are elected in statewide, partisan elections. A candidate must be licensed to practice law in the state of Alabama, and must reside in the state. Additionally, under Article VI, Section 155 of the Alabama Constitution, a candidate cannot be elected or appointed to a judicial office if they have reached the age of 70.",
+    "source_url": "https://judicial.alabama.gov/",
+    "source_name": "Alabama Judicial System",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Alabama?",
+    "question_variants": [
+      "How to fix a rejected signature in AL",
+      "Alabama ballot cure process deadline",
+      "Missing signature on AL mail ballot"
+    ],
+    "answer": "Alabama law DOES NOT currently provide a statutory cure process for absentee ballots. If a voter's absentee ballot affidavit envelope is missing a signature, missing the required two witness signatures (or notary), or missing a copy of their photo ID, the ballot is generally rejected by the Absentee Election Manager without granting the voter a post-election window to fix the error.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/absentee-voting",
+    "source_name": "Alabama Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Alabama?",
+    "question_variants": [
+      "When are military ballots due in Alabama?",
+      "UOCAVA return deadline AL",
+      "Overseas voting rules Alabama state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. Voted ballots returned by mail must be postmarked by Election Day and received by the Absentee Election Manager no later than noon on the seventh (7th) day following the election.",
+    "source_url": "https://www.fvap.gov/guide/chapter2/alabama",
+    "source_name": "FVAP.gov - Alabama",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Alabama?",
+    "question_variants": [
+      "What is a provisional ballot in AL?",
+      "Voting without ID Alabama",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter's name is not on the poll list, if they fail to present a valid photo ID, or if an inspector challenges their eligibility. The voter must complete a reidentification form. If the provisional ballot was cast due to a lack of ID, the voter has until 5:00 p.m. on the Friday following the election to bring a valid photo ID to the Board of Registrars for the ballot to count.",
+    "source_url": "https://www.sos.alabama.gov/sites/default/files/election-2022/2023_Provisional_Ballot_Guide.pdf",
+    "source_name": "Alabama Secretary of State - Provisional Voting Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Alabama have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Alabama DMV?",
+      "AL motor voter automatic registration",
+      "Do I have to register to vote if I get an AL driver's license?"
+    ],
+    "answer": "No. Alabama does not have Automatic Voter Registration (AVR). While the Alabama Law Enforcement Agency (ALEA) offers eligible citizens the opportunity to register to vote when applying for a license (in compliance with federal Motor Voter laws), the process is not automatic; voters must actively opt-in.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/register-to-vote",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Alabama offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in AL?",
+      "Alabama electronic voter registration",
+      "AL SOS online registration portal"
+    ],
+    "answer": "Yes. Eligible Alabama residents with a valid state driver's license or non-driver ID card can register to vote or update their registration using the Secretary of State's online voter registration portal. The deadline is 15 days prior to an election.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/register-to-vote",
+    "source_name": "Alabama Secretary of State - Online Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Alabama maintain its voter registration lists?",
+    "question_variants": [
+      "AL voter list maintenance rules",
+      "How are inactive voters handled in Alabama?",
+      "Alabama voter roll cleaning process"
+    ],
+    "answer": "The Board of Registrars continuously updates the voter list and is mandated to conduct list maintenance activities each January. This includes removing voters based on death records, felony convictions, and National Change of Address (NCOA) data. Voters who do not respond to confirmation notices and fail to vote in two consecutive federal general elections are purged.",
+    "source_url": "https://alison.legislature.state.al.us/code-of-alabama?section=17-4-7",
+    "source_name": "Alabama Code § 17-4-7",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Alabama voter file?",
+    "question_variants": [
+      "Alabama voter database access cost",
+      "How to get the voter list in AL",
+      "What data is included in the Alabama voter file?"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide or county-specific voter registration lists from the Secretary of State. The data request requires a fee, and the file includes voter names, addresses, and voting history (which primaries they participated in, but not how they voted).",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/election-information",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in Alabama elections?",
+    "question_variants": [
+      "How are tied elections decided in Alabama?",
+      "Tie-breaker rules Alabama elections",
+      "What happens if a race is tied in AL?"
+    ],
+    "answer": "In the extremely rare event of an exact tie in a general election or a primary runoff, Alabama law dictates that the winner is determined by casting lots (e.g., a coin toss or drawing names) conducted by the official canvassing authority, such as the Secretary of State or county election commission.",
+    "source_url": "https://www.sos.alabama.gov/",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Alabama?",
+    "question_variants": [
+      "Does Alabama use ranked choice voting?",
+      "RCV status in Alabama 2026",
+      "Instant runoff voting AL"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is strictly prohibited in Alabama. During the 2024 legislative session, the Alabama Legislature passed a law (SB 186) officially banning the use of Ranked Choice Voting for any local, state, or federal election in the state.",
+    "source_url": "https://legislature.state.al.us/",
+    "source_name": "Alabama State Legislature (SB 186)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Alabama campaign materials?",
+    "question_variants": [
+      "Alabama 'Paid for by' rules",
+      "Campaign ad disclaimer requirements AL",
+      "Political taglines Alabama FCPA"
+    ],
+    "answer": "The Alabama Fair Campaign Practices Act (FCPA) requires all political advertising (print, broadcast, and digital) to prominently display a 'Paid for by' disclaimer. The disclaimer must clearly identify the person, candidate committee, or PAC that financed the communication.",
+    "source_url": "https://fcpa.alabamavotes.gov/",
+    "source_name": "Alabama Secretary of State - FCPA Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Alabama?",
+    "question_variants": [
+      "AL campaign coordination rules",
+      "When is a PAC expenditure not independent in Alabama?",
+      "Prohibition on candidate-PAC coordination AL"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. While coordinated expenditures are legal due to the lack of contribution limits in Alabama, they are classified as in-kind contributions and must be fully disclosed by the campaign.",
+    "source_url": "https://fcpa.alabamavotes.gov/",
+    "source_name": "Alabama FCPA Guidelines",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Alabama?",
+    "question_variants": [
+      "AL FCPA late fee",
+      "Penalty for missing an Alabama campaign finance deadline",
+      "Ethics Commission fine for late filing AL"
+    ],
+    "answer": "The Alabama Ethics Commission levies significant fines for late FCPA reports. Fines are calculated based on the number of days late or the amount of undisclosed funds. Standard penalties are $300 or 10% of the amount not properly reported, whichever is greater, and can escalate for repeated offenses.",
+    "source_url": "https://ethics.alabama.gov/",
+    "source_name": "Alabama Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must an Alabama campaign committee terminate?",
+    "question_variants": [
+      "Closing an Alabama campaign committee",
+      "FCPA committee termination requirements",
+      "Final campaign finance report Alabama"
+    ],
+    "answer": "A candidate committee may formally terminate its registration when it will no longer receive contributions or make expenditures. The committee must legally disburse all surplus funds, achieve a zero cash balance, resolve all debts, and file a formal Termination Report through the FCPA portal.",
+    "source_url": "https://fcpa.alabamavotes.gov/",
+    "source_name": "Alabama Secretary of State - FCPA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Alabama?",
+    "question_variants": [
+      "AL independent expenditure reporting FCPA",
+      "Disclosure for AL independent expenditure groups",
+      "Reporting thresholds for outside spending Alabama"
+    ],
+    "answer": "Entities making independent expenditures must file reports disclosing their spending to the Secretary of State's FCPA system. Due to the lack of contribution limits, the focus in Alabama is heavily on ensuring complete transparency of where outside funds are originating and how they are spent.",
+    "source_url": "https://fcpa.alabamavotes.gov/",
+    "source_name": "Alabama Secretary of State - FCPA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Alabama?",
+    "question_variants": [
+      "Alabama in-kind contribution valuation rules",
+      "Reporting non-monetary donations Alabama campaign",
+      "Fair market value for in-kind gifts AL"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or discounts not available to the general public) must be reported at their fair market value on FCPA disclosures. They are documented simultaneously as both a contribution receipt and an operating expenditure.",
+    "source_url": "https://fcpa.alabamavotes.gov/",
+    "source_name": "Alabama Secretary of State - FCPA Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Alabama?",
+    "question_variants": [
+      "Alabama candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in AL?",
+      "Reporting candidate loans in FCPA"
+    ],
+    "answer": "A candidate may loan an unlimited amount of their own personal funds to their campaign committee. The loan must be properly reported on FCPA disclosures. Candidates are legally permitted to repay these personal loans from campaign contributions raised during the cycle.",
+    "source_url": "https://fcpa.alabamavotes.gov/",
+    "source_name": "Alabama Secretary of State - FCPA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Alabama candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in AL?",
+      "AL surplus campaign funds rules",
+      "Donating remaining campaign funds Alabama"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Under the FCPA, candidates may retain surplus funds for a future campaign, return them to contributors, donate them to an IRS-recognized charity, or transfer them to another candidate, PAC, or political party (since transfers are unlimited).",
+    "source_url": "https://ethics.alabama.gov/",
+    "source_name": "Alabama Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Alabama?",
+    "question_variants": [
+      "AL PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Alabama",
+      "Maximum PAC gift to state legislator AL"
+    ],
+    "answer": "In Alabama, Political Action Committees (PACs) are subject to the same contribution rules as individuals—meaning there are NO limits. A PAC is permitted to contribute completely unlimited amounts of money to a candidate for state or legislative office.",
+    "source_url": "https://ethics.alabama.gov/",
+    "source_name": "Alabama Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Alabama?",
+    "question_variants": [
+      "When are county sheriffs elected in AL?",
+      "Alabama county official term lengths",
+      "Are county commissions on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Alabama—including Sheriffs, Probate Judges, Circuit Clerks, and County Commissioners—generally serve four-year or six-year terms depending on the specific office. Most county executive offices are heavily featured on the 2026 midterm ballot, aligning with the Governor's cycle.",
+    "source_url": "https://www.sos.alabama.gov/",
+    "source_name": "Alabama Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "AL",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Alabama elections?",
+    "question_variants": [
+      "When are Alabama election results official?",
+      "AL certification deadline",
+      "State Canvassing Board meeting Alabama"
+    ],
+    "answer": "County canvassing boards meet at noon on the Tuesday following the election (7 days later) to officially canvass provisional and UOCAVA ballots and certify local results. The State Canvassing Board (composed of the Governor, Secretary of State, and Attorney General) must meet to certify statewide and federal results no later than 22 days after the election.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/election-information",
+    "source_name": "Alabama Secretary of State - Canvass",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "AL",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Alabama?",
+    "question_variants": [
+      "Alabama special election timeline",
+      "Who calls a special election to fill a US House vacancy in AL?",
+      "Filling a midterm vacancy Alabama"
+    ],
+    "answer": "Special elections to fill federal or state legislative vacancies are called by a proclamation from the Governor. The Governor holds significant discretion in setting the exact dates for the special primary, runoff, and general election, ensuring there is sufficient time (at least 70-80 days) for qualifying, ballot printing, and UOCAVA compliance.",
+    "source_url": "https://www.sos.alabama.gov/alabama-votes/voter/election-information",
+    "source_name": "Alabama Secretary of State - Special Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  }
+]
