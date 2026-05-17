@@ -1,0 +1,1334 @@
+[
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does New Jersey have an open or closed primary system?",
+    "question_variants": [
+      "New Jersey primary voting rules",
+      "Do I have to register with a party to vote in the NJ primary?",
+      "Can unaffiliated voters participate in the New Jersey primary?"
+    ],
+    "answer": "New Jersey operates a semi-open (or semi-closed) primary system. Voters who are already registered with a political party may only vote in that party's primary. However, unaffiliated voters (those who have not declared a party) are permitted to declare a party affiliation at the polls on Primary Day and immediately vote in that party's primary.",
+    "source_url": "https://nj.gov/state/elections/voter-party-affiliation.shtml",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does New Jersey hold primary runoff elections?",
+    "question_variants": [
+      "What is the threshold to win a primary in NJ?",
+      "Does New Jersey require a majority to win a primary?",
+      "New Jersey primary runoff rules"
+    ],
+    "answer": "No. New Jersey does not hold primary runoff elections. A candidate does not need to secure a 50%+1 majority to win the party's nomination; the candidate who receives a simple plurality (the most votes) in the primary advances directly to the general election.",
+    "source_url": "https://nj.gov/state/elections/",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All primary candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in New Jersey?",
+    "question_variants": [
+      "Do write-in votes count in NJ?",
+      "How to register as a write-in candidate in New Jersey",
+      "Write-in filing deadline New Jersey"
+    ],
+    "answer": "Yes. Write-in votes are permitted in both primary and general elections. However, to be officially nominated via a write-in campaign in a primary election, the candidate must receive at least the number of write-in votes equivalent to the number of signatures required on a standard nominating petition for that specific office.",
+    "source_url": "https://nj.gov/state/elections/candidate-information.shtml",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for New Jersey in 2026?",
+    "question_variants": [
+      "When do candidates file for office in New Jersey?",
+      "New Jersey filing deadline 2026",
+      "March filing deadline NJ"
+    ],
+    "answer": "For major party candidates participating in the 2026 primary election, the statutory filing deadline is the 71st day before the primary election. For the June 2, 2026 primary, the filing deadline was March 23, 2026.",
+    "source_url": "https://nj.gov/state/elections/election-chronological-timelines.shtml",
+    "source_name": "New Jersey Division of Elections - Timelines",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for independent candidates in New Jersey?",
+    "question_variants": [
+      "Independent candidate ballot access New Jersey",
+      "Running without a party in NJ 2026",
+      "How many signatures for independent US Senate NJ"
+    ],
+    "answer": "Independent (direct nomination) candidates seeking statewide office, such as the U.S. Senate, must submit a petition containing at least 800 valid signatures from registered voters. For U.S. House of Representatives candidates, the requirement is 100 valid signatures from voters within the district. The deadline to file is the day of the primary election.",
+    "source_url": "https://nj.gov/state/elections/candidate-information.shtml",
+    "source_name": "New Jersey Division of Elections - Candidate Guidelines",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does New Jersey have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the NJ primary?",
+      "New Jersey sore loser statute",
+      "General election ballot access after primary defeat NJ"
+    ],
+    "answer": "Yes. New Jersey strictly enforces a sore loser law under N.J.S.A. 19:13-8. A candidate who seeks a party's nomination in the primary election and is defeated is prohibited from subsequently running as an independent candidate for the same office in the ensuing general election.",
+    "source_url": "https://law.justia.com/codes/new-jersey/title-19/section-19-13-8/",
+    "source_name": "New Jersey Statutes Annotated 19:13-8",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in New Jersey?",
+    "question_variants": [
+      "New Jersey joint ticket rules",
+      "How are Lt Gov candidates selected in NJ?",
+      "Does the Governor pick a running mate in New Jersey?"
+    ],
+    "answer": "Yes. Following a constitutional amendment passed in 2005 (first effective in 2009), the Governor and Lieutenant Governor of New Jersey run on a joint ticket in the general election. The gubernatorial nominee selects their Lieutenant Governor running mate within 30 days after winning the primary election.",
+    "source_url": "https://nj.gov/state/elections/",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in New Jersey for 2026?",
+    "question_variants": [
+      "New Jersey primary date 2026",
+      "When is Election Day 2026 in New Jersey?",
+      "June primary New Jersey"
+    ],
+    "answer": "The New Jersey primary election will be held on Tuesday, June 2, 2026. The general election will be held on Tuesday, November 3, 2026. Polls are open statewide from 6:00 a.m. to 8:00 p.m. local time.",
+    "source_url": "https://nj.gov/state/elections/",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is the New Jersey Governor running for election in 2026?",
+    "question_variants": [
+      "New Jersey Governor election 2026",
+      "Who is defending the NJ Governor seat?",
+      "Gubernatorial race New Jersey 2026"
+    ],
+    "answer": "No. New Jersey is one of only two states (along with Virginia) that elects its Governor strictly in odd-numbered years following presidential elections. The New Jersey gubernatorial election occurs in 2025 and 2029; there is NO gubernatorial race on the 2026 midterm ballot.",
+    "source_url": "https://ballotpedia.org/Governor_of_New_Jersey",
+    "source_name": "Ballotpedia - Governor of New Jersey",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in New Jersey in 2026?",
+    "question_variants": [
+      "Is Cory Booker up for re-election in 2026?",
+      "When is Andy Kim's next election?",
+      "New Jersey US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Cory Booker (D) is up for election in 2026. Senator Andy Kim (Class 1) was elected in 2024 to fill the seat formerly held by Bob Menendez, and he will not appear on the ballot again until 2030.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Is Senator Andy Kim up for re-election in 2026?",
+    "question_variants": [
+      "Andy Kim Senate term length",
+      "New Jersey Class 1 Senate election",
+      "Is Andy Kim on the 2026 ballot?"
+    ],
+    "answer": "No. Senator Andy Kim holds the Class 1 U.S. Senate seat for New Jersey. He was elected in November 2024 and his current term runs until January 2031, meaning he will not be on the 2026 ballot.",
+    "source_url": "https://www.senate.gov/senators/Class_I.htm",
+    "source_name": "U.S. Senate - Class I Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in New Jersey for the 2026 election?",
+    "question_variants": [
+      "New Jersey congressional apportionment",
+      "Are all NJ congressional seats up in 2026?",
+      "Number of US Representatives from New Jersey"
+    ],
+    "answer": "New Jersey is apportioned 12 U.S. House districts. All 12 seats are on the 2026 ballot, as U.S. Representatives serve two-year terms.",
+    "source_url": "https://nj.gov/state/elections/",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which New Jersey State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all New Jersey Assembly seats up in 2026?",
+      "New Jersey Senate election cycle 2026",
+      "Which legislative districts are on the ballot in NJ?"
+    ],
+    "answer": "None. The entire New Jersey Legislature (all 40 State Senate seats and all 80 General Assembly seats) is elected strictly in odd-numbered years, aligned with the gubernatorial cycle (e.g., 2025, 2027). There are ZERO regular state legislative elections on the 2026 midterm ballot, making it an unusually federal- and local-focused year in NJ.",
+    "source_url": "https://njleg.state.nj.us/",
+    "source_name": "New Jersey Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are elected by voters in New Jersey?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "NJ statewide election list 2026",
+      "When is the Secretary of State election in NJ?"
+    ],
+    "answer": "In New Jersey, the Governor and Lieutenant Governor are the ONLY statewide executive officers elected by the voters. The Attorney General and Secretary of State are appointed by the Governor with Senate confirmation, and the State Treasurer is appointed by the Governor. Therefore, there are NO statewide executive offices on the 2026 ballot.",
+    "source_url": "https://nj.gov/nj/gov/dept/",
+    "source_name": "State of New Jersey - Departments and Agencies",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are New Jersey Supreme Court justices selected and are they on the ballot?",
+    "question_variants": [
+      "New Jersey judicial elections 2026",
+      "Are NJ judges elected or appointed?",
+      "Supreme Court elections New Jersey"
+    ],
+    "answer": "New Jersey does NOT hold judicial elections. Supreme Court justices and most state judges are appointed by the Governor and confirmed by the State Senate for an initial seven-year term. If re-appointed, they may serve until the mandatory retirement age of 70. They never appear on a public ballot.",
+    "source_url": "https://www.njcourts.gov/courts/supreme",
+    "source_name": "New Jersey Courts",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the New Jersey State Legislature sessions?",
+    "question_variants": [
+      "When does the NJ legislature meet?",
+      "New Jersey full-time legislature",
+      "Legislative session length New Jersey"
+    ],
+    "answer": "The New Jersey Legislature is one of the few full-time (or near full-time) legislatures in the country. It meets throughout the entire year, convening on the second Tuesday in January of even-numbered years for a two-year session, with meetings and committee work scheduled year-round.",
+    "source_url": "https://njleg.state.nj.us/",
+    "source_name": "New Jersey Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of New Jersey?",
+    "question_variants": [
+      "Age and residency for New Jersey Governor",
+      "New Jersey Constitution Governor qualifications",
+      "Who is eligible to be Governor of NJ?"
+    ],
+    "answer": "Under Article V of the New Jersey Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States for at least 20 years, and a resident of New Jersey for at least seven years continuously preceding their election.",
+    "source_url": "https://nj.gov/state/elections/candidate-information.shtml",
+    "source_name": "New Jersey Division of Elections - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the New Jersey State Legislature?",
+    "question_variants": [
+      "Qualifications for NJ State Assembly",
+      "Age requirement New Jersey State Senate",
+      "Do I have to live in my district to run in NJ?"
+    ],
+    "answer": "A candidate for the State Senate must be at least 30 years old. A candidate for the General Assembly must be at least 21 years old. Both must be citizens and residents of New Jersey for at least two years, and residents of their respective legislative district for at least one year prior to the election.",
+    "source_url": "https://nj.gov/state/elections/candidate-information.shtml",
+    "source_name": "New Jersey Division of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in New Jersey?",
+    "question_variants": [
+      "US Senate residency requirements New Jersey",
+      "Age to run for Congress in New Jersey",
+      "Federal constitutional requirements for NJ candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://nj.gov/state/elections/candidate-information.shtml",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the New Jersey Governor?",
+    "question_variants": [
+      "How many terms can a New Jersey Governor serve?",
+      "New Jersey executive term limit law",
+      "Phil Murphy term limits NJ"
+    ],
+    "answer": "Under the New Jersey Constitution, the Governor is limited to serving two consecutive four-year terms. After serving two consecutive terms, an individual is ineligible to run for the office again until a full four-year term has intervened.",
+    "source_url": "https://ballotpedia.org/Governor_of_New_Jersey",
+    "source_name": "New Jersey Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "How is the Attorney General selected in New Jersey, and what are the qualifications?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in NJ",
+      "Is the Attorney General elected in New Jersey?",
+      "Legal requirements for New Jersey Attorney General"
+    ],
+    "answer": "The Attorney General of New Jersey is NOT an elected position. The Attorney General is appointed by the Governor with the advice and consent of the State Senate and serves concurrently with the Governor's term. The appointee must be a licensed attorney in the state.",
+    "source_url": "https://www.njoag.gov/about/",
+    "source_name": "New Jersey Office of the Attorney General",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer or Secretary of State in New Jersey?",
+    "question_variants": [
+      "New Jersey Secretary of State requirements",
+      "Is the Treasurer elected in NJ?",
+      "Qualifications for Secretary of State New Jersey"
+    ],
+    "answer": "Neither the State Treasurer nor the Secretary of State are elected by voters in New Jersey. Both officials are appointed directly by the Governor, with the advice and consent of the State Senate, and serve at the pleasure of the Governor.",
+    "source_url": "https://nj.gov/nj/gov/dept/",
+    "source_name": "State of New Jersey",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in New Jersey?",
+    "question_variants": [
+      "New Jersey voter ID requirements",
+      "Do I need my driver's license to vote in NJ?",
+      "Acceptable ID for New Jersey voting"
+    ],
+    "answer": "No. New Jersey DOES NOT require voters to present a photo ID to vote in person at the polls. Election workers verify voter identity by matching the signature in the poll book with the signature the voter provides at the polling place. (ID is only required for certain first-time voters who registered by mail without providing a driver's license or SSN).",
+    "source_url": "https://nj.gov/state/elections/voter-id.shtml",
+    "source_name": "New Jersey Division of Elections - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is New Jersey a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in New Jersey?",
+      "New Jersey vote-by-mail system",
+      "Do I need an excuse to vote absentee in NJ?"
+    ],
+    "answer": "New Jersey is not a strictly universal mail ballot state (ballots are not automatically sent to all voters by default), but it has a broad no-excuse 'Vote By Mail' system. Any registered voter may request a mail-in ballot without providing an excuse, and voters can opt to receive mail ballots for all future elections automatically.",
+    "source_url": "https://nj.gov/state/elections/vote-by-mail.shtml",
+    "source_name": "New Jersey Division of Elections - Vote by Mail",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does New Jersey offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in NJ?",
+      "New Jersey early voting dates 2026",
+      "When does early voting start in New Jersey?"
+    ],
+    "answer": "Yes. New Jersey offers true no-excuse early in-person voting using voting machines. For the general election, the early voting period lasts 9 days, ending the Sunday before Election Day. For the primary election, the early voting period is 5 days, also ending the Sunday before Election Day.",
+    "source_url": "https://nj.gov/state/elections/vote-early-voting.shtml",
+    "source_name": "New Jersey Division of Elections - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does New Jersey offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in NJ",
+      "New Jersey same day voter registration",
+      "Voter registration deadline 2026 New Jersey"
+    ],
+    "answer": "The deadline to register to vote in New Jersey is 21 days before the election. Registration can be completed online, by mail, or in person. New Jersey DOES NOT currently offer same-day voter registration at the polls on Election Day or during early voting.",
+    "source_url": "https://nj.gov/state/elections/voter-registration.shtml",
+    "source_name": "New Jersey Division of Elections - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in New Jersey?",
+    "question_variants": [
+      "How close can I campaign to a polling place in NJ?",
+      "New Jersey 100 feet electioneering rule",
+      "NJ buffer zone around voting centers"
+    ],
+    "answer": "Under New Jersey law (N.J.S.A. 19:34-15), electioneering is strictly prohibited within 100 feet of the outside entrance to any polling place or early voting site. This bans the distribution of campaign literature, displaying signs, and soliciting votes within this zone.",
+    "source_url": "https://law.justia.com/codes/new-jersey/title-19/section-19-34-15/",
+    "source_name": "New Jersey Statutes Annotated 19:34-15",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in New Jersey?",
+    "question_variants": [
+      "Can felons vote in New Jersey state?",
+      "Felony voting rights restoration NJ",
+      "Voting on parole in New Jersey"
+    ],
+    "answer": "Following a 2019 law, New Jersey restores voting rights to individuals convicted of a felony immediately upon their release from prison. Individuals who are on probation or parole are fully eligible to register and vote.",
+    "source_url": "https://nj.gov/state/elections/voter-registration.shtml",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in New Jersey, and why does it matter for campaigns?",
+    "question_variants": [
+      "New Jersey county election administration",
+      "How many county clerks in NJ?",
+      "Local election control New Jersey"
+    ],
+    "answer": "New Jersey has 21 counties. Election administration is heavily decentralized to the county level, handled jointly by the County Clerk, the Board of Elections, and the Superintendent of Elections. Campaigns must coordinate with these 21 jurisdictions regarding ballot layout, mail voting, and early voting logistics.",
+    "source_url": "https://nj.gov/state/elections/county-eo.shtml",
+    "source_name": "New Jersey Division of Elections - County Officials",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in New Jersey?",
+    "question_variants": [
+      "Where do I file campaign finance reports in NJ?",
+      "What is the New Jersey ELEC?",
+      "Does the NJ Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in New Jersey are administered and enforced by the New Jersey Election Law Enforcement Commission (ELEC), an independent regulatory agency separate from the Division of Elections.",
+    "source_url": "https://www.elec.nj.gov/",
+    "source_name": "New Jersey Election Law Enforcement Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in New Jersey?",
+    "question_variants": [
+      "Are there contribution limits in New Jersey?",
+      "NJ individual donation caps 2026 election",
+      "Elections Transparency Act limits NJ"
+    ],
+    "answer": "Following the 2023 Elections Transparency Act, individual contribution limits in New Jersey were significantly raised. Individuals may contribute up to $5,200 per election to a candidate for non-gubernatorial office (like State Senate or local). Contributions to gubernatorial candidates are capped at $5,800 per election.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/Limits_chart.pdf",
+    "source_name": "New Jersey Election Law Enforcement Commission (ELEC)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in New Jersey campaigns?",
+    "question_variants": [
+      "Corporate contribution ban New Jersey state",
+      "Can a business donate to my campaign in NJ?",
+      "Corporate campaign finance rules New Jersey"
+    ],
+    "answer": "Yes. Direct contributions from corporations to candidates are permitted in New Jersey. However, they are subject to the exact same contribution limits as individual donors ($5,200 per election for most offices, $5,800 for Governor). Note that 'Pay-to-Play' laws strictly regulate contributions from businesses holding government contracts.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/Limits_chart.pdf",
+    "source_name": "New Jersey ELEC - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for New Jersey candidates?",
+    "question_variants": [
+      "NJ ELEC filing dates 2026",
+      "When are campaign finance reports due in NJ?",
+      "New Jersey pre-primary and pre-general report deadlines"
+    ],
+    "answer": "For candidates appearing on the ballot, reports must be filed 29 days before the election, 11 days before the election, and 20 days after the election. If the candidate committee remains active but the candidate is not on the ballot that year, they file quarterly reports.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/filing_dates/2026_dates.pdf",
+    "source_name": "New Jersey ELEC - Filing Dates",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are New Jersey's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "New Jersey 48-hour large contribution report",
+      "Late contribution reporting New Jersey ELEC",
+      "When do I file a rapid report in NJ?"
+    ],
+    "answer": "Under ELEC rules, if a candidate committee receives a contribution or loan in excess of $2,000 during the 13 days prior to an election up to Election Day, they must file a rapid disclosure '48-Hour Notice' with the Commission within 48 hours of receipt.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/compliance_manuals/manual_c.pdf",
+    "source_name": "New Jersey ELEC - Compliance Manual",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does New Jersey provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for New Jersey Governor",
+      "State funded campaigns New Jersey status",
+      "Government campaign grants NJ"
+    ],
+    "answer": "Yes, but exclusively for gubernatorial campaigns. New Jersey offers a Gubernatorial Public Financing Program where qualifying candidates for Governor (who raise a minimum threshold of private contributions) can receive two-for-one public matching funds, subject to strict expenditure limits.",
+    "source_url": "https://www.elec.nj.gov/publicinformation/gubernatorial_finance.htm",
+    "source_name": "New Jersey ELEC - Gubernatorial Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for New Jersey legislators?",
+    "question_variants": [
+      "Can New Jersey legislators raise money during session?",
+      "Lobbyist contribution ban NJ legislature",
+      "Legislative session contribution rules New Jersey"
+    ],
+    "answer": "No, New Jersey does not have a general 'session freeze' that prohibits legislators from accepting campaign contributions while the legislature is in session (which is year-round). However, state law strictly prohibits soliciting or accepting political contributions on state property at any time.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/compliance_manuals/manual_c.pdf",
+    "source_name": "New Jersey ELEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in New Jersey?",
+    "question_variants": [
+      "NJ PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit New Jersey",
+      "Maximum PAC gift to state legislator NJ"
+    ],
+    "answer": "Following the 2023 Elections Transparency Act, PACs (officially Continuing Political Committees) have significantly higher contribution limits than individuals. A PAC may contribute up to $17,300 per election to a non-gubernatorial candidate committee, compared to the $5,200 limit for individuals and corporations.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/Limits_chart.pdf",
+    "source_name": "New Jersey ELEC - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws New Jersey's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the NJ legislature draw district maps?",
+      "Who has the authority to draw district lines in New Jersey?",
+      "New Jersey redistricting commission"
+    ],
+    "answer": "In New Jersey, the state legislature does NOT draw district maps. Instead, the state uses two independent, bipartisan commissions: the 11-member Apportionment Commission handles state legislative districts, and the 13-member Redistricting Commission handles congressional districts. Both utilize tie-breaking independent chairs.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_New_Jersey",
+    "source_name": "Ballotpedia - Redistricting in New Jersey",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in New Jersey?",
+    "question_variants": [
+      "Standards for drawing New Jersey district lines",
+      "New Jersey gerrymandering rules",
+      "Map requirements NJ"
+    ],
+    "answer": "Under the New Jersey Constitution, state legislative districts must be contiguous, compact, and as nearly equal in population as possible, without dividing municipalities unless necessary for population equality. Federal districts must comply with the Voting Rights Act and equal population standards.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_New_Jersey",
+    "source_name": "New Jersey Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current New Jersey redistricting maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of New Jersey congressional redistricting maps",
+      "Are there pending redistricting lawsuits in New Jersey?",
+      "New Jersey 2026 legislative boundaries"
+    ],
+    "answer": "Yes. The maps adopted by the independent commissions in late 2021 and early 2022 remain fully operative for the 2026 election cycle. There have been no successful VRA or partisan gerrymandering challenges overturning them.",
+    "source_url": "https://www.njredistrictingcommission.org/",
+    "source_name": "New Jersey Redistricting Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the New Jersey Pay-to-Play law?",
+    "question_variants": [
+      "NJ government contract contribution limits",
+      "Pay-to-play campaign finance rules New Jersey",
+      "Can a government contractor donate to a campaign in NJ?"
+    ],
+    "answer": "New Jersey enforces strict 'Pay-to-Play' laws designed to limit the influence of businesses with government contracts. Under state law, businesses seeking or holding state or local government contracts over $17,500 are heavily restricted from making campaign contributions (typically capped at $300) to candidates or committees overseeing those contracts.",
+    "source_url": "https://www.elec.nj.gov/pay2play/p2p.html",
+    "source_name": "New Jersey ELEC - Pay-to-Play",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does New Jersey have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of New Jersey be recalled?",
+      "How to recall a state senator in NJ",
+      "Statewide recall election rules New Jersey"
+    ],
+    "answer": "Yes. Article I, Paragraph 2b of the New Jersey Constitution allows voters to recall any state-level elected official after their first year in office. Proponents must gather signatures equal to 25% of the registered voters who voted in the last general election, within 320 days for a Governor or U.S. Senator, or 160 days for other officials.",
+    "source_url": "https://law.justia.com/codes/new-jersey/title-19/section-19-27a-2/",
+    "source_name": "New Jersey Revised Statutes § 19:27A-2",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in New Jersey?",
+    "question_variants": [
+      "New Jersey county commissioner recall rules",
+      "Signature requirement local recall New Jersey",
+      "Recalling a mayor in NJ"
+    ],
+    "answer": "Yes. The same constitutional recall provision that applies to state officials also applies to local elected officials in New Jersey. Residents may recall local officials by gathering signatures from 25% of the voters who voted in the last general election within a 160-day period.",
+    "source_url": "https://law.justia.com/codes/new-jersey/title-19/section-19-27a-2/",
+    "source_name": "New Jersey Revised Statutes § 19:27A-2",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does New Jersey have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the NJ ballot",
+      "New Jersey citizen initiative signature requirements",
+      "Can citizens propose laws in New Jersey?"
+    ],
+    "answer": "No. New Jersey is one of the states that does NOT have a statewide citizen initiative process. Citizens cannot draft statutes or constitutional amendments and gather signatures to place them on the ballot. All statewide ballot measures must be referred by the state legislature.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_New_Jersey",
+    "source_name": "Ballotpedia - Initiative and Referendum in New Jersey",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the New Jersey legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process New Jersey",
+      "Referendum by legislature NJ",
+      "Can the NJ legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "The New Jersey Legislature can refer a constitutional amendment to the ballot in two ways: either by securing a three-fifths (60%) supermajority vote in both chambers during a single legislative session, OR by securing a simple majority vote in both chambers in two consecutive legislative sessions.",
+    "source_url": "https://ballotpedia.org/Amending_the_New_Jersey_Constitution",
+    "source_name": "New Jersey Constitution Article IX",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does New Jersey have a veto referendum process?",
+    "question_variants": [
+      "How to refer a NJ bill to the ballot",
+      "New Jersey citizen referendum rules",
+      "Veto referendum signature threshold New Jersey state"
+    ],
+    "answer": "No. New Jersey does not have a statewide veto referendum process. Citizens cannot gather signatures to suspend and refer an already-passed legislative act to the ballot for a popular vote of approval or rejection.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_New_Jersey",
+    "source_name": "Ballotpedia - Initiative and Referendum in New Jersey",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in New Jersey?",
+    "question_variants": [
+      "New Jersey ballot measure pass threshold",
+      "Does a measure need a supermajority in NJ?",
+      "Majority vote requirements New Jersey ballot measures"
+    ],
+    "answer": "In New Jersey, a legislatively referred constitutional amendment or bond measure requires only a simple majority (over 50%) of the total votes cast on that specific measure to pass and become law.",
+    "source_url": "https://nj.gov/state/elections/",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in New Jersey?",
+    "question_variants": [
+      "New Jersey Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in NJ?",
+      "Qualifications for Lieutenant Governor of New Jersey"
+    ],
+    "answer": "Under Article V of the New Jersey Constitution, the qualifications for Lieutenant Governor are identical to those for Governor. A candidate must be at least 30 years old, a U.S. citizen for 20 years, and a resident of New Jersey for seven years.",
+    "source_url": "https://nj.gov/state/elections/candidate-information.shtml",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "How is the Secretary of State selected in New Jersey, and what are the qualifications?",
+    "question_variants": [
+      "Requirements to run for NJ Secretary of State",
+      "Who can run for Secretary of State in NJ?",
+      "Is the Secretary of State elected in New Jersey?"
+    ],
+    "answer": "The Secretary of State is NOT elected by voters in New Jersey. The Secretary is appointed by the Governor with the advice and consent of the State Senate, and serves concurrently with the Governor's term. There are no specific constitutional age or residency requirements explicitly enumerated for this office.",
+    "source_url": "https://nj.gov/state/about-sos.shtml",
+    "source_name": "New Jersey Department of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in New Jersey?",
+    "question_variants": [
+      "Run for school board New Jersey requirements",
+      "Who can be a school board member in NJ?",
+      "School board residency rules New Jersey"
+    ],
+    "answer": "To run for a local school board in New Jersey, a candidate must be a registered voter in the district, a resident of the district for at least one year immediately preceding the election, able to read and write, and must pass a criminal background check (not disqualified by certain convictions).",
+    "source_url": "https://www.njsba.org/about/membership/school-board-candidacy/",
+    "source_name": "New Jersey School Boards Association",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for County Sheriff in New Jersey?",
+    "question_variants": [
+      "Qualifications for New Jersey Sheriff",
+      "Run for Sheriff in NJ",
+      "County Sheriff residency requirements New Jersey"
+    ],
+    "answer": "To run for County Sheriff in New Jersey, a candidate must be a citizen of the United States and a resident of the county they seek to serve for at least three years immediately preceding the election.",
+    "source_url": "https://nj.gov/state/elections/candidate-information.shtml",
+    "source_name": "New Jersey Division of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Surrogate in New Jersey?",
+    "question_variants": [
+      "Qualifications for New Jersey Surrogate",
+      "Run for Surrogate in NJ",
+      "County Surrogate term length New Jersey"
+    ],
+    "answer": "The Surrogate is a constitutional officer elected by the voters of the county to a five-year term. A candidate must be a registered voter and a resident of the county they seek to serve.",
+    "source_url": "https://nj.gov/state/elections/candidate-information.shtml",
+    "source_name": "New Jersey Division of Elections - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in New Jersey?",
+    "question_variants": [
+      "How to fix a rejected signature in NJ",
+      "New Jersey ballot cure process deadline",
+      "Missing signature on NJ mail ballot"
+    ],
+    "answer": "Under the Ballot Cure Act of 2020, if a county board of elections identifies a missing or mismatched signature on a mail-in ballot, they must send the voter a 'Cure Letter' detailing the issue. The voter then has until 48 hours prior to the final certification of the election to return a Cure Form and an acceptable ID to have their ballot counted.",
+    "source_url": "https://nj.gov/state/elections/vote-by-mail.shtml",
+    "source_name": "New Jersey Division of Elections - Vote by Mail",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in New Jersey?",
+    "question_variants": [
+      "When are military ballots due in New Jersey?",
+      "UOCAVA return deadline NJ",
+      "Overseas voting rules New Jersey state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. Voted ballots returned by mail must be postmarked by Election Day and received by the county board of elections within 144 hours (6 days) after the close of polls to be counted. If transmitted electronically, they must be received by 8:00 p.m. on Election Day.",
+    "source_url": "https://nj.gov/state/elections/vote-military-and-overseas.shtml",
+    "source_name": "New Jersey Division of Elections - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in New Jersey and how are they cured?",
+    "question_variants": [
+      "What is a provisional ballot in NJ?",
+      "Voting without ID New Jersey",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter's eligibility is in question, if they moved without updating their address, or if they requested a mail-in ballot but decided to vote in person instead. If a provisional ballot is cast because the voter lacked required first-time voter ID, the voter must provide the required ID to the county board within 48 hours after the election for the ballot to count.",
+    "source_url": "https://nj.gov/state/elections/vote-provisional-ballot.shtml",
+    "source_name": "New Jersey Division of Elections - Provisional Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does New Jersey have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the New Jersey MVC?",
+      "NJ motor voter automatic registration",
+      "Do I have to register to vote if I get an NJ driver's license?"
+    ],
+    "answer": "Yes. New Jersey implemented Automatic Voter Registration (AVR). Eligible individuals conducting business at the Motor Vehicle Commission (MVC) or other designated state agencies are automatically registered to vote or have their registration updated, unless they actively decline (opt-out) during the transaction.",
+    "source_url": "https://nj.gov/state/elections/voter-registration.shtml",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does New Jersey offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in NJ?",
+      "New Jersey electronic voter registration",
+      "NJ online registration portal"
+    ],
+    "answer": "Yes. Eligible New Jersey residents who possess an MVC-issued driver's license or non-driver ID card, or a Social Security Number, can securely register to vote or update their registration using the Division of Elections' online voter registration system.",
+    "source_url": "https://voter.svrs.nj.gov/register",
+    "source_name": "New Jersey Division of Elections - OVR",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does New Jersey maintain its voter registration lists?",
+    "question_variants": [
+      "NJ voter list maintenance rules",
+      "How are inactive voters handled in New Jersey?",
+      "New Jersey voter roll cleaning process"
+    ],
+    "answer": "New Jersey maintains its voter rolls using the Electronic Registration Information Center (ERIC) to identify voters who have moved or died. The state also utilizes National Change of Address (NCOA) data. Voters who are mailed confirmation notices and fail to respond or vote over two consecutive federal election cycles are removed from the active registry.",
+    "source_url": "https://nj.gov/state/elections/",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the New Jersey voter file?",
+    "question_variants": [
+      "New Jersey voter database access cost",
+      "How to get the voter list in NJ",
+      "What data is included in the New Jersey voter file?"
+    ],
+    "answer": "Campaigns and political committees can request the statewide voter registration list (Statewide Voter Registration System - SVRS) by submitting an application to the Division of Elections and paying an administrative fee. The data is legally restricted to electoral and political purposes and may not be used for commercial solicitation.",
+    "source_url": "https://nj.gov/state/elections/voter-information-request.shtml",
+    "source_name": "New Jersey Division of Elections - Voter Information",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in New Jersey?",
+    "question_variants": [
+      "Does New Jersey use ranked choice voting?",
+      "RCV status in New Jersey 2026",
+      "Instant runoff voting NJ"
+    ],
+    "answer": "Ranked Choice Voting (RCV) is not used for statewide or federal elections in New Jersey. However, under state law, certain municipalities may adopt it for local nonpartisan elections. For example, the city of Hoboken has utilized RCV for its municipal elections.",
+    "source_url": "https://nj.gov/state/elections/",
+    "source_name": "New Jersey Division of Elections / FairVote",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in New Jersey elections?",
+    "question_variants": [
+      "How are tied elections decided in New Jersey?",
+      "Tie-breaker rules New Jersey elections",
+      "What happens if a race is tied in NJ?"
+    ],
+    "answer": "Under N.J.S.A. 19:3-25, an exact tie in a general or primary election results in a 'failure to elect,' essentially creating a vacancy in that office. The vacancy is then filled according to the standard vacancy procedures for that specific office, which typically involves a special election or a temporary appointment by the relevant party committee or Governor.",
+    "source_url": "https://law.justia.com/codes/new-jersey/title-19/section-19-3-25/",
+    "source_name": "New Jersey Statutes Annotated 19:3-25",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on New Jersey campaign materials?",
+    "question_variants": [
+      "New Jersey 'Paid for by' rules",
+      "Campaign ad disclaimer requirements NJ",
+      "Political taglines New Jersey ELEC"
+    ],
+    "answer": "New Jersey campaign finance law requires all political advertising and campaign material to include a clear 'Paid for by' disclaimer. The disclaimer must identify the name and business address of the candidate, committee, or individual that authorized and financed the communication.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/compliance_manuals/manual_c.pdf",
+    "source_name": "New Jersey ELEC - Compliance Manual",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in New Jersey?",
+    "question_variants": [
+      "NJ campaign coordination rules",
+      "When is a PAC expenditure not independent in New Jersey?",
+      "Prohibition on candidate-PAC coordination NJ"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. Once coordinated, the expenditure constitutes an in-kind contribution and is subject to the strict per-election contribution limits.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/compliance_manuals/manual_c.pdf",
+    "source_name": "New Jersey ELEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in New Jersey?",
+    "question_variants": [
+      "NJ ELEC late fee",
+      "Penalty for missing a New Jersey campaign finance deadline",
+      "ELEC fine for late filing NJ"
+    ],
+    "answer": "The New Jersey Election Law Enforcement Commission (ELEC) has the authority to assess civil penalties for late reports or filing violations. Fines can be substantial, up to $9,900 for a first offense and more for subsequent offenses, depending on the severity of the violation and the amount of money involved.",
+    "source_url": "https://www.elec.nj.gov/",
+    "source_name": "New Jersey ELEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a New Jersey campaign committee terminate?",
+    "question_variants": [
+      "Closing a New Jersey campaign committee",
+      "ELEC committee termination requirements",
+      "Final campaign finance report New Jersey"
+    ],
+    "answer": "A candidate committee may formally terminate when it has achieved a zero cash balance, legally disposed of all unexpended funds, and resolved all outstanding debts or loans. A formal Final Report marking the campaign account as closed must be filed with ELEC.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/compliance_manuals/manual_c.pdf",
+    "source_name": "New Jersey ELEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in New Jersey?",
+    "question_variants": [
+      "New Jersey in-kind contribution valuation rules",
+      "Reporting non-monetary donations New Jersey campaign",
+      "Fair market value for in-kind gifts NJ"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported to ELEC at their fair market value. The value of in-kind contributions counts directly toward the donor's per-election monetary contribution limit.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/compliance_manuals/manual_c.pdf",
+    "source_name": "New Jersey ELEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in New Jersey?",
+    "question_variants": [
+      "New Jersey candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in NJ?",
+      "Reporting candidate loans in ELEC"
+    ],
+    "answer": "A candidate may loan or contribute an UNLIMITED amount of their own personal funds to their campaign committee; these funds are exempt from standard contribution limits. Loans must be properly documented on disclosures and may be repaid from campaign contributions raised during the cycle.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/compliance_manuals/manual_c.pdf",
+    "source_name": "New Jersey ELEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can New Jersey candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in NJ?",
+      "NJ surplus campaign funds rules",
+      "Donating remaining campaign funds New Jersey"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain surplus funds for a future campaign, return them pro-rata to contributors, transfer them to a recognized political party, or donate them to an IRS-recognized tax-exempt charitable organization.",
+    "source_url": "https://www.elec.nj.gov/pdffiles/compliance_manuals/manual_c.pdf",
+    "source_name": "New Jersey ELEC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in New Jersey?",
+    "question_variants": [
+      "When are county executives elected in NJ?",
+      "New Jersey county official term lengths",
+      "Are county commissioners on the 2026 ballot?"
+    ],
+    "answer": "In New Jersey, County Commissioners (formerly Freeholders) and County Sheriffs serve three-year terms. County Clerks and Surrogates serve five-year terms. Because these terms are staggered across odd and even years, many of these county offices will be featured prominently on the 2026 midterm ballot.",
+    "source_url": "https://nj.gov/state/elections/candidate-information.shtml",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["municipal"],
+    "category": "election_dates",
+    "question": "When are municipal elections held in New Jersey?",
+    "question_variants": [
+      "New Jersey May municipal elections",
+      "When are mayors elected in NJ?",
+      "Nonpartisan municipal election cycle New Jersey"
+    ],
+    "answer": "While many New Jersey municipalities hold their elections concurrently with the November general election, numerous municipalities utilizing nonpartisan forms of government (such as Newark and Trenton) hold their municipal elections on the second Tuesday in May. Many of these operate on an odd-year or four-year cycle independent of federal races.",
+    "source_url": "https://nj.gov/state/elections/election-chronological-timelines.shtml",
+    "source_name": "New Jersey Division of Elections - Timelines",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for New Jersey elections?",
+    "question_variants": [
+      "When are New Jersey election results official?",
+      "NJ certification deadline",
+      "Board of State Canvassers meeting New Jersey"
+    ],
+    "answer": "County Boards of Canvassers meet shortly after the election (typically the Monday following Election Day) to begin officially certifying local results. The Board of State Canvassers subsequently meets on or before the 28th day after the election to certify statewide and federal election returns.",
+    "source_url": "https://nj.gov/state/elections/election-chronological-timelines.shtml",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in New Jersey?",
+    "question_variants": [
+      "New Jersey special election timeline",
+      "Who calls a special election to fill a US House vacancy in NJ?",
+      "Filling a midterm vacancy New Jersey"
+    ],
+    "answer": "For a U.S. Senate vacancy, the Governor may appoint a temporary replacement and schedule a special election. For the State Legislature, a vacancy is initially filled within 35 days by a temporary appointment from the vacating member's county political party committee, followed by a special election if sufficient time remains in the term.",
+    "source_url": "https://nj.gov/state/elections/",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the equivalent of the State Board of Elections in New Jersey?",
+    "question_variants": [
+      "Who certifies statewide elections in NJ?",
+      "New Jersey Division of Elections structure",
+      "Who oversees the county boards of elections in NJ?"
+    ],
+    "answer": "New Jersey does not have a traditional 'State Board of Elections.' Election administration is overseen by the Division of Elections, which operates under the Secretary of State. The official certification of statewide results is handled by the Board of State Canvassers, comprising the Governor and four state senators.",
+    "source_url": "https://nj.gov/state/elections/about.shtml",
+    "source_name": "New Jersey Division of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NJ",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What are the specific dates for early in-person voting in New Jersey for 2026?",
+    "question_variants": [
+      "When is early voting for the New Jersey primary 2026?",
+      "NJ early voting dates 2026 general election",
+      "How many days of early voting in New Jersey?"
+    ],
+    "answer": "For the 2026 cycle, early voting for the primary election runs for 5 days, from Wednesday, May 27 through Sunday, May 31. For the general election, early voting runs for 9 days, from Saturday, October 24 through Sunday, November 1. Polls are open daily during these windows.",
+    "source_url": "https://nj.gov/state/elections/vote-early-voting.shtml",
+    "source_name": "New Jersey Division of Elections - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  }
+]
