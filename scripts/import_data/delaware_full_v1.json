@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in Delaware?",
+    "question_variants": [
+      "Are Delaware primaries open or closed?",
+      "Do I have to register with a party to vote in the DE primary?",
+      "Can unaffiliated voters participate in the Delaware primary?"
+    ],
+    "answer": "Delaware has a strictly closed primary system. Voters must be officially registered as a member of the Democratic or Republican party to vote in that respective party's primary election. Unaffiliated or independent voters cannot participate in partisan primary elections.",
+    "source_url": "https://elections.delaware.gov/voter/votereg.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for major party candidates in Delaware for 2026?",
+    "question_variants": [
+      "When do candidates file for office in Delaware?",
+      "Delaware filing deadline 2026",
+      "July filing deadline DE"
+    ],
+    "answer": "Because Delaware holds one of the latest primaries in the nation, its filing deadline is correspondingly late. Major party candidates must file their notification of candidacy by the second Tuesday in July. For the 2026 cycle, the deadline is July 14, 2026, at 12:00 noon.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Delaware?",
+    "question_variants": [
+      "Do write-in votes count in DE?",
+      "How to register as a write-in candidate in Delaware",
+      "Write-in filing deadline Delaware 2026"
+    ],
+    "answer": "Write-in candidates are not permitted in primary elections. To have write-in votes tabulated in the general election, a candidate must officially file a Declaration of Intent as a write-in candidate with the State Election Commissioner no later than September 20 of the election year.",
+    "source_url": "https://elections.delaware.gov/candidates/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for independent candidates in Delaware?",
+    "question_variants": [
+      "Independent candidate ballot access Delaware",
+      "Running without a party in DE 2026",
+      "How many signatures for independent US Senate DE"
+    ],
+    "answer": "Independent candidates must submit a nominating petition signed by registered voters equal to at least 1% of the total number of registered voters in the state (or district, for non-statewide offices) as of December 31 of the preceding year. The petition and sworn declaration must be filed by September 1 of the election year.",
+    "source_url": "https://delcode.delaware.gov/title15/c030/index.html",
+    "source_name": "Delaware Code Title 15 § 3002",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Delaware have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the DE primary?",
+      "Delaware sore loser statute",
+      "General election ballot access after primary defeat DE"
+    ],
+    "answer": "Yes. Delaware enforces a sore loser law. A candidate who runs unsuccessfully for a political party's nomination in the primary election is prohibited from subsequently filing to run as an independent candidate or a write-in candidate for the same office in the ensuing general election.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Delaware?",
+    "question_variants": [
+      "Delaware joint ticket rules",
+      "How are Lt Gov candidates selected in DE?",
+      "Does the Governor pick a running mate in Delaware?"
+    ],
+    "answer": "No. In Delaware, the Governor and Lieutenant Governor are elected completely separately. They run in separate primary and general elections and appear as separate items on the ballot, meaning voters can (and occasionally do) elect a Governor and Lieutenant Governor from two different political parties.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Delaware hold primary runoff elections?",
+    "question_variants": [
+      "What is the threshold to win a primary in DE?",
+      "Does Delaware require a majority to win a primary?",
+      "Delaware primary runoff rules"
+    ],
+    "answer": "No. Delaware does not hold primary runoff elections. A candidate does not need to secure a 50%+1 majority to win the party's nomination; the candidate who receives a simple plurality (the highest number) of the votes in the primary advances directly to the general election.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All primary candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Delaware for 2026?",
+    "question_variants": [
+      "Delaware primary date 2026",
+      "When is Election Day 2026 in Delaware?",
+      "September primary Delaware"
+    ],
+    "answer": "Delaware holds one of the latest primaries in the nation. The 2026 state and federal primary election will be held on Tuesday, September 15, 2026. The general election will be held on Tuesday, November 3, 2026. Polls are open from 7:00 a.m. to 8:00 p.m.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is the Delaware Governor running for election in 2026?",
+    "question_variants": [
+      "Delaware Governor election 2026",
+      "Who is defending the DE Governor seat?",
+      "Is Matt Meyer on the 2026 ballot?"
+    ],
+    "answer": "No. Delaware elects its Governor and Lieutenant Governor exclusively on the presidential election cycle. Governor Matt Meyer (D) was elected in November 2024, and his four-year term runs through early 2029. There is no gubernatorial race on the 2026 midterm ballot.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Delaware in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "DE statewide election list 2026",
+      "When is the State Treasurer election in DE?"
+    ],
+    "answer": "While the Governor is not on the ballot, Delaware elects several key statewide executives on the midterm cycle. In 2026, the offices of Attorney General, State Auditor of Accounts, and State Treasurer are all on the ballot for four-year terms.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Delaware in 2026?",
+    "question_variants": [
+      "Is Chris Coons up for re-election in 2026?",
+      "When is Lisa Blunt Rochester's next election?",
+      "Delaware US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Chris Coons (D) is up for election in 2026. Senator Lisa Blunt Rochester (Class 1) was elected to the Senate in 2024 and will not appear on the ballot again until 2030.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Delaware for the 2026 election?",
+    "question_variants": [
+      "Delaware congressional apportionment",
+      "Are all DE congressional seats up in 2026?",
+      "Number of US Representatives from Delaware"
+    ],
+    "answer": "Delaware is apportioned exactly 1 U.S. House district. The entire state is represented by a single At-Large district, which is on the 2026 ballot for a two-year term.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Delaware State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Delaware House seats up in 2026?",
+      "Delaware Senate election cycle 2026",
+      "Which legislative districts are on the ballot in DE?"
+    ],
+    "answer": "All 41 seats in the Delaware House of Representatives (2-year terms) are up for election in 2026. The Delaware State Senate has 21 members who serve 4-year staggered terms; approximately half the chamber (10 or 11 seats, depending on the post-redistricting cohort cycle) will be on the 2026 ballot.",
+    "source_url": "https://legis.delaware.gov/",
+    "source_name": "Delaware General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Does Delaware place constitutional amendments on the ballot for voters?",
+    "question_variants": [
+      "Delaware ballot measure schedule 2026",
+      "When do citizens vote on DE constitutional amendments?",
+      "Delaware unique ballot measure rules"
+    ],
+    "answer": "No. In a major constitutional distinctive, Delaware is the ONLY state in the nation where the state constitution can be amended without a popular vote by the citizenry. The General Assembly amends the constitution directly by passing the amendment with a two-thirds vote in two consecutive legislative sessions. Therefore, there are no mandatory ballot measures for amendments.",
+    "source_url": "https://statecourtreport.org/our-work/analysis-opinion/delaware-constitution-first-firsts",
+    "source_name": "State Court Report - Delaware Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Delaware General Assembly sessions?",
+    "question_variants": [
+      "When does the DE legislature meet?",
+      "Delaware legislative session length",
+      "Is the Delaware legislature full time?"
+    ],
+    "answer": "The Delaware General Assembly is a part-time legislature that meets annually. The regular session convenes on the second Tuesday in January and, by constitutional mandate, must conclude its business by June 30 of each year.",
+    "source_url": "https://legis.delaware.gov/",
+    "source_name": "Delaware General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Delaware?",
+    "question_variants": [
+      "Age and residency for Delaware Governor",
+      "Delaware Constitution Governor qualifications",
+      "Who is eligible to be Governor of DE?"
+    ],
+    "answer": "Under Article III of the Delaware Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States for at least 12 years, and a resident of Delaware for at least six years immediately preceding the election.",
+    "source_url": "https://elections.delaware.gov/candidates/index.shtml",
+    "source_name": "Delaware Department of Elections - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Delaware State Legislature?",
+    "question_variants": [
+      "Qualifications for DE State Representative",
+      "Age requirement Delaware State Senate",
+      "Do I have to live in my district to run in DE?"
+    ],
+    "answer": "Under Article II of the Delaware Constitution, a candidate for the State Senate must be at least 27 years old, and a State House candidate must be at least 24 years old. Both must be citizens of Delaware for at least three years, and residents of the specific district for at least one year immediately preceding the election.",
+    "source_url": "https://elections.delaware.gov/candidates/index.shtml",
+    "source_name": "Delaware Department of Elections - Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Delaware?",
+    "question_variants": [
+      "US Senate residency requirements Delaware",
+      "Age to run for Congress in Delaware",
+      "Federal constitutional requirements for DE candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://elections.delaware.gov/candidates/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for Delaware state officials?",
+    "question_variants": [
+      "How many terms can a Delaware Governor serve?",
+      "Are there term limits for the Delaware legislature?",
+      "Delaware executive term limit law"
+    ],
+    "answer": "Under the Delaware Constitution, the Governor is strictly limited to serving two consecutive four-year terms. However, there are NO term limits for members of the Delaware General Assembly (State House or State Senate).",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Delaware Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in DE",
+      "Do I need to be a member of the bar to be DE AG?",
+      "Legal requirements for Delaware Attorney General"
+    ],
+    "answer": "Yes. Statutory law requires the Attorney General of Delaware to be a qualified elector (registered voter) of the state and a licensed attorney authorized to practice law in Delaware.",
+    "source_url": "https://elections.delaware.gov/candidates/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Delaware?",
+    "question_variants": [
+      "Delaware Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in DE?",
+      "Qualifications for Lieutenant Governor of Delaware"
+    ],
+    "answer": "Under Article III of the Delaware Constitution, the qualifications for Lieutenant Governor are identical to those for Governor. A candidate must be at least 30 years old, a U.S. citizen for 12 years, and a Delaware resident for 6 years.",
+    "source_url": "https://elections.delaware.gov/candidates/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Delaware?",
+    "question_variants": [
+      "Delaware county council qualifications",
+      "Can I run for Levy Court in DE?",
+      "County residency for DE officials"
+    ],
+    "answer": "To run for a county office (such as County Council in New Castle, or Levy Court in Kent/Sussex counties), a candidate must generally be a qualified elector, at least 24 years old (varies by county), a resident of the county, and a resident of the specific district they seek to represent.",
+    "source_url": "https://elections.delaware.gov/candidates/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a strict photo ID required to vote in person in Delaware?",
+    "question_variants": [
+      "Delaware voter ID requirements",
+      "Do I need my driver's license to vote in DE?",
+      "Acceptable ID for Delaware voting"
+    ],
+    "answer": "No. Delaware does not have a strict photo ID requirement. Voters are asked to present a valid ID at the polls, which can be a photo ID (like a driver's license) OR a non-photo document (like a utility bill or paycheck). If a voter lacks ID entirely, they can still cast a regular ballot by signing an affidavit affirming their identity.",
+    "source_url": "https://elections.delaware.gov/voter/votereg.shtml",
+    "source_name": "Delaware Department of Elections - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Delaware a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Delaware?",
+      "Delaware vote-by-mail system",
+      "Do I need an excuse to vote absentee in DE?"
+    ],
+    "answer": "No. Delaware is not a universal mail ballot state. Historically, the state constitution restricted absentee voting to six specific excuses. While the legislature passed constitutional amendments in 2026 to enshrine no-excuse absentee voting, the process requires passage across two legislative sessions. Currently, voters must still meet specific statutory criteria (like illness, disability, or business absence) to vote absentee.",
+    "source_url": "https://housedems.delaware.gov/2026/03/26/house-passes-constitutional-amendments-to-protect-voting-rights/",
+    "source_name": "Delaware General Assembly (SB 3)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Delaware offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in DE?",
+      "Delaware early voting dates 2026",
+      "When does early voting start in Delaware?"
+    ],
+    "answer": "Yes. Delaware law permits 10 days of early in-person voting prior to primary, general, and special elections. While this statutory provision was briefly struck down by a lower court in 2024, the Delaware Supreme Court reversed the decision, keeping the 10-day early voting period fully operative for the 2026 cycle.",
+    "source_url": "https://housedems.delaware.gov/2026/03/26/house-passes-constitutional-amendments-to-protect-voting-rights/",
+    "source_name": "Delaware Department of Elections / General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Delaware offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in DE",
+      "Delaware same day voter registration",
+      "Voter registration deadline 2026 Delaware"
+    ],
+    "answer": "The deadline to register to vote in Delaware is the fourth Saturday prior to an election (October 10 for the 2026 general election, and August 22 for the primary). A previous law attempting to establish same-day registration was struck down by the Delaware Supreme Court in 2022, so voters MUST register prior to the deadline.",
+    "source_url": "https://elections.delaware.gov/voter/votereg.shtml",
+    "source_name": "Delaware Department of Elections - Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Delaware?",
+    "question_variants": [
+      "How close can I campaign to a polling place in DE?",
+      "Delaware 50 feet electioneering rule",
+      "DE buffer zone around voting centers"
+    ],
+    "answer": "Under Delaware Code Title 15 § 4942, electioneering is strictly prohibited within the polling place or within 50 feet of the entrance to the building in which the voting room is located. This bans distributing campaign literature or wearing apparel referring to candidates or partisan topics.",
+    "source_url": "https://law.justia.com/codes/delaware/title-15/chapter-49/subchapter-ii/section-4942/",
+    "source_name": "Delaware Code Title 15 § 4942",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Delaware?",
+    "question_variants": [
+      "Can felons vote in Delaware state?",
+      "Felony voting rights restoration DE",
+      "Voting on parole in Delaware"
+    ],
+    "answer": "In Delaware, most individuals convicted of a felony have their voting rights automatically restored upon the full completion of their sentence, including all periods of incarceration, probation, and parole. However, individuals convicted of certain disqualifying felonies (like murder, manslaughter, or certain sexual offenses) permanently lose their voting rights unless pardoned.",
+    "source_url": "https://elections.delaware.gov/voter/votereg.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "DE",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Delaware, and how does this affect election administration?",
+    "question_variants": [
+      "Delaware county election administration",
+      "How many county boards in DE?",
+      "Local election control Delaware"
+    ],
+    "answer": "Delaware has only 3 counties: New Castle, Kent, and Sussex. The state Department of Elections maintains centralized oversight, but operates a designated County Department of Elections office in each of the three counties to conduct voting logistics and process absentee ballots.",
+    "source_url": "https://elections.delaware.gov/aboutagency.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Delaware voter file?",
+    "question_variants": [
+      "Delaware voter database access cost",
+      "How to get the voter list in DE",
+      "What data is included in the Delaware voter file?"
+    ],
+    "answer": "Campaigns, political committees, and candidates can request the statewide or county-specific voter registration list directly from the Department of Elections. The list contains voter names, addresses, party affiliation, and voting history. Usage is restricted exclusively to political and election-related purposes.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Delaware?",
+    "question_variants": [
+      "Where do I file campaign finance reports in DE?",
+      "What is the Delaware Public Integrity Commission?",
+      "Does the DE Election Commissioner handle campaign finance?"
+    ],
+    "answer": "In a crucial accuracy point, while the Public Integrity Commission handles ethics and lobbying, Campaign Finance in Delaware is administered strictly by the State Election Commissioner via the Department of Elections' online Campaign Finance Reporting System (CFRS).",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/index.shtml",
+    "source_name": "Delaware Department of Elections - Campaign Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in Delaware for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Delaware?",
+      "DE individual donation caps 2026 election",
+      "Maximum donation to state legislature Delaware"
+    ],
+    "answer": "Delaware enforces per-election-period contribution limits. An individual may contribute a maximum of $1,200 to a candidate for statewide office, and $600 to a candidate for non-statewide office (such as State Senate or House). Because the primary and general are separate periods, donors can give the maximum for the primary and again for the general.",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/pdfs/contributiontable.pdf",
+    "source_name": "Delaware Department of Elections - Contribution Table",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Delaware campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Delaware state",
+      "Can a business donate to my campaign in DE?",
+      "Corporate campaign finance rules Delaware"
+    ],
+    "answer": "Yes. Direct contributions from the general treasury of a corporation, LLC, or labor union to a candidate's campaign committee are permitted in Delaware. They are subject to the exact same contribution limits as individual donors ($1,200 statewide, $600 non-statewide).",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/pdfs/contributiontable.pdf",
+    "source_name": "Delaware Department of Elections - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Delaware candidates?",
+    "question_variants": [
+      "DE CFRS filing dates 2026",
+      "When are campaign finance reports due in DE?",
+      "Delaware pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Delaware requires an annual Year-End report due by December 31. During an election year in which the candidate is on the ballot, the committee must also file a 30-Day Pre-Election Report and an 8-Day Pre-Election Report. (Pending legislation aimed at implementing quarterly reporting takes effect in 2028).",
+    "source_url": "https://delcode.delaware.gov/title15/c080/sc02/index.html",
+    "source_name": "Delaware Code Title 15 § 8011",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Delaware provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Delaware Governor",
+      "State funded campaigns Delaware status",
+      "Government campaign grants DE"
+    ],
+    "answer": "No. Delaware does not have a system of public financing or matching funds for state-level political campaigns. Candidates must rely entirely on private contributions raised within the statutory limits.",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Delaware?",
+    "question_variants": [
+      "DE personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in DE?",
+      "Prohibited expenditures Delaware CFRS"
+    ],
+    "answer": "Yes. Under Delaware campaign finance laws, campaign funds cannot be converted to personal use. All expenditures must be reasonably related to the election campaign or the execution of the duties of public office.",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Delaware?",
+    "question_variants": [
+      "Delaware candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in DE?",
+      "Reporting candidate loans in CFRS"
+    ],
+    "answer": "No. A candidate may loan or contribute an UNLIMITED amount of their own personal funds to their campaign committee; these funds are exempt from standard contribution limits. Loans must be properly documented on disclosures and may be repaid from campaign contributions raised during the cycle.",
+    "source_url": "https://www.bolderadvocacy.org/wp-content/uploads/2018/08/Delaware-Campaign-Finance.pdf",
+    "source_name": "Delaware Campaign Finance Rules",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Delaware?",
+    "question_variants": [
+      "DE PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Delaware",
+      "Maximum PAC gift to state legislator DE"
+    ],
+    "answer": "In Delaware, Political Action Committees (PACs) are subject to the EXACT SAME contribution limits as individuals and corporations. For the 2025-2026 cycle, a PAC is capped at donating $1,200 per election period to a candidate for statewide office, and $600 to a legislative candidate.",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/pdfs/contributiontable.pdf",
+    "source_name": "Delaware Department of Elections - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Delaware's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the DE legislature draw district maps?",
+      "Who has the authority to draw district lines in Delaware?",
+      "Delaware redistricting commission"
+    ],
+    "answer": "In Delaware, the state legislature (General Assembly) holds the exclusive authority to draw and enact both the single congressional district and the state legislative district boundaries. The maps are passed as regular legislation and are subject to the Governor's signature or veto.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Delaware",
+    "source_name": "Ballotpedia - Redistricting in Delaware",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Delaware?",
+    "question_variants": [
+      "Standards for drawing Delaware district lines",
+      "Delaware gerrymandering rules",
+      "Map requirements DE"
+    ],
+    "answer": "Under the Delaware Constitution and state statutes, districts must be contiguous, be bounded by major roads or natural features when possible, and be as nearly equal in population as possible. They must also not be created to unduly favor any person or political party.",
+    "source_url": "https://delcode.delaware.gov/title29/c008/index.html",
+    "source_name": "Delaware Code Title 29 § 804",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current Delaware state legislative maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of Delaware Senate redistricting maps",
+      "Are there pending redistricting lawsuits in Delaware?",
+      "Delaware 2026 state legislative boundaries"
+    ],
+    "answer": "Yes. The redistricting maps enacted by the Delaware General Assembly following the 2020 census remain fully operative for the 2026 election cycle. There are no ongoing systemic legal challenges preventing their use.",
+    "source_url": "https://legis.delaware.gov/",
+    "source_name": "Delaware General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Does Delaware's constitutional amendment process affect the creation of an independent redistricting commission?",
+    "question_variants": [
+      "Can Delaware create an independent redistricting commission by ballot measure?",
+      "Constitutional barriers to redistricting reform in DE",
+      "How to change redistricting rules in Delaware"
+    ],
+    "answer": "Yes, heavily. Because Delaware is the only state where the constitution is amended strictly by a two-thirds vote of the legislature across two successive sessions (without any voter referendum), citizens cannot bypass the legislature to create an independent redistricting commission. The legislature must voluntarily vote to strip itself of mapping power.",
+    "source_url": "https://ballotpedia.org/Amending_the_Delaware_Constitution",
+    "source_name": "Delaware Constitution",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees and Strategists"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Delaware have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Delaware be recalled?",
+      "How to recall a state senator in DE",
+      "Statewide recall election rules Delaware"
+    ],
+    "answer": "No. The State of Delaware does not have any constitutional or statutory provision allowing for the recall of state-level elected officials, including the Governor, statewide executives, or members of the General Assembly.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Delaware",
+    "source_name": "Laws governing recall in Delaware",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Delaware?",
+    "question_variants": [
+      "Delaware county council recall rules",
+      "Signature requirement local recall Delaware",
+      "Recalling a mayor in DE"
+    ],
+    "answer": "There is no statewide, general statutory right to recall local officials in Delaware. Recall is highly restricted and is only permitted in a select few municipalities if their specific, state-approved local city charter explicitly authorizes the recall process.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Delaware",
+    "source_name": "Laws governing recall in Delaware",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Delaware have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the DE ballot",
+      "Delaware citizen initiative signature requirements",
+      "Can citizens propose laws in Delaware?"
+    ],
+    "answer": "No. Delaware is one of the states that does NOT have a statewide citizen initiative process. Citizens cannot draft statutes or constitutional amendments and gather signatures to place them on the ballot.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Delaware",
+    "source_name": "Ballotpedia - Initiative and Referendum in Delaware",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Delaware have a veto referendum process?",
+    "question_variants": [
+      "How to refer a DE bill to the ballot",
+      "Delaware citizen referendum rules",
+      "Veto referendum signature threshold Delaware state"
+    ],
+    "answer": "No. Delaware does not have a statewide veto referendum process. Citizens cannot gather signatures to suspend and refer an already-passed legislative act to the ballot for a popular vote of approval or rejection.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Delaware",
+    "source_name": "Ballotpedia - Initiative and Referendum in Delaware",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does Delaware refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Delaware",
+      "Referendum by legislature DE",
+      "Can the DE legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "In the most distinctive constitutional feature in the nation, Delaware NEVER refers constitutional amendments to the voters. Under Article IX of the Delaware Constitution, the General Assembly amends the constitution by securing a two-thirds vote in two consecutive legislative sessions, with an election intervening. Voter ratification is not required.",
+    "source_url": "https://delcode.delaware.gov/constitution/constitution.html",
+    "source_name": "Delaware Constitution Article IX",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is there an elected Comptroller in Delaware?",
+    "question_variants": [
+      "Requirements to run for DE Comptroller",
+      "Who can run for Comptroller in DE?",
+      "Delaware Comptroller qualifications"
+    ],
+    "answer": "No. Delaware does not have the office of an elected Comptroller. The state's financial administration and oversight are divided between the elected State Treasurer and the elected Auditor of Accounts.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for State Treasurer in Delaware?",
+    "question_variants": [
+      "Qualifications for Delaware State Treasurer",
+      "Running for Treasurer in DE",
+      "Who elects the State Treasurer in Delaware?"
+    ],
+    "answer": "The Delaware State Treasurer is elected by the voters statewide. There are no specific enumerated constitutional age or residency requirements beyond being a qualified elector (registered voter) and citizen of Delaware.",
+    "source_url": "https://ballotpedia.org/Delaware_Treasurer",
+    "source_name": "Ballotpedia - Delaware Treasurer",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Auditor of Accounts in Delaware?",
+    "question_variants": [
+      "Qualifications for Delaware State Auditor",
+      "Running for Auditor in DE",
+      "Who elects the Auditor in Delaware?"
+    ],
+    "answer": "The Delaware Auditor of Accounts is a constitutional executive office elected statewide for a four-year term. Similar to the Treasurer, there are no specific constitutional qualifications (such as holding a CPA license) required to run for the office beyond being a qualified elector of the state.",
+    "source_url": "https://ballotpedia.org/Delaware_State_Auditor",
+    "source_name": "Ballotpedia - Delaware State Auditor",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Delaware?",
+    "question_variants": [
+      "Run for school board Delaware requirements",
+      "Who can be a school board member in DE?",
+      "School board residency rules Delaware"
+    ],
+    "answer": "To run for a local school board in Delaware, a candidate must be a citizen of the state and a resident of the specific school district they seek to represent. Candidates who are registered sex offenders or who have been convicted of certain disqualifying felonies are ineligible.",
+    "source_url": "https://elections.delaware.gov/school/index.shtml",
+    "source_name": "Delaware Department of Elections - School Boards",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for justices of the Delaware Supreme Court?",
+    "question_variants": [
+      "Delaware Supreme Court Justice eligibility",
+      "Years of practice required for DE Supreme Court",
+      "Are Delaware high court judges elected or appointed?"
+    ],
+    "answer": "Delaware Supreme Court justices are NOT elected. They are appointed by the Governor and confirmed by the State Senate for 12-year terms. They must be citizens of the state and learned in the law. Uniquely, the Delaware Constitution dictates strict political balance on the courts (no more than a bare majority may be from the same political party).",
+    "source_url": "https://courts.delaware.gov/supreme/",
+    "source_name": "Delaware Judiciary",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in Delaware?",
+    "question_variants": [
+      "How to fix a rejected signature in DE",
+      "Delaware ballot cure process deadline",
+      "Missing signature on DE mail ballot"
+    ],
+    "answer": "Delaware historically lacked an absentee ballot cure process. However, recent legislative updates (codified via SB 266 in 2026) formally require the Department of Elections to notify voters of certain deficiencies (like a missing signature) on their ballot envelope and offer the voter an opportunity to cure the error before the polls close on Election Day.",
+    "source_url": "https://legis.delaware.gov/BillDetail/143031",
+    "source_name": "Delaware General Assembly (SB 266)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Delaware?",
+    "question_variants": [
+      "When are military ballots due in Delaware?",
+      "UOCAVA return deadline DE",
+      "Overseas voting rules Delaware state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. In Delaware, voted UOCAVA absentee ballots must be received by the Department of Elections no later than the close of polls (8:00 p.m.) on Election Day to be counted.",
+    "source_url": "https://elections.delaware.gov/voter/absentee/uocava.shtml",
+    "source_name": "Delaware Department of Elections - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Delaware?",
+    "question_variants": [
+      "What is a provisional ballot in DE?",
+      "Voting without ID Delaware",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter's name is not on the official poll list but they affirm they are registered and eligible to vote in that district. The voter signs an affidavit on the provisional envelope. Delaware county election officials review the voter's status post-election to determine if the provisional ballot will be tabulated.",
+    "source_url": "https://www.vote411.org/delaware",
+    "source_name": "VOTE411 - Delaware",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Delaware have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Delaware DMV?",
+      "DE motor voter automatic registration",
+      "Do I have to register to vote if I get a DE driver's license?"
+    ],
+    "answer": "Yes. Delaware implemented Automatic Voter Registration (AVR) in 2021. Eligible individuals conducting business at the Division of Motor Vehicles are automatically registered to vote or have their address updated, unless they actively decline (opt-out) during the transaction.",
+    "source_url": "https://elections.delaware.gov/voter/votereg.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Delaware offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in DE?",
+      "Delaware electronic voter registration",
+      "DE ivote online registration portal"
+    ],
+    "answer": "Yes. Eligible Delaware residents with a valid state driver's license or DMV-issued ID card can register to vote or update their registration securely using the state's iVote.de.gov online portal.",
+    "source_url": "https://ivote.de.gov/VoterView",
+    "source_name": "Delaware Department of Elections - iVote",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Delaware maintain its voter registration lists?",
+    "question_variants": [
+      "DE voter list maintenance rules",
+      "How are inactive voters handled in Delaware?",
+      "Delaware voter roll cleaning process"
+    ],
+    "answer": "Delaware maintains its voter rolls using the Electronic Registration Information Center (ERIC) to track voters who have moved or died. The Department of Elections also utilizes National Change of Address (NCOA) data. Voters who do not respond to address confirmation notices and fail to vote in two consecutive federal general elections are removed from the active registry.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee ballot in Delaware?",
+    "question_variants": [
+      "When is the last day to mail my ballot in DE?",
+      "Delaware mail ballot postmark deadline",
+      "What time are ballots due in Delaware?"
+    ],
+    "answer": "Delaware strictly requires that all voted absentee ballots be physically RECEIVED by the county Department of Elections office by the close of polls (8:00 p.m.) on Election Day. Ballots arriving after 8:00 p.m. on Election Day are rejected, regardless of postmark date. They cannot be returned at Early Voting Sites or standard polling places.",
+    "source_url": "https://elections.delaware.gov/voter/absentee/pdfs/absentee_ballot_application.pdf",
+    "source_name": "Delaware Department of Elections - Absentee Application",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Delaware?",
+    "question_variants": [
+      "Does Delaware use ranked choice voting?",
+      "RCV status in Delaware 2026",
+      "Instant runoff voting DE"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is not used for any state, federal, or widespread local elections in Delaware. The state relies strictly on the traditional primary and plurality general election system.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in Delaware elections?",
+    "question_variants": [
+      "How are tied elections decided in Delaware?",
+      "Tie-breaker rules Delaware elections",
+      "What happens if a race is tied in DE?"
+    ],
+    "answer": "In the highly unusual event of an exact tie in a general election for a county or statewide office, the Superior Court, sitting as the board of canvass, certifies the tie to the Governor. The Governor is then required to call a special election to resolve the tie.",
+    "source_url": "https://codes.findlaw.com/de/title-9-counties/de-code-sect-9-331/",
+    "source_name": "Delaware Code Title 9 § 331",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Delaware campaign materials?",
+    "question_variants": [
+      "Delaware 'Paid for by' rules",
+      "Campaign ad disclaimer requirements DE",
+      "Political taglines Delaware CFRS"
+    ],
+    "answer": "Delaware campaign finance law requires that all printed political materials and broadcast advertisements clearly indicate the individual or committee responsible for funding the communication. The disclaimer must clearly state 'Paid for by' followed by the name of the candidate committee or PAC.",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/index.shtml",
+    "source_name": "Delaware Department of Elections - Campaign Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Delaware?",
+    "question_variants": [
+      "DE campaign coordination rules",
+      "When is a PAC expenditure not independent in Delaware?",
+      "Prohibition on candidate-PAC coordination DE"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their authorized campaign committee. Coordinated expenditures are legally treated as in-kind contributions and are subject to Delaware's strict per-election contribution limits.",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Delaware?",
+    "question_variants": [
+      "DE CFRS late fee",
+      "Penalty for missing a Delaware campaign finance deadline",
+      "State Election Commissioner fine for late filing DE"
+    ],
+    "answer": "The State Election Commissioner assesses mandatory administrative penalties for tardy campaign finance reports. The fine is $50 per day for each day the report is late, up to a maximum of 100 days ($5,000). Candidates may be prohibited from running in future elections if fines are unpaid.",
+    "source_url": "https://codes.findlaw.com/de/title-15-elections/de-code-sect-15-8044/",
+    "source_name": "Delaware Code Title 15 § 8044",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Delaware campaign committee terminate?",
+    "question_variants": [
+      "Closing a Delaware campaign committee",
+      "CFRS committee termination requirements",
+      "Final campaign finance report Delaware"
+    ],
+    "answer": "A candidate committee may formally terminate when it will no longer receive contributions or make expenditures. The committee must achieve a zero cash balance, legally dispose of all surplus funds, and file a formal Final Report marking the campaign account as closed within the CFRS portal.",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Delaware?",
+    "question_variants": [
+      "DE independent expenditure reporting CFRS",
+      "Disclosure for DE independent expenditure groups",
+      "Reporting thresholds for outside spending Delaware"
+    ],
+    "answer": "Organizations making independent expenditures must file reports with the State Election Commissioner. The reports must be filed within a standard reporting schedule, except that any independent expenditure exceeding $250 made within 9 days of an election triggers a mandatory 24-hour rapid disclosure report.",
+    "source_url": "https://www.ncsl.org/elections-and-campaigns/registration-and-reporting-processes",
+    "source_name": "NCSL / Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Delaware?",
+    "question_variants": [
+      "Delaware in-kind contribution valuation rules",
+      "Reporting non-monetary donations Delaware campaign",
+      "Fair market value for in-kind gifts DE"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment not available to the general public) must be reported on CFRS disclosures at their fair market value. They count directly toward the donor's per-election period contribution limit ($1,200 or $600).",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Delaware legislators?",
+    "question_variants": [
+      "Can Delaware legislators raise money during session?",
+      "Lobbyist contribution ban DE legislature",
+      "Legislative session contribution rules Delaware"
+    ],
+    "answer": "No. Unlike some other states, Delaware does not have a statutory 'session freeze' that prohibits legislators or statewide officials from accepting campaign contributions while the General Assembly is in regular session.",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Delaware candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in DE?",
+      "DE surplus campaign funds rules",
+      "Donating remaining campaign funds Delaware"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain surplus funds for a future campaign, return them pro-rata to contributors, transfer them to a recognized political party, or donate them to an IRS-recognized tax-exempt charitable organization.",
+    "source_url": "https://elections.delaware.gov/candidates/campaignfinance/index.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Delaware's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "Delaware 24-hour large contribution report",
+      "Late contribution reporting Delaware CFRS",
+      "When do I file a rapid report in DE?"
+    ],
+    "answer": "Third-party groups making independent expenditures must file a 24-hour rapid disclosure report if they make an expenditure exceeding $250 within 9 days of the election, or if they receive a single contribution over $2,000 at any time. Candidates generally adhere to the strict 8-Day Pre-Election report.",
+    "source_url": "https://www.ncsl.org/elections-and-campaigns/registration-and-reporting-processes",
+    "source_name": "NCSL - Reporting Processes",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "DE",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Delaware?",
+    "question_variants": [
+      "When are county sheriffs elected in DE?",
+      "Delaware county official term lengths",
+      "Are county councils on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials across Delaware's three counties—including County Executives, Councilmembers, Levy Court Commissioners, and Sheriffs—generally serve four-year staggered terms. Because they are aligned with the presidential and midterm cycles, numerous county offices will be featured on the 2026 ballot.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Delaware elections?",
+    "question_variants": [
+      "When are Delaware election results official?",
+      "DE certification deadline",
+      "Superior Court Board of Canvass meeting Delaware"
+    ],
+    "answer": "In Delaware, the Superior Court in each county sits as the Board of Canvass. They convene publicly on the Thursday following the Tuesday election (2 days later) to officially calculate the votes, resolve disputes, and certify the name of the winning candidates, forwarding the results to the Governor.",
+    "source_url": "https://law.justia.com/codes/delaware/title-15/chapter-31/subchapter-iv/section-3172/",
+    "source_name": "Delaware Code Title 15 § 3172",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Delaware?",
+    "question_variants": [
+      "Delaware special election timeline",
+      "Who calls a special election to fill a US House vacancy in DE?",
+      "Filling a midterm vacancy Delaware"
+    ],
+    "answer": "Special elections to fill vacancies in the General Assembly or federal offices are called by a Writ of Election issued by the presiding officer of the respective chamber or the Governor. The Department of Elections then administers the special election within a statutorily defined window.",
+    "source_url": "https://elections.delaware.gov/",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the role of the State Election Commissioner in Delaware?",
+    "question_variants": [
+      "Who oversees elections in DE?",
+      "Delaware Department of Elections structure",
+      "State Election Commissioner duties Delaware"
+    ],
+    "answer": "The State Election Commissioner is appointed by the Governor and confirmed by the Senate. They oversee the Department of Elections, ensure uniformity in the administration of election laws across all three counties, manage the state voter registration database, and enforce campaign finance regulations.",
+    "source_url": "https://elections.delaware.gov/aboutagency.shtml",
+    "source_name": "Delaware Department of Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "DE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What are the specific dates for early in-person voting in Delaware for 2026?",
+    "question_variants": [
+      "When is early voting for the Delaware primary 2026?",
+      "DE early voting dates 2026 general election",
+      "How many days of early voting in Delaware?"
+    ],
+    "answer": "For the 2026 cycle, early voting for the primary election is tentatively scheduled from September 2 to September 13 (with no voting on Labor Day, Sept 6-7). For the November 3 general election, early voting is scheduled from October 22 to November 1 (with polls closed on Oct 25). Polls are open daily during these windows.",
+    "source_url": "https://elections.delaware.gov/elections/votinglocations.shtml",
+    "source_name": "Delaware Department of Elections - Early Voting Sites",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  }
+]
