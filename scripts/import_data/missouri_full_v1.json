@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in Missouri?",
+    "question_variants": [
+      "Are Missouri primaries open or closed?",
+      "Do I have to register with a party to vote in the MO primary?",
+      "How do voters choose a ballot in the Missouri primary?"
+    ],
+    "answer": "Missouri utilizes an open primary system. Under RSMo 115.397, voters are not required to register with a political party prior to the election. At the polling place, voters verbally state to the election judge which party's primary ballot they wish to vote, and they receive only that party's ballot for the primary.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.397",
+    "source_name": "RSMo 115.397",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Missouri primary elections?",
+    "question_variants": [
+      "Do write-in votes count in the MO primary?",
+      "Can I run as a write-in for the Missouri primary?",
+      "Missouri primary write-in rules"
+    ],
+    "answer": "No. Under RSMo 115.399, write-in votes are strictly prohibited in primary elections. To be a write-in candidate, an individual must file a declaration of intent with the Secretary of State or local election authority prior to the general election, and write-in votes are only counted in the general.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.399",
+    "source_name": "RSMo 115.399",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for Missouri in 2026?",
+    "question_variants": [
+      "When do candidates file for office in Missouri?",
+      "Missouri filing deadline 2026",
+      "Last day to file to run in MO"
+    ],
+    "answer": "For the 2026 election cycle, the candidate filing period for major party primary access closes at 5:00 p.m. on the last Tuesday in March (March 31, 2026). Candidates must file a declaration of candidacy and pay the required filing fee ($200 for statewide/federal, $100 for State Senate, $50 for State House) to the state or county party committee.",
+    "source_url": "https://www.sos.mo.gov/elections/candidates",
+    "source_name": "Missouri Secretary of State - Candidate Filing",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "How do independent candidates access the general election ballot in Missouri?",
+    "question_variants": [
+      "Independent candidate petition threshold Missouri",
+      "Running without a party in MO",
+      "Unaffiliated candidate signature requirements Missouri"
+    ],
+    "answer": "Independent candidates bypass the primary and petition directly onto the general election ballot. Under RSMo 115.321, they must submit valid signatures from registered voters equal to at least 10,000 statewide, or 2% of the total number of votes cast for the office in the last election, whichever is less.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.321",
+    "source_name": "RSMo 115.321",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Missouri have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the MO primary?",
+      "Missouri sore loser statute",
+      "General election ballot access after primary defeat MO"
+    ],
+    "answer": "Yes. Under RSMo 115.315(4), Missouri enforces a sore loser law. A person who filed as a candidate for a political party's nomination in the primary election and lost cannot subsequently file as an independent candidate for the same or any other office in that year's general election.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.315",
+    "source_name": "RSMo 115.315",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Missouri?",
+    "question_variants": [
+      "Missouri joint ticket rules",
+      "How are Lt Gov candidates selected in MO?",
+      "Does the Governor pick a running mate in Missouri?"
+    ],
+    "answer": "No. Under the Missouri Constitution (Article IV), the Governor and Lieutenant Governor are elected separately. They run in entirely separate primary and general elections, meaning it is possible for Missouri to elect a Governor and a Lieutenant Governor from two different political parties.",
+    "source_url": "https://www.sos.mo.gov/CMSImages/Publications/CurrentMissouriConstitution.pdf",
+    "source_name": "Missouri Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["municipal", "judicial"],
+    "category": "election_dates",
+    "question": "When are municipal and school board elections held in Missouri?",
+    "question_variants": [
+      "Missouri April election dates",
+      "When do school boards run in MO?",
+      "Missouri spring nonpartisan elections"
+    ],
+    "answer": "In Missouri, most municipal, school board, and local special district elections are held on 'General Municipal Election Day.' This election is completely separate from the state and federal cycle and is held annually on the first Tuesday after the first Monday in April (April 7, 2026).",
+    "source_url": "https://www.sos.mo.gov/elections/calendar",
+    "source_name": "Missouri Secretary of State - Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Missouri for 2026?",
+    "question_variants": [
+      "Missouri primary date 2026",
+      "When is Election Day 2026 in Missouri?",
+      "August primary Missouri"
+    ],
+    "answer": "The Missouri state and federal primary election will be held on Tuesday, August 4, 2026. The general election will be held on Tuesday, November 3, 2026. Polls are open from 6:00 a.m. to 7:00 p.m.",
+    "source_url": "https://www.sos.mo.gov/elections/calendar",
+    "source_name": "Missouri Secretary of State - Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Mike Kehoe running for re-election in 2026?",
+    "question_variants": [
+      "Missouri Governor election 2026",
+      "Who is defending the MO Governor seat?",
+      "Is Mike Kehoe on the 2026 ballot?"
+    ],
+    "answer": "No. Missouri elects its Governor strictly on the presidential election cycle. Governor Mike Kehoe (R) was elected in 2024 and his four-year term runs through early 2029. There is no gubernatorial race on the 2026 midterm ballot.",
+    "source_url": "https://www.sos.mo.gov/elections/candidates",
+    "source_name": "Missouri Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seats are up for election in Missouri in 2026?",
+    "question_variants": [
+      "Is Eric Schmitt up for re-election in 2026?",
+      "When is Josh Hawley's next election?",
+      "Missouri US Senate cycle 2026"
+    ],
+    "answer": "The Class 3 U.S. Senate seat held by Eric Schmitt (R) is up for election in 2026. Senator Josh Hawley (Class 1) was recently re-elected in 2024 and is not on the ballot again until 2030.",
+    "source_url": "https://www.senate.gov/senators/Class_III.htm",
+    "source_name": "U.S. Senate - Class III Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Missouri in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "MO statewide election list 2026",
+      "When is the State Auditor election in MO?"
+    ],
+    "answer": "The State Auditor (currently Scott Fitzpatrick) is the ONLY statewide executive office on the 2026 midterm ballot in Missouri. The Governor, Lieutenant Governor, Secretary of State, Attorney General, and State Treasurer are all elected during presidential election years and will not appear on the ballot again until 2028.",
+    "source_url": "https://www.sos.mo.gov/elections/candidates",
+    "source_name": "Missouri Secretary of State - Candidate Filing",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Will the 2026 Missouri U.S. House races use a new mid-decade redistricting map?",
+    "question_variants": [
+      "Missouri mid-decade congressional redistricting 2025",
+      "Are there pending redistricting lawsuits in Missouri?",
+      "Status of Missouri 5th Congressional District 2026"
+    ],
+    "answer": "This is currently a highly volatile issue. The legislature enacted a new mid-decade congressional map in a 2025 special session aimed at eliminating the safe Democratic 5th District. The Missouri Supreme Court upheld the map in March 2026. However, the 'People Not Politicians' coalition has submitted referendum signatures to suspend the map. If certified by the Secretary of State, the 2026 races will revert to the post-2020 census maps while voters decide the new map's fate.",
+    "source_url": "https://www.sos.mo.gov/elections/petitions",
+    "source_name": "Missouri Secretary of State - Petitions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates and Strategists"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Missouri State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Missouri House seats up in 2026?",
+      "Missouri Senate election cycle 2026",
+      "Which legislative districts are on the ballot in MO?"
+    ],
+    "answer": "All 163 seats in the Missouri House of Representatives (2-year terms) are up for election in 2026. In the Missouri Senate (34 members, 4-year staggered terms), the 17 even-numbered districts are on the 2026 ballot.",
+    "source_url": "https://www.senate.mo.gov/",
+    "source_name": "Missouri State Senate",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "Are Missouri Supreme Court seats on the 2026 ballot?",
+    "question_variants": [
+      "Missouri Plan judicial retention elections",
+      "How are judges selected in Missouri?",
+      "Do MO Supreme Court judges run in the primary?"
+    ],
+    "answer": "Missouri Supreme Court and appellate judges do not run in competitive elections. Under the 'Missouri Nonpartisan Court Plan,' they are appointed by the Governor from a judicial commission's list. After serving one year, they face a nonpartisan retention election at the next general election, and subsequently every 12 years.",
+    "source_url": "https://www.courts.mo.gov/page.jsp?id=297",
+    "source_name": "Missouri State Courts - Nonpartisan Court Plan",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Missouri State Legislature's sessions?",
+    "question_variants": [
+      "When does the MO legislature meet?",
+      "Missouri May 30 legislative session deadline",
+      "Is the Missouri legislature full time?"
+    ],
+    "answer": "The Missouri General Assembly is a part-time legislature. Under Article III, Section 20(a) of the Missouri Constitution, the regular session convenes annually on the first Wednesday after the first Monday in January and must constitutionally adjourn by 6:00 p.m. on May 30.",
+    "source_url": "https://www.sos.mo.gov/CMSImages/Publications/CurrentMissouriConstitution.pdf",
+    "source_name": "Missouri Constitution Article III, Section 20(a)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Missouri?",
+    "question_variants": [
+      "Age and residency for Missouri Governor",
+      "Missouri Constitution Article IV Section 3 qualifications",
+      "Who can be Governor of MO?"
+    ],
+    "answer": "Under Article IV, Section 3 of the Missouri Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States for at least 15 years, and a resident of Missouri for at least 10 years preceding the election.",
+    "source_url": "https://www.sos.mo.gov/CMSImages/Publications/CurrentMissouriConstitution.pdf",
+    "source_name": "Missouri Constitution Article IV, Section 3",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Missouri?",
+    "question_variants": [
+      "Missouri Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in MO?",
+      "Qualifications for Lieutenant Governor of Missouri"
+    ],
+    "answer": "Under Article IV, Section 10 of the Missouri Constitution, the qualifications for Lieutenant Governor are identical to those for Governor. A candidate must be at least 30 years old, a U.S. citizen for 15 years, and a Missouri resident for 10 years.",
+    "source_url": "https://www.sos.mo.gov/CMSImages/Publications/CurrentMissouriConstitution.pdf",
+    "source_name": "Missouri Constitution Article IV, Section 10",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Missouri State Legislature?",
+    "question_variants": [
+      "Qualifications for MO State Representative",
+      "Age requirement Missouri State Senate",
+      "Do I have to live in my district to run in MO?"
+    ],
+    "answer": "Under Article III of the Missouri Constitution, State House candidates must be 24 years old, a registered voter for 2 years, and a district resident for 1 year. State Senate candidates must be 30 years old, a registered voter for 3 years, and a district resident for 1 year prior to the election.",
+    "source_url": "https://www.sos.mo.gov/CMSImages/Publications/CurrentMissouriConstitution.pdf",
+    "source_name": "Missouri Constitution Article III",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Missouri?",
+    "question_variants": [
+      "US Senate residency requirements Missouri",
+      "Age to run for Congress in Missouri",
+      "Federal constitutional requirements for MO candidates"
+    ],
+    "answer": "Federal candidates must meet U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected. District residency is not required for the House.",
+    "source_url": "https://www.sos.mo.gov/elections/candidates",
+    "source_name": "Missouri Secretary of State - Candidate FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does the Missouri Attorney General have to be a licensed attorney?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in MO",
+      "Do I need to be a member of the bar to be MO AG?",
+      "Legal requirements for Missouri Attorney General"
+    ],
+    "answer": "Yes. While the Missouri Constitution outlines broad executive qualifications, statutory law mandates that the Attorney General be an attorney authorized and licensed to practice law in the Supreme Court of Missouri.",
+    "source_url": "https://ago.mo.gov/",
+    "source_name": "Missouri Attorney General's Office",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Missouri?",
+    "question_variants": [
+      "Missouri county commissioner qualifications",
+      "Can I run for county board in MO?",
+      "County residency for MO officials"
+    ],
+    "answer": "To run for a county office (such as County Commissioner), a candidate must generally be a registered voter and a resident of the county (and the specific district, if applicable) for at least one year immediately preceding the date of the election.",
+    "source_url": "https://www.sos.mo.gov/elections/candidates",
+    "source_name": "Missouri Secretary of State - Local Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for Missouri executive and legislative offices?",
+    "question_variants": [
+      "8-year term limit Missouri",
+      "How long can I serve in the Missouri House?",
+      "Can a term-limited MO senator run for Governor?"
+    ],
+    "answer": "Missouri enforces strict term limits. The Governor and State Treasurer are limited to two four-year terms. State legislators are limited to 8 years in the State House and 8 years in the State Senate, for a lifetime maximum of 16 legislative years (Article III, Section 8 of the Missouri Constitution).",
+    "source_url": "https://www.sos.mo.gov/CMSImages/Publications/CurrentMissouriConstitution.pdf",
+    "source_name": "Missouri Constitution Article III, Section 8",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State executive and legislative candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Missouri?",
+    "question_variants": [
+      "Missouri voter ID requirements",
+      "Do I need my driver's license to vote in MO?",
+      "HB 1878 photo ID Missouri Supreme Court"
+    ],
+    "answer": "Yes. Under HB 1878, Missouri requires voters to present a non-expired, government-issued photo ID (such as a Missouri driver's license, non-driver ID, passport, or military ID) to cast a regular ballot. The Missouri Supreme Court upheld the constitutionality of this strict photo ID requirement in March 2026.",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/howtovote",
+    "source_name": "Missouri Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Missouri a universal mail ballot state?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Missouri?",
+      "Missouri vote-by-mail system",
+      "Are there traditional polling places in MO?"
+    ],
+    "answer": "No. Missouri is not a universal mail ballot state. Traditional in-person voting on Election Day is the primary method of casting a ballot. Mail-in absentee ballots are restricted and generally require a valid excuse (e.g., absence from jurisdiction, illness, physical disability).",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/howtovote",
+    "source_name": "Missouri Secretary of State - How to Vote",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Missouri offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in MO?",
+      "Missouri no-excuse in-person absentee voting",
+      "Two weeks early voting Missouri"
+    ],
+    "answer": "Yes. While traditional mail-in voting requires an excuse, Missouri offers two weeks of 'no-excuse in-person absentee voting' leading up to Election Day. During this period, any registered voter may go to designated local election authority locations to cast their ballot early, provided they show a valid government-issued photo ID.",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/howtovote",
+    "source_name": "Missouri Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Missouri offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in MO",
+      "Missouri same day voter registration",
+      "Voter registration deadline 2026 Missouri"
+    ],
+    "answer": "The deadline to register to vote in Missouri is 27 days before an election (RSMo 115.135). Missouri DOES NOT offer same-day voter registration. Residents must be fully registered prior to the deadline to participate in either the early voting period or on Election Day.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.135",
+    "source_name": "RSMo 115.135",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Missouri?",
+    "question_variants": [
+      "How close can I campaign to a polling place in MO?",
+      "Missouri 25 feet electioneering rule",
+      "MO buffer zone around voting centers"
+    ],
+    "answer": "Under RSMo 115.637, Missouri enforces an electioneering buffer zone of 25 feet from the outer door of a polling place, or any interior area of the building where voting is taking place. Distributing campaign literature or displaying campaign signs inside this zone is prohibited.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.637",
+    "source_name": "RSMo 115.637",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Missouri?",
+    "question_variants": [
+      "Can felons vote in Missouri state?",
+      "Felony voting rights restoration MO",
+      "Voting on parole in Missouri"
+    ],
+    "answer": "In Missouri, individuals convicted of a felony lose their voting rights while incarcerated AND while on probation or parole. Voting rights are automatically restored only after the individual has fully completed their entire sentence, including all periods of probation and parole (RSMo 115.133). Once completed, they must re-register to vote.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.133",
+    "source_name": "RSMo 115.133",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "MO",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How is election administration structured across Missouri counties?",
+    "question_variants": [
+      "Missouri county election administration",
+      "How many county clerks in MO?",
+      "Local election control Missouri St. Louis"
+    ],
+    "answer": "Election administration is highly decentralized in Missouri. Campaigns must coordinate with 116 local election authorities. This includes 114 county clerks (or local election boards), the independent City of St. Louis, and Kansas City (which operates its own independent election board separate from Jackson County).",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/localelectionauthority",
+    "source_name": "Missouri Secretary of State - Local Election Authorities",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the campaign contribution limits in Missouri for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Missouri?",
+      "MO individual donation caps 2026 election",
+      "Federal court ruling Missouri campaign finance"
+    ],
+    "answer": "Despite some legal challenges to PAC limits, direct candidate contribution limits absolutely EXIST in Missouri under Article VIII, Section 23 of the state Constitution. For the 2025-2026 cycle (indexed for inflation), individuals and PACs are limited to contributing approximately $2,825 to statewide candidates, $1,125 to State Senate candidates, and $375 to State House candidates per election.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Info.aspx",
+    "source_name": "Missouri Ethics Commission - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Missouri campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Missouri state",
+      "Can a business donate to my campaign in MO?",
+      "Corporate campaign finance rules Missouri"
+    ],
+    "answer": "No. Direct corporate and labor union contributions to candidate committees are strictly PROHIBITED in Missouri under Article VIII, Section 23.3(3)(a) of the Missouri Constitution. Corporations and unions may only establish a separate Political Action Committee (PAC) to make political contributions.",
+    "source_url": "https://www.sos.mo.gov/CMSImages/Publications/CurrentMissouriConstitution.pdf",
+    "source_name": "Missouri Constitution Article VIII",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Missouri?",
+    "question_variants": [
+      "Where do I file campaign finance reports in MO?",
+      "What is the Missouri Ethics Commission?",
+      "Does the MO Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Missouri are administered by the Missouri Ethics Commission (MEC), not the Secretary of State. All state and local candidates must register their committees and file their contribution and expenditure reports electronically through the MEC portal.",
+    "source_url": "https://mec.mo.gov/",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Missouri candidates?",
+    "question_variants": [
+      "MEC filing dates 2026",
+      "When are campaign finance reports due in MO?",
+      "Missouri pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Active candidate committees must file quarterly reports (January 15, April 15, July 15, October 15). Additionally, leading up to an election, candidates must file an '8-Day Before' report and a '30-Day After' report for both the primary and general elections.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Deadlines.aspx",
+    "source_name": "Missouri Ethics Commission - Reporting Deadlines",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Missouri's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "Missouri 48-hour large contribution report",
+      "Late contribution reporting Missouri MEC",
+      "When do I file a rapid report in MO?"
+    ],
+    "answer": "Any contribution from a single source exceeding $5,000 must be reported electronically within 48 hours of receipt at any time during the year. Furthermore, any contribution over $250 received within 11 days of an election must be reported within 24 hours.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Deadlines.aspx",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Missouri provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Missouri Governor",
+      "State funded campaigns Missouri status",
+      "Government campaign grants MO"
+    ],
+    "answer": "No. Missouri does not have a system of public financing or matching funds for state-level political campaigns. Candidates must rely entirely on private contributions within the statutory limits.",
+    "source_url": "https://mec.mo.gov/",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Missouri?",
+    "question_variants": [
+      "MO personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in MO?",
+      "Prohibited expenditures Missouri MEC"
+    ],
+    "answer": "Yes. Under RSMo 130.034, campaign contributions cannot be converted to personal use. They must be strictly used for campaign expenses, ordinary expenses incurred relating to the duties of public office, or returned to donors.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=130.034",
+    "source_name": "RSMo 130.034",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Missouri legislators?",
+    "question_variants": [
+      "Can Missouri legislators raise money during session?",
+      "Lobbyist contribution ban MO legislature",
+      "Legislative session contribution rules Missouri"
+    ],
+    "answer": "No. Unlike some states, Missouri does not have a statutory 'session freeze' that prohibits legislators from accepting campaign contributions while the General Assembly is in regular session. However, strict lobbyist gift limits (banning non-campaign gifts over $5) remain in effect year-round.",
+    "source_url": "https://mec.mo.gov/",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Missouri voter registration list?",
+    "question_variants": [
+      "Missouri voter file cost",
+      "How to get the voter list in MO",
+      "MO registered voter database access"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide voter registration list directly from the Missouri Secretary of State or specific county files from local election authorities. The file includes voter names, addresses, and voting history (which elections they participated in, though not who they voted for). It requires submitting a formal request form with a fee, and Missouri law strictly restricts the use of this data to political and election-related purposes.",
+    "source_url": "https://www.sos.mo.gov/elections/VoterFile/",
+    "source_name": "Missouri Secretary of State - Voter File Request",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Who draws Missouri's congressional maps?",
+    "question_variants": [
+      "Does the MO legislature draw US House maps?",
+      "Who has the authority to draw congressional district lines in Missouri?",
+      "Missouri congressional redistricting process"
+    ],
+    "answer": "In Missouri, congressional districts are drawn by the state legislature and must be signed by the Governor (subject to standard veto overrides). For the 2026 cycle, this process is highly volatile, as a mid-decade map passed by the legislature in 2025 is currently being challenged by a citizen veto referendum.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Missouri",
+    "source_name": "Ballotpedia - Redistricting in Missouri",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for congressional redistricting in Missouri?",
+    "question_variants": [
+      "Standards for drawing Missouri congressional lines",
+      "Missouri gerrymandering rules US House",
+      "Congressional map requirements MO"
+    ],
+    "answer": "Under the U.S. and Missouri Constitutions, congressional districts must have nearly equal populations (strict equality) and must comply with the Voting Rights Act to not discriminate on the basis of race. Districts must also be contiguous and as compact as may be.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Missouri",
+    "source_name": "Ballotpedia - Redistricting in Missouri",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Who draws Missouri State Senate districts?",
+    "question_variants": [
+      "Missouri Judicial Redistricting Commission",
+      "Who redistricts the MO Senate?",
+      "State Senate map process Missouri"
+    ],
+    "answer": "Missouri State Senate districts are initially assigned to a bipartisan Nonpartisan Senate Apportionment Commission. If that commission deadlocks and fails to approve a map, the responsibility falls to the Judicial Redistricting Commission (composed of six appellate judges appointed by the Missouri Supreme Court). The Judicial Redistricting Commission drew the current State Senate maps.",
+    "source_url": "https://budplan.oa.mo.gov/redistricting-office/judicial-commission",
+    "source_name": "Missouri Office of Administration - Judicial Redistricting Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Who draws Missouri State House districts?",
+    "question_variants": [
+      "Missouri House redistricting commission",
+      "Independent Bipartisan Citizens Commission MO",
+      "Who redistricts the State House in Missouri?"
+    ],
+    "answer": "The Missouri House of Representatives districts are drawn by the Independent Bipartisan Citizens Commission. This politically balanced commission is appointed by the Governor from lists submitted by the major political parties. They unanimously approved the current State House map.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Missouri",
+    "source_name": "Ballotpedia - Redistricting in Missouri",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current Missouri state legislative maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of 2022 Missouri redistricting maps",
+      "Are there pending legislative redistricting lawsuits in Missouri?",
+      "Missouri 2026 state legislative boundaries"
+    ],
+    "answer": "Yes. The state legislative maps approved in early 2022 (by the Independent Bipartisan Citizens Commission for the House, and the Judicial Redistricting Commission for the Senate) remain fully operative for the 2026 election cycle and face no systemic legal challenges.",
+    "source_url": "https://budplan.oa.mo.gov/redistricting-office/senate-maps",
+    "source_name": "Missouri Office of Administration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Missouri have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Missouri be recalled?",
+      "How to recall a state senator in MO",
+      "Statewide recall election rules Missouri"
+    ],
+    "answer": "No. The State of Missouri does not have any constitutional or statutory provision allowing for the recall of state-level elected officials, including the Governor, statewide executives, or state legislators.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Missouri",
+    "source_name": "Laws governing recall in Missouri",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Missouri?",
+    "question_variants": [
+      "Missouri county commissioner recall rules",
+      "Signature requirement local recall Missouri",
+      "Recalling a mayor in MO"
+    ],
+    "answer": "While state officials cannot be recalled, Missouri law allows for the recall of local elected officials in certain jurisdictions, such as third-class counties and municipalities with specific charters. The signature threshold and procedures vary significantly based on the specific local municipal or county charter.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Missouri",
+    "source_name": "Laws governing recall in Missouri",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for a constitutional amendment by initiative in Missouri?",
+    "question_variants": [
+      "How to amend the MO constitution by initiative",
+      "Missouri citizen initiative signature requirements",
+      "Geographic distribution rule for MO constitutional initiatives"
+    ],
+    "answer": "To qualify a constitutional amendment initiative for the ballot, proponents must gather valid signatures equal to at least 8% of the total votes cast for Governor in the previous gubernatorial election. Crucially, this 8% threshold must be met in at least six of Missouri's eight congressional districts.",
+    "source_url": "https://www.sos.mo.gov/elections/petitions",
+    "source_name": "Missouri Secretary of State - Petitions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for a statutory initiative in Missouri?",
+    "question_variants": [
+      "How to pass a state law by initiative in MO",
+      "Missouri statutory initiative signature count",
+      "Difference between constitutional and statutory initiative Missouri"
+    ],
+    "answer": "To qualify a statutory (state law) initiative for the ballot, proponents must gather valid signatures equal to at least 5% of the total votes cast for Governor in the previous gubernatorial election. Like constitutional amendments, this 5% threshold must be met in at least six of Missouri's eight congressional districts.",
+    "source_url": "https://www.sos.mo.gov/elections/petitions",
+    "source_name": "Missouri Secretary of State - Petitions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the threshold and deadline for a veto referendum in Missouri?",
+    "question_variants": [
+      "How to refer a MO bill to the ballot",
+      "Missouri citizen referendum rules",
+      "Veto referendum signature threshold Missouri state"
+    ],
+    "answer": "Citizens can refer a passed legislative act to the ballot via a veto referendum. This requires signatures equal to 5% of the votes cast for Governor in the previous election, gathered in at least six of the eight congressional districts. Signatures must be submitted within 90 days following the final adjournment of the legislative session.",
+    "source_url": "https://www.sos.mo.gov/elections/petitions",
+    "source_name": "Missouri Secretary of State - Petitions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What are the highly volatile ballot initiatives in Missouri for 2026?",
+    "question_variants": [
+      "Respect Missouri Voters initiative 2026",
+      "Missouri congressional map referendum",
+      "Major ballot measures Missouri 2026"
+    ],
+    "answer": "The 2026 cycle in Missouri features highly volatile citizen-led ballot items: 1) A veto referendum on the mid-decade congressional redistricting map, which suspends the map if certified. 2) The 'Respect Missouri Voters' initiative, which would require an 80% supermajority in the legislature to amend or repeal any law previously approved by voters via the initiative process.",
+    "source_url": "https://www.sos.mo.gov/elections/petitions",
+    "source_name": "Missouri Secretary of State - 2026 Petitions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "volatile",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees and Strategists"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Missouri?",
+    "question_variants": [
+      "Missouri ballot measure pass threshold",
+      "Does a measure need a supermajority in MO?",
+      "Majority vote requirements Missouri ballot measures"
+    ],
+    "answer": "In Missouri, all citizen initiatives (both statutory and constitutional) and legislatively referred constitutional amendments require only a simple majority (over 50%) of the total votes cast on that specific measure to pass.",
+    "source_url": "https://www.sos.mo.gov/elections/petitions",
+    "source_name": "Missouri Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Missouri?",
+    "question_variants": [
+      "Requirements to run for MO Secretary of State",
+      "Who can run for Secretary of State in MO?",
+      "Residency rules for Missouri SOS"
+    ],
+    "answer": "Under the Missouri Constitution and state statutes, a candidate for Secretary of State must be a citizen of the United States, a registered voter, and a resident of the state of Missouri for at least one year immediately preceding their election.",
+    "source_url": "https://www.sos.mo.gov/elections/candidates",
+    "source_name": "Missouri Secretary of State - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in Missouri?",
+    "question_variants": [
+      "Eligibility for Missouri State Treasurer",
+      "Who can run for State Treasurer in MO?",
+      "Missouri Treasurer residency requirements"
+    ],
+    "answer": "Under Article IV, Section 19 of the Missouri Constitution, a candidate for State Treasurer must be a citizen of the United States and a resident of Missouri for at least one year immediately preceding the election.",
+    "source_url": "https://www.sos.mo.gov/CMSImages/Publications/CurrentMissouriConstitution.pdf",
+    "source_name": "Missouri Constitution Article IV, Section 19",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Missouri?",
+    "question_variants": [
+      "Run for school board Missouri requirements",
+      "Who can be a school board member in MO?",
+      "School board age rules Missouri"
+    ],
+    "answer": "To run for a local school board in Missouri, a candidate must be a citizen of the United States, at least 24 years old, a resident taxpayer of the school district, and must have resided in the state for at least one year preceding the election.",
+    "source_url": "https://www.sos.mo.gov/elections/candidates",
+    "source_name": "Missouri Secretary of State - Local Candidate Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for Missouri Supreme Court justices?",
+    "question_variants": [
+      "Missouri Supreme Court Justice eligibility",
+      "Years of practice required for MO Supreme Court",
+      "Missouri Plan judicial requirements"
+    ],
+    "answer": "Under the 'Missouri Plan' for merit selection, Supreme Court justices must be at least 30 years old, a U.S. citizen for at least 15 years, a qualified voter of the state for at least nine years, and must be an attorney licensed to practice law in Missouri.",
+    "source_url": "https://www.courts.mo.gov/page.jsp?id=297",
+    "source_name": "Missouri State Courts",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee ballots in Missouri?",
+    "question_variants": [
+      "How to fix a rejected signature in MO",
+      "Missouri ballot cure process deadline",
+      "Missing notary on MO mail ballot"
+    ],
+    "answer": "Missouri law is strict regarding absentee ballots. Ballots must be properly signed and, in most cases, notarized. If a signature or notary stamp is missing, the election authority is generally required to reject the ballot. While some local election authorities may attempt to notify voters of a defect, there is no standardized, statewide statutory cure period allowing voters to fix ballot envelope errors after Election Day.",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/howtovote",
+    "source_name": "Missouri Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Missouri?",
+    "question_variants": [
+      "When are military ballots due in Missouri?",
+      "UOCAVA return deadline MO",
+      "Overseas voting rules Missouri state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters 45 days before an election. Voted ballots must be received by the local election authority by 7:00 p.m. on Election Day to be counted. Military personnel in hostile fire zones may return their ballots via a secure electronic portal.",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/registermilitary",
+    "source_name": "Missouri Secretary of State - Military/Overseas",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Missouri?",
+    "question_variants": [
+      "What is a provisional ballot in MO?",
+      "Voting without ID Missouri",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued in Missouri when a voter claims to be registered but their name does not appear on the polling place roster, or if the voter fails to present a valid government-issued photo ID. If issued for lack of ID, the ballot counts if the voter returns with a valid ID before polls close, or if the signature matches the voter registration record.",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/howtovote",
+    "source_name": "Missouri Secretary of State - Provisional Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Missouri have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Missouri DMV?",
+      "MO motor voter automatic registration",
+      "Do I have to register to vote if I get a MO driver's license?"
+    ],
+    "answer": "No. Missouri does not have Automatic Voter Registration (AVR). While the Department of Revenue (DMV) offers eligible citizens the opportunity to register to vote when applying for a license—in compliance with federal Motor Voter laws—voters must actively opt-in and complete the registration process.",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/register",
+    "source_name": "Missouri Secretary of State - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Missouri offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in MO?",
+      "Missouri electronic voter registration",
+      "MO SOS online registration portal"
+    ],
+    "answer": "Yes. Eligible Missouri residents can register to vote or update their registration electronically via the Secretary of State's online portal. To submit the registration entirely online, the applicant must provide the last four digits of their Social Security number and a touchscreen signature.",
+    "source_url": "https://s1.sos.mo.gov/elections/voterregistration/",
+    "source_name": "Missouri Secretary of State - Online Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Missouri maintain its voter registration lists?",
+    "question_variants": [
+      "MO voter list maintenance rules",
+      "How are inactive voters handled in Missouri?",
+      "Missouri voter roll cleaning process"
+    ],
+    "answer": "Local election authorities in Missouri conduct list maintenance primarily using the National Change of Address (NCOA) system. Voters whose mail is returned undeliverable are sent a forwardable canvass notice; if they fail to respond and do not vote in two consecutive federal general elections, their registration is canceled.",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/register",
+    "source_name": "Missouri Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee ballot in Missouri?",
+    "question_variants": [
+      "When is the last day to mail my ballot in MO?",
+      "Missouri mail ballot postmark deadline",
+      "What time are ballots due in Missouri?"
+    ],
+    "answer": "In Missouri, completed absentee ballots must be physically RECEIVED by the local election authority by 7:00 p.m. on Election Day. Missouri does not have a postmark grace period; ballots arriving after 7:00 p.m. on Election Day are rejected, regardless of when they were mailed.",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/howtovote",
+    "source_name": "Missouri Secretary of State - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Missouri use runoff elections for close races?",
+    "question_variants": [
+      "Are there runoffs in Missouri primaries?",
+      "How are tied elections decided in Missouri?",
+      "Tie-breaker rules Missouri elections"
+    ],
+    "answer": "No. Missouri does not hold runoff elections for state or federal offices; plurality determines the winner. Under RSMo 115.517, in the event of an exact tie for state or federal office, the Governor calls a special election. Alternatively, if both tied candidates officially agree, the race may be decided by drawing lots.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.517",
+    "source_name": "RSMo 115.517",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Missouri?",
+    "question_variants": [
+      "Does Missouri use ranked choice voting?",
+      "RCV status in Missouri 2026",
+      "Instant runoff voting MO"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is strictly prohibited across the state. In 2024, Missouri voters approved Constitutional Amendment 7, which explicitly banned the use of Ranked Choice Voting for all local, state, and federal elections, with a grandfather clause solely for St. Louis City's pre-existing nonpartisan approval voting system.",
+    "source_url": "https://www.sos.mo.gov/elections/petitions",
+    "source_name": "Missouri Secretary of State - Amendment 7 (2024)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Missouri campaign materials?",
+    "question_variants": [
+      "Missouri 'Paid for by' rules",
+      "Campaign ad disclaimer requirements MO",
+      "Political taglines Missouri MEC"
+    ],
+    "answer": "Under Missouri campaign finance law, all printed matter and broadcast ads must feature a clear 'Paid for by' disclaimer followed by the name of the candidate committee, PAC, or individual funding the communication. For committees, the name of the designated treasurer must also be included in the disclaimer.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Info.aspx",
+    "source_name": "Missouri Ethics Commission - Disclaimers",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Missouri?",
+    "question_variants": [
+      "MO campaign coordination rules",
+      "When is a PAC expenditure not independent in Missouri?",
+      "Prohibition on candidate-PAC coordination MO"
+    ],
+    "answer": "An expenditure is 'coordinated' (and thus treated as an in-kind contribution subject to statutory contribution limits) if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. The MEC strictly defines independence to ensure PACs do not bypass candidate limits.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Info.aspx",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Missouri?",
+    "question_variants": [
+      "MO MEC late fee",
+      "Penalty for missing a Missouri campaign finance deadline",
+      "Ethics Commission fine for late filing MO"
+    ],
+    "answer": "The Missouri Ethics Commission (MEC) assesses mandatory late fees for missing disclosure deadlines. Under RSMo 105.963, late fees accrue daily ($10/day for the first 30 days, then $100/day thereafter) up to a maximum of $3,000 per report.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Info.aspx",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Missouri campaign committee terminate?",
+    "question_variants": [
+      "Closing a Missouri campaign committee",
+      "MEC committee termination requirements",
+      "Final campaign finance report Missouri"
+    ],
+    "answer": "A candidate committee may formally terminate its registration with the MEC only when it has achieved a zero cash balance, disposed of all surplus funds legally, and resolved all outstanding debts or loans. A formal Termination Report must be filed marking the committee as closed.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Info.aspx",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Missouri?",
+    "question_variants": [
+      "MO independent expenditure reporting MEC",
+      "Disclosure for MO independent expenditure groups",
+      "Reporting thresholds for outside spending Missouri"
+    ],
+    "answer": "Committees making independent expenditures must report them on standard MEC filing schedules. However, any entity (including non-committees) making independent expenditures aggregating more than $500 must file a Non-Committee Expenditure Report within 14 days of exceeding the threshold.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Info.aspx",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Missouri?",
+    "question_variants": [
+      "Missouri in-kind contribution valuation rules",
+      "Reporting non-monetary donations Missouri campaign",
+      "Fair market value for in-kind gifts MO"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment) must be reported to the MEC at their fair market value. They are reported simultaneously as both a contribution receipt and an expenditure, and they count directly toward the donor's per-election contribution limit.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Info.aspx",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Missouri?",
+    "question_variants": [
+      "Missouri candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in MO?",
+      "Reporting candidate loans in MEC"
+    ],
+    "answer": "A candidate may loan an unlimited amount of their own personal funds to their candidate committee. Unlike contributions from third parties, candidate personal funds are not subject to any contribution limits. These must be reported as loans and may be repaid from campaign funds.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Info.aspx",
+    "source_name": "Missouri Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Missouri candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in MO?",
+      "MO surplus campaign funds rules",
+      "Donating remaining campaign funds Missouri"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain the funds for a future campaign, return them pro-rata to contributors, transfer them to a political party, or donate them to an IRS-recognized charitable organization.",
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=130.034",
+    "source_name": "RSMo 130.034",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Missouri?",
+    "question_variants": [
+      "MO PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Missouri",
+      "Maximum PAC gift to state legislator MO"
+    ],
+    "answer": "In Missouri, Political Action Committees (PACs) are subject to the exact same contribution limits as individuals when donating directly to a candidate committee. For the 2025-2026 cycle, PACs are limited to contributing ~$2,825 to statewide candidates, ~$1,125 to State Senate candidates, and ~$375 to State House candidates per election.",
+    "source_url": "https://mec.mo.gov/MEC/Campaign_Finance/CF_Info.aspx",
+    "source_name": "Missouri Ethics Commission - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Missouri?",
+    "question_variants": [
+      "When are county sheriffs elected in MO?",
+      "Missouri county official term lengths",
+      "Are county assessors on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Missouri—including Sheriffs, Assessors, Clerks, and Treasurers—generally serve four-year terms. They are elected on a partisan basis and are split between midterm and presidential election cycles, meaning specific county seats will be highly contested on the 2026 ballot.",
+    "source_url": "https://www.sos.mo.gov/elections/calendar",
+    "source_name": "Missouri Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "MO",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Missouri elections?",
+    "question_variants": [
+      "When are Missouri election results official?",
+      "MO certification deadline",
+      "State Board of Canvassers meeting Missouri"
+    ],
+    "answer": "Local election authorities must complete their canvass and certify local results no later than the second Tuesday following the election. The state Board of Canvassers must meet to officially certify statewide and federal election results no later than the second Tuesday in December.",
+    "source_url": "https://www.sos.mo.gov/elections/goVoteMissouri/howtovote",
+    "source_name": "Missouri Secretary of State - Canvass",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "MO",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Missouri?",
+    "question_variants": [
+      "Missouri special election timeline",
+      "Who calls a special election to fill a US House vacancy in MO?",
+      "Filling a midterm vacancy Missouri"
+    ],
+    "answer": "Special elections to fill federal or state legislative vacancies are called by a writ of election from the Governor. Under state law, the special election must be held on one of the state's statutorily authorized municipal or general election dates to minimize unbudgeted costs.",
+    "source_url": "https://www.sos.mo.gov/elections/calendar",
+    "source_name": "Missouri Secretary of State - Special Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  }
+]
