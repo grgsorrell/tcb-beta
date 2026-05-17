@@ -1,0 +1,1334 @@
+[
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Vermont have an open or closed primary system?",
+    "question_variants": [
+      "Vermont primary voting rules",
+      "Do I have to register with a party to vote in the VT primary?",
+      "Can unaffiliated voters participate in the Vermont primary?"
+    ],
+    "answer": "Vermont operates a fully open primary system. Voters do not register with a political party in Vermont. Any registered voter may request the primary ballot of any major party at the polling place on Election Day. However, they may only vote in one party's primary per election.",
+    "source_url": "https://sos.vermont.gov/elections/voters/voter-faqs/",
+    "source_name": "Vermont Secretary of State - Voter FAQs",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Vermont hold primary runoff elections?",
+    "question_variants": [
+      "What is the threshold to win a primary in VT?",
+      "Does Vermont require a majority to win a primary?",
+      "Vermont primary runoff rules"
+    ],
+    "answer": "No. Vermont does not hold primary runoff elections. A candidate does not need to secure a majority to win the party's nomination; the candidate who receives a simple plurality (the most votes) in the primary advances directly to the general election.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All primary candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates required to file paperwork in Vermont?",
+    "question_variants": [
+      "Do write-in votes count automatically in VT?",
+      "How to register as a write-in candidate in Vermont",
+      "Write-in filing deadline Vermont"
+    ],
+    "answer": "Yes. Counter to older baseline assumptions, Vermont DOES require paperwork for write-in votes to be tabulated for a specific candidate. Under 17 V.S.A. § 2370, a write-in candidate for federal, state, or legislative office must file a designated form with the Secretary of State no later than 5:00 p.m. on the Thursday preceding the election.",
+    "source_url": "https://legislature.vermont.gov/statutes/section/17/049/02370",
+    "source_name": "Vermont Statutes 17 V.S.A. § 2370",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for major party candidates in Vermont for 2026?",
+    "question_variants": [
+      "When do candidates file for office in Vermont?",
+      "Vermont filing deadline 2026",
+      "May filing deadline VT"
+    ],
+    "answer": "For major party candidates participating in the 2026 primary election, the filing deadline to submit petitions and consent forms is 5:00 p.m. on the fourth Thursday after the first Monday in May. For the 2026 cycle, this deadline is May 28, 2026.",
+    "source_url": "https://sos.vermont.gov/elections/election-info-resources/faqs",
+    "source_name": "Vermont Secretary of State - Candidate FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the filing deadline and signature threshold for independent candidates in Vermont?",
+    "question_variants": [
+      "Independent candidate ballot access Vermont",
+      "Running without a party in VT 2026",
+      "Independent filing deadline Vermont"
+    ],
+    "answer": "Independent candidates must file a statement of nomination (petition) and a consent form. The deadline for independent candidates is 5:00 p.m. on the Thursday before the statewide primary (August 6, 2026). The signature requirement varies by office, with 500 required for statewide and federal offices, and fewer for legislative seats.",
+    "source_url": "https://sos.vermont.gov/elections/election-info-resources/faqs",
+    "source_name": "Vermont Secretary of State - Candidate FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Vermont have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the VT primary?",
+      "Vermont sore loser statute",
+      "General election ballot access after primary defeat VT"
+    ],
+    "answer": "Yes. Vermont expanded its sore loser laws through Act 70 (H.429) in 2023. A candidate who runs and loses in a major party's primary election is explicitly prohibited from subsequently appearing on the general election ballot as an independent candidate or running as a write-in candidate for the same office.",
+    "source_url": "https://legislature.vermont.gov/Documents/2024/Docs/BILLS/H-0429/H-0429%20As%20passed%20by%20the%20House%20Official.pdf",
+    "source_name": "Vermont General Assembly (Act 70 / H.429)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Vermont?",
+    "question_variants": [
+      "Vermont joint ticket rules",
+      "How are Lt Gov candidates selected in VT?",
+      "Does the Governor pick a running mate in Vermont?"
+    ],
+    "answer": "No. In Vermont, the Governor and Lieutenant Governor are elected completely separately. They run in separate primary and general elections and appear as distinct items on the ballot, meaning voters can elect a Governor and Lieutenant Governor from two different political parties.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Vermont for 2026?",
+    "question_variants": [
+      "Vermont primary date 2026",
+      "When is Election Day 2026 in Vermont?",
+      "August primary Vermont"
+    ],
+    "answer": "The Vermont primary election will be held on Tuesday, August 11, 2026. The general election will be held on Tuesday, November 3, 2026. Polls open between 5:00 a.m. and 10:00 a.m. (depending on the town) and all polls close uniformly at 7:00 p.m.",
+    "source_url": "https://sos.vermont.gov/elections/voters/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Phil Scott running for election in 2026?",
+    "question_variants": [
+      "Vermont Governor election 2026",
+      "Who is defending the VT Governor seat?",
+      "Is Phil Scott on the 2026 ballot?"
+    ],
+    "answer": "Yes. Vermont is one of only two states (along with New Hampshire) that still elects its Governor to two-year terms. Therefore, the gubernatorial seat is on the ballot in every even-numbered year, including 2026.",
+    "source_url": "https://ballotpedia.org/Governor_of_Vermont",
+    "source_name": "Ballotpedia - Governor of Vermont",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Vermont in 2026?",
+    "question_variants": [
+      "Is Bernie Sanders up for re-election in 2026?",
+      "When is Peter Welch's next election?",
+      "Vermont US Senate cycle 2026"
+    ],
+    "answer": "Neither U.S. Senate seat in Vermont is on the ballot in 2026. Senator Bernie Sanders (Class 1) was re-elected in 2024 and is next up in 2030. Senator Peter Welch (Class 3) was elected in 2022 and is next up in 2028.",
+    "source_url": "https://www.senate.gov/senators/Class_I.htm",
+    "source_name": "U.S. Senate - Class I Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Vermont for the 2026 election?",
+    "question_variants": [
+      "Vermont congressional apportionment",
+      "Are all VT congressional seats up in 2026?",
+      "Number of US Representatives from Vermont"
+    ],
+    "answer": "Vermont is apportioned exactly 1 U.S. House district. The entire state is represented by a single At-Large district, which is on the 2026 ballot for a two-year term.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Vermont State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Vermont House seats up in 2026?",
+      "Vermont Senate election cycle 2026",
+      "Which legislative districts are on the ballot in VT?"
+    ],
+    "answer": "In Vermont, all members of the General Assembly serve two-year terms. Therefore, all 150 seats in the Vermont House of Representatives and all 30 seats in the Vermont State Senate are on the 2026 ballot.",
+    "source_url": "https://legislature.vermont.gov/",
+    "source_name": "Vermont General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Vermont in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "VT statewide election list 2026",
+      "When is the Secretary of State election in VT?"
+    ],
+    "answer": "Because Vermont utilizes two-year terms for all its statewide executives, ALL of them are on the 2026 ballot. This includes the Governor, Lieutenant Governor, Secretary of State, Treasurer, Auditor of Accounts, and Attorney General.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Vermont Supreme Court justices selected and are they on the ballot?",
+    "question_variants": [
+      "Vermont judicial elections 2026",
+      "Are VT judges elected or appointed?",
+      "Supreme Court elections Vermont"
+    ],
+    "answer": "Vermont does NOT hold judicial elections. Supreme Court justices are appointed by the Governor from a list provided by the Judicial Nominating Board, with the consent of the State Senate. They serve six-year terms and are retained by a majority vote of the General Assembly, not by the voters.",
+    "source_url": "https://www.vermontjudiciary.org/",
+    "source_name": "Vermont Judiciary",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Vermont General Assembly sessions?",
+    "question_variants": [
+      "When does the VT legislature meet?",
+      "Vermont legislative session length",
+      "Is the Vermont legislature full time?"
+    ],
+    "answer": "The Vermont General Assembly is a part-time legislature that meets annually. The regular session convenes on the Wednesday following the first Monday in January and generally adjourns in early to mid-May.",
+    "source_url": "https://legislature.vermont.gov/",
+    "source_name": "Vermont General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Vermont?",
+    "question_variants": [
+      "Age and residency for Vermont Governor",
+      "Vermont Constitution Governor qualifications",
+      "Who is eligible to be Governor of VT?"
+    ],
+    "answer": "Under Chapter II, Section 23 of the Vermont Constitution, a candidate for Governor or Lieutenant Governor must be a resident of Vermont for at least four years preceding the day of the election.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Vermont State Legislature?",
+    "question_variants": [
+      "Qualifications for VT State Representative",
+      "Age requirement Vermont State Senate",
+      "Do I have to live in my district to run in VT?"
+    ],
+    "answer": "A candidate for the State Senate or House of Representatives must be a resident of Vermont for at least two years and a resident of the legislative district they seek to represent for at least one year immediately preceding the election.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House candidates in Vermont?",
+    "question_variants": [
+      "US House residency requirements Vermont",
+      "Age to run for Congress in Vermont",
+      "Federal constitutional requirements for VT candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Vermont Governor?",
+    "question_variants": [
+      "How many terms can a Vermont Governor serve?",
+      "Phil Scott term limits VT",
+      "Vermont executive term limit law"
+    ],
+    "answer": "Vermont is one of the few states that does not impose term limits of any kind on its Governor or other statewide executive officers. Governor Phil Scott is fully eligible to continue seeking consecutive two-year terms.",
+    "source_url": "https://ballotpedia.org/Governor_of_Vermont",
+    "source_name": "Ballotpedia - Governor of Vermont",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General in Vermont?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in VT",
+      "Do I need to be a member of the bar to be VT AG?",
+      "Legal requirements for Vermont Attorney General"
+    ],
+    "answer": "The Attorney General is an elected statewide constitutional officer. Under the Vermont Constitution, the only explicitly enumerated requirement is that the candidate be a 'freeman' (a registered voter) of the state.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Vermont?",
+    "question_variants": [
+      "Vermont Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in VT?",
+      "Qualifications for Lieutenant Governor of Vermont"
+    ],
+    "answer": "Under Chapter II, Section 23 of the Vermont Constitution, the qualifications for Lieutenant Governor are identical to those for Governor. A candidate must have been a resident of Vermont for at least four years preceding the election.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Are there special financial disclosure requirements to run for state office in Vermont?",
+    "question_variants": [
+      "Vermont candidate tax return requirement",
+      "State Ethics Commission disclosure VT",
+      "Financial filing requirements for Vermont candidates"
+    ],
+    "answer": "Yes. Each candidate for non-federal statewide office, state senate, state representative, and county office must file a Financial Disclosure form with the State Ethics Commission alongside their petition. Furthermore, candidates for statewide office (Gov, Lt Gov, Sec of State, Treasurer, Auditor, AG) must submit a copy of their most recent IRS Form 1040.",
+    "source_url": "https://sos.vermont.gov/elections/election-info-resources/faqs",
+    "source_name": "Vermont Secretary of State - Candidate FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Vermont?",
+    "question_variants": [
+      "Vermont voter ID requirements",
+      "Do I need my driver's license to vote in VT?",
+      "Acceptable ID for Vermont voting"
+    ],
+    "answer": "No. Vermont does NOT require voters to present a photo ID to vote in person at the polls. (The only exception is for certain first-time voters who registered by mail without providing a driver's license number or SSN, who must show an ID or a current utility bill/bank statement).",
+    "source_url": "https://sos.vermont.gov/elections/voters/voter-faqs/",
+    "source_name": "Vermont Secretary of State - Voter FAQs",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Vermont a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Vermont?",
+      "Vermont vote-by-mail system",
+      "Do I need an excuse to vote absentee in VT?"
+    ],
+    "answer": "Yes. Under Act 60, Vermont is a Universal Mail Voting state for general elections. The state automatically mails a ballot to every active registered voter by October 1 of an even-numbered year. For primary and local elections, ballots are not mailed automatically, but any voter may request a no-excuse absentee ballot.",
+    "source_url": "https://sos.vermont.gov/elections/voters/early-absentee-voting/",
+    "source_name": "Vermont Secretary of State - Voting by Mail",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Vermont offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in VT?",
+      "Vermont early voting dates 2026",
+      "When does early voting start in Vermont?"
+    ],
+    "answer": "Yes. Vermont offers one of the longest early voting periods in the nation. Any registered voter may vote early in person at their town or city clerk's office starting 45 days before the election (which falls on June 27 for the August 2026 primary).",
+    "source_url": "https://sos.vermont.gov/elections/voters/early-absentee-voting/",
+    "source_name": "Vermont Secretary of State - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Vermont offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in VT",
+      "Vermont same day voter registration",
+      "Voter registration deadline 2026 Vermont"
+    ],
+    "answer": "Vermont has NO advance voter registration deadline. The state offers unrestricted Same-Day Registration (SDR). Eligible individuals can register to vote on any day up to and including Election Day at their town clerk's office or directly at their polling place.",
+    "source_url": "https://sos.vermont.gov/elections/voters/registration/",
+    "source_name": "Vermont Secretary of State - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Vermont?",
+    "question_variants": [
+      "Can felons vote in Vermont state?",
+      "Felony voting rights restoration VT",
+      "Voting on parole in Vermont"
+    ],
+    "answer": "In a major distinctive, Vermont is one of only two states (along with Maine) where felony voting rights are NEVER lost. Individuals convicted of a felony retain their right to vote, even while actively incarcerated. They vote via absentee ballot at their last voluntary residence.",
+    "source_url": "https://legislature.vermont.gov/statutes/section/28/011/00807",
+    "source_name": "Vermont Statutes 28 V.S.A. § 807",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "VT",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How is election administration structured across Vermont jurisdictions?",
+    "question_variants": [
+      "Vermont county election administration",
+      "How many town clerks in VT?",
+      "Local election control Vermont municipalities"
+    ],
+    "answer": "While Vermont has 14 geographic counties, election administration is conducted almost entirely at the municipal level by Town and City Clerks across 246 distinct municipalities. Statewide campaigns must coordinate heavily with these local clerks regarding ballot logistics and early voting.",
+    "source_url": "https://sos.vermont.gov/elections/town-clerks/",
+    "source_name": "Vermont Secretary of State - Town Clerks",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Vermont voter file?",
+    "question_variants": [
+      "Vermont voter database access cost",
+      "How to get the voter list in VT",
+      "What data is included in the Vermont voter file?"
+    ],
+    "answer": "Campaigns and political committees can request the statewide voter registration list from the Secretary of State. The file includes voter names, addresses, and voting history (but not party affiliation, as Vermont does not record it). The data is strictly restricted to political and electoral purposes.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee mail-in ballot in Vermont?",
+    "question_variants": [
+      "When is the last day to mail my ballot in VT?",
+      "Vermont mail ballot postmark deadline",
+      "What time are ballots due in Vermont?"
+    ],
+    "answer": "Voted absentee and universal mail ballots must be physically received by the local town clerk's office or polling place by the close of polls (7:00 p.m.) on Election Day. Vermont does NOT accept ballots arriving late based on postmark dates.",
+    "source_url": "https://sos.vermont.gov/elections/voters/early-absentee-voting/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Vermont?",
+    "question_variants": [
+      "Where do I file campaign finance reports in VT?",
+      "What is the Vermont Campaign Finance system?",
+      "Does the VT Secretary of State handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Vermont are administered and enforced by the Office of the Secretary of State. Candidates use the online Vermont Campaign Finance System to file their required contribution and expenditure reports.",
+    "source_url": "https://sos.vermont.gov/elections/campaign-finance/",
+    "source_name": "Vermont Secretary of State - Campaign Finance",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in Vermont for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Vermont?",
+      "VT individual donation caps 2026 election",
+      "Maximum donation to state legislature Vermont"
+    ],
+    "answer": "Vermont imposes contribution limits per TWO-YEAR election cycle, not per election. For the 2025-2026 cycle, individuals may contribute up to $5,180 to a gubernatorial candidate, $1,940 to a State Senate candidate, and $1,290 to a State Representative candidate for the entire cycle.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Vermont",
+    "source_name": "Ballotpedia / Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Vermont campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Vermont state",
+      "Can a business donate to my campaign in VT?",
+      "Corporate campaign finance rules Vermont"
+    ],
+    "answer": "Yes. Unlike most other New England states, direct contributions from the general treasury of a corporation or labor union to a candidate's campaign committee are PERMITTED in Vermont. They are subject to the exact same per-cycle limits as individual donors ($5,180 Gov, $1,940 Senate, $1,290 House).",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Vermont",
+    "source_name": "Ballotpedia / Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Vermont?",
+    "question_variants": [
+      "VT PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Vermont",
+      "Maximum PAC gift to state legislator VT"
+    ],
+    "answer": "In Vermont, standard Political Action Committees (PACs) are subject to the EXACT SAME contribution limits as individuals and corporations. For the 2025-2026 cycle, a PAC may contribute up to $5,180 to a gubernatorial candidate, $1,940 to a State Senate candidate, and $1,290 to a State House candidate per two-year cycle.",
+    "source_url": "https://ballotpedia.org/Campaign_finance_requirements_in_Vermont",
+    "source_name": "Ballotpedia / Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Vermont candidates?",
+    "question_variants": [
+      "VT SOS filing dates 2026",
+      "When are campaign finance reports due in VT?",
+      "Vermont pre-primary and pre-general report deadlines"
+    ],
+    "answer": "During an election year, Vermont candidates must file campaign finance reports on the 15th of March and July. Leading up to an election, they must file reports 30 days before, 15 days before, and 4 days before both the primary and general elections, as well as a post-election report two weeks after.",
+    "source_url": "https://outside.vermont.gov/dept/sos/Elections_Division/campaign_finance/campaign_finance_guide.pdf",
+    "source_name": "Vermont Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Vermont's rapid disclosure requirements for late mass media expenditures?",
+    "question_variants": [
+      "Vermont 24-hour large contribution report",
+      "Late mass media reporting Vermont SOS",
+      "When do I file a rapid report in VT?"
+    ],
+    "answer": "Under Vermont law, any candidate or political committee that makes expenditures for 'mass media activities' totaling $500 or more within the 45 days before an election must file a Mass Media Report with the Secretary of State within 24 hours of the expenditure.",
+    "source_url": "https://outside.vermont.gov/dept/sos/Elections_Division/campaign_finance/campaign_finance_guide.pdf",
+    "source_name": "Vermont Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Vermont provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Vermont Governor",
+      "State funded campaigns Vermont status",
+      "Government campaign grants VT"
+    ],
+    "answer": "Yes. Vermont offers optional public financing solely for candidates seeking the office of Governor or Lieutenant Governor. Qualifying candidates who accept strict spending limits and raise a threshold of small-dollar qualifying contributions receive public campaign grants from the state.",
+    "source_url": "https://sos.vermont.gov/elections/campaign-finance/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Vermont legislators?",
+    "question_variants": [
+      "Can Vermont legislators raise money during session?",
+      "Lobbyist contribution ban VT legislature",
+      "Legislative session contribution rules Vermont"
+    ],
+    "answer": "Yes. Vermont enforces a session freeze specifically targeted at lobbying entities. While the General Assembly is in regular session, any registered lobbyist, lobbyist employer, or lobbying firm is strictly prohibited from making or soliciting campaign contributions to legislators or statewide officeholders.",
+    "source_url": "https://www.jdsupra.com/legalnews/contributor-beware-state-level-2397699/",
+    "source_name": "JDSupra - Contributor Beware",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Vermont's state legislative maps?",
+    "question_variants": [
+      "Does the VT legislature draw district maps?",
+      "Who has the authority to draw district lines in Vermont?",
+      "Vermont redistricting commission"
+    ],
+    "answer": "In Vermont, a 7-member advisory body called the Legislative Apportionment Board drafts and proposes district maps. However, the Vermont General Assembly (state legislature) holds the ultimate authority to enact the final maps as standard legislation, which is subject to the Governor's signature or veto.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Vermont",
+    "source_name": "Ballotpedia - Redistricting in Vermont",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Vermont?",
+    "question_variants": [
+      "Standards for drawing Vermont district lines",
+      "Vermont gerrymandering rules",
+      "Map requirements VT"
+    ],
+    "answer": "Under Vermont statutes, legislative districts must be contiguous, compact, and as nearly equal in population as practicable. The law heavily emphasizes preserving the integrity of political subdivisions, meaning mapping should adhere to county and town boundaries whenever possible.",
+    "source_url": "https://sos.vermont.gov/elections/town-clerks/apportionment-board/",
+    "source_name": "Vermont Secretary of State - Apportionment Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "redistricting",
+    "question": "Are the current Vermont state legislative maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of Vermont legislative redistricting maps",
+      "Are there pending redistricting lawsuits in Vermont?",
+      "Vermont 2026 state legislative boundaries"
+    ],
+    "answer": "Yes. The redistricting maps enacted by the Vermont General Assembly in 2022 (following the 2020 census) remain fully operative for the 2026 election cycle without any overriding systemic legal challenges.",
+    "source_url": "https://legislature.vermont.gov/",
+    "source_name": "Vermont General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Did Vermont need to redraw its congressional map after the 2020 census?",
+    "question_variants": [
+      "Status of Vermont congressional redistricting",
+      "Vermont congressional map 2026",
+      "Vermont US House redistricting controversy"
+    ],
+    "answer": "No. Vermont is apportioned only a single, At-Large U.S. House district that covers the entire state. Because it retained only one seat following the 2020 census, congressional redistricting is unnecessary, avoiding any associated mapping controversies.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Vermont have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Vermont be recalled?",
+      "How to recall a state senator in VT",
+      "Statewide recall election rules Vermont"
+    ],
+    "answer": "No. The State of Vermont does not have any constitutional or statutory provision allowing for the recall of state-level elected officials, including the Governor, statewide executives, or members of the General Assembly.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Vermont",
+    "source_name": "Laws governing recall in Vermont",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Vermont?",
+    "question_variants": [
+      "Vermont town selectboard recall rules",
+      "Signature requirement local recall Vermont",
+      "Recalling a mayor in VT"
+    ],
+    "answer": "There is no statewide, general statutory right to recall local officials in Vermont. Recall is only permitted at the municipal level if a specific town or city charter has been explicitly approved by the legislature to include recall provisions.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Vermont",
+    "source_name": "Laws governing recall in Vermont",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Vermont have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the VT ballot",
+      "Vermont citizen initiative signature requirements",
+      "Can citizens propose laws in Vermont?"
+    ],
+    "answer": "No. Vermont is one of the states that does NOT have a statewide citizen initiative process. Citizens cannot draft statutes or constitutional amendments and gather signatures to place them on the ballot. All statewide ballot measures must be referred by the legislature.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Vermont",
+    "source_name": "Ballotpedia - Initiative and Referendum in Vermont",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Vermont legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Vermont",
+      "Referendum by legislature VT",
+      "Can the VT legislature put a constitutional amendment on the ballot?"
+    ],
+    "answer": "Vermont has a highly distinctive, multi-step amendment process. An amendment must first pass the State Senate by a two-thirds (2/3) supermajority, and then the House by a simple majority. In the NEXT biennial legislative session (after an election), it must pass BOTH chambers by a simple majority. Finally, it goes to the voters for ratification.",
+    "source_url": "https://ballotpedia.org/Amending_the_Vermont_Constitution",
+    "source_name": "Vermont Constitution Chapter II, Section 72",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does Vermont have a veto referendum process?",
+    "question_variants": [
+      "How to refer a VT bill to the ballot",
+      "Vermont citizen referendum rules",
+      "Veto referendum signature threshold Vermont state"
+    ],
+    "answer": "No. Vermont does not have a statewide veto referendum process. Citizens cannot gather signatures to suspend and refer an already-passed legislative act to the ballot for a popular vote of approval or rejection.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_Vermont",
+    "source_name": "Ballotpedia - Initiative and Referendum in Vermont",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What voter approval threshold is required to pass ballot measures in Vermont?",
+    "question_variants": [
+      "Vermont ballot measure pass threshold",
+      "Does a measure need a supermajority in VT?",
+      "Majority vote requirements Vermont ballot measures"
+    ],
+    "answer": "In Vermont, a legislatively referred constitutional amendment requires only a simple majority (over 50%) of the total votes cast on that specific measure by voters during a general election to pass.",
+    "source_url": "https://sos.vermont.gov/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Vermont?",
+    "question_variants": [
+      "Requirements to run for VT Secretary of State",
+      "Who can run for Secretary of State in VT?",
+      "Residency rules for Vermont SOS"
+    ],
+    "answer": "Under the Vermont Constitution, the state maintains highly permissive candidate requirements. To run for Secretary of State, an individual simply must be a 'freeman' (a registered voter) of the state. There are no other enumerated age or specific residency length requirements.",
+    "source_url": "https://sos.vermont.gov/elections/election-info-resources/faqs",
+    "source_name": "Vermont Secretary of State - Candidate FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in Vermont?",
+    "question_variants": [
+      "Eligibility for Vermont State Treasurer",
+      "Who can run for Treasurer in VT?",
+      "Vermont Treasurer residency requirements"
+    ],
+    "answer": "Similar to the Secretary of State, the only constitutional requirement to run for the office of State Treasurer in Vermont is that the candidate must be a 'freeman' (a registered voter) of the state.",
+    "source_url": "https://sos.vermont.gov/elections/election-info-resources/faqs",
+    "source_name": "Vermont Secretary of State - Candidate FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Auditor of Accounts in Vermont?",
+    "question_variants": [
+      "Eligibility for Vermont State Auditor",
+      "Who can run for Auditor in VT?",
+      "Is a CPA license required for Vermont Auditor?"
+    ],
+    "answer": "The Auditor of Accounts in Vermont is a statewide elected office. The only constitutional requirement to hold this office is that the candidate must be a registered voter of the state. There is no constitutional requirement for the candidate to hold a CPA license or specific financial degree.",
+    "source_url": "https://sos.vermont.gov/elections/election-info-resources/faqs",
+    "source_name": "Vermont Secretary of State - Candidate FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Vermont?",
+    "question_variants": [
+      "Run for school board Vermont requirements",
+      "Who can be a school board member in VT?",
+      "School board residency rules Vermont"
+    ],
+    "answer": "To run for a local school board in Vermont, candidates must be legally qualified voters and residents of the specific town or school district they seek to represent at the time they are elected.",
+    "source_url": "https://sos.vermont.gov/elections/town-clerks/",
+    "source_name": "Vermont Secretary of State - Local Offices",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for Vermont Supreme Court justices?",
+    "question_variants": [
+      "Vermont Supreme Court Justice eligibility",
+      "Years of practice required for VT Supreme Court",
+      "Are Vermont judges elected or appointed?"
+    ],
+    "answer": "Vermont Supreme Court justices are appointed, not elected. Candidates must be attorneys licensed to practice in Vermont with at least 10 years of legal experience, including at least five years practicing law in Vermont. They are chosen by the Governor from a Judicial Nominating Board list.",
+    "source_url": "https://www.vermontjudiciary.org/about-court/judicial-selection",
+    "source_name": "Vermont Judiciary",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in Vermont?",
+    "question_variants": [
+      "How to fix a rejected signature in VT",
+      "Vermont ballot cure process deadline",
+      "Missing signature on VT mail ballot"
+    ],
+    "answer": "Following the passage of Act 60, Vermont instituted a formal ballot cure process. If a town clerk determines an absentee ballot is defective (e.g., missing signature or unsealed inner envelope), they must notify the voter. The voter is then allowed to cure the defect either in person or by submitting a new ballot before the close of polls on Election Day.",
+    "source_url": "https://sos.vermont.gov/elections/voters/early-absentee-voting/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Vermont?",
+    "question_variants": [
+      "When are military ballots due in Vermont?",
+      "UOCAVA return deadline VT",
+      "Overseas voting rules Vermont state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. In Vermont, voted ballots (whether returned by mail or submitted electronically) must be received by the town clerk by the close of polls (7:00 p.m.) on Election Day to be counted.",
+    "source_url": "https://sos.vermont.gov/elections/voters/military-overseas/",
+    "source_name": "Vermont Secretary of State - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Vermont?",
+    "question_variants": [
+      "What is a provisional ballot in VT?",
+      "Voting without ID Vermont",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are extremely rare in Vermont because the state offers unrestricted Same-Day Registration (SDR) everywhere. They are generally only issued if a voter refuses to complete the same-day registration forms, or if a federal or state court orders the polling hours to be extended.",
+    "source_url": "https://sos.vermont.gov/elections/voters/voter-faqs/",
+    "source_name": "Vermont Secretary of State - Voter FAQs",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Vermont have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Vermont DMV?",
+      "VT motor voter automatic registration",
+      "Do I have to register to vote if I get a VT driver's license?"
+    ],
+    "answer": "Yes. Vermont has utilized Automatic Voter Registration (AVR) since 2017. Any eligible citizen conducting a transaction at the Department of Motor Vehicles is automatically registered to vote or has their address updated, unless they actively decline (opt-out) via the transaction forms.",
+    "source_url": "https://sos.vermont.gov/elections/voters/registration/",
+    "source_name": "Vermont Secretary of State - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Vermont offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in VT?",
+      "Vermont electronic voter registration",
+      "VT MyVoterPage online registration portal"
+    ],
+    "answer": "Yes. Eligible Vermont residents can securely register to vote or update their registration details via the Secretary of State's online 'My Voter Page' portal.",
+    "source_url": "https://mvp.vermont.gov/",
+    "source_name": "Vermont Secretary of State - MyVoterPage",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Vermont maintain its voter registration lists?",
+    "question_variants": [
+      "VT voter list maintenance rules",
+      "How are inactive voters handled in Vermont?",
+      "Vermont voter roll cleaning process"
+    ],
+    "answer": "Vermont conducts regular list maintenance using the Electronic Registration Information Center (ERIC) and National Change of Address (NCOA) data. Town clerks mail challenge notices to voters whose residency is in question. If they do not respond and fail to vote in two consecutive federal general elections, their names are purged from the checklist.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Vermont?",
+    "question_variants": [
+      "How close can I campaign to a polling place in VT?",
+      "Vermont electioneering rule inside building",
+      "VT buffer zone around voting centers"
+    ],
+    "answer": "Vermont has a relatively localized electioneering rule. Under 17 V.S.A. § 2508, electioneering, campaigning, and displaying political materials are strictly prohibited INSIDE the building containing the polling place. There is no set minimum exterior distance (like 100 feet), but officials must ensure exterior campaigning does not hinder voter access.",
+    "source_url": "https://legislature.vermont.gov/statutes/section/17/051/02508",
+    "source_name": "Vermont Statutes 17 V.S.A. § 2508",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Vermont?",
+    "question_variants": [
+      "Does Vermont use ranked choice voting?",
+      "RCV status in Vermont 2026",
+      "Instant runoff voting VT Burlington"
+    ],
+    "answer": "Ranked Choice Voting (RCV) is not used for any statewide or federal elections in Vermont. However, it is used locally: the City of Burlington (Vermont's largest city) utilizes Ranked Choice Voting for its mayoral and city council elections.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in Vermont elections?",
+    "question_variants": [
+      "How are tied elections decided in Vermont?",
+      "Tie-breaker rules Vermont elections",
+      "What happens if a race is tied in VT?"
+    ],
+    "answer": "In Vermont, if there is a tie for the top statewide executive offices (Governor, Lt. Governor, Treasurer), the General Assembly decides the winner by a joint ballot. For ties in state legislative or local races, the local court generally orders a special run-off election.",
+    "source_url": "https://legislature.vermont.gov/statutes/section/17/051/02602",
+    "source_name": "Vermont Statutes 17 V.S.A. § 2602",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Vermont campaign materials?",
+    "question_variants": [
+      "Vermont 'Paid for by' rules",
+      "Campaign ad disclaimer requirements VT",
+      "Political taglines Vermont SOS"
+    ],
+    "answer": "Under Vermont campaign finance law, all political advertising, mass media, and campaign materials must clearly contain the name and mailing address of the person, candidate, or committee that paid for the communication. (e.g., 'Paid for by [Name], [Address]').",
+    "source_url": "https://outside.vermont.gov/dept/sos/Elections_Division/campaign_finance/campaign_finance_guide.pdf",
+    "source_name": "Vermont Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Vermont?",
+    "question_variants": [
+      "VT campaign coordination rules",
+      "When is a PAC expenditure not independent in Vermont?",
+      "Prohibition on candidate-PAC coordination VT"
+    ],
+    "answer": "An 'independent expenditure' loses its independence and becomes 'coordinated' if it is made at the request, suggestion, or with the cooperation of a candidate or their committee. Once coordinated, the expenditure is treated legally as an in-kind contribution and strictly applied against the donor's per-cycle limit.",
+    "source_url": "https://outside.vermont.gov/dept/sos/Elections_Division/campaign_finance/campaign_finance_guide.pdf",
+    "source_name": "Vermont Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Vermont?",
+    "question_variants": [
+      "VT SOS late fee",
+      "Penalty for missing a Vermont campaign finance deadline",
+      "Secretary of State fine for late filing VT"
+    ],
+    "answer": "The Vermont Secretary of State imposes administrative penalties for late campaign finance reports. Filers who miss a deadline are subject to fines of $10 per day, which accumulate up to a maximum of $1,000 per report.",
+    "source_url": "https://outside.vermont.gov/dept/sos/Elections_Division/campaign_finance/campaign_finance_guide.pdf",
+    "source_name": "Vermont Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Vermont campaign committee terminate?",
+    "question_variants": [
+      "Closing a Vermont campaign committee",
+      "SOS committee termination requirements",
+      "Final campaign finance report Vermont"
+    ],
+    "answer": "A candidate committee may formally terminate by rolling over any surplus funds (to a future campaign or charity), bringing the committee's account balance to exactly zero, closing the dedicated bank account, and filing a 'Final Report' through the online campaign finance system.",
+    "source_url": "https://outside.vermont.gov/dept/sos/Elections_Division/campaign_finance/campaign_finance_guide.pdf",
+    "source_name": "Vermont Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Vermont?",
+    "question_variants": [
+      "VT independent expenditure reporting SOS",
+      "Disclosure for VT independent expenditure groups",
+      "Reporting thresholds for outside spending Vermont"
+    ],
+    "answer": "Any person, PAC, or entity that makes an independent expenditure (such as mass media activities) advocating for or against a candidate must file an Independent Expenditure Report. If $500 or more is spent within 45 days of the election, the report must be filed within 24 hours.",
+    "source_url": "https://sos.vermont.gov/elections/campaign-finance/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Vermont?",
+    "question_variants": [
+      "Vermont in-kind contribution valuation rules",
+      "Reporting non-monetary donations Vermont campaign",
+      "Fair market value for in-kind gifts VT"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment not available to the general public) must be reported at their fair market value. Their value is counted directly against the donor's per-cycle monetary contribution limits.",
+    "source_url": "https://outside.vermont.gov/dept/sos/Elections_Division/campaign_finance/campaign_finance_guide.pdf",
+    "source_name": "Vermont Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Vermont?",
+    "question_variants": [
+      "Vermont candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in VT?",
+      "Reporting candidate loans in SOS"
+    ],
+    "answer": "No. In Vermont, standard per-cycle contribution limits only apply to external donors. A candidate may loan or contribute an UNLIMITED amount of their own personal funds to their own campaign committee, unless the candidate is participating in the public financing program.",
+    "source_url": "https://outside.vermont.gov/dept/sos/Elections_Division/campaign_finance/campaign_finance_guide.pdf",
+    "source_name": "Vermont Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Vermont candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in VT?",
+      "VT surplus campaign funds rules",
+      "Donating remaining campaign funds Vermont"
+    ],
+    "answer": "Surplus campaign funds cannot be converted to personal use. Candidates may carry them forward to a future campaign, return them pro-rata to contributors, or donate them to an IRS-recognized charity or political party. Candidates participating in the public financing program must return all surplus public funds to the state.",
+    "source_url": "https://outside.vermont.gov/dept/sos/Elections_Division/campaign_finance/campaign_finance_guide.pdf",
+    "source_name": "Vermont Secretary of State - Campaign Finance Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["county", "municipal"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for local and county offices in Vermont?",
+    "question_variants": [
+      "When are county sheriffs elected in VT?",
+      "Vermont local official term lengths",
+      "Town Meeting Day elections Vermont"
+    ],
+    "answer": "Vermont's county-level officials (like Sheriffs, State's Attorneys, and Probate Judges) are elected during the November general election in even-numbered years for four-year terms. However, most local town officials (like selectboard members) are traditionally elected on Town Meeting Day, which is held annually on the first Tuesday in March.",
+    "source_url": "https://sos.vermont.gov/elections/town-clerks/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County and Local candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Vermont elections?",
+    "question_variants": [
+      "When are Vermont election results official?",
+      "VT certification deadline",
+      "State Canvassing Committee meeting Vermont"
+    ],
+    "answer": "Local town clerks report results within 48 hours of the election. The state canvassing committee then officially convenes at the Secretary of State's office on the third Tuesday in August for primary elections, and the third Tuesday in November for general elections, to certify the final returns.",
+    "source_url": "https://legislature.vermont.gov/statutes/section/17/051/02592",
+    "source_name": "Vermont Statutes 17 V.S.A. § 2592",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "VT",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Vermont?",
+    "question_variants": [
+      "Vermont special election timeline",
+      "Who calls a special election to fill a US House vacancy in VT?",
+      "Filling a midterm vacancy Vermont"
+    ],
+    "answer": "Special elections to fill a vacancy in a federal or state legislative office are called by a writ of election issued by the Governor. State legislative vacancies are often filled by a gubernatorial appointment (from the vacating member's party) if sufficient time does not remain to hold an election.",
+    "source_url": "https://sos.vermont.gov/elections/",
+    "source_name": "Vermont Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "VT",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the role of the State Ethics Commission in Vermont elections?",
+    "question_variants": [
+      "Who handles ethics disclosures in VT?",
+      "Vermont State Ethics Commission structure",
+      "Candidate financial disclosure Vermont"
+    ],
+    "answer": "Created relatively recently, the Vermont State Ethics Commission provides guidance and enforces compliance for state officials. Crucially for candidates, the Commission receives and reviews the mandatory Financial Disclosure forms and IRS Form 1040 submissions required of state-level candidates when they file for office.",
+    "source_url": "https://ethicscommission.vermont.gov/",
+    "source_name": "Vermont State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  }
+]
