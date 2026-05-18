@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in Nebraska?",
+    "question_variants": [
+      "Are Nebraska primaries open or closed?",
+      "Can unaffiliated voters participate in the Nebraska primary?",
+      "Nebraska primary voting rules"
+    ],
+    "answer": "Nebraska's primary system varies significantly by office. For the state legislature, the primary is a nonpartisan top-two blanket primary where any registered voter can participate. For congressional and statewide offices, primaries are partisan. Unaffiliated voters may request a partisan ballot for congressional races, but for statewide executive offices, each political party independently decides whether to allow unaffiliated voters to participate in their primary.",
+    "source_url": "https://sos.nebraska.gov/elections/voter-information",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Nebraska for 2026?",
+    "question_variants": [
+      "Nebraska primary date 2026",
+      "When is Election Day 2026 in Nebraska?",
+      "May primary Nebraska"
+    ],
+    "answer": "The Nebraska primary election will be held on Tuesday, May 12, 2026. The general election will be held on Tuesday, November 3, 2026. Polls are open from 8:00 a.m. to 8:00 p.m. in the Central Time Zone, and 7:00 a.m. to 7:00 p.m. in the Mountain Time Zone.",
+    "source_url": "https://civicnebraska.org/election-2026/cal/",
+    "source_name": "Civic Nebraska - Election Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline in Nebraska for 2026?",
+    "question_variants": [
+      "When do candidates file for office in Nebraska?",
+      "Nebraska filing deadline 2026",
+      "Incumbent filing deadline NE"
+    ],
+    "answer": "Nebraska utilizes split filing deadlines for the primary election. Incumbent officeholders must file their candidate paperwork by February 17, 2026. Non-incumbent challengers have until March 2, 2026, to file their candidacy.",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State - Candidate Info",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is unique about the structure of the Nebraska State Legislature?",
+    "question_variants": [
+      "Nebraska unicameral legislature",
+      "Is the Nebraska legislature nonpartisan?",
+      "How many chambers in the NE legislature?"
+    ],
+    "answer": "Nebraska holds the major constitutional distinctive of being the ONLY state in the nation with a unicameral (single-chamber) legislature. The body has 49 members (State Senators). Furthermore, the legislature is officially nonpartisan; candidates are elected via a top-two primary and their political party affiliations are not listed on the ballot.",
+    "source_url": "https://nebraskalegislature.gov/about/history.php",
+    "source_name": "Nebraska Legislature History",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Nebraska?",
+    "question_variants": [
+      "Do write-in votes count in NE?",
+      "How to register as a write-in candidate in Nebraska",
+      "Write-in filing deadline Nebraska"
+    ],
+    "answer": "Yes. Write-in candidates are permitted, but they must officially file a notarized affidavit of intent along with the required filing fee. To have their votes tabulated in the general election, the candidate must file this paperwork with the appropriate election official no later than the second Friday before the election.",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for independent candidates in Nebraska?",
+    "question_variants": [
+      "Independent candidate ballot access Nebraska",
+      "Running without a party in NE 2026",
+      "How many signatures for independent US Senate NE"
+    ],
+    "answer": "Independent (unaffiliated) candidates for partisan offices bypass the primary and petition directly onto the general election ballot. For statewide offices (like U.S. Senate or Governor), they must submit at least 4,000 valid signatures from registered voters. For U.S. House, they need 2,000 signatures. The deadline to file is September 1.",
+    "source_url": "https://ballotpedia.org/United_States_House_of_Representatives_elections_in_Nebraska,_2026",
+    "source_name": "Ballotpedia / Nebraska Revised Statutes",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Nebraska have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the NE primary?",
+      "Nebraska sore loser statute",
+      "General election ballot access after primary defeat NE"
+    ],
+    "answer": "Yes. Nebraska enforces a sore loser law under Neb. Rev. Stat. § 32-615. A candidate whose name appeared on the primary election ballot and was defeated for the nomination cannot subsequently have their name placed on the general election ballot by petition or as a write-in candidate for that same office.",
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-615",
+    "source_name": "Nebraska Revised Statutes § 32-615",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Nebraska?",
+    "question_variants": [
+      "Nebraska joint ticket rules",
+      "How are Lt Gov candidates selected in NE?",
+      "Does the Governor pick a running mate in Nebraska?"
+    ],
+    "answer": "In Nebraska, the Governor and Lieutenant Governor run as a joint ticket in the general election. However, they do not run together in the primary. The gubernatorial candidate runs independently in the primary and, upon securing the nomination, designates their Lieutenant Governor running mate for the November ballot.",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How does Nebraska allocate its Electoral College votes?",
+    "question_variants": [
+      "Nebraska split electoral votes",
+      "Congressional district method NE",
+      "Does the winner take all electoral votes in Nebraska?"
+    ],
+    "answer": "Nebraska is one of only two states (along with Maine) that uses the congressional district method to allocate its Electoral College votes, rather than winner-take-all. The state awards 2 at-large electoral votes to the statewide popular vote winner, and 1 electoral vote to the popular vote winner within each of its 3 congressional districts. NE-2 (Omaha) has historically split from the statewide vote (e.g., 2008, 2020).",
+    "source_url": "https://sos.nebraska.gov/elections/electoral-college",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Jim Pillen running for re-election in 2026?",
+    "question_variants": [
+      "Nebraska Governor election 2026",
+      "Who is defending the NE Governor seat?",
+      "Is Jim Pillen on the 2026 ballot?"
+    ],
+    "answer": "Yes. Governor Jim Pillen (R) was first elected in 2022 and is eligible to defend his seat for a second four-year term in the 2026 midterm election.",
+    "source_url": "https://ballotpedia.org/Governor_of_Nebraska",
+    "source_name": "Ballotpedia - Governor of Nebraska",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Nebraska in 2026?",
+    "question_variants": [
+      "Is Pete Ricketts up for re-election in 2026?",
+      "When is Deb Fischer's next election?",
+      "Nebraska US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Pete Ricketts (R) is up for election in 2026. Ricketts was appointed in 2023 and won a special election in 2024 to complete the term; he is now seeking his first full six-year term. Senator Deb Fischer (Class 1) was re-elected in 2024 and is next up in 2030.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Nebraska for the 2026 election?",
+    "question_variants": [
+      "Nebraska congressional apportionment",
+      "Are all NE congressional seats up in 2026?",
+      "Number of US Representatives from Nebraska"
+    ],
+    "answer": "Nebraska is apportioned 3 U.S. House districts. All three seats are on the 2026 ballot for two-year terms, with NE-2 traditionally being a highly competitive battleground district.",
+    "source_url": "https://ballotpedia.org/United_States_House_of_Representatives_elections_in_Nebraska,_2026",
+    "source_name": "Ballotpedia",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Nebraska State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Nebraska Senate seats up in 2026?",
+      "Nebraska Unicameral election cycle 2026",
+      "Which legislative districts are on the ballot in NE?"
+    ],
+    "answer": "The Nebraska Unicameral Legislature is composed of 49 State Senators who serve four-year staggered terms. In the 2026 election cycle, the 24 even-numbered legislative districts will be on the ballot.",
+    "source_url": "https://nebraskalegislature.gov/about/history.php",
+    "source_name": "Nebraska Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Nebraska in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "NE statewide election list 2026",
+      "When is the Secretary of State election in NE?"
+    ],
+    "answer": "Nebraska elects its major statewide executive officers concurrently on a four-year midterm cycle. In 2026, the offices of Governor, Lieutenant Governor, Secretary of State, Attorney General, State Treasurer, and Auditor of Public Accounts are all on the ballot.",
+    "source_url": "https://sos.nebraska.gov/",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Nebraska State Legislature sessions?",
+    "question_variants": [
+      "When does the NE legislature meet?",
+      "Nebraska 90 day legislative session",
+      "Is the Nebraska legislature full time?"
+    ],
+    "answer": "The Nebraska Unicameral is a part-time legislature that meets annually. Sessions begin on the first Wednesday after the first Monday in January. In odd-numbered years, the session lasts for 90 legislative days. In even-numbered election years (like 2026), it is a 'short session' lasting 60 legislative days.",
+    "source_url": "https://nebraskalegislature.gov/",
+    "source_name": "Nebraska Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Nebraska?",
+    "question_variants": [
+      "Age and residency for Nebraska Governor",
+      "Nebraska Constitution Governor qualifications",
+      "Who is eligible to be Governor of NE?"
+    ],
+    "answer": "Under Article IV, Section 2 of the Nebraska Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States, and must have been a resident of Nebraska for at least five years next preceding the election.",
+    "source_url": "https://nebraskalegislature.gov/laws/articles.php?article=IV-2",
+    "source_name": "Nebraska Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Nebraska State Legislature?",
+    "question_variants": [
+      "Qualifications for NE State Senator",
+      "Age requirement Nebraska Unicameral",
+      "Do I have to live in my district to run in NE?"
+    ],
+    "answer": "A candidate for the Nebraska Legislature must be a registered voter, at least 21 years of age, and a resident of the legislative district they seek to represent for exactly one year prior to the general election.",
+    "source_url": "https://nebraskalegislature.gov/laws/articles.php?article=III-8",
+    "source_name": "Nebraska Constitution Article III",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Nebraska?",
+    "question_variants": [
+      "US Senate residency requirements Nebraska",
+      "Age to run for Congress in Nebraska",
+      "Federal constitutional requirements for NE candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Nebraska Governor?",
+    "question_variants": [
+      "How many terms can a Nebraska Governor serve?",
+      "Jim Pillen term limits NE",
+      "Nebraska executive term limit law"
+    ],
+    "answer": "Under the Nebraska Constitution, the Governor is limited to serving two consecutive four-year terms. After serving two terms, the individual is ineligible to run for the office again until one full term has intervened.",
+    "source_url": "https://nebraskalegislature.gov/laws/articles.php?article=IV-1",
+    "source_name": "Nebraska Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Nebraska have legislative term limits?",
+    "question_variants": [
+      "How many terms can a Nebraska state senator serve?",
+      "Are there term limits for the Nebraska Unicameral?",
+      "Nebraska legislature term limit status"
+    ],
+    "answer": "Yes. Members of the Nebraska Legislature are subject to strict term limits. State Senators are limited to serving a maximum of two consecutive four-year terms (8 consecutive years). After sitting out for one term, they may run again.",
+    "source_url": "https://nebraskalegislature.gov/about/history.php",
+    "source_name": "Nebraska Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General in Nebraska?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in NE",
+      "Do I need to be a member of the bar to be NE AG?",
+      "Legal requirements for Nebraska Attorney General"
+    ],
+    "answer": "To run for Attorney General in Nebraska, a candidate must be a citizen of the United States, a resident of the state, and practically, must be an attorney admitted to practice law in the Supreme Court of Nebraska (statutory requirement).",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Nebraska?",
+    "question_variants": [
+      "Nebraska county commissioner qualifications",
+      "Can I run for county board in NE?",
+      "County residency for NE officials"
+    ],
+    "answer": "To run for a county office (such as County Commissioner, Clerk, or Sheriff) in Nebraska, a candidate must be a registered voter and a resident of the county (and the specific district, if applicable) they seek to serve.",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Nebraska?",
+    "question_variants": [
+      "Nebraska voter ID requirements",
+      "Do I need my driver's license to vote in NE?",
+      "Acceptable ID for Nebraska voting"
+    ],
+    "answer": "Yes. In an accuracy correction to older baselines: following a 2022 voter-approved constitutional amendment, the legislature enacted LB514 in 2023 implementing strict photo ID requirements. Acceptable IDs include a Nebraska driver's license, state ID, U.S. Passport, military ID, tribal ID, or a Nebraska college/university ID. If a voter lacks ID, they may vote provisionally or submit a reasonable impediment certification.",
+    "source_url": "https://sos.nebraska.gov/voter-id",
+    "source_name": "Nebraska Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Nebraska a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Nebraska?",
+      "Nebraska vote-by-mail system",
+      "Do I need an excuse to vote absentee in NE?"
+    ],
+    "answer": "Nebraska is not a universal mail ballot state (ballots are not mailed to all voters automatically). However, the state does allow for NO-EXCUSE absentee voting (referred to as early voting by mail). Any registered voter may request an early voting ballot without providing a reason.",
+    "source_url": "https://sos.nebraska.gov/elections/early-voting",
+    "source_name": "Nebraska Secretary of State - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Nebraska offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in NE?",
+      "Nebraska early voting dates 2026",
+      "When does early voting start in Nebraska?"
+    ],
+    "answer": "Yes. Nebraska offers in-person early voting at county election offices. This early voting period begins 30 days prior to the election and concludes the day before Election Day.",
+    "source_url": "https://sos.nebraska.gov/elections/early-voting",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Nebraska offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in NE",
+      "Nebraska same day voter registration",
+      "Voter registration deadline 2026 Nebraska"
+    ],
+    "answer": "Nebraska has split deadlines. Online or mailed registrations must be completed or postmarked by the 3rd Friday before the election (October 16, 2026, for the general). In-person registration at the county election office is permitted until 6:00 p.m. on the 2nd Friday before the election (October 23, 2026). Nebraska DOES NOT offer same-day registration at the polls.",
+    "source_url": "https://civicnebraska.org/election-2026/cal/",
+    "source_name": "Civic Nebraska / Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Nebraska?",
+    "question_variants": [
+      "How close can I campaign to a polling place in NE?",
+      "Nebraska 200 feet electioneering rule",
+      "NE buffer zone around voting centers"
+    ],
+    "answer": "Under Nebraska law (Neb. Rev. Stat. § 32-1524), electioneering is strictly prohibited within the polling place, within any building housing a polling place, or within 200 feet of the entrance to the building where voting is occurring.",
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-1524",
+    "source_name": "Nebraska Revised Statutes § 32-1524",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Nebraska?",
+    "question_variants": [
+      "Can felons vote in Nebraska state?",
+      "Felony voting rights restoration NE",
+      "Voting on parole in Nebraska"
+    ],
+    "answer": "In a major 2024 reform (LB20), Nebraska removed its previous two-year waiting period. Individuals convicted of a felony now have their voting rights automatically restored immediately upon the completion of their full sentence, which includes all prison time, probation, and parole.",
+    "source_url": "https://nebraskalegislature.gov/bills/view_bill.php?DocumentID=54129",
+    "source_name": "Nebraska Legislature (LB20)",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "NE",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Nebraska, and who administers elections locally?",
+    "question_variants": [
+      "Nebraska county election administration",
+      "How many county clerks in NE?",
+      "Local election control Nebraska"
+    ],
+    "answer": "Nebraska is divided into 93 counties. Election administration is handled at the local level by County Clerks, or in larger jurisdictions, by specifically appointed Election Commissioners. Campaigns must coordinate with these 93 offices for ballot logistics and early voting data.",
+    "source_url": "https://sos.nebraska.gov/elections/election-officials-contact-information",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Nebraska voter file?",
+    "question_variants": [
+      "Nebraska voter database access cost",
+      "How to get the voter list in NE",
+      "What data is included in the Nebraska voter file?"
+    ],
+    "answer": "Registered political committees and candidates can purchase the statewide voter registration list from the Secretary of State's office. The file contains voter names, addresses, party affiliations, and election history. The data is legally restricted to election-related and political purposes.",
+    "source_url": "https://sos.nebraska.gov/elections/voter-registration-data",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Nebraska?",
+    "question_variants": [
+      "Where do I file campaign finance reports in NE?",
+      "What is the Nebraska Accountability and Disclosure Commission?",
+      "Does the NE Secretary of State handle campaign finance?"
+    ],
+    "answer": "In Nebraska, campaign finance and disclosure laws are administered and enforced exclusively by the Nebraska Accountability and Disclosure Commission (NADC), an independent ethics agency, rather than the Secretary of State.",
+    "source_url": "https://nadc.nebraska.gov/",
+    "source_name": "Nebraska Accountability and Disclosure Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in Nebraska for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Nebraska?",
+      "NE individual donation caps 2026 election",
+      "Maximum donation to state legislature Nebraska"
+    ],
+    "answer": "Nebraska has a major campaign finance distinctive: there are NO contribution limits for individuals donating to state, legislative, or local candidates. Individuals may contribute an UNLIMITED amount of money to political campaigns.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC - Treasurer's Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Nebraska campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Nebraska state",
+      "Can a business donate to my campaign in NE?",
+      "Corporate campaign finance rules Nebraska"
+    ],
+    "answer": "Yes. Because Nebraska imposes no overarching contribution limits, direct contributions from the general treasury of a corporation or labor union to a candidate's campaign committee are PERMITTED and are unlimited.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Nebraska candidates?",
+    "question_variants": [
+      "NE NADC filing dates 2026",
+      "When are campaign finance reports due in NE?",
+      "Nebraska pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates must file periodic Campaign Statements (Form B-1) with the NADC. During an election year, reports are due 30 days before the election, 10 days before the election, and 40 days after the election (for both the primary and general). In non-election years, an annual report is due.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC - Treasurer's Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Nebraska's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "Nebraska 48-hour large contribution report",
+      "Late contribution reporting Nebraska NADC",
+      "When do I file a rapid report in NE?"
+    ],
+    "answer": "If a candidate committee receives a 'late contribution' of $1,000 or more during the 14 days immediately preceding an election, they must file a Report of Late Contribution (Form B-5) with the NADC within 48 hours of receiving the funds.",
+    "source_url": "https://nadc.nebraska.gov/sites/default/files/doc/B-5%202026.pdf",
+    "source_name": "Nebraska NADC - Form B-5",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Nebraska?",
+    "question_variants": [
+      "NE NADC late fee",
+      "Penalty for missing a Nebraska campaign finance deadline",
+      "NADC fine for late filing NE"
+    ],
+    "answer": "The NADC imposes strict, escalating penalties. For failing to file a Report of Late Contribution, the penalty is $100 for each of the first 10 days the report is late. Beginning on the 11th day, an additional daily late fee of 1% of the undisclosed amount is assessed (capped at 10%). Standard periodic reports incur $25 per day up to $750.",
+    "source_url": "https://nadc.nebraska.gov/enforcement",
+    "source_name": "Nebraska NADC - Enforcement",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Does Nebraska provide public financing for state campaigns?",
+    "question_variants": [
+      "Public matching funds for Nebraska Governor",
+      "State funded campaigns Nebraska status",
+      "Government campaign grants NE"
+    ],
+    "answer": "No. Following the repeal of the state's Campaign Finance Limitation Act (CFLA), Nebraska does not currently provide any system of public financing or matching funds for state-level political campaigns.",
+    "source_url": "https://nadc.nebraska.gov/",
+    "source_name": "Nebraska Accountability and Disclosure Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Nebraska?",
+    "question_variants": [
+      "NE personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in NE?",
+      "Prohibited expenditures Nebraska NADC"
+    ],
+    "answer": "Yes. Under the Nebraska Political Accountability and Disclosure Act, campaign funds are strictly prohibited from being converted to personal use. Expenditures must bear a direct relationship to the candidate's campaign or the necessary expenses of holding public office.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC - Treasurer's Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for a citizen statutory initiative in Nebraska?",
+    "question_variants": [
+      "How many signatures to pass a law in Nebraska?",
+      "Nebraska statutory initiative threshold",
+      "Qualifying a ballot measure in NE"
+    ],
+    "answer": "To qualify a statutory initiative for the ballot in Nebraska, proponents must collect valid signatures from registered voters equal to at least 7% of the total number of registered voters in the state on the deadline date for submitting signatures.",
+    "source_url": "https://sos.nebraska.gov/elections/initiative-and-referendum",
+    "source_name": "Nebraska Secretary of State - Initiative and Referendum",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for a constitutional amendment initiative in Nebraska?",
+    "question_variants": [
+      "How to amend the Nebraska Constitution by citizen petition",
+      "Nebraska constitutional amendment signature requirement",
+      "Citizen initiative constitutional amendment NE"
+    ],
+    "answer": "To place a citizen-initiated constitutional amendment on the ballot, proponents must gather valid signatures equal to at least 10% of the total number of registered voters in Nebraska as of the signature submission deadline.",
+    "source_url": "https://sos.nebraska.gov/elections/initiative-and-referendum",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for a veto referendum in Nebraska?",
+    "question_variants": [
+      "How to repeal a law in Nebraska",
+      "Nebraska veto referendum signature requirements",
+      "Referendum process NE"
+    ],
+    "answer": "Citizens can use a veto referendum to repeal a legislative act. To simply place the referendum on the ballot for a vote, signatures equal to 5% of registered voters are required. (If proponents gather signatures equal to 10% of registered voters, the law is entirely suspended from taking effect until voters decide the issue at the election).",
+    "source_url": "https://sos.nebraska.gov/elections/initiative-and-referendum",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "How does the Nebraska Unicameral Legislature refer a constitutional amendment to the voters?",
+    "question_variants": [
+      "Legislative referral process Nebraska",
+      "Can the Nebraska legislature put an amendment on the ballot?",
+      "Supermajority to refer amendment NE"
+    ],
+    "answer": "The Nebraska Legislature (the Unicameral) can refer a constitutional amendment to the general election ballot by securing a three-fifths (60%) supermajority vote of all elected members. Since there are 49 State Senators, an amendment requires 30 affirmative votes to be referred to the voters.",
+    "source_url": "https://nebraskalegislature.gov/laws/articles.php?article=XVI-1",
+    "source_name": "Nebraska Constitution Article XVI",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Legislators and Strategists"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Nebraska's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the NE legislature draw district maps?",
+      "Who has the authority to draw district lines in Nebraska?",
+      "Nebraska redistricting commission"
+    ],
+    "answer": "In Nebraska, the state legislature (the Unicameral) holds the exclusive authority to draw and enact both congressional and state legislative district boundaries. The maps are passed as regular legislation and are subject to the Governor's signature or veto.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Nebraska",
+    "source_name": "Ballotpedia - Redistricting in Nebraska",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Nebraska?",
+    "question_variants": [
+      "Standards for drawing Nebraska district lines",
+      "Nebraska gerrymandering rules",
+      "Map requirements NE"
+    ],
+    "answer": "Under the Nebraska Constitution and legislative guidelines, districts must be compact, contiguous, and as nearly equal in population as practicable. The guidelines also stipulate that county boundaries should be followed whenever practicable, and districts should not be drawn to intentionally dilute the voting strength of minority populations.",
+    "source_url": "https://nebraskalegislature.gov/laws/articles.php?article=III-5",
+    "source_name": "Nebraska Constitution Article III",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Are the 2021 congressional maps operative for the 2026 cycle in Nebraska?",
+    "question_variants": [
+      "Status of Nebraska congressional redistricting",
+      "Omaha NE-2 gerrymandering controversy",
+      "Nebraska congressional boundaries 2026"
+    ],
+    "answer": "Yes. The congressional maps enacted by the Unicameral in 2021 remain fully operative for the 2026 elections. Because Nebraska allocates Electoral College votes by congressional district, the boundaries of NE-2 (centered on Omaha) were highly contested, with Republicans altering its borders slightly to make it more competitive, but it remains the state's prime battleground.",
+    "source_url": "https://nebraskalegislature.gov/",
+    "source_name": "Nebraska Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Nebraska have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Nebraska be recalled?",
+      "How to recall a state senator in NE",
+      "Statewide recall election rules Nebraska"
+    ],
+    "answer": "No. The State of Nebraska does not have any legal or constitutional mechanism permitting the recall of state-level elected officials, including the Governor, statewide executives, or members of the Unicameral Legislature.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Nebraska",
+    "source_name": "Laws governing recall in Nebraska",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Nebraska?",
+    "question_variants": [
+      "Nebraska county commissioner recall rules",
+      "Signature requirement local recall Nebraska",
+      "Recalling a mayor in NE"
+    ],
+    "answer": "Yes. Nebraska law (Neb. Rev. Stat. § 32-1302) provides a universal right to recall local elected officials (city, county, school district). A recall petition must be signed by registered voters equal to at least 35% of the total vote cast for that office in the last general election (with special rules for at-large seats).",
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-1302",
+    "source_name": "Nebraska Revised Statutes § 32-1302",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in Nebraska?",
+    "question_variants": [
+      "Requirements to run for NE Secretary of State",
+      "Who can run for Secretary of State in NE?",
+      "Residency rules for Nebraska SOS"
+    ],
+    "answer": "To run for Secretary of State in Nebraska, a candidate must be a citizen of the United States, at least 18 years old, and a qualified elector (registered voter) and resident of the state. Unlike the Governor, there is no constitutional 30-year age requirement for the SOS.",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in Nebraska?",
+    "question_variants": [
+      "Eligibility for Nebraska State Treasurer",
+      "Who can run for Treasurer in NE?",
+      "Nebraska Treasurer term limits"
+    ],
+    "answer": "The qualifications for State Treasurer in Nebraska mirror those for the Secretary of State. A candidate must be a U.S. citizen, at least 18 years old, and a qualified elector and resident of Nebraska. The Treasurer is subject to a limit of two consecutive four-year terms.",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Nebraska?",
+    "question_variants": [
+      "Nebraska Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in NE?",
+      "Qualifications for Lieutenant Governor of Nebraska"
+    ],
+    "answer": "Under Article IV, Section 2 of the Nebraska Constitution, the qualifications for Lieutenant Governor are identical to those for the Governor. A candidate must be at least 30 years old, a U.S. citizen, and a resident of Nebraska for at least five years preceding the election.",
+    "source_url": "https://nebraskalegislature.gov/laws/articles.php?article=IV-2",
+    "source_name": "Nebraska Constitution Article IV",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Nebraska?",
+    "question_variants": [
+      "Run for school board Nebraska requirements",
+      "Who can be a school board member in NE?",
+      "School board residency rules Nebraska"
+    ],
+    "answer": "To run for a local Board of Education in Nebraska, a candidate must be a registered voter and a resident of the specific school district they seek to represent at the time of filing for office.",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State - Candidate Info",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are Nebraska Supreme Court justices selected and what are the qualifications?",
+    "question_variants": [
+      "Nebraska Supreme Court Justice eligibility",
+      "Are Nebraska judges elected or appointed?",
+      "Merit selection of judges Nebraska"
+    ],
+    "answer": "Nebraska uses the 'Missouri Plan' (merit selection). Supreme Court justices are appointed by the Governor from a list submitted by a judicial nominating commission. To be eligible, a justice must be at least 30 years old, a U.S. citizen, a resident of Nebraska for at least three years, and admitted to practice law in the state.",
+    "source_url": "https://supremecourt.nebraska.gov/administration/judicial-nominating-commission",
+    "source_name": "Nebraska Judicial Branch",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in Nebraska?",
+    "question_variants": [
+      "How to fix a rejected signature in NE",
+      "Nebraska ballot cure process deadline",
+      "Missing ID on NE early voting ballot"
+    ],
+    "answer": "Following the passage of LB514 (2023) enforcing voter ID, Nebraska instituted a cure process. If an early voting (absentee) ballot return envelope is missing a signature or the required ID information, the county election official must notify the voter. The voter then has until the end of the business day on the Tuesday following the election to cure the defect.",
+    "source_url": "https://sos.nebraska.gov/voter-id",
+    "source_name": "Nebraska Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Nebraska?",
+    "question_variants": [
+      "When are military ballots due in Nebraska?",
+      "UOCAVA return deadline NE",
+      "Overseas voting rules Nebraska state"
+    ],
+    "answer": "Under UOCAVA, early voting ballots are transmitted to military and overseas voters at least 45 days before an election. Voted ballots must be received by the county election office by the close of polls (8:00 p.m. Central / 7:00 p.m. Mountain) on Election Day to be counted.",
+    "source_url": "https://sos.nebraska.gov/elections/military-and-overseas-voters",
+    "source_name": "Nebraska Secretary of State - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Nebraska and how are they cured?",
+    "question_variants": [
+      "What is a provisional ballot in NE?",
+      "Voting without ID Nebraska",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter's name is not on the precinct roster, if they moved without updating their registration, or if they fail to present acceptable photo ID. If cast due to lack of ID, the voter must present their valid photo ID to their county election office by the end of the business day on the Tuesday following the election for the ballot to count.",
+    "source_url": "https://sos.nebraska.gov/voter-id",
+    "source_name": "Nebraska Secretary of State - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Nebraska have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Nebraska DMV?",
+      "NE motor voter automatic registration",
+      "Do I have to register to vote if I get a NE driver's license?"
+    ],
+    "answer": "No. Nebraska does NOT have Automatic Voter Registration (AVR). While the state complies with federal Motor Voter laws by offering individuals the opportunity to register to vote when applying for a driver's license, the process requires the voter to actively opt-in and complete the registration fields.",
+    "source_url": "https://sos.nebraska.gov/elections/voter-information",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Nebraska offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in NE?",
+      "Nebraska electronic voter registration",
+      "NE online registration portal"
+    ],
+    "answer": "Yes. Eligible Nebraska residents who possess a valid Nebraska driver's license or state identification card can securely register to vote or update their registration using the Secretary of State's online voter registration system.",
+    "source_url": "https://www.nebraska.gov/apps-sos-voter-registration/",
+    "source_name": "Nebraska Secretary of State - OVR",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Nebraska maintain its voter registration lists?",
+    "question_variants": [
+      "NE voter list maintenance rules",
+      "How are inactive voters handled in Nebraska?",
+      "Nebraska voter roll cleaning process"
+    ],
+    "answer": "Nebraska maintains its voter rolls using National Change of Address (NCOA) data and death records provided by the Department of Health and Human Services. Voters who are mailed a confirmation notice, fail to respond, and subsequently do not vote in two consecutive federal general elections are removed from the active rolls.",
+    "source_url": "https://sos.nebraska.gov/elections/voter-information",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee mail-in ballot in Nebraska?",
+    "question_variants": [
+      "When is the last day to mail my ballot in NE?",
+      "Nebraska early voting ballot return deadline",
+      "What time are ballots due in Nebraska?"
+    ],
+    "answer": "All voted early voting (absentee) ballots must be physically received by the county election office by the close of polls (8:00 p.m. Central Time / 7:00 p.m. Mountain Time) on Election Day. Nebraska does NOT accept late-arriving ballots based on postmark dates.",
+    "source_url": "https://sos.nebraska.gov/elections/early-voting",
+    "source_name": "Nebraska Secretary of State - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Nebraska?",
+    "question_variants": [
+      "Does Nebraska use ranked choice voting?",
+      "RCV status in Nebraska 2026",
+      "Instant runoff voting NE"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is not used in Nebraska for any statewide, federal, or state legislative elections. The state relies strictly on a traditional plurality voting system for partisan offices and a top-two advance system for its nonpartisan legislature.",
+    "source_url": "https://sos.nebraska.gov/",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in Nebraska elections?",
+    "question_variants": [
+      "How are tied elections decided in Nebraska?",
+      "Tie-breaker rules Nebraska elections",
+      "What happens if a race is tied in NE?"
+    ],
+    "answer": "Under Nebraska Revised Statutes § 32-1122, if two or more candidates receive an equal and highest number of votes for an office, the tie is broken by the casting of lots (e.g., drawing names or a coin toss). The tie-breaker is conducted by the appropriate canvassing board or the Secretary of State.",
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-1122",
+    "source_name": "Nebraska Revised Statutes § 32-1122",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Nebraska campaign materials?",
+    "question_variants": [
+      "Nebraska 'Paid for by' rules",
+      "Campaign ad disclaimer requirements NE",
+      "Political taglines Nebraska NADC"
+    ],
+    "answer": "Nebraska campaign finance law requires that printed and broadcast political materials must clearly state 'Paid for by' followed by the name and street address of the person, candidate, or committee that paid for the communication.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC - Treasurer's Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Nebraska?",
+    "question_variants": [
+      "NE campaign coordination rules",
+      "When is a PAC expenditure not independent in Nebraska?",
+      "Prohibition on candidate-PAC coordination NE"
+    ],
+    "answer": "An expenditure is no longer considered 'independent' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. In Nebraska, a coordinated expenditure is legally treated as an in-kind contribution. Because contribution limits are unlimited, coordination is not prohibited, but it triggers mandatory reporting by the candidate.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a Nebraska campaign committee terminate?",
+    "question_variants": [
+      "Closing a Nebraska campaign committee",
+      "NADC committee termination requirements",
+      "Final campaign finance report Nebraska"
+    ],
+    "answer": "A candidate committee may formally terminate when it has achieved a zero cash balance, legally disposed of all unexpended funds, and resolved all outstanding debts or loans. The committee must file a final Campaign Statement and a formal Statement of Dissolution with the NADC.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Nebraska?",
+    "question_variants": [
+      "NE independent expenditure reporting NADC",
+      "Disclosure for NE independent expenditure groups",
+      "Reporting thresholds for outside spending Nebraska"
+    ],
+    "answer": "Any person, PAC, or entity that makes an independent expenditure of more than $250 advocating for or against a candidate must file a Report of Independent Expenditure (Form B-6) with the Nebraska Accountability and Disclosure Commission (NADC).",
+    "source_url": "https://nadc.nebraska.gov/sites/default/files/doc/B-6%202026.pdf",
+    "source_name": "Nebraska NADC - Form B-6",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Nebraska?",
+    "question_variants": [
+      "Nebraska in-kind contribution valuation rules",
+      "Reporting non-monetary donations Nebraska campaign",
+      "Fair market value for in-kind gifts NE"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or discounts not available to the general public) must be reported to the NADC at their fair market value as of the time the contribution is received. They must be logged as both a receipt and an expenditure on the Campaign Statement.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC - Treasurer's Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Nebraska?",
+    "question_variants": [
+      "Nebraska candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in NE?",
+      "Reporting candidate loans in NADC"
+    ],
+    "answer": "No. Because Nebraska imposes NO contribution limits on individuals, a candidate may loan or contribute an UNLIMITED amount of their own personal funds to their campaign committee. Loans must be properly documented on NADC disclosures and may be repaid from campaign contributions.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Nebraska candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in NE?",
+      "NE surplus campaign funds rules",
+      "Donating remaining campaign funds Nebraska"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Under NADC rules, candidates may carry surplus funds forward to a future campaign, transfer them to a political party committee, transfer them to another candidate committee, return them to contributors, or donate them to an IRS-recognized tax-exempt charity.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC - Treasurer's Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Nebraska legislators?",
+    "question_variants": [
+      "Can Nebraska legislators raise money during session?",
+      "Lobbyist contribution ban NE Unicameral",
+      "Legislative session contribution rules Nebraska"
+    ],
+    "answer": "No. Nebraska does NOT have a 'session freeze.' State Senators and statewide executive officials are legally permitted to solicit and accept campaign contributions while the Unicameral Legislature is actively in session.",
+    "source_url": "https://nadc.nebraska.gov/",
+    "source_name": "Nebraska NADC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Nebraska?",
+    "question_variants": [
+      "NE PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Nebraska",
+      "Maximum PAC gift to state legislator NE"
+    ],
+    "answer": "In Nebraska, Political Action Committees (PACs) are subject to the EXACT SAME rules as individuals and corporations: there are NO contribution limits. A PAC may contribute an UNLIMITED amount of money to any candidate for statewide or legislative office.",
+    "source_url": "https://nadc.nebraska.gov/candidate-committee-treasurers-guide",
+    "source_name": "Nebraska NADC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Nebraska?",
+    "question_variants": [
+      "When are county sheriffs elected in NE?",
+      "Nebraska county official term lengths",
+      "Are county commissioners on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Nebraska—including County Commissioners, Clerks, Treasurers, and Sheriffs—serve four-year staggered terms. Elections for these offices occur during standard primary and general elections, meaning numerous county seats will be on the 2026 ballot.",
+    "source_url": "https://sos.nebraska.gov/elections/information-candidates",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Nebraska elections?",
+    "question_variants": [
+      "When are Nebraska election results official?",
+      "NE certification deadline",
+      "State Canvassing Board meeting Nebraska"
+    ],
+    "answer": "County canvassing boards meet shortly after Election Day to certify local returns and submit them to the Secretary of State. The Nebraska Board of State Canvassers officially convenes on the fourth Monday after the election to certify the final statewide and federal election returns.",
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-1037",
+    "source_name": "Nebraska Revised Statutes § 32-1037",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Nebraska?",
+    "question_variants": [
+      "Nebraska special election timeline",
+      "Who calls a special election to fill a US House vacancy in NE?",
+      "Filling a midterm vacancy Nebraska"
+    ],
+    "answer": "Special elections to fill a vacancy in the U.S. House of Representatives or the State Legislature are called by a writ of election issued by the Governor. The Governor sets the dates for the special election, which is then administered by the Secretary of State and local county clerks.",
+    "source_url": "https://sos.nebraska.gov/",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What is the election cycle for Nebraska Supreme Court justices?",
+    "question_variants": [
+      "When do NE Supreme Court justices run?",
+      "Nebraska judicial retention elections",
+      "Terms for Nebraska Supreme Court"
+    ],
+    "answer": "Under Nebraska's merit selection system, a newly appointed Supreme Court justice must face a retention election ('Yes' or 'No' vote) at the first general election that occurs more than three years after their appointment. If retained by the voters, they serve a full six-year term before facing another retention election.",
+    "source_url": "https://supremecourt.nebraska.gov/administration/judicial-nominating-commission",
+    "source_name": "Nebraska Judicial Branch",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "NE",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Nebraska hold general election runoffs if no candidate reaches a certain threshold?",
+    "question_variants": [
+      "Are there runoffs in Nebraska general elections?",
+      "Nebraska majority vote requirement general election",
+      "What happens if no one gets 50% in NE?"
+    ],
+    "answer": "No. Nebraska does not hold runoff elections for the general election. The candidate who receives a simple plurality (the highest number of votes) is declared the winner, even if they do not secure a 50%+1 majority. (Note: The nonpartisan legislature uses a top-two primary, guaranteeing only two candidates advance to the general).",
+    "source_url": "https://sos.nebraska.gov/elections/voter-information",
+    "source_name": "Nebraska Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  }
+]
