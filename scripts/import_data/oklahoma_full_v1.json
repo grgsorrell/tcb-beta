@@ -1,0 +1,1352 @@
+[
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in Oklahoma?",
+    "question_variants": [
+      "Are Oklahoma primaries open or closed?",
+      "Do I have to register with a party to vote in the OK primary?",
+      "Can unaffiliated voters participate in the Oklahoma primary?"
+    ],
+    "answer": "Oklahoma officially has a closed primary system, meaning voters must be registered with a political party to vote in that party's primary. However, state law allows recognized political parties to open their primaries to unaffiliated (Independent) voters on a cycle-by-cycle basis. The Democratic Party frequently opts to allow unaffiliated voters to participate, while the Republican primary generally remains closed.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/political-party-info.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Oklahoma hold primary runoff elections?",
+    "question_variants": [
+      "What is the threshold to win a primary in OK?",
+      "Does Oklahoma require a majority to win a primary?",
+      "Oklahoma primary runoff rules"
+    ],
+    "answer": "Yes. Oklahoma requires a candidate to secure an absolute majority (over 50%) of the vote to win a primary election outright. If a primary has three or more candidates and no candidate receives more than 50% of the vote, the top two vote-getters advance to a primary runoff election held later in the summer.",
+    "source_url": "https://oklahoma.gov/elections.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All primary candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in Oklahoma?",
+    "question_variants": [
+      "Do write-in votes count in OK?",
+      "How to register as a write-in candidate in Oklahoma",
+      "Write-in filing deadline Oklahoma"
+    ],
+    "answer": "No. In a major distinctive feature, write-in candidates and write-in voting are explicitly prohibited in Oklahoma for all federal, state, and local elections. If a voter writes a name on the ballot, that vote will not be counted by election officials.",
+    "source_url": "https://oksenate.gov/sites/default/files/2019-12/os26.pdf",
+    "source_name": "Oklahoma Statutes Title 26 § 7-127",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for major party candidates in Oklahoma for 2026?",
+    "question_variants": [
+      "When do candidates file for office in Oklahoma?",
+      "Oklahoma filing deadline 2026",
+      "April filing deadline OK"
+    ],
+    "answer": "Oklahoma has a highly concentrated candidate filing period. Candidates must submit their notarized Declaration of Candidacy (along with a filing fee or petition) during a strict three-day window. For the 2026 election cycle, this filing window occurs from Wednesday, April 1 through Friday, April 3, 2026. Early or late submissions are strictly rejected.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board - Candidate Filing",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the petition signature threshold for independent candidates in Oklahoma?",
+    "question_variants": [
+      "Independent candidate ballot access Oklahoma",
+      "Running without a party in OK 2026",
+      "How many signatures for independent US Senate OK"
+    ],
+    "answer": "To run as an independent or minor party candidate without paying the standard filing fee, a candidate must submit a petition. The petition must be signed by at least 2% of the registered voters in the specific district, county, or state (depending on the office sought) as of November 1 of the year preceding the election.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board - Petitions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does Oklahoma have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the OK primary?",
+      "Oklahoma sore loser statute",
+      "General election ballot access after primary defeat OK"
+    ],
+    "answer": "Yes. Oklahoma strictly enforces a sore loser law. A candidate who runs unsuccessfully for a political party's nomination in the primary election is prohibited from subsequently appearing on the general election ballot as an independent candidate for the same office.",
+    "source_url": "https://ballotpedia.org/Sore_loser_laws_by_state",
+    "source_name": "Ballotpedia - Sore Loser Laws",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in Oklahoma?",
+    "question_variants": [
+      "Oklahoma joint ticket rules",
+      "How are Lt Gov candidates selected in OK?",
+      "Does the Governor pick a running mate in Oklahoma?"
+    ],
+    "answer": "No. In a major accuracy correction to older baselines: while the legislature passed a measure (State Question 798 in 2018) attempting to link the Governor and Lieutenant Governor on a joint ticket starting in 2026, the voters DEFEATED the measure at the ballot box (54% No). Therefore, the Governor and Lieutenant Governor continue to run completely separately in both the primary and general elections.",
+    "source_url": "https://ballotpedia.org/Oklahoma_State_Question_798,_Governor_and_Lieutenant_Governor_Joint_Ticket_Amendment_(2018)",
+    "source_name": "Ballotpedia - Oklahoma State Question 798",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in Oklahoma for 2026?",
+    "question_variants": [
+      "Oklahoma primary date 2026",
+      "When is Election Day 2026 in Oklahoma?",
+      "June primary Oklahoma"
+    ],
+    "answer": "The Oklahoma primary election will be held on Tuesday, June 16, 2026. If no candidate secures a majority, the primary runoff election will be held on Tuesday, August 25, 2026. The general election will be held on Tuesday, November 3, 2026. Polls are open from 7:00 a.m. to 7:00 p.m. local time.",
+    "source_url": "https://oklahoma.gov/elections/elections-results/2026-election-calendar.html",
+    "source_name": "Oklahoma State Election Board - Calendar",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is the Oklahoma Governor running for election in 2026?",
+    "question_variants": [
+      "Oklahoma Governor election 2026",
+      "Who is defending the OK Governor seat?",
+      "Is Kevin Stitt term-limited?"
+    ],
+    "answer": "The Oklahoma governorship is an OPEN seat in 2026. Incumbent Governor Kevin Stitt (R) is term-limited and ineligible to seek a third term, as Oklahoma governors are restricted to serving eight total years in office.",
+    "source_url": "https://ballotpedia.org/Governor_of_Oklahoma",
+    "source_name": "Ballotpedia - Governor of Oklahoma",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in Oklahoma in 2026?",
+    "question_variants": [
+      "Is Markwayne Mullin up for re-election in 2026?",
+      "When is James Lankford's next election?",
+      "Oklahoma US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Markwayne Mullin (R) is up for election in 2026. Senator James Lankford (Class 3) was re-elected in 2022 and will not appear on the ballot again until 2028.",
+    "source_url": "https://www.senate.gov/senators/Class_II.htm",
+    "source_name": "U.S. Senate - Class II Senators",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in Oklahoma for the 2026 election?",
+    "question_variants": [
+      "Oklahoma congressional apportionment",
+      "Are all OK congressional seats up in 2026?",
+      "Number of US Representatives from Oklahoma"
+    ],
+    "answer": "Oklahoma is apportioned 5 U.S. House districts. All five seats are on the 2026 ballot, as U.S. Representatives serve two-year terms.",
+    "source_url": "https://oklahoma.gov/elections.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which Oklahoma State Legislature seats are up for election in 2026?",
+    "question_variants": [
+      "Are all Oklahoma House seats up in 2026?",
+      "Oklahoma Senate election cycle 2026",
+      "Which legislative districts are on the ballot in OK?"
+    ],
+    "answer": "All 101 seats in the Oklahoma House of Representatives (2-year terms) are up for election in 2026. The Oklahoma State Senate has 48 members serving 4-year staggered terms; in 2026, half of those seats (the 24 even-numbered districts) are on the ballot.",
+    "source_url": "https://oksenate.gov/",
+    "source_name": "Oklahoma State Senate",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in Oklahoma in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "OK statewide election list 2026",
+      "When is the State Auditor election in OK?"
+    ],
+    "answer": "Oklahoma elects almost all of its major statewide executive officers concurrently on a four-year midterm cycle. In 2026, the offices of Governor, Lieutenant Governor, Attorney General, State Auditor and Inspector, State Treasurer, Superintendent of Public Instruction, Commissioner of Labor, Insurance Commissioner, and one seat on the Corporation Commission are all on the ballot.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board - Candidate Filing",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "How are Oklahoma judges selected and are they on the ballot?",
+    "question_variants": [
+      "Oklahoma judicial elections 2026",
+      "Are OK judges elected or appointed?",
+      "Supreme Court elections Oklahoma"
+    ],
+    "answer": "Oklahoma uses a hybrid system. Justices of the Oklahoma Supreme Court are appointed by the Governor (from a list from the Judicial Nominating Commission) and subsequently face nonpartisan retention elections ('Yes/No' votes) at the end of their six-year terms. However, local District Court judges are chosen directly by voters in nonpartisan, contested elections.",
+    "source_url": "https://www.oscn.net/",
+    "source_name": "Oklahoma State Courts Network",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the Oklahoma State Legislature sessions?",
+    "question_variants": [
+      "When does the OK legislature meet?",
+      "Oklahoma legislative session length",
+      "Is the Oklahoma legislature full time?"
+    ],
+    "answer": "The Oklahoma State Legislature is a part-time body that meets annually. The regular session convenes on the first Monday in February and is constitutionally mandated to adjourn sine die no later than 5:00 p.m. on the last Friday in May.",
+    "source_url": "https://oklegislature.gov/",
+    "source_name": "Oklahoma Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of Oklahoma?",
+    "question_variants": [
+      "Age and residency for Oklahoma Governor",
+      "Oklahoma Constitution Governor qualifications",
+      "Who is eligible to be Governor of OK?"
+    ],
+    "answer": "Under Article VI, Section 3 of the Oklahoma Constitution, a candidate for Governor must be at least 31 years of age, a citizen of the United States, and a qualified elector (resident) of Oklahoma for at least 10 years preceding their election.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the Oklahoma State Legislature?",
+    "question_variants": [
+      "Qualifications for OK State Representative",
+      "Age requirement Oklahoma State Senate",
+      "Do I have to live in my district to run in OK?"
+    ],
+    "answer": "To run for the Oklahoma State Senate, a candidate must be at least 25 years old. To run for the State House, a candidate must be at least 21 years old. Both must be qualified electors and registered voters residing in their respective district for at least six months prior to the filing period.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House and Senate candidates in Oklahoma?",
+    "question_variants": [
+      "US Senate residency requirements Oklahoma",
+      "Age to run for Congress in Oklahoma",
+      "Federal constitutional requirements for OK candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected. U.S. Senators must be at least 30 years old, a U.S. citizen for 9 years, and an inhabitant of the state when elected.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the Oklahoma Governor and statewide executives?",
+    "question_variants": [
+      "How many terms can an Oklahoma Governor serve?",
+      "Oklahoma executive term limit law",
+      "Kevin Stitt term limits OK"
+    ],
+    "answer": "Following State Question 747 in 2010, the Oklahoma Constitution strictly limits the Governor, Lieutenant Governor, and other statewide executive officers to serving no more than 8 total years in any single office throughout their lifetime. (A full two terms).",
+    "source_url": "https://ballotpedia.org/Governor_of_Oklahoma",
+    "source_name": "Oklahoma Constitution Article VI",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does Oklahoma have legislative term limits?",
+    "question_variants": [
+      "How many terms can an Oklahoma state senator serve?",
+      "Are there term limits for the Oklahoma House?",
+      "Oklahoma legislature term limit status"
+    ],
+    "answer": "Yes. Oklahoma imposes strict cumulative legislative term limits. A state legislator is limited to serving a maximum of 12 CUMULATIVE years total in the Oklahoma Legislature, regardless of whether those years are spent entirely in the House, entirely in the Senate, or split between both chambers.",
+    "source_url": "https://oksenate.gov/",
+    "source_name": "Oklahoma State Senate - Term Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General in Oklahoma?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in OK",
+      "Do I need to be a member of the bar to be OK AG?",
+      "Legal requirements for Oklahoma Attorney General"
+    ],
+    "answer": "To run for Attorney General in Oklahoma, a candidate must be at least 31 years of age, a resident of Oklahoma for at least 10 years, and critically, a licensed attorney who is eligible to practice law before the state Supreme Court.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in Oklahoma?",
+    "question_variants": [
+      "Oklahoma county commissioner qualifications",
+      "Can I run for county board in OK?",
+      "County residency for OK officials"
+    ],
+    "answer": "To run for a county office (such as County Commissioner, Assessor, or Sheriff), a candidate must generally be a registered voter of the county and a resident of the specific district they seek to represent for at least six months prior to the filing period.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board - County Candidate Info",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in Oklahoma?",
+    "question_variants": [
+      "Oklahoma voter ID requirements",
+      "Do I need my driver's license to vote in OK?",
+      "Acceptable ID for Oklahoma voting"
+    ],
+    "answer": "Yes, but with flexible options. Oklahoma requires voters to present a valid photo ID issued by the federal, state, or tribal government (such as an Oklahoma driver's license or Passport). However, voters may also use the free non-photo Voter Identification Card mailed to them by the county election board when they registered.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/proof-of-identity.html",
+    "source_name": "Oklahoma State Election Board - Voter ID",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is Oklahoma a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in Oklahoma?",
+      "Oklahoma vote-by-mail system",
+      "Do I need an excuse to vote absentee in OK?"
+    ],
+    "answer": "Oklahoma is NOT a universal mail ballot state (ballots are not mailed automatically). However, the state does allow NO-EXCUSE absentee voting. Any registered voter may request an absentee ballot without providing a reason, provided they sign an affidavit that must generally be notarized.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/absentee-voting.html",
+    "source_name": "Oklahoma State Election Board - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Oklahoma offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in OK?",
+      "Oklahoma early voting dates 2026",
+      "When does early voting start in Oklahoma?"
+    ],
+    "answer": "Yes. Oklahoma offers in-person early voting, formally known as 'In-Person Absentee Voting.' Early voting is generally available on the Wednesday, Thursday, Friday, and Saturday immediately preceding a general election, and on the Thursday, Friday, and Saturday preceding a primary or runoff election.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/early-voting.html",
+    "source_name": "Oklahoma State Election Board - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does Oklahoma offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in OK",
+      "Oklahoma same day voter registration",
+      "Voter registration deadline 2026 Oklahoma"
+    ],
+    "answer": "The deadline to register to vote in Oklahoma is 25 days prior to an election. For the November 2026 general election, the deadline is early October. Oklahoma DOES NOT offer same-day voter registration at the polls or during early voting.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/register-to-vote.html",
+    "source_name": "Oklahoma State Election Board - Voter Registration",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in Oklahoma?",
+    "question_variants": [
+      "How close can I campaign to a polling place in OK?",
+      "Oklahoma 300 feet electioneering rule",
+      "OK buffer zone around voting centers"
+    ],
+    "answer": "Under Oklahoma state law, electioneering is strictly prohibited within 300 feet of any ballot box while an election is in progress. This applies to both Election Day polling locations and early voting sites, making it one of the largest buffer zones in the nation.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/voter-conduct.html",
+    "source_name": "Oklahoma State Election Board - Voter Conduct",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "OK",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in Oklahoma, and who administers elections locally?",
+    "question_variants": [
+      "Oklahoma county election administration",
+      "How many county election boards in OK?",
+      "Local election control Oklahoma"
+    ],
+    "answer": "Oklahoma is divided into 77 counties. Election administration is handled at the local level by County Election Boards. Statewide campaigns must coordinate heavily with these 77 local boards to manage early voting logistics and absentee ballot processing.",
+    "source_url": "https://oklahoma.gov/elections.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the Oklahoma voter file?",
+    "question_variants": [
+      "Oklahoma voter database access cost",
+      "How to get the voter list in OK",
+      "What data is included in the Oklahoma voter file?"
+    ],
+    "answer": "Campaigns and political committees can request the statewide voter registration list from the Oklahoma State Election Board for a prescribed fee. The file contains voter names, addresses, party affiliations, and election history. The data may only be used for election and political purposes.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/request-voter-data.html",
+    "source_name": "Oklahoma State Election Board - Voter Data",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in Oklahoma?",
+    "question_variants": [
+      "Where do I file campaign finance reports in OK?",
+      "What is the Oklahoma Campaign Reporting System?",
+      "Does the OK Election Board handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in Oklahoma are administered and enforced entirely by the Oklahoma Ethics Commission (not the State Election Board). Candidates and committees file their contribution and expenditure reports electronically using The Guardian System.",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in Oklahoma for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in Oklahoma?",
+      "OK individual donation caps 2026 election",
+      "Maximum donation to state legislature Oklahoma"
+    ],
+    "answer": "In Oklahoma, contribution limits apply per election. For the current cycle, an individual may contribute up to $3,500 to a candidate per election (so $3,500 for the primary, $3,500 for the runoff if applicable, and $3,500 for the general election).",
+    "source_url": "https://oklahoma.gov/content/dam/ok/en/ethics/documents/campaigns/state-candidates/contribution-chart/2026ElectionContributionChart.pdf",
+    "source_name": "Oklahoma Ethics Commission - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in Oklahoma campaigns?",
+    "question_variants": [
+      "Corporate contribution ban Oklahoma state",
+      "Can a business donate to my campaign in OK?",
+      "Corporate campaign finance rules Oklahoma"
+    ],
+    "answer": "No. Oklahoma strictly PROHIBITS direct contributions from the general treasury of a corporation or labor union to a candidate's political campaign committee. Corporate and union funds can only be used to establish and administer a separate PAC.",
+    "source_url": "https://oklahoma.gov/content/dam/ok/en/ethics/documents/campaigns/state-candidates/contribution-chart/2026ElectionContributionChart.pdf",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in Oklahoma?",
+    "question_variants": [
+      "OK PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit Oklahoma",
+      "Maximum PAC gift to state legislator OK"
+    ],
+    "answer": "In Oklahoma, a Limited Committee (PAC) may contribute a maximum of $5,000 to a candidate's committee per election. Like individual limits, this resets for the primary, runoff, and general elections.",
+    "source_url": "https://oklahoma.gov/content/dam/ok/en/ethics/documents/campaigns/state-candidates/contribution-chart/2026ElectionContributionChart.pdf",
+    "source_name": "Oklahoma Ethics Commission - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are Oklahoma's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "Oklahoma 48-hour large contribution report",
+      "Late contribution reporting Oklahoma Ethics Commission",
+      "When do I file a rapid report in OK?"
+    ],
+    "answer": "Oklahoma mandates rapid disclosure during the critical window before an election. If a candidate committee receives a contribution (or loan) of $1,000 or more in the aggregate from a single source within the two weeks immediately prior to an election, it must be reported to the Ethics Commission within 24 hours.",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for Oklahoma candidates?",
+    "question_variants": [
+      "OK Ethics Commission filing dates 2026",
+      "When are campaign finance reports due in OK?",
+      "Oklahoma pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Active state-level candidate committees must file comprehensive periodic reports. In an election year, this includes a Pre-Election report due exactly 8 days before each election (primary, runoff, general), and quarterly continuous reports tracking spending in the interim.",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for Oklahoma legislators?",
+    "question_variants": [
+      "Can Oklahoma legislators raise money during session?",
+      "Lobbyist contribution ban OK legislature",
+      "Legislative session contribution rules Oklahoma"
+    ],
+    "answer": "Yes. Oklahoma strictly enforces a legislative session freeze. State law and Ethics Rules prohibit members of the legislature (and candidates for legislative office) from intentionally soliciting or accepting campaign contributions from registered lobbyists or lobbyist principals during any regular legislative session and for five days after its adjournment.",
+    "source_url": "https://law.justia.com/codes/oklahoma/title-21/section-21-187-1/",
+    "source_name": "Oklahoma Statutes Title 21 § 187.1",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in Oklahoma?",
+    "question_variants": [
+      "OK personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in OK?",
+      "Prohibited expenditures Oklahoma Ethics Commission"
+    ],
+    "answer": "Yes. Under Oklahoma Ethics Commission Rules, campaign funds are strictly prohibited from being converted to the personal use of the candidate or any other person. Expenditures must bear a direct relationship to the candidate's campaign or the execution of their public office.",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for a statutory citizen initiative in Oklahoma?",
+    "question_variants": [
+      "How many signatures to pass a law in Oklahoma?",
+      "Oklahoma statutory initiative threshold",
+      "Qualifying a ballot measure in OK"
+    ],
+    "answer": "To qualify a statutory initiative for the ballot in Oklahoma, proponents must collect valid signatures equal to at least 8% of the total number of votes cast for the state office receiving the highest number of votes (typically Governor) in the most recent general election.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/state-questions.html",
+    "source_name": "Oklahoma State Election Board - State Questions",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What is the signature threshold for a constitutional amendment initiative in Oklahoma?",
+    "question_variants": [
+      "How to amend the Oklahoma Constitution by citizen petition",
+      "Oklahoma constitutional amendment signature requirement",
+      "Citizen initiative constitutional amendment OK"
+    ],
+    "answer": "To place a citizen-initiated constitutional amendment on the ballot, proponents must gather valid signatures equal to at least 15% of the total number of votes cast for the state office receiving the highest number of votes in the most recent general election.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/state-questions.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "What happens if a citizen initiative is rejected by Oklahoma voters?",
+    "question_variants": [
+      "Can a failed ballot measure be put back on the ballot in OK?",
+      "Oklahoma rejected initiative re-petition threshold",
+      "Resubmitting a defeated state question Oklahoma"
+    ],
+    "answer": "If an initiative petition is rejected by voters at the polls, it cannot be submitted again for three years, UNLESS proponents manage to gather signatures equal to an exceptionally high threshold of 25% of the votes cast in the last general election.",
+    "source_url": "https://ballotpedia.org/Laws_governing_the_initiative_process_in_Oklahoma",
+    "source_name": "Ballotpedia - Initiative Process in Oklahoma",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Who sets the election date for ballot measures and what is the pass threshold in Oklahoma?",
+    "question_variants": [
+      "When do Oklahomans vote on state questions?",
+      "Oklahoma ballot measure pass threshold",
+      "Does a measure need a supermajority in OK?"
+    ],
+    "answer": "The Governor of Oklahoma has the authority to set the election date for ballot measures (State Questions), deciding whether they will appear on the next general election ballot or be placed on a special election ballot. To become law, a measure requires a simple majority (over 50%) of the total votes cast on that specific question.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/state-questions.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws Oklahoma's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the OK legislature draw district maps?",
+      "Who has the authority to draw district lines in Oklahoma?",
+      "Oklahoma redistricting commission"
+    ],
+    "answer": "In Oklahoma, the state legislature holds the primary authority to draw and enact both congressional and state legislative district boundaries. The maps are passed as regular legislation and are subject to the Governor's signature or veto. If the legislature fails to enact maps on time, a Bipartisan Backup Commission takes over the process.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_Oklahoma",
+    "source_name": "Ballotpedia - Redistricting in Oklahoma",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in Oklahoma?",
+    "question_variants": [
+      "Standards for drawing Oklahoma district lines",
+      "Oklahoma gerrymandering rules",
+      "Map requirements OK"
+    ],
+    "answer": "Under the Oklahoma Constitution and legislative guidelines, districts must be contiguous, compact, and as nearly equal in population as practicable. They must adhere to the federal Voting Rights Act, protect communities of interest, and preserve political subdivisions (like county lines) wherever possible.",
+    "source_url": "https://oksenate.gov/redistricting",
+    "source_name": "Oklahoma State Senate - Redistricting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Are the current Oklahoma redistricting maps operative for the 2026 cycle?",
+    "question_variants": [
+      "Status of Oklahoma congressional redistricting",
+      "Are there pending redistricting lawsuits in Oklahoma?",
+      "Oklahoma 2026 legislative boundaries"
+    ],
+    "answer": "Yes. The redistricting maps passed by the legislature and signed into law by Governor Kevin Stitt in late 2021 remain fully operative for the 2026 election cycle. There are no ongoing systemic legal challenges preventing their use.",
+    "source_url": "https://oksenate.gov/redistricting",
+    "source_name": "Oklahoma State Senate",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State legislative candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does Oklahoma have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of Oklahoma be recalled?",
+      "How to recall a state senator in OK",
+      "Statewide recall election rules Oklahoma"
+    ],
+    "answer": "No. The State of Oklahoma does not have any legal or constitutional mechanism permitting the recall of state-level elected officials, including the Governor, statewide executives, or members of the state legislature.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Oklahoma",
+    "source_name": "Laws governing recall in Oklahoma",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in Oklahoma?",
+    "question_variants": [
+      "Oklahoma county commissioner recall rules",
+      "Signature requirement local recall Oklahoma",
+      "Recalling a mayor in OK"
+    ],
+    "answer": "There is no general, statewide statutory right to recall local officials in Oklahoma. The ability to recall a municipal official is permitted exclusively in municipalities that have established Home Rule charters that explicitly authorize the recall process.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_Oklahoma",
+    "source_name": "Laws governing recall in Oklahoma",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Is the Secretary of State an elected office in Oklahoma?",
+    "question_variants": [
+      "Requirements to run for OK Secretary of State",
+      "Who can run for Secretary of State in OK?",
+      "Oklahoma Secretary of State elections"
+    ],
+    "answer": "No. The Secretary of State in Oklahoma is NOT an elected office. The Secretary is appointed directly by the Governor, with the advice and consent of the State Senate, and serves a four-year term concurrent with the Governor.",
+    "source_url": "https://oklahoma.gov/sos/about-us.html",
+    "source_name": "Oklahoma Secretary of State",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for State Treasurer in Oklahoma?",
+    "question_variants": [
+      "Eligibility for Oklahoma State Treasurer",
+      "Who can run for Treasurer in OK?",
+      "Oklahoma Treasurer residency requirements"
+    ],
+    "answer": "To run for State Treasurer (or other general statewide elected offices), a candidate must be at least 31 years of age, a citizen of the United States, and a qualified elector who has resided in Oklahoma for at least 10 years immediately preceding the election.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in Oklahoma?",
+    "question_variants": [
+      "Oklahoma Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in OK?",
+      "Qualifications for Lieutenant Governor of Oklahoma"
+    ],
+    "answer": "Under Article VI, Section 3 of the Oklahoma Constitution, the qualifications for Lieutenant Governor are identical to those for the Governor. A candidate must be at least 31 years of age, a U.S. citizen, and a resident of Oklahoma for at least 10 years preceding their election.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in Oklahoma?",
+    "question_variants": [
+      "Run for school board Oklahoma requirements",
+      "Who can be a school board member in OK?",
+      "School board residency rules Oklahoma"
+    ],
+    "answer": "To run for a local Board of Education in Oklahoma, a candidate must be a registered voter and must have maintained a primary residence within the boundaries of the school district (and the specific ward/zone, if applicable) for at least six months prior to the filing period.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board - Local Offices",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for Oklahoma Supreme Court justices?",
+    "question_variants": [
+      "Oklahoma Supreme Court Justice eligibility",
+      "Years of practice required for OK Supreme Court",
+      "Are Oklahoma judges elected or appointed?"
+    ],
+    "answer": "To serve on the Oklahoma Supreme Court, a justice must be at least 30 years old, a qualified elector in their respective district for at least one year, and must have been a licensed attorney or judge (or a combination) for at least five years. Justices are appointed by the Governor and subsequently face retention elections.",
+    "source_url": "https://www.oscn.net/",
+    "source_name": "Oklahoma State Courts Network",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in Oklahoma?",
+    "question_variants": [
+      "How to fix a rejected signature in OK",
+      "Oklahoma ballot cure process deadline",
+      "Missing notary on OK mail ballot"
+    ],
+    "answer": "Oklahoma is highly distinctive in that it has NO statutory ballot cure process for absentee ballots. If a voter's absentee ballot affidavit is missing a signature, missing the required notarization, or fails to meet ID requirements, the ballot is simply rejected by the county election board without providing the voter a post-election window to correct the error.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/absentee-voting.html",
+    "source_name": "Oklahoma State Election Board - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in Oklahoma?",
+    "question_variants": [
+      "When are military ballots due in Oklahoma?",
+      "UOCAVA return deadline OK",
+      "Overseas voting rules Oklahoma state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. In Oklahoma, voted ballots returned by UOCAVA voters must be received by the County Election Board no later than 7:00 p.m. on Election Day to be counted.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/military-and-overseas-voters.html",
+    "source_name": "Oklahoma State Election Board - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in Oklahoma?",
+    "question_variants": [
+      "What is a provisional ballot in OK?",
+      "Voting without ID Oklahoma",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter cannot produce acceptable photo ID or the voter identification card, or if their name is not found in the precinct registry. The voter must sign a sworn affidavit. The county election board investigates the ballot post-election; there is no secondary window for the voter to bring an ID later.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/proof-of-identity.html",
+    "source_name": "Oklahoma State Election Board - Provisional Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Oklahoma have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the Oklahoma DPS?",
+      "OK motor voter automatic registration",
+      "Do I have to register to vote if I get an OK driver's license?"
+    ],
+    "answer": "No. Oklahoma does NOT have Automatic Voter Registration (AVR). While individuals may register to vote when interacting with the Department of Public Safety (DPS), the process requires the voter to actively opt-in and complete the registration form.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/register-to-vote.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does Oklahoma offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in OK?",
+      "Oklahoma electronic voter registration",
+      "OK Voter Portal online registration"
+    ],
+    "answer": "Yes. Eligible Oklahoma residents with a valid Oklahoma driver's license or state identification card can securely register to vote or update their registration using the OK Voter Portal. The deadline is 25 days prior to the election.",
+    "source_url": "https://okvoterportal.okelections.us/Home/RegWizard",
+    "source_name": "Oklahoma State Election Board - OK Voter Portal",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does Oklahoma maintain its voter registration lists?",
+    "question_variants": [
+      "OK voter list maintenance rules",
+      "How are inactive voters handled in Oklahoma?",
+      "Oklahoma voter roll cleaning process"
+    ],
+    "answer": "Oklahoma conducts regular list maintenance using National Change of Address (NCOA) data and death records. Voters whose mail is returned undeliverable are sent a confirmation notice. If they fail to respond and do not vote in the next two consecutive federal general elections, their registration is canceled.",
+    "source_url": "https://oklahoma.gov/elections.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee mail-in ballot in Oklahoma?",
+    "question_variants": [
+      "When is the last day to mail my ballot in OK?",
+      "Oklahoma mail ballot postmark deadline",
+      "What time are ballots due in Oklahoma?"
+    ],
+    "answer": "Absentee ballots returned by mail must be physically received by the County Election Board no later than 7:00 p.m. on Election Day. If a voter chooses to hand-deliver their standard absentee ballot, it must be delivered by the close of business on the Monday before Election Day and requires proof of identity.",
+    "source_url": "https://oklahoma.gov/elections/voter-info/absentee-voting.html",
+    "source_name": "Oklahoma State Election Board - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in Oklahoma?",
+    "question_variants": [
+      "Does Oklahoma use ranked choice voting?",
+      "RCV status in Oklahoma 2026",
+      "Instant runoff voting OK"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is strictly banned in Oklahoma. In April 2024, Governor Kevin Stitt signed HB 3156 into law, which explicitly prohibits the use of ranked choice voting in all statewide, county, and municipal elections.",
+    "source_url": "https://my.lwv.org/oklahoma/voting/ranked-choice-voting",
+    "source_name": "League of Women Voters - Oklahoma HB 3156",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in Oklahoma elections?",
+    "question_variants": [
+      "How are tied elections decided in Oklahoma?",
+      "Tie-breaker rules Oklahoma elections",
+      "What happens if a race is tied in OK?"
+    ],
+    "answer": "Under current Oklahoma election procedures, if a race remains an exact tie after a recount, the winner is determined by lot (e.g., a random drawing of names) conducted by the appropriate election board. (Note: 2025 legislation, HB1678, proposed requiring a special runoff election for ties, but unless passed and effective, lots are drawn).",
+    "source_url": "https://www.okhouse.gov/",
+    "source_name": "Oklahoma House of Representatives",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on Oklahoma campaign materials?",
+    "question_variants": [
+      "Oklahoma 'Paid for by' rules",
+      "Campaign ad disclaimer requirements OK",
+      "Political taglines Oklahoma Ethics Commission"
+    ],
+    "answer": "Oklahoma Ethics Rules require that political advertisements and campaign materials clearly identify the entity that financed the communication. The disclaimer must explicitly state 'Paid for by' followed by the name of the candidate committee, PAC, or individual authorizing the expenditure.",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in Oklahoma?",
+    "question_variants": [
+      "OK campaign coordination rules",
+      "When is a PAC expenditure not independent in Oklahoma?",
+      "Prohibition on candidate-PAC coordination OK"
+    ],
+    "answer": "An expenditure is no longer considered 'independent' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. Once coordinated, the expenditure constitutes an in-kind contribution and is subject to the strict $3,500 per-election individual or $5,000 per-election PAC limits.",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in Oklahoma?",
+    "question_variants": [
+      "OK Ethics Commission late fee",
+      "Penalty for missing an Oklahoma campaign finance deadline",
+      "Ethics Commission fine for late filing OK"
+    ],
+    "answer": "The Oklahoma Ethics Commission has the authority to assess strict administrative fees. Candidates and committees who fail to file required registrations or reports on time face a late filing fee of up to $100 for each day the report is unfiled, up to a maximum penalty of $1,000.",
+    "source_url": "https://law.justia.com/codes/oklahoma/title-74/section-74-4256/",
+    "source_name": "Oklahoma Statutes Title 74 § 4256",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must an Oklahoma campaign committee terminate?",
+    "question_variants": [
+      "Closing an Oklahoma campaign committee",
+      "Ethics Commission committee termination requirements",
+      "Final campaign finance report Oklahoma"
+    ],
+    "answer": "A candidate committee may formally terminate when it achieves a zero cash balance, resolves all outstanding debts or loans, and legally disposes of all surplus funds. A formal 'Final Report' marking the campaign account as closed must then be filed with the Ethics Commission.",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in Oklahoma?",
+    "question_variants": [
+      "OK independent expenditure reporting Ethics Commission",
+      "Disclosure for OK independent expenditure groups",
+      "Reporting thresholds for outside spending Oklahoma"
+    ],
+    "answer": "Any person or group making independent expenditures exceeding $5,000 must file reports detailing the spending and identifying major contributors. Furthermore, any independent expenditure exceeding $5,000 made during the last two weeks before an election must be reported no later than the next business day.",
+    "source_url": "https://www.c4integrity.org/wp-content/uploads/2022/06/Oklahoma-State-Report-FINAL-2022.pdf",
+    "source_name": "Oklahoma Ethics Rules / Center for Public Integrity",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in Oklahoma?",
+    "question_variants": [
+      "Oklahoma in-kind contribution valuation rules",
+      "Reporting non-monetary donations Oklahoma campaign",
+      "Fair market value for in-kind gifts OK"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or equipment not available to the general public) must be reported to the Ethics Commission at their fair market value. Their value counts directly toward the donor's per-election monetary contribution limit (e.g., $3,500 per election).",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in Oklahoma?",
+    "question_variants": [
+      "Oklahoma candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in OK?",
+      "Reporting candidate loans in Ethics Commission"
+    ],
+    "answer": "No. Candidates may loan or contribute an UNLIMITED amount of their own personal funds to their own campaign committee, as these funds are exempt from standard contribution limits. Loans must be properly documented on disclosures and may be repaid from campaign contributions.",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can Oklahoma candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in OK?",
+      "OK surplus campaign funds rules",
+      "Donating remaining campaign funds Oklahoma"
+    ],
+    "answer": "Unexpended campaign funds cannot be converted to personal use. Candidates may retain surplus funds for a future campaign for up to six years, transfer them to a political party, return them to contributors pro-rata, donate them to a charitable organization, or deposit them into the state's General Revenue Fund.",
+    "source_url": "https://www.ok.gov/ethics/",
+    "source_name": "Oklahoma Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the state party contribution limits to candidates in Oklahoma?",
+    "question_variants": [
+      "OK party donation limits to candidates 2026",
+      "State party contribution limit Oklahoma",
+      "Maximum party gift to state legislator OK"
+    ],
+    "answer": "In Oklahoma, state political party committees have distinct, higher contribution limits than individuals or standard PACs. A state party committee can contribute a maximum of $25,000 to a gubernatorial candidate per campaign, and up to $10,000 to a state legislative candidate per campaign.",
+    "source_url": "https://oklahoma.gov/content/dam/ok/en/ethics/documents/campaigns/state-candidates/contribution-chart/2026ElectionContributionChart.pdf",
+    "source_name": "Oklahoma Ethics Commission - Contribution Limits",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in Oklahoma?",
+    "question_variants": [
+      "Can felons vote in Oklahoma state?",
+      "Felony voting rights restoration OK",
+      "Voting on parole in Oklahoma"
+    ],
+    "answer": "In Oklahoma, individuals convicted of a felony lose their right to vote while serving their sentence. Following recent legislative updates (HB 1629/2024), voting rights are automatically restored immediately upon the completion of all court-mandated calendar days of the sentence, including all periods of incarceration, probation, and parole.",
+    "source_url": "https://ccresourcecenter.org/state-restoration-profiles/oklahoma-restoration-of-rights-pardon-expungement-sealing/",
+    "source_name": "Oklahoma Statutes Title 26 § 4-101",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Voters"
+  },
+  {
+    "state": "OK",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in Oklahoma?",
+    "question_variants": [
+      "When are county sheriffs elected in OK?",
+      "Oklahoma county official term lengths",
+      "Are county commissioners on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in Oklahoma—including County Commissioners, Sheriffs, Assessors, and Treasurers—serve four-year terms. They are elected on alternating, staggered cycles during even-numbered years, so many key county executive offices will be featured on the 2026 midterm ballot.",
+    "source_url": "https://oklahoma.gov/elections/candidates/2026-candidate-filing-information.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for Oklahoma elections?",
+    "question_variants": [
+      "When are Oklahoma election results official?",
+      "OK certification deadline",
+      "State Election Board meeting Oklahoma"
+    ],
+    "answer": "County Election Boards must certify their local election results by 5:00 p.m. on the Friday immediately following the election. The Oklahoma State Election Board then meets to officially certify statewide and federal election returns on the Tuesday following the election (one week after Election Day).",
+    "source_url": "https://oklahoma.gov/elections.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in Oklahoma?",
+    "question_variants": [
+      "Oklahoma special election timeline",
+      "Who calls a special election to fill a US House vacancy in OK?",
+      "Filling a midterm vacancy Oklahoma"
+    ],
+    "answer": "Special elections to fill a vacancy in a federal office (like the U.S. House) or the state legislature are called by a writ of election issued by the Governor. The Governor has the authority to set the dates for the special primary and general elections to fill the unexpired term.",
+    "source_url": "https://oklahoma.gov/elections.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What is the election cycle for Oklahoma Supreme Court justices?",
+    "question_variants": [
+      "When do OK Supreme Court justices run?",
+      "Oklahoma judicial retention elections",
+      "Terms for Oklahoma Supreme Court"
+    ],
+    "answer": "After being appointed by the Governor, a newly appointed Supreme Court justice must face a retention election ('Yes' or 'No' vote) during the first general election that occurs more than one year after their appointment. If retained by voters, they serve a full six-year term before facing another retention election.",
+    "source_url": "https://www.oscn.net/",
+    "source_name": "Oklahoma State Courts Network",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "OK",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does Oklahoma hold general election runoffs if no candidate reaches a certain threshold?",
+    "question_variants": [
+      "Are there runoffs in Oklahoma general elections?",
+      "Oklahoma majority vote requirement general election",
+      "What happens if no one gets 50% in OK?"
+    ],
+    "answer": "No. While Oklahoma requires a 50%+1 absolute majority to win a primary election (triggering a runoff if unmet), the general election does NOT require a majority. In the November general election, the candidate who receives a simple plurality (the most votes) is declared the winner.",
+    "source_url": "https://oklahoma.gov/elections.html",
+    "source_name": "Oklahoma State Election Board",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  }
+]
