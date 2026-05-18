@@ -1,0 +1,1334 @@
+[
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "What is the primary election system in South Carolina?",
+    "question_variants": [
+      "Are South Carolina primaries open or closed?",
+      "Do I have to register with a party to vote in the SC primary?",
+      "Can unaffiliated voters participate in the South Carolina primary?"
+    ],
+    "answer": "South Carolina has an open primary system. Any registered voter may vote in any party's primary without officially registering with that party. However, a voter may only participate in one party's primary per election cycle.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters and candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does South Carolina hold primary runoff elections?",
+    "question_variants": [
+      "What is the threshold to win a primary in SC?",
+      "Does South Carolina require a majority to win a primary?",
+      "South Carolina primary runoff rules"
+    ],
+    "answer": "Yes. South Carolina requires a candidate to secure an absolute majority (over 50%) of the vote to win a primary election outright. If a primary has three or more candidates and no candidate receives more than 50% of the vote, the top two vote-getters advance to a primary runoff election held exactly two weeks later.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All primary candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Are write-in candidates permitted in South Carolina and what paperwork is required?",
+    "question_variants": [
+      "Do write-in votes count in SC?",
+      "How to register as a write-in candidate in South Carolina",
+      "Write-in filing deadline South Carolina"
+    ],
+    "answer": "Yes, write-in candidates are permitted in the general election, and South Carolina is highly distinctive in that NO filing forms, fees, or paperwork are required to run as a write-in candidate. Write-in votes cast on the ballot are automatically valid and tabulated by election officials. Write-in votes are not allowed for President or in primary elections.",
+    "source_url": "https://scvotes.gov/candidates/",
+    "source_name": "South Carolina Election Commission - Candidates",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Write-in candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county"],
+    "category": "filing_requirements",
+    "question": "What is the candidate filing deadline for major party candidates in South Carolina for 2026?",
+    "question_variants": [
+      "When do candidates file for office in South Carolina?",
+      "South Carolina filing deadline 2026",
+      "March filing deadline SC"
+    ],
+    "answer": "For major party candidates participating in the 2026 primary election, the filing period opens at noon on March 16 and closes promptly at noon on March 30, 2026.",
+    "source_url": "https://scvotes.gov/candidates/2026-candidate-information/",
+    "source_name": "South Carolina Election Commission - Candidate Information",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county"],
+    "category": "ballot_access",
+    "question": "Does South Carolina have a sore loser law?",
+    "question_variants": [
+      "Can I run as an independent if I lose the SC primary?",
+      "South Carolina sore loser statute",
+      "General election ballot access after primary defeat SC"
+    ],
+    "answer": "Yes. Under South Carolina law (S.C. Code Ann. § 7-11-210), a candidate who was defeated in a political party's primary election may not actively offer or campaign as a write-in or petition candidate for the same office in the ensuing general election.",
+    "source_url": "https://www.scstatehouse.gov/code/t07c011.php",
+    "source_name": "South Carolina Code of Laws § 7-11-210",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Major party candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Do the Governor and Lieutenant Governor run on a joint ticket in South Carolina?",
+    "question_variants": [
+      "South Carolina joint ticket rules",
+      "How are Lt Gov candidates selected in SC?",
+      "Does the Governor pick a running mate in South Carolina?"
+    ],
+    "answer": "Yes, but only in the general election. The gubernatorial nominee is chosen in the primary election. After winning the primary, the gubernatorial nominee selects their Lieutenant Governor running mate. They run on a single joint ticket in the November general election.",
+    "source_url": "https://www.scstatehouse.gov/code/t07c011.php",
+    "source_name": "South Carolina Code of Laws § 7-11-15",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county"],
+    "category": "election_dates",
+    "question": "When are the primary and general elections in South Carolina for 2026?",
+    "question_variants": [
+      "South Carolina primary date 2026",
+      "When is Election Day 2026 in South Carolina?",
+      "June primary South Carolina"
+    ],
+    "answer": "The South Carolina primary election will be held on Tuesday, June 9, 2026. If a runoff is required (due to no candidate receiving a majority), it will be held two weeks later on June 23, 2026. The general election will be held on Tuesday, November 3, 2026. Polls are open from 7:00 a.m. to 7:00 p.m.",
+    "source_url": "https://scvotes.gov/candidates/2026-candidate-information/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and voters"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Is Governor Henry McMaster running for election in 2026?",
+    "question_variants": [
+      "South Carolina Governor election 2026",
+      "Who is defending the SC Governor seat?",
+      "Is Henry McMaster term-limited?"
+    ],
+    "answer": "No. South Carolina Governor Henry McMaster (R) is term-limited and ineligible to seek a third consecutive term. The South Carolina gubernatorial seat will be an open, highly competitive race on the 2026 ballot.",
+    "source_url": "https://ballotpedia.org/South_Carolina_gubernatorial_and_lieutenant_gubernatorial_election,_2026",
+    "source_name": "Ballotpedia - SC Governor 2026",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "Which U.S. Senate seat is up for election in South Carolina in 2026?",
+    "question_variants": [
+      "Is Lindsey Graham up for re-election in 2026?",
+      "When is Tim Scott's next election?",
+      "South Carolina US Senate cycle 2026"
+    ],
+    "answer": "The Class 2 U.S. Senate seat currently held by Lindsey Graham (R) is up for election in 2026. Senator Tim Scott (Class 3) was re-elected in 2022 and will not appear on the ballot again until 2028.",
+    "source_url": "https://en.wikipedia.org/wiki/2026_United_States_Senate_election_in_South_Carolina",
+    "source_name": "Wikipedia - 2026 US Senate Election in SC",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal"],
+    "category": "election_dates",
+    "question": "How many U.S. House districts are in South Carolina for the 2026 election?",
+    "question_variants": [
+      "South Carolina congressional apportionment",
+      "Are all SC congressional seats up in 2026?",
+      "Number of US Representatives from South Carolina"
+    ],
+    "answer": "South Carolina is apportioned 7 U.S. House districts. All seven seats are on the 2026 ballot, as U.S. Representatives serve two-year terms.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which South Carolina State Senate seats are up for election in 2026?",
+    "question_variants": [
+      "Are half of South Carolina Senate seats up in 2026?",
+      "South Carolina Senate election cycle 2026",
+      "Which legislative districts are on the ballot in SC?"
+    ],
+    "answer": "None. In a major structural distinctive, the South Carolina State Senate's 46 members serve four-year terms that are strictly aligned with United States presidential elections (e.g., 2024, 2028). Therefore, there are ZERO State Senate seats on the 2026 midterm ballot.",
+    "source_url": "https://en.wikipedia.org/wiki/South_Carolina_Senate",
+    "source_name": "Wikipedia - South Carolina Senate",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which South Carolina State House seats are up for election in 2026?",
+    "question_variants": [
+      "Are all South Carolina House seats up in 2026?",
+      "South Carolina House election cycle 2026",
+      "Is the SC House on the midterm ballot?"
+    ],
+    "answer": "All 124 seats in the South Carolina House of Representatives are up for election in 2026, as members serve two-year terms.",
+    "source_url": "https://ballotpedia.org/South_Carolina_State_Legislature",
+    "source_name": "Ballotpedia - South Carolina State Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "Which statewide executive offices are up for election in South Carolina in 2026?",
+    "question_variants": [
+      "Is the Attorney General up in 2026?",
+      "SC statewide election list 2026",
+      "When is the Secretary of State election in SC?"
+    ],
+    "answer": "South Carolina elects its major statewide executive officers concurrently on a four-year midterm cycle. In 2026, the offices of Governor, Lieutenant Governor, Secretary of State, Attorney General, State Treasurer, Comptroller General, Superintendent of Education, and Commissioner of Agriculture are all on the ballot.",
+    "source_url": "https://en.wikipedia.org/wiki/2026_South_Carolina_elections",
+    "source_name": "Wikipedia - 2026 South Carolina Elections",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "secondary_source",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "election_dates",
+    "question": "What is the schedule for the South Carolina General Assembly sessions?",
+    "question_variants": [
+      "When does the SC legislature meet?",
+      "South Carolina legislative session length",
+      "Is the South Carolina legislature full time?"
+    ],
+    "answer": "The South Carolina General Assembly is a part-time legislature that meets annually. The regular session convenes on the second Tuesday in January of each year and typically runs through mid-May.",
+    "source_url": "https://www.scstatehouse.gov/",
+    "source_name": "South Carolina General Assembly",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Governor of South Carolina?",
+    "question_variants": [
+      "Age and residency for South Carolina Governor",
+      "South Carolina Constitution Governor qualifications",
+      "Who is eligible to be Governor of SC?"
+    ],
+    "answer": "Under Article IV, Section 2 of the South Carolina Constitution, a candidate for Governor must be at least 30 years old, a citizen of the United States, and a resident of South Carolina for five years preceding the day of the election.",
+    "source_url": "https://en.wikipedia.org/wiki/Governor_of_South_Carolina",
+    "source_name": "Wikipedia - Governor of South Carolina",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for the South Carolina State Legislature?",
+    "question_variants": [
+      "Qualifications for SC State Representative",
+      "Age requirement South Carolina State Senate",
+      "Do I have to live in my district to run in SC?"
+    ],
+    "answer": "A candidate for the State Senate must be at least 25 years old. A candidate for the State House of Representatives must be at least 21 years old. Both must be citizens of the United States and residents of the district they seek to represent at the time they file.",
+    "source_url": "https://scsba.org/general/aboutus_boardcandidates_boardcandidate.pdf",
+    "source_name": "South Carolina School Boards Association - Qualifications Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for U.S. House candidates in South Carolina?",
+    "question_variants": [
+      "US House residency requirements South Carolina",
+      "Age to run for Congress in South Carolina",
+      "Federal constitutional requirements for SC candidates"
+    ],
+    "answer": "Federal candidates must meet standard U.S. Constitutional requirements: U.S. House members must be at least 25 years old, a U.S. citizen for 7 years, and an inhabitant of the state when elected.",
+    "source_url": "https://scsba.org/general/aboutus_boardcandidates_boardcandidate.pdf",
+    "source_name": "South Carolina Qualifications Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the term limits for the South Carolina Governor?",
+    "question_variants": [
+      "How many terms can a South Carolina Governor serve?",
+      "South Carolina executive term limit law",
+      "Henry McMaster term limits SC"
+    ],
+    "answer": "Under Section 3 in Article IV of the South Carolina Constitution, the Governor is limited to serving two consecutive four-year terms. After serving two consecutive terms, an individual is ineligible to run for the office again without an intervening term (there is no lifetime limit).",
+    "source_url": "https://en.wikipedia.org/wiki/Governor_of_South_Carolina",
+    "source_name": "Wikipedia - Governor of South Carolina",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Gubernatorial candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "Does South Carolina have legislative term limits?",
+    "question_variants": [
+      "How many terms can a South Carolina state senator serve?",
+      "Are there term limits for the South Carolina House?",
+      "South Carolina legislature term limit status"
+    ],
+    "answer": "No. South Carolina does not impose term limits on members of the State Senate or the House of Representatives. State legislators may serve an unlimited number of terms as long as they continue to win re-election.",
+    "source_url": "https://ballotpedia.org/South_Carolina_State_Legislature",
+    "source_name": "Ballotpedia - South Carolina State Legislature",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "State legislative candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Lieutenant Governor in South Carolina?",
+    "question_variants": [
+      "South Carolina Lt Gov requirements",
+      "Does the Lt Gov have the same requirements as the Governor in SC?",
+      "Qualifications for Lieutenant Governor of South Carolina"
+    ],
+    "answer": "The qualifications for Lieutenant Governor in South Carolina are identical to those for Governor. A candidate must be at least 30 years old, a U.S. citizen, and a resident of the state for five years.",
+    "source_url": "https://scsba.org/general/aboutus_boardcandidates_boardcandidate.pdf",
+    "source_name": "South Carolina Qualifications Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide executive candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["county"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for county officeholders in South Carolina?",
+    "question_variants": [
+      "South Carolina county council qualifications",
+      "Can I run for county board in SC?",
+      "County residency for SC officials"
+    ],
+    "answer": "To run for a standard county office in South Carolina, a candidate must be a registered voter and a resident of the county (and the specific district, if applicable) they seek to represent at the time of the election.",
+    "source_url": "https://scsba.org/general/aboutus_boardcandidates_boardcandidate.pdf",
+    "source_name": "South Carolina Qualifications Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "County candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is a photo ID required to vote in person in South Carolina?",
+    "question_variants": [
+      "South Carolina voter ID requirements",
+      "Do I need my driver's license to vote in SC?",
+      "Acceptable ID for South Carolina voting"
+    ],
+    "answer": "Yes. South Carolina enforces a strict photo ID law. Voters must present a valid photo ID (such as an SC driver's license, DMV ID card, passport, military ID, or SC voter registration card with a photo). If a voter suffers from a 'reasonable impediment' to obtaining a photo ID, they may sign an affidavit, present their non-photo voter registration card, and cast a provisional ballot that will count.",
+    "source_url": "https://scvotes.gov/voters/voter-faq/",
+    "source_name": "South Carolina Election Commission - Voter FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All voters"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Is South Carolina a universal mail ballot state, and is no-excuse absentee voting allowed?",
+    "question_variants": [
+      "Do all voters get a mail ballot in South Carolina?",
+      "South Carolina vote-by-mail system",
+      "Do I need an excuse to vote absentee in SC?"
+    ],
+    "answer": "No. South Carolina is not a universal mail ballot state, and it strictly REQUIRES an excuse to vote absentee by mail. Voters must meet specific qualifying criteria (such as being over 65, having a physical disability, or working during polling hours) to request an absentee mail ballot.",
+    "source_url": "https://scvotes.gov/voters/voter-faq/",
+    "source_name": "South Carolina Election Commission - Voter FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does South Carolina offer early in-person voting?",
+    "question_variants": [
+      "Can I vote early in person in SC?",
+      "South Carolina early voting dates 2026",
+      "When does early voting start in South Carolina?"
+    ],
+    "answer": "Yes. South Carolina offers true no-excuse early in-person voting. The early voting period begins approximately two weeks prior to the election and ends on the Friday before the election. For the 2026 general election, this period is slated for October 19 through October 31 (closed on Sunday).",
+    "source_url": "https://scvotes.gov/candidates/2026-candidate-information/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the voter registration deadline and does South Carolina offer same-day registration?",
+    "question_variants": [
+      "Last day to register to vote in SC",
+      "South Carolina same day voter registration",
+      "Voter registration deadline 2026 South Carolina"
+    ],
+    "answer": "The deadline to register to vote in South Carolina is 30 days before the election. Registration can be completed online, by mail, or in person. South Carolina DOES NOT offer same-day voter registration at the polls on Election Day or during early voting.",
+    "source_url": "https://scvotes.gov/wp-content/uploads/2024/04/Voter-Registration-Facts-in-SC-4.pdf",
+    "source_name": "South Carolina Election Commission - Voter Registration Facts",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the electioneering buffer zone distance in South Carolina?",
+    "question_variants": [
+      "How close can I campaign to a polling place in SC?",
+      "South Carolina 500 feet electioneering rule",
+      "SC buffer zone around voting centers"
+    ],
+    "answer": "Under South Carolina law (S.C. Code § 7-25-180), electioneering is strictly prohibited within the polling place and within 500 feet of any entrance used by the voters to enter the polling place. This applies during both Election Day and the early voting period, making it one of the largest buffer zones in the nation.",
+    "source_url": "https://www.scstatehouse.gov/sess125_2023-2024/bills/4711.htm",
+    "source_name": "South Carolina Legislature - S.C. Code § 7-25-180",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Campaign workers and Voters"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How are voting rights restored for individuals with felony convictions in South Carolina?",
+    "question_variants": [
+      "Can felons vote in South Carolina state?",
+      "Felony voting rights restoration SC",
+      "Voting on parole in South Carolina"
+    ],
+    "answer": "In South Carolina, individuals convicted of a felony lose their voting rights while serving their sentence. Their voting rights are automatically restored upon the full completion of their entire sentence, which includes all prison time as well as any periods of probation or parole. They must re-register to vote once eligible.",
+    "source_url": "https://www.rootandreboundsc.org/wp-content/uploads/2020/08/RR_SouthCarolina_Voting.pdf",
+    "source_name": "Root & Rebound SC - Voting Rights",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Voters"
+  },
+  {
+    "state": "SC",
+    "office_level": ["county"],
+    "category": "voter_interaction",
+    "question": "How many counties are in South Carolina, and who administers elections locally?",
+    "question_variants": [
+      "South Carolina county election administration",
+      "How many county election commissions in SC?",
+      "Local election control South Carolina"
+    ],
+    "answer": "South Carolina is divided into 46 counties. Election administration is handled at the local level by county boards of voter registration and elections. Statewide campaigns must coordinate heavily with these 46 local boards to manage early voting logistics and absentee ballot processing.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How can campaigns access the South Carolina voter file?",
+    "question_variants": [
+      "South Carolina voter database access cost",
+      "How to get the voter list in SC",
+      "What data is included in the South Carolina voter file?"
+    ],
+    "answer": "Campaigns and political committees can purchase the statewide voter registration list from the South Carolina Election Commission. The file contains voter names, addresses, and election history. The data is legally restricted exclusively to election-related and political purposes.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Campaign Strategists"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the deadline to return an absentee mail-in ballot in South Carolina?",
+    "question_variants": [
+      "When is the last day to mail my ballot in SC?",
+      "South Carolina mail ballot postmark deadline",
+      "What time are ballots due in South Carolina?"
+    ],
+    "answer": "All voted absentee ballots must be physically received by the county voter registration office by 7:00 p.m. on Election Day. South Carolina does NOT accept late-arriving ballots based on postmark dates.",
+    "source_url": "https://scvotes.gov/wp-content/uploads/2023/12/Absentee-Voter-Go-To-Guide.pdf",
+    "source_name": "South Carolina Election Commission - Absentee Guide",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "runoff_rules",
+    "question": "Is Ranked Choice Voting (RCV) used in South Carolina?",
+    "question_variants": [
+      "Does South Carolina use ranked choice voting?",
+      "RCV status in South Carolina 2026",
+      "Instant runoff voting SC"
+    ],
+    "answer": "No. Ranked Choice Voting (RCV) is not used for any state, federal, or municipal elections in South Carolina. The state relies on a traditional plurality system for general elections and a majority-runoff system for primary elections.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Which agency administers campaign finance tracking in South Carolina?",
+    "question_variants": [
+      "Where do I file campaign finance reports in SC?",
+      "What is the South Carolina campaign finance system?",
+      "Does the SC Election Commission handle campaign finance?"
+    ],
+    "answer": "Campaign finance and disclosure laws in South Carolina are administered and enforced by the South Carolina State Ethics Commission. Candidates and committees file their contribution and expenditure reports electronically using the Commission's online public reporting portal.",
+    "source_url": "https://apps.sc.gov/publicreporting/index.aspx",
+    "source_name": "SC State Ethics Commission - Public Disclosure",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the individual campaign contribution limits in South Carolina for the 2026 cycle?",
+    "question_variants": [
+      "Are there contribution limits in South Carolina?",
+      "SC individual donation caps 2026 election",
+      "Maximum donation to state legislature South Carolina"
+    ],
+    "answer": "In South Carolina, contribution limits apply per election. An individual may contribute up to $3,500 to a statewide candidate per election, and up to $1,000 to a local or legislative candidate per election. Because the primary, runoff, and general are counted as separate elections, donors can give the maximum amount for each.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission - Campaigns",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "Candidates and Donors"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are corporate contributions permitted in South Carolina campaigns?",
+    "question_variants": [
+      "Corporate contribution ban South Carolina state",
+      "Can a business donate to my campaign in SC?",
+      "Corporate campaign finance rules South Carolina"
+    ],
+    "answer": "Yes. Direct contributions from the general treasury of a corporation or labor union to a candidate's campaign committee are PERMITTED in South Carolina. They are subject to the exact same per-election limits as individual donors ($3,500 for statewide, $1,000 for local/legislative).",
+    "source_url": "https://documents.ncsl.org/wwwncsl/Elections/State-Limits-on-Contributions-to-Candidates-2025-2026.pdf",
+    "source_name": "NCSL - State Limits on Contributions 2025-2026",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Candidates and Businesses"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What is the general campaign finance reporting schedule for South Carolina candidates?",
+    "question_variants": [
+      "SC Ethics Commission filing dates 2026",
+      "When are campaign finance reports due in SC?",
+      "South Carolina pre-primary and pre-general report deadlines"
+    ],
+    "answer": "Candidates must file an Initial Campaign Disclosure when they raise or spend a total of $500. After that, they must file quarterly disclosures (April, July, October, January). During an election year, candidates must also file a Pre-Election Campaign Disclosure report exactly 15 days prior to any election (primary, runoff, or general).",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission - Campaigns",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are candidates prohibited from using campaign funds for personal use in South Carolina?",
+    "question_variants": [
+      "SC personal use prohibition campaign finance",
+      "Can I use campaign money for personal items in SC?",
+      "Prohibited expenditures South Carolina Ethics Commission"
+    ],
+    "answer": "Yes. Under the South Carolina Ethics Reform Act, campaign funds are strictly prohibited from being converted to personal use. Expenditures must bear a direct relationship to the candidate's campaign or the execution of their public office.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What can South Carolina candidates do with unexpended campaign funds?",
+    "question_variants": [
+      "What can I do with leftover campaign money in SC?",
+      "SC surplus campaign funds rules",
+      "Donating remaining campaign funds South Carolina"
+    ],
+    "answer": "Surplus campaign funds cannot be converted to personal use. Candidates may carry them forward to a future campaign, return them pro-rata to contributors, transfer them to a political party committee, or donate them to a tax-exempt charitable organization.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "Are there limits on a candidate loaning personal funds to their own campaign in South Carolina?",
+    "question_variants": [
+      "South Carolina candidate personal loan limits",
+      "Can I pay myself back for a campaign loan in SC?",
+      "Reporting candidate loans in SC Ethics Commission"
+    ],
+    "answer": "No. A candidate may loan or contribute an UNLIMITED amount of their own personal funds to their campaign committee, as these funds are exempt from standard contribution limits. Loans must be properly documented on Ethics Commission disclosures and may be repaid from campaign contributions.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "Who draws South Carolina's congressional and state legislative maps?",
+    "question_variants": [
+      "Does the SC legislature draw district maps?",
+      "Who has the authority to draw district lines in South Carolina?",
+      "South Carolina redistricting commission"
+    ],
+    "answer": "In South Carolina, the state legislature (General Assembly) holds the exclusive authority to draw and enact both congressional and state legislative district boundaries. The maps are passed as regular legislation and are subject to the Governor's signature or veto.",
+    "source_url": "https://ballotpedia.org/Redistricting_in_South_Carolina",
+    "source_name": "Ballotpedia - Redistricting in South Carolina",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state"],
+    "category": "redistricting",
+    "question": "What are the legal criteria for redistricting in South Carolina?",
+    "question_variants": [
+      "Standards for drawing South Carolina district lines",
+      "South Carolina gerrymandering rules",
+      "Map requirements SC"
+    ],
+    "answer": "Under South Carolina law and legislative committee guidelines, district maps must be contiguous, compact, and adhere to federal equal population standards. The guidelines also prioritize preserving communities of interest, respecting political subdivisions (like county boundaries), and complying with the federal Voting Rights Act to protect minority voting rights.",
+    "source_url": "https://www.scstatehouse.gov/redistricting/RedistrictingGuidelines.pdf",
+    "source_name": "South Carolina General Assembly - Redistricting Guidelines",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal"],
+    "category": "redistricting",
+    "question": "Are the 2021 congressional redistricting maps operative for the 2026 cycle in South Carolina?",
+    "question_variants": [
+      "SC-1 gerrymandering controversy",
+      "Status of South Carolina congressional maps",
+      "Supreme Court ruling on South Carolina redistricting"
+    ],
+    "answer": "Yes. The congressional maps enacted in 2021 remain fully operative for the 2026 elections. The maps faced a high-profile legal challenge regarding the 1st Congressional District (SC-1). In 2024, the U.S. Supreme Court ruled in 'Alexander v. SC State Conference of the NAACP' that the map was a permissible partisan gerrymander rather than an unconstitutional racial gerrymander, upholding the district boundaries.",
+    "source_url": "https://www.supremecourt.gov/opinions/23pdf/22-807_3e04.pdf",
+    "source_name": "U.S. Supreme Court - Alexander v. SC NAACP",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "recall_rules",
+    "question": "Does South Carolina have a recall mechanism for state officials?",
+    "question_variants": [
+      "Can the Governor of South Carolina be recalled?",
+      "How to recall a state senator in SC",
+      "Statewide recall election rules South Carolina"
+    ],
+    "answer": "No. The State of South Carolina does not have any constitutional or statutory provision allowing for the recall of state-level elected officials, including the Governor, statewide executives, or members of the General Assembly.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_South_Carolina",
+    "source_name": "Laws governing recall in South Carolina",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Statewide and legislative candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["county", "municipal"],
+    "category": "recall_rules",
+    "question": "What are the rules for local recall in South Carolina?",
+    "question_variants": [
+      "South Carolina county council recall rules",
+      "Signature requirement local recall South Carolina",
+      "Recalling a mayor in SC"
+    ],
+    "answer": "There is no broad, statewide statutory right to recall local officials in South Carolina. Recall is extremely rare and only permitted if a specific municipality's incorporating charter explicitly includes provisions allowing for it.",
+    "source_url": "https://ballotpedia.org/Laws_governing_recall_in_South_Carolina",
+    "source_name": "Laws governing recall in South Carolina",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Local candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Attorney General in South Carolina?",
+    "question_variants": [
+      "Qualifications to run for Attorney General in SC",
+      "Do I need to be a member of the bar to be SC AG?",
+      "Legal requirements for South Carolina Attorney General"
+    ],
+    "answer": "Under Article VI, Section 7 of the South Carolina Constitution, a candidate for Attorney General must be a citizen of the United States, a qualified elector (registered voter) of the state, and must have been a licensed attorney actively practicing law for at least five years.",
+    "source_url": "https://www.scstatehouse.gov/scconstitution/A06.pdf",
+    "source_name": "South Carolina Constitution Article VI",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements to run for Secretary of State in South Carolina?",
+    "question_variants": [
+      "Requirements to run for SC Secretary of State",
+      "Who can run for Secretary of State in SC?",
+      "Residency rules for South Carolina SOS"
+    ],
+    "answer": "To run for Secretary of State in South Carolina, a candidate must simply be a qualified elector (registered voter) of the state. There are no additional specialized constitutional age or residency requirements explicitly enumerated for this specific office beyond those required of all electors.",
+    "source_url": "https://scvotes.gov/candidates/qualifications/",
+    "source_name": "South Carolina Election Commission - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for State Treasurer in South Carolina?",
+    "question_variants": [
+      "Eligibility for South Carolina State Treasurer",
+      "Who can run for Treasurer in SC?",
+      "South Carolina Treasurer residency requirements"
+    ],
+    "answer": "Similar to the Secretary of State, the only constitutional requirement to run for the office of State Treasurer in South Carolina is that the candidate must be a qualified elector (registered voter) of the state.",
+    "source_url": "https://scvotes.gov/candidates/qualifications/",
+    "source_name": "South Carolina Election Commission - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications to run for Comptroller General in South Carolina?",
+    "question_variants": [
+      "Eligibility for South Carolina Comptroller",
+      "Who can run for Comptroller General in SC?",
+      "Is a CPA license required for SC Comptroller?"
+    ],
+    "answer": "The Comptroller General is a statewide elected office in South Carolina. The constitutional requirement is simply that the candidate must be a qualified elector of the state. There is no constitutional requirement for the candidate to hold a CPA license or specific financial degree.",
+    "source_url": "https://scvotes.gov/candidates/qualifications/",
+    "source_name": "South Carolina Election Commission - Qualifications",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Statewide candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["municipal"],
+    "category": "candidate_eligibility",
+    "question": "What are the eligibility requirements for a school board candidate in South Carolina?",
+    "question_variants": [
+      "Run for school board South Carolina requirements",
+      "Who can be a school board member in SC?",
+      "School board residency rules South Carolina"
+    ],
+    "answer": "To run for a local school board in South Carolina, a candidate must be a registered voter and a resident of the specific school district (and district boundary, if elected by a specific zone) they seek to represent at the time they are elected.",
+    "source_url": "https://scsba.org/general/aboutus_boardcandidates_boardcandidate.pdf",
+    "source_name": "South Carolina School Boards Association",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "School board candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "What are the qualifications for South Carolina Supreme Court justices?",
+    "question_variants": [
+      "South Carolina Supreme Court Justice eligibility",
+      "Years of practice required for SC Supreme Court",
+      "Are South Carolina judges elected or appointed?"
+    ],
+    "answer": "To serve on the South Carolina Supreme Court, an individual must be a citizen of the United States, at least 32 years of age, and must have been a licensed attorney at law for at least eight years. Justices are elected by the General Assembly, not the voters.",
+    "source_url": "https://www.sccourts.org/supreme/",
+    "source_name": "South Carolina Judicial Branch",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the ballot signature cure process for absentee mail-in ballots in South Carolina?",
+    "question_variants": [
+      "How to fix a rejected signature in SC",
+      "South Carolina ballot cure process deadline",
+      "Missing witness signature on SC mail ballot"
+    ],
+    "answer": "South Carolina does NOT have an absentee or mail-in ballot curing process. If a returned absentee ballot is missing a signature or the required witness signature on the return envelope, it is rejected by the county board of voter registration and elections without providing the voter a secondary window to correct the error.",
+    "source_url": "https://scvotes.gov/voters/absentee-voting/",
+    "source_name": "South Carolina Election Commission - Absentee Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What are the deadlines for military and overseas (UOCAVA) voters in South Carolina?",
+    "question_variants": [
+      "When are military ballots due in South Carolina?",
+      "UOCAVA return deadline SC",
+      "Overseas voting rules South Carolina state"
+    ],
+    "answer": "Under UOCAVA, ballots are transmitted to military and overseas voters at least 45 days before an election. In South Carolina, voted UOCAVA ballots must be physically received by the county voter registration and elections office no later than 7:00 p.m. on Election Day to be counted.",
+    "source_url": "https://scvotes.gov/voters/military-overseas-citizens/",
+    "source_name": "South Carolina Election Commission - UOCAVA",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "UOCAVA voters"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "When are provisional ballots used in South Carolina?",
+    "question_variants": [
+      "What is a provisional ballot in SC?",
+      "Voting without ID South Carolina reasonable impediment",
+      "When do election workers issue provisional ballots?"
+    ],
+    "answer": "Provisional ballots are issued if a voter's name is not on the registration list or if they lack the required photo ID. Under the 'reasonable impediment' exception, a voter lacking a photo ID can sign an affidavit explaining their impediment, present their non-photo voter registration card, and cast a provisional ballot, which will be counted unless the election commission proves the affidavit is false.",
+    "source_url": "https://scvotes.gov/voters/voter-faq/",
+    "source_name": "South Carolina Election Commission - Voter FAQ",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Poll Watchers"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does South Carolina have Automatic Voter Registration (AVR) at the DMV?",
+    "question_variants": [
+      "Is registration automatic at the South Carolina DMV?",
+      "SC motor voter automatic registration",
+      "Do I have to register to vote if I get a SC driver's license?"
+    ],
+    "answer": "No. South Carolina does NOT have Automatic Voter Registration (AVR). While the state complies with federal Motor Voter laws by giving individuals the opportunity to register to vote when conducting business at the DMV, voters must actively opt-in and submit the registration.",
+    "source_url": "https://scvotes.gov/voters/register-to-vote/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "Does South Carolina offer Online Voter Registration?",
+    "question_variants": [
+      "Can I register to vote online in SC?",
+      "South Carolina electronic voter registration",
+      "SC online registration portal"
+    ],
+    "answer": "Yes. Eligible South Carolina residents who possess a valid South Carolina driver's license or DMV-issued ID card can securely register to vote or update their registration using the State Election Commission's online voter registration portal.",
+    "source_url": "https://scvotes.gov/voters/register-to-vote/",
+    "source_name": "South Carolina Election Commission - OVR",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "How does South Carolina maintain its voter registration lists?",
+    "question_variants": [
+      "SC voter list maintenance rules",
+      "How are inactive voters handled in South Carolina?",
+      "South Carolina voter roll cleaning process"
+    ],
+    "answer": "The State Election Commission conducts voter list maintenance using National Change of Address (NCOA) data, DMV cross-checks, and Department of Health and Environmental Control (DHEC) death records. Voters whose addresses cannot be verified are sent confirmation notices and eventually moved to inactive status if they fail to respond and do not vote in two consecutive federal general elections.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What is the schedule for early in-person voting in South Carolina?",
+    "question_variants": [
+      "When is early voting open in SC?",
+      "South Carolina early voting hours",
+      "Is early voting open on weekends in SC?"
+    ],
+    "answer": "South Carolina established a 15-day early voting window. Early voting centers open on the Monday 15 days prior to an election and run through the Saturday immediately preceding the election. The centers operate from 8:30 a.m. to 5:00 p.m., Monday through Saturday. Early voting centers are closed on Sundays and state holidays.",
+    "source_url": "https://scvotes.gov/voters/early-voting/",
+    "source_name": "South Carolina Election Commission - Early Voting",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county", "municipal"],
+    "category": "voter_interaction",
+    "question": "What excuses are required to vote absentee by mail in South Carolina?",
+    "question_variants": [
+      "Who is eligible to vote by mail in SC?",
+      "South Carolina absentee ballot qualifying reasons",
+      "Can anyone vote absentee in South Carolina?"
+    ],
+    "answer": "Because South Carolina is an excuse-required absentee state, voters must meet specific criteria to vote by mail. Valid excuses include: being 65 years of age or older, having a physical disability, attending to a sick or disabled person, employment obligations during all polling and early voting hours, military/overseas service, or being absent from the county for the duration of early voting and Election Day.",
+    "source_url": "https://scvotes.gov/voters/absentee-voting/",
+    "source_name": "South Carolina Election Commission - Absentee",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Voters and Campaigns"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "How are exact ties broken in South Carolina elections?",
+    "question_variants": [
+      "How are tied elections decided in South Carolina?",
+      "Tie-breaker rules South Carolina elections",
+      "What happens if a race is tied in SC?"
+    ],
+    "answer": "Under South Carolina Code § 7-13-2210, if a general or special election results in an exact tie vote between candidates, the election officials must hold a mandatory runoff election exactly two weeks following the initial election to resolve the tie.",
+    "source_url": "https://www.scstatehouse.gov/code/t07c013.php",
+    "source_name": "South Carolina Code of Laws § 7-13-2210",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "ballot_access",
+    "question": "Does South Carolina have a citizen initiative process?",
+    "question_variants": [
+      "How to get an initiative on the SC ballot",
+      "South Carolina citizen initiative signature requirements",
+      "Can citizens propose laws in South Carolina?"
+    ],
+    "answer": "No. South Carolina is one of the states that does NOT have a statewide citizen initiative process. Citizens cannot draft statutes or constitutional amendments and gather signatures to place them on the ballot. All statewide ballot measures must be referred by the legislature.",
+    "source_url": "https://ballotpedia.org/Initiative_and_referendum_in_South_Carolina",
+    "source_name": "Ballotpedia - Initiative and Referendum in South Carolina",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Ballot measure committees"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county"],
+    "category": "finance_ethics",
+    "question": "What are the PAC contribution limits to candidates in South Carolina?",
+    "question_variants": [
+      "SC PAC donation limits to candidates 2026",
+      "Political committee vs individual contribution limit South Carolina",
+      "Maximum PAC gift to state legislator SC"
+    ],
+    "answer": "In South Carolina, standard Political Action Committees (PACs) are subject to the EXACT SAME contribution limits as individuals. A PAC may contribute up to $3,500 per election to a statewide candidate, and up to $1,000 per election to a legislative or local candidate.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission - Campaigns",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "State and County candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What disclaimer language is required on South Carolina campaign materials?",
+    "question_variants": [
+      "South Carolina 'Paid for by' rules",
+      "Campaign ad disclaimer requirements SC",
+      "Political taglines South Carolina Ethics Commission"
+    ],
+    "answer": "South Carolina campaign finance law requires that all political advertising and broadcast mass media clearly state the name and address of the candidate, committee, or person who paid for the communication. (e.g., 'Paid for by [Committee Name]').",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and PACs"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When does outside spending become prohibited coordination in South Carolina?",
+    "question_variants": [
+      "SC campaign coordination rules",
+      "When is a PAC expenditure not independent in South Carolina?",
+      "Prohibition on candidate-PAC coordination SC"
+    ],
+    "answer": "An independent expenditure becomes 'coordinated' if it is made in cooperation, consultation, or concert with, or at the request or suggestion of, a candidate or their committee. In South Carolina, coordinated expenditures are legally treated as in-kind contributions and are subject to strict per-election limits.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and IECs"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the penalties for late campaign finance filings in South Carolina?",
+    "question_variants": [
+      "SC Ethics Commission late fee",
+      "Penalty for missing a South Carolina campaign finance deadline",
+      "Ethics Commission fine for late filing SC"
+    ],
+    "answer": "The South Carolina State Ethics Commission enforces late filing penalties. If a report is not filed within 5 days of a warning notice, a $100 fine is assessed. The fine then increases by $10 for each day the report remains unfiled, up to a maximum penalty of $500.",
+    "source_url": "https://ethics.sc.gov/",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "When and how must a South Carolina campaign committee terminate?",
+    "question_variants": [
+      "Closing a South Carolina campaign committee",
+      "Ethics Commission committee termination requirements",
+      "Final campaign finance report South Carolina"
+    ],
+    "answer": "A candidate committee may formally terminate when it has ceased receiving contributions and making expenditures, achieved a zero cash balance, and legally disposed of all surplus funds. A final Campaign Disclosure Report checking the 'Final Report' box must be filed with the State Ethics Commission.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are the disclosure rules for independent expenditures in South Carolina?",
+    "question_variants": [
+      "SC independent expenditure reporting Ethics Commission",
+      "Disclosure for SC independent expenditure groups",
+      "Reporting thresholds for outside spending South Carolina"
+    ],
+    "answer": "Persons or entities making independent expenditures aggregating more than $500 during an election cycle must file an independent expenditure report with the State Ethics Commission. This report must detail the expenditure and identify the candidate supported or opposed.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Independent groups and PACs"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "How are in-kind contributions valued and reported in South Carolina?",
+    "question_variants": [
+      "South Carolina in-kind contribution valuation rules",
+      "Reporting non-monetary donations South Carolina campaign",
+      "Fair market value for in-kind gifts SC"
+    ],
+    "answer": "In-kind contributions (donated goods, services, or discounts not available to the general public) must be reported to the State Ethics Commission at their fair market value. Their value is counted directly against the donor's per-election monetary contribution limit.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "finance_ethics",
+    "question": "What are South Carolina's rapid disclosure requirements for late contributions?",
+    "question_variants": [
+      "South Carolina 24-hour large contribution report",
+      "Late contribution reporting South Carolina Ethics Commission",
+      "When do I file a rapid report in SC?"
+    ],
+    "answer": "Under South Carolina law, any contribution of $500 or more received in the final 20 days immediately preceding an election must be reported to the State Ethics Commission within 24 hours of receipt.",
+    "source_url": "https://ethics.sc.gov/campaigns",
+    "source_name": "SC State Ethics Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and treasurers"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state"],
+    "category": "finance_ethics",
+    "question": "Is there a session freeze on campaign contributions for South Carolina legislators?",
+    "question_variants": [
+      "Can South Carolina legislators raise money during session?",
+      "Lobbyist contribution ban SC legislature",
+      "Legislative session contribution rules South Carolina"
+    ],
+    "answer": "Yes. South Carolina enforces a strict 'session freeze' under S.C. Code § 8-13-1356. Members of the General Assembly and candidates for the General Assembly are strictly prohibited from soliciting or accepting campaign contributions from any person during the regular legislative session (which typically runs from January through May).",
+    "source_url": "https://www.scstatehouse.gov/code/t08c013.php",
+    "source_name": "South Carolina Code of Laws § 8-13-1356",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "statute_citation",
+    "scope": "State legislative candidates and Lobbyists"
+  },
+  {
+    "state": "SC",
+    "office_level": ["county"],
+    "category": "election_dates",
+    "question": "What are the terms and election cycles for county offices in South Carolina?",
+    "question_variants": [
+      "When are county sheriffs elected in SC?",
+      "South Carolina county official term lengths",
+      "Are county councils on the 2026 ballot?"
+    ],
+    "answer": "Elected county officials in South Carolina—including County Sheriffs, Clerks of Court, Auditors, and Treasurers—serve four-year terms. They are elected on alternating cycles, meaning many county offices will appear on the 2026 midterm ballot.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "per_cycle",
+    "verification_method": "official_source_direct",
+    "scope": "County candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["state", "county", "municipal"],
+    "category": "election_dates",
+    "question": "What is the canvassing and certification timeline for South Carolina elections?",
+    "question_variants": [
+      "When are South Carolina election results official?",
+      "SC certification deadline",
+      "State Election Commission meeting South Carolina"
+    ],
+    "answer": "The county boards of voter registration and elections meet on the Friday following Election Day to officially canvass and certify the local results. The State Election Commission then meets shortly thereafter to certify the final statewide and federal election returns.",
+    "source_url": "https://scvotes.gov/voters/election-results/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates and campaigns"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state"],
+    "category": "election_dates",
+    "question": "When and how are special elections called in South Carolina?",
+    "question_variants": [
+      "South Carolina special election timeline",
+      "Who calls a special election to fill a US House vacancy in SC?",
+      "Filling a midterm vacancy South Carolina"
+    ],
+    "answer": "Special elections to fill a vacancy in a federal office (like the U.S. House) or the State Legislature are called by a writ of election issued by the Governor. The election calendar, including special primary and general election dates, is then established by the State Election Commission.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Federal and State candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["judicial"],
+    "category": "election_dates",
+    "question": "What is the election cycle for South Carolina Supreme Court justices?",
+    "question_variants": [
+      "When do SC Supreme Court justices run?",
+      "South Carolina judicial elections",
+      "Terms for South Carolina Supreme Court"
+    ],
+    "answer": "South Carolina Supreme Court justices serve 10-year terms. However, because they are elected entirely by a vote of the General Assembly rather than by the general public, their election dates are determined by the legislative calendar and they never appear on a public ballot.",
+    "source_url": "https://www.sccourts.org/supreme/",
+    "source_name": "South Carolina Judicial Branch",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "Judicial candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["federal", "state", "county"],
+    "category": "runoff_rules",
+    "question": "Does South Carolina hold general election runoffs if no candidate reaches a certain threshold?",
+    "question_variants": [
+      "Are there runoffs in South Carolina general elections?",
+      "South Carolina majority vote requirement general election",
+      "What happens if no one gets 50% in SC?"
+    ],
+    "answer": "No. While South Carolina strictly requires an absolute majority (>50%) to win a primary election, it does not require a majority for the general election. The candidate who receives a simple plurality (the most votes) in November wins the general election, unless the race results in an exact tie.",
+    "source_url": "https://scvotes.gov/",
+    "source_name": "South Carolina Election Commission",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "official_source_direct",
+    "scope": "All candidates"
+  },
+  {
+    "state": "SC",
+    "office_level": ["judicial"],
+    "category": "candidate_eligibility",
+    "question": "How are judges selected in South Carolina?",
+    "question_variants": [
+      "South Carolina judicial selection process",
+      "Are judges elected or appointed in SC?",
+      "Judicial Merit Selection Commission South Carolina"
+    ],
+    "answer": "South Carolina is one of only two states (along with Virginia) where the state legislature holds the exclusive power to elect state supreme and appellate court judges. A ten-member Judicial Merit Selection Commission (JMSC) screens candidates and submits up to three names to the General Assembly, which then elects the judge by a joint vote.",
+    "source_url": "https://en.wikipedia.org/wiki/South_Carolina_Supreme_Court",
+    "source_name": "Wikipedia - SC Supreme Court",
+    "last_verified_date": "2026-05-17",
+    "update_frequency": "static",
+    "verification_method": "secondary_source",
+    "scope": "Judicial candidates"
+  }
+]
