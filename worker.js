@@ -125,6 +125,7 @@ export default {
         const ownerRow = await env.DB.prepare(
           'SELECT sam_engine FROM users WHERE id = ?'
         ).bind(sub.owner_id).first();
+        if (!ownerRow) return { userId, ownerId: null, isSubUser: true, revoked: true };
         const samEngine = normalizeEngine(ownerRow && ownerRow.sam_engine);
         return { userId, ownerId: sub.owner_id, isSubUser: true, permissions: perms, samEngine };
       }
@@ -1479,6 +1480,16 @@ export default {
         const { subUserId, permissions } = await request.json();
         if (!subUserId) return jsonResponse({ error: 'subUserId required' }, 400);
         if (!permissions || typeof permissions !== 'object') return jsonResponse({ error: 'permissions object required' }, 400);
+        const allowedTabs = ['calendar', 'budget', 'notes', 'endorsements', 'intel'];
+        const allowedLevels = ['read', 'full'];
+        for (const key of Object.keys(permissions)) {
+          if (!allowedTabs.includes(key)) {
+            return jsonResponse({ error: 'invalid_permission_key', message: 'Unknown permission key: ' + key }, 400);
+          }
+          if (!allowedLevels.includes(permissions[key])) {
+            return jsonResponse({ error: 'invalid_permission_value', message: 'Invalid level for ' + key + ': ' + permissions[key] }, 400);
+          }
+        }
         const owned = await env.DB.prepare(
           'SELECT id FROM sub_users WHERE id = ? AND owner_id = ?'
         ).bind(subUserId, ctx.ownerId).first();
@@ -2029,7 +2040,7 @@ export default {
         if (list.length > 0) {
           const stmt = env.DB.prepare(
             'INSERT INTO tasks (id, user_id, workspace_owner_id, name, date, category, completed, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, category = excluded.category, completed = excluded.completed, campaign_id = excluded.campaign_id'
+            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, category = excluded.category, completed = excluded.completed, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
           );
           const batch = list.map(t => stmt.bind(
             String(t.id),
@@ -2109,7 +2120,7 @@ export default {
         if (list.length > 0) {
           const stmt = env.DB.prepare(
             'INSERT INTO events (id, user_id, workspace_owner_id, name, date, time, end_time, location, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, time = excluded.time, end_time = excluded.end_time, location = excluded.location, campaign_id = excluded.campaign_id'
+            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, time = excluded.time, end_time = excluded.end_time, location = excluded.location, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
           );
           const batch = list.map(e => stmt.bind(
             String(e.id),
@@ -2560,6 +2571,7 @@ export default {
       try {
         const ctx = await getSessionContext(request);
         if (!ctx) return jsonResponse({ success: true, skipped: 'unauth' });
+        if (ctx.revoked) return denyRevoked();
         const body = await request.json().catch(() => ({}));
         const trunc = (s, n) => {
           if (s == null) return null;
@@ -3571,7 +3583,7 @@ export default {
         if (incomingFolders.length > 0) {
           const folderStmt = env.DB.prepare(
             'INSERT INTO folders (id, user_id, workspace_owner_id, name, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?) ' +
-            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, campaign_id = excluded.campaign_id'
+            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
           );
           const folderBatch = incomingFolders.map(f => folderStmt.bind(
             String(f.id || generateId(16)),
@@ -3588,7 +3600,7 @@ export default {
         if (incomingNotes.length > 0) {
           const noteStmt = env.DB.prepare(
             'INSERT INTO notes (id, folder_id, user_id, workspace_owner_id, title, content, campaign_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-            'ON CONFLICT(id) DO UPDATE SET folder_id = excluded.folder_id, title = excluded.title, content = excluded.content, campaign_id = excluded.campaign_id, updated_at = excluded.updated_at'
+            'ON CONFLICT(id) DO UPDATE SET folder_id = excluded.folder_id, title = excluded.title, content = excluded.content, campaign_id = excluded.campaign_id, updated_at = excluded.updated_at WHERE workspace_owner_id = excluded.workspace_owner_id'
           );
           const noteBatch = incomingNotes.map(({ folderId, note: n }) => noteStmt.bind(
             String(n.id || generateId(16)),
@@ -3702,8 +3714,9 @@ export default {
     // ========================================
     if (url.pathname === '/api/chat-history/save' && request.method === 'POST') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
 
         const { messages } = await request.json();
 
@@ -3713,7 +3726,7 @@ export default {
           ON CONFLICT(user_id) DO UPDATE SET
             messages = excluded.messages,
             updated_at = datetime('now')
-        `).bind(userId, JSON.stringify(messages)).run();
+        `).bind(ctx.userId, JSON.stringify(messages)).run();
 
         return jsonResponse({ success: true });
       } catch (error) {
@@ -3726,12 +3739,13 @@ export default {
     // ========================================
     if (url.pathname === '/api/chat-history/load' && request.method === 'GET') {
       try {
-        const userId = await getUserFromSession(request);
-        if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
 
         const row = await env.DB.prepare(
           'SELECT messages FROM chat_history WHERE user_id = ?'
-        ).bind(userId).first();
+        ).bind(ctx.userId).first();
 
         let messages = [];
         if (row && row.messages) {
@@ -3766,7 +3780,7 @@ export default {
         if (list.length > 0) {
           const stmt = env.DB.prepare(
             'INSERT INTO endorsements (id, user_id, workspace_owner_id, name, title, status, notes, date, added_by_sam, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, title = excluded.title, status = excluded.status, notes = excluded.notes, date = excluded.date, added_by_sam = excluded.added_by_sam, campaign_id = excluded.campaign_id'
+            'ON CONFLICT(id) DO UPDATE SET name = excluded.name, title = excluded.title, status = excluded.status, notes = excluded.notes, date = excluded.date, added_by_sam = excluded.added_by_sam, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
           );
           const batch = list.map(e => stmt.bind(
             String(e.id), ctx.userId, ctx.ownerId, e.name || '', e.title || '', e.status || 'Pursuing',
@@ -3825,7 +3839,7 @@ export default {
         if (list.length > 0) {
           const stmt = env.DB.prepare(
             'INSERT INTO contributions (id, user_id, workspace_owner_id, donor_name, amount, source, date, employer, occupation, notes, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-            'ON CONFLICT(id) DO UPDATE SET donor_name = excluded.donor_name, amount = excluded.amount, source = excluded.source, date = excluded.date, employer = excluded.employer, occupation = excluded.occupation, notes = excluded.notes, campaign_id = excluded.campaign_id'
+            'ON CONFLICT(id) DO UPDATE SET donor_name = excluded.donor_name, amount = excluded.amount, source = excluded.source, date = excluded.date, employer = excluded.employer, occupation = excluded.occupation, notes = excluded.notes, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
           );
           const batch = list.map(c => stmt.bind(
             String(c.id), ctx.userId, ctx.ownerId, c.donorName || '', c.amount || 0, c.source || 'individual',
@@ -3899,7 +3913,7 @@ export default {
         if (!e || !e.id) return jsonResponse({ error: 'event.id required' }, 400);
         await env.DB.prepare(
           'INSERT INTO events (id, user_id, workspace_owner_id, name, date, time, end_time, location, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, time = excluded.time, end_time = excluded.end_time, location = excluded.location, campaign_id = excluded.campaign_id'
+          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, time = excluded.time, end_time = excluded.end_time, location = excluded.location, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
         ).bind(
           String(e.id), ctx.userId, ctx.ownerId,
           e.name || e.title || '', e.date || null, e.time || null,
@@ -3936,7 +3950,7 @@ export default {
         if (!t || !t.id) return jsonResponse({ error: 'task.id required' }, 400);
         await env.DB.prepare(
           'INSERT INTO tasks (id, user_id, workspace_owner_id, name, date, category, completed, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, category = excluded.category, completed = excluded.completed, campaign_id = excluded.campaign_id'
+          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, date = excluded.date, category = excluded.category, completed = excluded.completed, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
         ).bind(
           String(t.id), ctx.userId, ctx.ownerId,
           t.name || t.text || '', t.date || null, t.category || 'general',
@@ -3973,7 +3987,7 @@ export default {
         if (!f || !f.id) return jsonResponse({ error: 'folder.id required' }, 400);
         await env.DB.prepare(
           'INSERT INTO folders (id, user_id, workspace_owner_id, name, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?) ' +
-          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, campaign_id = excluded.campaign_id'
+          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
         ).bind(
           String(f.id), ctx.userId, ctx.ownerId,
           f.name || '', f.campaign_id || null,
@@ -4019,9 +4033,11 @@ export default {
         const { note: n } = await request.json();
         if (!n || !n.id) return jsonResponse({ error: 'note.id required' }, 400);
         if (!n.folder_id) return jsonResponse({ error: 'note.folder_id required' }, 400);
+        const folderOwned = await env.DB.prepare('SELECT id FROM folders WHERE id = ? AND workspace_owner_id = ?').bind(n.folder_id, ctx.ownerId).first();
+        if (!folderOwned) return jsonResponse({ error: 'folder not found' }, 404);
         await env.DB.prepare(
           'INSERT INTO notes (id, folder_id, user_id, workspace_owner_id, title, content, campaign_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-          'ON CONFLICT(id) DO UPDATE SET folder_id = excluded.folder_id, title = excluded.title, content = excluded.content, campaign_id = excluded.campaign_id, updated_at = excluded.updated_at'
+          'ON CONFLICT(id) DO UPDATE SET folder_id = excluded.folder_id, title = excluded.title, content = excluded.content, campaign_id = excluded.campaign_id, updated_at = excluded.updated_at WHERE workspace_owner_id = excluded.workspace_owner_id'
         ).bind(
           String(n.id), String(n.folder_id), ctx.userId, ctx.ownerId,
           n.title || '', n.content || '', n.campaign_id || null,
@@ -4058,7 +4074,7 @@ export default {
         if (!e || !e.id) return jsonResponse({ error: 'endorsement.id required' }, 400);
         await env.DB.prepare(
           'INSERT INTO endorsements (id, user_id, workspace_owner_id, name, title, status, notes, date, added_by_sam, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, title = excluded.title, status = excluded.status, notes = excluded.notes, date = excluded.date, added_by_sam = excluded.added_by_sam, campaign_id = excluded.campaign_id'
+          'ON CONFLICT(id) DO UPDATE SET name = excluded.name, title = excluded.title, status = excluded.status, notes = excluded.notes, date = excluded.date, added_by_sam = excluded.added_by_sam, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
         ).bind(
           String(e.id), ctx.userId, ctx.ownerId,
           e.name || '', e.title || '', e.status || 'Pursuing',
@@ -4097,7 +4113,7 @@ export default {
         if (!c || !c.id) return jsonResponse({ error: 'contribution.id required' }, 400);
         await env.DB.prepare(
           'INSERT INTO contributions (id, user_id, workspace_owner_id, donor_name, amount, source, date, employer, occupation, notes, campaign_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
-          'ON CONFLICT(id) DO UPDATE SET donor_name = excluded.donor_name, amount = excluded.amount, source = excluded.source, date = excluded.date, employer = excluded.employer, occupation = excluded.occupation, notes = excluded.notes, campaign_id = excluded.campaign_id'
+          'ON CONFLICT(id) DO UPDATE SET donor_name = excluded.donor_name, amount = excluded.amount, source = excluded.source, date = excluded.date, employer = excluded.employer, occupation = excluded.occupation, notes = excluded.notes, campaign_id = excluded.campaign_id WHERE workspace_owner_id = excluded.workspace_owner_id'
         ).bind(
           String(c.id), ctx.userId, ctx.ownerId,
           c.donorName || c.donor_name || '', c.amount || 0,
@@ -5064,6 +5080,37 @@ export default {
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
 
+    // ========================================
+    // HELPER: Query campaign_reference D1 table
+    // Returns up to 5 relevant rows for state + message keywords
+    // ========================================
+    async function queryCampaignReference(stateAbbr, userMessage) {
+      if (!stateAbbr || stateAbbr === 'unknown') return [];
+      try {
+        const stopWords = new Set(['what','when','is','are','the','a','an','i','do','my','for','in','of','to','how','can','does','will','about','have','has','need','be','run','running','know','tell','me','us','you','it','if','on','at','by','or','and','but','not','was','get','use','much','any','all','this','that','they','we','he','she','his','her','our','your','their','its','from','with','as','so','up','out','there','here']);
+        const keywords = userMessage.toLowerCase()
+          .replace(/[^a-z0-9 ]/g, ' ')
+          .split(/\s+/)
+          .filter(w => w.length > 3 && !stopWords.has(w));
+        if (keywords.length === 0) return [];
+        const topKeywords = keywords.slice(0, 3);
+        const conditions = topKeywords.map(() =>
+          `(LOWER(question) LIKE ? OR LOWER(answer) LIKE ? OR LOWER(category) LIKE ?)`
+        ).join(' OR ');
+        const bindings = topKeywords.flatMap(kw => [`%${kw}%`, `%${kw}%`, `%${kw}%`]);
+        const result = await env.DB.prepare(
+          `SELECT question, answer, category, source_name
+           FROM campaign_reference
+           WHERE state = ? AND (${conditions})
+           LIMIT 5`
+        ).bind(stateAbbr.toUpperCase(), ...bindings).all();
+        return result.results || [];
+      } catch (e) {
+        console.error('campaign_reference lookup error:', e);
+        return [];
+      }
+    }
+
     // Only allow POST for the main chat endpoint
     if (request.method !== 'POST') {
       return new Response('Method not allowed', { status: 405, headers: corsHeaders });
@@ -5965,6 +6012,10 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
       const isNewUser = needsOnboarding === true;
       const isReturningUser = !isNewUser && officeType && officeType !== 'unknown';
 
+      // Campaign reference lookup
+      const stateAbbrForLookup = (state || '').toUpperCase().trim();
+      const refRows = await queryCampaignReference(stateAbbrForLookup, message || '');
+
       // Sam v2 Phase 1: load candidate site content + fallback bio for the
       // ABOUT YOUR CANDIDATE block. Owner-scoped: chatOwnerId points to the
       // candidate's user_id (sub-users see the same content as the owner).
@@ -6596,6 +6647,13 @@ RESEARCH SCOPE: ${geo.scope} race. Always research ${geo.researchArea}. Never li
 
 CURRENT CAMPAIGN STATUS:
 ${additionalContext || 'No additional context.'}
+${refRows.length > 0 ? `
+================================================================
+VERIFIED STATE ELECTION LAW (FROM DATABASE — USE THESE FIRST, DO NOT WEB SEARCH FOR COVERED TOPICS):
+================================================================
+${refRows.map(r => `[${r.category.toUpperCase()}] ${r.question}\n${r.answer}\n(Source: ${r.source_name})`).join('\n\n')}
+================================================================
+` : ''}
 ${calendarReference}${toolMemoryBlock}
 ================================================================
 RULES (mandatory, ranked by priority)
@@ -7343,6 +7401,56 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         }
       }
 
+      // ========================================
+      // ROUTER: Classify user intent → 'search' or 'action'
+      //
+      // Tiny Gemini call (~20 tokens out, thinkingBudget=0) that decides
+      // which path this turn takes. 'search' → Gemini + googleSearch
+      // grounding (no functions). 'action' → Gemini + functionDeclarations
+      // (no grounding — Gemini disallows both in the same request).
+      //
+      // Fail-safe: any error or unclear response → 'action' so the user
+      // never loses tool access on a router failure.
+      // ========================================
+      async function routeUserIntent(userMessage) {
+        if (!env.GEMINI_API_KEY || !userMessage) return 'action';
+        try {
+          const resp = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                systemInstruction: { parts: [{ text: "You are a router. Classify the user message as either 'search' (needs live web lookup: deadlines, election law, compliance, current events, filing requirements, form numbers) or 'action' (save note, add calendar, write content, strategy, budget, tasks, general chat). Reply with only the single word: search or action." }] },
+                contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+                generationConfig: {
+                  maxOutputTokens: 20,
+                  temperature: 0,
+                  thinkingConfig: { thinkingBudget: 0 }
+                }
+              })
+            }
+          );
+          const data = await resp.json();
+          await logApiUsage('sam_router', {
+            inputTokens: (data && data.usageMetadata && data.usageMetadata.promptTokenCount) || 0,
+            outputTokens: (data && data.usageMetadata && data.usageMetadata.candidatesTokenCount) || 0
+          }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
+          const txt = ((data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) || '').trim().toLowerCase();
+          if (txt.includes('search')) return 'search';
+          return 'action';
+        } catch (e) {
+          console.warn('[router] failed:', e.message);
+          return 'action';
+        }
+      }
+
+      // Route is decided once per user turn and cached across all
+      // callClaude invocations within the tool loop. Reset per request
+      // because callClaude is defined fresh inside the chat handler's
+      // try block.
+      let _chatRoute = null;
+
       async function callClaude(msgs) {
         // Pre-call defense: strip dangling citations from any message in
         // the array. Multi-turn conversations can carry citations from
@@ -7360,25 +7468,106 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         const maskedMsgs = (workspaceEntities && workspaceEntities.length > 0)
           ? maskMessagesArray(sanitizedMsgs, workspaceEntities)
           : sanitizedMsgs;
-        const resp = await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": env.ANTHROPIC_API_KEY,
-            "anthropic-version": "2023-06-01",
-          },
-          body: JSON.stringify({
-            model: "claude-haiku-4-5-20251001",
-            max_tokens: 10000,
-            temperature: 0.4,
-            system: [{ type: "text", text: systemPrompt, cache_control: { type: "ephemeral" } }],
-            tools: tools,
-            messages: maskedMsgs,
-          }),
-        });
-        const data = await resp.json();
-        await logApiUsage('sam_chat', data, rateLimitUserId, chatOwnerId);
-        return data;
+        // Convert Anthropic history format to Gemini format
+        function toGeminiHistory(anthropicHistory) {
+          if (!anthropicHistory || anthropicHistory.length === 0) return [];
+          return anthropicHistory
+            .filter(m => m.role === 'user' || m.role === 'assistant')
+            .map(m => ({
+              role: m.role === 'assistant' ? 'model' : 'user',
+              parts: [{ text: typeof m.content === 'string' ? m.content : JSON.stringify(m.content) }]
+            }));
+        }
+
+        const geminiContents = maskedMsgs && maskedMsgs.length > 0
+          ? toGeminiHistory(maskedMsgs)
+          : [{ role: 'user', parts: [{ text: message }] }];
+
+        const geminiToolDeclarations = tools
+          .filter(t => t.name !== 'web_search')
+          .map(t => ({
+            name: t.name,
+            description: t.description,
+            parameters: t.input_schema || { type: 'object', properties: {} }
+          }));
+
+        // Route the turn once. If the D1 campaign_reference lookup already
+        // returned matching rows, skip the search path — the verified
+        // answer is already injected into the system prompt and we should
+        // go straight to action so Sam can still call tools if needed.
+        if (_chatRoute === null) {
+          if (refRows && refRows.length > 0) {
+            _chatRoute = 'action';
+          } else {
+            _chatRoute = await routeUserIntent(message || '');
+          }
+        }
+
+        const toolsConfig = _chatRoute === 'search'
+          ? [{ googleSearch: {} }]
+          : [{ functionDeclarations: geminiToolDeclarations }];
+
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: geminiContents,
+              tools: toolsConfig,
+              generationConfig: {
+                maxOutputTokens: 2000,
+                temperature: 0.4,
+                thinkingConfig: { thinkingBudget: 0 }
+              },
+              safetySettings: [
+                { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
+                { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+                { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
+                { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' }
+              ]
+            })
+          }
+        );
+
+        const geminiData = await response.json();
+
+        if (geminiData.error) {
+          console.error('Gemini API error:', geminiData.error);
+          return { error: 'AI service error: ' + geminiData.error.message };
+        }
+
+        if (!geminiData.candidates || geminiData.candidates.length === 0) {
+          return { content: [{ type: 'text', text: "I wasn't able to generate a response. Please try rephrasing your question." }] };
+        }
+
+        const candidate = geminiData.candidates[0];
+        const parts = candidate.content?.parts || [];
+        const anthropicContent = [];
+        for (const part of parts) {
+          if (part.text) {
+            anthropicContent.push({ type: 'text', text: part.text });
+          } else if (part.functionCall) {
+            anthropicContent.push({
+              type: 'tool_use',
+              id: 'gemini_' + Date.now() + '_' + Math.random().toString(36).slice(2),
+              name: part.functionCall.name,
+              input: part.functionCall.args || {}
+            });
+          }
+        }
+        if (anthropicContent.length === 0) {
+          anthropicContent.push({ type: 'text', text: "I'm here to help! What would you like to work on?" });
+        }
+
+        const translatedResponse = {
+          content: anthropicContent,
+          stop_reason: candidate.finishReason === 'STOP' ? 'end_turn' : (candidate.finishReason || 'end_turn'),
+          model: 'gemini-2.5-flash'
+        };
+
+        return translatedResponse;
       }
 
       // ============================================================
@@ -8814,81 +9003,15 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // consistency with the existing validator pipeline.
       const _shadowHaikuStartedAt = Date.now();
       let data;
-      if (samEngine === 'gemini') {
-        try {
-          data = await runProductionGeminiTurn({
-            systemPrompt,
-            messages,
-            workspaceEntities,
-            conversationId: conversation_id,
-            userId: rateLimitUserId,
-            ownerId: chatOwnerId,
-            classifierCategory: _questionCategory
-          });
-        } catch (e) {
-          // Phase 1.5.B: NO Haiku fallback for Gemini-engine users.
-          // Response generation always-and-only from engine of choice.
-          // On transient failures (timeout, 5xx, rate_limit), retry once
-          // with shorter timeout. On non-transient failures (auth,
-          // malformed, unhandled), graceful error. Either way, never
-          // silently swap brains.
-          await logGeminiFailure({
-            failureMode: e.failureMode || 'unhandled',
-            statusCode: (typeof e.statusCode === 'number') ? e.statusCode : null,
-            errorMessage: (e && e.message) || String(e),
-            userId: rateLimitUserId,
-            ownerId: chatOwnerId,
-            conversationId: conversation_id,
-            retryAttempt: 1
-          });
-
-          const isTransient = ['timeout', '5xx', 'rate_limit'].includes(e.failureMode);
-          if (isTransient) {
-            console.warn('[gemini_production] transient failure, retrying once with 8s timeout:', e.failureMode);
-            try {
-              data = await runProductionGeminiTurn({
-                systemPrompt,
-                messages,
-                workspaceEntities,
-                conversationId: conversation_id,
-                userId: rateLimitUserId,
-                ownerId: chatOwnerId,
-                classifierCategory: _questionCategory,
-                timeoutOverrideMs: 8000
-              });
-            } catch (e2) {
-              await logGeminiFailure({
-                failureMode: e2.failureMode || 'unhandled',
-                statusCode: (typeof e2.statusCode === 'number') ? e2.statusCode : null,
-                errorMessage: (e2 && e2.message) || String(e2),
-                userId: rateLimitUserId,
-                ownerId: chatOwnerId,
-                conversationId: conversation_id,
-                retryAttempt: 2
-              });
-              // Auth failure surfacing on retry is a deploy-time issue
-              // (key revoked / quota exhausted between attempts).
-              if (e2.failureMode === 'auth') {
-                console.error('[gemini_production] AUTH FAILURE — investigate API key / quota immediately:', (e2 && e2.message));
-              }
-              return jsonResponse({
-                error: { message: 'Sam is having trouble right now — give me a moment and try again.' }
-              }, 503);
-            }
-          } else {
-            // Non-transient (auth, malformed, unhandled) — no retry; graceful error.
-            console.warn('[gemini_production] non-transient failure, returning graceful error:', e.failureMode);
-            if (e.failureMode === 'auth') {
-              console.error('[gemini_production] AUTH FAILURE — investigate API key / quota immediately:', (e && e.message));
-            }
-            return jsonResponse({
-              error: { message: 'Sam is having trouble right now — give me a moment and try again.' }
-            }, 503);
-          }
-        }
-      } else {
-        data = await callClaudeAndDemask(messages);
-      }
+      // All users now route through callClaudeAndDemask → callClaude,
+      // which contains the search/action router (Gemini grounding for
+      // factual questions, Gemini function calling for tool-using turns).
+      // The legacy samEngine === 'gemini' branch routed through
+      // runProductionGeminiTurn — a tool-less grounding-only brain that
+      // silently dropped save_note / add_calendar_event / etc. tool calls.
+      // runProductionGeminiTurn is now dead code, kept around for
+      // reference; remove after the router has proven stable.
+      data = await callClaudeAndDemask(messages);
       const _shadowHaikuLatencyMs = Date.now() - _shadowHaikuStartedAt;
       const _shadowHaikuRawContent = (data && Array.isArray(data.content))
         ? JSON.parse(JSON.stringify(data.content))
