@@ -70,6 +70,38 @@ export default {
     }
 
     // ========================================
+    // HELPER: Extract {excerpt, url, hasUsableContent} from a Gemini
+    // generateContent response that used Google Search grounding.
+    //
+    // Anthropic web_search returned tool_use + web_search_tool_result
+    // blocks with extractable URLs. Gemini exposes the same information
+    // via candidate.groundingMetadata.groundingChunks[].web.uri (URLs)
+    // and the model's narrative text in candidate.content.parts[].text.
+    //
+    // hasUsableContent: text present AND at least one grounded URL.
+    // ========================================
+    function extractGroundingResult(geminiData) {
+      let text = '';
+      const candidate = geminiData && geminiData.candidates && geminiData.candidates[0];
+      if (candidate && candidate.content && Array.isArray(candidate.content.parts)) {
+        for (const p of candidate.content.parts) {
+          if (p && p.text) text += p.text;
+        }
+      }
+      text = text.trim();
+
+      const chunks = (candidate && candidate.groundingMetadata && candidate.groundingMetadata.groundingChunks) || [];
+      const urls = chunks
+        .map(c => c && c.web && c.web.uri)
+        .filter(u => typeof u === 'string' && u.length > 0);
+      const primaryUrl = urls[0] || null;
+
+      const hasUsableContent = text.length > 0 && !!primaryUrl;
+
+      return { excerpt: text, url: primaryUrl, urls, hasUsableContent };
+    }
+
+    // ========================================
     // HELPER: Get user from session
     // ========================================
     async function getUserFromSession(req) {
@@ -888,39 +920,41 @@ export default {
           '- threatLevel: overall (roughly average of sub-scores, weighted by financial + directThreat).\n' +
           '- party: use FEC party_short if present (REP=R, DEM=D, etc.). If roster says incumbent_challenge is "Incumbent" for someone other than the user\'s candidate, note it in keyRisk.';
         apiBody = {
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 2000,
-          temperature: 0.2,
-          system: [{ type: "text", text: 'You are a political research analyst. Return ONLY valid JSON matching the shape requested — no preamble, no markdown fences. Use only the research data provided — FEC data is authoritative. Do not include XML citation tags, <cite> tags, or any HTML/XML markup inside the JSON string values — return plain prose only. Current year is ' + new Date().getFullYear() + '.' }],
-          messages: [{ role: "user", content: userMsg }]
+          systemInstruction: { parts: [{ text: 'You are a political research analyst. Return ONLY valid JSON matching the shape requested — no preamble, no markdown fences. Use only the research data provided — FEC data is authoritative. Do not include XML citation tags, <cite> tags, or any HTML/XML markup inside the JSON string values — return plain prose only. Current year is ' + new Date().getFullYear() + '.' }] },
+          contents: [{ role: 'user', parts: [{ text: userMsg }] }],
+          generationConfig: { maxOutputTokens: 2000, temperature: 0.2, thinkingConfig: { thinkingBudget: 0 } }
         };
       } else {
         featureTag = 'intel_opponent_anthropic';
-        const userMsg = 'Research ' + name + ', an opponent of ' + (myCandidateName || 'my candidate') + ' (' + (myParty || 'unknown party') + ') running for ' + (office || 'unknown office') + ' in ' + (loc ? loc + ', ' : '') + (state || '') + ', ' + year + '. Perform at most 3 web searches. Focus on: (1) bio/background, (2) recent news/campaign activity, (3) campaign focus and issues. Do not do exhaustive research.\n\nReturn ONLY JSON in this exact shape:\n' + jsonShape + '\n\nScoring: nameRecognition (incumbent=9, prominent=6, unknown=3), momentum (recent news+fundraising=8+, quiet=3), directThreat (strong same-lane=high).\n\nIMPORTANT: Do not wrap any text in <cite>, <cite index="...">, or any other XML/HTML tags. The JSON string values must be plain prose with no markup — just the sentences themselves.';
+        const userMsg = 'Research ' + name + ', an opponent of ' + (myCandidateName || 'my candidate') + ' (' + (myParty || 'unknown party') + ') running for ' + (office || 'unknown office') + ' in ' + (loc ? loc + ', ' : '') + (state || '') + ', ' + year + '. Focus on: (1) bio/background, (2) recent news/campaign activity, (3) campaign focus and issues. Do not do exhaustive research.\n\nReturn ONLY JSON in this exact shape:\n' + jsonShape + '\n\nScoring: nameRecognition (incumbent=9, prominent=6, unknown=3), momentum (recent news+fundraising=8+, quiet=3), directThreat (strong same-lane=high).\n\nIMPORTANT: Do not wrap any text in <cite>, <cite index="...">, or any other XML/HTML tags. The JSON string values must be plain prose with no markup — just the sentences themselves.';
         apiBody = {
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 3000,
-          temperature: 0.2,
-          system: [{ type: "text", text: 'You are a political research analyst. Perform at most 3 web searches. Focus only on bio/background, recent news, and campaign focus — do not do exhaustive research. Return ONLY valid JSON — no preamble, no markdown fences. Do not include XML citation tags, <cite> tags, or any HTML/XML markup inside the JSON string values — return plain prose only. Current year is ' + new Date().getFullYear() + '.' }],
-          tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 3 }],
-          messages: [{ role: "user", content: userMsg }]
+          systemInstruction: { parts: [{ text: 'You are a political research analyst. Focus only on bio/background, recent news, and campaign focus — do not do exhaustive research. Return ONLY valid JSON — no preamble, no markdown fences. Do not include XML citation tags, <cite> tags, or any HTML/XML markup inside the JSON string values — return plain prose only. Current year is ' + new Date().getFullYear() + '.' }] },
+          contents: [{ role: 'user', parts: [{ text: userMsg }] }],
+          tools: [{ googleSearch: {} }],
+          generationConfig: { maxOutputTokens: 3000, temperature: 0.2, thinkingConfig: { thinkingBudget: 0 } }
         };
       }
 
-      const apiResp = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
-        body: JSON.stringify(apiBody)
-      });
+      const apiResp = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(apiBody)
+        }
+      );
       const apiData = await apiResp.json();
-      await logApiUsage(featureTag, apiData, userId, ownerId);
+      await logApiUsage(featureTag, {
+        inputTokens: (apiData && apiData.usageMetadata && apiData.usageMetadata.promptTokenCount) || 0,
+        outputTokens: (apiData && apiData.usageMetadata && apiData.usageMetadata.candidatesTokenCount) || 0
+      }, userId, ownerId, 'gemini-2.5-flash');
 
-      // Parse JSON from last text block
-      const textBlocks = [];
-      if (apiData.content && Array.isArray(apiData.content)) {
-        apiData.content.forEach(b => { if (b.type === 'text' && b.text) textBlocks.push(b.text); });
-      }
-      const lastBlock = textBlocks[textBlocks.length - 1] || '';
+      // Extract narrative text (grounded with Google Search on non-federal
+      // branch, pure synthesis on federal branch). Parse JSON from the
+      // tail of the text — Gemini can prepend a one-line preamble even
+      // when instructed otherwise.
+      const { excerpt: opponentText } = extractGroundingResult(apiData);
+      const lastBlock = opponentText || '';
       const jsonStr = lastBlock.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
       let card = null;
       try { card = JSON.parse(jsonStr); } catch (e) {
@@ -2804,20 +2838,8 @@ export default {
         return { excerpt: null, url: null, hasUsableContent: false };
       }
       try {
-        const resp = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': env.ANTHROPIC_API_KEY,
-            'anthropic-version': '2023-06-01'
-          },
-          body: JSON.stringify({
-            model: 'claude-haiku-4-5-20251001',
-            max_tokens: 800,
-            temperature: 0,
-            tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 1 }],
-            system:
-              'You are a search-and-quote helper for a campaign-management tool. Call web_search exactly once with the query you receive.\n\n' +
+        const lookupSystemPrompt =
+              'You are a search-and-quote helper for a campaign-management tool. Use Google Search to find the answer to the query you receive.\n\n' +
               'OUTPUT REQUIREMENTS:\n' +
               '- Quote ONE paragraph VERBATIM from the source page. Do NOT paraphrase. Do NOT summarize. Do NOT recombine sentences from different parts of the page. The text you return must appear in the source word-for-word.\n' +
               '- Quote the smallest paragraph that contains the label + the answer to the query. Don\'t include unrelated office categories or other items listed under the same header.\n' +
@@ -2843,65 +2865,50 @@ export default {
               'Page contains "Primary Filing Deadline: November 11, 2025" and "General Election Filing: 71st day before election" but no paragraph labeled as a qualifying period that matches the query.\n' +
               'GOOD: NO_USABLE_CONTENT (no paragraph on the page matches "qualifying period" category exactly — Texas may use different terminology, but until you find a paragraph that explicitly answers the query category, do not substitute a similar-sounding paragraph).\n' +
               'BAD: quoting "Primary Filing Deadline: November 11, 2025" because Texas State Senate is mentioned nearby. Wrong category for the query. The user would mistake this for the qualifying period.\n\n' +
-              'Do not speculate. Do not synthesize. Do not add commentary. Quote one verbatim paragraph (with its label preserved) and stop.',
-            messages: [{ role: 'user', content: query }]
-          })
-        });
+              'Do not speculate. Do not synthesize. Do not add commentary. Quote one verbatim paragraph (with its label preserved) and stop.';
+        const resp = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: lookupSystemPrompt }] },
+              contents: [{ role: 'user', parts: [{ text: query }] }],
+              tools: [{ googleSearch: {} }],
+              generationConfig: { maxOutputTokens: 800, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+            })
+          }
+        );
         const data = await resp.json();
         // Log spend separately from chat so it's analyzable. Caller passes
         // ctx (userId/ownerId) for billing attribution; both optional.
         try {
           await logApiUsage(
             'lookup_websearch_fallback',
-            data,
+            {
+              inputTokens: (data && data.usageMetadata && data.usageMetadata.promptTokenCount) || 0,
+              outputTokens: (data && data.usageMetadata && data.usageMetadata.candidatesTokenCount) || 0
+            },
             (logCtx && logCtx.userId) || null,
-            (logCtx && logCtx.ownerId) || null
+            (logCtx && logCtx.ownerId) || null,
+            'gemini-2.5-flash'
           );
         } catch (_) {}
 
-        if (!data || !Array.isArray(data.content)) {
-          return { excerpt: null, url: null, hasUsableContent: false };
-        }
+        const grounded = extractGroundingResult(data);
+        const excerpt = grounded.excerpt;
+        const url = grounded.url;
 
-        // Concatenate all text blocks into the excerpt. Haiku may emit
-        // a brief lead-in before the quoted paragraph; keeping the full
-        // text gives Sam max flexibility in how she quotes it.
-        let excerpt = '';
-        for (const blk of data.content) {
-          if (blk && blk.type === 'text' && typeof blk.text === 'string') {
-            excerpt += blk.text;
-          }
-        }
-        excerpt = excerpt.trim();
-
-        // Sentinel: helper-Haiku decided the search produced nothing
-        // usable. Caller falls through to existing deferral path.
+        // Sentinel: helper decided the search produced nothing usable.
+        // Caller falls through to existing deferral path.
         if (!excerpt || /^NO_USABLE_CONTENT\b/i.test(excerpt)) {
           return { excerpt: null, url: null, hasUsableContent: false };
         }
 
-        // Pull the first URL from the first web_search_tool_result block.
-        // Anthropic's native web_search returns blocks of shape:
-        //   { type: 'web_search_tool_result',
-        //     content: [{ type: 'web_search_result', url, title, ... }, ...] }
-        let url = null;
-        for (const blk of data.content) {
-          if (blk && blk.type === 'web_search_tool_result' && Array.isArray(blk.content)) {
-            for (const r of blk.content) {
-              if (r && typeof r.url === 'string' && r.url.length > 0) {
-                url = r.url;
-                break;
-              }
-            }
-            if (url) break;
-          }
-        }
-
-        // No tool-result block means Haiku either skipped the search
-        // (recalled from training instead) or the API stripped the
-        // results. Either way we have no citation — return unusable
-        // since the citation requirement is what makes the fallback
-        // safe to ship.
+        // No grounded URL means Gemini either recalled from training (no
+        // grounding fired) or the search returned nothing. Either way we
+        // have no citation — return unusable since the citation
+        // requirement is what makes the fallback safe to ship.
         if (!url) {
           return { excerpt: null, url: null, hasUsableContent: false };
         }
@@ -5493,21 +5500,29 @@ RULES:
 4. Be specific: use real names, real dates, real percentages. Do not make up data.
 5. Current year is ${new Date().getFullYear()}.`;
 
-        const researchResponse = await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
-          body: JSON.stringify({
-            model: "claude-haiku-4-5-20251001",
-            max_tokens: 8000,
-            temperature: 0.2,
-            system: [{ type: "text", text: researchSystemPrompt }],
-            tools: [{ type: "web_search_20250305", name: "web_search" }],
-            messages: [{ role: "user", content: message }],
-          }),
-        });
+        const researchResponse = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: researchSystemPrompt }] },
+              contents: [{ role: 'user', parts: [{ text: message }] }],
+              tools: [{ googleSearch: {} }],
+              generationConfig: { maxOutputTokens: 8000, temperature: 0.2, thinkingConfig: { thinkingBudget: 0 } }
+            }),
+          }
+        );
 
-        const researchData = await researchResponse.json();
-        await logApiUsage(researchFeature + '_anthropic', researchData, rateLimitUserId, chatOwnerId);
+        const researchRaw = await researchResponse.json();
+        await logApiUsage(researchFeature + '_anthropic', {
+          inputTokens: (researchRaw && researchRaw.usageMetadata && researchRaw.usageMetadata.promptTokenCount) || 0,
+          outputTokens: (researchRaw && researchRaw.usageMetadata && researchRaw.usageMetadata.candidatesTokenCount) || 0
+        }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
+        // Translate Gemini → Anthropic shape so existing client parsers
+        // (which read data.content[].text) keep working unchanged.
+        const { excerpt: researchText } = extractGroundingResult(researchRaw);
+        const researchData = { content: [{ type: 'text', text: researchText }], model: 'gemini-2.5-flash' };
         return new Response(JSON.stringify(researchData), { headers: { "Content-Type": "application/json", ...corsHeaders } });
       }
 
