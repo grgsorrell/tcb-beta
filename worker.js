@@ -301,17 +301,48 @@ export default {
           'SELECT placeholder FROM entity_mask WHERE workspace_owner_id = ? AND entity_type = ? AND real_name = ?'
         ).bind(workspaceOwnerId, entityType, cleanName).first();
         if (existing) return existing.placeholder;
-        let placeholder;
-        if (entityType === 'CANDIDATE')            placeholder = '{{CANDIDATE}}';
-        else if (entityType === 'CANDIDATE_FIRST') placeholder = '{{CANDIDATE_FIRST}}';
-        else if (entityType === 'CANDIDATE_LAST')  placeholder = '{{CANDIDATE_LAST}}';
-        else {
-          const countRow = await env.DB.prepare(
-            'SELECT COUNT(*) AS n FROM entity_mask WHERE workspace_owner_id = ? AND entity_type = ?'
-          ).bind(workspaceOwnerId, entityType).first();
-          const n = ((countRow && countRow.n) || 0) + 1;
-          placeholder = '{{' + entityType + '_' + n + '}}';
+
+        // Singleton entity types — one-to-one mapping between workspace
+        // and a fixed placeholder. When the profile is renamed, the
+        // singleton row must track the new real_name. Pre-existing rows
+        // with the SAME placeholder but a DIFFERENT real_name are stale
+        // (left over from a prior profile state) and must be updated,
+        // not coexisted-with. Without this, INSERT OR IGNORE silently
+        // no-ops on the (workspace, placeholder) unique constraint and
+        // the demask layer keeps resolving placeholders to the stale
+        // name — the "Stephanie Murphy" bug class manifesting via
+        // chat_history echo. See worker.js:268 history.
+        const SINGLETON_TYPES = ['CANDIDATE', 'CANDIDATE_FIRST', 'CANDIDATE_LAST'];
+        if (SINGLETON_TYPES.includes(entityType)) {
+          const placeholder = '{{' + entityType + '}}';
+          // UPDATE if a stale row exists, INSERT otherwise. Either way
+          // the row for this workspace+entity_type+placeholder ends up
+          // pointing at cleanName.
+          const staleRow = await env.DB.prepare(
+            'SELECT id, real_name FROM entity_mask WHERE workspace_owner_id = ? AND entity_type = ? AND placeholder = ?'
+          ).bind(workspaceOwnerId, entityType, placeholder).first();
+          if (staleRow) {
+            if (staleRow.real_name !== cleanName) {
+              await env.DB.prepare(
+                'UPDATE entity_mask SET real_name = ? WHERE id = ?'
+              ).bind(cleanName, staleRow.id).run();
+            }
+          } else {
+            await env.DB.prepare(
+              'INSERT OR IGNORE INTO entity_mask (id, workspace_owner_id, entity_type, real_name, placeholder) VALUES (?, ?, ?, ?, ?)'
+            ).bind(generateId(16), workspaceOwnerId, entityType, cleanName, placeholder).run();
+          }
+          return placeholder;
         }
+
+        // Additive entity types (OPPONENT, ENDORSER, DONOR, ...) —
+        // multiple distinct real_names coexist per workspace, each
+        // getting its own numbered placeholder.
+        const countRow = await env.DB.prepare(
+          'SELECT COUNT(*) AS n FROM entity_mask WHERE workspace_owner_id = ? AND entity_type = ?'
+        ).bind(workspaceOwnerId, entityType).first();
+        const n = ((countRow && countRow.n) || 0) + 1;
+        const placeholder = '{{' + entityType + '_' + n + '}}';
         await env.DB.prepare(
           'INSERT OR IGNORE INTO entity_mask (id, workspace_owner_id, entity_type, real_name, placeholder) VALUES (?, ?, ?, ?, ?)'
         ).bind(generateId(16), workspaceOwnerId, entityType, cleanName, placeholder).run();
@@ -1813,6 +1844,28 @@ export default {
         if (ctx.isSubUser) return denyOwnerOnly();
 
         const data = await request.json();
+
+        // Entity-mask self-heal on candidate rename. The singleton mask
+        // rows (CANDIDATE / CANDIDATE_FIRST / CANDIDATE_LAST) map fixed
+        // placeholders to the workspace's current candidate name. When
+        // the name changes, the new getOrCreateMask UPSERT path will
+        // update them on the next chat call — but we can do better by
+        // proactively purging here so the rename takes effect on the
+        // very next request, not the next chat turn. Belt-and-suspenders
+        // against the "Stephanie Murphy" bug class where stale mask
+        // rows would otherwise have the demask layer keep resolving
+        // {{CANDIDATE}} to the prior name until the next chat call
+        // exercises getOrCreateMask. See worker.js:268.
+        if (data.candidate_name) {
+          const prior = await env.DB.prepare(
+            'SELECT candidate_name FROM profiles WHERE user_id = ?'
+          ).bind(ctx.ownerId).first();
+          if (prior && prior.candidate_name && prior.candidate_name !== data.candidate_name) {
+            await env.DB.prepare(
+              "DELETE FROM entity_mask WHERE workspace_owner_id = ? AND entity_type IN ('CANDIDATE', 'CANDIDATE_FIRST', 'CANDIDATE_LAST')"
+            ).bind(ctx.ownerId).run();
+          }
+        }
 
         // Sam v2 Phase 1: candidate_site_url + candidate_bio_text + early_voting_start_date
         // are upserted alongside core profile fields. candidate_site_content and
