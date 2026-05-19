@@ -7452,7 +7452,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                systemInstruction: { parts: [{ text: "You are a router. Classify the user message as either 'search' (needs live web lookup: deadlines, election law, compliance, current events, filing requirements, form numbers) or 'action' (save note, add calendar, write content, strategy, budget, tasks, general chat). Reply with only the single word: search or action." }] },
+                systemInstruction: { parts: [{ text: "You are a router. Classify the user message as 'search' ONLY if it explicitly asks for current, live, or time-sensitive information — such as messages containing words like: current, latest, right now, today, this week, this year, 2026, deadline, when does, what's the limit, how much can, is it still, has it changed, recent, upcoming, or asks for a specific form number or filing date. Everything else — strategy, planning, writing content, saving notes, calendar tasks, budget, fundraising advice, general campaign management, or any action request — classify as 'action'. Reply with only the single word: search or action." }] },
                 contents: [{ role: 'user', parts: [{ text: userMessage }] }],
                 generationConfig: {
                   maxOutputTokens: 20,
@@ -7522,10 +7522,28 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             parameters: t.input_schema || { type: 'object', properties: {} }
           }));
 
-        // Route the turn once. If the D1 campaign_reference lookup already
-        // returned matching rows, skip the search path — the verified
-        // answer is already injected into the system prompt and we should
-        // go straight to action so Sam can still call tools if needed.
+        // Route the turn once per user message. Two short-circuits before
+        // we burn a router call:
+        //
+        //   1. D1 short-circuit: if queryCampaignReference returned matching
+        //      rows for the user's state + keywords, the verified election-law
+        //      answer is already injected into the system prompt as
+        //      VERIFIED STATE ELECTION LAW. We BYPASS THE ROUTER ENTIRELY
+        //      and force 'action' path so Sam can quote the verified answer
+        //      and still call tools (save_note, add_calendar_event, etc.).
+        //      No grounding fee, no router classifier call, no second-guessing
+        //      the canonical reference data.
+        //
+        //   2. Router call: only fires when D1 had no match. The router
+        //      classifies tightly into 'search' (live time-sensitive lookup
+        //      needed — current/today/deadline/limit/form-number/etc.) or
+        //      'action' (everything else, including strategy, content
+        //      generation, tool calls, planning). Action is the default
+        //      bias — search must be earned by an explicit live-info signal
+        //      in the user message.
+        //
+        // Cached for the entire turn — tool-loop re-invocations of
+        // callClaude reuse the same _chatRoute and never re-classify.
         if (_chatRoute === null) {
           if (refRows && refRows.length > 0) {
             _chatRoute = 'action';
