@@ -1483,8 +1483,8 @@ function handleUnauthenticated(msg) {
 
 // Write to D1 first, then cache in localStorage. If D1 fails, cache locally and queue for sync.
 function d1Write(endpoint, body, onFail) {
-  if (!d1Session) { if (onFail) onFail(); return; }
-  fetch(D1_API + endpoint, {
+  if (!d1Session) { if (onFail) onFail(); return Promise.resolve(); }
+  return fetch(D1_API + endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
     body: JSON.stringify(body)
@@ -1758,9 +1758,9 @@ function saveBudget() {
 // nested inside folder objects, but the server stores folder_id as
 // a first-class foreign key.
 function saveOneFolder(f) {
-  if (!f || !f.id) return;
+  if (!f || !f.id) return Promise.resolve();
   saveState(storageKey('ctb_folders'), folders);
-  d1Write('/api/folders/save', { folder: f });
+  return d1Write('/api/folders/save', { folder: f });
 }
 function deleteOneFolder(id) {
   saveState(storageKey('ctb_folders'), folders);
@@ -8582,7 +8582,9 @@ async function executeToolCall(block) {
     };
     targetFolder.notes.push(newSamNote);
     targetFolder.updatedAt = new Date().toISOString();
-    if (targetFolderIsNew) saveOneFolder(targetFolder);
+    if (targetFolderIsNew) {
+      await saveOneFolder(targetFolder);
+    }
     saveOneNote(newSamNote, targetFolder.id);
     if (currentView === 'notes') renderNotesView();
     confirmMsg = '\u2705 Saved "' + finalTitle + '" to ' + folderName;
