@@ -2437,28 +2437,28 @@ export default {
           '(no "a typical 5–10% planning range" — that\'s only valid for canonical categories you have benchmarks for). ' +
           'Treat them the same as canonical categories for over/under-budget commentary; just skip the benchmark.';
 
-        const apiResp = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': env.ANTHROPIC_API_KEY,
-            'anthropic-version': '2023-06-01'
-          },
-          body: JSON.stringify({
-            model: 'claude-haiku-4-5-20251001',
-            max_tokens: 400,
-            temperature: 0.4,
-            system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
-            messages: [{ role: 'user', content: 'Generate the coaching paragraph now.' }]
-          })
-        });
+        const apiResp = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: 'user', parts: [{ text: 'Generate the coaching paragraph now.' }] }],
+              generationConfig: { maxOutputTokens: 400, temperature: 0.4, thinkingConfig: { thinkingBudget: 0 } }
+            })
+          }
+        );
         const apiData = await apiResp.json();
-        await logApiUsage('sams_take_anthropic', apiData, ctx.userId, ctx.ownerId);
+        await logApiUsage('sams_take_anthropic', {
+          inputTokens: (apiData && apiData.usageMetadata && apiData.usageMetadata.promptTokenCount) || 0,
+          outputTokens: (apiData && apiData.usageMetadata && apiData.usageMetadata.candidatesTokenCount) || 0
+        }, ctx.userId, ctx.ownerId, 'gemini-2.5-flash');
 
         let content = '';
-        if (apiData && apiData.content && Array.isArray(apiData.content)) {
-          for (const block of apiData.content) {
-            if (block.type === 'text' && block.text) content += block.text;
+        if (apiData && apiData.candidates && apiData.candidates[0] && apiData.candidates[0].content && Array.isArray(apiData.candidates[0].content.parts)) {
+          for (const p of apiData.candidates[0].content.parts) {
+            if (p && p.text) content += p.text;
           }
         }
         content = (content || '').trim();
@@ -5454,19 +5454,31 @@ export default {
         if (vpsResult) {
           // VPS succeeded — call Haiku WITHOUT web_search tool (much cheaper)
           const enrichedMessage = message + '\n\nHere is current research data you MUST use to answer. Do NOT search the web — use ONLY this data:\n\n' + vpsResult.content;
-          const vpsResponse = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
-            body: JSON.stringify({
-              model: "claude-haiku-4-5-20251001",
-              max_tokens: 8000,
-              temperature: 0.2,
-              system: [{ type: "text", text: 'You are a political research analyst. ' + (researchFeature === 'morning_brief' || researchFeature === 'day1_brief' ? 'Write in plain text, no JSON. Be conversational and concise.' : 'Return ONLY valid JSON. No preamble, no explanation.') + ' Be specific with real names, dates, percentages. Current year is ' + new Date().getFullYear() + '. Use the provided research data to answer. Do not make up data.' }],
-              messages: [{ role: "user", content: enrichedMessage }],
-            }),
-          });
-          const vpsData = await vpsResponse.json();
-          await logApiUsage(researchFeature + '_vps', vpsData, rateLimitUserId, chatOwnerId);
+          const vpsSystemPrompt = 'You are a political research analyst. ' + (researchFeature === 'morning_brief' || researchFeature === 'day1_brief' ? 'Write in plain text, no JSON. Be conversational and concise.' : 'Return ONLY valid JSON. No preamble, no explanation.') + ' Be specific with real names, dates, percentages. Current year is ' + new Date().getFullYear() + '. Use the provided research data to answer. Do not make up data.';
+          const vpsResponse = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                systemInstruction: { parts: [{ text: vpsSystemPrompt }] },
+                contents: [{ role: 'user', parts: [{ text: enrichedMessage }] }],
+                generationConfig: { maxOutputTokens: 8000, temperature: 0.2, thinkingConfig: { thinkingBudget: 0 } }
+              }),
+            }
+          );
+          const vpsRaw = await vpsResponse.json();
+          await logApiUsage(researchFeature + '_vps', {
+            inputTokens: (vpsRaw && vpsRaw.usageMetadata && vpsRaw.usageMetadata.promptTokenCount) || 0,
+            outputTokens: (vpsRaw && vpsRaw.usageMetadata && vpsRaw.usageMetadata.candidatesTokenCount) || 0
+          }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
+          // Translate Gemini → Anthropic shape so existing client parsers
+          // (which read data.content[].text) keep working unchanged.
+          let vpsText = '';
+          if (vpsRaw && vpsRaw.candidates && vpsRaw.candidates[0] && vpsRaw.candidates[0].content && Array.isArray(vpsRaw.candidates[0].content.parts)) {
+            for (const p of vpsRaw.candidates[0].content.parts) if (p && p.text) vpsText += p.text;
+          }
+          const vpsData = { content: [{ type: 'text', text: vpsText }], model: 'gemini-2.5-flash' };
           return new Response(JSON.stringify(vpsData), { headers: { "Content-Type": "application/json", ...corsHeaders } });
         }
 
@@ -6821,21 +6833,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           'USER\'S LATEST MESSAGE:\n' + userMessage + '\n\n' +
           'Return ONE category name only: factual, strategic, compliance, predictive, or conversational.';
         try {
-          const aResp = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-            body: JSON.stringify({
-              model: 'claude-haiku-4-5-20251001',
-              max_tokens: 20,
-              temperature: 0,
-              messages: [{ role: 'user', content: prompt }]
-            })
-          });
+          const aResp = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: { maxOutputTokens: 20, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+              })
+            }
+          );
           const ad = await aResp.json();
-          await logApiUsage('sam_classifier', ad, rateLimitUserId, chatOwnerId);
+          await logApiUsage('sam_classifier', {
+            inputTokens: (ad && ad.usageMetadata && ad.usageMetadata.promptTokenCount) || 0,
+            outputTokens: (ad && ad.usageMetadata && ad.usageMetadata.candidatesTokenCount) || 0
+          }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
           let txt = '';
-          if (ad && ad.content && Array.isArray(ad.content)) {
-            for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          if (ad && ad.candidates && ad.candidates[0] && ad.candidates[0].content && Array.isArray(ad.candidates[0].content.parts)) {
+            for (const p of ad.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
           const normalized = txt.trim().toLowerCase().replace(/[^a-z]/g, '');
           const valid = ['factual', 'strategic', 'compliance', 'predictive', 'conversational'];
@@ -7888,21 +7904,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           'If no unauthorized claims: {"claims": []}\n' +
           'JSON ONLY.';
         try {
-          const aResp = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-            body: JSON.stringify({
-              model: 'claude-haiku-4-5-20251001',
-              max_tokens: 600,
-              temperature: 0,
-              messages: [{ role: 'user', content: prompt }]
-            })
-          });
+          const aResp = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: { maxOutputTokens: 600, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+              })
+            }
+          );
           const ad = await aResp.json();
-          await logApiUsage('sam_opponent_validator', ad, rateLimitUserId, chatOwnerId);
+          await logApiUsage('sam_opponent_validator', {
+            inputTokens: (ad && ad.usageMetadata && ad.usageMetadata.promptTokenCount) || 0,
+            outputTokens: (ad && ad.usageMetadata && ad.usageMetadata.candidatesTokenCount) || 0
+          }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
           let txt = '';
-          if (ad && ad.content && Array.isArray(ad.content)) {
-            for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          if (ad && ad.candidates && ad.candidates[0] && ad.candidates[0].content && Array.isArray(ad.candidates[0].content.parts)) {
+            for (const p of ad.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
           const mm = txt.match(/\{[\s\S]*\}/);
           if (!mm) return [];
@@ -8841,25 +8861,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           '- If no places mentioned: {"mentioned": [], "unauthorized": []}\n' +
           '- DO NOT add commentary. JSON only.';
         try {
-          const resp = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': env.ANTHROPIC_API_KEY,
-              'anthropic-version': '2023-06-01'
-            },
-            body: JSON.stringify({
-              model: 'claude-haiku-4-5-20251001',
-              max_tokens: 600,
-              temperature: 0,
-              messages: [{ role: 'user', content: prompt }]
-            })
-          });
+          const resp = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: { maxOutputTokens: 600, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+              })
+            }
+          );
           const data = await resp.json();
-          await logApiUsage('sam_validator', data, rateLimitUserId, chatOwnerId);
+          await logApiUsage('sam_validator', {
+            inputTokens: (data && data.usageMetadata && data.usageMetadata.promptTokenCount) || 0,
+            outputTokens: (data && data.usageMetadata && data.usageMetadata.candidatesTokenCount) || 0
+          }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
           let text = '';
-          if (data && data.content && Array.isArray(data.content)) {
-            for (const b of data.content) if (b && b.type === 'text' && b.text) text += b.text;
+          if (data && data.candidates && data.candidates[0] && data.candidates[0].content && Array.isArray(data.candidates[0].content.parts)) {
+            for (const p of data.candidates[0].content.parts) if (p && p.text) text += p.text;
           }
           const m = text.match(/\{[\s\S]*\}/);
           if (!m) return { mentioned: [], unauthorized: [] };
@@ -9171,25 +9191,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       async function extractClaimedComplianceDates(samText) {
         const prompt = `You are a compliance-date auditor. Extract every specific calendar date or specific deadline mentioned in this campaign coaching response that is NOT accompanied by a source citation. Return JSON only.\n\nRESPONSE:\n${samText}\n\nTASK: Identify any UNCITED specific dates (like "June 8, 2026", "May 12", "the 15th of May", "noon Eastern on June 12") presented as filing/qualifying/petition/ballot deadlines. EXCLUDE:\n- Today's date used as a reference point\n- Vague references ("early June", "this summer") unless presented as a deadline\n- Election day itself\n- Calendar items unrelated to compliance\n- DATES ACCOMPANIED BY A CITATION — inline URL (https://...), "Source: [name]", "Per [organization]", "According to [website]", "[domain] reports/shows/lists". Cited dates are AUTHORIZED even if you can't verify the source independently — the user can click through to verify.\n\nReturn JSON: {"dates": ["June 8, 2026", "noon Eastern June 12, 2026"]}\nIf no uncited compliance dates: {"dates": []}\nJSON ONLY — no preamble, no markdown.`;
         try {
-          const resp = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': env.ANTHROPIC_API_KEY,
-              'anthropic-version': '2023-06-01'
-            },
-            body: JSON.stringify({
-              model: 'claude-haiku-4-5-20251001',
-              max_tokens: 400,
-              temperature: 0,
-              messages: [{ role: 'user', content: prompt }]
-            })
-          });
+          const resp = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: { maxOutputTokens: 400, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+              })
+            }
+          );
           const auditData = await resp.json();
-          await logApiUsage('sam_compliance_validator', auditData, rateLimitUserId, chatOwnerId);
+          await logApiUsage('sam_compliance_validator', {
+            inputTokens: (auditData && auditData.usageMetadata && auditData.usageMetadata.promptTokenCount) || 0,
+            outputTokens: (auditData && auditData.usageMetadata && auditData.usageMetadata.candidatesTokenCount) || 0
+          }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
           let txt = '';
-          if (auditData && auditData.content && Array.isArray(auditData.content)) {
-            for (const b of auditData.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          if (auditData && auditData.candidates && auditData.candidates[0] && auditData.candidates[0].content && Array.isArray(auditData.candidates[0].content.parts)) {
+            for (const p of auditData.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
           const mm = txt.match(/\{[\s\S]*\}/);
           if (!mm) return [];
@@ -9481,16 +9501,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       async function extractClaimedFinanceDates(samText) {
         const prompt = `You are a campaign-finance-report-date auditor. Extract every specific calendar date or deadline mentioned in this campaign coaching response that pertains to FINANCE REPORTS AND IS NOT ACCOMPANIED BY A SOURCE CITATION. Return JSON only.\n\nRESPONSE:\n${samText}\n\nTASK: Identify any UNCITED specific dates (like "April 15, 2026", "July 31", "the 15th") presented as finance-report due dates, filing windows, or coverage periods. EXCLUDE:\n- Today's date or generic time references\n- Election day itself (unless specifically tied to a post-election report)\n- Filing/qualifying deadlines (those are Class A compliance, not finance reports)\n- Vague references unless presented as a deadline\n- DATES ACCOMPANIED BY A CITATION — inline URL (https://...), "Source: [name]", "Per [organization]", "According to [website]", "[domain] reports/shows/lists". Cited dates are AUTHORIZED.\n\nReturn JSON: {"dates": ["April 15, 2026", "Q2 2026 due July 31"]}\nIf no uncited finance dates: {"dates": []}\nJSON ONLY — no preamble, no markdown.`;
         try {
-          const resp = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-            body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, temperature: 0, messages: [{ role: 'user', content: prompt }] })
-          });
+          const resp = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: { maxOutputTokens: 400, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+              })
+            }
+          );
           const auditData = await resp.json();
-          await logApiUsage('sam_finance_validator', auditData, rateLimitUserId, chatOwnerId);
+          await logApiUsage('sam_finance_validator', {
+            inputTokens: (auditData && auditData.usageMetadata && auditData.usageMetadata.promptTokenCount) || 0,
+            outputTokens: (auditData && auditData.usageMetadata && auditData.usageMetadata.candidatesTokenCount) || 0
+          }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
           let txt = '';
-          if (auditData && auditData.content && Array.isArray(auditData.content)) {
-            for (const b of auditData.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          if (auditData && auditData.candidates && auditData.candidates[0] && auditData.candidates[0].content && Array.isArray(auditData.candidates[0].content.parts)) {
+            for (const p of auditData.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
           const mm = txt.match(/\{[\s\S]*\}/);
           if (!mm) return [];
@@ -9758,16 +9787,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           'If no donation-limit amounts: {"amounts": []}\n' +
           'JSON ONLY — no preamble, no markdown.';
         try {
-          const resp = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-            body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, temperature: 0, messages: [{ role: 'user', content: prompt }] })
-          });
+          const resp = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: { maxOutputTokens: 400, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+              })
+            }
+          );
           const auditData = await resp.json();
-          await logApiUsage('sam_donation_validator', auditData, rateLimitUserId, chatOwnerId);
+          await logApiUsage('sam_donation_validator', {
+            inputTokens: (auditData && auditData.usageMetadata && auditData.usageMetadata.promptTokenCount) || 0,
+            outputTokens: (auditData && auditData.usageMetadata && auditData.usageMetadata.candidatesTokenCount) || 0
+          }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
           let txt = '';
-          if (auditData && auditData.content && Array.isArray(auditData.content)) {
-            for (const b of auditData.content) if (b && b.type === 'text' && b.text) txt += b.text;
+          if (auditData && auditData.candidates && auditData.candidates[0] && auditData.candidates[0].content && Array.isArray(auditData.candidates[0].content.parts)) {
+            for (const p of auditData.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
           const mm = txt.match(/\{[\s\S]*\}/);
           if (!mm) return [];
@@ -10248,21 +10286,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             'If none: {"high_stakes": [], "medium": [], "low": []}\n' +
             'JSON ONLY.';
           try {
-            const aResp = await fetch('https://api.anthropic.com/v1/messages', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-              body: JSON.stringify({
-                model: 'claude-haiku-4-5-20251001',
-                max_tokens: 800,
-                temperature: 0,
-                messages: [{ role: 'user', content: prompt }]
-              })
-            });
+            const aResp = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                  generationConfig: { maxOutputTokens: 800, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+                })
+              }
+            );
             const ad = await aResp.json();
-            await logApiUsage('sam_citation_validator', ad, rateLimitUserId, chatOwnerId);
+            await logApiUsage('sam_citation_validator', {
+              inputTokens: (ad && ad.usageMetadata && ad.usageMetadata.promptTokenCount) || 0,
+              outputTokens: (ad && ad.usageMetadata && ad.usageMetadata.candidatesTokenCount) || 0
+            }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
             let txt = '';
-            if (ad && ad.content && Array.isArray(ad.content)) {
-              for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+            if (ad && ad.candidates && ad.candidates[0] && ad.candidates[0].content && Array.isArray(ad.candidates[0].content.parts)) {
+              for (const p of ad.candidates[0].content.parts) if (p && p.text) txt += p.text;
             }
             const mm = txt.match(/\{[\s\S]*\}/);
             if (!mm) return { high_stakes: [], medium: [], low: [] };
@@ -10487,21 +10529,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             'JSON ONLY.';
 
           try {
-            const resp = await fetch('https://api.anthropic.com/v1/messages', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-              body: JSON.stringify({
-                model: 'claude-haiku-4-5-20251001',
-                max_tokens: 800,
-                temperature: 0,
-                messages: [{ role: 'user', content: prompt }]
-              })
-            });
+            const resp = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                  generationConfig: { maxOutputTokens: 800, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+                })
+              }
+            );
             const ad = await resp.json();
-            await logApiUsage('sam_grounded_source_verifier', ad, rateLimitUserId, chatOwnerId);
+            await logApiUsage('sam_grounded_source_verifier', {
+              inputTokens: (ad && ad.usageMetadata && ad.usageMetadata.promptTokenCount) || 0,
+              outputTokens: (ad && ad.usageMetadata && ad.usageMetadata.candidatesTokenCount) || 0
+            }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
             let txt = '';
-            if (ad && ad.content && Array.isArray(ad.content)) {
-              for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+            if (ad && ad.candidates && ad.candidates[0] && ad.candidates[0].content && Array.isArray(ad.candidates[0].content.parts)) {
+              for (const p of ad.candidates[0].content.parts) if (p && p.text) txt += p.text;
             }
             const m = txt.match(/\{[\s\S]*\}/);
             // Phase 2 fix 1 — FAIL CLOSED on unparseable response.
@@ -10707,21 +10753,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             'JSON ONLY — no preamble.';
 
           try {
-            const resp = await fetch('https://api.anthropic.com/v1/messages', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-              body: JSON.stringify({
-                model: 'claude-haiku-4-5-20251001',
-                max_tokens: 800,
-                temperature: 0,
-                messages: [{ role: 'user', content: prompt }]
-              })
-            });
+            const resp = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                  generationConfig: { maxOutputTokens: 800, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+                })
+              }
+            );
             const ad = await resp.json();
-            await logApiUsage('sam_citation_verifier', ad, rateLimitUserId, chatOwnerId);
+            await logApiUsage('sam_citation_verifier', {
+              inputTokens: (ad && ad.usageMetadata && ad.usageMetadata.promptTokenCount) || 0,
+              outputTokens: (ad && ad.usageMetadata && ad.usageMetadata.candidatesTokenCount) || 0
+            }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
             let txt = '';
-            if (ad && ad.content && Array.isArray(ad.content)) {
-              for (const b of ad.content) if (b && b.type === 'text' && b.text) txt += b.text;
+            if (ad && ad.candidates && ad.candidates[0] && ad.candidates[0].content && Array.isArray(ad.candidates[0].content.parts)) {
+              for (const p of ad.candidates[0].content.parts) if (p && p.text) txt += p.text;
             }
             const m = txt.match(/\{[\s\S]*\}/);
             if (!m) return { allVerified: true, unsupportedClaims: [] };
