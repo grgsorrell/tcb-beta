@@ -1483,20 +1483,29 @@ function handleUnauthenticated(msg) {
 
 // Write to D1 first, then cache in localStorage. If D1 fails, cache locally and queue for sync.
 function d1Write(endpoint, body, onFail) {
-  if (!d1Session) { if (onFail) onFail(); return Promise.resolve(); }
+  if (!d1Session) { if (onFail) onFail(); return Promise.resolve({ ok: false, error: 'no_session' }); }
   return fetch(D1_API + endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + d1Session },
     body: JSON.stringify(body)
   }).then(function(r) {
-    if (!r.ok) throw new Error('D1 ' + r.status);
+    if (!r.ok) {
+      d1Online = false;
+      d1SyncNotify('failure');
+      if (onFail) onFail();
+      var errMsg = 'D1 ' + r.status;
+      console.log('[D1] Write error:', errMsg);
+      return { ok: false, error: errMsg };
+    }
     d1Online = true;
     d1SyncNotify('success');
+    return { ok: true, error: null };
   }).catch(function(e) {
     console.log('[D1] Write error:', e.message);
     d1Online = false;
     d1SyncNotify('failure');
     if (onFail) onFail();
+    return { ok: false, error: e.message };
   });
 }
 
@@ -1767,9 +1776,9 @@ function deleteOneFolder(id) {
   d1Write('/api/folders/delete', { id: id });
 }
 function saveOneNote(n, folderId) {
-  if (!n || !n.id || !folderId) return;
+  if (!n || !n.id || !folderId) return Promise.resolve({ ok: false, error: 'invalid_note' });
   saveState(storageKey('ctb_folders'), folders);
-  d1Write('/api/notes/save', {
+  return d1Write('/api/notes/save', {
     note: {
       id: n.id, folder_id: folderId,
       title: n.title || '', content: n.content || '',
@@ -8548,29 +8557,35 @@ async function executeToolCall(block) {
   // "Saved" in chat. If the user needs to edit, they can do so from the
   // Notes view after save.
   else if (name === 'save_note' || name === 'add_note' || name === 'save_document' || name === 'save_to_notes') {
+    // PESSIMISTIC SAVE: don't mutate `folders` until BOTH D1 writes confirm.
+    // Old contract said "Saved" before knowing \u2014 every failure mode (race,
+    // type mismatch, folder-ownership 404, network blip) left local state
+    // claiming success while D1 had nothing, then the 60s poll wiped local.
+    // New contract: confirmMsg only says "Saved" after a 200 from
+    // /api/notes/save. On any failure, local state is untouched.
     var folderName = inp.folder || inp.folder_name || 'Campaign Notes';
     var noteTitle = inp.title || inp.note_title || 'Untitled';
     var noteContent = inp.content || '';
     var noteStatus = inp.status || 'Ready';
     var noteDocType = inp.doc_type || 'Other';
-    // Find or create the target folder.
-    var targetFolder = folders.find(function(f){ return f.name.toLowerCase() === folderName.toLowerCase(); });
-    var targetFolderIsNew = false;
-    if (!targetFolder) {
-      targetFolder = { id: Date.now(), name: folderName, notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-      folders.push(targetFolder);
-      targetFolderIsNew = true;
-    }
-    if (!targetFolder.notes) targetFolder.notes = [];
-    // Handle duplicate title: append " (2)", " (3)", etc. Sam reruns on
-    // the same topic shouldn't silently clobber or bounce.
+
+    // Resolve the target folder against local state, but DON'T push yet.
+    var existingFolder = folders.find(function(f){ return f.name.toLowerCase() === folderName.toLowerCase(); });
+    var targetFolderIsNew = !existingFolder;
+    var targetFolder = existingFolder || {
+      id: Date.now(), name: folderName, notes: [],
+      createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+    };
+
+    // Duplicate-title handling against the folder's existing notes.
+    var existingTitles = (targetFolder.notes || []).map(function(n){ return (n.title||'').toLowerCase(); });
     var finalTitle = noteTitle;
-    var existingTitles = targetFolder.notes.map(function(n){ return (n.title||'').toLowerCase(); });
-    var counter = 2;
+    var dupCounter = 2;
     while (existingTitles.indexOf(finalTitle.toLowerCase()) >= 0) {
-      finalTitle = noteTitle + ' (' + counter + ')';
-      counter++;
+      finalTitle = noteTitle + ' (' + dupCounter + ')';
+      dupCounter++;
     }
+
     var newSamNote = {
       id: Date.now() + Math.random(),
       title: finalTitle,
@@ -8580,14 +8595,35 @@ async function executeToolCall(block) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    targetFolder.notes.push(newSamNote);
-    targetFolder.updatedAt = new Date().toISOString();
+
+    // Persist to D1 first. saveOneFolder/saveOneNote now return
+    // { ok, error } from d1Write.
+    var saveOk = true;
+    var saveError = '';
     if (targetFolderIsNew) {
-      await saveOneFolder(targetFolder);
+      var folderRes = await saveOneFolder(targetFolder);
+      if (!folderRes || !folderRes.ok) { saveOk = false; saveError = (folderRes && folderRes.error) || 'folder save failed'; }
     }
-    saveOneNote(newSamNote, targetFolder.id);
-    if (currentView === 'notes') renderNotesView();
-    confirmMsg = '\u2705 Saved "' + finalTitle + '" to ' + folderName;
+    if (saveOk) {
+      var noteRes = await saveOneNote(newSamNote, targetFolder.id);
+      if (!noteRes || !noteRes.ok) { saveOk = false; saveError = (noteRes && noteRes.error) || 'note save failed'; }
+    }
+
+    if (saveOk) {
+      // Both writes confirmed \u2014 NOW commit to local state.
+      if (targetFolderIsNew) folders.push(targetFolder);
+      if (!targetFolder.notes) targetFolder.notes = [];
+      targetFolder.notes.push(newSamNote);
+      targetFolder.updatedAt = new Date().toISOString();
+      saveState(storageKey('ctb_folders'), folders);
+      if (currentView === 'notes') renderNotesView();
+      confirmMsg = '\u2705 Saved "' + finalTitle + '" to ' + folderName;
+    } else {
+      // No local mutation happened \u2014 `folders` is untouched, so no rollback
+      // needed. Surface the error to the user instead of silently dropping.
+      console.warn('[save_note] D1 write failed:', saveError);
+      confirmMsg = '\u26a0\ufe0f Couldn\u2019t save "' + finalTitle + '" \u2014 ' + saveError + '. Please try again.';
+    }
   }
   else if (name === 'add_endorsement') {
     var endorsements = [];
