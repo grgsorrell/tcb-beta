@@ -2534,7 +2534,7 @@ function addDashTask() {
   if (!canEdit('calendar')) { showReadOnlyToast('calendar'); return; }
   var inp = document.getElementById('dash-task-input');
   if (!inp || !inp.value.trim()) return;
-  var newDashTask = { id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false };
+  var newDashTask = { id: (Date.now() * 1000 + Math.floor(Math.random() * 1000)), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false };
   tasks.push(newDashTask);
   saveOneTask(newDashTask);
   inp.value = '';
@@ -2659,7 +2659,7 @@ function popupAddTask() {
   if (!canEdit('calendar')) { showReadOnlyToast('calendar'); return; }
   var inp = document.getElementById('popup-task-input');
   if (!inp || !inp.value.trim()) return;
-  var newPopupTask = { id: Date.now() + Math.random(), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false };
+  var newPopupTask = { id: (Date.now() * 1000 + Math.floor(Math.random() * 1000)), name: inp.value.trim(), date: getTodayStr(), category: 'other', completed: false };
   tasks.push(newPopupTask);
   saveOneTask(newPopupTask);
   inp.value = '';
@@ -7991,7 +7991,7 @@ function addSuggestedTask(el, idx) {
   // Get task text from the element
   var text = el.textContent.replace(/^\+\s*/, '').trim();
   if (!text) return;
-  var samSuggestedTask = { id: Date.now() + Math.random(), name: text, date: getTodayStr(), category: 'other', completed: false, source: 'sam_suggested', fromBrief: true };
+  var samSuggestedTask = { id: (Date.now() * 1000 + Math.floor(Math.random() * 1000)), name: text, date: getTodayStr(), category: 'other', completed: false, source: 'sam_suggested', fromBrief: true };
   tasks.push(samSuggestedTask);
   saveOneTask(samSuggestedTask);
   // Update pill appearance
@@ -8481,7 +8481,7 @@ async function executeToolCall(block) {
     // If type='task' or this was the old add_to_calendar, create a task
     if (inp.type === 'task') {
       var task = {
-        id: Date.now() + Math.random(),
+        id: (Date.now() * 1000 + Math.floor(Math.random() * 1000)),
         name: inp.name || inp.task_name || 'Untitled Task',
         date: inp.date,
         category: inp.category || autoCategorize(inp.name || ''),
@@ -8496,7 +8496,7 @@ async function executeToolCall(block) {
     } else {
       // type='event' or default — create an event
       var evt = {
-        id: Date.now() + Math.random(),
+        id: (Date.now() * 1000 + Math.floor(Math.random() * 1000)),
         name: inp.name || inp.event_name || 'Untitled Event',
         date: inp.date,
         time: inp.time || '',
@@ -8514,7 +8514,7 @@ async function executeToolCall(block) {
   // Backward compat: old add_to_calendar always creates a task
   else if (name === 'add_to_calendar' || name === 'add_task') {
     var task = {
-      id: Date.now() + Math.random(),
+      id: (Date.now() * 1000 + Math.floor(Math.random() * 1000)),
       name: inp.task_name || inp.name || 'Untitled Task',
       date: inp.date,
       category: inp.category || autoCategorize(inp.task_name || inp.name || ''),
@@ -8587,7 +8587,7 @@ async function executeToolCall(block) {
     }
 
     var newSamNote = {
-      id: Date.now() + Math.random(),
+      id: (Date.now() * 1000 + Math.floor(Math.random() * 1000)),
       title: finalTitle,
       content: noteContent,
       status: noteStatus,
