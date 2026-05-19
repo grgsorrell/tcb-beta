@@ -5002,7 +5002,7 @@ function createNewNote() {
 
 function openNoteEditor(noteId) {
   var found = null;
-  folders.forEach(function(f) { (f.notes||[]).forEach(function(n) { if (n.id === noteId) found = n; }); });
+  folders.forEach(function(f) { (f.notes||[]).forEach(function(n) { if (String(n.id) === String(noteId)) found = n; }); });
   if (!found) return;
   document.getElementById('note-modal-title').textContent = 'Edit Note';
   document.getElementById('note-title-input').value = found.title || '';
@@ -5026,7 +5026,7 @@ function saveNoteFromModal() {
     // folder_id through to the per-row save.
     var editedNote = null; var editedParentFolderId = null;
     folders.forEach(function(f) { (f.notes||[]).forEach(function(n) {
-      if (n.id === editId) {
+      if (String(n.id) === String(editId)) {
         n.title = title || n.title;
         n.content = content;
         n.updatedAt = new Date().toISOString();
@@ -5053,7 +5053,7 @@ function saveNoteFromModal() {
 // Print note
 function printNote(noteId) {
   var found = null, folderName = '';
-  folders.forEach(function(f) { (f.notes||[]).forEach(function(n) { if (n.id === noteId) { found = n; folderName = f.name; } }); });
+  folders.forEach(function(f) { (f.notes||[]).forEach(function(n) { if (String(n.id) === String(noteId)) { found = n; folderName = f.name; } }); });
   if (!found) return;
   var w = window.open('', '_blank');
   var dateStr = found.createdAt ? new Date(found.createdAt).toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '';
@@ -5066,7 +5066,7 @@ function printNote(noteId) {
 // Delete note with confirmation
 function deleteNoteConfirm(noteId) {
   var found = null;
-  folders.forEach(function(f) { (f.notes||[]).forEach(function(n) { if (n.id === noteId) found = n; }); });
+  folders.forEach(function(f) { (f.notes||[]).forEach(function(n) { if (String(n.id) === String(noteId)) found = n; }); });
   if (!found) return;
   var existing = document.getElementById('delete-note-modal');
   if (existing) existing.remove();
@@ -5084,7 +5084,7 @@ function deleteNoteConfirm(noteId) {
 
 function executeDeleteNote(noteId) {
   folders.forEach(function(f) {
-    if (f.notes) f.notes = f.notes.filter(function(n){ return n.id !== noteId; });
+    if (f.notes) f.notes = f.notes.filter(function(n){ return String(n.id) !== String(noteId); });
   });
   deleteOneNote(noteId);
   var dm = document.getElementById('delete-note-modal');
