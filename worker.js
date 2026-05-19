@@ -4033,7 +4033,7 @@ export default {
         const { note: n } = await request.json();
         if (!n || !n.id) return jsonResponse({ error: 'note.id required' }, 400);
         if (!n.folder_id) return jsonResponse({ error: 'note.folder_id required' }, 400);
-        const folderOwned = await env.DB.prepare('SELECT id FROM folders WHERE id = ? AND workspace_owner_id = ?').bind(n.folder_id, ctx.ownerId).first();
+        const folderOwned = await env.DB.prepare('SELECT id FROM folders WHERE id = ? AND workspace_owner_id = ?').bind(String(n.folder_id), ctx.ownerId).first();
         if (!folderOwned) return jsonResponse({ error: 'folder not found' }, 404);
         await env.DB.prepare(
           'INSERT INTO notes (id, folder_id, user_id, workspace_owner_id, title, content, campaign_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
