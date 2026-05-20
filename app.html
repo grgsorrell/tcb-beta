@@ -8476,6 +8476,48 @@ async function executeToolCall(block) {
     }
   }
 
+  // lookup_top_donors — server-resolved FEC Schedule A donor list (federal
+  // races only). Same architectural shape as lookup_finance_reports:
+  // silent UI, tool_result threaded back into Sam's response. Returns
+  // either structured donor rows or a deferral with the FEC authority URL.
+  if (name === 'lookup_top_donors') {
+    try {
+      var sessTD = getD1Session();
+      if (!sessTD) {
+        return { confirmMsg: '', toolResultContent: JSON.stringify({ error: 'not_authenticated' }), toolId: block.id, toolName: name, input: inp };
+      }
+      var respTD = await fetch(D1_API + '/api/donor/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sessTD },
+        body: JSON.stringify({
+          state: inp.state || '',
+          office: inp.office || '',
+          district: inp.district || '',
+          race_year: inp.race_year || null,
+          party: inp.party || '',
+          incumbent_name: inp.incumbent_name || '',
+          top_n: inp.top_n || 20
+        })
+      });
+      var dataTD = await respTD.json();
+      return {
+        confirmMsg: '',
+        toolResultContent: JSON.stringify(dataTD),
+        toolId: block.id,
+        toolName: name,
+        input: inp
+      };
+    } catch (e) {
+      return {
+        confirmMsg: '',
+        toolResultContent: JSON.stringify({ error: 'donor_lookup_failed', message: e.message }),
+        toolId: block.id,
+        toolName: name,
+        input: inp
+      };
+    }
+  }
+
   // Sam 2.0 unified add_calendar_event handles both tasks and events
   if (name === 'add_calendar_event' || name === 'add_event') {
     // If type='task' or this was the old add_to_calendar, create a task

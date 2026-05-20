@@ -3549,6 +3549,128 @@ export default {
       }
     }
 
+    // ========================================
+    // DATA API: lookup_top_donors (FEC Schedule A proxy)
+    //
+    // Backs the lookup_top_donors Sam tool. Federal-race only — proxies
+    // research.thecandidatestoolbox.com/donor/top, which:
+    //   1. Resolves incumbent_name → committee_id via existing FEC roster
+    //      (or accepts an explicit committee_id if the caller knows it).
+    //   2. Queries FEC /v1/schedule_a/?committee_id=...&two_year_transaction_period=...
+    //      &is_individual=true&sort=-contribution_receipt_amount.
+    //   3. Returns top N rows with name, amount, employer, occupation,
+    //      city, state, zip, plus the candidate's principal committee URL
+    //      on fec.gov for citation.
+    //
+    // No D1 caching in v1 — donor data for past cycles is stable but the
+    // result sets are large and vary by N. Re-evaluate caching once usage
+    // patterns clarify.
+    //
+    // Failure modes (all surface a 'status' field for Sam's handler):
+    //   - Non-federal race or missing district for House → 'unsupported'
+    //   - Roster resolution failed (no candidate found) → 'no_match'
+    //   - FEC returned no donor rows → 'empty'
+    //   - VPS unreachable / timeout → 'unavailable' (defer)
+    // ========================================
+    if (url.pathname === '/api/donor/lookup' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        const body = await request.json().catch(() => ({}));
+
+        const stateRaw = (body.state || '').trim();
+        const office = (body.office || '').trim().toLowerCase();
+        const district = (body.district || '').toString().trim();
+        const raceYear = parseInt(body.race_year, 10);
+        const party = (body.party || '').trim().toUpperCase() || null;
+        const incumbentName = (body.incumbent_name || '').trim() || null;
+        const topN = Math.min(50, Math.max(1, parseInt(body.top_n, 10) || 20));
+
+        if (!stateRaw || !office || !Number.isFinite(raceYear)) {
+          return jsonResponse({ status: 'invalid_input', error: 'state, office, race_year required' }, 400);
+        }
+
+        // Federal-only gate. Map office to FEC office code.
+        let fecCode = null;
+        if (office.includes('house') || office.includes('congress') || office.includes('representative')) fecCode = 'H';
+        else if (office.includes('senate') || office.includes('senator')) fecCode = 'S';
+        else if (office.includes('president')) fecCode = 'P';
+        if (!fecCode) {
+          return jsonResponse({
+            status: 'unsupported',
+            message: 'Donor lookup is federal-race only (US House, US Senate, US President). For state/local races, defer to the state campaign finance authority.',
+            office: body.office
+          });
+        }
+        if (fecCode === 'H' && !district) {
+          return jsonResponse({
+            status: 'invalid_input',
+            message: 'House race requires a district number.'
+          }, 400);
+        }
+
+        const stateCode = normalizeStateCode(stateRaw) || stateRaw.toUpperCase();
+        const districtPadded = fecCode === 'H' ? String(district).replace(/\D/g, '').padStart(2, '0') : '';
+
+        // Proxy to VPS endpoint that holds the FEC API key.
+        try {
+          const vpsResp = await fetch('https://research.thecandidatestoolbox.com/donor/top', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Search-Key': env.VPS_SEARCH_KEY },
+            body: JSON.stringify({
+              office: fecCode,
+              state: stateCode,
+              district: districtPadded,
+              election_year: raceYear,
+              party: party,
+              incumbent_name: incumbentName,
+              top_n: topN
+            }),
+            signal: AbortSignal.timeout(25000)
+          });
+          if (!vpsResp.ok) {
+            console.warn('[donor_lookup] VPS status', vpsResp.status);
+            return jsonResponse({
+              status: 'unavailable',
+              message: 'FEC donor service is temporarily unreachable. Try again, or pull the data directly at fec.gov/data/candidates.',
+              authority: { name: 'Federal Election Commission', url: 'https://www.fec.gov/data/candidates/' }
+            });
+          }
+          const data = await vpsResp.json();
+          if (!data || !data.success) {
+            return jsonResponse({
+              status: data && data.status ? data.status : 'no_match',
+              message: (data && data.message) || 'No matching candidate or donor data found.',
+              authority: { name: 'Federal Election Commission', url: 'https://www.fec.gov/data/candidates/' }
+            });
+          }
+          await logApiUsage('lookup_top_donors_fec', { inputTokens: 0, outputTokens: 0 }, ctx.userId, ctx.ownerId, 'gemini-2.5-flash');
+          return jsonResponse({
+            status: 'ok',
+            candidate_name: data.candidate_name || null,
+            candidate_id: data.candidate_id || null,
+            committee_id: data.committee_id || null,
+            committee_url: data.committee_url || null,
+            cycle: raceYear,
+            donor_count: Array.isArray(data.donors) ? data.donors.length : 0,
+            donors: Array.isArray(data.donors) ? data.donors.slice(0, topN) : [],
+            source: 'fec_schedule_a',
+            authority: { name: 'Federal Election Commission', url: 'https://www.fec.gov/data/candidates/' }
+          });
+        } catch (e) {
+          console.warn('[donor_lookup] VPS failed:', e.message);
+          return jsonResponse({
+            status: 'unavailable',
+            message: 'FEC donor service is temporarily unreachable. Try again, or pull the data directly at fec.gov/data/candidates.',
+            authority: { name: 'Federal Election Commission', url: 'https://www.fec.gov/data/candidates/' }
+          });
+        }
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
     function formatDonationCacheRow(row, isCached) {
       let limits = {};
       let authority = {};
@@ -6318,6 +6440,19 @@ No web_search needed. Cite the context source:
 
 Context-grounded answers are sourced by construction — citation is the trust signal, no separate tag needed.
 
+STATE-SPECIFIC URLs — HARD CONSTRAINT:
+
+When referencing a state-specific resource URL — state bar association, ethics commission, secretary of state, elections division, attorney general, campaign finance authority, lawyer referral service, or any URL that encodes a state name or jurisdiction — the URL MUST come from a Google Search result in THIS conversation or from a lookup tool result in THIS conversation. Do NOT emit state-specific URLs from memory.
+
+If you don't have a verified URL from this session, say exactly this (substituting the state and resource type): "Search '[State] [resource type]' — I don't have a verified URL for this session."
+
+EXAMPLES of the bug class this rule prevents:
+- Bad: "The Louisiana Bar's lawyer referral service is at floridabar.org/public/lrs." (URL is for Florida, not Louisiana — a training-data anchor slip.)
+- Good: "Search 'Louisiana Bar lawyer referral service' — I don't have a verified URL for this session. Once you find it, I can save the contact info."
+- Good (when grounded): "Per the Louisiana State Bar Association at lsba.org/public/findalawyer (cited above)..."
+
+WHY: State-specific URLs from training data are the highest-frequency hallucination class. Well-known state agencies (Florida, Texas, California) have dominant patterns in training data that override the user's actual state context. A wrong URL pointing to a different state's resource is worse than no URL — it sends the user to the wrong jurisdiction.
+
 CITATION FORMAT REQUIREMENT:
 
 Every specific factual claim about a date, dollar amount, named person, URL, address, statute, or law MUST include a source attribution in the same response. Acceptable formats (preferred listed first):
@@ -6567,7 +6702,24 @@ When the user asks about individual contribution limits, donation caps, max dona
 
   URL HANDLING: only use URLs from the tool result — authority.url for verified data, web_search.url for fallback content. When both are null, do NOT invent or guess URLs.
 
-  WHY: A campaign manager who states the limit (with verify caveat) is useful. One who refuses when authoritative sources are findable online is not. The tool's built-in web_search backstop ensures findable answers reach you without chaining searches yourself; the citation requirement keeps every figure traceable.` : ''}${samEngine === 'gemini' ? `VERIFIED-DATA CITATION DISCIPLINE — HARD CONSTRAINT (Gemini path):
+  WHY: A campaign manager who states the limit (with verify caveat) is useful. One who refuses when authoritative sources are findable online is not. The tool's built-in web_search backstop ensures findable answers reach you without chaining searches yourself; the citation requirement keeps every figure traceable.
+
+DONOR RESEARCH — HARD CONSTRAINT (read every time, before any answer about donors or fundraising history):
+
+When the user asks for top donors, max donors, donor list, top contributors, call list, "who funded [candidate]", "where the money came from", or any "pull donor data" request for a FEDERAL race — your FIRST action this turn is a call to lookup_top_donors with state, office, race_year, and district (if House). Add incumbent_name when known to skip roster resolution.
+
+  PRIMARY SOURCE: lookup_top_donors. Returns structured rows (name, amount, employer, occupation, city, state, zip) plus the candidate's principal committee URL on fec.gov for citation. Format the rows as a clean table or numbered list. Cite the committee URL inline.
+
+  STATUS HANDLING:
+    "ok" — verified donor data. Present rows. Cite committee_url.
+    "unsupported" — race is non-federal (state/local). Defer with: "FEC only itemizes donors for federal races. For [office] in [state], check [state campaign finance authority]." NEVER fabricate donor names from training data for state/local races.
+    "no_match" — roster couldn't resolve the incumbent. Ask the user for clarification (which incumbent, or a different cycle).
+    "empty" — committee resolved but no donor rows found for the cycle. Likely a new candidate with no filings yet. Tell the user honestly.
+    "unavailable" — VPS/FEC unreachable. Defer with fec.gov/data/candidates/.
+
+  TRAINING-DATA RECALL FORBIDDEN: never fabricate donor names, amounts, employers, or occupations from training data. Every row must come from the tool. If the tool returns no data, defer — do not guess.
+
+  WHY: Fabricated donor lists trigger FEC compliance issues (you can't call someone who never donated) and waste candidate time. Real FEC Schedule A data via the tool is verifiable, structured, and trusted.` : ''}${samEngine === 'gemini' ? `VERIFIED-DATA CITATION DISCIPLINE — HARD CONSTRAINT (Gemini path):
 
 For any specific date, deadline, dollar amount, contribution limit, filing fee, qualifying period, contact name, or compliance rule — your answer must trace to either:
 
@@ -7448,6 +7600,23 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             },
             required: ["state", "office", "race_year"]
           }
+        },
+        {
+          name: "lookup_top_donors",
+          description: "Pull a list of top individual donors from FEC Schedule A for a federal race (US House, US Senate, US President). Use this WHENEVER the user asks for: 'top donors', 'max donors', 'donor list', 'who funded [candidate]', 'top contributors', 'call list', 'fundraising history', 'where the money came from', or similar in a federal race context. The tool resolves the incumbent's committee_id via the FEC roster and returns top N individual donors sorted by amount descending — each with name, amount, employer, occupation, city, state, zip. CRITICAL: federal-race only. For state/local races there is no FEC equivalent — defer to the user's state campaign finance authority. NEVER fabricate donor names — call this tool when the user asks. The tool returns structured rows; format them as a clean table or list in your response with FEC committee URL for verification.",
+          input_schema: {
+            type: "object",
+            properties: {
+              state: { type: "string", description: "Two-letter state code, e.g. 'LA' or 'FL'" },
+              office: { type: "string", description: "Federal office: 'US House', 'US Senate', or 'US President'" },
+              district: { type: "string", description: "District number for House races, e.g. '5' or '05'. Omit for Senate/President." },
+              race_year: { type: "integer", description: "The two-year election cycle, e.g. 2024 or 2022" },
+              party: { type: "string", description: "Optional party filter: 'R', 'D', 'I'. Omit to include all parties." },
+              incumbent_name: { type: "string", description: "Optional candidate name to resolve directly. If provided, skips the roster lookup. E.g. 'Julia Letlow'" },
+              top_n: { type: "integer", description: "How many top donors to return. Default 20, max 50." }
+            },
+            required: ["state", "office", "race_year"]
+          }
         }])
       ];
 
@@ -7466,6 +7635,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           case 'delete_event': return { success: true, message: `Event "${inp.event_name}" removed` };
           case 'add_expense': return { success: true, message: `$${inp.amount} expense logged for ${inp.description} in ${inp.category}` };
           case 'log_contribution': return { success: true, message: `$${inp.amount} contribution from ${inp.donorName} logged` };
+          case 'lookup_top_donors': return { success: true, message: `Top donor lookup for ${inp.state || ''} ${inp.office || ''} ${inp.race_year || ''}` };
           case 'set_budget': {
             const parts = [];
             if (inp.total) parts.push(`Budget: $${inp.total}`);
@@ -7505,7 +7675,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                systemInstruction: { parts: [{ text: "You are a router. Classify the user message as 'search' ONLY if it explicitly asks for current, live, or time-sensitive information — such as messages containing words like: current, latest, right now, today, this week, this year, 2026, deadline, when does, what's the limit, how much can, is it still, has it changed, recent, upcoming, or asks for a specific form number or filing date. Everything else — strategy, planning, writing content, saving notes, calendar tasks, budget, fundraising advice, general campaign management, or any action request — classify as 'action'. Reply with only the single word: search or action." }] },
+                systemInstruction: { parts: [{ text: "You are a router. Classify the user message as 'search' ONLY if it explicitly asks for current, live, or time-sensitive information — such as messages containing words like: current, latest, right now, today, this week, this year, 2026, deadline, when does, what's the limit, how much can, is it still, has it changed, recent, upcoming, or asks for a specific form number or filing date. Everything else — strategy, planning, writing content, saving notes, calendar tasks, budget, fundraising advice, general campaign management, donor research / top donors / max donors / call lists / 'who funded X' (these are tool-backed FEC lookups, not search), or any action request — classify as 'action'. Reply with only the single word: search or action." }] },
                 contents: [{ role: 'user', parts: [{ text: userMessage }] }],
                 generationConfig: {
                   maxOutputTokens: 20,
