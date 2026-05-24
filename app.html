@@ -1757,7 +1757,10 @@ function saveBudget() {
   // Send categories as an object — the worker handles serialization.
   // Pre-stringifying here was the source of the double-encoded
   // categories blob in D1; both sides cleaned up in the same commit.
-  d1Write('/api/budget/save', { budget: { total: campaignBudget.total, categories: campaignBudget.categories || {} } });
+  // Returns d1Write's { ok, error } promise so onboarding can await it
+  // before letting the user reach Sam (otherwise the first Sam turn
+  // can race ahead of the D1 commit and Sam sees a stale/missing budget).
+  return d1Write('/api/budget/save', { budget: { total: campaignBudget.total, categories: campaignBudget.categories || {} } });
 }
 // Per-row folder/note save/delete (item #5).
 // saveOneFolder writes the folder metadata only (notes children are
@@ -7033,7 +7036,7 @@ function renderOnboarding() {
     samMsg = "Almost done! What's your <strong>total campaign budget?</strong> I'll track every dollar.";
     bodyHtml = '<div class="ob-ttl">What\'s your campaign budget?</div><div class="ob-sub">Sam tracks every expense and alerts you when you\'re running low. You can update this anytime.</div>' +
       '<div class="ob-lbl">Total Campaign Budget</div>' +
-      '<div style="display:flex;align-items:center;gap:10px"><div style="font-family:var(--font-d);font-size:26px;font-weight:700;color:var(--gold);flex-shrink:0">$</div><input id="ob-budget" type="number" placeholder="7,000" value="' + (onboardingData.budget||'') + '" style="font-size:22px;font-weight:700"></div>' +
+      '<div style="display:flex;align-items:center;gap:10px"><div style="font-family:var(--font-d);font-size:26px;font-weight:700;color:var(--gold);flex-shrink:0">$</div><input id="ob-budget" type="number" placeholder="7000" value="' + (onboardingData.budget||'') + '" style="font-size:22px;font-weight:700"></div>' +
       '<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:12px">' +
         '<div class="qp" onclick="document.getElementById(\'ob-budget\').value=5000">$5,000</div>' +
         '<div class="qp" onclick="document.getElementById(\'ob-budget\').value=10000">$10,000</div>' +
@@ -7101,7 +7104,7 @@ function selectState(state, el) {
   el.classList.add('sel');
 }
 
-function obNext() {
+async function obNext() {
   if (onboardingStep === 1) {
     var first = document.getElementById('ob-first').value.trim();
     var last = document.getElementById('ob-last').value.trim();
@@ -7147,9 +7150,15 @@ function obNext() {
     campaignData.city = onboardingData.city || '';
     saveCampaign();
     if (onboardingData.budget) {
-      campaignBudget.total = parseFloat(onboardingData.budget);
+      // Sanitize before parseFloat — strip commas, dollar signs, whitespace,
+      // any non-numeric junk. parseFloat("7,000") returns 7, parseFloat("$7000")
+      // returns NaN — both were producing wrong values that either showed as
+      // "$7" or "not set" to Sam later. Sanitize first, then parse.
+      campaignBudget.total = parseFloat(String(onboardingData.budget).replace(/[^0-9.]/g, ''));
       if (!campaignBudget.expenses) campaignBudget.expenses = [];
-      saveBudget();
+      // Await the D1 commit so the user can't reach Sam before the budget
+      // has actually persisted. saveBudget() returns d1Write's promise.
+      await saveBudget();
     }
     // Fire the website fetch + bio save server-side. Don't block the UI;
     // user lands on completion screen while these run.
