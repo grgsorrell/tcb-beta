@@ -6160,7 +6160,7 @@ function fetchPulse() {
   var party = campaignData.party || '';
   var name = campaignData.candidateName || '';
   var scope = getIntelScope();
-  var prompt = 'Search for recent news, events, and issues affecting ' + scope.descriptor + ' related to the ' + office + ' race and politics. Find 5-8 recent news items or issues that a candidate for ' + office + ' should know about. Focus on political developments, voter concerns, controversies, and community issues. Return ONLY valid JSON: {"items":[{"headline":"...","summary":"...","relevance":"...","sentiment":"positive|negative|neutral","date":"...","category":"local-politics|issues|opponent|community|economy"}]}';
+  var prompt = 'Search for recent news, events, and issues affecting ' + scope.descriptor + ' related to the ' + office + ' race and politics. Find 5-8 recent news items or issues that a candidate for ' + office + ' should know about. Focus on political developments, voter concerns, controversies, and community issues. Each item MUST include a source_url drawn from your Google Search results — never invent a URL. If you cannot find a real source URL for an item, omit that item. Return ONLY valid JSON: {"items":[{"headline":"...","summary":"...","relevance":"...","source_url":"https://...","sentiment":"positive|negative|neutral","date":"...","category":"local-politics|issues|opponent|community|economy"}]}';
   fetch(typeof WORKER_URL !== 'undefined' ? WORKER_URL : '', {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({message: prompt, mode: 'research', candidateName: name, specificOffice: office, location: loc, state: state, electionDate: campaignData.electionDate||'', party: party})
@@ -6546,6 +6546,15 @@ function renderPulseTab(data) {
   items.forEach(function(item) {
     var catColor = catColors[item.category] || 'var(--t3)';
     var sentIcon = item.sentiment === 'positive' ? '<span style="color:var(--green);font-size:9px;font-weight:700;letter-spacing:.08em">TRENDING \u2191</span>' : item.sentiment === 'negative' ? '<span style="color:var(--red);font-size:9px;font-weight:700;letter-spacing:.08em">TRENDING \u2193</span>' : '<span style="color:var(--t3);font-size:9px;font-weight:700;letter-spacing:.08em">TRENDING \u2192</span>';
+    // Source link — only rendered when Gemini grounding returned a real URL.
+    // Validates URL shape client-side; opens in new tab with noopener for
+    // security. If absent, the row gracefully renders without the link.
+    var sourceLinkHtml = '';
+    if (item.source_url && typeof item.source_url === 'string' && /^https?:\/\//i.test(item.source_url)) {
+      var sourceHost = '';
+      try { sourceHost = new URL(item.source_url).hostname.replace(/^www\./, ''); } catch (e) { sourceHost = 'source'; }
+      sourceLinkHtml = '<div style="margin-top:6px;font-size:10px"><a href="' + escapeHtml(item.source_url) + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none;border-bottom:1px dotted var(--gold)">↗ ' + escapeHtml(sourceHost) + '</a></div>';
+    }
     html += '<div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05)">' +
       '<div style="display:flex;justify-content:space-between;align-items:center">' +
         '<span style="font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' + catColor + '">' + escapeHtml(item.category||'') + '</span>' +
@@ -6554,6 +6563,7 @@ function renderPulseTab(data) {
       '<div style="font-family:var(--font-d);font-style:italic;font-size:13px;font-weight:600;color:var(--t1);margin:4px 0">' + escapeHtml(item.headline||'') + '</div>' +
       '<div style="font-size:11px;color:var(--t2);line-height:1.6">' + escapeHtml(item.summary||'') + '</div>' +
       (item.relevance ? '<div class="intel-relevance">WHY IT MATTERS: ' + escapeHtml(item.relevance) + '</div>' : '') +
+      sourceLinkHtml +
     '</div>';
   });
   return html;

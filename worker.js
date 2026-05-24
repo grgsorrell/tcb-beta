@@ -5628,8 +5628,58 @@ export default {
           ];
         }
 
+        // intel_pulse routes through Gemini googleSearch grounding so each
+        // item carries a verified source_url back to the client (the
+        // VPS multiSearch path collapsed per-result URLs into a content
+        // blob and lost citation linkage — Shannan reported "Sam can't
+        // tell me the source URL of any pulse article" during beta).
+        // Grounding metadata (groundingChunks[].web.uri) is the URL
+        // whitelist; Gemini is instructed to populate source_url per
+        // item only from those grounded URLs.
+        if (researchFeature === 'intel_pulse') {
+          const pulseSystemPrompt = 'You are a political research analyst. Use Google Search to find recent news items relevant to the user\'s query. Return ONLY valid JSON in the exact schema requested — no preamble, no markdown fences, no explanation. Be specific with real names, dates, and percentages drawn from the search results. Each item MUST include a source_url field populated with the URL of the source you used for that item. NEVER invent URLs — only use URLs that came from your Google Search grounding results. If you cannot find a source URL for an item, omit that item rather than guessing. Current year is ' + new Date().getFullYear() + '.';
+          try {
+            const pulseResp = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  systemInstruction: { parts: [{ text: pulseSystemPrompt }] },
+                  contents: [{ role: 'user', parts: [{ text: message }] }],
+                  tools: [{ googleSearch: {} }],
+                  generationConfig: { maxOutputTokens: 8000, temperature: 0.2, thinkingConfig: { thinkingBudget: 0 } }
+                }),
+              }
+            );
+            const pulseRaw = await pulseResp.json();
+            await logApiUsage('intel_pulse_grounded', {
+              inputTokens: (pulseRaw && pulseRaw.usageMetadata && pulseRaw.usageMetadata.promptTokenCount) || 0,
+              outputTokens: (pulseRaw && pulseRaw.usageMetadata && pulseRaw.usageMetadata.candidatesTokenCount) || 0
+            }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
+            // extractGroundingResult pulls excerpt + URL list from
+            // grounding metadata. The excerpt is the model's narrative
+            // (which contains the JSON we want); urls[] is the
+            // whitelist of grounded source URLs.
+            const grounded = extractGroundingResult(pulseRaw);
+            // Wrap into Anthropic-shape so the client's parseLastJsonBlock
+            // works unchanged. grounding_urls is exposed at top-level for
+            // debugging / future audit (client doesn't need it — Gemini
+            // populated source_url per item).
+            const pulseData = {
+              content: [{ type: 'text', text: grounded.excerpt }],
+              model: 'gemini-2.5-flash',
+              grounding_urls: grounded.urls || []
+            };
+            return new Response(JSON.stringify(pulseData), { headers: { "Content-Type": "application/json", ...corsHeaders } });
+          } catch (e) {
+            console.warn('[intel_pulse_grounded] failed:', e.message);
+            return new Response(JSON.stringify({ error: 'pulse_failed', message: e.message }), { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } });
+          }
+        }
+
         // candidate_brief uses Anthropic web_search directly (deeper research).
-        // Pulse, morning_brief, day1_brief use multi-query VPS search (free, fast).
+        // morning_brief, day1_brief use multi-query VPS search (free, fast).
         const useAnthropicDirect = researchFeature === 'candidate_brief';
         const vpsResult = useAnthropicDirect ? null : await multiSearch(searchQueries, 5000);
 
@@ -6200,8 +6250,11 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
           }).join('\n');
         }
         if (hasPulse) {
+          // Include source_url so Sam can cite it inline when asked
+          // "what's the source of that article?". Without the URL the
+          // best Sam could do was a generic agency reference.
           intelGroundTruth += `\n\nDISTRICT PULSE (recent):\n` + intelContext.pulseItems.slice(0, 6).map(p =>
-            `- [${p.category || 'news'}] ${p.headline || ''}${p.summary ? ' — ' + p.summary : ''}`
+            `- [${p.category || 'news'}] ${p.headline || ''}${p.summary ? ' — ' + p.summary : ''}${p.source_url ? ' (Source: ' + p.source_url + ')' : ''}`
           ).join('\n');
         }
       } else {
