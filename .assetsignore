@@ -19,4 +19,13 @@ node_modules/
 *.test.js
 *.test.ts
 worker.js
+worker-*.js
 app-pre-*.html
+lib/
+lib/**
+tests/
+tests/**
+playwright.config.js
+.claude/
+.claude/**
+admin.html
