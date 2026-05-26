@@ -288,6 +288,56 @@ export default {
       return prev[n];
     }
 
+    // Sentence splitter that respects name suffixes / honorifics.
+    //
+    // The naive split /(?<=[.!?])\s+|\n+/ treats every period+space as a
+    // sentence boundary — including the period inside "Sr.", "Dr.", "Jr.",
+    // "Hon.", etc. That broke stripOpponentClaims (and the other strip*Claims
+    // functions): a single sentence like "Your opponents are Blaine Griffin
+    // Sr. (R) and Diana Jones (R)." was being split at "Sr." into two
+    // fragments, only the first (containing the unauthorized name) got
+    // stripped, and the user saw "(R) and Diana Jones (R)." as garbage debris.
+    //
+    // This helper walks the text and only treats sentence-ending punctuation
+    // as a boundary when the word ending there is NOT a known honorific or
+    // name suffix. Six strip*Claims callsites use this — keep it shared so
+    // the bug class can't drift between them.
+    const _NAME_SUFFIX_NO_SPLIT = new Set([
+      'Sr','Jr','Dr','Mr','Mrs','Ms','Hon','Rev','Sen','Rep','Gov','St',
+      'II','III','IV','Lt','Col','Gen','Esq','Capt','Sgt','Maj'
+    ]);
+    function splitSentences(text) {
+      if (!text || typeof text !== 'string') return [];
+      const out = [];
+      let buf = '';
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        buf += c;
+        // Newline always splits (matches the original `|\n+`).
+        if (c === '\n') {
+          if (buf.trim()) out.push(buf.trim());
+          buf = '';
+          while (i + 1 < text.length && text[i + 1] === '\n') i++;
+          continue;
+        }
+        // Sentence-end punctuation followed by whitespace (or end of text).
+        if ((c === '.' || c === '!' || c === '?') &&
+            (i + 1 >= text.length || /\s/.test(text[i + 1]))) {
+          // Find the last word before the punctuation. If it's a known
+          // honorific/suffix, don't split — keep accumulating.
+          const wordMatch = buf.slice(0, -1).match(/(\S+)$/);
+          if (wordMatch && _NAME_SUFFIX_NO_SPLIT.has(wordMatch[1])) {
+            continue;
+          }
+          if (buf.trim()) out.push(buf.trim());
+          buf = '';
+          while (i + 1 < text.length && /\s/.test(text[i + 1])) i++;
+        }
+      }
+      if (buf.trim()) out.push(buf.trim());
+      return out;
+    }
+
     function escapeForRegex(s) {
       return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
@@ -7447,7 +7497,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // ACTION/PERSISTENCE — always available (group 2).
         {
           name: "add_calendar_event",
-          description: "Add a task OR event to the campaign calendar. Use type='task' for deadlines and to-dos (things to complete BY a date). Use type='event' for activities AT a specific time and place (town halls, fundraisers, meetings). Always include the date in YYYY-MM-DD format. Check the calendar context in Ground Truth before adding to avoid duplicates.",
+          description: "CRITICAL — PERMISSION GATE: Only call this tool when the user has explicitly said 'add this', 'put it on my calendar', 'schedule it', 'create a task for', 'remind me to', or any clear paraphrase requesting a calendar action. If the user is just thinking aloud or asking a question, DO NOT call this tool — instead ask 'Would you like me to add this to your calendar?' and wait for confirmation. Calling this tool unprompted creates clutter the user has to manually delete.\n\nAdd a task OR event to the campaign calendar. Use type='task' for deadlines and to-dos (things to complete BY a date). Use type='event' for activities AT a specific time and place (town halls, fundraisers, meetings). Always include the date in YYYY-MM-DD format. Check the calendar context in Ground Truth before adding to avoid duplicates.",
           input_schema: {
             type: "object",
             properties: {
@@ -7465,7 +7515,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "update_task",
-          description: "Update an existing task. Use the taskId from the UPCOMING TASKS list in context to target the exact task. Falls back to name matching if no ID provided.",
+          description: "CRITICAL — PERMISSION GATE: Only call this tool when the user has explicitly said 'add this', 'put it on my calendar', 'schedule it', 'create a task for', 'remind me to', or any clear paraphrase requesting a calendar action. If the user is just thinking aloud or asking a question, DO NOT call this tool — instead ask 'Would you like me to add this to your calendar?' and wait for confirmation. Calling this tool unprompted creates clutter the user has to manually delete.\n\nUpdate an existing task. Use the taskId from the UPCOMING TASKS list in context to target the exact task. Falls back to name matching if no ID provided.",
           input_schema: {
             type: "object",
             properties: {
@@ -9287,7 +9337,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // unauthorized place. Threshold-checks the result so a near-empty
       // response gets a graceful generic instead.
       function stripUnauthorizedSentences(samText, unauthorized) {
-        const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+        const sentences = splitSentences(samText);
         const cleaned = sentences.filter(s => {
           const sLower = s.toLowerCase();
           return !unauthorized.some(u => u && sLower.includes(u.toLowerCase()));
@@ -9706,7 +9756,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           ...(unauthorizedUrls || [])
         ].filter(x => x);
         if (offenders.length === 0) return samText;
-        const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+        const sentences = splitSentences(samText);
         const cleaned = sentences.filter(s => {
           const sLower = s.toLowerCase();
           return !offenders.some(o => o && sLower.includes(String(o).toLowerCase()));
@@ -9961,7 +10011,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           ...(unauthorizedUrls || [])
         ].filter(x => x);
         if (offenders.length === 0) return samText;
-        const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+        const sentences = splitSentences(samText);
         const cleaned = sentences.filter(s => {
           const sLower = s.toLowerCase();
           return !offenders.some(o => o && sLower.includes(String(o).toLowerCase()));
@@ -10254,7 +10304,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           ...(unauthorizedUrls || [])
         ].filter(x => x);
         if (offenders.length === 0) return samText;
-        const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+        const sentences = splitSentences(samText);
         const cleaned = sentences.filter(s => {
           const sLower = s.toLowerCase();
           return !offenders.some(o => o && sLower.includes(String(o).toLowerCase()));
@@ -10416,7 +10466,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
         function stripOpponentClaims(samText, unauthorizedClaims) {
           if (!unauthorizedClaims || unauthorizedClaims.length === 0) return samText;
-          const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+          const sentences = splitSentences(samText);
           const cleaned = sentences.filter(s => {
             const sLower = s.toLowerCase();
             return !unauthorizedClaims.some(c => c && sLower.includes(String(c).toLowerCase()));
@@ -10691,7 +10741,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
         function stripUnverifiedClaims(samText, claims) {
           if (!claims || claims.length === 0) return samText;
-          const sentences = samText.split(/(?<=[.!?])\s+|\n+/);
+          const sentences = splitSentences(samText);
           const cleaned = sentences.filter(s => {
             const sLower = s.toLowerCase();
             return !claims.some(c => c && sLower.includes(String(c).toLowerCase()));
