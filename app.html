@@ -2340,9 +2340,9 @@ function updateTopbar() {
   var days = calcDaysToElection();
   var phase = getPhase(days);
   // Upgrade pill renders only when billing is active server-side AND
-  // the user isn't already on Standard. Hidden for beta accounts and
-  // for paid subscribers; only the unpaid-on-active-billing case shows it.
-  var upgradePill = (window.TCB_BILLING_ACTIVE && !isSubscribed())
+  // the user isn't already subscribed AND they're not a grandfathered
+  // beta user. Beta accounts keep their legacy access silently.
+  var upgradePill = (window.TCB_BILLING_ACTIVE && !isSubscribed() && !isGrandfathered())
     ? '<div class="upgrade-pill" onclick="goToBilling()" title="Lock in Early Bird $49.99/mo">Lock In $49.99 \u2192</div>'
     : '';
   document.getElementById('tb-center').innerHTML =
@@ -5549,27 +5549,40 @@ function submitServiceRequest() {
 // ============================================
 window.TCB_BILLING_ACTIVE = false;
 window.TCB_SUBSCRIPTION = null;
+window.TCB_PLAN = null;  // Top-level plan from users.plan (independent of subscription row)
 
 function loadBillingState() {
   return fetch(D1_API + '/api/billing/status')
     .then(function(r){ return r.json(); })
     .then(function(s){
       window.TCB_BILLING_ACTIVE = !!(s && s.active);
-      if (!window.TCB_BILLING_ACTIVE) { window.TCB_SUBSCRIPTION = null; return null; }
+      if (!window.TCB_BILLING_ACTIVE) { window.TCB_SUBSCRIPTION = null; window.TCB_PLAN = null; return null; }
       var auth = { 'Authorization': 'Bearer ' + getD1Session() };
       return fetch(D1_API + '/api/billing/subscription', { headers: auth })
         .then(function(r){ return r.json(); })
-        .then(function(d){ window.TCB_SUBSCRIPTION = (d && d.subscription) || null; });
+        .then(function(d){
+          window.TCB_SUBSCRIPTION = (d && d.subscription) || null;
+          window.TCB_PLAN = (d && d.plan) || null;
+        });
     })
     .catch(function(){
       window.TCB_BILLING_ACTIVE = false;
       window.TCB_SUBSCRIPTION = null;
+      window.TCB_PLAN = null;
     });
 }
 
 function isSubscribed() {
   var s = window.TCB_SUBSCRIPTION;
   return !!(s && s.plan === 'standard' && (s.status === 'active' || s.status === 'trialing'));
+}
+
+// Grandfathered beta users: keep their legacy unlimited-access tier
+// silently. No upgrade pill, no Early Bird CTA, no billing surface at
+// all. Distinct from "standard plan without an active subscription"
+// (which DOES get the CTA).
+function isGrandfathered() {
+  return window.TCB_PLAN === 'beta';
 }
 
 function subscribeStandard() {
@@ -5648,6 +5661,7 @@ function handleBillingUrlParams() {
 
 function renderBillingSection() {
   if (!window.TCB_BILLING_ACTIVE) return '';  // Hide entirely when billing is off
+  if (isGrandfathered()) return '';  // Grandfathered beta users: silent, no billing surface
   if (isSubscribed()) {
     var sub = window.TCB_SUBSCRIPTION;
     var renewal = sub && sub.currentPeriodEnd
@@ -5758,7 +5772,7 @@ function renderSettings() {
       '<div id="sub-users-list"></div>' +
     '</div>' +
     '<div class="settings-section"><div class="settings-lbl">Account</div>' +
-      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128100;</div><div><div class="sr-nm">Logged in as</div><div class="sr-desc">' + escapeHtml(window.TCB_USER || 'unknown') + ' (' + escapeHtml((window.TCB_SUBSCRIPTION && window.TCB_SUBSCRIPTION.plan) || 'beta') + ')</div></div></div><div class="sr-arrow"></div></div>' +
+      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128100;</div><div><div class="sr-nm">Logged in as</div><div class="sr-desc">' + escapeHtml(window.TCB_USER || 'unknown') + ' (' + escapeHtml(window.TCB_PLAN || (window.TCB_SUBSCRIPTION && window.TCB_SUBSCRIPTION.plan) || 'beta') + ')</div></div></div><div class="sr-arrow"></div></div>' +
       '<div class="settings-row" onclick="confirmLogout()" style="cursor:pointer"><div class="sr-left"><div class="sr-icon">&#128682;</div><div><div class="sr-nm">Sign Out</div><div class="sr-desc">Sign out of The Candidate\'s Toolbox</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
     '</div>' +
     renderBillingSection() +

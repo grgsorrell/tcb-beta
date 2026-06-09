@@ -4814,10 +4814,16 @@ export default {
       try {
         const userId = await getUserFromSession(request);
         if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
+        // Include the user's plan at the top level of the response so the
+        // client can distinguish grandfathered 'beta' users (who keep
+        // their legacy access and shouldn't see upgrade CTAs) from
+        // 'standard' users who haven't completed checkout yet.
+        const userRow = await env.DB.prepare('SELECT plan FROM users WHERE id = ?').bind(userId).first();
+        const userPlan = (userRow && userRow.plan) || 'standard';
         const sub = await env.DB.prepare('SELECT * FROM subscriptions WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').bind(userId).first();
-        if (!sub) return jsonResponse({ success: true, subscription: null });
+        if (!sub) return jsonResponse({ success: true, plan: userPlan, subscription: null });
         const pm = await env.DB.prepare('SELECT brand, last4 FROM payment_methods WHERE user_id = ? AND is_default = 1').bind(userId).first();
-        return jsonResponse({ success: true, subscription: { plan: sub.plan, status: sub.status, billingPeriod: sub.billing_period, currentPeriodEnd: sub.current_period_end, cancelAtPeriodEnd: sub.cancel_at_period_end === 1, paymentMethod: pm || null } });
+        return jsonResponse({ success: true, plan: userPlan, subscription: { plan: sub.plan, status: sub.status, billingPeriod: sub.billing_period, currentPeriodEnd: sub.current_period_end, cancelAtPeriodEnd: sub.cancel_at_period_end === 1, paymentMethod: pm || null } });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
 
