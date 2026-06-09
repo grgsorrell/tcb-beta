@@ -68,6 +68,28 @@ select{-webkit-appearance:none;appearance:none;}
 .phase-pill{background:rgba(212,165,116,.12);border:1px solid rgba(212,165,116,.3);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--gold);white-space:nowrap;position:relative;cursor:default;}
 .about-pill{background:rgba(212,165,116,.12);border:1px solid rgba(212,165,116,.3);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--gold);white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s ease,border-color .15s ease;}
 .about-pill:hover{background:rgba(212,165,116,.2);border-color:rgba(212,165,116,.5);}
+.upgrade-pill{background:rgba(212,165,116,.18);border:1px solid rgba(212,165,116,.45);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--gold);white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s;}
+.upgrade-pill:hover{background:rgba(212,165,116,.28);border-color:rgba(212,165,116,.7);}
+.bill-card-eb{background:rgba(212,165,116,.08);border:1px solid rgba(212,165,116,.3);border-radius:10px;padding:20px;margin-top:8px;}
+.bill-card-active{background:rgba(130,179,134,.08);border:1px solid rgba(130,179,134,.3);border-radius:10px;padding:20px;margin-top:8px;}
+.bill-head{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px;}
+.bill-head-active{color:var(--green);}
+.bill-price{font-family:var(--font-d);font-size:28px;font-weight:800;color:var(--gold);line-height:1.1;margin-bottom:6px;}
+.bill-price-suffix{font-size:14px;color:var(--t2);font-weight:600;}
+.bill-subtle{font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:4px;}
+.bill-row{font-size:12px;color:var(--t2);line-height:1.7;}
+.bill-row strong{color:var(--t1);font-weight:600;}
+.bill-btn{margin-top:14px;background:var(--gold);color:#0B1120;border:none;border-radius:6px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-b);transition:opacity .15s;}
+.bill-btn:hover{opacity:.9;}
+.bill-btn:disabled{opacity:.5;cursor:wait;}
+.bill-btn-ghost{margin-top:14px;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:6px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-b);}
+.bill-btn-ghost:hover{background:rgba(212,165,116,.1);}
+.bill-btn-ghost:disabled{opacity:.5;cursor:wait;}
+.bill-toast{position:fixed;top:74px;right:16px;background:var(--n2);border-radius:8px;padding:14px 18px;font-size:13px;color:var(--t1);max-width:340px;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:9999;opacity:0;transform:translateY(-8px);transition:opacity .25s,transform .25s;}
+.bill-toast.show{opacity:1;transform:translateY(0);}
+.bill-toast.success{border:1px solid var(--green);}
+.bill-toast.info{border:1px solid var(--gold);}
+.bill-toast.error{border:1px solid var(--red);}
 .phase-tip{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#111827;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 14px;width:220px;max-width:220px;white-space:normal;word-wrap:break-word;overflow:hidden;font-size:12px;color:var(--t1);line-height:1.55;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:1000;pointer-events:none;opacity:0;transition:opacity .15s;}
 .phase-tip::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid rgba(255,255,255,.12);}
 .phase-tip::after{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #111827;}
@@ -1953,6 +1975,12 @@ function initApp() {
             body: JSON.stringify({ campaignId: pick })
           }).catch(function(){});
         }
+        // Billing hydration runs in parallel with the rest of init. It
+        // gates the Settings billing section + the topbar upgrade pill;
+        // also fires the ?upgraded=true / ?cancelled=true return-from-
+        // Stripe handler. Failure is non-fatal — TCB_BILLING_ACTIVE
+        // stays false and every billing surface stays hidden.
+        loadBillingState().then(handleBillingUrlParams);
         proceedWithLocalData();
         loadFromD1();
         startDataRefreshPoll();
@@ -2311,10 +2339,17 @@ function showOnboardedUI() {
 function updateTopbar() {
   var days = calcDaysToElection();
   var phase = getPhase(days);
+  // Upgrade pill renders only when billing is active server-side AND
+  // the user isn't already on Standard. Hidden for beta accounts and
+  // for paid subscribers; only the unpaid-on-active-billing case shows it.
+  var upgradePill = (window.TCB_BILLING_ACTIVE && !isSubscribed())
+    ? '<div class="upgrade-pill" onclick="goToBilling()" title="Lock in Early Bird $49.99/mo">Lock In $49.99 \u2192</div>'
+    : '';
   document.getElementById('tb-center').innerHTML =
     '<div class="cd-pill"><div class="cd-num">' + (days > 0 ? days : 0) + '</div><div><div class="cd-sub">Days To</div><div class="cd-sub">Election</div></div></div>' +
     '<div class="phase-pill" id="phase-pill-el">' + phase + '</div>' +
-    '<div class="about-pill" onclick="openAboutSam()" title="Learn what Sam can do"><span style="font-size:13px;line-height:1">\uD83D\uDCA1</span><span>About Sam</span></div>';
+    '<div class="about-pill" onclick="openAboutSam()" title="Learn what Sam can do"><span style="font-size:13px;line-height:1">\uD83D\uDCA1</span><span>About Sam</span></div>' +
+    upgradePill;
   var pill = document.getElementById('phase-pill-el');
   if (pill) {
     pill.addEventListener('mouseenter', function() {
@@ -5502,6 +5537,153 @@ function submitServiceRequest() {
 // ============================================
 // SETTINGS
 // ============================================
+// ============================================
+// BILLING UI — gated on window.TCB_BILLING_ACTIVE.
+// Backend endpoints in worker.js:
+//   GET  /api/billing/status        (public, returns {active})
+//   GET  /api/billing/subscription  (auth, returns current sub or null)
+//   POST /api/billing/create-checkout (auth, returns Stripe Checkout URL)
+//   POST /api/billing/create-portal   (auth, returns Stripe Portal URL)
+// When STRIPE_ACTIVE=false server-side, every billing surface here
+// hides — no broken buttons surface to beta users.
+// ============================================
+window.TCB_BILLING_ACTIVE = false;
+window.TCB_SUBSCRIPTION = null;
+
+function loadBillingState() {
+  return fetch(D1_API + '/api/billing/status')
+    .then(function(r){ return r.json(); })
+    .then(function(s){
+      window.TCB_BILLING_ACTIVE = !!(s && s.active);
+      if (!window.TCB_BILLING_ACTIVE) { window.TCB_SUBSCRIPTION = null; return null; }
+      var auth = { 'Authorization': 'Bearer ' + getD1Session() };
+      return fetch(D1_API + '/api/billing/subscription', { headers: auth })
+        .then(function(r){ return r.json(); })
+        .then(function(d){ window.TCB_SUBSCRIPTION = (d && d.subscription) || null; });
+    })
+    .catch(function(){
+      window.TCB_BILLING_ACTIVE = false;
+      window.TCB_SUBSCRIPTION = null;
+    });
+}
+
+function isSubscribed() {
+  var s = window.TCB_SUBSCRIPTION;
+  return !!(s && s.plan === 'standard' && (s.status === 'active' || s.status === 'trialing'));
+}
+
+function subscribeStandard() {
+  var btn = document.getElementById('bill-subscribe-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Loading…'; }
+  fetch(D1_API + '/api/billing/create-checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getD1Session() },
+    body: JSON.stringify({ plan: 'standard', billingPeriod: 'monthly' })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (d && d.checkoutUrl) { window.location.href = d.checkoutUrl; return; }
+    showBillingToast((d && d.error) || 'Could not start checkout', 'error');
+    if (btn) { btn.disabled = false; btn.textContent = 'Lock In $49.99/mo →'; }
+  })
+  .catch(function(e){
+    showBillingToast('Network error: ' + e.message, 'error');
+    if (btn) { btn.disabled = false; btn.textContent = 'Lock In $49.99/mo →'; }
+  });
+}
+
+function manageBilling() {
+  var btn = document.getElementById('bill-manage-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Loading…'; }
+  fetch(D1_API + '/api/billing/create-portal', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getD1Session() }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (d && d.portalUrl) { window.location.href = d.portalUrl; return; }
+    showBillingToast((d && d.error) || 'Could not open billing portal', 'error');
+    if (btn) { btn.disabled = false; btn.textContent = 'Manage Billing →'; }
+  })
+  .catch(function(e){
+    showBillingToast('Network error: ' + e.message, 'error');
+    if (btn) { btn.disabled = false; btn.textContent = 'Manage Billing →'; }
+  });
+}
+
+function goToBilling() {
+  showView('settings');
+  setTimeout(function(){
+    var el = document.getElementById('billing-section');
+    if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+}
+
+function showBillingToast(msg, kind) {
+  var t = document.createElement('div');
+  t.className = 'bill-toast ' + (kind || 'info');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  // double-RAF so the transition fires
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ t.classList.add('show'); }); });
+  setTimeout(function(){
+    t.classList.remove('show');
+    setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, 300);
+  }, 6000);
+}
+
+function handleBillingUrlParams() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('upgraded') === 'true') {
+      showBillingToast('Welcome aboard — your subscription is active.', 'success');
+      loadBillingState().then(function(){ if (currentView === 'settings') renderSettings(); updateTopbar(); });
+      history.replaceState(null, '', window.location.pathname);
+    } else if (params.get('cancelled') === 'true') {
+      showBillingToast('Checkout cancelled — you can subscribe whenever you’re ready.', 'info');
+      history.replaceState(null, '', window.location.pathname);
+    }
+  } catch (e) {}
+}
+
+function renderBillingSection() {
+  if (!window.TCB_BILLING_ACTIVE) return '';  // Hide entirely when billing is off
+  if (isSubscribed()) {
+    var sub = window.TCB_SUBSCRIPTION;
+    var renewal = sub && sub.currentPeriodEnd
+      ? new Date(sub.currentPeriodEnd).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})
+      : 'unknown';
+    var pm = sub && sub.paymentMethod;
+    var pmText = (pm && pm.brand && pm.last4)
+      ? (pm.brand.charAt(0).toUpperCase() + pm.brand.slice(1) + ' ending in ' + pm.last4)
+      : 'Saved card on file';
+    var cancNotice = sub && sub.cancelAtPeriodEnd
+      ? '<div style="color:var(--red);font-size:11px;margin-top:8px">Scheduled to cancel on ' + renewal + '</div>'
+      : '';
+    return '<div id="billing-section" class="settings-section">' +
+      '<div class="settings-lbl">Billing</div>' +
+      '<div class="bill-card-active">' +
+        '<div class="bill-head bill-head-active">✓ Standard — $49.99/month</div>' +
+        '<div class="bill-row"><strong>Status:</strong> ' + escapeHtml((sub && sub.status) || 'active') + '</div>' +
+        '<div class="bill-row"><strong>' + (sub && sub.cancelAtPeriodEnd ? 'Access through' : 'Renews') + ':</strong> ' + renewal + '</div>' +
+        '<div class="bill-row"><strong>Payment:</strong> ' + escapeHtml(pmText) + '</div>' +
+        cancNotice +
+        '<button id="bill-manage-btn" class="bill-btn-ghost" onclick="manageBilling()">Manage Billing →</button>' +
+      '</div>' +
+    '</div>';
+  }
+  // Not subscribed — Early Bird CTA
+  return '<div id="billing-section" class="settings-section">' +
+    '<div class="settings-lbl">Billing</div>' +
+    '<div class="bill-card-eb">' +
+      '<div class="bill-head">🔥 Lock in Early Bird Pricing</div>' +
+      '<div class="bill-price">$49.99<span class="bill-price-suffix">/month</span></div>' +
+      '<div class="bill-subtle">Get started now before the price increases to $99.99/month.</div>' +
+      '<button id="bill-subscribe-btn" class="bill-btn" onclick="subscribeStandard()">Lock In $49.99/mo →</button>' +
+    '</div>' +
+  '</div>';
+}
+
 function renderSettings() {
   var name = campaignData.candidateName || 'Not set';
   var office = campaignData.specificOffice || 'Not set';
@@ -5576,9 +5758,10 @@ function renderSettings() {
       '<div id="sub-users-list"></div>' +
     '</div>' +
     '<div class="settings-section"><div class="settings-lbl">Account</div>' +
-      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128100;</div><div><div class="sr-nm">Logged in as</div><div class="sr-desc">' + escapeHtml(window.TCB_USER || 'unknown') + ' (beta)</div></div></div><div class="sr-arrow"></div></div>' +
+      '<div class="settings-row"><div class="sr-left"><div class="sr-icon">&#128100;</div><div><div class="sr-nm">Logged in as</div><div class="sr-desc">' + escapeHtml(window.TCB_USER || 'unknown') + ' (' + escapeHtml((window.TCB_SUBSCRIPTION && window.TCB_SUBSCRIPTION.plan) || 'beta') + ')</div></div></div><div class="sr-arrow"></div></div>' +
       '<div class="settings-row" onclick="confirmLogout()" style="cursor:pointer"><div class="sr-left"><div class="sr-icon">&#128682;</div><div><div class="sr-nm">Sign Out</div><div class="sr-desc">Sign out of The Candidate\'s Toolbox</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
     '</div>' +
+    renderBillingSection() +
     '<div class="settings-section"><div class="settings-lbl">Danger Zone</div>' +
       '<div class="settings-row danger" onclick="resetAllData()"><div class="sr-left"><div class="sr-icon">&#128260;</div><div><div class="sr-nm">Reset Campaign Data</div><div class="sr-desc">Clears all tasks, expenses, and notes. Cannot be undone.</div></div></div><div class="sr-arrow">&#8250;</div></div>' +
     '</div>';
