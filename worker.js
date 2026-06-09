@@ -102,6 +102,52 @@ export default {
     }
 
     // ========================================
+    // HELPER: Verify a Stripe webhook signature
+    //
+    // Stripe signs the raw POST body with HMAC-SHA256 using the webhook
+    // secret. The `stripe-signature` header looks like:
+    //   t=<unix_ts>,v1=<sig>[,v1=<sig>][,v0=<sig>]
+    // Multiple v1 entries appear during signing-secret rotation. We accept
+    // if ANY v1 matches. 300-second timestamp tolerance protects against
+    // replay. Constant-time hex compare avoids timing leaks. Returns true
+    // on success, false on any failure (missing header, parse error,
+    // stale ts, no v1 match, no secret configured).
+    // ========================================
+    async function verifyStripeSignature(rawBody, sigHeader, secret) {
+      if (!sigHeader || !secret || typeof rawBody !== 'string') return false;
+      let ts = null;
+      const v1Sigs = [];
+      for (const part of sigHeader.split(',')) {
+        const eq = part.indexOf('=');
+        if (eq <= 0) continue;
+        const k = part.slice(0, eq).trim();
+        const v = part.slice(eq + 1).trim();
+        if (k === 't') ts = v;
+        else if (k === 'v1') v1Sigs.push(v);
+      }
+      if (!ts || v1Sigs.length === 0) return false;
+      const tsInt = parseInt(ts, 10);
+      if (!Number.isFinite(tsInt)) return false;
+      const skew = Math.abs(Math.floor(Date.now() / 1000) - tsInt);
+      if (skew > 300) return false;
+      const enc = new TextEncoder();
+      const key = await crypto.subtle.importKey(
+        'raw', enc.encode(secret),
+        { name: 'HMAC', hash: 'SHA-256' },
+        false, ['sign']
+      );
+      const sigBuf = await crypto.subtle.sign('HMAC', key, enc.encode(ts + '.' + rawBody));
+      const computed = Array.from(new Uint8Array(sigBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      for (const v of v1Sigs) {
+        if (v.length !== computed.length) continue;
+        let diff = 0;
+        for (let i = 0; i < v.length; i++) diff |= v.charCodeAt(i) ^ computed.charCodeAt(i);
+        if (diff === 0) return true;
+      }
+      return false;
+    }
+
+    // ========================================
     // HELPER: Get user from session
     // ========================================
     async function getUserFromSession(req) {
@@ -1134,7 +1180,11 @@ export default {
         const trialEnds = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
         await env.DB.prepare(
           'INSERT INTO users (id, username, email, password_hash, full_name, plan, trial_started, trial_ends, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        // BETA: All new accounts get 'beta' plan (no expiry). Change to 'trial' when billing activates.
+        // BETA: All new accounts get 'beta' plan (no expiry).
+        // STRIPE-ACTIVATION TODO: when STRIPE_ACTIVE=true, flip this default
+        // from 'beta' to 'standard' (or 'trial' if a trial period is added)
+        // so new signups land on the paying plan tier. The 'beta' literal
+        // is the only thing to change on this line.
         ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'beta', now, trialEnds, 'active', now).run();
         // Create session
         const sessionId = generateId(48);
@@ -1551,9 +1601,13 @@ export default {
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         const subUserId = generateId();
+        // Store username lowercased — matches the users-table INSERT
+        // convention at the create-account endpoint. Login resolution
+        // already lowercases for comparison, and idx_sub_users_username_unique_nocase
+        // enforces case-insensitive uniqueness at the DB layer.
         await env.DB.prepare(
           'INSERT INTO sub_users (id, owner_id, username, password_hash, name, role, permissions_json, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(subUserId, ctx.ownerId, username, hashHex, name, role, JSON.stringify(permissions || {}), 'active').run();
+        ).bind(subUserId, ctx.ownerId, username.toLowerCase(), hashHex, name, role, JSON.stringify(permissions || {}), 'active').run();
         // Log activity
         await env.DB.prepare('INSERT INTO activity_log (id, user_id, user_name, action, details) VALUES (?, ?, ?, ?, ?)').bind(generateId(16), ctx.ownerId, 'Owner', 'Created sub-user', name + ' (' + role + ')').run();
         return jsonResponse({ success: true, userId: subUserId, username });
@@ -4699,11 +4753,11 @@ export default {
         if (!userId) return jsonResponse({ error: 'Not authenticated' }, 401);
         const user = await env.DB.prepare('SELECT email FROM users WHERE id = ?').bind(userId).first();
         const { plan, billingPeriod } = await request.json();
+        // Single-tier launch: $49.99/month standard. Additional tiers
+        // (annual, $99.99 premium, etc.) can be added here later by
+        // appending the corresponding STRIPE_* env keys.
         const priceMap = {
-          'starter_monthly': env.STRIPE_STARTER_MONTHLY, 'starter_annual': env.STRIPE_STARTER_ANNUAL,
-          'campaign_monthly': env.STRIPE_CAMPAIGN_MONTHLY, 'campaign_annual': env.STRIPE_CAMPAIGN_ANNUAL,
-          'pro_monthly': env.STRIPE_PRO_MONTHLY, 'pro_annual': env.STRIPE_PRO_ANNUAL,
-          'consultant_monthly': env.STRIPE_CONSULTANT_MONTHLY, 'consultant_annual': env.STRIPE_CONSULTANT_ANNUAL
+          'standard_monthly': env.STRIPE_STANDARD_MONTHLY
         };
         const priceId = priceMap[plan + '_' + (billingPeriod || 'monthly')];
         if (!priceId) return jsonResponse({ error: 'Invalid plan' }, 400);
@@ -4763,20 +4817,29 @@ export default {
     if (url.pathname === '/api/billing/webhook' && request.method === 'POST') {
       if (!STRIPE_ACTIVE) return new Response('OK', { status: 200 });
       try {
-        const body = await request.text();
+        const rawBody = await request.text();
         const sig = request.headers.get('stripe-signature');
-        // TODO: Verify webhook signature with env.STRIPE_WEBHOOK_SECRET
-        const event = JSON.parse(body);
+        // Verify signature BEFORE parsing JSON or touching the DB. Fail-closed
+        // when STRIPE_WEBHOOK_SECRET is unset — if someone enabled STRIPE_ACTIVE
+        // without configuring the secret, surface that loudly rather than
+        // silently accepting unsigned events.
+        const verified = await verifyStripeSignature(rawBody, sig, env.STRIPE_WEBHOOK_SECRET);
+        if (!verified) return new Response('Invalid signature', { status: 400, headers: corsHeaders });
+        const event = JSON.parse(rawBody);
         switch (event.type) {
           case 'customer.subscription.created':
           case 'customer.subscription.updated': {
             const sub = event.data.object;
             const userId = sub.metadata?.userId;
             if (userId) {
+              // billing_period derived from the Stripe price object (canonical
+              // source). 'year' → 'annual', anything else → 'monthly'.
+              const _interval = sub.items?.data?.[0]?.price?.recurring?.interval;
+              const billingPeriod = _interval === 'year' ? 'annual' : 'monthly';
               await env.DB.prepare(
-                'INSERT INTO subscriptions (id, user_id, stripe_customer_id, stripe_subscription_id, plan, status, current_period_start, current_period_end, cancel_at_period_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(stripe_subscription_id) DO UPDATE SET status = excluded.status, current_period_start = excluded.current_period_start, current_period_end = excluded.current_period_end, cancel_at_period_end = excluded.cancel_at_period_end, updated_at = datetime(\'now\')'
-              ).bind(generateId(16), userId, sub.customer, sub.id, sub.metadata?.plan || 'starter', sub.status, new Date(sub.current_period_start * 1000).toISOString(), new Date(sub.current_period_end * 1000).toISOString(), sub.cancel_at_period_end ? 1 : 0).run();
-              await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind(sub.metadata?.plan || 'starter', userId).run();
+                'INSERT INTO subscriptions (id, user_id, stripe_customer_id, stripe_subscription_id, plan, status, billing_period, current_period_start, current_period_end, cancel_at_period_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(stripe_subscription_id) DO UPDATE SET status = excluded.status, billing_period = excluded.billing_period, current_period_start = excluded.current_period_start, current_period_end = excluded.current_period_end, cancel_at_period_end = excluded.cancel_at_period_end, updated_at = datetime(\'now\')'
+              ).bind(generateId(16), userId, sub.customer, sub.id, sub.metadata?.plan || 'standard', sub.status, billingPeriod, new Date(sub.current_period_start * 1000).toISOString(), new Date(sub.current_period_end * 1000).toISOString(), sub.cancel_at_period_end ? 1 : 0).run();
+              await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind(sub.metadata?.plan || 'standard', userId).run();
             }
             break;
           }
@@ -4785,7 +4848,7 @@ export default {
             const userId = sub.metadata?.userId;
             if (userId) {
               await env.DB.prepare('UPDATE subscriptions SET status = ? WHERE stripe_subscription_id = ?').bind('canceled', sub.id).run();
-              await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind('trial', userId).run();
+              await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind('standard', userId).run();
             }
             break;
           }
@@ -4804,8 +4867,11 @@ export default {
     // Plan limit check helper (used by other endpoints)
     function checkPlanLimit(plan, resource, current) {
       if (!STRIPE_ACTIVE) return { allowed: true };
-      const limits = { starter: { users: 1, campaigns: 1 }, campaign: { users: 3, campaigns: 3 }, pro: { users: 10, campaigns: 10 }, consultant: { users: 999, campaigns: 999 }, beta: { users: 999, campaigns: 999 } };
-      var limit = (limits[plan] || limits.starter)[resource] || 1;
+      // Single-tier launch ($49.99/month standard) plus beta legacy bypass.
+      // Additional tiers (premium, consultant, etc.) can be appended here
+      // when the matching Stripe price IDs are added to priceMap.
+      const limits = { standard: { users: 1, campaigns: 1 }, beta: { users: 999, campaigns: 999 } };
+      var limit = (limits[plan] || limits.standard)[resource] || 1;
       return current >= limit ? { allowed: false, limit: limit, upgradeRequired: true } : { allowed: true };
     }
 
