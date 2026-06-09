@@ -4712,8 +4712,8 @@ export default {
         params.append('payment_method_types[0]', 'card');
         params.append('line_items[0][price]', priceId);
         params.append('line_items[0][quantity]', '1');
-        params.append('success_url', 'https://tcb-beta.grgsorrell.workers.dev/app?upgraded=true');
-        params.append('cancel_url', 'https://tcb-beta.grgsorrell.workers.dev/app?cancelled=true');
+        params.append('success_url', 'https://thecandidatestoolbox.com/app?upgraded=true');
+        params.append('cancel_url', 'https://thecandidatestoolbox.com/app?cancelled=true');
         if (user && user.email) params.append('customer_email', user.email);
         params.append('metadata[userId]', userId);
         params.append('metadata[plan]', plan);
@@ -4737,7 +4737,7 @@ export default {
         if (!sub || !sub.stripe_customer_id) return jsonResponse({ error: 'No subscription found' }, 404);
         const params = new URLSearchParams();
         params.append('customer', sub.stripe_customer_id);
-        params.append('return_url', 'https://tcb-beta.grgsorrell.workers.dev/app');
+        params.append('return_url', 'https://thecandidatestoolbox.com/app');
         const resp = await fetch('https://api.stripe.com/v1/billing_portal/sessions', {
           method: 'POST',
           headers: { 'Authorization': 'Basic ' + btoa(env.STRIPE_SECRET_KEY + ':'), 'Content-Type': 'application/x-www-form-urlencoded' },

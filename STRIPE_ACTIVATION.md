@@ -25,7 +25,7 @@
 - [ ] Save price IDs as secrets: `wrangler secret put STRIPE_STARTER_MONTHLY` etc.
 - [ ] Save `STRIPE_SECRET_KEY` as secret
 - [ ] Save `STRIPE_WEBHOOK_SECRET` as secret
-- [ ] Register webhook endpoint in Stripe: `https://candidate-toolbox-secretary2.grgsorrell.workers.dev/api/billing/webhook`
+- [ ] Register webhook endpoint in Stripe: `https://api.thecandidatestoolbox.com/api/billing/webhook`
 - [ ] Test checkout flow end-to-end in test mode
 - [ ] Test webhook events via `stripe listen --forward-to`
 - [ ] Test subscription cancellation

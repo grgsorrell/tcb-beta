@@ -1183,7 +1183,7 @@ function storageKey(key) {
 // ============================================
 // STATE
 // ============================================
-var WORKER_URL = 'https://candidate-toolbox-secretary2.grgsorrell.workers.dev';
+var WORKER_URL = 'https://api.thecandidatestoolbox.com';
 var APP_VERSION = 'D1-Phase6';
 console.log('[TCB] App version:', APP_VERSION);
 // Show version badge briefly so user can confirm they have latest code
@@ -5248,7 +5248,7 @@ function showCredentialsModal(name, username, password) {
   var backdrop = document.createElement('div');
   backdrop.id = 'creds-modal-backdrop';
   backdrop.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.6);z-index:999;display:flex;align-items:center;justify-content:center';
-  var credsText = 'TCB Login Credentials\nURL: https://tcb-beta.grgsorrell.workers.dev\nUsername: ' + username + '\nPassword: ' + password + '\nYou will be asked to create a new password on first login.';
+  var credsText = 'TCB Login Credentials\nURL: https://thecandidatestoolbox.com\nUsername: ' + username + '\nPassword: ' + password + '\nYou will be asked to create a new password on first login.';
   backdrop.innerHTML = '<div style="width:420px;max-width:calc(100vw - 32px);background:var(--n2);border:1px solid var(--br);border-radius:12px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
     '<div style="font-size:16px;color:var(--green);font-weight:700;margin-bottom:12px">\u2705 User Created</div>' +
     '<div style="font-size:12px;color:var(--t2);margin-bottom:14px">Share these login credentials with <strong style="color:var(--t1)">' + escapeHtml(name) + '</strong>.</div>' +

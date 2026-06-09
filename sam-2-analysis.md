@@ -654,7 +654,7 @@ Mitigation: Keep `cleanResearchNarration()` in the frontend as a safety net even
 
 ### Setup
 - **Tool:** @playwright/test v1.59.1 with Chromium, headless mode
-- **Target:** https://tcb-beta.grgsorrell.workers.dev/app.html
+- **Target:** https://thecandidatestoolbox.com/app.html
 - **Auth method:** localStorage session injection (bypasses index.html login modal)
 - **User:** greg (Beta#01 session)
 - **Test file:** `sam-tests.spec.js` (8 tests)

@@ -17,8 +17,8 @@ named Sam powered by Claude Haiku.
 Every change requires TWO separate deploys.
 Never deploy one without the other.
 
-- Frontend: https://tcb-beta.grgsorrell.workers.dev
-- Sam Worker: https://candidate-toolbox-secretary2.grgsorrell.workers.dev
+- Frontend: https://thecandidatestoolbox.com (legacy: tcb-beta.grgsorrell.workers.dev)
+- Sam Worker: https://api.thecandidatestoolbox.com (legacy: candidate-toolbox-secretary2.grgsorrell.workers.dev)
 - GitHub: https://github.com/grgsorrell/tcb-beta
 
 ```bash
