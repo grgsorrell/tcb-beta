@@ -826,6 +826,10 @@
       <div style="margin-bottom:4px"><input id="signup-password" type="password" placeholder="Password (8+ characters)" oninput="checkPasswordStrength()" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none"></div>
       <div id="password-strength" style="height:3px;border-radius:2px;background:rgba(255,255,255,.06);margin-bottom:14px;overflow:hidden"><div id="password-strength-bar" style="height:100%;width:0;transition:width .3s,background .3s"></div></div>
       <div style="margin-bottom:14px"><input id="signup-confirm" type="password" placeholder="Confirm password" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none" onkeydown="if(event.key==='Enter')createAccount()"></div>
+      <div style="margin-bottom:14px;display:flex;align-items:flex-start;gap:8px">
+        <input id="signup-terms" type="checkbox" style="margin-top:3px;accent-color:#d4a574;cursor:pointer;width:14px;height:14px;flex-shrink:0">
+        <label for="signup-terms" style="font-size:12px;color:#94A3B8;line-height:1.5;cursor:pointer;font-family:'DM Sans',sans-serif">I agree to the <a href="/terms" target="_blank" rel="noopener" style="color:#d4a574;text-decoration:underline">Terms of Service</a> and <a href="/privacy" target="_blank" rel="noopener" style="color:#d4a574;text-decoration:underline">Privacy Policy</a>.</label>
+      </div>
       <div id="signup-error" style="display:none;font-size:12px;color:#e87070;margin-bottom:10px;padding:8px 12px;background:rgba(232,112,112,.08);border-radius:4px"></div>
       <button onclick="createAccount()" style="width:100%;padding:12px;background:transparent;border:1px solid #d4a574;color:#d4a574;border-radius:6px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:12px">Create My Account</button>
       <div style="text-align:center;font-size:12px;color:#64748B">Already have an account? <span onclick="showLoginForm()" style="color:#6b9cd8;cursor:pointer;font-weight:600">Sign in &#8594;</span></div>
@@ -943,17 +947,20 @@ function createAccount() {
   var username = document.getElementById('signup-username').value.trim().toLowerCase();
   var password = document.getElementById('signup-password').value;
   var confirm = document.getElementById('signup-confirm').value;
+  var termsAccepted = document.getElementById('signup-terms').checked;
   var errorEl = document.getElementById('signup-error');
   if (!name || !email || !username || !password) { errorEl.textContent = 'All fields are required.'; errorEl.style.display = 'block'; return; }
   if (password.length < 8) { errorEl.textContent = 'Password must be at least 8 characters.'; errorEl.style.display = 'block'; return; }
   if (password !== confirm) { errorEl.textContent = 'Passwords do not match.'; errorEl.style.display = 'block'; return; }
+  if (!termsAccepted) { errorEl.textContent = 'You must agree to the Terms of Service and Privacy Policy.'; errorEl.style.display = 'block'; return; }
   errorEl.style.display = 'none';
   fetch(WORKER_AUTH_URL + '/api/auth/create-account', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username: username, email: email, password: password, fullName: name })
+    body: JSON.stringify({ username: username, email: email, password: password, fullName: name, termsAccepted: true })
   }).then(function(r){ return r.json(); }).then(function(data) {
     if (data.error === 'username_taken') { errorEl.textContent = 'Username taken. Try: ' + (data.suggestions||[]).join(', '); errorEl.style.display = 'block'; return; }
     if (data.error === 'email_taken') { errorEl.textContent = 'An account with this email already exists.'; errorEl.style.display = 'block'; return; }
+    if (data.error === 'terms_not_accepted') { errorEl.textContent = data.message || 'You must agree to the Terms of Service and Privacy Policy.'; errorEl.style.display = 'block'; return; }
     if (data.error) { errorEl.textContent = data.error; errorEl.style.display = 'block'; return; }
     if (data.success) {
       localStorage.setItem('tcb_session', JSON.stringify({ userId: data.username, loginTime: Date.now(), expires: Date.now() + 2592000000, fullName: data.fullName, plan: data.plan }));

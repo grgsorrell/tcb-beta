@@ -1156,9 +1156,14 @@ export default {
     // ========================================
     if (url.pathname === '/api/auth/create-account' && request.method === 'POST') {
       try {
-        const { username, email, password, fullName } = await request.json();
+        const { username, email, password, fullName, termsAccepted } = await request.json();
         if (!username || !email || !password || !fullName) return jsonResponse({ error: 'All fields required' }, 400);
         if (password.length < 8) return jsonResponse({ error: 'weak_password' }, 400);
+        // Terms of Service + Privacy Policy consent is required for account
+        // creation. Reject affirmative-only — termsAccepted must be exactly
+        // true (not truthy). Timestamp recorded in users.terms_accepted_at
+        // below as the persistent record of consent.
+        if (termsAccepted !== true) return jsonResponse({ error: 'terms_not_accepted', message: 'You must agree to the Terms of Service and Privacy Policy to create an account.' }, 400);
         // Check username — both users and sub_users (cross-table uniqueness).
         // Same username can't exist in either table; collision is reported
         // with the same generic 'username_taken' error in both cases.
@@ -1179,13 +1184,15 @@ export default {
         const now = new Date().toISOString();
         const trialEnds = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
         await env.DB.prepare(
-          'INSERT INTO users (id, username, email, password_hash, full_name, plan, trial_started, trial_ends, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+          'INSERT INTO users (id, username, email, password_hash, full_name, plan, trial_started, trial_ends, status, created_at, terms_accepted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         // BETA: All new accounts get 'beta' plan (no expiry).
         // STRIPE-ACTIVATION TODO: when STRIPE_ACTIVE=true, flip this default
         // from 'beta' to 'standard' (or 'trial' if a trial period is added)
         // so new signups land on the paying plan tier. The 'beta' literal
         // is the only thing to change on this line.
-        ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'beta', now, trialEnds, 'active', now).run();
+        // terms_accepted_at uses `now` — the same value as created_at — to
+        // record when the user agreed to ToS / Privacy Policy.
+        ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'beta', now, trialEnds, 'active', now, now).run();
         // Create session
         const sessionId = generateId(48);
         const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
