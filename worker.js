@@ -5631,6 +5631,78 @@ export default {
       }
 
       // ========================================
+      // HELPER: Extract a district number from a free-form user message.
+      // Tries (in order): "District 22", "HD 22" / "HD-22" / "HD22",
+      // "22nd district". Returns null if nothing usable.
+      // ========================================
+      function extractDistrictNumber(msg) {
+        if (!msg || typeof msg !== 'string') return null;
+        const m1 = msg.match(/\bdistrict\s*#?\s*(\d{1,3})\b/i);
+        if (m1) return m1[1];
+        const m2 = msg.match(/\bhd[\s\-]?(\d{1,3})\b/i);
+        if (m2) return m2[1];
+        const m3 = msg.match(/\b(\d{1,3})(?:st|nd|rd|th)\s+district\b/i);
+        if (m3) return m3[1];
+        return null;
+      }
+
+      // ========================================
+      // HELPER: Pick the most recent comparable election year. For a
+      // 2026 race we want 2024 (the last general). Pulls from the
+      // candidate's electionDate when supplied; falls back to
+      // (current year - 2) if even, else (current year - 1).
+      // ========================================
+      function mostRecentComparableYear(electionDateStr) {
+        try {
+          if (electionDateStr) {
+            const yr = parseInt(String(electionDateStr).slice(0, 4), 10);
+            if (yr >= 2000 && yr <= 2099) return yr - 2;
+          }
+        } catch (e) {}
+        const cy = new Date().getFullYear();
+        return cy % 2 === 0 ? cy - 2 : cy - 1;
+      }
+
+      // ========================================
+      // HELPER: Pre-fetch full-page election results via VPS multiSearch
+      // when the user is asking about win number / historical results.
+      // Gemini's googleSearch grounding returns Ballotpedia URLs but the
+      // snippets often omit the per-candidate vote totals; VPS pulls the
+      // full Trafilatura-extracted page text which does contain them.
+      //
+      // Returns { pageText, sources } on hit, null on miss. Relevance gate:
+      // text must contain at least one 4-5 digit comma-separated number
+      // (e.g. "41,626") to count as a hit — otherwise we know the page
+      // didn't have the vote table.
+      // ========================================
+      async function historicalElectionPreFetch({ message, state, specificOffice, electionDate }) {
+        const yr = mostRecentComparableYear(electionDate);
+        const district = extractDistrictNumber(message);
+        const distPhrase = district ? `District ${district}` : '';
+        const officePhrase = specificOffice || '';
+        const st = state || '';
+        const queries = [
+          `${st} ${officePhrase} ${distPhrase} ${yr} election results Ballotpedia`,
+          `${st} ${officePhrase} ${distPhrase} ${yr} general election vote totals`,
+          message
+        ].map(q => q.trim().replace(/\s+/g, ' ')).filter(q => q.length > 3);
+        if (queries.length === 0) return null;
+        let vpsResult;
+        try {
+          vpsResult = await multiSearch(queries, 5000);
+        } catch (e) {
+          console.warn('[historical_election_prefetch] vps error:', e && e.message);
+          return null;
+        }
+        if (!vpsResult || !vpsResult.content || vpsResult.content.length < 200) return null;
+        if (!/\b\d{1,3},\d{3}\b/.test(vpsResult.content)) return null;
+        return {
+          pageText: vpsResult.content.slice(0, 12000),
+          queries
+        };
+      }
+
+      // ========================================
       // RESEARCH MODE — multi-query VPS search, Anthropic fallback
       // ========================================
       if (mode === 'research') {
@@ -6326,6 +6398,37 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
       const stateAbbrForLookup = (state || '').toUpperCase().trim();
       const refRows = await queryCampaignReference(stateAbbrForLookup, message || '');
 
+      // Historical-election pre-fetch via VPS. Gemini grounding's snippets
+      // omit per-candidate vote totals on Ballotpedia pages; the VPS full-
+      // page Trafilatura pull does include them. Fires only when the user
+      // message contains an explicit win-number / historical-results
+      // trigger. Adds ~5-15s latency, hence the narrow trigger list.
+      let histElectionContext = null;
+      {
+        const _lcMsg = (message || '').toLowerCase();
+        const _histTriggers = [
+          'win number', 'election results', 'vote totals',
+          'votes cast', 'past election', 'previous results'
+        ];
+        if (_histTriggers.some(t => _lcMsg.includes(t))) {
+          try {
+            histElectionContext = await historicalElectionPreFetch({
+              message,
+              state: stateAbbrForLookup,
+              specificOffice,
+              electionDate
+            });
+            if (histElectionContext) {
+              await logApiUsage('historical_election_vps', { inputTokens: 0, outputTokens: 0 }, rateLimitUserId, chatOwnerId, 'vps');
+            } else {
+              await logApiUsage('historical_election_vps_miss', { inputTokens: 0, outputTokens: 0 }, rateLimitUserId, chatOwnerId, 'vps');
+            }
+          } catch (e) {
+            console.warn('[historical_election_prefetch] failed:', (e && e.message) || String(e));
+          }
+        }
+      }
+
       // Sam v2 Phase 1: load candidate site content + fallback bio for the
       // ABOUT YOUR CANDIDATE block. Owner-scoped: chatOwnerId points to the
       // candidate's user_id (sub-users see the same content as the owner).
@@ -6948,16 +7051,18 @@ Once you have the prior race's winning vote count and runner-up vote count, calc
 
 WHY: Win-number requests fail when Sam targets raw canvass sources. Targeting Ballotpedia by name converts a failed search into a usable answer the candidate can plan around. Verified via direct grounding test against the Gemini API.
 
-WIN NUMBER — MANDATORY BEHAVIOR: When a candidate asks for their win number, search for "[State] [Office] District [Number] [most recent comparable year] election results Ballotpedia" and EXTRACT THE ACTUAL VOTE TOTALS from the results.
+WIN NUMBER — MANDATORY BEHAVIOR: When a candidate asks for their win number, the system pre-fetches the full prior-race result page via VPS and injects it as VERIFIED HISTORICAL ELECTION DATA above. EXTRACT THE ACTUAL VOTE TOTALS from that block and calculate.
 
-Calculate using REAL numbers from the search, not assumptions:
+Calculate using REAL numbers from VERIFIED HISTORICAL ELECTION DATA:
 - For single-winner races: win number = (winner's actual vote total) — use the most recent comparable election
 - For multi-member districts (like Arizona's 2-seat House districts): the win number is approximately the vote total of the LOWEST-PLACED WINNER in the most recent election, since that's the threshold to claim the final available seat
 - Adjust for election type: presidential-year turnout (2024, 2028) is significantly higher than midterm (2026, 2030) — if the candidate is running in a midterm but the data is from a presidential year, note that turnout will likely be 25-40% lower and adjust the estimate down accordingly
 
-ONLY fall back to a generic turnout estimate if the search returns no usable vote totals. When you DO have real numbers, cite them: "In the 2024 general election, the lowest winning candidate received 36,664 votes. Since 2026 is a midterm with typically lower turnout, your win number is approximately 24,000-28,000 votes (based on 2024 results adjusted for midterm turnout — verify with official results)."
+When VERIFIED HISTORICAL ELECTION DATA is present, cite the real numbers: "In the 2024 general election, the lowest winning candidate received 36,664 votes. Since 2026 is a midterm with typically lower turnout, your win number is approximately 24,000-28,000 votes (based on 2024 results adjusted for midterm turnout — verify with official results)."
 
-NEVER use a hardcoded turnout guess when real prior-election data is available in your search results.
+FALLBACK (only when VERIFIED HISTORICAL ELECTION DATA is NOT present in this prompt): the VPS pre-fetch couldn't retrieve real prior-race numbers. Provide a rough turnout-based estimate and label it as such — "rough estimate, prior-race data couldn't be retrieved." For Arizona State House: assume ~37,000 typical turnout × 28-35% second-place share, label it "(rough estimate — verify against official 2024 results)." Do NOT use this fallback when the VERIFIED block is present.
+
+NEVER tell the candidate "vote totals are not available." If you don't have real numbers, give the rough estimate with the label.
 
 EPISTEMIC HONESTY — HARD CONSTRAINT:
 
@@ -7082,6 +7187,12 @@ ${refRows.length > 0 ? `
 VERIFIED STATE ELECTION LAW (FROM DATABASE — USE THESE FIRST, DO NOT WEB SEARCH FOR COVERED TOPICS):
 ================================================================
 ${refRows.map(r => `[${r.category.toUpperCase()}] ${r.question}\n${r.answer}\n(Source: ${r.source_name})`).join('\n\n')}
+================================================================
+` : ''}${histElectionContext ? `
+================================================================
+VERIFIED HISTORICAL ELECTION DATA (this turn, full-page extraction via VPS — AUTHORITATIVE; quote vote totals directly from this text):
+================================================================
+${histElectionContext.pageText}
 ================================================================
 ` : ''}
 ${calendarReference}${toolMemoryBlock}
@@ -7966,24 +8077,33 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // Cached for the entire turn — tool-loop re-invocations of
         // callClaude reuse the same _chatRoute and never re-classify.
         if (_chatRoute === null) {
-          // Live-data triggers override the bypass. The D1 short-circuit
-          // is meant to skip search when canonical state-law data answers
-          // the question — not when an unrelated keyword in a state-law
-          // row coincidentally matched a vote-totals / win-number / results
-          // query. If the message contains an explicit live-data signal,
-          // route through the router so it can classify as 'search' and
-          // give Sam grounding.
-          const lcMsg = (message || '').toLowerCase();
-          const liveDataTriggers = [
-            'win number', 'election results', 'vote count', 'votes cast',
-            'total votes', 'election history', 'past election', 'previous results',
-            'margin of victory', 'prior race'
-          ];
-          const forceRouter = liveDataTriggers.some(t => lcMsg.includes(t));
-          if (refRows && refRows.length > 0 && !forceRouter) {
+          // Highest priority: if the VPS historical-election pre-fetch
+          // succeeded, force 'action'. Sam already has the verified
+          // full-page text in her system prompt; she doesn't need
+          // grounding for this turn and SHOULD keep tool access so she
+          // can call save_win_number in the same turn.
+          if (histElectionContext) {
             _chatRoute = 'action';
           } else {
-            _chatRoute = await routeUserIntent(message || '');
+            // Live-data triggers override the D1 bypass. The campaign_reference
+            // short-circuit is meant to skip search when canonical state-law
+            // data answers the question — not when an unrelated keyword in a
+            // state-law row coincidentally matched a vote-totals / win-number
+            // / results query. If the message contains a live-data signal,
+            // route through the router so it can classify as 'search' and
+            // give Sam grounding.
+            const lcMsg = (message || '').toLowerCase();
+            const liveDataTriggers = [
+              'win number', 'election results', 'vote count', 'votes cast',
+              'total votes', 'election history', 'past election', 'previous results',
+              'margin of victory', 'prior race'
+            ];
+            const forceRouter = liveDataTriggers.some(t => lcMsg.includes(t));
+            if (refRows && refRows.length > 0 && !forceRouter) {
+              _chatRoute = 'action';
+            } else {
+              _chatRoute = await routeUserIntent(message || '');
+            }
           }
         }
 
