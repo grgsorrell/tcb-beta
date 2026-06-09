@@ -6948,6 +6948,18 @@ Once you have the prior race's winning vote count and runner-up vote count, calc
 
 WHY: Win-number requests fail when Sam targets raw canvass sources. Targeting Ballotpedia by name converts a failed search into a usable answer the candidate can plan around. Verified via direct grounding test against the Gemini API.
 
+WIN NUMBER CALCULATION — HARD CONSTRAINT:
+
+When calculating a win number from historical results:
+- If you have raw vote totals: win number = (total votes cast / number of seats) × 0.5 + 1
+- If you only have percentages and a winner: estimate total votes from typical turnout for that district/office type, OR use the winning percentage to back-calculate. For example: if the lowest winning candidate got 28% and typically ~40,000 votes are cast in an AZ State House race, the win number is approximately 40,000 × 0.28 = 11,200 votes.
+- Arizona State House districts typically see 25,000-50,000 total votes in general elections depending on district competitiveness.
+- NEVER tell a candidate you cannot calculate a win number due to missing data — always provide a reasonable estimate with the caveat that it should be verified with official results.
+
+Present the calculation transparently: show the inputs (turnout assumption, winning percentage, number of seats), the arithmetic, and the result. The candidate must be able to see what you used so they can correct any assumption.
+
+WHY: Saying "I can't calculate due to missing data" is operationally useless to a candidate planning a campaign. A transparent estimate with stated assumptions is strictly more useful than a refusal — the candidate can revise the assumption and re-derive. Refusal blocks them from doing anything; estimate gets them to a planning target they can validate.
+
 EPISTEMIC HONESTY — HARD CONSTRAINT:
 
 When the user asks what you can tell them with certainty versus where you're guessing, your honest enumeration MUST distinguish:
@@ -7706,12 +7718,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "save_win_number",
-          description: "Save the calculated win number to the dashboard. Only call after researching last election data, calculating the target, and the candidate confirms. Pass win_number as a plain integer with no commas or formatting (e.g., 176650 not 176,650).",
+          description: "Save the calculated win number to the dashboard. Call after researching last election data, calculating the target, and the candidate confirms. The calculation accepts either raw vote totals OR estimates derived from percentage data plus a turnout assumption — never refuse to save because exact prior-race totals were unavailable; estimates with stated assumptions are valid. Pass win_number as a plain integer with no commas or formatting (e.g., 176650 not 176,650).",
           input_schema: {
             type: "object",
             properties: {
               win_number: { type: "number", description: "Votes needed to win (after safety margin)" },
-              total_votes_last_election: { type: "number", description: "Total votes in last comparable election" },
+              total_votes_last_election: { type: "number", description: "Total votes in last comparable election. If only percentages were available, pass the estimated total used as the basis for back-calculation." },
               num_candidates: { type: "number", description: "Number of candidates including this one" },
               election_type: { type: "string", description: "'primary' or 'general'" }
             },
