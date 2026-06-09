@@ -5326,10 +5326,15 @@ export default {
           .filter(w => w.length > 3 && !stopWords.has(w));
         if (keywords.length === 0) return [];
         const topKeywords = keywords.slice(0, 3);
+        // Match on question + category only. Answer bodies were too broad
+        // and produced false positives (e.g. "total votes" matching a
+        // finance row containing "total number of registered voters"),
+        // which spuriously triggered the D1 bypass and forced 'action' mode
+        // on queries that genuinely needed grounded search.
         const conditions = topKeywords.map(() =>
-          `(LOWER(question) LIKE ? OR LOWER(answer) LIKE ? OR LOWER(category) LIKE ?)`
+          `(LOWER(question) LIKE ? OR LOWER(category) LIKE ?)`
         ).join(' OR ');
-        const bindings = topKeywords.flatMap(kw => [`%${kw}%`, `%${kw}%`, `%${kw}%`]);
+        const bindings = topKeywords.flatMap(kw => [`%${kw}%`, `%${kw}%`]);
         const result = await env.DB.prepare(
           `SELECT question, answer, category, source_name
            FROM campaign_reference
@@ -7969,6 +7974,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         );
 
         const geminiData = await response.json();
+
+        // Log every primary chat turn (search and action modes) so we have
+        // a per-turn record. Logged before any early return so error and
+        // empty-candidate turns are visible too.
+        await logApiUsage(
+          'sam_chat_gemini',
+          {
+            inputTokens: (geminiData && geminiData.usageMetadata && geminiData.usageMetadata.promptTokenCount) || 0,
+            outputTokens: (geminiData && geminiData.usageMetadata && geminiData.usageMetadata.candidatesTokenCount) || 0
+          },
+          rateLimitUserId,
+          chatOwnerId,
+          'gemini-2.5-flash'
+        );
 
         if (geminiData.error) {
           console.error('Gemini API error:', geminiData.error);
