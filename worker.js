@@ -1185,19 +1185,19 @@ export default {
         const trialEnds = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
         await env.DB.prepare(
           'INSERT INTO users (id, username, email, password_hash, full_name, plan, trial_started, trial_ends, status, created_at, terms_accepted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        // BETA: All new accounts get 'beta' plan (no expiry).
-        // STRIPE-ACTIVATION TODO: when STRIPE_ACTIVE=true, flip this default
-        // from 'beta' to 'standard' (or 'trial' if a trial period is added)
-        // so new signups land on the paying plan tier. The 'beta' literal
-        // is the only thing to change on this line.
+        // Stripe activation: new signups land on 'standard' so they're on
+        // the billing tier; checkPlanLimit gates them at 1 user / 1
+        // campaign until they subscribe via /api/billing/create-checkout.
+        // Existing 'beta' rows are unchanged — beta users keep their
+        // legacy unlimited-access tier.
         // terms_accepted_at uses `now` — the same value as created_at — to
         // record when the user agreed to ToS / Privacy Policy.
-        ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'beta', now, trialEnds, 'active', now, now).run();
+        ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'standard', now, trialEnds, 'active', now, now).run();
         // Create session
         const sessionId = generateId(48);
         const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
         await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, userId, expiresAt).run();
-        return jsonResponse({ success: true, sessionId, userId, username: username.toLowerCase(), fullName, plan: 'beta' });
+        return jsonResponse({ success: true, sessionId, userId, username: username.toLowerCase(), fullName, plan: 'standard' });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
