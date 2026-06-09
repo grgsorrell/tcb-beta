@@ -7967,7 +7967,21 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // Cached for the entire turn — tool-loop re-invocations of
         // callClaude reuse the same _chatRoute and never re-classify.
         if (_chatRoute === null) {
-          if (refRows && refRows.length > 0) {
+          // Live-data triggers override the bypass. The D1 short-circuit
+          // is meant to skip search when canonical state-law data answers
+          // the question — not when an unrelated keyword in a state-law
+          // row coincidentally matched a vote-totals / win-number / results
+          // query. If the message contains an explicit live-data signal,
+          // route through the router so it can classify as 'search' and
+          // give Sam grounding.
+          const lcMsg = (message || '').toLowerCase();
+          const liveDataTriggers = [
+            'win number', 'election results', 'vote count', 'votes cast',
+            'total votes', 'election history', 'past election', 'previous results',
+            'margin of victory', 'prior race'
+          ];
+          const forceRouter = liveDataTriggers.some(t => lcMsg.includes(t));
+          if (refRows && refRows.length > 0 && !forceRouter) {
             _chatRoute = 'action';
           } else {
             _chatRoute = await routeUserIntent(message || '');
