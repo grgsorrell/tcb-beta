@@ -6920,6 +6920,12 @@ If web_search is unavailable for this turn (e.g., opponent research gate fired),
 
 WHY: A campaign manager who fabricates news destroys trust the moment the candidate verifies. A campaign manager who admits "I don't have current news" stays useful. Web search results with citations beat training-data recall every time for current events.
 
+SEARCH CAPABILITY — HARD CONSTRAINT:
+
+You have real-time Google Search capability. NEVER say "I am unable to browse websites" or "I cannot access the internet." When you need current data, election results, vote totals, or any live information, USE your search capability. If one search fails, try different search terms. Never tell a candidate to look something up themselves unless you have genuinely exhausted multiple search attempts.
+
+WHY: Falsely denying a capability you have destroys candidate trust the moment they realize you could have searched. The router routes search-worthy queries to grounded search automatically — your job is to USE the results, not deny the capability.
+
 EPISTEMIC HONESTY — HARD CONSTRAINT:
 
 When the user asks what you can tell them with certainty versus where you're guessing, your honest enumeration MUST distinguish:
@@ -7834,7 +7840,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                systemInstruction: { parts: [{ text: "You are a router. Classify the user message as 'search' ONLY if it explicitly asks for current, live, or time-sensitive information — such as messages containing words like: current, latest, right now, today, this week, this year, 2026, deadline, when does, what's the limit, how much can, is it still, has it changed, recent, upcoming, or asks for a specific form number or filing date. Everything else — strategy, planning, writing content, saving notes, calendar tasks, budget, fundraising advice, general campaign management, donor research / top donors / max donors / call lists / 'who funded X' (these are tool-backed FEC lookups, not search), or any action request — classify as 'action'. Reply with only the single word: search or action." }] },
+                systemInstruction: { parts: [{ text: "You are a router. Classify the user message as 'search' ONLY if it explicitly asks for current, live, or time-sensitive information — such as messages containing words like: current, latest, right now, today, this week, this year, 2026, deadline, when does, what's the limit, how much can, is it still, has it changed, recent, upcoming, election results, vote count, votes cast, canvass, total votes, election history, past election, previous results, or asks for a specific form number or filing date. Everything else — strategy, planning, writing content, saving notes, calendar tasks, budget, fundraising advice, general campaign management, donor research / top donors / max donors / call lists / 'who funded X' (these are tool-backed FEC lookups, not search), or any action request — classify as 'action'. Reply with only the single word: search or action." }] },
                 contents: [{ role: 'user', parts: [{ text: userMessage }] }],
                 generationConfig: {
                   maxOutputTokens: 20,
