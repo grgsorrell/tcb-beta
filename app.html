@@ -1980,7 +1980,18 @@ function initApp() {
         // also fires the ?upgraded=true / ?cancelled=true return-from-
         // Stripe handler. Failure is non-fatal — TCB_BILLING_ACTIVE
         // stays false and every billing surface stays hidden.
-        loadBillingState().then(handleBillingUrlParams);
+        //
+        // After hydration we ALWAYS refresh the topbar (and Settings if
+        // currently viewed). proceedWithLocalData() runs synchronously
+        // immediately after this line and calls updateTopbar() while
+        // TCB_BILLING_ACTIVE is still its initial false — the post-
+        // hydration updateTopbar() catches up the upgrade pill once the
+        // real state is known.
+        loadBillingState().then(function(){
+          handleBillingUrlParams();
+          if (typeof updateTopbar === 'function' && document.getElementById('tb-center')) updateTopbar();
+          if (currentView === 'settings' && typeof renderSettings === 'function') renderSettings();
+        });
         proceedWithLocalData();
         loadFromD1();
         startDataRefreshPoll();
