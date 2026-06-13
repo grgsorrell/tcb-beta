@@ -4921,6 +4921,13 @@ export default {
         if (user && user.email) params.append('customer_email', user.email);
         params.append('metadata[userId]', userId);
         params.append('metadata[plan]', plan);
+        // CRITICAL: also stamp the SUBSCRIPTION object's metadata. Checkout
+        // Session metadata (above) does NOT propagate to the subscription, and
+        // the customer.subscription.* webhooks read sub.metadata.userId. Without
+        // this, those events can't map back to a user and the activation silently
+        // no-ops (root cause of the 2026-06-13 paywall-stuck bug).
+        params.append('subscription_data[metadata][userId]', userId);
+        params.append('subscription_data[metadata][plan]', plan);
         const resp = await fetch('https://api.stripe.com/v1/checkout/sessions', {
           method: 'POST',
           headers: { 'Authorization': 'Basic ' + btoa(env.STRIPE_SECRET_KEY + ':'), 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -4982,40 +4989,110 @@ export default {
         const verified = await verifyStripeSignature(rawBody, sig, env.STRIPE_WEBHOOK_SECRET);
         if (!verified) return new Response('Invalid signature', { status: 400, headers: corsHeaders });
         const event = JSON.parse(rawBody);
+
+        // Stripe moved current_period_start/end onto subscription ITEMS in
+        // recent API versions. Read the top-level field first, fall back to the
+        // first item, and tolerate undefined — otherwise new Date(undefined*1000)
+        // .toISOString() throws and 400s the whole webhook, making Stripe retry
+        // forever and never activating anyone.
+        const epochToIso = (sec) => {
+          if (sec === null || sec === undefined || isNaN(Number(sec))) return null;
+          try { return new Date(Number(sec) * 1000).toISOString(); } catch (e) { return null; }
+        };
+        const subPeriod = (sub) => {
+          const item = (sub.items && sub.items.data && sub.items.data[0]) || {};
+          return {
+            start: epochToIso(sub.current_period_start != null ? sub.current_period_start : item.current_period_start),
+            end: epochToIso(sub.current_period_end != null ? sub.current_period_end : item.current_period_end)
+          };
+        };
+        // Shared upsert used by both customer.subscription.* and the
+        // checkout.session.completed fast-path. Keyed on stripe_subscription_id,
+        // so event ordering doesn't matter — whichever lands first wins, the
+        // rest enrich via ON CONFLICT.
+        const upsertSubscription = async (uid, sub, planHint) => {
+          const interval = sub.items?.data?.[0]?.price?.recurring?.interval;
+          const billingPeriod = interval === 'year' ? 'annual' : 'monthly';
+          const period = subPeriod(sub);
+          const plan = sub.metadata?.plan || planHint || 'standard';
+          await env.DB.prepare(
+            'INSERT INTO subscriptions (id, user_id, stripe_customer_id, stripe_subscription_id, plan, status, billing_period, current_period_start, current_period_end, cancel_at_period_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(stripe_subscription_id) DO UPDATE SET status = excluded.status, billing_period = excluded.billing_period, current_period_start = excluded.current_period_start, current_period_end = excluded.current_period_end, cancel_at_period_end = excluded.cancel_at_period_end, updated_at = datetime(\'now\')'
+          ).bind(generateId(16), uid, sub.customer, sub.id, plan, sub.status, billingPeriod, period.start, period.end, sub.cancel_at_period_end ? 1 : 0).run();
+          await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind(plan, uid).run();
+        };
+
+        let matchedUserId = null;
         switch (event.type) {
+          // Fast-path activation: fires the instant Checkout completes and
+          // carries the SESSION metadata (which DOES include userId) plus the
+          // new subscription id. Fetch the full subscription for real status +
+          // period; if that fetch fails, still write a minimal 'active' row so
+          // the paywall releases immediately.
+          case 'checkout.session.completed': {
+            const session = event.data.object;
+            const uid = session.metadata?.userId;
+            const subId = typeof session.subscription === 'string' ? session.subscription : (session.subscription?.id);
+            matchedUserId = uid || null;
+            if (uid && subId) {
+              let sub = null;
+              try {
+                const r = await fetch('https://api.stripe.com/v1/subscriptions/' + subId, {
+                  headers: { 'Authorization': 'Basic ' + btoa(env.STRIPE_SECRET_KEY + ':') }
+                });
+                sub = await r.json();
+              } catch (e) { sub = null; }
+              if (sub && sub.id && !sub.error) {
+                await upsertSubscription(uid, sub, session.metadata?.plan);
+              } else {
+                // Minimal fallback — the customer.subscription.* event enriches
+                // period/billing details via ON CONFLICT moments later.
+                await env.DB.prepare(
+                  'INSERT INTO subscriptions (id, user_id, stripe_customer_id, stripe_subscription_id, plan, status, billing_period) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(stripe_subscription_id) DO UPDATE SET status = excluded.status, updated_at = datetime(\'now\')'
+                ).bind(generateId(16), uid, session.customer || '', subId, session.metadata?.plan || 'standard', 'active', 'monthly').run();
+                await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind(session.metadata?.plan || 'standard', uid).run();
+              }
+            }
+            break;
+          }
           case 'customer.subscription.created':
           case 'customer.subscription.updated': {
             const sub = event.data.object;
-            const userId = sub.metadata?.userId;
-            if (userId) {
-              // billing_period derived from the Stripe price object (canonical
-              // source). 'year' → 'annual', anything else → 'monthly'.
-              const _interval = sub.items?.data?.[0]?.price?.recurring?.interval;
-              const billingPeriod = _interval === 'year' ? 'annual' : 'monthly';
-              await env.DB.prepare(
-                'INSERT INTO subscriptions (id, user_id, stripe_customer_id, stripe_subscription_id, plan, status, billing_period, current_period_start, current_period_end, cancel_at_period_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(stripe_subscription_id) DO UPDATE SET status = excluded.status, billing_period = excluded.billing_period, current_period_start = excluded.current_period_start, current_period_end = excluded.current_period_end, cancel_at_period_end = excluded.cancel_at_period_end, updated_at = datetime(\'now\')'
-              ).bind(generateId(16), userId, sub.customer, sub.id, sub.metadata?.plan || 'standard', sub.status, billingPeriod, new Date(sub.current_period_start * 1000).toISOString(), new Date(sub.current_period_end * 1000).toISOString(), sub.cancel_at_period_end ? 1 : 0).run();
-              await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind(sub.metadata?.plan || 'standard', userId).run();
+            const uid = sub.metadata?.userId;
+            matchedUserId = uid || null;
+            if (uid) {
+              await upsertSubscription(uid, sub, null);
             }
             break;
           }
           case 'customer.subscription.deleted': {
             const sub = event.data.object;
-            const userId = sub.metadata?.userId;
-            if (userId) {
+            const uid = sub.metadata?.userId;
+            matchedUserId = uid || null;
+            if (uid) {
               await env.DB.prepare('UPDATE subscriptions SET status = ? WHERE stripe_subscription_id = ?').bind('canceled', sub.id).run();
-              await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind('standard', userId).run();
+              await env.DB.prepare('UPDATE users SET plan = ? WHERE id = ?').bind('standard', uid).run();
             }
             break;
           }
           case 'invoice.payment_succeeded': {
             const inv = event.data.object;
+            matchedUserId = inv.metadata?.userId || null;
             await env.DB.prepare(
               'INSERT OR IGNORE INTO invoices (id, user_id, stripe_invoice_id, amount, status, paid_at) VALUES (?, ?, ?, ?, ?, ?)'
             ).bind(generateId(16), inv.metadata?.userId || '', inv.id, (inv.amount_paid || 0) / 100, 'paid', new Date().toISOString()).run();
             break;
           }
         }
+
+        // Lightweight delivery log — every signature-verified event, whether or
+        // not it mapped to a user. Inspect with:
+        //   SELECT * FROM webhook_events ORDER BY received_at DESC;
+        try {
+          await env.DB.prepare(
+            'INSERT INTO webhook_events (id, event_id, event_type, matched_user_id) VALUES (?, ?, ?, ?)'
+          ).bind(generateId(16), event.id || null, event.type || null, matchedUserId).run();
+        } catch (e) { /* logging must never break the webhook ack */ }
+
         return new Response('OK', { status: 200, headers: corsHeaders });
       } catch (error) { return new Response('Webhook error', { status: 400, headers: corsHeaders }); }
     }
