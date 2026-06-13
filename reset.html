@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Reset Password — The Candidate's Toolbox</title>
+  <link rel="icon" href="/icon512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0B1120;
+      font-family: 'DM Sans', sans-serif;
+      color: #e8e8e8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      width: 400px;
+      max-width: calc(100vw - 32px);
+      background: #111827;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    }
+    .brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .brand-name em { color: #d4a574; font-style: italic; }
+    .brand-sub {
+      font-size: 12px;
+      color: #64748B;
+      letter-spacing: .08em;
+      margin-top: 4px;
+    }
+    label.fld {
+      display: block;
+      font-size: 12px;
+      color: #94A3B8;
+      margin-bottom: 6px;
+    }
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 6px;
+      color: #e8e8e8;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+    }
+    input[type="password"]:focus { border-color: rgba(42,82,152,.6); }
+    .row { margin-bottom: 14px; }
+    .hint { font-size: 11px; color: #64748B; margin-top: 6px; }
+    .msg {
+      display: none;
+      font-size: 12px;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+    .msg.err { color: #e87070; background: rgba(232,112,112,.08); }
+    .msg.ok  { color: #82b386; background: rgba(130,179,134,.08); }
+    button.primary {
+      width: 100%;
+      padding: 12px;
+      background: #2A5298;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+    }
+    button.primary:disabled { opacity: .55; cursor: default; }
+    .back {
+      text-align: center;
+      font-size: 12px;
+      color: #64748B;
+      margin-top: 16px;
+    }
+    .back a { color: #6b9cd8; text-decoration: none; font-weight: 600; }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 10px;
+      color: rgba(255,255,255,.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <div class="brand-name">The Candidate's <em>Toolbox</em></div>
+      <div class="brand-sub">RESET YOUR PASSWORD</div>
+    </div>
+
+    <!-- Reset form (shown when a token is present) -->
+    <div id="reset-form">
+      <div class="row">
+        <label class="fld" for="new-password">New password</label>
+        <input id="new-password" type="password" placeholder="New password" onkeydown="if(event.key==='Enter')submitReset()">
+        <div class="hint">At least 8 characters, including one number or symbol.</div>
+      </div>
+      <div class="row">
+        <label class="fld" for="confirm-password">Confirm password</label>
+        <input id="confirm-password" type="password" placeholder="Confirm password" onkeydown="if(event.key==='Enter')submitReset()">
+      </div>
+      <div id="msg" class="msg"></div>
+      <button id="submit-btn" class="primary" onclick="submitReset()">Reset Password</button>
+    </div>
+
+    <!-- Invalid/missing token state -->
+    <div id="invalid-state" style="display:none">
+      <div id="invalid-msg" class="msg err" style="display:block">This reset link is invalid or incomplete.</div>
+    </div>
+
+    <div class="back"><a href="/">&#8592; Back to sign in</a></div>
+    <div class="footer">Powered by The Candidate's Toolbox</div>
+  </div>
+
+  <script>
+    var WORKER_AUTH_URL = 'https://api.thecandidatestoolbox.com';
+
+    function getToken() {
+      var params = new URLSearchParams(window.location.search);
+      return params.get('token');
+    }
+
+    var TOKEN = getToken();
+    if (!TOKEN) {
+      document.getElementById('reset-form').style.display = 'none';
+      document.getElementById('invalid-state').style.display = '';
+    }
+
+    function showMsg(text, kind) {
+      var m = document.getElementById('msg');
+      m.textContent = text;
+      m.className = 'msg ' + kind;
+      m.style.display = 'block';
+    }
+
+    function submitReset() {
+      var pw = document.getElementById('new-password').value || '';
+      var confirm = document.getElementById('confirm-password').value || '';
+      var btn = document.getElementById('submit-btn');
+
+      // Client-side validation mirrors the server rules (server is authoritative).
+      if (pw.length < 8) { showMsg('Password must be at least 8 characters.', 'err'); return; }
+      if (!/[0-9\W_]/.test(pw)) { showMsg('Password must include at least one number or symbol.', 'err'); return; }
+      if (pw !== confirm) { showMsg('Passwords do not match.', 'err'); return; }
+
+      btn.disabled = true; btn.textContent = 'Resetting...';
+      fetch(WORKER_AUTH_URL + '/api/auth/confirm-reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: TOKEN, newPassword: pw })
+      })
+        .then(function (r) { return r.json().then(function (b) { return { status: r.status, body: b }; }); })
+        .then(function (res) {
+          if (res.status === 200 && res.body && res.body.success) {
+            showMsg('Password reset. Redirecting you to sign in...', 'ok');
+            btn.textContent = 'Done';
+            setTimeout(function () { window.location.href = '/'; }, 2000);
+          } else {
+            var err = (res.body && res.body.message) || 'Could not reset your password. Please request a new link.';
+            showMsg(err, 'err');
+            btn.disabled = false; btn.textContent = 'Reset Password';
+          }
+        })
+        .catch(function () {
+          showMsg('Network error. Please try again.', 'err');
+          btn.disabled = false; btn.textContent = 'Reset Password';
+        });
+    }
+  </script>
+</body>
+</html>

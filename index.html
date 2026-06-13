@@ -816,6 +816,7 @@
       <div style="margin-bottom:14px"><input id="login-password" type="password" placeholder="Password" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none" onfocus="this.style.borderColor='rgba(42,82,152,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'" onkeydown="if(event.key==='Enter')attemptLogin()"></div>
       <div id="login-error" style="display:none;font-size:12px;color:#e87070;margin-bottom:10px;padding:8px 12px;background:rgba(232,112,112,.08);border-radius:4px"></div>
       <button onclick="attemptLogin()" style="width:100%;padding:12px;background:#2A5298;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:12px">Sign In</button>
+      <div style="text-align:center;font-size:12px;margin-bottom:12px"><span onclick="showResetForm()" style="color:#6b9cd8;cursor:pointer">Forgot password?</span></div>
       <div style="text-align:center;font-size:12px;color:#64748B">New to TCB? <span onclick="showSignupForm()" style="color:#d4a574;cursor:pointer;font-weight:600">Create an account &#8594;</span></div>
     </div>
     <div id="auth-signup-form" style="display:none">
@@ -833,6 +834,13 @@
       <div id="signup-error" style="display:none;font-size:12px;color:#e87070;margin-bottom:10px;padding:8px 12px;background:rgba(232,112,112,.08);border-radius:4px"></div>
       <button onclick="createAccount()" style="width:100%;padding:12px;background:transparent;border:1px solid #d4a574;color:#d4a574;border-radius:6px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:12px">Create My Account</button>
       <div style="text-align:center;font-size:12px;color:#64748B">Already have an account? <span onclick="showLoginForm()" style="color:#6b9cd8;cursor:pointer;font-weight:600">Sign in &#8594;</span></div>
+    </div>
+    <div id="auth-reset-form" style="display:none">
+      <div style="font-size:13px;color:#94A3B8;margin-bottom:14px;line-height:1.5">Enter your account email and we'll send you a link to reset your password.</div>
+      <div style="margin-bottom:14px"><input id="reset-email" type="email" placeholder="Email address" style="width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none" onfocus="this.style.borderColor='rgba(42,82,152,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'" onkeydown="if(event.key==='Enter')requestPasswordReset()"></div>
+      <div id="reset-msg" style="display:none;font-size:12px;margin-bottom:10px;padding:8px 12px;border-radius:4px"></div>
+      <button id="reset-submit-btn" onclick="requestPasswordReset()" style="width:100%;padding:12px;background:#2A5298;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:12px">Send reset link</button>
+      <div style="text-align:center;font-size:12px;color:#64748B"><span onclick="showLoginForm()" style="color:#6b9cd8;cursor:pointer;font-weight:600">&#8592; Back to sign in</span></div>
     </div>
     <div style="text-align:center;margin-top:20px;font-size:10px;color:rgba(255,255,255,.15)">Powered by The Candidate's Toolbox</div>
   </div>
@@ -856,8 +864,43 @@ function closeLoginModal() {
   if (signupErr) signupErr.style.display = 'none';
 }
 
-function showSignupForm() { document.getElementById('auth-login-form').style.display = 'none'; document.getElementById('auth-signup-form').style.display = ''; }
-function showLoginForm() { document.getElementById('auth-login-form').style.display = ''; document.getElementById('auth-signup-form').style.display = 'none'; }
+function showSignupForm() { document.getElementById('auth-login-form').style.display = 'none'; document.getElementById('auth-signup-form').style.display = ''; var r = document.getElementById('auth-reset-form'); if (r) r.style.display = 'none'; }
+function showLoginForm() { document.getElementById('auth-login-form').style.display = ''; document.getElementById('auth-signup-form').style.display = 'none'; var r = document.getElementById('auth-reset-form'); if (r) r.style.display = 'none'; }
+function showResetForm() {
+  document.getElementById('auth-login-form').style.display = 'none';
+  document.getElementById('auth-signup-form').style.display = 'none';
+  document.getElementById('auth-reset-form').style.display = '';
+  var m = document.getElementById('reset-msg'); if (m) m.style.display = 'none';
+}
+function requestPasswordReset() {
+  var email = (document.getElementById('reset-email').value || '').trim();
+  var msg = document.getElementById('reset-msg');
+  var btn = document.getElementById('reset-submit-btn');
+  if (!email || email.indexOf('@') === -1) {
+    msg.textContent = 'Please enter a valid email address.';
+    msg.style.color = '#e87070'; msg.style.background = 'rgba(232,112,112,.08)';
+    msg.style.display = 'block';
+    return;
+  }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  // Always show the same confirmation regardless of the result — mirrors
+  // the server's non-disclosure behavior (don't reveal which emails exist).
+  var showGeneric = function (text) {
+    msg.textContent = text || "If an account exists for that email, we've sent a reset link.";
+    msg.style.color = '#82b386'; msg.style.background = 'rgba(130,179,134,.08)';
+    msg.style.display = 'block';
+    document.getElementById('reset-email').value = '';
+    btn.disabled = false; btn.textContent = 'Send reset link';
+  };
+  fetch(WORKER_AUTH_URL + '/api/auth/request-reset', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (data) { showGeneric(data && data.message); })
+    .catch(function () { showGeneric(); });
+}
 
 function attemptLogin() {
   var username = document.getElementById('login-username').value.trim();

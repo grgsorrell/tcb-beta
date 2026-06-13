@@ -1460,6 +1460,131 @@ export default {
     }
 
     // ========================================
+    // AUTH: Request password reset (owner accounts with a real email)
+    // ========================================
+    if (url.pathname === '/api/auth/request-reset' && request.method === 'POST') {
+      // Non-disclosure: this endpoint ALWAYS returns the same generic
+      // success, whether or not an account exists for the submitted email,
+      // so it can't be used to enumerate registered addresses.
+      const GENERIC = { success: true, message: "If an account exists for that email, we've sent a reset link." };
+      try {
+        const { email } = await request.json();
+        if (!email || !email.includes('@')) {
+          return jsonResponse({ error: 'Valid email required' }, 400);
+        }
+        const cleanEmail = email.toLowerCase().trim();
+
+        // Only owner accounts with a real, deliverable email qualify.
+        // @sub.tcb (sub-users) and @beta.tcb (beta anchors) are synthetic
+        // addresses with their own reset paths, so they're excluded here —
+        // and because the response is generic, the exclusion leaks nothing.
+        const user = await env.DB.prepare(
+          "SELECT id FROM users WHERE email = ? AND password_hash IS NOT NULL AND email NOT LIKE '%@sub.tcb' AND email NOT LIKE '%@beta.tcb'"
+        ).bind(cleanEmail).first();
+
+        if (user) {
+          // Minimal per-email throttle: at most 3 reset requests per 15 min.
+          // Counted on outstanding token rows — we don't delete prior tokens
+          // on request (only on successful reset), so the count survives the
+          // window. Over the cap we silently skip the send and still return
+          // the generic response, so a real user can't be email-bombed.
+          const recent = await env.DB.prepare(
+            "SELECT COUNT(*) as n FROM password_reset_tokens WHERE user_id = ? AND created_at > datetime('now', '-15 minutes')"
+          ).bind(user.id).first();
+
+          if (!recent || recent.n < 3) {
+            const token = generateId(48);
+            // 1-hour expiry.
+            const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+            await env.DB.prepare(
+              'INSERT INTO password_reset_tokens (token, user_id, expires_at) VALUES (?, ?, ?)'
+            ).bind(token, user.id, expiresAt).run();
+
+            const resetLink = 'https://thecandidatestoolbox.com/reset?token=' + token;
+            // Mirror the magic-link email structure (same sender + styling).
+            await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + env.RESEND_API_KEY,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                from: 'Candidate Tool Box <sam@thecandidatestoolbox.com>',
+                to: [cleanEmail],
+                subject: 'Reset your Candidate\'s Toolbox password',
+                html: '<div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 20px;">' +
+                  '<h2 style="color: #1a1a2e;">The Candidate\'s Toolbox</h2>' +
+                  '<p>We received a request to reset your password. This link expires in 1 hour.</p>' +
+                  '<a href="' + resetLink + '" style="display: inline-block; background: #16213e; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; margin: 16px 0;">Reset My Password</a>' +
+                  '<p style="color: #666; font-size: 13px;">If you didn\'t request this, you can safely ignore this email — your password won\'t change.</p>' +
+                  '</div>'
+              })
+            });
+          }
+        }
+
+        return jsonResponse(GENERIC);
+      } catch (error) {
+        // Stay non-revealing even on internal/parse errors.
+        return jsonResponse(GENERIC);
+      }
+    }
+
+    // ========================================
+    // AUTH: Confirm password reset (consume single-use token)
+    // ========================================
+    if (url.pathname === '/api/auth/confirm-reset' && request.method === 'POST') {
+      try {
+        const { token, newPassword } = await request.json();
+        if (!token || typeof token !== 'string') {
+          return jsonResponse({ error: 'invalid_token', message: 'This reset link is invalid.' }, 400);
+        }
+        if (!newPassword || typeof newPassword !== 'string') {
+          return jsonResponse({ error: 'Password required' }, 400);
+        }
+        // Same rules as /api/auth/change-password (server is authoritative).
+        if (newPassword.length < 8) {
+          return jsonResponse({ error: 'weak_password', message: 'Password must be at least 8 characters.' }, 400);
+        }
+        if (!/[0-9\W_]/.test(newPassword)) {
+          return jsonResponse({ error: 'weak_password', message: 'Password must include at least one number or symbol.' }, 400);
+        }
+
+        const row = await env.DB.prepare(
+          'SELECT token, user_id, expires_at, used_at FROM password_reset_tokens WHERE token = ?'
+        ).bind(token).first();
+
+        if (!row || row.used_at) {
+          return jsonResponse({ error: 'invalid_token', message: 'This reset link is invalid or has already been used.' }, 400);
+        }
+        if (Date.parse(row.expires_at) < Date.now()) {
+          await env.DB.prepare('DELETE FROM password_reset_tokens WHERE token = ?').bind(token).run();
+          return jsonResponse({ error: 'expired_token', message: 'This reset link has expired. Please request a new one.' }, 400);
+        }
+
+        // Hash with the same salt/algorithm used by signup + login.
+        const encoder = new TextEncoder();
+        const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(newPassword + '_tcb_salt_2026'));
+        const newHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+        await env.DB.prepare('UPDATE users SET password_hash = ? WHERE id = ?').bind(newHash, row.user_id).run();
+
+        // Single-use: delete the token just used AND any other live reset
+        // links outstanding for this user.
+        await env.DB.prepare('DELETE FROM password_reset_tokens WHERE user_id = ?').bind(row.user_id).run();
+
+        // Possible-compromise flow: invalidate every existing session for
+        // this user so any attacker holding a stale session is logged out.
+        // The user re-authenticates with their new password.
+        await env.DB.prepare('DELETE FROM sessions WHERE user_id = ?').bind(row.user_id).run();
+
+        return jsonResponse({ success: true });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
     // API: List campaigns for user
     // ========================================
     if (url.pathname === '/api/campaigns/list' && request.method === 'GET') {
