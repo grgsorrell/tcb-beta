@@ -161,6 +161,24 @@ export default {
     }
 
     // ========================================
+    // HELPER: Does a workspace have paid (or grandfathered) access?
+    // Beta plan → always true (grandfathered). Otherwise true only when the
+    // owner has a subscriptions row with status 'active'. This is the pure
+    // access truth — callers decide whether to ENFORCE it based on
+    // STRIPE_ACTIVE, so we never lock anyone out when there's no way to pay.
+    // For sub-users, pass the workspace OWNER's id (access follows the owner).
+    // ========================================
+    async function workspaceHasActiveAccess(ownerId) {
+      if (!ownerId) return false;
+      const owner = await env.DB.prepare('SELECT plan FROM users WHERE id = ?').bind(ownerId).first();
+      if (owner && owner.plan === 'beta') return true;
+      const sub = await env.DB.prepare(
+        "SELECT status FROM subscriptions WHERE user_id = ? ORDER BY created_at DESC LIMIT 1"
+      ).bind(ownerId).first();
+      return !!(sub && sub.status === 'active');
+    }
+
+    // ========================================
     // HELPER: Resolve session → workspace context (C3, dormant until C4)
     // ========================================
     // Owner:    { userId, ownerId: userId, isSubUser: false, permissions: null }
@@ -1182,17 +1200,16 @@ export default {
         const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
         const userId = generateId();
         const now = new Date().toISOString();
-        const trialEnds = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
         await env.DB.prepare(
-          'INSERT INTO users (id, username, email, password_hash, full_name, plan, trial_started, trial_ends, status, created_at, terms_accepted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        // Stripe activation: new signups land on 'standard' so they're on
-        // the billing tier; checkPlanLimit gates them at 1 user / 1
-        // campaign until they subscribe via /api/billing/create-checkout.
-        // Existing 'beta' rows are unchanged — beta users keep their
-        // legacy unlimited-access tier.
+          'INSERT INTO users (id, username, email, password_hash, full_name, plan, status, created_at, terms_accepted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        // Hard paywall: new signups land on 'standard' with NO trial dates —
+        // access is gated on an active Stripe subscription. The createAccount
+        // client redirects straight to Checkout; until the webhook marks the
+        // subscription 'active', the app-load paywall takeover blocks entry.
+        // Existing 'beta' rows are unchanged — beta users bypass the paywall.
         // terms_accepted_at uses `now` — the same value as created_at — to
         // record when the user agreed to ToS / Privacy Policy.
-        ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'standard', now, trialEnds, 'active', now, now).run();
+        ).bind(userId, username.toLowerCase(), email.toLowerCase(), hashHex, fullName, 'standard', 'active', now, now).run();
         // Create session
         const sessionId = generateId(48);
         const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -1279,10 +1296,6 @@ export default {
             const sessionId = generateId(48);
             const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
             await env.DB.prepare('INSERT INTO sessions (session_id, user_id, expires_at) VALUES (?, ?, ?)').bind(sessionId, user.id, expiresAt).run();
-            let trialDaysLeft = null;
-            if (user.plan === 'trial' && user.trial_ends) {
-              trialDaysLeft = Math.max(0, Math.ceil((new Date(user.trial_ends) - new Date()) / 86400000));
-            }
             return jsonResponse({
               success: true,
               sessionId,
@@ -1290,7 +1303,6 @@ export default {
               username: user.username || clean,
               fullName: user.full_name,
               plan: user.plan,
-              trialDaysLeft,
               isSubUser: false
             });
           }
@@ -1385,29 +1397,35 @@ export default {
       try {
         const userId = await getUserFromSession(request);
         if (!userId) return jsonResponse({ error: 'Invalid session' }, 401);
-        const user = await env.DB.prepare('SELECT id, username, email, full_name, plan, trial_ends, status FROM users WHERE id = ?').bind(userId).first();
+        const user = await env.DB.prepare('SELECT id, username, email, full_name, plan, status FROM users WHERE id = ?').bind(userId).first();
         if (!user || user.status === 'deleted') return jsonResponse({ error: 'Account not found' }, 401);
-        let trialDaysLeft = null;
-        if (user.plan === 'trial' && user.trial_ends) { trialDaysLeft = Math.max(0, Math.ceil((new Date(user.trial_ends) - new Date()) / 86400000)); }
         // If this is a sub-user (email ends with @sub.tcb), return their
         // current permissions so the client can reflect updates without a
         // logout/login cycle. Owner users get the same response as before.
         let isSubUser = false;
         let permissions = null;
         let mustChangePassword = false;
+        let ownerId = user.id;  // owners own their workspace; overridden for sub-users below
         if (user.email && user.email.endsWith('@sub.tcb')) {
           const subUsername = user.email.replace(/@sub\.tcb$/, '');
           const subRow = await env.DB.prepare(
-            'SELECT status, permissions_json, must_change_password FROM sub_users WHERE LOWER(username) = ?'
+            'SELECT status, permissions_json, must_change_password, owner_id FROM sub_users WHERE LOWER(username) = ?'
           ).bind(subUsername).first();
           if (subRow) {
             if (subRow.status === 'revoked') return jsonResponse({ error: 'Access revoked' }, 401);
             isSubUser = true;
             try { permissions = JSON.parse(subRow.permissions_json || '{}'); } catch (e) { permissions = {}; }
             mustChangePassword = subRow.must_change_password === 1;
+            ownerId = subRow.owner_id;  // a sub-user's access follows the workspace owner's subscription
           }
         }
-        return jsonResponse({ success: true, userId: user.id, username: user.username, fullName: user.full_name, plan: user.plan, trialDaysLeft, isSubUser, permissions, mustChangePassword });
+        // Hard paywall signals for the client app-load gate. hasAccess is the
+        // pure access truth (beta OR active subscription on the owner);
+        // billingActive reflects STRIPE_ACTIVE so the client never blocks
+        // entry when there's no way to pay.
+        const billingActive = env.STRIPE_ACTIVE === 'true';
+        const hasAccess = await workspaceHasActiveAccess(ownerId);
+        return jsonResponse({ success: true, userId: user.id, username: user.username, fullName: user.full_name, plan: user.plan, isSubUser, permissions, mustChangePassword, hasAccess, billingActive });
       } catch (error) { return jsonResponse({ error: error.message }, 500); }
     }
 
@@ -5581,6 +5599,18 @@ export default {
       // ========================================
       const chatCtx = await getSessionContext(request);
       if (chatCtx && chatCtx.revoked) return denyRevoked();
+
+      // ========================================
+      // HARD PAYWALL — gate the expensive Sam endpoint. Only enforced when
+      // billing is live (STRIPE_ACTIVE), so we never block when there's no
+      // way to pay. Beta workspaces bypass via workspaceHasActiveAccess.
+      // Access follows the workspace owner (chatCtx.ownerId), so sub-users
+      // inherit the owner's subscription. Unauthenticated callers (no
+      // chatCtx) fall through to the existing logic unchanged.
+      // ========================================
+      if (STRIPE_ACTIVE && chatCtx && chatCtx.ownerId && !(await workspaceHasActiveAccess(chatCtx.ownerId))) {
+        return jsonResponse({ error: 'subscription_required', message: 'An active subscription is required to use Sam.' }, 402);
+      }
       const rateLimitUserId = chatCtx ? chatCtx.userId : null;
       const chatOwnerId = chatCtx ? chatCtx.ownerId : null;
       // Brain selection flag for the Sam-on-Gemini migration. Owners read

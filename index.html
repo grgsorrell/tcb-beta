@@ -912,8 +912,6 @@ function attemptLogin() {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: username, password: password })
   }).then(function(r){ return r.json(); }).then(function(data) {
-    // BETA: Trial expiry not enforced. Activate when Stripe is live.
-    // if (data.error === 'trial_expired') { errorEl.textContent = 'Trial ended.'; errorEl.style.display = 'block'; return; }
     if (data.error) {
       if (data.error === 'Invalid credentials') {
         errorEl.textContent = 'Invalid username or password.';
@@ -927,7 +925,7 @@ function attemptLogin() {
       errorEl.style.display = 'block'; document.getElementById('login-password').value = ''; return;
     }
     if (data.success) {
-      var session = { userId: data.username || username, loginTime: Date.now(), expires: Date.now() + 2592000000, fullName: data.fullName, plan: data.plan, trialDaysLeft: data.trialDaysLeft, isSubUser: !!data.isSubUser };
+      var session = { userId: data.username || username, loginTime: Date.now(), expires: Date.now() + 2592000000, fullName: data.fullName, plan: data.plan, isSubUser: !!data.isSubUser };
       localStorage.setItem('tcb_session', JSON.stringify(session));
       localStorage.setItem('tcb_current_user', data.username || username);
       localStorage.setItem('tcb_d1_session', data.sessionId);
@@ -949,7 +947,6 @@ function attemptLogin() {
       if (data.mustChangePassword) { localStorage.setItem('tcb_must_change_password', 'true'); }
       else { localStorage.removeItem('tcb_must_change_password'); }
       if (data.plan) localStorage.setItem('tcb_plan', data.plan);
-      if (data.trialDaysLeft != null) localStorage.setItem('tcb_trial_days', String(data.trialDaysLeft));
       window.location.href = 'app.html';
     }
   }).catch(function() { errorEl.textContent = 'Connection error. Please try again.'; errorEl.style.display = 'block'; });
@@ -1009,8 +1006,18 @@ function createAccount() {
       localStorage.setItem('tcb_session', JSON.stringify({ userId: data.username, loginTime: Date.now(), expires: Date.now() + 2592000000, fullName: data.fullName, plan: data.plan }));
       localStorage.setItem('tcb_current_user', data.username);
       localStorage.setItem('tcb_d1_session', data.sessionId);
-      localStorage.setItem('tcb_plan', data.plan || 'trial');
-      window.location.href = 'app.html';
+      localStorage.setItem('tcb_plan', data.plan || 'standard');
+      // Hard paywall: send the new account straight to Stripe Checkout — they
+      // do NOT enter the app until payment completes (the webhook marks them
+      // active). If checkout creation fails, fall back to the app, where the
+      // app-load "Subscribe to continue" takeover will block entry instead.
+      fetch(WORKER_AUTH_URL + '/api/billing/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + data.sessionId },
+        body: JSON.stringify({ plan: 'standard', billingPeriod: 'monthly' })
+      }).then(function(r){ return r.json(); }).then(function(co) {
+        window.location.href = (co && co.checkoutUrl) ? co.checkoutUrl : 'app.html';
+      }).catch(function(){ window.location.href = 'app.html'; });
     }
   }).catch(function() { errorEl.textContent = 'Connection error. Please try again.'; errorEl.style.display = 'block'; });
 }

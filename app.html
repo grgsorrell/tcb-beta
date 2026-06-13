@@ -1495,6 +1495,51 @@ function forcedPwdLogout() {
   window.location.href = 'index.html?relogin=1';
 }
 
+// ============================================================
+// HARD PAYWALL — full-screen "Subscribe to continue" takeover.
+// Rendered by initApp() when the server reports billingActive && !hasAccess.
+// Reuses the .pwd-takeover styling. No app renders behind it; the only ways
+// out are completing checkout or logging out.
+// ============================================================
+function renderPaywallTakeover() {
+  var existing = document.getElementById('paywall-takeover');
+  if (existing) existing.remove();
+  var el = document.createElement('div');
+  el.id = 'paywall-takeover';
+  el.className = 'pwd-takeover';
+  el.innerHTML =
+    '<div class="pwd-takeover-box">' +
+      '<h2>Subscribe to continue</h2>' +
+      '<p class="ptk-sub">The Candidate’s Toolbox is $49.99/month. Subscribe to unlock Sam and your full campaign workspace.</p>' +
+      '<div id="paywall-err" class="ptk-err"></div>' +
+      '<button id="paywall-go" class="ptk-submit" onclick="startPaywallCheckout()">Continue to secure checkout →</button>' +
+      '<div class="ptk-logout" onclick="logoutUser()">Log out</div>' +
+    '</div>';
+  document.body.appendChild(el);
+  setTimeout(function(){ var b = document.getElementById('paywall-go'); if (b) b.focus(); }, 50);
+}
+
+function startPaywallCheckout() {
+  var btn = document.getElementById('paywall-go');
+  var errEl = document.getElementById('paywall-err');
+  var sess = getD1Session();
+  if (!sess) { window.location.href = 'index.html?relogin=1'; return; }
+  if (errEl) errEl.classList.remove('on');
+  if (btn) { btn.disabled = true; btn.textContent = 'Loading…'; }
+  fetch(D1_API + '/api/billing/create-checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({ plan: 'standard', billingPeriod: 'monthly' })
+  }).then(function(r){ return r.json(); }).then(function(d) {
+    if (d && d.checkoutUrl) { window.location.href = d.checkoutUrl; return; }
+    if (errEl) { errEl.textContent = (d && d.error) || 'Could not start checkout. Please try again.'; errEl.classList.add('on'); }
+    if (btn) { btn.disabled = false; btn.textContent = 'Continue to secure checkout →'; }
+  }).catch(function(){
+    if (errEl) { errEl.textContent = 'Network error. Please try again.'; errEl.classList.add('on'); }
+    if (btn) { btn.disabled = false; btn.textContent = 'Continue to secure checkout →'; }
+  });
+}
+
 function handleUnauthenticated(msg) {
   // Keep tcb_current_user so the login form can pre-fill the username.
   localStorage.removeItem('tcb_d1_session');
@@ -1931,6 +1976,16 @@ function initApp() {
         localStorage.removeItem('tcb_session');
         d1Session = null;
         window.location.href = 'index.html?relogin=1';
+        return;
+      }
+      // HARD PAYWALL gate. The server tells us whether billing is live
+      // (billingActive = STRIPE_ACTIVE) and whether this workspace has access
+      // (hasAccess = beta plan OR an active subscription on the owner). Only
+      // block when billing is live, so we never trap a user with no way to
+      // pay. This halts init entirely — no showOnboardedUI, no loadFromD1, no
+      // Sam — behind the "Subscribe to continue" takeover.
+      if (sessionData.billingActive && !sessionData.hasAccess) {
+        renderPaywallTakeover();
         return;
       }
       d1Online = true;
