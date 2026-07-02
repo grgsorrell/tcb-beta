@@ -412,6 +412,33 @@ legacy salt only in the verify helper; gemini modelTag default; plan-based beta 
 
 ---
 
+## Phase 7 — State-agnostic URL authority acceptance
+
+Resolves the Phase 5 URL-whitelist finding (a correct non-FL/TX state SOS citation was being
+stripped). The matching logic is extracted into **`lib/url_authority.mjs`** so it's unit-testable and
+shared with the real code path.
+
+- **`urlMatchesAuthoritative`** (worker.js ~9930) now delegates to `urlHostMatchesAuthority`. A claimed
+  URL's host is authoritative if it: **(a)** ends in `.gov` (any subdomain), **(b)** matches
+  `*.state.XX.us` or `*.XX.us` for a valid two-letter state code (50 states + DC), **(c)** is or is a
+  subdomain of the retained `KNOWN_AUTHORITY_DOMAINS` (the original 15 — kept because `myflorida.com`,
+  `voterfocus.com`, `ballotpedia.org`, etc. aren't `.gov`), or **(d)** matches a tool-returned authority
+  URL (existing substring behavior, unchanged). Matching is case-insensitive and on the **host suffix**,
+  so subdomains pass (`elections.ohiosos.gov`) but look-alikes fail (`mygov.com` does NOT match `.gov`).
+  This also fixes the old loose bidirectional-substring bug for (a)–(c).
+- **Regen prompts genericized** — the three compliance/finance/donation validator regen prompts now
+  present FL + TX + a non-FL/TX (`OH → ohiosos.gov`) example and read as "examples of the pattern, not a
+  fixed list — any real state .gov is accepted."
+- **`scripts/test_url_whitelist.mjs`** — pure-function test importing the real predicate. All 10 cases
+  pass: `ohiosos.gov`, `sos.ga.gov`, `elections.virginia.gov`, `sos.state.tx.us`, `dos.myflorida.com`,
+  `ballotpedia.org`, and a scheme+path URL → PASS; `randomblog.com`, `sos-ga.fake.com`, and `mygov.com`
+  → FAIL (the last confirms no substring `.gov` match).
+
+Verification: `node --check worker.js` + `lib/url_authority.mjs` pass (no pipe);
+`node scripts/test_url_whitelist.mjs` → all pass. **This completes the overhaul.**
+
+---
+
 ## Anything skipped / deferred (consolidated)
 
 - **Phase 2:** URL-ROUTING FL table + FL worked-example deferrals intentionally dropped (superseded by
@@ -420,10 +447,9 @@ legacy salt only in the verify helper; gemini modelTag default; plan-based beta 
   round (documented edge). `functionResponse` round-trip shape **live-validated** (test PASSED).
 - **Phase 4:** validator **merge NOT done** (different triggers/schemas/tables — left separate but
   schema-ified). One descriptive validator `web_search` mention handled in Phase 5.
-- **Phase 5:** dead-code **not deleted** (all reachable). **URL-acceptance whitelist de-Floridification
-  NOT done** — coupled to the functional whitelist; full investigation + recommendation in the Phase 5
-  section. **Ruled a Phase 7 follow-up by the lead engineer.** Compliance-date/finance validator regen
-  prompts keep FL-domain examples (whitelist-coupled).
+- **Phase 5:** dead-code **not deleted** (all reachable — documented).
+- **Phase 7 (DONE):** URL-acceptance whitelist made state-agnostic (was the deferred Phase 5 finding);
+  regen-prompt FL/TX examples genericized; unit test added. Nothing outstanding from the overhaul.
 - **Cross-cutting:** nothing deployed; branch not merged. `sam_turn_trace` token counts are main-turn
   only (grounding-subturn/validator tokens logged separately via `logApiUsage`).
 
@@ -456,5 +482,10 @@ Deploy the branch to a test worker first (do NOT merge to master). Then:
 11. **(reliability)** After some turns, `SELECT * FROM sam_turn_trace ORDER BY id DESC LIMIT 10;` shows
     rows with route/tokens/latency; to smoke-test alerting, temporarily lower the ≥5 threshold and force
     Gemini errors, confirm one Resend email arrives (and only one within 6h).
-12. **(function round-trip)** `GEMINI_API_KEY=... node scripts/test_gemini_functionresponse.mjs` → PASS.
+12. **(function round-trip)** `GEMINI_API_KEY=... node scripts/test_gemini_functionresponse.mjs` → PASS
+    (already run live — PASSED).
+13. **(Phase 7 — state-agnostic citations)** Ask a compliance question for an **Ohio or Georgia** race
+    where Sam cites the state SOS site (e.g. ohiosos.gov / sos.ga.gov) — verify the citation **SURVIVES
+    in the final answer** (is not stripped by the validator). Pure-function coverage:
+    `node scripts/test_url_whitelist.mjs`.
 

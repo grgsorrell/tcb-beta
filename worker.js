@@ -4,6 +4,7 @@ import { classifyClaimSourcing, temperatureForCategory } from './lib/grounding_a
 import { lookupCampaignReference } from './lib/campaign_reference_lookup.mjs';
 import { classifyForReferenceLookup } from './lib/classify_reference_lookup.mjs';
 import { MODULE_IDENTITY, MODULE_TRUST_LADDER, MODULE_HARD_CONSTRAINTS, MODULE_TOOL_GUIDANCE } from './lib/sam_prompt_modules.mjs';
+import { urlHostMatchesAuthority, KNOWN_AUTHORITY_DOMAINS } from './lib/url_authority.mjs';
 
 export default {
   async fetch(request, env, ctx) {
@@ -9927,35 +9928,16 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         return Array.from(found);
       }
 
-      // Sam v2 Phase 4: well-known authority URLs that Sam may use in smart
-      // deferrals even when the lookup tool's authority.url is null. These
-      // are real domains the smart-deferral templates explicitly route to;
-      // not fabricated. Validator no longer flags claimed URLs that match
-      // any of these.
-      const V2_KNOWN_AUTHORITY_DOMAINS = [
-        'fec.gov', 'irs.gov', 'census.gov', 'data.census.gov',
-        'dos.fl.gov', 'dos.myflorida.com', 'dos.elections.myflorida.com',
-        'myflorida.com', 'sos.state.tx.us', 'votetexas.gov',
-        'ocfelections.gov', 'voterfocus.com', 'sb.seminolecountyfl.gov',
-        'floridabar.org', 'ballotpedia.org'
-      ];
-
+      // Phase 7: authority-URL acceptance is now STATE-AGNOSTIC. A claimed URL
+      // is accepted if its host (a) ends in .gov, (b) matches *.state.XX.us /
+      // *.XX.us for a valid state code, (c) is/subdomains one of the retained
+      // KNOWN_AUTHORITY_DOMAINS (federal + a few non-.gov authorities), or
+      // (d) matches a tool-returned authority URL. Host-suffix matching, so
+      // subdomains pass (elections.ohiosos.gov) but look-alikes fail
+      // (mygov.com). Logic + unit test live in lib/url_authority.mjs /
+      // scripts/test_url_whitelist.mjs.
       function urlMatchesAuthoritative(claimedUrl, authoritativeUrls) {
-        if (!claimedUrl) return true;
-        const cl = String(claimedUrl).toLowerCase();
-        // First: explicit tool-returned authoritative URLs (existing path)
-        for (const a of authoritativeUrls) {
-          if (!a) continue;
-          const al = String(a).toLowerCase();
-          if (cl === al) return true;
-          if (cl.includes(al) || al.includes(cl)) return true;
-        }
-        // Sam v2 Phase 4: also accept well-known smart-deferral target domains.
-        // Sam citing dos.fl.gov in a deferral is the v2 default behavior.
-        for (const known of V2_KNOWN_AUTHORITY_DOMAINS) {
-          if (cl === known || cl.includes(known) || known.includes(cl)) return true;
-        }
-        return false;
+        return urlHostMatchesAuthority(claimedUrl, authoritativeUrls, KNOWN_AUTHORITY_DOMAINS);
       }
 
       async function regenerateWithComplianceFeedback(originalMsgs, badContent, claimedDates, claimedUrls, lookupResult) {
@@ -9985,7 +9967,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `Rewrite your response. RULES:\n` +
             `- Acknowledge honestly that you don't have verified deadline data for this specific race.\n` +
             `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
-            `- MUST include a specific authority URL inline. Prefer a real authority domain for the candidate's state: e.g. FL state/local → dos.fl.gov/elections, federal → fec.gov, TX → sos.state.tx.us, FL contribution-finance reports → dos.elections.myflorida.com/campaign-finance/. If none fits the candidate's state, defer per the FACT TRUST LADDER ("Search '[State] [resource type]'"). Do NOT invent a URL based on state name (e.g., "florida-elections.gov" is fabrication). Do NOT use the v1 phrase "search the state government website" — that is forbidden.\n` +
+            `- MUST include a specific authority URL inline — the candidate's OWN state elections/SOS site (any real state .gov is accepted). These are format examples, not a fixed list: FL → dos.fl.gov/elections, TX → sos.state.tx.us, OH → ohiosos.gov, and federal → fec.gov. If you don't have the candidate's state's URL, defer per the FACT TRUST LADDER ("Search '[State] [resource type]'"). Do NOT invent a URL from the state name (e.g., "florida-elections.gov" is fabrication). Do NOT use the v1 phrase "search the state government website" — that is forbidden.\n` +
             `- ${authUrl ? `If you have a specific tool-returned URL "${authUrl}", you may use it; otherwise use a well-known authority domain for the candidate's state or defer per the FACT TRUST LADDER.` : ''}` +
             `- Offer ONE concrete next step (draft a checklist of what to ask, or set a calendar reminder).\n` +
             `- DO NOT state any specific deadline dates.\n` +
@@ -10251,7 +10233,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `Rewrite your response. RULES:\n` +
             `- Acknowledge honestly that you don't have a verified finance-report schedule for this specific race.\n` +
             `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
-            `- MUST include a specific authority URL inline. For FL finance reports use dos.elections.myflorida.com/campaign-finance/ or dos.fl.gov; for federal use fec.gov; for TX use sos.state.tx.us. Do NOT invent a URL. Do NOT use "search the state government website" — forbidden.\n` +
+            `- MUST include a specific authority URL inline — the candidate's state elections/SOS finance page (any real state .gov is accepted). Examples of the pattern, not a fixed list: FL → dos.elections.myflorida.com/campaign-finance/, TX → sos.state.tx.us, OH → ohiosos.gov, federal → fec.gov. Do NOT invent a URL. Do NOT use "search the state government website" — forbidden.\n` +
             `- Offer ONE concrete next step (set a calendar reminder, draft questions to ask the elections office).\n` +
             `- DO NOT state any specific report dates.\n` +
             `- DO NOT formally apologize. Sound like a campaign manager.\n` +
@@ -10554,7 +10536,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `- Acknowledge honestly that you don't have verified contribution limits for this specific race.\n` +
             `- Note that limits vary by race level (federal/state/local) and can change between cycles.\n` +
             `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
-            `- MUST include a specific authority URL inline. For FL state/local contribution limits use dos.fl.gov/elections/for-candidates or dos.fl.gov; for federal use fec.gov; for TX use sos.state.tx.us. Do NOT invent a URL. Do NOT use "search the state government website" — forbidden.\n` +
+            `- MUST include a specific authority URL inline — the candidate's state elections/SOS contribution-limits page (any real state .gov is accepted). Examples of the pattern, not a fixed list: FL → dos.fl.gov/elections/for-candidates, TX → sos.state.tx.us, OH → ohiosos.gov, federal → fec.gov. Do NOT invent a URL. Do NOT use "search the state government website" — forbidden.\n` +
             `- Offer ONE concrete next step (set a calendar reminder, draft questions to ask the elections office).\n` +
             `- DO NOT state any specific contribution limit dollar amounts.\n` +
             `- DO NOT formally apologize. Sound like a campaign manager.\n` +
