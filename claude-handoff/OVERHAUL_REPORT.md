@@ -382,4 +382,76 @@ double-blank fallback removed. The migration is applied and the table confirmed 
   grounding-subturn and validator tokens are logged separately via `logApiUsage`, not in the trace.
 
 ---
-<!-- Phases appended below as completed. -->
+## Phase 6 — Security + docs
+
+- **PBKDF2 password hashing** (`hashPasswordPBKDF2` / `verifyPassword`, ~line 200): format
+  `pbkdf2$210000$<saltB64>$<hashB64>` (per-user 16-byte salt, 210k iterations, SHA-256, 256-bit key).
+  `verifyPassword` returns `{ok, legacy}` and accepts both formats; **on a successful legacy verify the
+  caller transparently rehashes** and updates the row. Rewired all 9 hashing sites: create-account,
+  login (owner + sub-user, both with rehash-on-legacy), change-password, confirm-reset, sub-user
+  create, reset-password. New signups/resets/creates always write the new format; the legacy SHA-256
+  path stays for verification only (in `_legacySha256Hex`). **Validated standalone** (round-trip,
+  wrong-password rejection, legacy verify+flag, null-safety — all pass), so existing logins won't break.
+- **`callClaude` → `callGemini`** rename (24 occurrences incl. `callClaudeAndDemask` →
+  `callGeminiAndDemask`); the Gemini→Anthropic-shape translation + its comment are kept.
+- **Beta rate-limit bypass** now checks **`users.plan === 'beta'`** (the hardcoded
+  `['greg','shannan','cjc','jerry']` allowlist for the bypass was removed; the separate admin-gate
+  allowlist at ~2935 is a different feature and was left).
+- **`logApiUsage` default modelTag** → `gemini-2.5-flash` (was `claude-haiku-4-5-20251001`, which
+  mis-parsed any 4-arg Gemini-shape call as Anthropic-shape and logged 0 tokens).
+- **CLAUDE.md rewritten**: Gemini 2.5 Flash, module prompt structure + per-module budgets + the guard
+  script, the trust ladder, 22 tools + `request_web_search` escape-hatch flow, the trace table, PBKDF2
+  auth + `plan='beta'`. Haiku-era claims (model rule, 16-tool count, "under 800 words", "16 consolidated
+  tools", Haiku synthesis) removed.
+
+Verification: `node --check` passes (no pipe); budget guard green; 0 `callClaude` / 24 `callGemini`;
+legacy salt only in the verify helper; gemini modelTag default; plan-based beta bypass.
+
+---
+
+## Anything skipped / deferred (consolidated)
+
+- **Phase 2:** URL-ROUTING FL table + FL worked-example deferrals intentionally dropped (superseded by
+  the ladder). Validator-side FL-domain refs flagged for Phase 4.
+- **Phase 3:** co-emitted action tool + `request_web_search` in one response defers the action one
+  round (documented edge). `functionResponse` role shape to confirm on a live turn.
+- **Phase 4:** validator **merge NOT done** (different triggers/schemas/tables — left separate but
+  schema-ified). One descriptive validator `web_search` mention handled in Phase 5.
+- **Phase 5:** dead-code **not deleted** (all reachable). **URL-acceptance whitelist de-Floridification
+  NOT done** — coupled to the functional whitelist; full investigation + recommendation in the Phase 5
+  section. **Ruled a Phase 7 follow-up by the lead engineer.** Compliance-date/finance validator regen
+  prompts keep FL-domain examples (whitelist-coupled).
+- **Cross-cutting:** nothing deployed; branch not merged. `sam_turn_trace` token counts are main-turn
+  only (grounding-subturn/validator tokens logged separately via `logApiUsage`).
+
+## Manual test checklist for Greg (run against a deploy of the `sam-overhaul` branch)
+
+Deploy the branch to a test worker first (do NOT merge to master). Then:
+
+1. **Onboarding** — fresh signup (localStorage cleared) → lands on standard plan → Stripe checkout;
+   after paying, Sam loads. (Signup now writes a PBKDF2 hash.)
+2. **Free chat save/update/delete with permission gate** — ask Sam to save a note, update a task,
+   delete an event; confirm the calendar permission gate still asks before adding when you're just
+   thinking aloud, and acts directly on an explicit "add this".
+3. **Compliance question in a reference-DB state** (e.g. a covered state) — verify Sam quotes the
+   VERIFIED block / lookup tool and cites the authority, no fabricated dates.
+4. **Compliance question in a NON-covered state** — verify Sam defers per the trust ladder
+   ("Search '[State] [resource]'") and does NOT emit a wrong-state URL.
+5. **News question** — verify Sam calls `request_web_search` (action route) or grounding (search
+   route), cites sources, and never fabricates.
+6. **Win-number request** — verify the Ballotpedia search pattern + lowest-placed-winner / midterm
+   turnout adjustment still produce a real number.
+7. **Action + search combined** — "find my filing deadline and add it to my calendar" — verify the
+   escape hatch fetches the deadline AND Sam still calls the calendar tool (the capability cliff is
+   gone). Watch for the one-round action deferral edge.
+8. **Login with an existing password** — an account created before this branch should log in normally
+   (legacy SHA-256 verifies) and be transparently rehashed to PBKDF2 (check `users.password_hash` now
+   starts with `pbkdf2$`).
+9. **Password reset** — request-reset email → reset page → new password → log in with it (writes PBKDF2).
+10. **Paywall check** — with the test account (unpaid), Sam chat returns 402 and the app shows the
+    subscribe takeover; a beta-plan account bypasses.
+11. **(reliability)** After some turns, `SELECT * FROM sam_turn_trace ORDER BY id DESC LIMIT 10;` shows
+    rows with route/tokens/latency; to smoke-test alerting, temporarily lower the ≥5 threshold and force
+    Gemini errors, confirm one Resend email arrives (and only one within 6h).
+12. **(function round-trip)** `GEMINI_API_KEY=... node scripts/test_gemini_functionresponse.mjs` → PASS.
+
