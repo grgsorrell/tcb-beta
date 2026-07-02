@@ -7102,7 +7102,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           '5. conversational — Greetings, transitions, acknowledgments, no factual claim or guidance request. Examples: "Thanks", "Hi Sam", "What\'s next?", "Got it", "Good morning"\n\n' +
           'RECENT CONVERSATION:\n' + (recentContext || 'none') + '\n\n' +
           'USER\'S LATEST MESSAGE:\n' + userMessage + '\n\n' +
-          'Return ONE category name only: factual, strategic, compliance, predictive, or conversational.';
+          'Return a JSON object of the form {"category":"<one of: factual, strategic, compliance, predictive, conversational>"}.';
         try {
           const aResp = await fetch(
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
@@ -7111,7 +7111,19 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                generationConfig: { maxOutputTokens: 20, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+                // Phase 4: structured output — the model must return JSON
+                // matching the schema; no more substring/normalize guessing.
+                generationConfig: {
+                  maxOutputTokens: 40,
+                  temperature: 0,
+                  thinkingConfig: { thinkingBudget: 0 },
+                  responseMimeType: 'application/json',
+                  responseSchema: {
+                    type: 'object',
+                    properties: { category: { type: 'string', enum: ['factual', 'strategic', 'compliance', 'predictive', 'conversational'] } },
+                    required: ['category']
+                  }
+                }
               })
             }
           );
@@ -7124,9 +7136,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           if (ad && ad.candidates && ad.candidates[0] && ad.candidates[0].content && Array.isArray(ad.candidates[0].content.parts)) {
             for (const p of ad.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
-          const normalized = txt.trim().toLowerCase().replace(/[^a-z]/g, '');
           const valid = ['factual', 'strategic', 'compliance', 'predictive', 'conversational'];
-          if (valid.includes(normalized)) return { category: normalized, failed: false };
+          try {
+            const parsed = JSON.parse(txt);
+            if (parsed && valid.includes(parsed.category)) return { category: parsed.category, failed: false };
+          } catch (e) { /* fall through to fail-open */ }
           return { category: 'factual', failed: true };
         } catch (e) {
           console.warn('[classifier] failed:', e.message);
@@ -7135,6 +7149,13 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
       const _classification = await classifyUserQuestion(_latestUserText, history);
       const _questionCategory = _classification.category;
+      // Phase 4: turn-scoped accumulator of validator fail-opens (verifier
+      // infra errors that let a response through unvalidated). Phase 5's
+      // sam_turn_trace insert serializes this into the validator_result column.
+      const _validatorFailOpens = [];
+      const _noteValidatorFailOpen = (name, reason) => {
+        try { _validatorFailOpens.push({ validator: name, reason: String(reason || 'unknown').slice(0, 200) }); } catch (e) {}
+      };
       // Log classification event
       try {
         await env.DB.prepare(
@@ -7745,12 +7766,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                systemInstruction: { parts: [{ text: "You are a router. Classify the user message as 'search' ONLY if it explicitly asks for current, live, or time-sensitive information — such as messages containing words like: current, latest, right now, today, this week, this year, 2026, deadline, when does, what's the limit, how much can, is it still, has it changed, recent, upcoming, election results, vote count, votes cast, canvass, total votes, election history, past election, previous results, or asks for a specific form number or filing date. Everything else — strategy, planning, writing content, saving notes, calendar tasks, budget, fundraising advice, general campaign management, donor research / top donors / max donors / call lists / 'who funded X' (these are tool-backed FEC lookups, not search), or any action request — classify as 'action'. Reply with only the single word: search or action." }] },
+                systemInstruction: { parts: [{ text: "You are a router. Classify the user message as 'search' ONLY if it explicitly asks for current, live, or time-sensitive information — such as messages containing words like: current, latest, right now, today, this week, this year, 2026, deadline, when does, what's the limit, how much can, is it still, has it changed, recent, upcoming, election results, vote count, votes cast, canvass, total votes, election history, past election, previous results, or asks for a specific form number or filing date. Everything else — strategy, planning, writing content, saving notes, calendar tasks, budget, fundraising advice, general campaign management, donor research / top donors / max donors / call lists / 'who funded X' (these are tool-backed FEC lookups, not search), or any action request — classify as 'action'. Reply with a JSON object: {\"route\":\"search\"} or {\"route\":\"action\"}." }] },
                 contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+                // Phase 4: structured output — JSON {route} instead of
+                // substring matching on a free-text single word.
                 generationConfig: {
-                  maxOutputTokens: 20,
+                  maxOutputTokens: 30,
                   temperature: 0,
-                  thinkingConfig: { thinkingBudget: 0 }
+                  thinkingConfig: { thinkingBudget: 0 },
+                  responseMimeType: 'application/json',
+                  responseSchema: {
+                    type: 'object',
+                    properties: { route: { type: 'string', enum: ['search', 'action'] } },
+                    required: ['route']
+                  }
                 }
               })
             }
@@ -7760,8 +7789,14 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             inputTokens: (data && data.usageMetadata && data.usageMetadata.promptTokenCount) || 0,
             outputTokens: (data && data.usageMetadata && data.usageMetadata.candidatesTokenCount) || 0
           }, rateLimitUserId, chatOwnerId, 'gemini-2.5-flash');
-          const txt = ((data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) || '').trim().toLowerCase();
-          if (txt.includes('search')) return 'search';
+          let txt = '';
+          if (data && data.candidates && data.candidates[0] && data.candidates[0].content && Array.isArray(data.candidates[0].content.parts)) {
+            for (const p of data.candidates[0].content.parts) if (p && p.text) txt += p.text;
+          }
+          try {
+            const parsed = JSON.parse(txt);
+            if (parsed && parsed.route === 'search') return 'search';
+          } catch (e) { /* fall through to the action fail-safe */ }
           return 'action';
         } catch (e) {
           console.warn('[router] failed:', e.message);
@@ -7934,7 +7969,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
                 generationConfig: {
                   maxOutputTokens: 2000,
                   temperature: 0.4,
-                  thinkingConfig: { thinkingBudget: 0 }
+                  // Phase 4: give the MAIN Sam turn a small thinking budget so
+                  // multi-constraint turns (trust ladder + hard constraints +
+                  // tool choice) reason before answering. Router/classifier/
+                  // validators/grounding-subturn stay at 0.
+                  thinkingConfig: { thinkingBudget: 512 }
                 },
                 safetySettings: [
                   { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
@@ -8049,10 +8088,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // Consumer wraps via geminiToAnthropic for validator-audit
       // compatibility.
       //
-      // Field-name verification (2026-05-07): for gemini-2.5-flash REST,
-      // grounding tool name is "google_search" (snake_case), NOT the
-      // older "googleSearchRetrieval" from the Gemini 1.5 era. Source:
-      // ai.google.dev/gemini-api/docs/google-search.
+      // Grounding tool key normalized to "googleSearch" (camelCase) in Phase 4
+      // to match the working production path in callClaude — every call site
+      // now uses the same key. (An earlier note here claimed snake_case
+      // "google_search"; the live callClaude search route uses camelCase, so
+      // that is the canonical form for this codebase.) NOT the older
+      // "googleSearchRetrieval" from the Gemini 1.5 era.
       // ============================================================
       async function geminiCallSam({ systemPrompt, contents, timeoutMs, temperature }) {
         const startedAt = Date.now();
@@ -8093,7 +8134,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         const body = {
           systemInstruction: { parts: [{ text: systemPrompt }] },
           contents: contents,
-          tools: [{ google_search: {} }],
+          tools: [{ googleSearch: {} }],
           generationConfig: {
             // Phase 2: caller can override temperature per-category. Default
             // 0.4 preserved for backward compat with existing callers
@@ -8359,7 +8400,18 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                generationConfig: { maxOutputTokens: 600, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+                // Phase 4: structured output — schema-validated JSON, no regex extraction.
+                generationConfig: {
+                  maxOutputTokens: 600,
+                  temperature: 0,
+                  thinkingConfig: { thinkingBudget: 0 },
+                  responseMimeType: 'application/json',
+                  responseSchema: {
+                    type: 'object',
+                    properties: { claims: { type: 'array', items: { type: 'string' } } },
+                    required: ['claims']
+                  }
+                }
               })
             }
           );
@@ -8372,12 +8424,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           if (ad && ad.candidates && ad.candidates[0] && ad.candidates[0].content && Array.isArray(ad.candidates[0].content.parts)) {
             for (const p of ad.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
-          const mm = txt.match(/\{[\s\S]*\}/);
-          if (!mm) return [];
-          const parsed = JSON.parse(mm[0]);
+          const parsed = JSON.parse(txt);
           return Array.isArray(parsed.claims) ? parsed.claims : [];
         } catch (e) {
           console.warn('[opponent_validator] extract failed:', e.message);
+          _noteValidatorFailOpen('opponent', e.message);
           return [];
         }
       }
@@ -9753,7 +9804,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           ? `You mentioned unverified URL(s): ${JSON.stringify(claimedUrls)}. ` +
             (authUrl
               ? `The only URL the tool returned is "${authUrl}". Use that exact URL or none at all.`
-              : 'The tool returned NO URL for this authority. You may NOT invent or guess a URL based on the state name (e.g., "florida-elections.gov" is fabrication). However, you MAY use the well-known authority domains from the smart-deferral templates in your prompt (dos.fl.gov, fec.gov, ocfelections.gov, sos.state.tx.us, etc.) — those are real and pre-vetted. Pick the appropriate one for this question type.')
+              : 'The tool returned NO URL for this authority. You may NOT invent or guess a URL based on the state name (e.g., "florida-elections.gov" is fabrication). You MAY use a real, well-known authority domain for the candidate\'s state (e.g., dos.fl.gov for FL, fec.gov for federal, sos.state.tx.us for TX). If none fits the candidate\'s state, defer per the FACT TRUST LADDER: "Search \'[State] [resource type]\' — I don\'t have a verified URL for this session."')
           : '';
         const allNotes = [datesNote, urlsNote].filter(Boolean).join(' ');
         const retryMsgs = [
@@ -9767,8 +9818,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             `Rewrite your response. RULES:\n` +
             `- Acknowledge honestly that you don't have verified deadline data for this specific race.\n` +
             `- Provide the authority contact: ${authName}. Phone: ${authPhone}.${authJurisdictionSpecific ? ' ' + authJurisdictionSpecific : ''}\n` +
-            `- MUST include a specific authority URL inline. Pick from the smart-deferral templates: for FL state/local races use dos.fl.gov/elections; for federal use fec.gov; for TX use sos.state.tx.us; for FL contribution-finance reports use dos.elections.myflorida.com/campaign-finance/. Do NOT invent a URL based on state name (e.g., "florida-elections.gov" is fabrication). Do NOT use the v1 phrase "search the state government website" — that is forbidden.\n` +
-            `- ${authUrl ? `If you have a specific tool-returned URL "${authUrl}", you may use it; otherwise use one of the well-known authority domains from the smart-deferral templates.` : ''}` +
+            `- MUST include a specific authority URL inline. Prefer a real authority domain for the candidate's state: e.g. FL state/local → dos.fl.gov/elections, federal → fec.gov, TX → sos.state.tx.us, FL contribution-finance reports → dos.elections.myflorida.com/campaign-finance/. If none fits the candidate's state, defer per the FACT TRUST LADDER ("Search '[State] [resource type]'"). Do NOT invent a URL based on state name (e.g., "florida-elections.gov" is fabrication). Do NOT use the v1 phrase "search the state government website" — that is forbidden.\n` +
+            `- ${authUrl ? `If you have a specific tool-returned URL "${authUrl}", you may use it; otherwise use a well-known authority domain for the candidate's state or defer per the FACT TRUST LADDER.` : ''}` +
             `- Offer ONE concrete next step (draft a checklist of what to ask, or set a calendar reminder).\n` +
             `- DO NOT state any specific deadline dates.\n` +
             `- DO NOT formally apologize. Sound like a campaign manager — direct, useful.\n` +
@@ -10242,7 +10293,18 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                generationConfig: { maxOutputTokens: 400, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+                // Phase 4: structured output — schema-validated JSON, no regex extraction.
+                generationConfig: {
+                  maxOutputTokens: 400,
+                  temperature: 0,
+                  thinkingConfig: { thinkingBudget: 0 },
+                  responseMimeType: 'application/json',
+                  responseSchema: {
+                    type: 'object',
+                    properties: { amounts: { type: 'array', items: { type: 'string' } } },
+                    required: ['amounts']
+                  }
+                }
               })
             }
           );
@@ -10255,12 +10317,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           if (auditData && auditData.candidates && auditData.candidates[0] && auditData.candidates[0].content && Array.isArray(auditData.candidates[0].content.parts)) {
             for (const p of auditData.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
-          const mm = txt.match(/\{[\s\S]*\}/);
-          if (!mm) return [];
-          const parsed = JSON.parse(mm[0]);
+          const parsed = JSON.parse(txt);
           return Array.isArray(parsed.amounts) ? parsed.amounts : [];
         } catch (e) {
           console.warn('[donation_validator] extract failed:', e.message);
+          _noteValidatorFailOpen('donation', e.message);
           return [];
         }
       }
@@ -10728,7 +10789,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             'Categorize each unverified claim into one of three buckets:\n' +
             '- "high_stakes": specific dollar amounts, dates, phone numbers, URLs, addresses, named persons (not in AUTHORITATIVE_SOURCES), statute citations, day-of-week assertions for dates not traceable to CALENDAR_REFERENCE, procedural/legal/regulatory rules about campaign finance or compliance not traceable to a tool result → these will trigger regenerate-with-citation, then strip if regen fails\n' +
             '- "medium": pattern-based or industry-typical claims — campaign benchmarks ("80-120 doors per day", "5% mail response"), general electoral patterns ("incumbents win ~85%"), industry best practices for messaging/fundraising/GOTV → these will be TAGGED inline with "(typical pattern — your race may differ)"\n' +
-            '- "low": inference, judgment, recall without source — Sam\'s "I think" reasoning, predictions about future outcomes, characterizations of districts/opponents/dynamics not in Intel or web_search → these will be TAGGED inline with "(my read — verify before acting)"\n\n' +
+            '- "low": inference, judgment, recall without source — Sam\'s "I think" reasoning, predictions about future outcomes, characterizations of districts/opponents/dynamics not in Intel or a live search → these will be TAGGED inline with "(my read — verify before acting)"\n\n' +
             'Return JSON: {"high_stakes": ["claim text 1", ...], "medium": ["claim 1", ...], "low": ["claim 1", ...]}\n' +
             'Each claim should be a verbatim substring from SAM_RESPONSE so the post-processor can locate it.\n' +
             'If none: {"high_stakes": [], "medium": [], "low": []}\n' +
@@ -10741,7 +10802,22 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                  generationConfig: { maxOutputTokens: 800, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+                  // Phase 4: structured output — schema-validated JSON, no regex extraction.
+                  generationConfig: {
+                    maxOutputTokens: 800,
+                    temperature: 0,
+                    thinkingConfig: { thinkingBudget: 0 },
+                    responseMimeType: 'application/json',
+                    responseSchema: {
+                      type: 'object',
+                      properties: {
+                        high_stakes: { type: 'array', items: { type: 'string' } },
+                        medium: { type: 'array', items: { type: 'string' } },
+                        low: { type: 'array', items: { type: 'string' } }
+                      },
+                      required: ['high_stakes', 'medium', 'low']
+                    }
+                  }
                 })
               }
             );
@@ -10754,9 +10830,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             if (ad && ad.candidates && ad.candidates[0] && ad.candidates[0].content && Array.isArray(ad.candidates[0].content.parts)) {
               for (const p of ad.candidates[0].content.parts) if (p && p.text) txt += p.text;
             }
-            const mm = txt.match(/\{[\s\S]*\}/);
-            if (!mm) return { high_stakes: [], medium: [], low: [] };
-            const parsed = JSON.parse(mm[0]);
+            const parsed = JSON.parse(txt);
             const filt = (a) => Array.isArray(a) ? a.filter(c => typeof c === 'string' && c.length > 0) : [];
             return {
               high_stakes: filt(parsed.high_stakes),
@@ -10768,6 +10842,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             };
           } catch (e) {
             console.warn('[citation_validator] extract failed:', e.message);
+            _noteValidatorFailOpen('citation', e.message);
             return { high_stakes: [], medium: [], low: [] };
           }
         }
@@ -11241,7 +11316,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             { role: 'user', content:
               'STOP. Your previous response mentioned authority agency names without an inline URL: ' +
               JSON.stringify(agencyMentions) + '.\n\n' +
-              'This is the v1 generic-punt pattern that the SMART DEFERRAL TEMPLATES block forbids. Every agency reference MUST include the specific URL inline within the same sentence (or immediately following parenthetical).\n\n' +
+              'This is the v1 generic-punt pattern the FACT TRUST LADDER forbids. Every agency reference MUST include the specific URL inline within the same sentence (or immediately following parenthetical).\n\n' +
               'Rewrite your response. For each agency mentioned, append the matching URL from these well-known authority domains:\n' +
               '- Florida Division of Elections / Florida Department of State → dos.fl.gov/elections (filing/qualifying), dos.fl.gov/elections/for-candidates/campaign-finance (contribution limits), dos.elections.myflorida.com/campaign-finance/ (finance reports)\n' +
               '- Texas Secretary of State → sos.state.tx.us/elections\n' +

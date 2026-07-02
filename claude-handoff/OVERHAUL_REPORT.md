@@ -224,4 +224,67 @@ Phase 2 corruption. Wiring confirmed: tool decl present, `runGroundingSubturn` d
   the smart-deferral validator references noted in Phase 2.
 
 ---
+## Phase 4 — Generation config + structured output
+
+**4.1 — thinkingBudget.** Main Sam turn only: `thinkingBudget 0 → 512` (in callClaude's generate
+loop). Router, classifier, validators, and the grounding sub-turn stay at 0. Verified: `thinkingBudget: 512`
+appears exactly once; `thinkingBudget: 0` appears 18×.
+
+**4.2 — Router + classifier → responseSchema.** Both now use `responseMimeType:'application/json'` +
+`responseSchema` with an enum, and parse JSON — the substring `.includes('search')` and the
+`replace(/[^a-z]/g,'')` normalize guessing are gone.
+- `routeUserIntent` → `{ route: enum['search','action'] }`; fail-safe to `'action'` on parse error.
+- `classifyUserQuestion` → `{ category: enum['factual','strategic','compliance','predictive','conversational'] }`;
+  fail-open to `'factual'`.
+
+**4.3 — The three named validators → responseSchema.** Regex extraction (`match(/\{[\s\S]*\}/)`)
+removed; each now emits schema-validated JSON parsed directly:
+- opponent validator → `{ claims: string[] }`
+- donation validator → `{ amounts: string[] }`
+- citation verifier → `{ high_stakes: string[], medium: string[], low: string[] }`
+Fail-open is preserved **only** for verifier infra errors (parse/HTTP), and every fail-open is now
+recorded to a turn-scoped `_validatorFailOpens` accumulator via `_noteValidatorFailOpen(name, reason)`.
+**Phase 5's `sam_turn_trace` insert will serialize this accumulator into the `validator_result`
+column** (the accumulator is declared now; the DB write lands in Phase 5 to avoid a forward table
+dependency).
+
+**4.4 — Validator merge: NOT done (too invasive — noted).** The three validators have different
+triggers (opponent-claim detection vs donation-limit signals vs all-factual), different schemas,
+different D1 tables (`sam_{opponent,donation,citation}_validation_events`), and different downstream
+strip/regen dispatch. Merging into one post-pass call with a single schema is a significant redesign
+with real regression risk on an untestable path. Per the spec's "if invasive, leave them separate but
+schema-ified and note it," they are left separate and schema-ified.
+
+**4.5 — googleSearch key normalization.** The one snake_case call site (`tools:[{ google_search:{} }]`
+in the dormant `geminiCallSam`) → `googleSearch`, matching the live callClaude path. The stale comment
+that claimed snake_case was canonical was corrected. All grounding call sites now use `googleSearch`.
+
+**Folded-in Phase 4 items:**
+- The descriptive `web_search` mention in the citation-verifier prompt (former ~10729) → "a live
+  search."
+- The validator regen prompts (compliance validator + the strip-fallback critic) that referenced the
+  **removed** "SMART DEFERRAL TEMPLATES" block now reference the **FACT TRUST LADDER**, and I added a
+  generic ladder fallback ("Search '[State] [resource type]'") so a non-FL/TX candidate isn't pushed
+  toward a wrong-state URL.
+  - **FL/TX domains retained as examples on purpose:** those same domains (`dos.fl.gov`, `fec.gov`,
+    `sos.state.tx.us`, …) are entries in the validator's functional **URL-acceptance whitelist**
+    (worker.js ~9768) — the re-audit accepts a regenerated citation only if its host is whitelisted.
+    Stripping the domains from the regen prompts without also reworking that whitelist would make the
+    validator reject valid FL/TX citations. Full de-Floridification of the whitelist is a coupled
+    change and is **flagged as a separate follow-up**, not done here.
+
+**Verification:** `node --check worker.js` passes (no pipe). 5 `responseSchema` sites (router +
+classifier + 3 validators); accumulator declared once with 3 fail-open call sites; budget guard still
+green.
+
+**Risks / notes:**
+- Router and classifier now **hard-depend** on Gemini honoring `responseSchema` (JSON out). Both keep
+  fail-safe/fail-open defaults on parse failure, so a schema regression degrades gracefully — but this
+  should be confirmed on a live turn in Greg's manual test.
+- **Not converted (out of the named scope):** the compliance-date auditor and the finance validator
+  also regex-extract JSON (`match(/\{…\}/)`), structurally identical to the three converted. They use
+  the separate `sam_{compliance,finance}_validation_events` tables and were not in the named set;
+  flagged as an easy follow-up applying the same pattern.
+
+---
 <!-- Phases appended below as completed. -->
