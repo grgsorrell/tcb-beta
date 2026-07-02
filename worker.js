@@ -7228,7 +7228,7 @@ When the user asks anything about geographic targeting — canvassing, neighborh
 
   IF YOU HAVE NO TOOL RESULT (the lookup returned source: 'unsupported' for district-level races): the tool result includes an \`authority\` field with the state elections office contact info. Use it. Sample phrasing: "I don't have a verified place list for [jurisdiction]. For verified district boundaries, contact [authority.name] — phone: [authority.phone]. Want me to set a reminder to follow up?" Do NOT invent place names from training.
 
-${samEngine === 'haiku' ? `COMPLIANCE / FILING / QUALIFYING — HARD CONSTRAINT (read every time, before any answer about deadlines):
+COMPLIANCE / FILING / QUALIFYING — HARD CONSTRAINT (read every time, before any answer about deadlines):
 
 When the user asks about filing deadlines, qualifying periods, ballot access dates, petition deadlines, filing fees, or any "must do X by date Y to be on the ballot" question — your FIRST action this turn is a call to lookup_compliance_deadlines for the candidate's race.
 
@@ -7297,7 +7297,9 @@ When the user asks for top donors, max donors, donor list, top contributors, cal
 
   TRAINING-DATA RECALL FORBIDDEN: never fabricate donor names, amounts, employers, or occupations from training data. Every row must come from the tool. If the tool returns no data, defer — do not guess.
 
-  WHY: Fabricated donor lists trigger FEC compliance issues (you can't call someone who never donated) and waste candidate time. Real FEC Schedule A data via the tool is verifiable, structured, and trusted.` : ''}${samEngine === 'gemini' ? `VERIFIED-DATA CITATION DISCIPLINE — HARD CONSTRAINT (Gemini path):
+  WHY: Fabricated donor lists trigger FEC compliance issues (you can't call someone who never donated) and waste candidate time. Real FEC Schedule A data via the tool is verifiable, structured, and trusted.
+
+VERIFIED-DATA CITATION DISCIPLINE — HARD CONSTRAINT:
 
 For any specific date, deadline, dollar amount, contribution limit, filing fee, qualifying period, contact name, or compliance rule — your answer must trace to either:
 
@@ -7306,7 +7308,7 @@ For any specific date, deadline, dollar amount, contribution limit, filing fee, 
 
 TRAINING-DATA RECALL FORBIDDEN: do not state specific facts from memory. If neither (a) nor (b) provides the specific fact requested, say what you do know and offer to help find the answer — do NOT fabricate a date or dollar amount, and do NOT defer to authority URLs without first checking whether the VERIFIED CAMPAIGN REFERENCE DATA block has the answer.
 
-When VERIFIED CAMPAIGN REFERENCE DATA is present, integrate those facts into your answer in your strategic consultant voice. Cite the source named in that block (e.g., "per Florida Statutes § 99.061" or "per the Texas Secretary of State"). Do not say "according to my data" or similar database-pointing phrasing — speak from authoritative knowledge.` : ''}
+When VERIFIED CAMPAIGN REFERENCE DATA is present, integrate those facts into your answer in your strategic consultant voice. Cite the source named in that block (e.g., "per Florida Statutes § 99.061" or "per the Texas Secretary of State"). Do not say "according to my data" or similar database-pointing phrasing — speak from authoritative knowledge.
 
 CITATION DISCIPLINE — HARD CONSTRAINT (read every time, applies to ALL specific factual claims):
 
@@ -7724,7 +7726,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // logic has access) but before category-specific framing append
       // (so pre-fetched data is positioned ahead of category instructions
       // in the final prompt).
-      if (samEngine === 'gemini') {
+      { // Phase 1: un-forked (was samEngine==='gemini') — all users get pre-fetch now
         try {
           const _preFetchBlock = await assemblePreFetchContext({
             stateCode: state ? normalizeStateCode(state) : '',
@@ -7771,7 +7773,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       let _campaignRefStateForLog = null;
       let _campaignRefCategoryForLog = null;
       let _campaignRefRawOutputForLog = null;
-      if (samEngine === 'gemini') {
+      { // Phase 1: un-forked (was samEngine==='gemini') — all users get campaign_reference injection now
         try {
           const _refClassifierResult = classifyForReferenceLookup(_latestUserText, state);
           _campaignRefRawOutputForLog = JSON.stringify(_refClassifierResult);
@@ -7906,7 +7908,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // Flash). Gated on samEngine + relevant category — strategic and
       // conversational don't need grounding pressure (mandate would just
       // be noise on those turns).
-      if (samEngine === 'gemini' && (_questionCategory === 'factual' || _questionCategory === 'compliance' || _questionCategory === 'predictive')) {
+      if (_questionCategory === 'factual' || _questionCategory === 'compliance' || _questionCategory === 'predictive') {
         systemPrompt += '\n\n================================================================\nGROUNDING MANDATE FOR THIS TURN\n================================================================\n' +
           'GROUNDING MANDATE — this ' + _questionCategory + ' turn requires Search Grounding for any specific date, dollar amount, named contact, current event, compliance rule, or biographical claim. Do NOT use training-data recall for specifics. When grounding surfaces no verifiable source, defer with a specific authority URL using SMART DEFERRAL TEMPLATES — never substitute plausible-sounding training details. The validator strips any specific claim that didn\'t trace to grounding or pre-fetched context.';
       }
