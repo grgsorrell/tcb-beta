@@ -180,6 +180,69 @@ export default {
     }
 
     // ========================================
+    // HELPER: Password hashing — PBKDF2 (Phase 6) with transparent legacy
+    // SHA-256 migration.
+    //
+    // New format:  pbkdf2$<iterations>$<saltB64>$<hashB64>  (per-user 16-byte
+    // random salt, 210,000 iterations, SHA-256, 256-bit derived key).
+    // Legacy format: 64-char hex of SHA-256(password + salt). verifyPassword
+    // accepts both; callers rehash to the new format on a successful legacy
+    // verify. New signups / resets always write the new format.
+    // ========================================
+    const PBKDF2_ITERATIONS = 210000;
+    function _bytesToB64(bytes) {
+      let s = '';
+      const a = new Uint8Array(bytes);
+      for (let i = 0; i < a.length; i++) s += String.fromCharCode(a[i]);
+      return btoa(s);
+    }
+    function _b64ToBytes(b64) {
+      const bin = atob(b64);
+      const a = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+      return a;
+    }
+    function _constantTimeEqual(a, b) {
+      if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false;
+      let r = 0;
+      for (let i = 0; i < a.length; i++) r |= a.charCodeAt(i) ^ b.charCodeAt(i);
+      return r === 0;
+    }
+    async function _legacySha256Hex(password) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password + '_tcb_salt_2026'));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    async function _pbkdf2Bits(password, salt, iterations) {
+      const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+      return crypto.subtle.deriveBits({ name: 'PBKDF2', salt, iterations, hash: 'SHA-256' }, key, 256);
+    }
+    async function hashPasswordPBKDF2(password) {
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const bits = await _pbkdf2Bits(password, salt, PBKDF2_ITERATIONS);
+      return 'pbkdf2$' + PBKDF2_ITERATIONS + '$' + _bytesToB64(salt) + '$' + _bytesToB64(bits);
+    }
+    // Returns { ok, legacy }. ok = password matches; legacy = matched via the
+    // old SHA-256 path (caller should rehash + persist the new format).
+    async function verifyPassword(password, stored) {
+      if (!stored || typeof stored !== 'string') return { ok: false, legacy: false };
+      if (stored.indexOf('pbkdf2$') === 0) {
+        const parts = stored.split('$');
+        if (parts.length !== 4) return { ok: false, legacy: false };
+        const iterations = parseInt(parts[1], 10);
+        if (!Number.isFinite(iterations) || iterations < 1) return { ok: false, legacy: false };
+        let computed;
+        try {
+          const bits = await _pbkdf2Bits(password, _b64ToBytes(parts[2]), iterations);
+          computed = _bytesToB64(bits);
+        } catch (e) { return { ok: false, legacy: false }; }
+        return { ok: _constantTimeEqual(computed, parts[3]), legacy: false };
+      }
+      // Legacy SHA-256 hex.
+      const legacyHex = await _legacySha256Hex(password);
+      return { ok: _constantTimeEqual(legacyHex, stored), legacy: true };
+    }
+
+    // ========================================
     // HELPER: Resolve session → workspace context (C3, dormant until C4)
     // ========================================
     // Owner:    { userId, ownerId: userId, isSubUser: false, permissions: null }
@@ -869,8 +932,10 @@ export default {
     // selects rates and is also written to api_usage.model so weekly
     // cost-per-engine queries work cleanly.
     //
-    // Backwards compatible: existing 4-arg calls (no modelTag) default to
-    // claude-haiku-4-5-20251001 and behave exactly as before.
+    // Phase 6: the default modelTag is 'gemini-2.5-flash' — Sam runs on Gemini
+    // and every live caller passes Gemini-shape data. (The old
+    // claude-haiku-4-5-20251001 default mis-parsed any 4-arg Gemini-shape call
+    // as Anthropic-shape and logged 0 tokens.)
     //
     // Search Grounding billing note: Gemini 2.5 Flash grounded requests
     // are 1,500 RPD free (shared with Flash-Lite), then $35/1000. Tracked
@@ -878,7 +943,7 @@ export default {
     // this token-based cost calc. Phase 1 + Phase 4 won't hit the free
     // limit; revisit when broader rollout pushes daily aggregate above.
     async function logApiUsage(feature, data, userId, ownerId, modelTag) {
-      const model = modelTag || 'claude-haiku-4-5-20251001';
+      const model = modelTag || 'gemini-2.5-flash';
       let inputTokens, outputTokens, cost;
 
       if (model.startsWith('gemini')) {
@@ -1195,10 +1260,8 @@ export default {
         // Check email
         const existingEmail = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email.toLowerCase()).first();
         if (existingEmail) return jsonResponse({ error: 'email_taken' }, 409);
-        // Hash password
-        const encoder = new TextEncoder();
-        const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(password + '_tcb_salt_2026'));
-        const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        // Hash password (PBKDF2, Phase 6 — new accounts always get new format).
+        const hashHex = await hashPasswordPBKDF2(password);
         const userId = generateId();
         const now = new Date().toISOString();
         await env.DB.prepare(
@@ -1270,10 +1333,9 @@ export default {
           } catch (e) {}
         };
 
-        // Hash once — used by both owner and sub-user comparisons.
-        const encoder = new TextEncoder();
-        const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(password + '_tcb_salt_2026'));
-        const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        // Phase 6: PBKDF2 verify with transparent legacy-SHA-256 rehash.
+        // No single precomputed hash — each PBKDF2 hash carries its own salt,
+        // so verifyPassword is called per stored hash below.
 
         // ---- Try owner row first ----
         // Match on users.username OR users.email. Owner rows have a
@@ -1290,7 +1352,9 @@ export default {
             await logAttempt(false);
             return jsonResponse({ error: 'Account has been deleted' }, 401);
           }
-          if (hashHex === user.password_hash) {
+          const _ownerV = await verifyPassword(password, user.password_hash);
+          if (_ownerV.ok) {
+            if (_ownerV.legacy) { try { await env.DB.prepare('UPDATE users SET password_hash = ? WHERE id = ?').bind(await hashPasswordPBKDF2(password), user.id).run(); } catch (e) {} }
             // Owner login success.
             await logAttempt(true);
             await clearFailures();
@@ -1318,7 +1382,9 @@ export default {
           'SELECT * FROM sub_users WHERE LOWER(username) = ?'
         ).bind(clean).first();
 
-        if (sub && sub.password_hash === hashHex) {
+        const _subV = sub ? await verifyPassword(password, sub.password_hash) : { ok: false, legacy: false };
+        if (sub && _subV.ok) {
+          if (_subV.legacy) { try { await env.DB.prepare('UPDATE sub_users SET password_hash = ? WHERE id = ?').bind(await hashPasswordPBKDF2(password), sub.id).run(); } catch (e) {} }
           // Password matched. Check status.
           if (sub.status === 'revoked') {
             // Correct password, but account is disabled. Not the user's
@@ -1462,13 +1528,13 @@ export default {
         const subUsername = anchor.email.replace(/@sub\.tcb$/, '');
         const sub = await env.DB.prepare('SELECT id, password_hash FROM sub_users WHERE LOWER(username) = ?').bind(subUsername).first();
         if (!sub) return jsonResponse({ error: 'Sub-user record not found' }, 404);
-        // Hash new password.
-        const encoder = new TextEncoder();
-        const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(newPassword + '_tcb_salt_2026'));
-        const newHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-        if (newHash === sub.password_hash) {
+        // Phase 6: reject a no-op change (compare against the current hash in
+        // either format), then hash the new password with PBKDF2.
+        const _sameAsCurrent = await verifyPassword(newPassword, sub.password_hash);
+        if (_sameAsCurrent.ok) {
           return jsonResponse({ error: 'same_password', message: 'New password must be different from your current password.' }, 400);
         }
+        const newHash = await hashPasswordPBKDF2(newPassword);
         await env.DB.prepare(
           "UPDATE sub_users SET password_hash = ?, must_change_password = 0, last_password_change_at = datetime('now') WHERE id = ?"
         ).bind(newHash, sub.id).run();
@@ -1581,10 +1647,8 @@ export default {
           return jsonResponse({ error: 'expired_token', message: 'This reset link has expired. Please request a new one.' }, 400);
         }
 
-        // Hash with the same salt/algorithm used by signup + login.
-        const encoder = new TextEncoder();
-        const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(newPassword + '_tcb_salt_2026'));
-        const newHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        // Phase 6: resets always write the new PBKDF2 format.
+        const newHash = await hashPasswordPBKDF2(newPassword);
 
         await env.DB.prepare('UPDATE users SET password_hash = ? WHERE id = ?').bind(newHash, row.user_id).run();
 
@@ -1745,12 +1809,8 @@ export default {
           }
           return jsonResponse({ error: 'Username taken', suggestions }, 409);
         }
-        // Hash password (simple SHA-256 for beta — upgrade to bcrypt later)
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password + '_tcb_salt_2026');
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        // Phase 6: sub-users get the new PBKDF2 format.
+        const hashHex = await hashPasswordPBKDF2(password);
         const subUserId = generateId();
         // Store username lowercased — matches the users-table INSERT
         // convention at the create-account endpoint. Login resolution
@@ -1902,9 +1962,8 @@ export default {
         for (let i = 0; i < 7; i++) newPassword += charset[randBytes[i] % charset.length];
         newPassword += symbols[randBytes[7] % symbols.length];
 
-        // Hash with the same salt/algorithm used by login + change-password.
-        const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(newPassword + '_tcb_salt_2026'));
-        const newHash = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        // Phase 6: reset writes the new PBKDF2 format.
+        const newHash = await hashPasswordPBKDF2(newPassword);
 
         // Update sub_users: new hash, flip must_change_password back on so
         // the forced-takeover fires on next login, stamp last_password_change_at.
@@ -5704,26 +5763,25 @@ export default {
       // mid-debug. Every bypass is logged to sam_rate_bypass_events with
       // the actual call_count_today at the moment of bypass — production
       // posture is intact for all other accounts.
-      const BETA_USERNAMES = ['greg', 'shannan', 'cjc', 'jerry'];
       let _isBetaAccount = false;
       let _betaUsername = null;
       if (rateLimitUserId) {
         try {
-          // Username column is set for production users, but beta logins
-          // (/auth/beta-login) only set email like "<username>@beta.tcb".
-          // Fall back to extracting username from email when username is null.
-          const userRow = await env.DB.prepare('SELECT username, email FROM users WHERE id = ?').bind(rateLimitUserId).first();
-          let u = null;
-          if (userRow && userRow.username) {
-            u = String(userRow.username).toLowerCase();
-          } else if (userRow && userRow.email && /@beta\.tcb$/.test(userRow.email)) {
-            u = String(userRow.email).replace(/@beta\.tcb$/, '').toLowerCase();
-          }
-          if (u && BETA_USERNAMES.includes(u)) {
+          // Phase 6: grandfathered beta accounts (users.plan === 'beta') skip
+          // the 100/day cap — replaces the hardcoded username allowlist.
+          // Username/email is retained only for the bypass audit log.
+          const userRow = await env.DB.prepare('SELECT username, email, plan FROM users WHERE id = ?').bind(rateLimitUserId).first();
+          if (userRow && userRow.plan === 'beta') {
             _isBetaAccount = true;
-            _betaUsername = u;
+            if (userRow.username) {
+              _betaUsername = String(userRow.username).toLowerCase();
+            } else if (userRow.email && /@beta\.tcb$/.test(userRow.email)) {
+              _betaUsername = String(userRow.email).replace(/@beta\.tcb$/, '').toLowerCase();
+            } else if (userRow.email) {
+              _betaUsername = String(userRow.email).toLowerCase();
+            }
           }
-        } catch (e) { console.warn('[rate_bypass] username lookup failed:', e.message); }
+        } catch (e) { console.warn('[rate_bypass] plan lookup failed:', e.message); }
       }
 
       if (rateLimitUserId) {
@@ -7493,7 +7551,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
         // ESCAPE HATCH (Phase 3): live grounding as a function tool, so an
         // action-route turn keeps its full toolset AND can fetch live data.
-        // Handled server-side in callClaude's grounding sub-loop; capped at 2
+        // Handled server-side in callGemini's grounding sub-loop; capped at 2
         // calls/turn. Omitted on conversational turns AND on opponent-research
         // turns (grounding re-leaks masked opponent identities — same gate as
         // web_search).
@@ -7889,12 +7947,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       }
 
       // Route is decided once per user turn and cached across all
-      // callClaude invocations within the tool loop. Reset per request
-      // because callClaude is defined fresh inside the chat handler's
+      // callGemini invocations within the tool loop. Reset per request
+      // because callGemini is defined fresh inside the chat handler's
       // try block.
       let _chatRoute = null;
 
-      async function callClaude(msgs) {
+      async function callGemini(msgs) {
         // Pre-call defense: strip dangling citations from any message in
         // the array. Multi-turn conversations can carry citations from
         // earlier turns whose web_search_tool_result blocks have aged out
@@ -7955,7 +8013,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         //      in the user message.
         //
         // Cached for the entire turn — tool-loop re-invocations of
-        // callClaude reuse the same _chatRoute and never re-classify.
+        // callGemini reuse the same _chatRoute and never re-classify.
         if (_chatRoute === null) {
           // Highest priority: if the VPS historical-election pre-fetch
           // succeeded, force 'action'. Sam already has the verified
@@ -8176,9 +8234,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // compatibility.
       //
       // Grounding tool key normalized to "googleSearch" (camelCase) in Phase 4
-      // to match the working production path in callClaude — every call site
+      // to match the working production path in callGemini — every call site
       // now uses the same key. (An earlier note here claimed snake_case
-      // "google_search"; the live callClaude search route uses camelCase, so
+      // "google_search"; the live callGemini search route uses camelCase, so
       // that is the canonical form for this codebase.) NOT the older
       // "googleSearchRetrieval" from the Gemini 1.5 era.
       // ============================================================
@@ -8543,7 +8601,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       //       hardcoded literals — verified — so they cannot reintroduce
       //       real names. By the time runShadowGeminiTurn receives
       //       systemPrompt, it has placeholders ({{OPPONENT_1}}) only.
-      //     - messages are NOT pre-masked at this point (callClaude masks
+      //     - messages are NOT pre-masked at this point (callGemini masks
       //       internally on a local that doesn't escape). Step 1 below
       //       applies sanitizeMessagesForApi + maskMessagesArray before
       //       translation, mirroring the worker.js:7041-7045 pattern.
@@ -8554,7 +8612,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       //     - Gemini returns text containing {{OPPONENT_1}} placeholders
       //       (because it was given masked input). Step 4 demasks this
       //       text BEFORE audit and BEFORE D1 storage — mirrors the
-      //       production callClaudeAndDemask pattern (line 7868). Privacy
+      //       production callGeminiAndDemask pattern (line 7868). Privacy
       //       unaffected: Google has already returned the data, the
       //       demask is a same-side operation translating placeholders
       //       back to real names so audits compare apples-to-apples
@@ -8563,7 +8621,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       //
       //   Single source of truth: workspaceEntities (loaded from D1
       //   entity_masks for this workspace owner). Same set used by
-      //   callClaude, by line 6535's systemPrompt sweep, and by Step 1
+      //   callGemini, by line 6535's systemPrompt sweep, and by Step 1
       //   below — keeping the placeholders consistent in both directions.
       //
       // Citation audit deferred — validateUnsourcedClaims is too entangled
@@ -8625,7 +8683,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       //   - Returns Anthropic-shape { content, usage } so downstream
       //     code (validators, regen, response assembly) is shape-identical.
       //   - Throws on Gemini failure (caught by switching block at the
-      //     callClaudeAndDemask line, triggers Haiku fallback).
+      //     callGeminiAndDemask line, triggers Haiku fallback).
       //   - Calls stripToolReferencesForGemini on the masked systemPrompt
       //     before sending to Gemini.
       //   - No shadow audit calls — validator pipeline runs downstream
@@ -8663,7 +8721,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // by upstream sweep at line 6610, so real names are placeholders.
         const geminiSystemPrompt = stripToolReferencesForGemini(rawSystemPrompt);
 
-        // Step 2: Mask messages (mirrors callClaude internal masking).
+        // Step 2: Mask messages (mirrors callGemini internal masking).
         const sanitizedMsgs = sanitizeMessagesForApi(rawMessages || []);
         const maskedMsgs = (workEntities && workEntities.length > 0)
           ? maskMessagesArray(sanitizedMsgs, workEntities)
@@ -8818,7 +8876,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       //       if (error) return error;
       //
       // For Haiku users (samEngine !== 'gemini'), no error path —
-      // callClaude throws on Anthropic infra failures, propagating up
+      // callGemini throws on Anthropic infra failures, propagating up
       // the chat handler like before. Haiku-side behavior is unchanged.
       //
       // For Gemini regen failures: logs to gemini_production_failures
@@ -8859,7 +8917,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             };
           }
         }
-        return { result: await callClaude(retryMsgs), error: null };
+        return { result: await callGemini(retryMsgs), error: null };
       }
 
       // ============================================================
@@ -9093,9 +9151,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           } = params || {};
 
           // STEP 1: ENTITY-MASK INTEGRITY GATE
-          // Apply same masking layer callClaude uses (worker.js:7041-7045
+          // Apply same masking layer callGemini uses (worker.js:7041-7045
           // pattern). messages at this point are NOT pre-masked — the
-          // production callClaude masks internally on a local variable
+          // production callGemini masks internally on a local variable
           // that doesn't escape. Real opponent names must NEVER reach
           // Google's servers.
           const sanitizedMsgs = sanitizeMessagesForApi(messages || []);
@@ -9115,7 +9173,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
           // STEP 4: EXTRACT + DEMASK TEXTS for audit
           //
-          // Haiku side: data.content is already demasked by callClaudeAndDemask
+          // Haiku side: data.content is already demasked by callGeminiAndDemask
           // (line 7868) — _shadowHaikuRawContent inherits that demask, so
           // haikuRawText / haikuFinalText already have real names.
           //
@@ -9135,7 +9193,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           //      side-by-side with Haiku output. Storing demasked Gemini
           //      text means no manual unmasking step during review.
           //
-          // Mirrors the production callClaudeAndDemask pattern. workspaceEntities
+          // Mirrors the production callGeminiAndDemask pattern. workspaceEntities
           // is the single source of truth for both mask + demask directions.
           const haikuRawText = extractTextFromContent(haikuRawContent);
           const haikuFinalText = extractTextFromContent(haikuFinalContent);
@@ -9589,8 +9647,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // regens). Returns Anthropic response with content demasked,
       // so the rest of the chat handler — validators, tool execution,
       // logging — sees real entity names.
-      async function callClaudeAndDemask(msgs) {
-        const result = await callClaude(msgs);
+      async function callGeminiAndDemask(msgs) {
+        const result = await callGemini(msgs);
         if (workspaceEntities && workspaceEntities.length > 0 && result && Array.isArray(result.content)) {
           result.content = demaskContentArray(result.content, workspaceEntities);
         }
@@ -9613,7 +9671,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // consistency with the existing validator pipeline.
       const _shadowHaikuStartedAt = Date.now();
       let data;
-      // All users now route through callClaudeAndDemask → callClaude,
+      // All users now route through callGeminiAndDemask → callGemini,
       // which contains the search/action router (Gemini grounding for
       // factual questions, Gemini function calling for tool-using turns).
       // The legacy samEngine === 'gemini' branch routed through
@@ -9621,8 +9679,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // silently dropped save_note / add_calendar_event / etc. tool calls.
       // runProductionGeminiTurn is now dead code, kept around for
       // reference; remove after the router has proven stable.
-      data = await callClaudeAndDemask(messages);
-      // Phase 5: capture a Gemini error (callClaude returns {error} on API failure).
+      data = await callGeminiAndDemask(messages);
+      // Phase 5: capture a Gemini error (callGemini returns {error} on API failure).
       if (data && data.error) _turnGeminiError = String(data.error);
       const _shadowHaikuLatencyMs = Date.now() - _shadowHaikuStartedAt;
       const _shadowHaikuRawContent = (data && Array.isArray(data.content))
@@ -9653,7 +9711,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       if (_isBlankResponse(data.content)) {
         _turnWasBlank = true;
         _turnDidRetry = true;
-        const retryData = await callClaudeAndDemask(messages);
+        const retryData = await callGeminiAndDemask(messages);
         if (retryData && retryData.error && !_turnGeminiError) _turnGeminiError = String(retryData.error);
         if (!_isBlankResponse(retryData.content)) {
           data = retryData;

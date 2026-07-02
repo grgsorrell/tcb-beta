@@ -3,7 +3,7 @@
 ## What This Is
 TCB is an AI-powered political campaign management 
 platform. Single-page app with an AI campaign manager 
-named Sam powered by Claude Haiku.
+named Sam powered by Google Gemini 2.5 Flash.
 
 ## File Structure
 - index.html — Marketing website + login page
@@ -46,22 +46,27 @@ CSS Variables:
 
 ## Beta Users
 Usernames: greg, shannan, cjc, jerry
-Password: see Cloudflare secret BETA_PASSWORD on candidate-toolbox-secretary2 (rotated 2026-05-04; D1 users.password_hash also stores SHA-256 of the same value with `_tcb_salt_2026` salt for the unified /api/auth/login path)
+Password: see Cloudflare secret BETA_PASSWORD on candidate-toolbox-secretary2. Auth: D1 users.password_hash stores a **PBKDF2** hash (`pbkdf2$210000$<saltB64>$<hashB64>`, per-user salt, 210k iters, SHA-256). Legacy SHA-256 hashes (`_tcb_salt_2026` salt) still verify and are **transparently rehashed to PBKDF2 on next successful login**. Beta accounts are identified by **users.plan='beta'** (the old greg/shannan/cjc/jerry username allowlist for the rate-limit bypass was removed in the Sam overhaul).
 Session: 30 days (remember me) / 8 hours
 
 ## Critical Rules — Never Break These
-1. Sam model must always be claude-haiku-4-5-20251001
+1. Sam model is **gemini-2.5-flash** (main chat, router, classifier, all
+   validators, grounding sub-calls). The main chat function is `callGemini()`
+   (formerly `callClaude`); it translates Gemini responses into Anthropic-shape
+   `content` blocks — keep that translation and its comment.
 2. All localStorage keys must use storageKey() wrapper
    for per-user data namespacing
 3. No hardcoded candidate names anywhere in UI
-4. Worker system prompt order is critical:
-   1. Identity rule (candidate name first)
-   2. Brief injected as prose
-   3. Sam intro
-   4. Campaign data
-   5. Response style (max 12 rules)
-5. Research mode (mode:'research') bypasses Sam persona
-   and enables web_search — never change this
+4. System prompt is assembled from **module constants** (see
+   `lib/sam_prompt_modules.mjs`) in this stable-first order, volatile data last:
+   MODULE_IDENTITY → MODULE_TRUST_LADDER → MODULE_HARD_CONSTRAINTS →
+   MODULE_TOOL_GUIDANCE → [per-turn: capability statement, ground truth,
+   verified blocks, calendar, tool memory]. Keep the stable modules first so
+   Gemini implicit prefix caching works.
+5. Router (`routeUserIntent`) picks 'search' (native googleSearch grounding) vs
+   'action' (function tools). It is an OPTIMIZER, not a hard gate — an action
+   turn can still fetch live data via the `request_web_search` escape hatch, so
+   a misroute costs one hop, not a broken turn. Never remove the escape hatch.
 6. Design system CSS variables are locked
 
 ## Key localStorage Keys (all use storageKey())
@@ -73,18 +78,27 @@ ctb_finance_setup, ctb_day1_brief, ctb_budget
 Global keys (no namespacing):
 tcb_session, tcb_current_user, samVoiceEnabled
 
-## Sam 2.0 Tools (all defined in worker.js)
-web_search, add_calendar_event (tasks+events),
-update_task, delete_task, complete_task,
-update_event, delete_event, add_expense,
-log_contribution, set_budget (merged),
-set_category_allocation, save_note (merged),
-add_endorsement, navigate_to, save_win_number,
-save_candidate_profile
+## Sam Tools (Gemini — 21 declarations in worker.js `const tools = [...]`)
+Action/persistence (client-executed): add_calendar_event (tasks+events),
+update_task, delete_task, complete_task, update_event, delete_event,
+add_expense, log_contribution, set_budget, set_category_allocation, save_note,
+add_endorsement, navigate_to, save_win_number, save_candidate_profile.
+Verified-fact lookup tools (server-executed → Trust Ladder rung 3):
+lookup_jurisdiction, lookup_compliance_deadlines, lookup_finance_reports,
+lookup_donation_limits, lookup_top_donors.
+Search: `request_web_search` (the escape hatch — see below). The legacy
+Anthropic `web_search` declaration is stripped before Gemini sees the tools.
 
-Server-side tool loop (up to 10 rounds).
-Tool calls returned in data.toolCalls for
-client-side execution in app.html.
+**Escape hatch (`request_web_search`):** on an action-route turn, when Sam
+calls it, `callGemini` runs a grounding-only Gemini sub-call
+(`runGroundingSubturn`), feeds `{excerpt, sources}` back as a functionResponse,
+and re-calls with the full toolset — capped at 2 grounding calls/turn. Omitted
+on conversational and opponent-research turns. This is what keeps the action
+path fully capable, so the router can be a soft optimizer.
+
+For Gemini, function tools and native googleSearch grounding are mutually
+exclusive per call — hence the escape hatch on the action path and native
+grounding on the search path.
 
 ## Known Working State
 - Login system working with session cookies
@@ -95,7 +109,7 @@ client-side execution in app.html.
   openAboutSam() / closeAboutSam(). Copy is the canonical source — update it
   directly in the #about-overlay markup.
 - Morning brief: AI-generated daily, background gen on day 1
-- Sam 2.0: server-side tool loop, 16 consolidated tools
+- Sam (Gemini 2.5 Flash): 21 tool declarations + request_web_search escape hatch; per-turn tracing to sam_turn_trace
 - All Sam tools executing correctly (10/10 Playwright tests)
 - Compliance checkboxes persisting
 - Voice TTS and mic STT working
@@ -115,10 +129,10 @@ Tab 3 — Threat Assessment: reads opponents from in-memory
   `intelOpponents`. Sorts by threatLevel desc. No refresh —
   auto-reflects Tab 1 state.
 
-Research cost targets:
-- Federal opponent: ~$0.005 (FEC finances + 1 VPS search + Haiku synthesis)
-- Non-federal opponent: $0.05-0.07 (Haiku with web_search, max_uses: 3)
-- Pulse: ~$0.005 (VPS search + Haiku synthesis)
+Research cost targets (synthesis now via Gemini 2.5 Flash, not Haiku):
+- Federal opponent: ~$0.005 (FEC finances + 1 VPS search + Gemini synthesis)
+- Non-federal opponent: VPS/grounding search + Gemini synthesis
+- Pulse: ~$0.005 (VPS search + Gemini synthesis)
 
 Feature tags in api_usage: intel_opponent_fec, intel_opponent_anthropic,
 intel_pulse_vps, intel_pulse_anthropic.
@@ -799,18 +813,28 @@ localStorage wipe + D1 resync).
    "Uncategorized" option entirely (parking bucket only,
    not a destination for new expenses).
 
-## Anti-Bloat Rule (check before every deploy)
-- System prompt: MUST be under 800 words (currently 623)
-- Rules: MUST be 15 or fewer (currently 15)
-- Tools: MUST be 16 or fewer (currently 16)
-- Never add a new rule without removing or merging one
-- Never add a new tool without removing or merging one
-- Quick check: `sed -n '/let systemPrompt/,/\`;$/p' worker.js | wc -w`
+## Prompt Budget Rule (check before every deploy)
+The prompt is modular (`lib/sam_prompt_modules.mjs`). Per-module word budgets
+are enforced by a script that fails loudly on breach:
+- Quick check: `node scripts/check_prompt_budget.mjs`
+- Budgets: MODULE_IDENTITY ≤450, MODULE_TRUST_LADDER ≤500,
+  MODULE_HARD_CONSTRAINTS ≤1050, MODULE_TOOL_GUIDANCE ≤600; base assembly
+  (the four modules) ≤2500 words total. (Current base ≈1,886.)
+- The FACT TRUST LADDER (MODULE_TRUST_LADDER) is the single citation system —
+  it replaced five overlapping ones. Don't reintroduce a parallel citation
+  block; extend the ladder instead.
+- The old "under 800 words / 16 tools / `sed | wc -w`" check is retired — it was
+  never accurate against the real (formerly ~8,700-word) prompt.
 
 ## When Making Changes
 - Always test with localStorage.clear() + fresh onboarding
-- Never modify the worker system prompt order
-- Never change the Haiku model string
+- Keep the module assembly order (identity → ladder → constraints → tool
+  guidance → volatile); don't move volatile data ahead of the stable modules
+- Never change the Gemini model string (gemini-2.5-flash)
+- Reliability: every main chat turn writes a row to the `sam_turn_trace` D1
+  table (route, tools, gemini_error, was_blank, did_retry, validator fail-opens,
+  tokens, latency); ≥5 Gemini errors/hour emails an alert (rate-limited 6h). Do
+  not remove the trace write in `buildSafeResponse`.
 - Always keep CORS headers on all Worker responses
 - Budget progress bar shows AVAILABLE not spent
 - Days to election always calculated fresh — never cached
