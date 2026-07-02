@@ -217,8 +217,11 @@ Phase 2 corruption. Wiring confirmed: tool decl present, `runGroundingSubturn` d
   action tool (e.g. `save_note`) in the same response, the action gets an "acknowledged — re-issue
   after search" functionResponse (to satisfy the API contract) and the model re-issues it the next
   round. In practice the model searches-then-acts sequentially, so this is a rare edge; documented.
-- **functionResponse role.** The grounding result is fed back as `{role:'user', parts:[{functionResponse}]}`
-  — the Gemini REST-accepted shape. Worth confirming against a live turn in Greg's manual test.
+- **functionResponse role — LIVE-VALIDATED.** The grounding result is fed back as
+  `{role:'user', parts:[{functionResponse}]}`. `scripts/test_gemini_functionresponse.mjs` was run
+  against the live Gemini API and **PASSED**: Round 1 triggered `request_web_search`, Round 2 accepted
+  the `functionResponse` (HTTP 200), and the model called an action tool afterward. The escape-hatch
+  round-trip shape is confirmed — this risk is closed.
 - **One descriptive validator `web_search` mention left** (worker.js ~10729, a confidence-tag
   description, not an actionable instruction) — left for the Phase 4 validator restructure, along with
   the smart-deferral validator references noted in Phase 2.
@@ -414,7 +417,7 @@ legacy salt only in the verify helper; gemini modelTag default; plan-based beta 
 - **Phase 2:** URL-ROUTING FL table + FL worked-example deferrals intentionally dropped (superseded by
   the ladder). Validator-side FL-domain refs flagged for Phase 4.
 - **Phase 3:** co-emitted action tool + `request_web_search` in one response defers the action one
-  round (documented edge). `functionResponse` role shape to confirm on a live turn.
+  round (documented edge). `functionResponse` round-trip shape **live-validated** (test PASSED).
 - **Phase 4:** validator **merge NOT done** (different triggers/schemas/tables — left separate but
   schema-ified). One descriptive validator `web_search` mention handled in Phase 5.
 - **Phase 5:** dead-code **not deleted** (all reachable). **URL-acceptance whitelist de-Floridification

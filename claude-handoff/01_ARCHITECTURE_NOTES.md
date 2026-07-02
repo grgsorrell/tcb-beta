@@ -102,6 +102,6 @@ section of the prior notes / worker.js `/api/billing/*`.
   FL-domain examples in regen prompts (kept because they're whitelist-coupled).
 - `runProductionGeminiTurn`/`geminiCallSam` kept (reachable) but represent a confusing legacy Haiku
   path; worth a dedicated cleanup once `samEngine` is fully retired.
-- Live-verify items for Greg: PBKDF2 login (existing password), password reset, a Gemini
-  functionResponse round-trip (`scripts/test_gemini_functionresponse.mjs`), and the failure-alert
-  email. Full checklist in `OVERHAUL_REPORT.md`.
+- Live-verify items for Greg: PBKDF2 login (existing password), password reset, and the failure-alert
+  email. Full checklist in `OVERHAUL_REPORT.md`. (The Gemini functionResponse round-trip —
+  `scripts/test_gemini_functionresponse.mjs` — has already been run live and **PASSED**.)
