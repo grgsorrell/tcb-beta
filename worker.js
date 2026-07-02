@@ -5908,8 +5908,85 @@ export default {
         return respObj;
       }
 
+      // Phase 5: write a per-turn trace row (fire-and-forget) and, on a Gemini
+      // error, run the rate-limited failure alert.
+      async function recordTurnTrace(t) {
+        try {
+          await env.DB.prepare(
+            "INSERT INTO sam_turn_trace (user_id, ts, route, tools_called, gemini_error, was_blank, did_retry, validator_result, input_tokens, output_tokens, latency_ms) VALUES (?, datetime('now'), ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+          ).bind(
+            rateLimitUserId || null,
+            t.route || null,
+            JSON.stringify(t.toolsCalled || []),
+            t.geminiError || null,
+            t.wasBlank ? 1 : 0,
+            t.didRetry ? 1 : 0,
+            t.validatorResult || null,
+            t.inputTokens || 0,
+            t.outputTokens || 0,
+            t.latencyMs || 0
+          ).run();
+        } catch (e) { console.warn('[turn_trace] insert failed:', e && e.message); }
+        if (t.geminiError) {
+          try { await maybeSendFailureAlert(t.geminiError); } catch (e) { console.warn('[turn_trace] alert failed:', e && e.message); }
+        }
+      }
+
+      // Failure alert: >=5 Gemini errors in the last 60 min triggers one email
+      // to Greg via Resend, rate-limited to once per 6h. Rate-limit state is a
+      // route='__alert__' sentinel row in sam_turn_trace (no second table).
+      async function maybeSendFailureAlert(latestError) {
+        const cnt = await env.DB.prepare(
+          "SELECT COUNT(*) AS n FROM sam_turn_trace WHERE gemini_error IS NOT NULL AND (route IS NULL OR route != '__alert__') AND ts > datetime('now', '-60 minutes')"
+        ).first();
+        if (!cnt || cnt.n < 5) return;
+        const last = await env.DB.prepare(
+          "SELECT MAX(ts) AS last_ts FROM sam_turn_trace WHERE route = '__alert__'"
+        ).first();
+        if (last && last.last_ts) {
+          const lastMs = Date.parse(String(last.last_ts).replace(' ', 'T') + 'Z');
+          if (Number.isFinite(lastMs) && lastMs > Date.now() - 6 * 60 * 60 * 1000) return;
+        }
+        const safeErr = String(latestError || '').slice(0, 300).replace(/[<>&]/g, '');
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + env.RESEND_API_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: 'Candidate Tool Box <sam@thecandidatestoolbox.com>',
+            to: ['grgsorrell@gmail.com'],
+            subject: 'Sam alert: ' + cnt.n + ' Gemini errors in the last hour',
+            html: '<p>Sam has logged <b>' + cnt.n + '</b> Gemini errors in the last 60 minutes.</p>' +
+                  '<p>Most recent: <code>' + safeErr + '</code></p>' +
+                  '<p>See the sam_turn_trace table for detail. This alert is rate-limited to once per 6 hours.</p>'
+          })
+        });
+        await env.DB.prepare(
+          "INSERT INTO sam_turn_trace (user_id, ts, route, gemini_error) VALUES ('__alert__', datetime('now'), '__alert__', ?)"
+        ).bind('alert sent; recent error: ' + String(latestError || '').slice(0, 120)).run();
+      }
+
       function buildSafeResponse(respObj) {
         applySafeModeBanner(respObj);
+        // Phase 5: fire-and-forget per-turn trace (never blocks the response).
+        // Covers error and blank turns since every return routes through here.
+        try {
+          if (ctx && typeof ctx.waitUntil === 'function') {
+            const _toolsCalled = Array.isArray(respObj && respObj.content)
+              ? respObj.content.filter(b => b && b.type === 'tool_use').map(b => b.name)
+              : [];
+            ctx.waitUntil(recordTurnTrace({
+              route: _chatRoute,
+              toolsCalled: _toolsCalled,
+              geminiError: _turnGeminiError,
+              wasBlank: _turnWasBlank,
+              didRetry: _turnDidRetry,
+              validatorResult: JSON.stringify({ failOpens: _validatorFailOpens }),
+              inputTokens: _turnTokens.input,
+              outputTokens: _turnTokens.output,
+              latencyMs: Date.now() - _turnStart
+            }));
+          }
+        } catch (e) { /* trace must never break the response */ }
         return new Response(JSON.stringify(respObj), {
           headers: { "Content-Type": "application/json", ...corsHeaders }
         });
@@ -7156,6 +7233,13 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       const _noteValidatorFailOpen = (name, reason) => {
         try { _validatorFailOpens.push({ validator: name, reason: String(reason || 'unknown').slice(0, 200) }); } catch (e) {}
       };
+      // Phase 5: per-turn trace state (persisted to sam_turn_trace in
+      // buildSafeResponse — the single response chokepoint).
+      const _turnStart = Date.now();
+      const _turnTokens = { input: 0, output: 0 };
+      let _turnGeminiError = null;
+      let _turnWasBlank = false;
+      let _turnDidRetry = false;
       // Log classification event
       try {
         await env.DB.prepare(
@@ -8000,6 +8084,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             chatOwnerId,
             'gemini-2.5-flash'
           );
+          // Phase 5: accumulate main-turn tokens for sam_turn_trace.
+          _turnTokens.input += (geminiData && geminiData.usageMetadata && geminiData.usageMetadata.promptTokenCount) || 0;
+          _turnTokens.output += (geminiData && geminiData.usageMetadata && geminiData.usageMetadata.candidatesTokenCount) || 0;
 
           if (geminiData.error) {
             console.error('Gemini API error:', geminiData.error);
@@ -9460,7 +9547,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
       // Simple pass-through: one API call, return raw response.
       // Client handles tool execution and follow-up calls.
-      const messages = (history && history.length > 0) ? [...history] : [{ role: "user", content: message }];
+      // Phase 5: server-side history cap. Bound the prompt to the last 30
+      // messages (~15 turns) regardless of what the client sends, to cap token
+      // blow-out and prompt-injection surface. Downstream sanitize/toGeminiHistory
+      // handles any tool_use/tool_result trimming at the boundary.
+      const messages = (history && history.length > 0) ? history.slice(-30) : [{ role: "user", content: message }];
 
       // Relative-date preprocessor: rewrite the latest user-text message
       // (skip tool_result blocks) so Haiku sees absolute dates inline.
@@ -9531,6 +9622,8 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // runProductionGeminiTurn is now dead code, kept around for
       // reference; remove after the router has proven stable.
       data = await callClaudeAndDemask(messages);
+      // Phase 5: capture a Gemini error (callClaude returns {error} on API failure).
+      if (data && data.error) _turnGeminiError = String(data.error);
       const _shadowHaikuLatencyMs = Date.now() - _shadowHaikuStartedAt;
       const _shadowHaikuRawContent = (data && Array.isArray(data.content))
         ? JSON.parse(JSON.stringify(data.content))
@@ -9558,19 +9651,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         } catch (e) { console.warn('[blank_response_log] failed:', e.message); }
       }
       if (_isBlankResponse(data.content)) {
+        _turnWasBlank = true;
+        _turnDidRetry = true;
         const retryData = await callClaudeAndDemask(messages);
+        if (retryData && retryData.error && !_turnGeminiError) _turnGeminiError = String(retryData.error);
         if (!_isBlankResponse(retryData.content)) {
           data = retryData;
           await _logBlankResponseEvent(true, true, false, false);
         } else {
           // Both blank — substantive fallback. Routes user to authoritative
           // sources for the most common question types per Phase 4.
+          // Phase 5: jurisdiction-neutral fallback. Templates the candidate's
+          // state when known; never emits a state-specific URL (the old copy
+          // hardcoded FL / Orange County, wrong for every non-FL candidate).
+          const _fbState = (state && String(state).trim()) ? String(state).trim() : 'your state';
           const fallbackText =
-            "I had trouble formulating a response on that one — sometimes the tool calls don't synthesize cleanly on my end. Let me ask: can you tell me a bit more about what you're trying to figure out? While you do, here are the authoritative sources for the most common questions:\n\n" +
-            "- Filing/qualifying deadlines, contribution limits, finance reporting (FL): dos.fl.gov/elections/for-candidates\n" +
-            "- Federal candidate questions: fec.gov/help-candidates-and-committees\n" +
-            "- County-level questions (Orange County): ocfelections.gov\n" +
-            "- Legal/tax referrals: floridabar.org/public/lrs and irs.gov\n\n" +
+            "I had trouble formulating a response on that one — sometimes the tool calls don't synthesize cleanly on my end. Can you tell me a bit more about what you're trying to figure out? In the meantime, for verified specifics the authoritative sources are:\n\n" +
+            "- Filing/qualifying deadlines, contribution limits, and finance reporting: " + _fbState + "'s Division/Secretary of Elections (search \"" + _fbState + " Division of Elections\"), and for federal races fec.gov/help-candidates-and-committees\n" +
+            "- County/local specifics: your county Supervisor of Elections or clerk's office\n" +
+            "- Legal or tax questions: your state bar's lawyer-referral service, and irs.gov for political-organization tax guidance\n\n" +
             "Want me to set a calendar reminder to follow up, or rephrase your question and I'll try again?";
           data = { ...retryData, content: [{ type: 'text', text: fallbackText }] };
           await _logBlankResponseEvent(true, true, true, true);
@@ -9697,7 +9796,18 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                generationConfig: { maxOutputTokens: 400, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+                // Phase 5: structured output — schema-validated JSON, no regex extraction.
+                generationConfig: {
+                  maxOutputTokens: 400,
+                  temperature: 0,
+                  thinkingConfig: { thinkingBudget: 0 },
+                  responseMimeType: 'application/json',
+                  responseSchema: {
+                    type: 'object',
+                    properties: { dates: { type: 'array', items: { type: 'string' } } },
+                    required: ['dates']
+                  }
+                }
               })
             }
           );
@@ -9710,12 +9820,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           if (auditData && auditData.candidates && auditData.candidates[0] && auditData.candidates[0].content && Array.isArray(auditData.candidates[0].content.parts)) {
             for (const p of auditData.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
-          const mm = txt.match(/\{[\s\S]*\}/);
-          if (!mm) return [];
-          const parsed = JSON.parse(mm[0]);
+          const parsed = JSON.parse(txt);
           return Array.isArray(parsed.dates) ? parsed.dates : [];
         } catch (e) {
           console.warn('[compliance_validator] extract failed:', e.message);
+          _noteValidatorFailOpen('compliance', e.message);
           return [];
         }
       }
@@ -10007,7 +10116,18 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                generationConfig: { maxOutputTokens: 400, temperature: 0, thinkingConfig: { thinkingBudget: 0 } }
+                // Phase 5: structured output — schema-validated JSON, no regex extraction.
+                generationConfig: {
+                  maxOutputTokens: 400,
+                  temperature: 0,
+                  thinkingConfig: { thinkingBudget: 0 },
+                  responseMimeType: 'application/json',
+                  responseSchema: {
+                    type: 'object',
+                    properties: { dates: { type: 'array', items: { type: 'string' } } },
+                    required: ['dates']
+                  }
+                }
               })
             }
           );
@@ -10020,12 +10140,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           if (auditData && auditData.candidates && auditData.candidates[0] && auditData.candidates[0].content && Array.isArray(auditData.candidates[0].content.parts)) {
             for (const p of auditData.candidates[0].content.parts) if (p && p.text) txt += p.text;
           }
-          const mm = txt.match(/\{[\s\S]*\}/);
-          if (!mm) return [];
-          const parsed = JSON.parse(mm[0]);
+          const parsed = JSON.parse(txt);
           return Array.isArray(parsed.dates) ? parsed.dates : [];
         } catch (e) {
           console.warn('[finance_validator] extract failed:', e.message);
+          _noteValidatorFailOpen('finance', e.message);
           return [];
         }
       }

@@ -287,4 +287,99 @@ green.
   flagged as an easy follow-up applying the same pattern.
 
 ---
+## Phase 5 — Reliability (+ two folded items)
+
+### Folded 1 — compliance-date & finance validators → responseSchema
+Both converted with the exact pattern used for the named three: `responseMimeType:'application/json'`
++ `responseSchema { dates: string[] }`, direct `JSON.parse` (regex `match(/\{…\}/)` removed), and
+fail-open now recorded via `_noteValidatorFailOpen('compliance'|'finance', …)`. All **five** validators
+are now schema-ified (7 `responseSchema` sites total incl. router + classifier).
+
+### Folded 2 — URL-acceptance whitelist investigation (report only, no code change)
+
+**(a) Whitelisted domains, verbatim** (`V2_KNOWN_AUTHORITY_DOMAINS`, worker.js ~9785):
+`fec.gov, irs.gov, census.gov, data.census.gov, dos.fl.gov, dos.myflorida.com,
+dos.elections.myflorida.com, myflorida.com, sos.state.tx.us, votetexas.gov, ocfelections.gov,
+voterfocus.com, sb.seminolecountyfl.gov, floridabar.org, ballotpedia.org` (15 domains). In addition,
+`urlMatchesAuthoritative(url, authoritativeUrls)` first accepts any URL matching a **tool-returned**
+authority URL (`lookupResult.authority.url/notes/…`, dynamic per race).
+
+**(b) End-to-end when a citation host is NOT whitelisted** (compliance/finance/donation validator
+paths): the audit computes `unauthorizedUrls = claimedUrls.filter(u => !urlMatchesAuthoritative(u,…))`.
+If any unauthorized URL (or unauthorized date) is present → `regenerateWith{Compliance,Finance}Feedback`
+runs (Sam rewrites with a STOP prompt). The regen is **re-audited**; if an unauthorized URL still
+survives → `stripUnauthorized{…}Artifacts` **removes the URL token (and unauthorized dates) from the
+text**. The user sees the response with the citation **silently stripped** — the turn does **not**
+error or fail; it degrades (regenerate → strip), and a validation event is logged
+(`action = regenerated | stripped | passed`). **Consequence:** a *correct* state authority URL for a
+non-FL/TX candidate (e.g. an Ohio candidate citing `ohiosos.gov`) that the tool didn't return gets
+treated as unauthorized, forced through a regen, and — if it persists — stripped, leaving the user a
+less-useful answer.
+
+**(c) First-pass or regen-only?** **Both.** The same `urlMatchesAuthoritative` gate computes the
+first-pass `unauthorizedUrls` (which decides whether to regen at all) *and* the post-regen re-audit.
+So it gates first-pass citations too — but only **within** the compliance/finance/donation validator
+paths, which fire only when that fact-class validator is active for the turn (there is no global
+per-turn URL gate; the broader citation verifier uses a separate grounding-aware check).
+
+**(d) Recommendation (lead engineer decides fix + phase):**
+1. **Pattern-accept government hosts** instead of an explicit FL/TX list: accept `*.gov`,
+   `*.state.<xx>.us`, and `*.<xx>.us` government patterns + a small federal allowlist
+   (fec.gov/irs.gov/census.gov/ballotpedia.org). Simple, low-risk, immediately unbreaks every
+   non-FL/TX candidate. (`*.gov` is broad but still excludes `.com` fabrications.)
+2. **Augment with a per-state authority list from `campaign_reference`** (3,789 rows already carry
+   `source_url` per state) — build the accept-list from the candidate's state rows for precision.
+3. **Long-term:** replace host-gating with **grounding provenance** — accept a URL iff it appeared in
+   a tool/grounding result *this turn* (now feasible because `request_web_search` returns real source
+   URLs). Cleanest, but a larger refactor.
+   Also: **fix the loose bidirectional substring match** — `urlMatchesAuthoritative` uses
+   `cl.includes(known) || known.includes(cl)`; the second direction over-accepts short tokens. Tighten
+   to hostname-suffix matching.
+   *My pick: ship (1) now, add (2) soon, plan (3).*
+
+### Main Phase 5 work
+- **5.1 `sam_turn_trace` table** — `migrations/001_sam_turn_trace.sql` (schema exactly as specified,
+  `id INTEGER PK AUTOINCREMENT`) **created on `--remote`** (the one permitted D1 write; verified
+  present). Two indexes for the alert/error queries.
+- **5.2 Per-turn tracing** — one row per main chat turn, written fire-and-forget (`ctx.waitUntil`)
+  from **`buildSafeResponse`**, the single response chokepoint every path (incl. error and blank
+  turns) routes through. Captures route, tools_called, gemini_error, was_blank, did_retry,
+  input/output tokens (accumulated in callClaude's loop), latency, and **`validator_result` =
+  `{failOpens: _validatorFailOpens}`** — persisting the Phase 4 accumulator as designed. Error/blank
+  flags are set where callClaude returns `{error}` and in the blank-retry block.
+- **5.3 Failure alerting** — on a Gemini-error turn, `maybeSendFailureAlert` counts errors in the last
+  60 min; if ≥5 it emails Greg via Resend (`sam@thecandidatestoolbox.com` → `grgsorrell@gmail.com`)
+  with the error summary, **rate-limited to once per 6h**. Rate-limit state is a `route='__alert__'`
+  **sentinel row in `sam_turn_trace`** — deliberately avoiding a second table (hard-rule: one new
+  table). The error-count query excludes sentinel rows.
+- **5.4 Jurisdiction-neutral fallback** — the double-blank fallback no longer hardcodes FL / Orange
+  County. It templates the candidate's `state` when known and points to generic authorities (their
+  state's Division/Secretary of Elections via a search hint, county SoE, state bar, plus the
+  state-agnostic federal `fec.gov`/`irs.gov`). **No state-specific URL emitted.**
+- **5.5 History cap** — incoming `history` is `slice(-30)` before building geminiContents, bounding
+  prompt tokens / injection surface regardless of client behavior.
+- **5.6 Dead-code assessment — LEFT ALL, documented (none provably unreachable):**
+  - `geminiCallSam` ← reachable via the **live** shadow path (`runShadowGeminiTurn`, gated by
+    `shadowEnabledForUser`/`SHADOW_GEMINI_USER_IDS`, called at ~11699) **and** via
+    `runProductionGeminiTurn`.
+  - `runProductionGeminiTurn` ← reachable via `regenViaEngine` (7 live validator-regen call sites)
+    when `samEngine === 'gemini'` (the gemini-engine users).
+  - `logGeminiFailure` ← reachable via `regenViaEngine`'s catch.
+  The architecture-notes "dead code" label was **inaccurate** — these run for gemini-engine and
+  shadow-allowlist users. Per the spec ("delete ONLY if provably unreachable"), nothing was deleted.
+
+**Verification:** `node --check` passes (no pipe); budget guard green; 7 responseSchema sites; 5
+fail-open notes; trace insert (main + sentinel) + `recordTurnTrace` wired; history cap present; FL
+double-blank fallback removed. The migration is applied and the table confirmed in D1.
+
+**Risks / notes:**
+- `sam_turn_trace` inserts are fire-and-forget; a D1 hiccup drops a trace row silently (logged to
+  console) but never affects the user response — acceptable for telemetry.
+- The alert email path depends on `RESEND_API_KEY` + the verified sender domain (both already in
+  place). Worth one live check that an alert actually sends (hard to trigger without ≥5 real errors;
+  Greg could temporarily lower the threshold to smoke-test).
+- Token counts in the trace are the **main-turn** Gemini tokens (sum across escape-hatch rounds);
+  grounding-subturn and validator tokens are logged separately via `logApiUsage`, not in the trace.
+
+---
 <!-- Phases appended below as completed. -->
