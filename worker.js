@@ -7018,7 +7018,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // Rule 1 now explicitly invites web_search as a verification path.
       // ========================================
       if (safeModeActive) {
-        systemPrompt += '\n\n================================================================\nSAFE MODE ACTIVE — RELIABILITY HEURISTIC\n================================================================\nEarlier in this conversation, your responses contained claims that needed correction by validators. The system has degraded your default behavior to favor honest deferral over attempted answers.\n\nWhile Safe Mode is active:\n\n1. Default to deferral on uncertain claims. When uncertain about ANY specific fact (date, dollar amount, name, organization, statistic) and no source is available via web_search or context, do NOT attempt to recall it. Tell the user "I don\'t have verified [X] — please confirm with [appropriate authority]."\n\n2. Acknowledge the situation when relevant. If the user asks a factual question and you defer, you may briefly note: "I want to be careful here — I\'ve had some accuracy issues in our conversation, so I\'d rather have you verify than guess."\n\n3. Strategic guidance is still your job. You can still give campaign strategy advice, frame options, ask good questions, and structure thinking. Safe Mode targets specific factual claims, not strategic reasoning.\n\nWHY: When your validator firings exceed a threshold in a single conversation, the system signals that something is producing repeated drift. The right response is increased honesty about uncertainty, not increased confidence to compensate.';
+        systemPrompt += '\n\n================================================================\nSAFE MODE ACTIVE — RELIABILITY HEURISTIC\n================================================================\nEarlier in this conversation, your responses contained claims that needed correction by validators. The system has degraded your default behavior to favor honest deferral over attempted answers.\n\nWhile Safe Mode is active:\n\n1. Default to deferral on uncertain claims. When uncertain about ANY specific fact (date, dollar amount, name, organization, statistic) and no source is available via request_web_search or context, do NOT attempt to recall it. Tell the user "I don\'t have verified [X] — please confirm with [appropriate authority]."\n\n2. Acknowledge the situation when relevant. If the user asks a factual question and you defer, you may briefly note: "I want to be careful here — I\'ve had some accuracy issues in our conversation, so I\'d rather have you verify than guess."\n\n3. Strategic guidance is still your job. You can still give campaign strategy advice, frame options, ask good questions, and structure thinking. Safe Mode targets specific factual claims, not strategic reasoning.\n\nWHY: When your validator firings exceed a threshold in a single conversation, the system signals that something is producing repeated drift. The right response is increased honesty about uncertainty, not increased confidence to compensate.';
       }
 
       // ========================================
@@ -7069,7 +7069,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // Append a note to the system prompt so Sam knows web_search
         // is unavailable for this turn and why. She can then defer
         // honestly to the user instead of trying to research.
-        systemPrompt += '\n\nOPPONENT RESEARCH GATE — IMPORTANT: web_search is DISABLED for this turn because the user message contains opponent-research signals. Do NOT cite web sources. Use ONLY the Intel panel data shown in GROUND TRUTH and information the user has provided. If Intel data is limited, acknowledge that and ask the user to tell you what they know about the opponent directly in chat — qualitative details (fundraising, endorsements, voting record, controversies) belong in conversation, not in Intel. This is a hard system constraint, not a soft suggestion.';
+        systemPrompt += '\n\nOPPONENT RESEARCH GATE — IMPORTANT: live web search (web_search and request_web_search) is DISABLED for this turn because the user message contains opponent-research signals. Do NOT cite web sources. Use ONLY the Intel panel data shown in GROUND TRUTH and information the user has provided. If Intel data is limited, acknowledge that and ask the user to tell you what they know about the opponent directly in chat — qualitative details (fundraising, endorsements, voting record, controversies) belong in conversation, not in Intel. This is a hard system constraint, not a soft suggestion.';
         if (conversation_id) {
           env.DB.prepare(
             'INSERT INTO sam_opponent_validation_events (id, conversation_id, workspace_owner_id, user_id, action_taken, blocked_search_query) VALUES (?, ?, ?, ?, ?, ?)'
@@ -7302,12 +7302,12 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         systemPrompt += '\n\nSTRATEGIC GROUNDING — CATEGORY: STRATEGIC:\n\n' +
           'This is a strategic question — guidance, messaging, targeting, allocation, or recommendation. Use the candidate\'s Intel data, profile, and Opposition Notes (above in GROUND TRUTH and ABOUT YOUR CANDIDATE) as the PRIMARY context. Strategic recommendations should be specific to this race — not generic patterns.\n\n' +
           'When you reference industry benchmarks (door-knock counts, mail response rates, etc.), tag with "(typical pattern — your race may differ)" or contextually customized wording. Never use the words "HIGH/MEDIUM/LOW confidence".\n\n' +
-          'Strategic JUDGMENTS don\'t need citations ("I think you should focus on healthcare messaging" doesn\'t need a URL). But strategic reasoning often surfaces FACTS — specific dollar amounts, named opponents, current events, electoral history. Those facts MUST be web_searched and cited, even inside strategic responses. When in doubt: search first, then reason on the cited results.\n\n' +
+          'Strategic JUDGMENTS don\'t need citations ("I think you should focus on healthcare messaging" doesn\'t need a URL). But strategic reasoning often surfaces FACTS — specific dollar amounts, named opponents, current events, electoral history. Those facts MUST be fetched via request_web_search (or a lookup tool / verified block) and cited, even inside strategic responses. When in doubt: search first, then reason on the cited results.\n\n' +
           'WHY: Strategic recommendations are judgments grounded in the user\'s specific context. Forcing every strategic sentence to carry a citation makes Sam wooden and less useful — but skipping search on factual claims inside strategic reasoning produces fabrication. The user wants reasoning grounded in real data, not links on every sentence.';
       } else if (_questionCategory === 'compliance') {
         systemPrompt += '\n\nCOMPLIANCE FRAMING — CATEGORY: COMPLIANCE:\n\n' +
           'This is a legal, regulatory, ethics, tax, or campaign-finance question. Treat it at MAXIMUM strictness:\n\n' +
-          '- Even when you find a relevant rule via web_search, append "verify with a campaign attorney before acting" or equivalent\n' +
+          '- Even when you find a relevant rule via request_web_search or a lookup tool, append "verify with a campaign attorney before acting" or equivalent\n' +
           '- For tax questions specifically, route to floridabar.org/public/lrs (lawyer referral) AND irs.gov (IRS guidance for political organizations)\n' +
           '- For campaign-finance questions, route to dos.fl.gov/elections/for-candidates (FL state) or fec.gov (federal)\n' +
           '- For ethics questions, route to the relevant state ethics commission (e.g., ethics.fl.gov for Florida)\n' +
@@ -7326,7 +7326,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       } else if (_questionCategory === 'conversational') {
         systemPrompt += '\n\nCONVERSATIONAL TONE — CATEGORY: CONVERSATIONAL:\n\n' +
           'User is in conversational mode (greeting, transition, acknowledgment, "what\'s next?", "thanks", etc.). Brief, warm, focused responses. No factual claims unless directly answering a small request. Move the conversation forward.\n\n' +
-          'No web_search call needed. No long checklists. A few sentences max.';
+          'No request_web_search call needed. No long checklists. A few sentences max.';
       } else if (_questionCategory === 'factual') {
         systemPrompt += '\n\nFACTUAL GROUNDING — CATEGORY: FACTUAL:\n\n' +
           'This is a factual question — dates, dollar amounts, named people, current events, electoral history, compliance rules. Work the FACT TRUST LADDER: verified blocks and lookup tools first, then live search. If nothing reaches the fact, defer per ladder rung 5 — name the specific authority from a tool result, or say "Search \'[State] [resource type]\'" — do NOT recall from training and never emit a state-specific URL from memory. Citation is mandatory for every specific claim.';
@@ -7385,6 +7385,25 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // the question is conversational (greetings shouldn't burn an
         // Anthropic search call).
         ...((opponentResearchGate || _isConversational) ? [] : [{ type: "web_search_20250305", name: "web_search" }]),
+
+        // ESCAPE HATCH (Phase 3): live grounding as a function tool, so an
+        // action-route turn keeps its full toolset AND can fetch live data.
+        // Handled server-side in callClaude's grounding sub-loop; capped at 2
+        // calls/turn. Omitted on conversational turns AND on opponent-research
+        // turns (grounding re-leaks masked opponent identities — same gate as
+        // web_search).
+        ...((opponentResearchGate || _isConversational) ? [] : [{
+          name: "request_web_search",
+          description: "Fetch live web information via Google Search when the answer requires current data not present in your verified blocks or tools. Use for news, election results, current officeholders, live facts.",
+          input_schema: {
+            type: "object",
+            properties: {
+              query: { type: "string", description: "The search query for the live web lookup." },
+              reason: { type: "string", description: "One short phrase: why this live lookup is needed." }
+            },
+            required: ["query", "reason"]
+          }
+        }]),
 
         // ACTION/PERSISTENCE — always available (group 2).
         {
@@ -7612,7 +7631,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "lookup_compliance_deadlines",
-          description: "Look up verified filing/qualifying deadlines for the candidate's race. CRITICAL: when the user asks about filing deadlines, qualifying periods, ballot access, petition deadlines, filing fees, or any 'must do X by date Y to be on the ballot' question, call this FIRST. The tool returns either verified dates with citation OR an authority contact for honest deferral (never invented dates). The authority field is ALWAYS populated — use it. Do NOT use web_search as a substitute for this tool; web_search results are unverified for this fact class and a wrong deadline can disqualify a candidate.",
+          description: "Look up verified filing/qualifying deadlines for the candidate's race. CRITICAL: when the user asks about filing deadlines, qualifying periods, ballot access, petition deadlines, filing fees, or any 'must do X by date Y to be on the ballot' question, call this FIRST. The tool returns either verified dates with citation OR an authority contact for honest deferral (never invented dates). The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute for this tool; live-search results are unverified for this fact class and a wrong deadline can disqualify a candidate.",
           input_schema: {
             type: "object",
             properties: {
@@ -7626,7 +7645,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "lookup_finance_reports",
-          description: "Look up the verified campaign finance report schedule for the candidate's race — quarterly reports, pre-primary / pre-general special filings, post-election reports. CRITICAL: when the user asks about quarterly reports, FEC filings, pre-primary / pre-general filings, post-election reports, or any 'when is my finance report due' question, call this FIRST. The tool returns either verified report dates OR an authority contact for honest deferral. The authority field is ALWAYS populated — use it. Do NOT use web_search as a substitute; wrong report dates can mean missed filings, fines, and bad press.",
+          description: "Look up the verified campaign finance report schedule for the candidate's race — quarterly reports, pre-primary / pre-general special filings, post-election reports. CRITICAL: when the user asks about quarterly reports, FEC filings, pre-primary / pre-general filings, post-election reports, or any 'when is my finance report due' question, call this FIRST. The tool returns either verified report dates OR an authority contact for honest deferral. The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute; wrong report dates can mean missed filings, fines, and bad press.",
           input_schema: {
             type: "object",
             properties: {
@@ -7640,7 +7659,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "lookup_donation_limits",
-          description: "Look up the verified individual contribution limits for the candidate's race — per-election and per-cycle limits, plus whether primary and general count separately. CRITICAL: when the user asks about contribution limits, donation caps, max donations, 'how much can a donor give', or any 'what's the limit' question, call this FIRST. The tool returns either verified limits OR an authority contact for honest deferral. NEVER state donation limit amounts from training data — federal limits change every cycle and state/local limits vary widely. Do NOT use web_search as a substitute; wrong limit guidance triggers refunded contributions and compliance fines.",
+          description: "Look up the verified individual contribution limits for the candidate's race — per-election and per-cycle limits, plus whether primary and general count separately. CRITICAL: when the user asks about contribution limits, donation caps, max donations, 'how much can a donor give', or any 'what's the limit' question, call this FIRST. The tool returns either verified limits OR an authority contact for honest deferral. NEVER state donation limit amounts from training data — federal limits change every cycle and state/local limits vary widely. Do NOT use request_web_search as a substitute; wrong limit guidance triggers refunded contributions and compliance fines.",
           input_schema: {
             type: "object",
             properties: {
@@ -7853,81 +7872,166 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           ? [{ googleSearch: {} }]
           : [{ functionDeclarations: geminiToolDeclarations }];
 
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              systemInstruction: { parts: [{ text: systemPrompt }] },
-              contents: geminiContents,
-              tools: toolsConfig,
-              generationConfig: {
-                maxOutputTokens: 2000,
-                temperature: 0.4,
-                thinkingConfig: { thinkingBudget: 0 }
+        // Phase 3: the router is now an OPTIMIZER, not a hard gate. A misroute
+        // costs one hop, not a broken turn — the action path reaches live data
+        // via request_web_search (handled in the grounding sub-loop below).
+        const turnCapability = _chatRoute === 'search'
+          ? '\n\nTHIS TURN: you have live Google Search grounding but NOT your save/calendar/budget tools. Complete the research; if the candidate also asked for an action, tell them you\'ll handle the save/add on their next message.'
+          : '\n\nTHIS TURN: you have your full toolset. For live information, call request_web_search — never claim you cannot search.';
+        const turnSystemPrompt = systemPrompt + turnCapability;
+
+        // request_web_search escape hatch: a grounding-only Gemini sub-call.
+        // Returns { excerpt, sources }. Logged as 'sam_grounding_subturn'.
+        async function runGroundingSubturn(query) {
+          try {
+            const gr = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  systemInstruction: { parts: [{ text: 'Research the query with Google Search. Summarize findings with specific facts and include the source URL for every fact. If nothing relevant is found, say so.' }] },
+                  contents: [{ role: 'user', parts: [{ text: String(query || '') }] }],
+                  tools: [{ googleSearch: {} }],
+                  generationConfig: { temperature: 0.2, maxOutputTokens: 2000, thinkingConfig: { thinkingBudget: 0 } }
+                })
+              }
+            );
+            const gd = await gr.json();
+            await logApiUsage(
+              'sam_grounding_subturn',
+              {
+                inputTokens: (gd && gd.usageMetadata && gd.usageMetadata.promptTokenCount) || 0,
+                outputTokens: (gd && gd.usageMetadata && gd.usageMetadata.candidatesTokenCount) || 0
               },
-              safetySettings: [
-                { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
-                { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
-                { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
-                { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' }
-              ]
-            })
-          }
-        );
-
-        const geminiData = await response.json();
-
-        // Log every primary chat turn (search and action modes) so we have
-        // a per-turn record. Logged before any early return so error and
-        // empty-candidate turns are visible too.
-        await logApiUsage(
-          'sam_chat_gemini',
-          {
-            inputTokens: (geminiData && geminiData.usageMetadata && geminiData.usageMetadata.promptTokenCount) || 0,
-            outputTokens: (geminiData && geminiData.usageMetadata && geminiData.usageMetadata.candidatesTokenCount) || 0
-          },
-          rateLimitUserId,
-          chatOwnerId,
-          'gemini-2.5-flash'
-        );
-
-        if (geminiData.error) {
-          console.error('Gemini API error:', geminiData.error);
-          return { error: 'AI service error: ' + geminiData.error.message };
-        }
-
-        if (!geminiData.candidates || geminiData.candidates.length === 0) {
-          return { content: [{ type: 'text', text: "I wasn't able to generate a response. Please try rephrasing your question." }] };
-        }
-
-        const candidate = geminiData.candidates[0];
-        const parts = candidate.content?.parts || [];
-        const anthropicContent = [];
-        for (const part of parts) {
-          if (part.text) {
-            anthropicContent.push({ type: 'text', text: part.text });
-          } else if (part.functionCall) {
-            anthropicContent.push({
-              type: 'tool_use',
-              id: 'gemini_' + Date.now() + '_' + Math.random().toString(36).slice(2),
-              name: part.functionCall.name,
-              input: part.functionCall.args || {}
-            });
+              rateLimitUserId, chatOwnerId, 'gemini-2.5-flash'
+            );
+            if (gd && gd.error) return { excerpt: 'Live search unavailable: ' + gd.error.message, sources: [] };
+            const g = extractGroundingResult(gd);
+            return { excerpt: g.excerpt || 'No relevant results found for that query.', sources: g.urls || [] };
+          } catch (e) {
+            return { excerpt: 'Live search failed: ' + ((e && e.message) || 'unknown error'), sources: [] };
           }
         }
-        if (anthropicContent.length === 0) {
-          anthropicContent.push({ type: 'text', text: "I'm here to help! What would you like to work on?" });
+
+        // Main generate loop. Normally one pass; when the model invokes
+        // request_web_search we run grounding server-side, feed the result back
+        // as a functionResponse, and re-call — keeping the full function toolset
+        // available. Grounding is capped at 2 calls per turn; the outer bound
+        // is a safety net.
+        let groundingUsed = 0;
+        let loopContents = geminiContents;
+        for (let _round = 0; _round < 5; _round++) {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                systemInstruction: { parts: [{ text: turnSystemPrompt }] },
+                contents: loopContents,
+                tools: toolsConfig,
+                generationConfig: {
+                  maxOutputTokens: 2000,
+                  temperature: 0.4,
+                  thinkingConfig: { thinkingBudget: 0 }
+                },
+                safetySettings: [
+                  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
+                  { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+                  { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
+                  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' }
+                ]
+              })
+            }
+          );
+
+          const geminiData = await response.json();
+
+          // Log every primary chat turn (search and action modes) so we have
+          // a per-turn record. Logged before any early return so error and
+          // empty-candidate turns are visible too.
+          await logApiUsage(
+            'sam_chat_gemini',
+            {
+              inputTokens: (geminiData && geminiData.usageMetadata && geminiData.usageMetadata.promptTokenCount) || 0,
+              outputTokens: (geminiData && geminiData.usageMetadata && geminiData.usageMetadata.candidatesTokenCount) || 0
+            },
+            rateLimitUserId,
+            chatOwnerId,
+            'gemini-2.5-flash'
+          );
+
+          if (geminiData.error) {
+            console.error('Gemini API error:', geminiData.error);
+            return { error: 'AI service error: ' + geminiData.error.message };
+          }
+
+          if (!geminiData.candidates || geminiData.candidates.length === 0) {
+            return { content: [{ type: 'text', text: "I wasn't able to generate a response. Please try rephrasing your question." }] };
+          }
+
+          const candidate = geminiData.candidates[0];
+          const parts = candidate.content?.parts || [];
+
+          // Escape hatch: if the model asked for a live web search, run it
+          // server-side and loop. Only the action path exposes request_web_search
+          // (the search path already has native grounding).
+          const rwsCalls = parts.filter(p => p.functionCall && p.functionCall.name === 'request_web_search');
+          if (rwsCalls.length > 0) {
+            const frParts = [];
+            for (const part of parts) {
+              if (!part.functionCall) continue;
+              if (part.functionCall.name === 'request_web_search') {
+                let responseObj;
+                if (groundingUsed >= 2) {
+                  responseObj = { result: 'Search budget exhausted for this turn (2 searches max). Answer from the data you already have, or defer per the FACT TRUST LADDER.' };
+                } else {
+                  groundingUsed++;
+                  const sub = await runGroundingSubturn(part.functionCall.args && part.functionCall.args.query);
+                  responseObj = { excerpt: sub.excerpt, sources: sub.sources };
+                }
+                frParts.push({ functionResponse: { name: 'request_web_search', response: responseObj } });
+              } else {
+                // A co-emitted action tool (save_note, etc.) — acknowledge so
+                // the API contract holds; the model re-issues it next round.
+                frParts.push({ functionResponse: { name: part.functionCall.name, response: { result: 'Noted — re-issue this action after you have the search results if you still need it.' } } });
+              }
+            }
+            loopContents = loopContents.concat(
+              [{ role: 'model', parts: parts }],
+              [{ role: 'user', parts: frParts }]
+            );
+            continue;
+          }
+
+          // No escape-hatch call — translate to Anthropic shape and return.
+          const anthropicContent = [];
+          for (const part of parts) {
+            if (part.text) {
+              anthropicContent.push({ type: 'text', text: part.text });
+            } else if (part.functionCall) {
+              anthropicContent.push({
+                type: 'tool_use',
+                id: 'gemini_' + Date.now() + '_' + Math.random().toString(36).slice(2),
+                name: part.functionCall.name,
+                input: part.functionCall.args || {}
+              });
+            }
+          }
+          if (anthropicContent.length === 0) {
+            anthropicContent.push({ type: 'text', text: "I'm here to help! What would you like to work on?" });
+          }
+
+          return {
+            content: anthropicContent,
+            stop_reason: candidate.finishReason === 'STOP' ? 'end_turn' : (candidate.finishReason || 'end_turn'),
+            model: 'gemini-2.5-flash'
+          };
         }
 
-        const translatedResponse = {
-          content: anthropicContent,
-          stop_reason: candidate.finishReason === 'STOP' ? 'end_turn' : (candidate.finishReason || 'end_turn'),
-          model: 'gemini-2.5-flash'
-        };
-
-        return translatedResponse;
+        // Loop bound exhausted (should not happen) — safe fallback.
+        return { content: [{ type: 'text', text: "I had trouble pulling live data just now. Tell me what you need and I'll try again." }] };
       }
 
       // ============================================================
@@ -10925,11 +11029,11 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               'STOP. Your previous response stated factual claims without citing sources: ' +
               JSON.stringify(uncitedClaims) + '.\n\n' +
               'Rewrite your response. For each factual claim about a date, dollar amount, named person, URL, address, statute, or law:\n' +
-              '- Call web_search if you haven\'t already this turn\n' +
+              '- Call request_web_search if you haven\'t already this turn\n' +
               '- Cite the source inline using the format "(Source: [domain])" OR "According to [organization]" OR "Per [URL]" OR "[Source name] reports..."\n' +
               '- Make URLs clickable when possible\n\n' +
               'CITATION PRESERVATION: If your previous response ALREADY had citations (markdown links, "Per [URL]", "Source: [domain]"), KEEP THEM. This regeneration is fixing only the specific uncited claims listed above. Do NOT remove existing citations — that strips usable content. Sentences with valid existing citations should appear unchanged in your rewrite.\n\n' +
-              'If a claim cannot be sourced via web_search, replace it with a smart deferral: "I searched and didn\'t find [X] — [specific authoritative URL where it WILL be published] is where to check." Do NOT fall back to training-data answers.\n\n' +
+              'If a claim cannot be sourced via request_web_search, replace it with a smart deferral: "I searched and didn\'t find [X] — [specific authoritative URL where it WILL be published] is where to check." Do NOT fall back to training-data answers.\n\n' +
               'Reply with only the rewritten answer — no preamble, no acknowledgment of this correction.'
             }
           ];

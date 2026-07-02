@@ -162,4 +162,66 @@ GROUND TRUTH).
   specified — no new voice content was invented.
 
 ---
+## Phase 3 — request_web_search escape hatch (kills the router capability cliff)
+
+**What changed (worker.js only):**
+1. Added `request_web_search { query, reason }` to the tools array with the specified description.
+   Gated to omit on conversational turns AND opponent-research turns (see correctness fix below).
+2. `callClaude` restructured: the single `generateContent` call is now a bounded loop. When the model
+   emits a `request_web_search` functionCall, a **grounding-only Gemini sub-call** runs server-side
+   (`runGroundingSubturn`: systemInstruction as specified, `tools:[{googleSearch:{}}]`, temp 0.2,
+   maxOutputTokens 2000), the result is extracted via `extractGroundingResult`, and `{excerpt, sources}`
+   is fed back as a `functionResponse`; the loop re-calls with the full function toolset intact.
+   Logged as `sam_grounding_subturn`.
+3. **Cap of 2** grounding calls per turn; beyond that the functionResponse says the search budget is
+   exhausted (answer from data or defer). Outer loop bound of 5 rounds as a safety net.
+4. Router demoted to optimizer: `routeUserIntent` kept, but per-turn capability statements are now
+   appended to a local `turnSystemPrompt` — the SEARCH-route and ACTION-route statements verbatim as
+   specified ("THIS TURN: you have live Google Search grounding but NOT your save/calendar/budget
+   tools…" / "THIS TURN: you have your full toolset. For live information, call request_web_search…").
+5. Converted remaining prompt-facing `web_search` references to `request_web_search`: STRATEGIC,
+   COMPLIANCE, CONVERSATIONAL category appends; the Safe Mode append; the opponent-research-gate text;
+   the three `lookup_*` "do not substitute" clauses; and two validator regen instructions.
+
+**"More invasive than described" — noted per the hard rule:** the spec said "in callClaude's tool
+loop," but there was **no server-side tool loop** — `callClaude` did a single call and returned
+tool_use blocks to the client for execution. So I *added* a server-side grounding sub-loop inside
+`callClaude` (the only correct place to keep function tools available while fetching live data). This
+is a real behavioral addition, not just a handler in an existing loop. It's self-contained inside
+`callClaude` and does not touch the outer demask/validator pipeline.
+
+**Correctness fix caught during the phase:** my first cut gated `request_web_search` only on
+`_isConversational`, which would have re-opened live web search on **opponent-research** turns —
+violating the OPPONENT FACTS constraint (no web_search for opponents, since grounding re-leaks masked
+identities). Fixed to gate on `(opponentResearchGate || _isConversational)`, mirroring `web_search`.
+
+**Verification:** `node --check worker.js` passes (no pipe). The `callClaude` function was also
+extracted and syntax-checked in isolation (exit 0) — the same isolated-fragment test that caught the
+Phase 2 corruption. Wiring confirmed: tool decl present, `runGroundingSubturn` defined+called,
+`sam_grounding_subturn` logged, 2-call cap present, both capability statements present, both
+`web_search`/`request_web_search` gated on opponent+conversational.
+
+### Requested verification — six rules confirmed surviving the Phase 2 consolidation
+
+| Rule | Where it lives now | Confirming text (quoted from the module) |
+|---|---|---|
+| (a) Win-number: Ballotpedia search pattern + multi-member lowest-placed-winner + presidential→midterm turnout adjustment | **MODULE_HARD_CONSTRAINTS #6** | "search the pattern '[State] [Office] District [N] [Year] election results Ballotpedia'… single-winner → the winner's total; multi-member district → the **LOWEST-PLACED WINNER's total**; adjust presidential-year turnout down **25–40% for a midterm**." — all three components intact. |
+| (b) Illegal contributions: definitive NO + jurisdiction-matched enforcement agency | **MODULE_HARD_CONSTRAINTS #2** | "respond with a **definitive NO — not a hedge** — and name the SPECIFIC enforcement agency for that jurisdiction (LA City → LA City Ethics Commission; CA state → FPPC; federal → FEC…)". |
+| (c) Calendar permission gate + explicit-instruction exception | **MODULE_HARD_CONSTRAINTS #1** | "Never add, update, or delete a calendar item without explicit permission. Only proceed directly when the candidate says 'add this,' 'put it on my calendar,' 'schedule it,' 'remind me to,' or a clear paraphrase; otherwise ask first." |
+| (d) Municipal-vs-state primary constraint | **MODULE_HARD_CONSTRAINTS #3** | "Never apply a state's primary system (e.g., California's top-two) to a city or county race. Charter cities and counties set their own rules…" |
+| (e) Never emit state-specific URLs from memory | **MODULE_TRUST_LADDER, rung 5** | "**Never emit a state-specific URL or agency name from memory; a wrong-state URL is worse than no URL.**" |
+| (f) COMPLIANCE/FILING lookup-tool-first (un-forked in Phase 1) | **MODULE_TOOL_GUIDANCE** (and mirrored in TRUST_LADDER rung 3) — **confirmed in MODULE_TOOL_GUIDANCE** | "lookup_compliance_deadlines (filing/qualifying deadlines)… For those fact classes, **call the tool FIRST** and cite its authority field; on status 'unsupported'/'unavailable,' defer with the authority contact in the tool result — do not substitute training data or a state-specific URL from memory." |
+
+### Risks / notes
+- **Co-emitted action tools deferred one round.** If the model emits `request_web_search` *and* an
+  action tool (e.g. `save_note`) in the same response, the action gets an "acknowledged — re-issue
+  after search" functionResponse (to satisfy the API contract) and the model re-issues it the next
+  round. In practice the model searches-then-acts sequentially, so this is a rare edge; documented.
+- **functionResponse role.** The grounding result is fed back as `{role:'user', parts:[{functionResponse}]}`
+  — the Gemini REST-accepted shape. Worth confirming against a live turn in Greg's manual test.
+- **One descriptive validator `web_search` mention left** (worker.js ~10729, a confidence-tag
+  description, not an actionable instruction) — left for the Phase 4 validator restructure, along with
+  the smart-deferral validator references noted in Phase 2.
+
+---
 <!-- Phases appended below as completed. -->
