@@ -842,6 +842,62 @@ export default {
       return authority;
     }
 
+    // Punch-list item 1: federal races (US House / US Senate / President) are
+    // FEC jurisdiction for CAMPAIGN FINANCE — reporting calendars and
+    // contribution limits — regardless of state. (Qualifying/filing is still
+    // state-administered, so this is NOT used for compliance/jurisdiction
+    // lookups — only finance + donation.)
+    function isFederalOffice(office) {
+      const o = String(office || '').toLowerCase();
+      if (!o) return false;
+      if (o.includes('president')) return true;
+      if (o.includes('congress')) return true;
+      // "US House", "U.S. House", "House of Representatives", "US Representative"
+      if ((o.includes('house') || o.includes('representative')) && !o.includes('state')) return true;
+      // "US Senate", "U.S. Senator" — exclude "state senate/senator"
+      if (o.includes('senate') && !o.includes('state')) return true;
+      return false;
+    }
+    function fecAuthority(factClass) {
+      const url = factClass === 'donation'
+        ? 'https://www.fec.gov/help-candidates-and-committees/candidate-taking-receipts/contribution-limits/'
+        : 'https://www.fec.gov/help-candidates-and-committees/dates-and-deadlines/';
+      return {
+        name: 'Federal Election Commission (FEC)',
+        phone: '1-800-424-9530',
+        url,
+        notes: 'Federal races (US House, US Senate, President) report to and are regulated by the FEC — not the state authority.',
+        jurisdiction_specific: null
+      };
+    }
+
+    // Punch-list item 3: map internal placeholder tokens to natural language
+    // BEFORE the lookup result reaches the model (it's a tool result the model
+    // reads and can quote). Fixed at the data layer so "unsupported" and null
+    // fields can never leak to the candidate as literal text. Safe to remap the
+    // status here: the client and the server-side validators don't consume the
+    // status from this HTTP response.
+    function naturalizeLookupForModel(result) {
+      if (!result || typeof result !== 'object') return result;
+      const NO_DATA = 'no verified data available';
+      const out = { ...result };
+      if (out.status === 'unsupported') { out.status = NO_DATA; out.data_available = false; }
+      else if (out.status === 'web_search_fallback') { out.data_available = 'partial'; }
+      if (out.source === 'unsupported') out.source = NO_DATA;
+      for (const key of ['reports', 'limits', 'deadlines', 'schedule']) {
+        const sub = out[key];
+        if (sub && typeof sub === 'object' && !Array.isArray(sub)) {
+          const o = {};
+          for (const k of Object.keys(sub)) {
+            const v = sub[k];
+            o[k] = (v === null || v === undefined || v === 'unsupported') ? NO_DATA : v;
+          }
+          out[key] = o;
+        }
+      }
+      return out;
+    }
+
     // Detect jurisdiction type from the office + jurisdiction strings.
     // Returns one of: 'county', 'city', 'us_house_district',
     // 'state_legislative_district', or 'unknown'.
@@ -3155,7 +3211,7 @@ export default {
           result.source, result.last_updated
         ).run();
 
-        return jsonResponse({ ...result, cached: false });
+        return jsonResponse(naturalizeLookupForModel({ ...result, cached: false }));
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -3444,7 +3500,7 @@ export default {
         ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
 
         if (cached) {
-          return jsonResponse(formatComplianceCacheRow(cached, true));
+          return jsonResponse(naturalizeLookupForModel(formatComplianceCacheRow(cached, true)));
         }
 
         // Source cascade — Ballotpedia and SOS scrapers are future work.
@@ -3542,7 +3598,7 @@ export default {
           result.web_search ? result.web_search.url : null
         ).run().catch((e) => { console.warn('[compliance] cache write failed:', e.message); });
 
-        return jsonResponse({ ...result, cached: false });
+        return jsonResponse(naturalizeLookupForModel({ ...result, cached: false }));
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -3628,7 +3684,7 @@ export default {
         ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
 
         if (cached) {
-          return jsonResponse(formatFinanceCacheRow(cached, true));
+          return jsonResponse(naturalizeLookupForModel(formatFinanceCacheRow(cached, true)));
         }
 
         // Source cascade — FEC reporting calendar + state SOS deferred.
@@ -3637,12 +3693,16 @@ export default {
         // if (!result) result = await trySosFinanceCalendar(stateCode, office, raceYear);
 
         if (!result) {
-          const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
+          // Item 1: federal races resolve to FEC for finance reporting.
+          const authority = isFederalOffice(office)
+            ? fecAuthority('finance')
+            : await fetchAuthorityForRace(stateCode, jurisdictionName);
 
           // Web_search fallback before giving up entirely. See compliance
           // lookup for the architectural rationale (Hypothesis-4 mitigation).
+          // Federal races target FEC; state/local target the state authority.
           const fbQuery = [
-            stateCode ? expandStateName(stateCode) : stateRaw,
+            isFederalOffice(office) ? 'FEC federal' : (stateCode ? expandStateName(stateCode) : stateRaw),
             office,
             raceYear,
             'campaign finance reporting deadlines'
@@ -3700,7 +3760,7 @@ export default {
           result.web_search ? result.web_search.url : null
         ).run().catch((e) => { console.warn('[finance] cache write failed:', e.message); });
 
-        return jsonResponse({ ...result, cached: false });
+        return jsonResponse(naturalizeLookupForModel({ ...result, cached: false }));
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -3780,7 +3840,7 @@ export default {
         ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
 
         if (cached) {
-          return jsonResponse(formatDonationCacheRow(cached, true));
+          return jsonResponse(naturalizeLookupForModel(formatDonationCacheRow(cached, true)));
         }
 
         // Source cascade — FEC + state stubbed.
@@ -3789,7 +3849,10 @@ export default {
         // if (!result) result = await tryStateContributionLimits(stateCode, office, raceYear);
 
         if (!result) {
-          const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
+          // Item 1: federal races resolve to FEC for contribution limits.
+          const authority = isFederalOffice(office)
+            ? fecAuthority('donation')
+            : await fetchAuthorityForRace(stateCode, jurisdictionName);
 
           // Web_search fallback before giving up entirely. See compliance
           // lookup for the architectural rationale (Hypothesis-4 mitigation).
@@ -3798,7 +3861,7 @@ export default {
           // limits — those are explicitly excluded by the DONATION LIMITS
           // hard-constraint and surfacing them would be a citation hazard.
           const fbQuery = [
-            stateCode ? expandStateName(stateCode) : stateRaw,
+            isFederalOffice(office) ? 'FEC federal' : (stateCode ? expandStateName(stateCode) : stateRaw),
             office,
             raceYear,
             'individual contribution limit per election'
@@ -3858,7 +3921,7 @@ export default {
           result.web_search ? result.web_search.url : null
         ).run().catch((e) => { console.warn('[donation] cache write failed:', e.message); });
 
-        return jsonResponse({ ...result, cached: false });
+        return jsonResponse(naturalizeLookupForModel({ ...result, cached: false }));
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -7795,7 +7858,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "lookup_compliance_deadlines",
-          description: "Look up verified filing/qualifying deadlines for the candidate's race. CRITICAL: when the user asks about filing deadlines, qualifying periods, ballot access, petition deadlines, filing fees, or any 'must do X by date Y to be on the ballot' question, call this FIRST. The tool returns either verified dates with citation OR an authority contact for honest deferral (never invented dates). The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute for this tool; live-search results are unverified for this fact class and a wrong deadline can disqualify a candidate.",
+          description: "Look up verified filing/qualifying deadlines for the candidate's race. CRITICAL: when the user asks about filing deadlines, qualifying periods, ballot access, petition deadlines, filing fees, or any 'must do X by date Y to be on the ballot' question, call this FIRST. The tool returns either verified dates with citation OR an authority contact for honest deferral (never invented dates). The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute for calling this tool FIRST. But if the tool returns no verified data for the race, THEN fall through to request_web_search targeting the official source, cite what you find, and add a one-line note to confirm with the authority in the tool result — never stop at a bare deferral.",
           input_schema: {
             type: "object",
             properties: {
@@ -7809,7 +7872,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "lookup_finance_reports",
-          description: "Look up the verified campaign finance report schedule for the candidate's race — quarterly reports, pre-primary / pre-general special filings, post-election reports. CRITICAL: when the user asks about quarterly reports, FEC filings, pre-primary / pre-general filings, post-election reports, or any 'when is my finance report due' question, call this FIRST. The tool returns either verified report dates OR an authority contact for honest deferral. The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute; wrong report dates can mean missed filings, fines, and bad press.",
+          description: "Look up the verified campaign finance report schedule for the candidate's race — quarterly reports, pre-primary / pre-general special filings, post-election reports. CRITICAL: when the user asks about quarterly reports, FEC filings, pre-primary / pre-general filings, post-election reports, or any 'when is my finance report due' question, call this FIRST. The tool returns either verified report dates OR an authority contact for honest deferral. The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute for calling this tool FIRST. But if it returns no verified data, THEN fall through to request_web_search targeting the official source (fec.gov for federal races), cite what you find, and add a one-line note to confirm with the authority in the tool result — never stop at a bare deferral. Wrong report dates can mean missed filings, fines, and bad press.",
           input_schema: {
             type: "object",
             properties: {
@@ -7823,7 +7886,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "lookup_donation_limits",
-          description: "Look up the verified individual contribution limits for the candidate's race — per-election and per-cycle limits, plus whether primary and general count separately. CRITICAL: when the user asks about contribution limits, donation caps, max donations, 'how much can a donor give', or any 'what's the limit' question, call this FIRST. The tool returns either verified limits OR an authority contact for honest deferral. NEVER state donation limit amounts from training data — federal limits change every cycle and state/local limits vary widely. Do NOT use request_web_search as a substitute; wrong limit guidance triggers refunded contributions and compliance fines.",
+          description: "Look up the verified individual contribution limits for the candidate's race — per-election and per-cycle limits, plus whether primary and general count separately. CRITICAL: when the user asks about contribution limits, donation caps, max donations, 'how much can a donor give', or any 'what's the limit' question, call this FIRST. The tool returns either verified limits OR an authority contact for honest deferral. NEVER state donation limit amounts from training data — federal limits change every cycle and state/local limits vary widely. Do NOT use request_web_search as a substitute for calling this tool FIRST. But if it returns no verified data, THEN fall through to request_web_search targeting the official source (fec.gov for federal races), cite what you find, and add a one-line note to confirm with the authority in the tool result — never stop at a bare deferral. Wrong limit guidance triggers refunded contributions and compliance fines.",
           input_schema: {
             type: "object",
             properties: {
