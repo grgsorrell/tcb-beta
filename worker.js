@@ -93,14 +93,41 @@ export default {
       text = text.trim();
 
       const chunks = (candidate && candidate.groundingMetadata && candidate.groundingMetadata.groundingChunks) || [];
-      const urls = chunks
-        .map(c => c && c.web && c.web.uri)
-        .filter(u => typeof u === 'string' && u.length > 0);
+      // Item 7: capture a DISPLAY title for each source (Google supplies
+      // web.title, usually the publisher/domain). The uri is a
+      // vertexaisearch.cloud.google.com redirect — keep it as the link href,
+      // but the source NAME shown to the user must be the title/domain, never
+      // the redirect host.
+      const sources = chunks
+        .map(c => {
+          const web = c && c.web;
+          if (!web || typeof web.uri !== 'string' || !web.uri) return null;
+          const title = (typeof web.title === 'string' && web.title.trim()) ? web.title.trim() : 'web source';
+          return { title, uri: web.uri };
+        })
+        .filter(Boolean);
+      const urls = sources.map(s => s.uri);
       const primaryUrl = urls[0] || null;
 
       const hasUsableContent = text.length > 0 && !!primaryUrl;
 
-      return { excerpt: text, url: primaryUrl, urls, hasUsableContent };
+      return { excerpt: text, url: primaryUrl, urls, sources, hasUsableContent };
+    }
+
+    // Item 7: replace vertexaisearch redirect URLs in model text with the
+    // source title, and strip any bare vertexaisearch host mentions, so no
+    // user ever sees a vertexaisearch domain as a "source". `sources` is the
+    // [{title, uri}] list from extractGroundingResult.
+    function scrubGroundingRedirects(text, sources) {
+      if (!text) return text;
+      let out = String(text);
+      for (const s of (sources || [])) {
+        if (s && s.uri) out = out.split(s.uri).join(s.title || 'source');
+      }
+      out = out.replace(/\[([^\]]*)\]\(https?:\/\/vertexaisearch\.cloud\.google\.com\/[^)]*\)/gi, '$1');
+      out = out.replace(/https?:\/\/vertexaisearch\.cloud\.google\.com\/[^\s)\]]*/gi, '');
+      out = out.replace(/\(?\s*vertexaisearch\.cloud\.google\.com\b[^\s)]*\)?/gi, '');
+      return out;
     }
 
     // ========================================
@@ -896,6 +923,27 @@ export default {
         }
       }
       return out;
+    }
+
+    // Punch-list item 6: a bare affirmation ("yes", "please", "do it") in reply
+    // to a Sam offer must route as ACTION with the offer context — not as a
+    // conversational turn that loses the offer.
+    function isBareAffirmation(msg) {
+      const m = String(msg || '').trim().toLowerCase().replace(/[.!\s]+$/, '');
+      if (!m || m.length > 25) return false;
+      return /^(yes|yep|yeah|yup|sure|ok|okay|please|do it|go ahead|sounds good|yes please|please do|add it|schedule it|save it|do that|do so|let'?s do it|go for it|absolutely|confirmed|yes do it)$/.test(m);
+    }
+    function lastAssistantOfferedAction(history) {
+      if (!Array.isArray(history)) return false;
+      for (let i = history.length - 1; i >= 0; i--) {
+        const h = history[i];
+        if (!h || h.role !== 'assistant') continue;
+        let text = '';
+        if (typeof h.content === 'string') text = h.content;
+        else if (Array.isArray(h.content)) text = h.content.filter(b => b && b.type === 'text').map(b => b.text).join(' ');
+        return /\?/.test(text) && /\b(would you like|want me to|should i|shall i|do you want me to|can i add|shall i add|like me to)\b/i.test(text);
+      }
+      return false;
     }
 
     // Detect jurisdiction type from the office + jurisdiction strings.
@@ -7347,7 +7395,13 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         }
       }
       const _classification = await classifyUserQuestion(_latestUserText, history);
-      const _questionCategory = _classification.category;
+      // Item 6: a bare affirmation replying to a pending Sam offer routes as
+      // ACTION, not conversational (which would drop the offer). Forces the
+      // route to 'action' in callGemini and bumps a 'conversational'
+      // classification so tools stay available and the offer context is used.
+      const _affirmationFollowUp = isBareAffirmation(_latestUserText) && lastAssistantOfferedAction(history);
+      let _questionCategory = _classification.category;
+      if (_affirmationFollowUp && _questionCategory === 'conversational') _questionCategory = 'strategic';
       // Phase 4: turn-scoped accumulator of validator fail-opens (verifier
       // infra errors that let a response through unvalidated). Phase 5's
       // sam_turn_trace insert serializes this into the validator_result column.
@@ -8079,12 +8133,16 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // Cached for the entire turn — tool-loop re-invocations of
         // callGemini reuse the same _chatRoute and never re-classify.
         if (_chatRoute === null) {
+          // Item 6: a bare affirmation answering a pending Sam offer must keep
+          // the full toolset so Sam can execute the offered action.
+          if (_affirmationFollowUp) {
+            _chatRoute = 'action';
+          } else if (histElectionContext) {
           // Highest priority: if the VPS historical-election pre-fetch
           // succeeded, force 'action'. Sam already has the verified
           // full-page text in her system prompt; she doesn't need
           // grounding for this turn and SHOULD keep tool access so she
           // can call save_win_number in the same turn.
-          if (histElectionContext) {
             _chatRoute = 'action';
           } else {
             // Live-data triggers override the D1 bypass. The campaign_reference
@@ -8131,7 +8189,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                  systemInstruction: { parts: [{ text: 'Research the query with Google Search. Summarize findings with specific facts and include the source URL for every fact. If nothing relevant is found, say so.' }] },
+                  systemInstruction: { parts: [{ text: 'Research the query with Google Search. Summarize findings with specific facts. Cite each source by its publisher/site name or domain (e.g., "FEC" or "fec.gov"), never by a raw redirect URL. If nothing relevant is found, say so.' }] },
                   contents: [{ role: 'user', parts: [{ text: String(query || '') }] }],
                   tools: [{ googleSearch: {} }],
                   generationConfig: { temperature: 0.2, maxOutputTokens: 2000, thinkingConfig: { thinkingBudget: 0 } }
@@ -8149,7 +8207,14 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             );
             if (gd && gd.error) return { excerpt: 'Live search unavailable: ' + gd.error.message, sources: [] };
             const g = extractGroundingResult(gd);
-            return { excerpt: g.excerpt || 'No relevant results found for that query.', sources: g.urls || [] };
+            // Item 7: return title+uri source pairs so Sam cites by name, not
+            // the vertexaisearch redirect host. Render as markdown links
+            // [title](uri) — the uri redirects to the real source.
+            return {
+              excerpt: g.excerpt || 'No relevant results found for that query.',
+              sources: (g.sources && g.sources.length) ? g.sources : (g.urls || []).map(u => ({ title: 'web source', uri: u })),
+              source_render_hint: 'Cite each source by its title/domain as a markdown link [title](uri); never show the raw vertexaisearch URL as the source name.'
+            };
           } catch (e) {
             return { excerpt: 'Live search failed: ' + ((e && e.message) || 'unknown error'), sources: [] };
           }
@@ -8267,6 +8332,36 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               });
             }
           }
+          // Item 7: on the search route, scrub vertexaisearch redirect URLs
+          // from the grounded text so the user sees source titles/domains.
+          if (_chatRoute === 'search') {
+            const _gsources = extractGroundingResult(geminiData).sources;
+            for (const b of anthropicContent) {
+              if (b.type === 'text') b.text = scrubGroundingRedirects(b.text, _gsources);
+            }
+          }
+
+          // Item 5b: same-turn permission-gate guard. If the model BOTH asks a
+          // permission question (offers an action) AND emits that action's tool
+          // call in the same turn, drop the tool call and keep the question —
+          // otherwise the client executes it and the gate is bypassed.
+          const GATED_WRITE_TOOLS = new Set([
+            'add_calendar_event', 'update_task', 'delete_task', 'complete_task',
+            'update_event', 'delete_event', 'add_expense', 'log_contribution',
+            'set_budget', 'set_category_allocation', 'save_note', 'add_endorsement',
+            'save_win_number', 'save_candidate_profile'
+          ]);
+          const _turnText = anthropicContent.filter(b => b.type === 'text').map(b => b.text).join(' ');
+          const _offersPermission = /\?/.test(_turnText) &&
+            /\b(would you like|want me to|should i|shall i|do you want me to|can i add|shall i add)\b/i.test(_turnText);
+          if (_offersPermission && anthropicContent.some(b => b.type === 'tool_use' && GATED_WRITE_TOOLS.has(b.name))) {
+            const _dropped = anthropicContent.filter(b => b.type === 'tool_use' && GATED_WRITE_TOOLS.has(b.name)).map(b => b.name);
+            console.warn('[permission_gate] dropped same-turn action tool call(s) offered as a question:', _dropped.join(','));
+            for (let i = anthropicContent.length - 1; i >= 0; i--) {
+              if (anthropicContent[i].type === 'tool_use' && GATED_WRITE_TOOLS.has(anthropicContent[i].name)) anthropicContent.splice(i, 1);
+            }
+          }
+
           if (anthropicContent.length === 0) {
             anthropicContent.push({ type: 'text', text: "I'm here to help! What would you like to work on?" });
           }

@@ -82,4 +82,52 @@ migration file. Before → after:
 (No worker.js change in this group — data only.)
 
 ---
+## Group C — behavior fixes (commit 3)
+
+### Item 5 — same-turn permission bypass (both layers fixed)
+- **(a) Prompt:** MODULE_HARD_CONSTRAINTS #1 now says: if you ask a permission question, STOP — do
+  NOT emit the action's tool call in the same turn; ask, then wait. Added a bad/good example.
+- **(b) Server-side guard (implemented — it was clean):** in `callGemini`'s response translation, if
+  the turn's text contains a permission question (`?` + "would you like / want me to / should i /
+  shall i / can i add …") AND the model also emitted a gated write-tool call
+  (add_calendar_event/update_task/…/save_note/etc.), the tool_use block(s) are dropped and the
+  question is kept, so the client can't execute the offered action. Non-write tools (navigate_to,
+  lookup_*, request_web_search) are unaffected.
+
+### Item 6 — affirmation routing
+Added `isBareAffirmation()` + `lastAssistantOfferedAction()`. When the latest user message is a bare
+affirmation ("yes", "please", "do it", …) AND the most recent assistant message was an offer (a
+"would you like me to…?" question), the turn now (a) forces `_chatRoute = 'action'` in `callGemini`
+(full toolset available) and (b) bumps a `conversational` classification to `strategic` so the
+conversational framing doesn't drop the offer. History is already sent, so Sam sees its own offer +
+the "yes" and executes it.
+
+### Item 7 — grounding citation rendering (no vertexaisearch domains)
+- `extractGroundingResult` now returns `sources: [{title, uri}]` using `groundingChunks[].web.title`
+  (publisher/domain) for display; the vertexaisearch redirect stays as the `uri`.
+- `runGroundingSubturn` returns those title+uri pairs plus a render hint, and its systemInstruction
+  now says to cite by publisher/domain, never a raw redirect URL.
+- Added `scrubGroundingRedirects()` and applied it to the search-route response text in `callGemini`:
+  redirect URLs are swapped for the source title and any bare `vertexaisearch.cloud.google.com`
+  mention is stripped. Verified with a small logic test (markdown link, bare URL, bare domain all
+  cleaned).
+
+### Item 8 — "Done! What would you like to work on next?" bubbles. ROOT CAUSE (frontend).
+**Origin: FRONTEND — `app.html` lines 9877–9882**, the branch
+`if (!fullText.trim() && confirmations.length === 0) { … 'Done! What would you like to work on
+next?' … }`. It appends the generic bubble whenever the backend response had **no user-visible text
+AND no action confirmations**. That happens on **tool-call rounds** (a lookup_*/search turn where the
+model emitted only a tool_use with no accompanying text — normal, it's awaiting the tool result next
+turn) and on read-only turns with no confirmation. There is **no backend source** — worker.js only has
+the distinct empty-content fallback "I'm here to help! What would you like to work on?" (callGemini,
+different string). Per the instruction, this is documented for the upcoming **frontend job**, not
+changed here. Recommended frontend fix: in that branch, do NOT emit the generic bubble for
+read-only/lookup/search tool rounds; for action turns, render Sam's own confirmation text instead of
+the generic bubble. (Backend note: a text-less response on a tool-call round is expected model
+behavior; the frontend shouldn't treat it as a completed action needing a "Done!" acknowledgement.)
+
+**Verification:** `node --check worker.js` + module pass (no pipe); budget guard green (2020/2500);
+scrub logic unit-tested.
+
+---
 <!-- Groups appended below as completed. -->
