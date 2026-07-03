@@ -946,6 +946,39 @@ export default {
       return false;
     }
 
+    // 50-state (+DC) timezone map, module-scoped so both the main chat path and
+    // the morning-brief research path can compute local time. (Item 9.)
+    const STATE_TIMEZONES = {
+      'TX':'America/Chicago','CA':'America/Los_Angeles','NY':'America/New_York',
+      'FL':'America/New_York','IL':'America/Chicago','PA':'America/New_York',
+      'OH':'America/New_York','GA':'America/New_York','NC':'America/New_York',
+      'MI':'America/New_York','NJ':'America/New_York','VA':'America/New_York',
+      'WA':'America/Los_Angeles','AZ':'America/Phoenix','MA':'America/New_York',
+      'TN':'America/Chicago','IN':'America/New_York','MO':'America/Chicago',
+      'MD':'America/New_York','WI':'America/Chicago','CO':'America/Denver',
+      'MN':'America/Chicago','SC':'America/New_York','AL':'America/Chicago',
+      'LA':'America/Chicago','KY':'America/New_York','OR':'America/Los_Angeles',
+      'OK':'America/Chicago','CT':'America/New_York','UT':'America/Denver',
+      'IA':'America/Chicago','NV':'America/Los_Angeles','AR':'America/Chicago',
+      'MS':'America/Chicago','KS':'America/Chicago','NM':'America/Denver',
+      'NE':'America/Chicago','ID':'America/Boise','WV':'America/New_York',
+      'HI':'Pacific/Honolulu','NH':'America/New_York','ME':'America/New_York',
+      'MT':'America/Denver','RI':'America/New_York','DE':'America/New_York',
+      'SD':'America/Chicago','ND':'America/Chicago','AK':'America/Anchorage',
+      'VT':'America/New_York','WY':'America/Denver','DC':'America/New_York'
+    };
+    // Item 9: local time-of-day context for greetings.
+    function localTimeContext(state) {
+      const tz = STATE_TIMEZONES[String(state || '').toUpperCase().trim()] || 'America/Chicago';
+      const now = new Date();
+      const hour = parseInt(new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', hour12: false }).format(now), 10);
+      const timeStr = new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true }).format(now);
+      let greeting = 'Good evening';
+      if (hour >= 5 && hour < 12) greeting = 'Good morning';
+      else if (hour >= 12 && hour < 17) greeting = 'Good afternoon';
+      return { tz, hour, timeStr, greeting };
+    }
+
     // Detect jurisdiction type from the office + jurisdiction strings.
     // Returns one of: 'county', 'city', 'us_house_district',
     // 'state_legislative_district', or 'unknown'.
@@ -6292,11 +6325,13 @@ export default {
             loc + ' ' + st + ' election news ' + yr
           ];
         } else if (researchFeature === 'morning_brief') {
+          // Item 10: scope every query to the race / district / state politics —
+          // no bare "local news" / "news this week" that geo-localizes by IP.
           searchQueries = [
-            cn + ' ' + st + ' news ' + yr,
-            st + ' ' + (body.party || '') + ' politics news today',
-            fullDistrict + ' ' + yr + ' campaign',
-            loc + ' ' + st + ' news this week'
+            fullDistrict + ' ' + st + ' race news ' + yr,
+            cn + ' ' + st + ' campaign news ' + yr,
+            loc + ' ' + st + ' local political news ' + yr,
+            st + ' ' + (body.party || '') + ' state politics news ' + yr
           ];
         } else if (researchFeature === 'candidate_brief') {
           searchQueries = [
@@ -6372,7 +6407,14 @@ export default {
         if (vpsResult) {
           // VPS succeeded — call Haiku WITHOUT web_search tool (much cheaper)
           const enrichedMessage = message + '\n\nHere is current research data you MUST use to answer. Do NOT search the web — use ONLY this data:\n\n' + vpsResult.content;
-          const vpsSystemPrompt = 'You are a political research analyst. ' + (researchFeature === 'morning_brief' || researchFeature === 'day1_brief' ? 'Write in plain text, no JSON. Be conversational and concise.' : 'Return ONLY valid JSON. No preamble, no explanation.') + ' Be specific with real names, dates, percentages. Current year is ' + new Date().getFullYear() + '. Use the provided research data to answer. Do not make up data.';
+          // Items 9 + 10: for the morning brief, greet by the candidate's LOCAL
+          // time-of-day (not a hardcoded "Good morning"), and constrain the news
+          // to race/district/state relevance (no unrelated national/sports items).
+          const _briefCtx = researchFeature === 'morning_brief' ? localTimeContext(state) : null;
+          const _briefExtra = _briefCtx
+            ? ' The candidate\'s local time is now ' + _briefCtx.timeStr + ' — open the briefing with "' + _briefCtx.greeting + '," and do NOT assume it is morning. Include ONLY news items plausibly relevant to this race, the candidate\'s district, or ' + (state || 'the candidate\'s state') + ' state politics; exclude national, sports, entertainment, and out-of-state items. If the research data contains no relevant items, say exactly that in one sentence and do NOT pad the briefing with unrelated items.'
+            : '';
+          const vpsSystemPrompt = 'You are a political research analyst. ' + (researchFeature === 'morning_brief' || researchFeature === 'day1_brief' ? 'Write in plain text, no JSON. Be conversational and concise.' : 'Return ONLY valid JSON. No preamble, no explanation.') + ' Be specific with real names, dates, percentages. Current year is ' + new Date().getFullYear() + '. Use the provided research data to answer. Do not make up data.' + _briefExtra;
           const vpsResponse = await fetch(
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
             {
@@ -6468,25 +6510,7 @@ RULES:
       // ========================================
       // HELPER: Build timezone-aware date
       // ========================================
-      const stateTimezones = {
-        'TX':'America/Chicago','CA':'America/Los_Angeles','NY':'America/New_York',
-        'FL':'America/New_York','IL':'America/Chicago','PA':'America/New_York',
-        'OH':'America/New_York','GA':'America/New_York','NC':'America/New_York',
-        'MI':'America/New_York','NJ':'America/New_York','VA':'America/New_York',
-        'WA':'America/Los_Angeles','AZ':'America/Phoenix','MA':'America/New_York',
-        'TN':'America/Chicago','IN':'America/New_York','MO':'America/Chicago',
-        'MD':'America/New_York','WI':'America/Chicago','CO':'America/Denver',
-        'MN':'America/Chicago','SC':'America/New_York','AL':'America/Chicago',
-        'LA':'America/Chicago','KY':'America/New_York','OR':'America/Los_Angeles',
-        'OK':'America/Chicago','CT':'America/New_York','UT':'America/Denver',
-        'IA':'America/Chicago','NV':'America/Los_Angeles','AR':'America/Chicago',
-        'MS':'America/Chicago','KS':'America/Chicago','NM':'America/Denver',
-        'NE':'America/Chicago','ID':'America/Boise','WV':'America/New_York',
-        'HI':'Pacific/Honolulu','NH':'America/New_York','ME':'America/New_York',
-        'MT':'America/Denver','RI':'America/New_York','DE':'America/New_York',
-        'SD':'America/Chicago','ND':'America/Chicago','AK':'America/Anchorage',
-        'VT':'America/New_York','WY':'America/Denver','DC':'America/New_York'
-      };
+      const stateTimezones = STATE_TIMEZONES;
       const stateAbbr = (state || '').toUpperCase().trim();
       const tz = stateTimezones[stateAbbr] || 'America/Chicago';
       const today = new Date();

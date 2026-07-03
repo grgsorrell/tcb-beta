@@ -130,4 +130,45 @@ behavior; the frontend shouldn't treat it as a completed action needing a "Done!
 scrub logic unit-tested.
 
 ---
-<!-- Groups appended below as completed. -->
+## Group D — morning briefing (commit 4)
+
+### Item 9 — time-of-day greeting
+Extracted the 50-state (+DC) timezone map to a module-scoped `STATE_TIMEZONES` and added
+`localTimeContext(state)` → `{ tz, hour, timeStr, greeting }` (morning <12, afternoon 12–17, else
+evening). The main chat path now references the shared map (no duplication). The morning-brief system
+prompt is told the candidate's current local time and to open with the correct greeting, "do NOT
+assume it is morning." Verified: 6 PM → "Good evening" (the reported 6:02 PM bug), 6 AM → "Good
+morning", 1 PM → "Good afternoon".
+
+### Item 10 — briefing news scoping
+- Search queries rewritten to be race/district/state-scoped — `"[district] [state] race news [yr]"`,
+  `"[candidate] [state] campaign news [yr]"`, `"[loc] [state] local political news [yr]"`,
+  `"[state] [party] state politics news [yr]"` — no bare `"news this week"` / `"local news"` that
+  gets geo-localized by the requester IP (the KTLA / Cowboys leak).
+- Added to the brief prompt: include ONLY items plausibly relevant to the race, district, or the
+  candidate's state politics; exclude national/sports/entertainment/out-of-state; and if the research
+  has no relevant items, **say exactly that in one sentence — do not pad**.
+
+### Item 11 — relative-date guidance
+Added one line to MODULE_HARD_CONSTRAINTS #7: when the candidate says "next [weekday]" and that weekday
+is within the next ~2 days, CONFIRM which date they mean before scheduling ("next Friday" on a
+Thursday is ambiguous). Budget still green (HARD_CONSTRAINTS 1014/1050, base 2057/2500).
+
+**Verification:** `node --check worker.js` + module pass (no pipe); budget guard green; greeting logic
+unit-tested.
+
+---
+
+## Done — handoff + redeploy
+
+- Refreshed `02_BACKEND_WORKER.txt` and `04_SAM_PROMPT_AND_TOOLS.txt` against the branch (they now
+  include the punch-list changes and the new `lib/url_authority.mjs`).
+- Root causes documented: **item 1** (state-only `fetchAuthorityForRace`, office-blind — Group A) and
+  **item 8** (frontend `app.html` ~9877 empty-response branch — Group C).
+- **Single redeploy command for Greg** (backend only — no frontend files changed; item 8 is a separate
+  frontend task):
+  ```powershell
+  wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
+  ```
+  (The item-4 D1 update is already applied to production; no migration to run.)
+

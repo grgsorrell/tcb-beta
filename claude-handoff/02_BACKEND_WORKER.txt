@@ -1,4 +1,4 @@
-===== FILE: worker.js  (11766 lines) — sam-overhaul branch (Phases 0-7 applied) =====
+===== FILE: worker.js  (11948 lines) — sam-overhaul branch (Phases 0-7 + post-test punch list A-D) =====
 ===== Secret VALUES redacted; env.* NAMES retained; password-hash salt redacted. =====
 
 import { stripToolReferencesForGemini } from './lib/strip_tool_references.mjs';
@@ -96,14 +96,41 @@ export default {
       text = text.trim();
 
       const chunks = (candidate && candidate.groundingMetadata && candidate.groundingMetadata.groundingChunks) || [];
-      const urls = chunks
-        .map(c => c && c.web && c.web.uri)
-        .filter(u => typeof u === 'string' && u.length > 0);
+      // Item 7: capture a DISPLAY title for each source (Google supplies
+      // web.title, usually the publisher/domain). The uri is a
+      // vertexaisearch.cloud.google.com redirect — keep it as the link href,
+      // but the source NAME shown to the user must be the title/domain, never
+      // the redirect host.
+      const sources = chunks
+        .map(c => {
+          const web = c && c.web;
+          if (!web || typeof web.uri !== 'string' || !web.uri) return null;
+          const title = (typeof web.title === 'string' && web.title.trim()) ? web.title.trim() : 'web source';
+          return { title, uri: web.uri };
+        })
+        .filter(Boolean);
+      const urls = sources.map(s => s.uri);
       const primaryUrl = urls[0] || null;
 
       const hasUsableContent = text.length > 0 && !!primaryUrl;
 
-      return { excerpt: text, url: primaryUrl, urls, hasUsableContent };
+      return { excerpt: text, url: primaryUrl, urls, sources, hasUsableContent };
+    }
+
+    // Item 7: replace vertexaisearch redirect URLs in model text with the
+    // source title, and strip any bare vertexaisearch host mentions, so no
+    // user ever sees a vertexaisearch domain as a "source". `sources` is the
+    // [{title, uri}] list from extractGroundingResult.
+    function scrubGroundingRedirects(text, sources) {
+      if (!text) return text;
+      let out = String(text);
+      for (const s of (sources || [])) {
+        if (s && s.uri) out = out.split(s.uri).join(s.title || 'source');
+      }
+      out = out.replace(/\[([^\]]*)\]\(https?:\/\/vertexaisearch\.cloud\.google\.com\/[^)]*\)/gi, '$1');
+      out = out.replace(/https?:\/\/vertexaisearch\.cloud\.google\.com\/[^\s)\]]*/gi, '');
+      out = out.replace(/\(?\s*vertexaisearch\.cloud\.google\.com\b[^\s)]*\)?/gi, '');
+      return out;
     }
 
     // ========================================
@@ -843,6 +870,116 @@ export default {
         ? `For ${jurisdictionName} races, also contact the local (county/city) elections office — local races are typically administered locally even when state-level rules apply.`
         : null;
       return authority;
+    }
+
+    // Punch-list item 1: federal races (US House / US Senate / President) are
+    // FEC jurisdiction for CAMPAIGN FINANCE — reporting calendars and
+    // contribution limits — regardless of state. (Qualifying/filing is still
+    // state-administered, so this is NOT used for compliance/jurisdiction
+    // lookups — only finance + donation.)
+    function isFederalOffice(office) {
+      const o = String(office || '').toLowerCase();
+      if (!o) return false;
+      if (o.includes('president')) return true;
+      if (o.includes('congress')) return true;
+      // "US House", "U.S. House", "House of Representatives", "US Representative"
+      if ((o.includes('house') || o.includes('representative')) && !o.includes('state')) return true;
+      // "US Senate", "U.S. Senator" — exclude "state senate/senator"
+      if (o.includes('senate') && !o.includes('state')) return true;
+      return false;
+    }
+    function fecAuthority(factClass) {
+      const url = factClass === 'donation'
+        ? 'https://www.fec.gov/help-candidates-and-committees/candidate-taking-receipts/contribution-limits/'
+        : 'https://www.fec.gov/help-candidates-and-committees/dates-and-deadlines/';
+      return {
+        name: 'Federal Election Commission (FEC)',
+        phone: '1-800-424-9530',
+        url,
+        notes: 'Federal races (US House, US Senate, President) report to and are regulated by the FEC — not the state authority.',
+        jurisdiction_specific: null
+      };
+    }
+
+    // Punch-list item 3: map internal placeholder tokens to natural language
+    // BEFORE the lookup result reaches the model (it's a tool result the model
+    // reads and can quote). Fixed at the data layer so "unsupported" and null
+    // fields can never leak to the candidate as literal text. Safe to remap the
+    // status here: the client and the server-side validators don't consume the
+    // status from this HTTP response.
+    function naturalizeLookupForModel(result) {
+      if (!result || typeof result !== 'object') return result;
+      const NO_DATA = 'no verified data available';
+      const out = { ...result };
+      if (out.status === 'unsupported') { out.status = NO_DATA; out.data_available = false; }
+      else if (out.status === 'web_search_fallback') { out.data_available = 'partial'; }
+      if (out.source === 'unsupported') out.source = NO_DATA;
+      for (const key of ['reports', 'limits', 'deadlines', 'schedule']) {
+        const sub = out[key];
+        if (sub && typeof sub === 'object' && !Array.isArray(sub)) {
+          const o = {};
+          for (const k of Object.keys(sub)) {
+            const v = sub[k];
+            o[k] = (v === null || v === undefined || v === 'unsupported') ? NO_DATA : v;
+          }
+          out[key] = o;
+        }
+      }
+      return out;
+    }
+
+    // Punch-list item 6: a bare affirmation ("yes", "please", "do it") in reply
+    // to a Sam offer must route as ACTION with the offer context — not as a
+    // conversational turn that loses the offer.
+    function isBareAffirmation(msg) {
+      const m = String(msg || '').trim().toLowerCase().replace(/[.!\s]+$/, '');
+      if (!m || m.length > 25) return false;
+      return /^(yes|yep|yeah|yup|sure|ok|okay|please|do it|go ahead|sounds good|yes please|please do|add it|schedule it|save it|do that|do so|let'?s do it|go for it|absolutely|confirmed|yes do it)$/.test(m);
+    }
+    function lastAssistantOfferedAction(history) {
+      if (!Array.isArray(history)) return false;
+      for (let i = history.length - 1; i >= 0; i--) {
+        const h = history[i];
+        if (!h || h.role !== 'assistant') continue;
+        let text = '';
+        if (typeof h.content === 'string') text = h.content;
+        else if (Array.isArray(h.content)) text = h.content.filter(b => b && b.type === 'text').map(b => b.text).join(' ');
+        return /\?/.test(text) && /\b(would you like|want me to|should i|shall i|do you want me to|can i add|shall i add|like me to)\b/i.test(text);
+      }
+      return false;
+    }
+
+    // 50-state (+DC) timezone map, module-scoped so both the main chat path and
+    // the morning-brief research path can compute local time. (Item 9.)
+    const STATE_TIMEZONES = {
+      'TX':'America/Chicago','CA':'America/Los_Angeles','NY':'America/New_York',
+      'FL':'America/New_York','IL':'America/Chicago','PA':'America/New_York',
+      'OH':'America/New_York','GA':'America/New_York','NC':'America/New_York',
+      'MI':'America/New_York','NJ':'America/New_York','VA':'America/New_York',
+      'WA':'America/Los_Angeles','AZ':'America/Phoenix','MA':'America/New_York',
+      'TN':'America/Chicago','IN':'America/New_York','MO':'America/Chicago',
+      'MD':'America/New_York','WI':'America/Chicago','CO':'America/Denver',
+      'MN':'America/Chicago','SC':'America/New_York','AL':'America/Chicago',
+      'LA':'America/Chicago','KY':'America/New_York','OR':'America/Los_Angeles',
+      'OK':'America/Chicago','CT':'America/New_York','UT':'America/Denver',
+      'IA':'America/Chicago','NV':'America/Los_Angeles','AR':'America/Chicago',
+      'MS':'America/Chicago','KS':'America/Chicago','NM':'America/Denver',
+      'NE':'America/Chicago','ID':'America/Boise','WV':'America/New_York',
+      'HI':'Pacific/Honolulu','NH':'America/New_York','ME':'America/New_York',
+      'MT':'America/Denver','RI':'America/New_York','DE':'America/New_York',
+      'SD':'America/Chicago','ND':'America/Chicago','AK':'America/Anchorage',
+      'VT':'America/New_York','WY':'America/Denver','DC':'America/New_York'
+    };
+    // Item 9: local time-of-day context for greetings.
+    function localTimeContext(state) {
+      const tz = STATE_TIMEZONES[String(state || '').toUpperCase().trim()] || 'America/Chicago';
+      const now = new Date();
+      const hour = parseInt(new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', hour12: false }).format(now), 10);
+      const timeStr = new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true }).format(now);
+      let greeting = 'Good evening';
+      if (hour >= 5 && hour < 12) greeting = 'Good morning';
+      else if (hour >= 12 && hour < 17) greeting = 'Good afternoon';
+      return { tz, hour, timeStr, greeting };
     }
 
     // Detect jurisdiction type from the office + jurisdiction strings.
@@ -3158,7 +3295,7 @@ export default {
           result.source, result.last_updated
         ).run();
 
-        return jsonResponse({ ...result, cached: false });
+        return jsonResponse(naturalizeLookupForModel({ ...result, cached: false }));
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -3447,7 +3584,7 @@ export default {
         ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
 
         if (cached) {
-          return jsonResponse(formatComplianceCacheRow(cached, true));
+          return jsonResponse(naturalizeLookupForModel(formatComplianceCacheRow(cached, true)));
         }
 
         // Source cascade — Ballotpedia and SOS scrapers are future work.
@@ -3545,7 +3682,7 @@ export default {
           result.web_search ? result.web_search.url : null
         ).run().catch((e) => { console.warn('[compliance] cache write failed:', e.message); });
 
-        return jsonResponse({ ...result, cached: false });
+        return jsonResponse(naturalizeLookupForModel({ ...result, cached: false }));
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -3631,7 +3768,7 @@ export default {
         ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
 
         if (cached) {
-          return jsonResponse(formatFinanceCacheRow(cached, true));
+          return jsonResponse(naturalizeLookupForModel(formatFinanceCacheRow(cached, true)));
         }
 
         // Source cascade — FEC reporting calendar + state SOS deferred.
@@ -3640,12 +3777,16 @@ export default {
         // if (!result) result = await trySosFinanceCalendar(stateCode, office, raceYear);
 
         if (!result) {
-          const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
+          // Item 1: federal races resolve to FEC for finance reporting.
+          const authority = isFederalOffice(office)
+            ? fecAuthority('finance')
+            : await fetchAuthorityForRace(stateCode, jurisdictionName);
 
           // Web_search fallback before giving up entirely. See compliance
           // lookup for the architectural rationale (Hypothesis-4 mitigation).
+          // Federal races target FEC; state/local target the state authority.
           const fbQuery = [
-            stateCode ? expandStateName(stateCode) : stateRaw,
+            isFederalOffice(office) ? 'FEC federal' : (stateCode ? expandStateName(stateCode) : stateRaw),
             office,
             raceYear,
             'campaign finance reporting deadlines'
@@ -3703,7 +3844,7 @@ export default {
           result.web_search ? result.web_search.url : null
         ).run().catch((e) => { console.warn('[finance] cache write failed:', e.message); });
 
-        return jsonResponse({ ...result, cached: false });
+        return jsonResponse(naturalizeLookupForModel({ ...result, cached: false }));
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -3783,7 +3924,7 @@ export default {
         ).bind(stateCode || '', officeNormalized, raceYear, cacheJurKey).first();
 
         if (cached) {
-          return jsonResponse(formatDonationCacheRow(cached, true));
+          return jsonResponse(naturalizeLookupForModel(formatDonationCacheRow(cached, true)));
         }
 
         // Source cascade — FEC + state stubbed.
@@ -3792,7 +3933,10 @@ export default {
         // if (!result) result = await tryStateContributionLimits(stateCode, office, raceYear);
 
         if (!result) {
-          const authority = await fetchAuthorityForRace(stateCode, jurisdictionName);
+          // Item 1: federal races resolve to FEC for contribution limits.
+          const authority = isFederalOffice(office)
+            ? fecAuthority('donation')
+            : await fetchAuthorityForRace(stateCode, jurisdictionName);
 
           // Web_search fallback before giving up entirely. See compliance
           // lookup for the architectural rationale (Hypothesis-4 mitigation).
@@ -3801,7 +3945,7 @@ export default {
           // limits — those are explicitly excluded by the DONATION LIMITS
           // hard-constraint and surfacing them would be a citation hazard.
           const fbQuery = [
-            stateCode ? expandStateName(stateCode) : stateRaw,
+            isFederalOffice(office) ? 'FEC federal' : (stateCode ? expandStateName(stateCode) : stateRaw),
             office,
             raceYear,
             'individual contribution limit per election'
@@ -3861,7 +4005,7 @@ export default {
           result.web_search ? result.web_search.url : null
         ).run().catch((e) => { console.warn('[donation] cache write failed:', e.message); });
 
-        return jsonResponse({ ...result, cached: false });
+        return jsonResponse(naturalizeLookupForModel({ ...result, cached: false }));
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -6184,11 +6328,13 @@ export default {
             loc + ' ' + st + ' election news ' + yr
           ];
         } else if (researchFeature === 'morning_brief') {
+          // Item 10: scope every query to the race / district / state politics —
+          // no bare "local news" / "news this week" that geo-localizes by IP.
           searchQueries = [
-            cn + ' ' + st + ' news ' + yr,
-            st + ' ' + (body.party || '') + ' politics news today',
-            fullDistrict + ' ' + yr + ' campaign',
-            loc + ' ' + st + ' news this week'
+            fullDistrict + ' ' + st + ' race news ' + yr,
+            cn + ' ' + st + ' campaign news ' + yr,
+            loc + ' ' + st + ' local political news ' + yr,
+            st + ' ' + (body.party || '') + ' state politics news ' + yr
           ];
         } else if (researchFeature === 'candidate_brief') {
           searchQueries = [
@@ -6264,7 +6410,14 @@ export default {
         if (vpsResult) {
           // VPS succeeded — call Haiku WITHOUT web_search tool (much cheaper)
           const enrichedMessage = message + '\n\nHere is current research data you MUST use to answer. Do NOT search the web — use ONLY this data:\n\n' + vpsResult.content;
-          const vpsSystemPrompt = 'You are a political research analyst. ' + (researchFeature === 'morning_brief' || researchFeature === 'day1_brief' ? 'Write in plain text, no JSON. Be conversational and concise.' : 'Return ONLY valid JSON. No preamble, no explanation.') + ' Be specific with real names, dates, percentages. Current year is ' + new Date().getFullYear() + '. Use the provided research data to answer. Do not make up data.';
+          // Items 9 + 10: for the morning brief, greet by the candidate's LOCAL
+          // time-of-day (not a hardcoded "Good morning"), and constrain the news
+          // to race/district/state relevance (no unrelated national/sports items).
+          const _briefCtx = researchFeature === 'morning_brief' ? localTimeContext(state) : null;
+          const _briefExtra = _briefCtx
+            ? ' The candidate\'s local time is now ' + _briefCtx.timeStr + ' — open the briefing with "' + _briefCtx.greeting + '," and do NOT assume it is morning. Include ONLY news items plausibly relevant to this race, the candidate\'s district, or ' + (state || 'the candidate\'s state') + ' state politics; exclude national, sports, entertainment, and out-of-state items. If the research data contains no relevant items, say exactly that in one sentence and do NOT pad the briefing with unrelated items.'
+            : '';
+          const vpsSystemPrompt = 'You are a political research analyst. ' + (researchFeature === 'morning_brief' || researchFeature === 'day1_brief' ? 'Write in plain text, no JSON. Be conversational and concise.' : 'Return ONLY valid JSON. No preamble, no explanation.') + ' Be specific with real names, dates, percentages. Current year is ' + new Date().getFullYear() + '. Use the provided research data to answer. Do not make up data.' + _briefExtra;
           const vpsResponse = await fetch(
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
             {
@@ -6360,25 +6513,7 @@ RULES:
       // ========================================
       // HELPER: Build timezone-aware date
       // ========================================
-      const stateTimezones = {
-        'TX':'America/Chicago','CA':'America/Los_Angeles','NY':'America/New_York',
-        'FL':'America/New_York','IL':'America/Chicago','PA':'America/New_York',
-        'OH':'America/New_York','GA':'America/New_York','NC':'America/New_York',
-        'MI':'America/New_York','NJ':'America/New_York','VA':'America/New_York',
-        'WA':'America/Los_Angeles','AZ':'America/Phoenix','MA':'America/New_York',
-        'TN':'America/Chicago','IN':'America/New_York','MO':'America/Chicago',
-        'MD':'America/New_York','WI':'America/Chicago','CO':'America/Denver',
-        'MN':'America/Chicago','SC':'America/New_York','AL':'America/Chicago',
-        'LA':'America/Chicago','KY':'America/New_York','OR':'America/Los_Angeles',
-        'OK':'America/Chicago','CT':'America/New_York','UT':'America/Denver',
-        'IA':'America/Chicago','NV':'America/Los_Angeles','AR':'America/Chicago',
-        'MS':'America/Chicago','KS':'America/Chicago','NM':'America/Denver',
-        'NE':'America/Chicago','ID':'America/Boise','WV':'America/New_York',
-        'HI':'Pacific/Honolulu','NH':'America/New_York','ME':'America/New_York',
-        'MT':'America/Denver','RI':'America/New_York','DE':'America/New_York',
-        'SD':'America/Chicago','ND':'America/Chicago','AK':'America/Anchorage',
-        'VT':'America/New_York','WY':'America/Denver','DC':'America/New_York'
-      };
+      const stateTimezones = STATE_TIMEZONES;
       const stateAbbr = (state || '').toUpperCase().trim();
       const tz = stateTimezones[stateAbbr] || 'America/Chicago';
       const today = new Date();
@@ -7287,7 +7422,13 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         }
       }
       const _classification = await classifyUserQuestion(_latestUserText, history);
-      const _questionCategory = _classification.category;
+      // Item 6: a bare affirmation replying to a pending Sam offer routes as
+      // ACTION, not conversational (which would drop the offer). Forces the
+      // route to 'action' in callGemini and bumps a 'conversational'
+      // classification so tools stay available and the offer context is used.
+      const _affirmationFollowUp = isBareAffirmation(_latestUserText) && lastAssistantOfferedAction(history);
+      let _questionCategory = _classification.category;
+      if (_affirmationFollowUp && _questionCategory === 'conversational') _questionCategory = 'strategic';
       // Phase 4: turn-scoped accumulator of validator fail-opens (verifier
       // infra errors that let a response through unvalidated). Phase 5's
       // sam_turn_trace insert serializes this into the validator_result column.
@@ -7798,7 +7939,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "lookup_compliance_deadlines",
-          description: "Look up verified filing/qualifying deadlines for the candidate's race. CRITICAL: when the user asks about filing deadlines, qualifying periods, ballot access, petition deadlines, filing fees, or any 'must do X by date Y to be on the ballot' question, call this FIRST. The tool returns either verified dates with citation OR an authority contact for honest deferral (never invented dates). The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute for this tool; live-search results are unverified for this fact class and a wrong deadline can disqualify a candidate.",
+          description: "Look up verified filing/qualifying deadlines for the candidate's race. CRITICAL: when the user asks about filing deadlines, qualifying periods, ballot access, petition deadlines, filing fees, or any 'must do X by date Y to be on the ballot' question, call this FIRST. The tool returns either verified dates with citation OR an authority contact for honest deferral (never invented dates). The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute for calling this tool FIRST. But if the tool returns no verified data for the race, THEN fall through to request_web_search targeting the official source, cite what you find, and add a one-line note to confirm with the authority in the tool result — never stop at a bare deferral.",
           input_schema: {
             type: "object",
             properties: {
@@ -7812,7 +7953,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "lookup_finance_reports",
-          description: "Look up the verified campaign finance report schedule for the candidate's race — quarterly reports, pre-primary / pre-general special filings, post-election reports. CRITICAL: when the user asks about quarterly reports, FEC filings, pre-primary / pre-general filings, post-election reports, or any 'when is my finance report due' question, call this FIRST. The tool returns either verified report dates OR an authority contact for honest deferral. The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute; wrong report dates can mean missed filings, fines, and bad press.",
+          description: "Look up the verified campaign finance report schedule for the candidate's race — quarterly reports, pre-primary / pre-general special filings, post-election reports. CRITICAL: when the user asks about quarterly reports, FEC filings, pre-primary / pre-general filings, post-election reports, or any 'when is my finance report due' question, call this FIRST. The tool returns either verified report dates OR an authority contact for honest deferral. The authority field is ALWAYS populated — use it. Do NOT use request_web_search as a substitute for calling this tool FIRST. But if it returns no verified data, THEN fall through to request_web_search targeting the official source (fec.gov for federal races), cite what you find, and add a one-line note to confirm with the authority in the tool result — never stop at a bare deferral. Wrong report dates can mean missed filings, fines, and bad press.",
           input_schema: {
             type: "object",
             properties: {
@@ -7826,7 +7967,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         },
         {
           name: "lookup_donation_limits",
-          description: "Look up the verified individual contribution limits for the candidate's race — per-election and per-cycle limits, plus whether primary and general count separately. CRITICAL: when the user asks about contribution limits, donation caps, max donations, 'how much can a donor give', or any 'what's the limit' question, call this FIRST. The tool returns either verified limits OR an authority contact for honest deferral. NEVER state donation limit amounts from training data — federal limits change every cycle and state/local limits vary widely. Do NOT use request_web_search as a substitute; wrong limit guidance triggers refunded contributions and compliance fines.",
+          description: "Look up the verified individual contribution limits for the candidate's race — per-election and per-cycle limits, plus whether primary and general count separately. CRITICAL: when the user asks about contribution limits, donation caps, max donations, 'how much can a donor give', or any 'what's the limit' question, call this FIRST. The tool returns either verified limits OR an authority contact for honest deferral. NEVER state donation limit amounts from training data — federal limits change every cycle and state/local limits vary widely. Do NOT use request_web_search as a substitute for calling this tool FIRST. But if it returns no verified data, THEN fall through to request_web_search targeting the official source (fec.gov for federal races), cite what you find, and add a one-line note to confirm with the authority in the tool result — never stop at a bare deferral. Wrong limit guidance triggers refunded contributions and compliance fines.",
           input_schema: {
             type: "object",
             properties: {
@@ -8019,12 +8160,16 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // Cached for the entire turn — tool-loop re-invocations of
         // callGemini reuse the same _chatRoute and never re-classify.
         if (_chatRoute === null) {
+          // Item 6: a bare affirmation answering a pending Sam offer must keep
+          // the full toolset so Sam can execute the offered action.
+          if (_affirmationFollowUp) {
+            _chatRoute = 'action';
+          } else if (histElectionContext) {
           // Highest priority: if the VPS historical-election pre-fetch
           // succeeded, force 'action'. Sam already has the verified
           // full-page text in her system prompt; she doesn't need
           // grounding for this turn and SHOULD keep tool access so she
           // can call save_win_number in the same turn.
-          if (histElectionContext) {
             _chatRoute = 'action';
           } else {
             // Live-data triggers override the D1 bypass. The campaign_reference
@@ -8071,7 +8216,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                  systemInstruction: { parts: [{ text: 'Research the query with Google Search. Summarize findings with specific facts and include the source URL for every fact. If nothing relevant is found, say so.' }] },
+                  systemInstruction: { parts: [{ text: 'Research the query with Google Search. Summarize findings with specific facts. Cite each source by its publisher/site name or domain (e.g., "FEC" or "fec.gov"), never by a raw redirect URL. If nothing relevant is found, say so.' }] },
                   contents: [{ role: 'user', parts: [{ text: String(query || '') }] }],
                   tools: [{ googleSearch: {} }],
                   generationConfig: { temperature: 0.2, maxOutputTokens: 2000, thinkingConfig: { thinkingBudget: 0 } }
@@ -8089,7 +8234,14 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             );
             if (gd && gd.error) return { excerpt: 'Live search unavailable: ' + gd.error.message, sources: [] };
             const g = extractGroundingResult(gd);
-            return { excerpt: g.excerpt || 'No relevant results found for that query.', sources: g.urls || [] };
+            // Item 7: return title+uri source pairs so Sam cites by name, not
+            // the vertexaisearch redirect host. Render as markdown links
+            // [title](uri) — the uri redirects to the real source.
+            return {
+              excerpt: g.excerpt || 'No relevant results found for that query.',
+              sources: (g.sources && g.sources.length) ? g.sources : (g.urls || []).map(u => ({ title: 'web source', uri: u })),
+              source_render_hint: 'Cite each source by its title/domain as a markdown link [title](uri); never show the raw vertexaisearch URL as the source name.'
+            };
           } catch (e) {
             return { excerpt: 'Live search failed: ' + ((e && e.message) || 'unknown error'), sources: [] };
           }
@@ -8207,6 +8359,36 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               });
             }
           }
+          // Item 7: on the search route, scrub vertexaisearch redirect URLs
+          // from the grounded text so the user sees source titles/domains.
+          if (_chatRoute === 'search') {
+            const _gsources = extractGroundingResult(geminiData).sources;
+            for (const b of anthropicContent) {
+              if (b.type === 'text') b.text = scrubGroundingRedirects(b.text, _gsources);
+            }
+          }
+
+          // Item 5b: same-turn permission-gate guard. If the model BOTH asks a
+          // permission question (offers an action) AND emits that action's tool
+          // call in the same turn, drop the tool call and keep the question —
+          // otherwise the client executes it and the gate is bypassed.
+          const GATED_WRITE_TOOLS = new Set([
+            'add_calendar_event', 'update_task', 'delete_task', 'complete_task',
+            'update_event', 'delete_event', 'add_expense', 'log_contribution',
+            'set_budget', 'set_category_allocation', 'save_note', 'add_endorsement',
+            'save_win_number', 'save_candidate_profile'
+          ]);
+          const _turnText = anthropicContent.filter(b => b.type === 'text').map(b => b.text).join(' ');
+          const _offersPermission = /\?/.test(_turnText) &&
+            /\b(would you like|want me to|should i|shall i|do you want me to|can i add|shall i add)\b/i.test(_turnText);
+          if (_offersPermission && anthropicContent.some(b => b.type === 'tool_use' && GATED_WRITE_TOOLS.has(b.name))) {
+            const _dropped = anthropicContent.filter(b => b.type === 'tool_use' && GATED_WRITE_TOOLS.has(b.name)).map(b => b.name);
+            console.warn('[permission_gate] dropped same-turn action tool call(s) offered as a question:', _dropped.join(','));
+            for (let i = anthropicContent.length - 1; i >= 0; i--) {
+              if (anthropicContent[i].type === 'tool_use' && GATED_WRITE_TOOLS.has(anthropicContent[i].name)) anthropicContent.splice(i, 1);
+            }
+          }
+
           if (anthropicContent.length === 0) {
             anthropicContent.push({ type: 'text', text: "I'm here to help! What would you like to work on?" });
           }
@@ -11807,7 +11989,7 @@ Answer from the HIGHEST rung that has the fact, and cite that rung inline. Never
 
 1. GROUND TRUTH — the candidate's own saved data shown above. Cite as "per your campaign data" or "per your campaign site".
 2. VERIFIED BLOCKS — any VERIFIED STATE ELECTION LAW / VERIFIED CAMPAIGN REFERENCE DATA / VERIFIED HISTORICAL ELECTION DATA block in this prompt. Cite the source named inside the block (e.g., "per Florida Statutes § 99.061"). Speak from authoritative knowledge — never say "according to my database".
-3. LOOKUP TOOLS — for filing/qualifying deadlines use lookup_compliance_deadlines; finance report schedules → lookup_finance_reports; contribution limits → lookup_donation_limits; jurisdiction/geography lists → lookup_jurisdiction; federal donor lists → lookup_top_donors. For these fact classes, call the tool FIRST — do not substitute search. Cite the tool's citation/authority field.
+3. LOOKUP TOOLS — for filing/qualifying deadlines use lookup_compliance_deadlines; finance report schedules → lookup_finance_reports; contribution limits → lookup_donation_limits; jurisdiction/geography lists → lookup_jurisdiction; federal donor lists → lookup_top_donors. For these fact classes, call the tool FIRST — do not substitute search. Cite the tool's citation/authority field. If the tool returns no verified data, do NOT stop at a bare deferral — fall through to rung 4: request_web_search the official source, cite what you find, and add a one-line note to confirm with the named authority before acting.
 4. LIVE SEARCH — request_web_search, for news, current events, election results, polls, and anything rungs 1–3 don't cover. Cite the specific source inline and make URLs clickable markdown links.
 5. MODEL MEMORY — allowed ONLY for concepts, definitions, strategy, and general benchmarks (tag benchmarks "(typical pattern — your race may differ)"; tag your own reads "(my read — verify before acting)"). FORBIDDEN for every fact class listed at the top of this ladder.
 
@@ -11816,9 +11998,9 @@ If no rung reaches the fact: say what you DO know, then defer with the SPECIFIC 
 
 export const MODULE_HARD_CONSTRAINTS = `HARD CONSTRAINTS (read every time; each overrides default helpfulness):
 
-1. CALENDAR PERMISSION GATE. Never add, update, or delete a calendar item without explicit permission. Only proceed directly when the candidate says "add this," "put it on my calendar," "schedule it," "remind me to," or a clear paraphrase; otherwise ask first.
-   Bad: candidate says "I'm thinking about a June fundraiser" → you silently create a task. Good: "Want me to drop a placeholder 'Plan June fundraiser' on your calendar to revisit?"
-   WHY: silent additions clutter the calendar and erode the candidate's control over their own schedule.
+1. CALENDAR PERMISSION GATE. Never add, update, or delete a calendar item without explicit permission. Only proceed directly when the candidate says "add this," "put it on my calendar," "schedule it," "remind me to," or a clear paraphrase; otherwise ask first. CRITICAL: if you ask a permission question, STOP — do NOT emit the action's tool call in the same turn. Ask, then wait for the reply; asking and calling the tool in one turn bypasses the gate mechanically.
+   Bad: candidate says "I'm thinking about a June fundraiser" → you silently create a task, OR you say "Want me to add this?" AND call add_calendar_event in the same turn. Good: "Want me to drop a placeholder 'Plan June fundraiser' on your calendar to revisit?" and NO tool call this turn.
+   WHY: silent additions (or ask-and-act-in-one-turn) clutter the calendar and erode the candidate's control over their own schedule.
 
 2. ILLEGAL CONTRIBUTIONS. When a described contribution is clearly illegal (corporate donation where banned, over a known limit, foreign national, in another's name, cash over the cap), respond with a definitive NO — not a hedge — and name the SPECIFIC enforcement agency for that jurisdiction (LA City → LA City Ethics Commission; CA state → FPPC; federal → FEC; other → defer to "the [city] ethics commission or [state] equivalent," and call lookup_jurisdiction if available).
    Bad: "Corporate contributions may be restricted; check with the CA Secretary of State." Good: "No — LA City bans corporate contributions to municipal candidates; refuse it and report any received funds to the LA City Ethics Commission (ethics.lacity.org)."
@@ -11838,7 +12020,7 @@ export const MODULE_HARD_CONSTRAINTS = `HARD CONSTRAINTS (read every time; each 
 6. WIN NUMBER. Research the state's primary system first (top-two states like CA/WA require a top-two finish; never just divide total votes by candidates). For historical results, search the pattern "[State] [Office] District [N] [Year] election results Ballotpedia" (Ballotpedia indexes candidate-level results grounding can retrieve; raw canvass/SoS PDFs do not surface). When VERIFIED HISTORICAL ELECTION DATA is present, extract the real vote totals and calculate: single-winner → the winner's total; multi-member district → the LOWEST-PLACED WINNER's total; adjust presidential-year turnout down 25–40% for a midterm. Cite the real numbers; never say "vote totals aren't available" — give a labeled rough estimate instead.
    WHY: targeting Ballotpedia and using real prior-race numbers turns a failed win-number answer into a plan the candidate can act on.
 
-7. DATES. Today's date is in GROUND TRUTH. Never guess dates, never state the day of the week, and never use relative dates ("tomorrow," "next week"). Use YYYY-MM-DD for tools and cite the source of any date.
+7. DATES. Today's date is in GROUND TRUTH. Never guess dates, never state the day of the week, and never use relative dates ("tomorrow," "next week"). Use YYYY-MM-DD for tools and cite the source of any date. When the candidate says "next [weekday]" and that weekday falls within the next ~2 days, CONFIRM which date they mean before scheduling — e.g., "next Friday" said on a Thursday is ambiguous (tomorrow vs. the following week).
    WHY: a wrong day-of-week or drifting relative date silently corrupts scheduling.
 
 8. GEOGRAPHIC TARGETING. For any question about where to canvass, hold events, mail, or focus the ground game, call lookup_jurisdiction FIRST. Then the ONLY place names you may use are those the tool returned (union of incorporated municipalities and major unincorporated areas) — no city from memory, even an adjacent one.
@@ -11858,7 +12040,7 @@ export const MODULE_TOOL_GUIDANCE = `TOOL GUIDANCE:
 - Always call the appropriate tool BEFORE confirming any action; never claim you did something (saved, added, updated) without the tool call. If a turn needs several tools, call all of them before you respond, then confirm briefly and ask what's next.
 - Persistence/action tools (add_calendar_event, update_task, delete_task, complete_task, update_event, delete_event, add_expense, log_contribution, set_budget, set_category_allocation, save_note, add_endorsement, save_win_number, save_candidate_profile) write to the candidate's workspace — respect the calendar permission gate and budget ground-truth constraint above.
 - navigate_to switches the app view when the candidate asks to go somewhere.
-- Verified-fact tools map to Trust Ladder rung 3: lookup_compliance_deadlines (filing/qualifying deadlines), lookup_finance_reports (report schedules), lookup_donation_limits (contribution limits), lookup_jurisdiction (municipalities/geography), lookup_top_donors (federal FEC Schedule A donors). For those fact classes, call the tool FIRST and cite its authority field; on status "unsupported"/"unavailable," defer with the authority contact in the tool result — do not substitute training data or a state-specific URL from memory.
+- Verified-fact tools map to Trust Ladder rung 3: lookup_compliance_deadlines (filing/qualifying deadlines), lookup_finance_reports (report schedules), lookup_donation_limits (contribution limits), lookup_jurisdiction (municipalities/geography), lookup_top_donors (federal FEC Schedule A donors). For those fact classes, call the tool FIRST and cite its authority field. If the tool returns no verified data, FALL THROUGH to request_web_search targeting the official source (fec.gov for federal finance/limits, the candidate's state SOS otherwise), cite what you find, and add a one-line advisory to confirm with the named authority before acting — never stop at a bare deferral, and never emit a state-specific URL from memory.
 - For news, current events, election results, polls, and other live facts not covered by a verified block or a lookup tool, use request_web_search (Trust Ladder rung 4). You DO have live search — never claim "I can't access the internet." If one query fails, try different terms before deferring.
 - BUDGET CATEGORY MAPPING: map the candidate's language to these keys — digital, mail, broadcast, polling, fieldOps, fundraisingCompliance, consulting, reserveFund, signs, events, staffing, misc.
 - COMPLIANCE POSTURE: never tell a candidate they are "compliant" or "all set" — present findings as "here's what I found" and recommend they verify with their clerk or elections office.
