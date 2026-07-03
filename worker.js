@@ -6157,6 +6157,31 @@ export default {
       }
 
       // ========================================
+      // HELPER: mechanical relevance filter for the brief (pm-punchlist-2 item 7).
+      // multiSearch returns a blob of per-query Trafilatura text (the VPS does
+      // not expose discrete result items). Segment it on blank lines and drop
+      // any paragraph that mentions NONE of the relevance tokens (case-
+      // insensitive containment against a list built from campaign data — no
+      // model judgment). Also drops the "===== Search: <query> =====" header
+      // lines. Returns { filtered, survivors }; survivors===0 means nothing in
+      // the retrieval was race-relevant, so the caller emits the one-sentence
+      // "No race-relevant news today." brief. survivors===-1 means the filter
+      // was not applied (no tokens/empty content) — caller uses content as-is.
+      // ========================================
+      function filterBriefContentByRelevance(content, tokens) {
+        if (!content || !Array.isArray(tokens) || tokens.length === 0) return { filtered: content, survivors: -1 };
+        const kept = [];
+        for (const raw of content.split(/\n{2,}/)) {
+          const para = raw.trim();
+          if (!para) continue;
+          if (/^=====\s*Search:/.test(para)) continue; // multiSearch query header, not content
+          const lc = para.toLowerCase();
+          if (tokens.some(t => t && lc.includes(t))) kept.push(para);
+        }
+        return { filtered: kept.join('\n\n'), survivors: kept.length };
+      }
+
+      // ========================================
       // HELPER: Extract a district number from a free-form user message.
       // Tries (in order): "District 22", "HD 22" / "HD-22" / "HD22",
       // "22nd district". Returns null if nothing usable.
@@ -6251,6 +6276,33 @@ export default {
         // Build natural district description for better search results
         const fullDistrict = office + ' ' + (loc ? loc + ' ' : '') + st;
 
+        // Item 6: brief queries must use the FULL state name (never the 2-letter
+        // abbreviation — a bare "LA" geo-resolves to Los Angeles, which served a
+        // Louisiana candidate CA CD-5 / LA City Council items), spell out the
+        // district, and add per-locality and per-opponent queries from campaign
+        // data. The same data feeds the item-7 relevance-token list below.
+        const stateFull = expandStateName(st);
+        const _ordinal = (n) => { n = parseInt(n, 10); if (!n) return ''; const s = ['th','st','nd','rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); };
+        const _lastName = (nm) => { const p = (nm || '').trim().split(/\s+/); return p.length ? p[p.length - 1] : ''; };
+        const _distNum = extractDistrictNumber(specificOffice || '') || extractDistrictNumber(office || '') || extractDistrictNumber(loc || '');
+        const _officeLC = (office || '').toLowerCase();
+        const _isFedHouse = /\b(u\.?s\.?\s*house|congress|congressional|representative)\b/.test(_officeLC) && !_officeLC.includes('state');
+        const raceDescriptor = (_isFedHouse && _distNum)
+          ? stateFull + "'s " + _ordinal(_distNum) + ' Congressional District'
+          : (_distNum ? office + ' District ' + _distNum + ', ' + stateFull : office + ', ' + stateFull);
+        const _localities = (loc || '').split(/[\/,;]/).map(s => s.trim()).filter(Boolean).slice(0, 3);
+        const _oppNames = (intelContext && Array.isArray(intelContext.opponents) ? intelContext.opponents.map(o => o && o.name).filter(Boolean) : []).slice(0, 2);
+        // Item 7: relevance tokens — full state, localities, candidate + last
+        // name, opponents + last names, district phrases, office. All >= 4 chars
+        // so the 2-letter abbr and short stopwords can never match.
+        const relevanceTokens = Array.from(new Set([
+          stateFull, ..._localities, cn, _lastName(cn),
+          ..._oppNames, ..._oppNames.map(_lastName), raceDescriptor,
+          _distNum ? _ordinal(_distNum) + ' congressional district' : '',
+          _distNum ? 'district ' + _distNum : '',
+          _isFedHouse ? 'congress' : '', specificOffice || office || ''
+        ].map(t => (t || '').toLowerCase().trim()).filter(t => t.length >= 4)));
+
         if (researchFeature === 'intel_pulse') {
           searchQueries = [
             cn + ' ' + st + ' news ' + yr,
@@ -6258,28 +6310,30 @@ export default {
             st + ' political news this week ' + yr,
             loc + ' ' + st + ' election news ' + yr
           ];
-        } else if (researchFeature === 'morning_brief') {
-          // Item 10: scope every query to the race / district / state politics —
-          // no bare "local news" / "news this week" that geo-localizes by IP.
+        } else if (researchFeature === 'morning_brief' || researchFeature === 'day1_brief') {
+          // Item 6: full state name, spelled-out district, per-locality and
+          // per-opponent queries. Never a bare state abbreviation; never a bare
+          // "local news" / "news this week" that geo-localizes by requester IP.
           searchQueries = [
-            fullDistrict + ' ' + st + ' race news ' + yr,
-            cn + ' ' + st + ' campaign news ' + yr,
-            loc + ' ' + st + ' local political news ' + yr,
-            st + ' ' + (body.party || '') + ' state politics news ' + yr
-          ];
+            raceDescriptor + ' race news ' + yr,
+            cn + ' ' + stateFull + ' campaign news ' + yr,
+            ..._localities.map(l => l + ', ' + stateFull + ' news ' + yr),
+            stateFull + ' ' + (body.party || '') + ' politics news ' + yr,
+            ..._oppNames.map(n => n + ' ' + stateFull + ' campaign ' + yr)
+          ].map(q => q.replace(/\s+/g, ' ').trim()).filter(q => q.length > 3);
         } else if (researchFeature === 'candidate_brief') {
           searchQueries = [
-            cn + ' biography background ' + st,
+            cn + ' biography background ' + stateFull,
             cn + ' voting record political positions',
-            fullDistrict + ' ' + yr + ' election race',
-            cn + ' campaign ' + st + ' ' + yr,
-            cn + ' endorsements ' + st
+            raceDescriptor + ' ' + yr + ' election race',
+            cn + ' campaign ' + stateFull + ' ' + yr,
+            cn + ' endorsements ' + stateFull
           ];
         } else {
           searchQueries = [
-            cn + ' ' + fullDistrict + ' ' + yr,
-            fullDistrict + ' politics ' + yr,
-            cn + ' ' + st + ' news ' + yr
+            cn + ' ' + raceDescriptor + ' ' + yr,
+            raceDescriptor + ' politics ' + yr,
+            cn + ' ' + stateFull + ' news ' + yr
           ];
         }
 
@@ -6339,8 +6393,22 @@ export default {
         const vpsResult = useAnthropicDirect ? null : await multiSearch(searchQueries, 5000);
 
         if (vpsResult) {
+          // Item 7: mechanical relevance filter for the briefs. Drop retrieved
+          // paragraphs that mention none of the campaign-data tokens. Zero
+          // survivors → emit the one-sentence brief and skip synthesis entirely.
+          let _briefContent = vpsResult.content;
+          if (researchFeature === 'morning_brief' || researchFeature === 'day1_brief') {
+            const _rel = filterBriefContentByRelevance(vpsResult.content, relevanceTokens);
+            if (_rel.survivors === 0) {
+              const _one = researchFeature === 'morning_brief'
+                ? (localTimeContext(state).greeting + '. No race-relevant news today.')
+                : 'No race-relevant news today.';
+              return new Response(JSON.stringify({ content: [{ type: 'text', text: _one }], model: 'gemini-2.5-flash' }), { headers: { "Content-Type": "application/json", ...corsHeaders } });
+            }
+            if (_rel.survivors > 0) _briefContent = _rel.filtered;
+          }
           // VPS succeeded — call Haiku WITHOUT web_search tool (much cheaper)
-          const enrichedMessage = message + '\n\nHere is current research data you MUST use to answer. Do NOT search the web — use ONLY this data:\n\n' + vpsResult.content;
+          const enrichedMessage = message + '\n\nHere is current research data you MUST use to answer. Do NOT search the web — use ONLY this data:\n\n' + _briefContent;
           // Items 9 + 10: for the morning brief, greet by the candidate's LOCAL
           // time-of-day (not a hardcoded "Good morning"), and constrain the news
           // to race/district/state relevance (no unrelated national/sports items).

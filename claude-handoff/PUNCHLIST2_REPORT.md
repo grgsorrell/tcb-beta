@@ -131,4 +131,88 @@ unsure of the exact term, say 'local elections office.'"*
   clean assistant messages, and tool blocks untouched.
 
 ---
-<!-- Group B appended below. -->
+## Group B — the brief (commit 2)
+
+### Item 6 — news scoping root cause. Hypothesis CONFIRMED.
+
+**Confirmed: the query builder used the 2-letter state ABBREVIATION, and a bare "LA" geo-resolves to
+Los Angeles.** Proof: the `state` field is passed as the postal abbreviation — worker.js uses
+`STATE_TIMEZONES[(state||'').toUpperCase()]` for the (working) local-time greeting, which only resolves
+if `state` is `"LA"`. The morning-brief builder then interpolated that `st="LA"` straight into every
+query.
+
+**Pre-fix morning_brief query strings** (with `st="LA"`, `loc="Monroe"`,
+`fullDistrict="US House Monroe LA"`):
+
+```
+US House Monroe LA LA race news 2026      ← "LA" (twice — fullDistrict already had it) = Los Angeles
+Jane Doe LA campaign news 2026            ← "LA" = Los Angeles
+Monroe LA local political news 2026       ← "LA" = Los Angeles + "local … news" geo-localizes by IP
+LA Democratic state politics news 2026    ← leading "LA" = Los Angeles
+```
+
+That is exactly how a Louisiana candidate's brief filled with **California CD-5 and Los Angeles City
+Council** items.
+
+**Fix.** The morning_brief (and day1_brief) builder now:
+- expands the state to its **full name** via the existing `expandStateName()` (`LA → "Louisiana"`) — the
+  abbreviation is never interpolated into a query again;
+- spells out the district — `raceDescriptor` builds **"Louisiana's 5th Congressional District"** for a
+  federal House seat (from `expandStateName` + `extractDistrictNumber` + an ordinal helper), or
+  `"{office} District N, {state}"` / `"{office}, {state}"` otherwise;
+- adds a **separate query per locality** parsed from campaign data (`location` split on `,` `/` `;`) —
+  `"Monroe, Louisiana news 2026"`;
+- adds a **separate query per known opponent** from `intelContext.opponents` — `"Bob Smith Louisiana
+  campaign 2026"`;
+- keeps a full-state party-politics query. **No bare "local news"/"news this week"; no abbreviations.**
+
+Post-fix queries (same candidate): `Louisiana's 5th Congressional District race news 2026` /
+`Jane Doe Louisiana campaign news 2026` / `Monroe, Louisiana news 2026` / `Louisiana Democratic
+politics news 2026` / `Bob Smith Louisiana campaign 2026`. (Unit-tested — asserted no bare `\bLA\b`
+survives.)
+
+### Item 7 — mechanical relevance filter
+
+New `filterBriefContentByRelevance(content, tokens)`. `multiSearch` returns a blob of per-query
+Trafilatura text (the VPS exposes no discrete result items), so the filter segments the blob on blank
+lines, drops the `===== Search: … =====` header lines, and keeps only paragraphs whose lowercased text
+**contains at least one relevance token** — case-insensitive containment, no model judgment. Applied to
+the retrieval **before** synthesis. Tokens are built from campaign data only: full state name,
+localities, candidate name + last name, opponent names + last names, the spelled-out district phrases,
+and the office — all **≥ 4 chars** so the 2-letter abbreviation and short stopwords can never match.
+
+`survivors === 0` → the endpoint returns a **one-sentence brief** and skips synthesis entirely:
+`"{greeting}. No race-relevant news today."` for the morning brief, `"No race-relevant news today."`
+otherwise.
+
+Unit-tested against a mixed blob (Monroe/candidate item, LA City Council item, opponent/Louisiana item,
+Cowboys item): survivors = 2, the LA City Council and Cowboys paragraphs dropped, both race-relevant
+paragraphs kept; an all-irrelevant blob → survivors = 0.
+
+### Item 8 — brief spine unchanged
+
+The brief's spine (local-time greeting, days-out, schedule, open compliance items) was **not touched** —
+Group B changes only the news retrieval (query strings + the post-retrieval relevance filter). The
+local-time greeting instruction (`_briefExtra`, items 9/10 from punch-list 1) is preserved verbatim, and
+news remains last/optional: when the filter finds nothing, the brief says so in one sentence instead of
+padding.
+
+### Verification (Group B)
+- `node --check worker.js` → exit 0 (no pipe).
+- Query builder + filter unit-tested: full-state queries with no bare `LA`; district spelled out as
+  "Louisiana's 5th Congressional District"; filter drops off-topic paragraphs, keeps race-relevant ones,
+  and returns survivors = 0 for an all-irrelevant blob.
+
+---
+
+## Done — handoff + redeploy
+
+- Refreshed `claude-handoff/02_BACKEND_WORKER.txt` and `04_SAM_PROMPT_AND_TOOLS.txt` against the branch.
+- Root causes confirmed: **item 1** (missing fall-through on `lookup_jurisdiction` + fall-through not
+  followed on the post-lookup turn; Safe Mode was NOT active — 2 strips < threshold 5), and **item 6**
+  (state abbreviation "LA" interpolated into brief queries → Los Angeles). Pre-fix query strings above.
+- **Redeploy command for Greg** (backend only — no frontend files changed):
+  ```powershell
+  wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
+  ```
+- Not merged to master.
