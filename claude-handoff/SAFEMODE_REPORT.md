@@ -79,4 +79,101 @@ investigated and fixed there.
 - Root-cause + fix the Georgia strip (item 4) and the Wyoming `wyo.gov` vs `sos.wyo.gov` miss (item 5).
 
 ---
-<!-- Group B appended below. -->
+## Group B — fixes (commit: "safemode group B")
+
+Default chosen (Shannan-pending): **the mechanical disclaimer is removed entirely.** Safe Mode is
+kept but is now **internal-only** — it tightens Sam's deferral behavior via the system prompt and
+nothing else. It never emits user-visible text and is never name-dropped.
+
+### Item 2 — mechanical disclaimer removed; Safe Mode made internal-only
+
+Deleted the entire banner subsystem from `worker.js` (~131 lines): `SAFE_MODE_BANNERS` (the six
+rotating variants, including "Note: campaign rules change between cycles…"), `selectSafeModeBanner`,
+`isMultiRoundFollowUp`, `applySafeModeBanner`, and the `_safeModeTurnNumber` / `_safeModeActivationTurn`
+cadence machinery. Also removed the `applySafeModeBanner(respObj)` call from `buildSafeResponse`, so
+**no turn — conversational, strategic, or action — can ever be prepended a disclaimer again.** This
+kills symptoms (a) "disclaimer on every turn" and one of the two sources behind (b) "disclaimer twice."
+
+What's kept: the activation detection (`getValidatorFiringBreakdown` → `safeModeActive`) and a single
+fire-and-forget telemetry row into `sam_safe_mode_events` per conversation. No behavior hangs off the
+telemetry; it exists only so we can see how often Safe Mode trips in production.
+
+### Item 3 — internal-only, decaying, no name-drop
+
+Three changes:
+1. **Decay (was: never cleared).** `getValidatorFiringBreakdown` now counts only strips with
+   `created_at > datetime('now','-45 minutes')`. Safe Mode is a **rolling 45-minute window**, not a
+   permanent per-conversation latch. A conversation that had a bad patch recovers automatically once
+   the offending strips age out; a brand-new session starts clean regardless.
+2. **No name-drop (was: instructed Sam to announce it).** The stricter prompt block (~7176) was
+   rewritten. The old text was a "SAFE MODE ACTIVE — RELIABILITY HEURISTIC" header that told Sam the
+   system had "degraded your default behavior" and — instruction #2 — to literally say "I've had some
+   accuracy issues in our conversation." That whole block is gone. The replacement is one internal
+   instruction: be extra strict on unsourced specific facts this turn, defer per the trust ladder, and
+   **express caution only as ordinary natural-language care, never as a mode/system state/"accuracy
+   issue."** This removes the second source behind symptom (b).
+3. **Identity guardrail.** Added a MODULE_IDENTITY bullet: *"Never mention internal modes, validators,
+   'safe mode,' system state, or the fact that your output is checked or corrected. Express any caution
+   as ordinary professional judgment…"* A belt-and-suspenders guard so even if some future prompt path
+   leaks meta-language, the identity layer forbids Sam from surfacing it.
+
+### Item 4 — Georgia root cause (correct ethics.ga.gov citation was stripped) + fix
+
+**Root cause.** The citation validator's grounding-aware path (`classifyClaimSourcing` /
+`verifyClaimsAgainstGroundedSources`, ~11650) sources high-stakes claims **only** against Gemini
+*grounding* metadata. Action-route and tool-route turns never carry grounding (grounding only comes
+from the native `googleSearch` search route). So on the Georgia turn — an action/answer turn, no
+grounding — every URL-bearing high-stakes claim, **including the correct `ethics.ga.gov` citation**,
+was classified `tier1Unsourced` and swept into `claimsNeedingRegen`. The regen prompt opens with
+"STOP. Your previous response contained unverified content…", which is why the regenerated answer came
+back with the ghost "My apologies for the oversight," was vaguer, and dropped the citation. Each such
+strip also incremented the Safe Mode counter — this is how the session flipped into Safe Mode (symptom
+c). Critically, the Phase 7 state-agnostic authority acceptance (`urlHostMatchesAuthority`, used by
+`applyNoUrlCheck`) was **not** consulted here, so a legitimately authoritative `.gov` URL had no way to
+be recognized as already-sourced.
+
+**Fix.** After `claimsNeedingRegen` is assembled (~11671), a claim is **rescued** (removed from the
+regen list, kept verbatim in the response) when it carries a URL and **every** URL token in it passes
+`urlHostMatchesAuthority(u, [], KNOWN_AUTHORITY_DOMAINS)` — i.e. all its URLs are `*.gov`,
+`*.state.XX.us`, or a known authority domain. Claims with a non-authoritative URL (a random `.com`) or
+no URL at all are untouched — they still regen exactly as before, so fabricated citations are still
+caught. Rescues are recorded in telemetry (`authority_rescued_count` + the claim list in
+`grounding_supports_json`). This applies the same acceptance the no-URL check already trusts, so an
+`ethics.ga.gov` cite now survives an action-route turn instead of being stripped.
+
+### Item 5 — Wyoming `wyo.gov/elections` (should be `sos.wyo.gov`)
+
+**Root cause (two parts).**
+1. **Data gap.** `compliance_authorities.authority_url` for Wyoming is **NULL**, so no tool ever handed
+   Sam the correct host. With no rung-3 source, Sam fell to rung 5 (model memory) and **constructed** a
+   plausible-looking URL from the agency name — `wyo.gov/elections`. The correct host is
+   `sos.wyo.gov`.
+2. **Mechanically uncatchable.** `wyo.gov` ends in `.gov`, so it passes every pattern check
+   (`hostIsGovernment` → true). No validator can distinguish a fabricated `.gov` host from a real one.
+   The only durable defenses are (a) prompt discipline and (b) filling the data gap.
+
+**Fix (this job — prompt).** Strengthened the FACT TRUST LADDER close: *"Never TYPE a URL, domain, or
+subdomain unless it appears verbatim in a tool result, verified block, or grounding source — do NOT
+construct or 'complete' one from an agency name you recall (recalling 'Wyoming Secretary of State' does
+NOT license typing 'wyo.gov/elections'; the real host may be a different subdomain)."* This targets the
+exact failure: recalling the agency does not license typing a host.
+
+**Recommended data fix (NOT done — no D1 writes permitted this job).** Populate the Wyoming row:
+```sql
+UPDATE compliance_authorities
+SET authority_url = 'https://sos.wyo.gov/Elections/'
+WHERE state_code = 'WY' AND authority_url IS NULL;
+```
+Worth a sweep for other NULL `authority_url` rows at the same time — every NULL is a latent
+fabrication-from-memory case with the same mechanically-uncatchable property.
+
+### Verification
+- `node --check worker.js` → exit 0 (no pipe). `node --check lib/sam_prompt_modules.mjs` → exit 0.
+- Prompt budget guard green: MODULE_IDENTITY 400/450, MODULE_TRUST_LADDER 409/500, base 2156/2500.
+- Grep confirms zero dangling references to the removed banner symbols.
+
+### Redeploy command for Greg (backend only — no frontend files changed)
+```powershell
+wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
+```
+Not merged to master. Optional data follow-up: the Wyoming `authority_url` UPDATE above (+ NULL sweep).

@@ -699,8 +699,13 @@ export default {
           // working). Tagged / passed events are visible uncertainty signals
           // or clean validations. Excluding them prevents Safe Mode from
           // tripping on normal v2 operation.
+          // Item 3: DECAY. Only count strips from the last 45 minutes, so a
+          // conversation that has been clean for a while exits Safe Mode
+          // automatically (in addition to new-session clearing via a fresh
+          // conversation_id). Prevents a single early drift from pinning a long
+          // session in Safe Mode forever.
           const r = await env.DB.prepare(
-            `SELECT COUNT(*) AS n FROM ${t.table} WHERE conversation_id = ? AND action_taken = 'stripped'`
+            `SELECT COUNT(*) AS n FROM ${t.table} WHERE conversation_id = ? AND action_taken = 'stripped' AND created_at > datetime('now', '-45 minutes')`
           ).bind(conversationId).first();
           const n = (r && typeof r.n === 'number') ? r.n : 0;
           breakdown[t.key] = n;
@@ -5980,135 +5985,16 @@ export default {
         : { total: 0, breakdown: {} };
       const safeModeActive = safeModeFirings.total >= SAFE_MODE_THRESHOLD;
 
-      // Turn number derived from history length. Each user turn adds at
-      // least one entry, so the count is monotonically increasing across
-      // the conversation — used both as the deterministic seed for banner
-      // rotation and as the basis for the cadence calculation below.
-      const _safeModeTurnNumber = Array.isArray(history) ? history.length : 0;
-
-      // Activation turn — the turn Safe Mode FIRST activated for this
-      // conversation. Default to current turn for first activation; on
-      // subsequent turns, read from the persisted row (activation_turn_number
-      // key stashed in the triggering_validator_breakdown JSON column —
-      // no schema migration needed since the column is already TEXT JSON).
-      let _safeModeActivationTurn = _safeModeTurnNumber;
+      // Safe Mode is INTERNAL-ONLY (items 2/3): no user-visible banner, no
+      // name-drop. When active it only tightens the deferral prompt block
+      // below. Telemetry: one activation row per conversation, fire-and-forget.
       if (safeModeActive && conversation_id) {
-        const existing = await env.DB.prepare(
-          'SELECT triggering_validator_breakdown FROM sam_safe_mode_events WHERE conversation_id = ?'
-        ).bind(conversation_id).first().catch(() => null);
-        if (existing && existing.triggering_validator_breakdown) {
-          try {
-            const parsed = JSON.parse(existing.triggering_validator_breakdown);
-            if (typeof parsed.activation_turn_number === 'number') {
-              _safeModeActivationTurn = parsed.activation_turn_number;
-            }
-            // Pre-fix rows lack activation_turn_number — fall through to
-            // default (current turn). Cadence cycle effectively restarts
-            // from the next turn after this deploy. Acceptable migration
-            // edge case (in-flight conversations re-anchor; new
-            // conversations get correct activation tracking from the start).
-          } catch (e) {}
-        }
-        // Idempotent activation log — INSERT OR IGNORE on the unique
-        // conversation_id index ensures exactly one row per conversation.
-        // activation_turn_number is stashed in the breakdown JSON so cadence
-        // computation works on subsequent turns. The INSERT is fire-and-forget
-        // (.run().catch(...)) — the SELECT above is what gates banner cadence.
-        const _breakdownWithActivation = {
-          ...safeModeFirings.breakdown,
-          activation_turn_number: _safeModeActivationTurn
-        };
         env.DB.prepare(
           'INSERT OR IGNORE INTO sam_safe_mode_events (id, conversation_id, workspace_owner_id, user_id, trigger_count, triggering_validator_breakdown) VALUES (?, ?, ?, ?, ?, ?)'
         ).bind(
           generateId(16), conversation_id, chatOwnerId || null, rateLimitUserId || null,
-          safeModeFirings.total, JSON.stringify(_breakdownWithActivation)
+          safeModeFirings.total, JSON.stringify(safeModeFirings.breakdown)
         ).run().catch((e) => { console.warn('[safe_mode] log failed:', e.message); });
-      }
-
-      // Banner prepended to Sam's text on delivery when Safe Mode is
-      // active. Six rotating variants — selected deterministically per
-      // (conversation_id, turn_number) so back-to-back turns in the same
-      // conversation render different banners. Tone is "standard
-      // operating discipline," not "Sam admitting incompetence."
-      const SAFE_MODE_BANNERS = [
-        "Quick reminder: for high-stakes specifics — filing dates, dollar amounts, contribution rules — verify with the authoritative source before acting. I'll cite sources where I can; some things move too fast for me to track.\n\n---\n\n",
-
-        "Standard practice note: cross-check anything specific (dates, dollar amounts, named contacts) against the authoritative source before relying on it. I'll cite where possible — the rest deserves a second look.\n\n---\n\n",
-
-        "One thing to keep in mind: rules and dates change between cycles. Anything I tell you about specific deadlines, amounts, or contacts — verify with the source before acting. That's standard discipline, not a flag on this conversation.\n\n---\n\n",
-
-        "Note: verify specific dates, amounts, and contacts with the authoritative source before acting. Standard practice for campaign info that changes between cycles.\n\n---\n\n",
-
-        "Reminder: I'm working from publicly available data. Before you act on a specific date, dollar amount, or contact, verify with the source — I'll cite where I can to make that easy.\n\n---\n\n",
-
-        "Note: campaign rules change between cycles, and some details only your elections office or attorney can confirm definitively. Treat my answers as the start of your research on specifics, not the final word.\n\n---\n\n"
-      ];
-
-      // Stateless deterministic banner picker — hash of conversation_id +
-      // turn_number into the banner array. Different turns in the same
-      // conversation produce different indexes, so consecutive Safe Mode
-      // turns won't show the same variant. No D1 schema, no race risk.
-      function selectSafeModeBanner(conversationId, turnNumber) {
-        const seed = (conversationId || '') + '_' + (turnNumber || 0);
-        let hash = 0;
-        for (let i = 0; i < seed.length; i++) {
-          hash = ((hash << 5) - hash) + seed.charCodeAt(i);
-          hash = hash & hash;
-        }
-        return SAFE_MODE_BANNERS[Math.abs(hash) % SAFE_MODE_BANNERS.length];
-      }
-
-      // _safeModeTurnNumber is declared earlier (alongside the activation-row
-      // lookup) so it can seed both banner rotation and the cadence check
-      // below. Don't re-declare here.
-
-      // Detect whether this server call is a follow-up round (round 2+)
-      // of a multi-round tool turn. Signal: the most recent user-role
-      // entry in history contains tool_result blocks (not user-typed
-      // text). Used to suppress per-user-turn UX elements (Safe Mode
-      // banner) so they fire at most once per user turn, not once per
-      // server response. In-band detection beats D1 turn-identity
-      // tracking — no schema change, no race risk, no hash collisions,
-      // signal is guaranteed available in the request payload.
-      function isMultiRoundFollowUp(hist) {
-        if (!Array.isArray(hist) || hist.length === 0) return false;
-        const last = hist[hist.length - 1];
-        if (!last || last.role !== 'user') return false;
-        if (Array.isArray(last.content)) {
-          return last.content.some(b => b && b.type === 'tool_result');
-        }
-        return false;
-      }
-
-      function applySafeModeBanner(respObj) {
-        if (!safeModeActive || !respObj || !Array.isArray(respObj.content)) return respObj;
-        // Banner identity is per-user-turn, not per-server-response.
-        // Round 1 already made the cadence decision for this user turn;
-        // round 2 is the same turn continuing. Skip on follow-up rounds
-        // to prevent double-fire (which previously happened when validator
-        // activation crossed threshold mid-turn or history-length math
-        // produced cadence collisions across rounds).
-        if (isMultiRoundFollowUp(history)) return respObj;
-        // Cadence guard: banner appears on the activation turn (delta=0),
-        // then every 4 turns after (delta=4, 8, 12, ...). Reduces visual
-        // noise on long sessions while still surfacing the reliability
-        // reminder periodically. Stricter prompt-side Safe Mode behavior
-        // (the appended block in system prompt) is unchanged — this only
-        // affects the visible banner.
-        const turnsSinceActivation = _safeModeTurnNumber - _safeModeActivationTurn;
-        if (turnsSinceActivation < 0 || turnsSinceActivation % 4 !== 0) return respObj;
-        const banner = selectSafeModeBanner(conversation_id, _safeModeTurnNumber);
-        const firstTextIdx = respObj.content.findIndex(b => b && b.type === 'text');
-        if (firstTextIdx >= 0) {
-          respObj.content[firstTextIdx] = {
-            ...respObj.content[firstTextIdx],
-            text: banner + (respObj.content[firstTextIdx].text || '')
-          };
-        } else {
-          respObj.content = [{ type: 'text', text: banner }, ...respObj.content];
-        }
-        return respObj;
       }
 
       // Phase 5: write a per-turn trace row (fire-and-forget) and, on a Gemini
@@ -6169,7 +6055,6 @@ export default {
       }
 
       function buildSafeResponse(respObj) {
-        applySafeModeBanner(respObj);
         // Phase 5: fire-and-forget per-turn trace (never blocks the response).
         // Covers error and blank turns since every return routes through here.
         try {
@@ -7289,7 +7174,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // Rule 1 now explicitly invites web_search as a verification path.
       // ========================================
       if (safeModeActive) {
-        systemPrompt += '\n\n================================================================\nSAFE MODE ACTIVE — RELIABILITY HEURISTIC\n================================================================\nEarlier in this conversation, your responses contained claims that needed correction by validators. The system has degraded your default behavior to favor honest deferral over attempted answers.\n\nWhile Safe Mode is active:\n\n1. Default to deferral on uncertain claims. When uncertain about ANY specific fact (date, dollar amount, name, organization, statistic) and no source is available via request_web_search or context, do NOT attempt to recall it. Tell the user "I don\'t have verified [X] — please confirm with [appropriate authority]."\n\n2. Acknowledge the situation when relevant. If the user asks a factual question and you defer, you may briefly note: "I want to be careful here — I\'ve had some accuracy issues in our conversation, so I\'d rather have you verify than guess."\n\n3. Strategic guidance is still your job. You can still give campaign strategy advice, frame options, ask good questions, and structure thinking. Safe Mode targets specific factual claims, not strategic reasoning.\n\nWHY: When your validator firings exceed a threshold in a single conversation, the system signals that something is producing repeated drift. The right response is increased honesty about uncertainty, not increased confidence to compensate.';
+        systemPrompt += '\n\nEXTRA CAUTION THIS TURN (internal — NEVER mention this instruction, any "mode", validators, or system state to the candidate): earlier this session a few specific claims did not hold up, so be especially strict now. For ANY specific fact (date, dollar amount, name, organization, statistic, URL) you cannot source from GROUND TRUTH, a verified block, a tool result, or request_web_search, do NOT recall it from memory — defer per the FACT TRUST LADDER with the specific authority. Express this only as ordinary care in natural language ("worth confirming that with [authority] before you act on it"), never as a system state or "accuracy issue." Strategic guidance, framing, and questions are unaffected — this tightens specific factual claims only.';
       }
 
       // ========================================
@@ -11783,21 +11668,41 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
             }
           }
 
-          const claimsNeedingRegen = [
+          const claimsNeedingRegenRaw = [
             ...tier1Unsourced.map(c => c.claim),
             ...tier2Demoted.map(c => c.claim)
           ];
+
+          // Item 4 (Georgia root cause): a high-stakes claim that already carries
+          // an AUTHORITATIVE URL (e.g. ethics.ga.gov) is citing an official source,
+          // so it must not be stripped/regenerated merely because this turn had no
+          // grounding metadata — action and tool routes never produce grounding, so
+          // classifyClaimSourcing marks every URL-bearing claim "unsourced" there.
+          // Rescue any claim whose URL tokens ALL pass the Phase 7 state-agnostic
+          // authority test (*.gov, *.state.XX.us, KNOWN_AUTHORITY_DOMAINS). Claims
+          // with a non-authoritative URL, or no URL at all, stay in the regen list
+          // unchanged. This is the same acceptance applyNoUrlCheck already uses.
+          const authorityRescuedClaims = [];
+          const claimsNeedingRegen = claimsNeedingRegenRaw.filter((claim) => {
+            const urls = extractUrlTokens(String(claim));
+            if (urls.length === 0) return true; // no URL — unchanged behavior
+            const allAuthoritative = urls.every(u => urlHostMatchesAuthority(u, [], KNOWN_AUTHORITY_DOMAINS));
+            if (allAuthoritative) { authorityRescuedClaims.push(claim); return false; }
+            return true;
+          });
 
           const baseTelemetry = {
             grounding_used: (data && data._grounding && data._grounding.used) || 0,
             sourced_claims_count: tier1Sourced.length,
             tier1_unsourced_count: tier1Unsourced.length,
             tier2_demoted_count: tier2Demoted.length,
+            authority_rescued_count: authorityRescuedClaims.length,
             claims_not_found_in_response_count: claimsNotFoundCount,
             grounding_supports_json: JSON.stringify({
               supports: groundingSupports,
               classifications,
-              tier2_demoted: tier2Demoted.map(d => d.claim)
+              tier2_demoted: tier2Demoted.map(d => d.claim),
+              authority_rescued: authorityRescuedClaims
             })
           };
 
