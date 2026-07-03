@@ -177,3 +177,109 @@ fabrication-from-memory case with the same mechanically-uncatchable property.
 wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
 ```
 Not merged to master. Optional data follow-up: the Wyoming `authority_url` UPDATE above (+ NULL sweep).
+
+---
+
+## Group C — `authority_url` NULL sweep (production D1, approved)
+
+Approved follow-up to items 4/5: run the WY update, then sweep every authority table for NULL/empty
+`authority_url`, fill what could be sourced from the official state SOS/elections site (each URL
+verified live, not recalled), and flag anything unsourceable.
+
+### Tables checked
+
+Only two tables in the DB carry an `authority_url` column:
+- **`compliance_authorities`** — the seed table, one row per state (+ a generic `XX` fallback). This is
+  the real target: it's the rung-3 source Sam cites, and NULLs here are exactly the
+  fabricate-from-memory trap that produced the Wyoming `wyo.gov` bug.
+- **`compliance_deadlines_cache`** — a **transient cache** (keyed by state+office+race_year, rewritten
+  by lookups; only 4 rows, 3 NULL). **Deliberately NOT filled** — hand-seeding cache rows would be
+  clobbered on the next lookup and could mask stale data. Flagged here, left as-is.
+
+### `compliance_authorities` — before / after
+
+| | rows | populated | NULL/empty |
+|---|---|---|---|
+| **Before** | 51 | 1 (FL only) | 50 |
+| **After**  | 51 | 50 | **1** (`XX` generic placeholder — intentionally left NULL) |
+
+49 rows filled: **WY** (approved `sos.wyo.gov/Elections/`, run first) + **48** via
+`migrations/003_authority_urls.sql`. FL (`dos.fl.gov`) was already populated. The one remaining NULL,
+`XX | state elections office`, is a generic fallback with no real jurisdiction — **flagged, left NULL**.
+
+### How each URL was sourced (anti-fabrication discipline)
+
+Every URL was **verified live** by web search/fetch against the official government domain — none
+recalled from memory (that recall-and-guess path is the exact bug this whole job fixed). Fan-out: 5
+research agents, one per ~10 states, each required to return an official `.gov` or `*.state.XX.us` host
+and cite how it confirmed the page resolves. All 48 came back **high-confidence**. Two are official
+non-`.gov` state domains (CO `sos.state.co.us`, MA `sec.state.ma.us`) — both pass the Phase 7 authority
+test's `*.state.XX.us` branch, so Sam's validator will accept them.
+
+Guard: the migration only writes rows still NULL/empty, matched by `state_code`, so FL/WY were never
+touched. (`wrangler --file` reported "0 rows written" — a known quirk of its batch summary; the
+authoritative after-count confirms 50 populated.)
+
+| ST | authority_url | source (verified) |
+|----|---------------|-------------------|
+| AK | https://www.elections.alaska.gov/ | official AK Division of Elections .gov |
+| AL | https://www.sos.alabama.gov/alabama-votes | AL SOS "Alabama Votes" elections page |
+| AR | https://www.sos.arkansas.gov/elections/ | AR SOS Elections Division .gov |
+| AZ | https://azsos.gov/elections | AZ SOS elections page .gov |
+| CA | https://www.sos.ca.gov/elections | CA SOS Elections Division .gov |
+| CO | https://www.sos.state.co.us/pubs/elections/ | CO SOS (official state.co.us; fetch 403 bot-block, host established) |
+| CT | https://portal.ct.gov/SOTS/Election-Services/V5-Side-Navigation/ELE---Election-Information | CT Sec. of the State on portal.ct.gov (fetch-confirmed) |
+| DE | https://elections.delaware.gov/ | DE Dept. of Elections .gov |
+| FL | https://dos.fl.gov/elections/candidates-committees/qualifying/ | (pre-existing — not modified) |
+| GA | https://sos.ga.gov/elections-division-georgia-secretary-states-office | GA SOS Elections Division .gov |
+| HI | https://elections.hawaii.gov/ | HI Office of Elections .gov |
+| IA | https://sos.iowa.gov/elections-voting | IA SOS Elections & Voting .gov |
+| ID | https://sos.idaho.gov/elections-division/ | ID SOS Elections Division (fetch-confirmed title) |
+| IL | https://www.elections.il.gov/ | IL State Board of Elections .gov |
+| IN | https://www.in.gov/sos/elections/ | IN SOS Election Division .gov |
+| KS | https://sos.ks.gov/elections/elections.html | KS SOS Elections Home .gov |
+| KY | https://www.sos.ky.gov/elections | KY SOS elections (fetch-confirmed) |
+| LA | https://www.sos.la.gov/electionsandvoting/ | LA SOS Elections & Voting .gov |
+| MA | https://www.sec.state.ma.us/divisions/elections/elections-and-voting.htm | MA Sec. of the Commonwealth (official state.ma.us) |
+| MD | https://elections.maryland.gov/ | MD State Board of Elections .gov |
+| ME | https://www.maine.gov/sos/elections-voting | ME SOS Elections & Voting (fetch-confirmed) |
+| MI | https://www.michigan.gov/sos/elections | MI Dept. of State / Bureau of Elections .gov (fetch 403 bot-block, host confirmed) |
+| MN | https://www.sos.mn.gov/elections-voting/ | MN SOS Elections & Voting .gov |
+| MO | https://www.sos.mo.gov/elections | MO SOS Elections Division .gov |
+| MS | https://www.sos.ms.gov/elections-voting | MS SOS Elections & Voting .gov |
+| MT | https://sosmt.gov/elections/ | MT SOS Election & Voter Services (fetch-confirmed) |
+| NC | https://www.ncsbe.gov/ | NC State Board of Elections .gov |
+| ND | https://www.sos.nd.gov/elections | ND SOS elections .gov |
+| NE | https://sos.nebraska.gov/elections-division | NE SOS Elections Division .gov |
+| NH | https://www.sos.nh.gov/elections | NH SOS elections .gov |
+| NJ | https://nj.gov/state/elections/index.shtml | NJ Dept. of State Div. of Elections .gov |
+| NM | https://www.sos.nm.gov/voting-and-elections/ | NM SOS Bureau of Elections .gov |
+| NV | https://www.nvsos.gov/elections | NV SOS Elections Division .gov |
+| NY | https://elections.ny.gov/ | NYS Board of Elections .gov |
+| OH | https://www.ohiosos.gov/elections/ | OH SOS elections .gov |
+| OK | https://oklahoma.gov/elections.html | OK State Election Board on official oklahoma.gov |
+| OR | https://sos.oregon.gov/elections/Pages/election-information.aspx | OR SOS Elections Division .gov |
+| PA | https://www.pa.gov/agencies/dos/department-and-offices/be | PA Dept. of State Bureau of Elections on pa.gov |
+| RI | https://vote.sos.ri.gov/ | RI SOS Elections (301 from sos.ri.gov, fetch-confirmed) |
+| SC | https://scvotes.gov/ | SC State Election Commission .gov (fetch-confirmed) |
+| SD | https://sdsos.gov/elections-voting/default.aspx | SD SOS Elections & Voting .gov |
+| TN | https://sos.tn.gov/elections | TN SOS Division of Elections .gov |
+| TX | https://www.sos.texas.gov/elections/index.shtml | TX SOS Elections Division .gov |
+| UT | https://elections.utah.gov/ | UT Lt. Governor Elections Office .gov |
+| VA | https://www.elections.virginia.gov/ | VA Dept. of Elections .gov |
+| VT | https://sos.vermont.gov/elections | VT SOS Elections Division .gov |
+| WA | https://www.sos.wa.gov/elections | WA SOS Elections .gov |
+| WI | https://elections.wi.gov/ | WI Elections Commission .gov |
+| WV | https://sos.wv.gov/elections | WV SOS Elections Division .gov |
+| WY | https://sos.wyo.gov/Elections/ | WY SOS Elections (approved item-5 fix) |
+
+### Flagged / left NULL
+
+- **`compliance_authorities` `XX | state elections office`** — generic fallback row, no real
+  jurisdiction. Left NULL by design.
+- **`compliance_deadlines_cache`** (3 of 4 rows NULL `authority_url`) — transient cache, not seed data.
+  Left as-is; it repopulates from lookups. Noted so it isn't mistaken for a data gap.
+
+### Files
+- `migrations/003_authority_urls.sql` — the 48 guarded UPDATEs (committed for audit trail).
+- WY was applied as a one-off `UPDATE` (documented under item 5 above); no separate migration file.
