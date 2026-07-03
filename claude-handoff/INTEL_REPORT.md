@@ -104,4 +104,64 @@ except the new Phase-1 endpoints (which are DB-only, no model calls).
 - **Phase 6** — polish/mobile + the three folded-in frontend fixes + folders migration + Greg's manual
   test checklist. (commit 7)
 
-**STOP — awaiting go-ahead for Phase 1.**
+---
+
+## Phase 1 — VOTER CONTACT PRIMITIVE (backend, commit 2)
+
+### 1. D1 table (the one permitted D1 change — applied to remote)
+`migrations/004_voter_contact.sql` — `CREATE TABLE voter_contact (id INTEGER PK AUTOINCREMENT, user_id
+TEXT, date TEXT, doors/calls/texts INTEGER DEFAULT 0, created_at TEXT)` + `CREATE UNIQUE INDEX
+idx_voter_contact_user_date ON (user_id, date)`. Applied via `wrangler d1 execute … --remote --file`
+(2 queries, 3 rows written = schema objects; **purely additive, no existing data touched**). The unique
+index is the conflict target for the additive upsert (the spec's "upsert today's row" requires
+per-(user,date) uniqueness). **Scoping:** `user_id` holds the **workspace owner id** (matching the
+profiles/budget one-row-per-workspace pattern) so the candidate and every field-team sub-user
+contribute to ONE campaign pace. Verified the additive upsert against the live table with a throwaway
+id: doors 40 then +10 → 50, calls → 25; row deleted after.
+
+### 2. Endpoints
+- `POST /api/voter-contact/log` — auth via `getSessionContext`, additive upsert to today's row (or
+  `body.date`), returns `{ today, total, weeklyAvg }`.
+- `GET /api/voter-contact/summary` — returns `{ total, weeklyAvg, weeklyHistory[], pace }`. Reads
+  `win_number` + `election_date` from the workspace `profiles` row to compute pace server-side (see
+  #4). No per-tab permission gate — field activity is campaign-wide; any authed workspace member logs.
+
+### 3. Sam tool `log_voter_contact { doors, calls, texts, date? }`
+Declaration added to the `tools` array with the exact spec description ("Log the candidate's voter
+contact numbers … Additive … Confirm the totals back to the candidate."). **Executed server-side** in
+`callGemini`'s tool loop (a dedicated block before the request_web_search escape hatch): it runs the
+same `upsertVoterContact` helper, then feeds the updated totals back as a `functionResponse` with an
+instruction to confirm them — so "I knocked 40 doors today" works end-to-end with no client wiring, and
+never produces a client-side action bubble. Shares the identical upsert logic with the endpoint.
+
+### 4. Pace math — single shared documented function
+`computeVoterContactPace({ winNumber, daysToElection, totalContacts, weeklyAvg })` in worker.js is the
+**one** implementation, called by both `/summary` and the Ground Truth block. Rules per spec:
+`contact_target = win_number` **(commented `v1 — multiplier to be tuned by Shannan`, the tuning knob)**;
+`weeks_remaining = max(1, days/7)`; `weekly_needed = (target − total)/weeks_remaining`; `on_pace` when
+last-21-day weekly avg ≥ weekly_needed else `behind`; `not_started` when no contacts; `no_target` when
+no win number; `projected_total = total + weekly_avg × weeks_remaining`. `getVoterContactData` computes
+`total`, the last-21-day `weeklyAvg` (21-day sum ÷ 3), and per-week history. Unit-tested: all five
+status branches, `weekly_needed = 1200` and `projected = 10000` for the worked example, and the
+`weeks_remaining ≥ 1` floor.
+
+### 5. PACE block in Ground Truth
+Injected right under the Win Number line (worker.js ~7373), **3 compact lines** (target/logged/recent/
+needed + status/projected), or one line for `no_target`. Built from `computeVoterContactPace` with the
+turn's `winNumber` + `effectiveDays` and a `getVoterContactData(chatOwnerId)` read. Wrapped in
+try/catch → empty block on any failure, never blocks a chat turn.
+
+### Verification (Phase 1)
+- `node --check worker.js` → exit 0 (no pipe).
+- **Prompt budget guard GREEN — BASE ASSEMBLY 2380 / 2500, unchanged.** (The PACE block lives in
+  per-turn Ground Truth, not in the four budgeted module constants, so it doesn't affect the guard.)
+- Additive upsert validated against the live remote table (then cleaned up); pace math unit-tested
+  against the spec rules.
+- Cost controls untouched: the new endpoints are DB-only (no model/search calls); the server-side tool
+  does a DB write only.
+
+### Deferred to the final phase
+Handoff dumps `02_BACKEND_WORKER.txt` / `04_SAM_PROMPT_AND_TOOLS.txt` will be refreshed once in Phase 6
+(rather than every phase) to keep per-phase diffs focused.
+
+**STOP — awaiting go-ahead for Phase 2 (Reality Check hero, frontend).**

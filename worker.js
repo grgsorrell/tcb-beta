@@ -997,6 +997,84 @@ export default {
       return lc.includes('unsupported') || lc.includes('stub_authority_only') || lc.includes('no verified data');
     }
 
+    // ========================================
+    // VOTER CONTACT (intel-redesign Phase 1) — shared helpers used by both
+    // /api/voter-contact/* and the log_voter_contact tool + Ground Truth PACE.
+    // Keyed by workspace owner id (one row per owner+date).
+    // ========================================
+    async function upsertVoterContact(ownerId, { doors, calls, texts, date }) {
+      const d = (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)) ? date : null;
+      const nDoors = Math.max(0, Math.round(Number(doors) || 0));
+      const nCalls = Math.max(0, Math.round(Number(calls) || 0));
+      const nTexts = Math.max(0, Math.round(Number(texts) || 0));
+      // Additive upsert: add to today's row if it exists, else create it. The
+      // UNIQUE(user_id, date) index is the conflict target. date defaults to
+      // the DB's current date when not supplied.
+      await env.DB.prepare(
+        `INSERT INTO voter_contact (user_id, date, doors, calls, texts, created_at)
+         VALUES (?, COALESCE(?, date('now')), ?, ?, ?, datetime('now'))
+         ON CONFLICT(user_id, date) DO UPDATE SET
+           doors = doors + excluded.doors,
+           calls = calls + excluded.calls,
+           texts = texts + excluded.texts`
+      ).bind(ownerId, d, nDoors, nCalls, nTexts).run();
+      const row = await env.DB.prepare(
+        `SELECT date, doors, calls, texts FROM voter_contact WHERE user_id = ? AND date = COALESCE(?, date('now'))`
+      ).bind(ownerId, d).first();
+      return row || { date: d, doors: nDoors, calls: nCalls, texts: nTexts };
+    }
+
+    // Aggregate a workspace's voter-contact history into total, last-21-day
+    // weekly average, and per-week history (most recent first).
+    async function getVoterContactData(ownerId) {
+      const res = await env.DB.prepare(
+        `SELECT date, doors, calls, texts FROM voter_contact WHERE user_id = ? ORDER BY date ASC`
+      ).bind(ownerId).all();
+      const rows = (res && res.results) ? res.results : [];
+      let total = 0;
+      let last21 = 0;
+      const cutoff = new Date(Date.now() - 20 * 86400000).toISOString().slice(0, 10); // 21-day inclusive window
+      const weekMap = new Map(); // weekStart(YYYY-MM-DD Monday) -> contacts
+      for (const r of rows) {
+        const c = (r.doors || 0) + (r.calls || 0) + (r.texts || 0);
+        total += c;
+        if (r.date && r.date >= cutoff) last21 += c;
+        if (r.date) {
+          const dt = new Date(r.date + 'T00:00:00Z');
+          const dow = (dt.getUTCDay() + 6) % 7; // Mon=0
+          const monday = new Date(dt.getTime() - dow * 86400000).toISOString().slice(0, 10);
+          weekMap.set(monday, (weekMap.get(monday) || 0) + c);
+        }
+      }
+      const weeklyAvg = last21 / 3; // last-21-day average, expressed per week
+      const weeklyHistory = Array.from(weekMap.entries())
+        .map(([weekStart, contacts]) => ({ weekStart, contacts }))
+        .sort((a, b) => (a.weekStart < b.weekStart ? 1 : -1));
+      return { total, weeklyAvg, weeklyHistory };
+    }
+
+    // PACE MATH — the single source of truth (Phase 1 item 4). Shared by the
+    // /api/voter-contact/summary endpoint and the Ground Truth PACE block, so
+    // the hero and Sam always agree. Pure function; inputs come from the
+    // voter-contact summary + the workspace's win number and days-to-election.
+    function computeVoterContactPace({ winNumber, daysToElection, totalContacts, weeklyAvg }) {
+      // contact_target = win_number  (v1 — multiplier to be tuned by Shannan)
+      const contact_target = (winNumber && Number(winNumber) > 0) ? Number(winNumber) : null;
+      const weeks_remaining = Math.max(1, (daysToElection != null ? Number(daysToElection) : 0) / 7);
+      const total = Math.max(0, Number(totalContacts) || 0);
+      const avg = Math.max(0, Number(weeklyAvg) || 0);
+      if (contact_target == null) {
+        return { pace_status: 'no_target', contact_target: null, weeks_remaining, weekly_needed: null, projected_total: null, weekly_avg: avg, total_contacts: total };
+      }
+      if (total <= 0) {
+        return { pace_status: 'not_started', contact_target, weeks_remaining, weekly_needed: Math.max(0, contact_target / weeks_remaining), projected_total: 0, weekly_avg: 0, total_contacts: 0 };
+      }
+      const weekly_needed = Math.max(0, (contact_target - total) / weeks_remaining);
+      const projected_total = total + avg * weeks_remaining;
+      const pace_status = avg >= weekly_needed ? 'on_pace' : 'behind';
+      return { pace_status, contact_target, weeks_remaining, weekly_needed, projected_total, weekly_avg: avg, total_contacts: total };
+    }
+
     // Punch-list item 3: map internal placeholder tokens to natural language
     // BEFORE the lookup result reaches the model (it's a tool result the model
     // reads and can quote). Fixed at the data layer so "unsupported" and null
@@ -2903,6 +2981,50 @@ export default {
         };
 
         return jsonResponse({ success: true, budget });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    // ========================================
+    // DATA API: voter_contact (intel-redesign Phase 1)
+    // Workspace-scoped field activity (doors/calls/texts). No per-tab gate —
+    // any authed workspace member logs to the shared campaign pace.
+    // ========================================
+    if (url.pathname === '/api/voter-contact/log' && request.method === 'POST') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        const body = await request.json().catch(() => ({}));
+        const today = await upsertVoterContact(ctx.ownerId, {
+          doors: body.doors, calls: body.calls, texts: body.texts, date: body.date
+        });
+        const agg = await getVoterContactData(ctx.ownerId);
+        return jsonResponse({ success: true, today, total: agg.total, weeklyAvg: agg.weeklyAvg });
+      } catch (error) {
+        return jsonResponse({ error: error.message }, 500);
+      }
+    }
+
+    if (url.pathname === '/api/voter-contact/summary' && request.method === 'GET') {
+      try {
+        const ctx = await getSessionContext(request);
+        if (!ctx) return jsonResponse({ error: 'Not authenticated' }, 401);
+        if (ctx.revoked) return denyRevoked();
+        const agg = await getVoterContactData(ctx.ownerId);
+        // Pace needs the workspace's win number + days-to-election from profile.
+        const prof = await env.DB.prepare(
+          'SELECT win_number, election_date FROM profiles WHERE user_id = ?'
+        ).bind(ctx.ownerId).first();
+        const winNumber = prof ? prof.win_number : null;
+        let daysToElection = null;
+        if (prof && prof.election_date) {
+          const ms = new Date(prof.election_date + 'T00:00:00Z').getTime() - Date.now();
+          if (!isNaN(ms)) daysToElection = Math.max(0, Math.ceil(ms / 86400000));
+        }
+        const pace = computeVoterContactPace({ winNumber, daysToElection, totalContacts: agg.total, weeklyAvg: agg.weeklyAvg });
+        return jsonResponse({ success: true, total: agg.total, weeklyAvg: agg.weeklyAvg, weeklyHistory: agg.weeklyHistory, pace });
       } catch (error) {
         return jsonResponse({ error: error.message }, 500);
       }
@@ -7231,6 +7353,27 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
         ? `\nLocal subdivisions: ${expandStateName(state)} has ${_sub.plur}, not counties — its local election offices are ${_sub.sing} offices. Say "${_sub.sing}," never "county."`
         : '';
 
+      // intel-redesign Phase 1: compact PACE block for Ground Truth (3-4 lines).
+      // Uses the shared computeVoterContactPace so Sam and the Intel hero agree.
+      // Fire-and-forget-safe: any failure yields an empty block, never blocks chat.
+      let paceBlock = '';
+      try {
+        if (chatOwnerId) {
+          const _vc = await getVoterContactData(chatOwnerId);
+          const _pace = computeVoterContactPace({ winNumber, daysToElection: effectiveDays, totalContacts: _vc.total, weeklyAvg: _vc.weeklyAvg });
+          const _n = (x) => (x == null ? '—' : Math.round(x).toLocaleString());
+          if (_pace.pace_status === 'no_target') {
+            paceBlock = `\nVOTER CONTACT PACE: no win number set — contact target unavailable. Logged so far: ${_n(_pace.total_contacts)} contacts.`;
+          } else {
+            const _status = _pace.pace_status === 'on_pace' ? 'ON PACE' : (_pace.pace_status === 'behind' ? 'BEHIND' : 'NOT STARTED');
+            paceBlock =
+              `\nVOTER CONTACT PACE (target = win number; v1):` +
+              `\n  Target ${_n(_pace.contact_target)} · Logged ${_n(_pace.total_contacts)} · Recent ~${_n(_pace.weekly_avg)}/wk · Needed ~${_n(_pace.weekly_needed)}/wk` +
+              `\n  Status: ${_status} — projected ~${_n(_pace.projected_total)} by election day.`;
+          }
+        }
+      } catch (e) { console.warn('[pace] Ground Truth block failed:', e && e.message); paceBlock = ''; }
+
       let systemPrompt = `${MODULE_IDENTITY}
 
 ${MODULE_TRUST_LADDER}
@@ -7248,7 +7391,7 @@ GROUND TRUTH — ${currentDate} (${isoToday})
 Candidate: ${candidateName || 'unknown'} | Office: ${specificOffice || officeType || 'unknown'} (${effectiveGovLevel})
 Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'}${subdivisionLine}
 Election: ${electionDate || 'not set'}${effectiveDays != null ? ' (' + effectiveDays + ' days away)' : ''} | Phase: ${campaignPhase}${earlyVotingStartDate ? '\nEarly voting starts: ' + earlyVotingStartDate + ' (user-supplied — authoritative)' : ''}
-Budget: ${budgetStr} | Win Number: ${winNumberStr}
+Budget: ${budgetStr} | Win Number: ${winNumberStr}${paceBlock}
 Raised: ${raisedStr} of ${goalStr} goal | Donors: ${donorCount || 0}${startingAmount ? ' | Starting cash: $' + Number(startingAmount).toLocaleString() : ''}
 Filed: ${filingStatus || 'unknown'}${effectiveDays != null && effectiveDays > 180 ? ' (early planning — do not ask about filing)' : ''}
 ${briefProse ? `\nRACE INTELLIGENCE:\n${briefProse}` : ''}
@@ -7884,6 +8027,20 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           }
         },
         {
+          name: "log_voter_contact",
+          description: "Log the candidate's voter contact numbers when they report door-knocking, phone-banking, or texting activity, e.g. 'I knocked 40 doors today'. Additive to any numbers already logged for that date. Confirm the totals back to the candidate.",
+          input_schema: {
+            type: "object",
+            properties: {
+              doors: { type: "number", description: "Doors knocked" },
+              calls: { type: "number", description: "Phone calls made" },
+              texts: { type: "number", description: "Texts sent" },
+              date: { type: "string", description: "Date in YYYY-MM-DD (defaults to today)" }
+            },
+            required: []
+          }
+        },
+        {
           name: "set_budget",
           description: "Set or update campaign budget settings. You MUST include at least one of: total, startingAmount, or fundraisingGoal. Can set multiple in one call. Example: to set a $25K budget use {total: 25000}. To set a fundraising goal use {fundraisingGoal: 50000}.",
           input_schema: {
@@ -8425,6 +8582,42 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
 
           const candidate = geminiData.candidates[0];
           const parts = candidate.content?.parts || [];
+
+          // Server-executed write tool: log_voter_contact (intel-redesign Phase
+          // 1). Handled server-side (D1 upsert) so it works without client
+          // wiring; the updated totals are fed back so Sam confirms them.
+          const vcCalls = parts.filter(p => p.functionCall && p.functionCall.name === 'log_voter_contact');
+          if (vcCalls.length > 0) {
+            const frParts = [];
+            for (const part of parts) {
+              if (!part.functionCall) continue;
+              if (part.functionCall.name === 'log_voter_contact') {
+                let responseObj;
+                if (!chatOwnerId) {
+                  responseObj = { result: 'Could not log voter contact — no active workspace session.' };
+                } else {
+                  try {
+                    const a = part.functionCall.args || {};
+                    const today = await upsertVoterContact(chatOwnerId, { doors: a.doors, calls: a.calls, texts: a.texts, date: a.date });
+                    const agg = await getVoterContactData(chatOwnerId);
+                    responseObj = { success: true, logged_today: { doors: today.doors || 0, calls: today.calls || 0, texts: today.texts || 0 }, total_contacts: agg.total, instruction: 'Confirm these updated totals back to the candidate in one short sentence.' };
+                  } catch (e) {
+                    responseObj = { result: 'Logging failed: ' + ((e && e.message) || 'unknown error') };
+                  }
+                }
+                frParts.push({ functionResponse: { name: 'log_voter_contact', response: responseObj } });
+              } else if (part.functionCall.name === 'request_web_search') {
+                frParts.push({ functionResponse: { name: 'request_web_search', response: { result: 'Acknowledged; issue this search on your next turn.' } } });
+              } else {
+                frParts.push({ functionResponse: { name: part.functionCall.name, response: { result: 'Noted — re-issue this action on your next message if you still need it.' } } });
+              }
+            }
+            loopContents = loopContents.concat(
+              [{ role: 'model', parts: parts }],
+              [{ role: 'user', parts: frParts }]
+            );
+            continue;
+          }
 
           // Escape hatch: if the model asked for a live web search, run it
           // server-side and loop. Only the action path exposes request_web_search
