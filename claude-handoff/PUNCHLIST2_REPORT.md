@@ -205,12 +205,87 @@ padding.
 
 ---
 
+## Group C — server-enforced lookup fall-through + subdivision terms (commit 3)
+
+The redeploy re-test confirmed the prediction from Group A: even with the strengthened decision-point
+prompt, both probes still bare-deferred (finance schedule → bare FEC deferral; jurisdiction → bare
+deferral). The prompt lever isn't enough — the invariant must not depend on the model choosing to
+search. This commit makes the fall-through **structural**.
+
+### Item 1 — server-enforced fall-through (the structural fix)
+
+**Where it hooks — the tool-result path.** Lookups are client-executed: Sam emits a `lookup_*`
+tool_use, the client calls the `/api/*/lookup` endpoint and sends the result back as a `tool_result` in
+the next turn's history. `toGeminiHistory` stringifies that tool_result into the last user turn the
+model sees. So inside `callGemini` — right after `runGroundingSubturn` is defined and **before** the
+generate loop — a new block scans `maskedMsgs`: it maps `tool_use.id → {name, input}` from assistant
+turns, then walks the most recent tool-result-bearing user turn for any `lookup_*` result that
+`lookupResultLacksData()` flags as no-verified-data. For each (deduped by tool), it runs
+`runGroundingSubturn(buildLookupFallthroughQuery(name, input))` and **splices a tagged block into the
+last user turn of `geminiContents`**:
+
+```
+[VERIFIED LOOKUP — <tool>: no verified data on file for this race.]
+[SEARCH RESULTS (live web — synthesize from these, cite the sources inline, and add a one-line note to
+confirm with the named authority before acting): <excerpt>
+Sources: [FEC](https://…), …]
+```
+
+The model now receives the empty-lookup signal **and** live search results with source URLs in the same
+turn, so it synthesizes with citations instead of bare-deferring. Shares the **2-search/turn** grounding
+budget: `_fallthroughGroundingUsed` seeds the loop's `groundingUsed`, so the escape hatch can't exceed 2
+total. `lookupResultLacksData` deliberately returns false when the tool_result already carries the
+endpoint's own `web_search_fallback` excerpt (no double-search). The Group-A prompt language stays as
+reinforcement; the invariant no longer relies on it.
+
+**Final query template per lookup tool** (`buildLookupFallthroughQuery`, built from the tool's own
+arguments + fact class; `isFederalOffice` decides federal vs state; `expandStateName` gives the full
+state name):
+
+| Tool | Federal office | State/local office |
+|---|---|---|
+| `lookup_finance_reports` | `FEC {yr} quarterly reporting deadlines candidate committee` | `{State} campaign finance report deadlines {office} {yr} site official` |
+| `lookup_compliance_deadlines` | `{State} {office} {yr} filing qualifying deadline secretary of state` | (same) |
+| `lookup_donation_limits` | `FEC {yr} individual contribution limits candidate committee` | `{State} {office} contribution limits {yr}` |
+| `lookup_jurisdiction` | `{State} {jurisdiction/district} municipalities parishes communities {yr}` | (same) |
+
+(`{yr}` = the tool's `race_year` arg, else current year. Donation was extended to branch federal→FEC to
+parallel finance — the user's base template `{State} {office} contribution limits {yr}` is the state
+form.)
+
+Unit-tested: query templates render as above; `lookupResultLacksData` returns true for
+`status:'unsupported'`/`stub_authority_only`, false for `web_search_fallback`/verified/empty; the scan
+splices exactly one tagged block (with excerpt + source link) into the last user turn for an empty
+finance lookup, and no-ops on verified data and on turns with no lookup.
+
+### Item 2 — subdivision term in ground truth
+
+Root cause: the "county" default is a distant prompt rule Sam skipped; proximity beats it. Added a small
+`SUBDIVISION_TERMS` map (`LA → parish/parishes`, `AK → borough/boroughs`; everywhere else "county" is
+correct and gets no note) and injected a line **into the per-turn GROUND TRUTH block**, right under the
+Location line:
+
+```
+Local subdivisions: Louisiana has parishes, not counties — its local election offices are parish
+offices. Say "parish," never "county."
+```
+
+Only emitted for LA/AK, so county-default states stay lean.
+
+### Verification (Group C)
+- `node --check worker.js` → exit 0 (no pipe). Prompt budget guard green (no module changes this round).
+- Helpers + augmentation unit-tested (query templates, empty-detection, scan/splice/budget/no-op paths).
+
+---
+
 ## Done — handoff + redeploy
 
 - Refreshed `claude-handoff/02_BACKEND_WORKER.txt` and `04_SAM_PROMPT_AND_TOOLS.txt` against the branch.
-- Root causes confirmed: **item 1** (missing fall-through on `lookup_jurisdiction` + fall-through not
-  followed on the post-lookup turn; Safe Mode was NOT active — 2 strips < threshold 5), and **item 6**
-  (state abbreviation "LA" interpolated into brief queries → Los Angeles). Pre-fix query strings above.
+- Root causes confirmed: **item 1** (Group A: missing fall-through on `lookup_jurisdiction` + fall-through
+  not followed on the post-lookup turn, Safe Mode NOT active — 2 strips < threshold 5; **Group C**: prompt
+  lever alone insufficient on re-test → made the fall-through server-enforced in the tool-result path),
+  and **item 6** (state abbreviation "LA" interpolated into brief queries → Los Angeles). Pre-fix query
+  strings and the fall-through query templates are above.
 - **Redeploy command for Greg** (backend only — no frontend files changed):
   ```powershell
   wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07

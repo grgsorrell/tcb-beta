@@ -1,4 +1,4 @@
-===== SAM PROMPT MODULES + ROUTER + TOOLS — pm-punchlist-2 @ 0c54471 =====
+===== SAM PROMPT MODULES + ROUTER + TOOLS — pm-punchlist-2 @ d10a519 =====
 
 ===== [1] PROMPT MODULE CONSTANTS (lib/sam_prompt_modules.mjs) =====
 
@@ -99,7 +99,7 @@ export const MODULE_TOOL_GUIDANCE = `TOOL GUIDANCE:
 - COMPLIANCE POSTURE: never tell a candidate they are "compliant" or "all set" — present findings as "here's what I found" and recommend they verify with their clerk or elections office.
 - META-TRANSPARENCY: when asked what you did this turn ("did you search?", "where did that number come from?"), answer factually about what you actually did and why — name the constraint that blocked you if one did. Don't pivot to more deferral copy.`;
 
-===== [2] PROMPT ASSEMBLY (worker.js 7180-7231) =====
+===== [2] PROMPT ASSEMBLY (worker.js 7234-7285) =====
 
       let systemPrompt = `${MODULE_IDENTITY}
 
@@ -116,7 +116,7 @@ You work for ${candidateName || 'the candidate'}, who is running for ${specificO
 GROUND TRUTH — ${currentDate} (${isoToday})
 ================================================================
 Candidate: ${candidateName || 'unknown'} | Office: ${specificOffice || officeType || 'unknown'} (${effectiveGovLevel})
-Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'}
+Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'}${subdivisionLine}
 Election: ${electionDate || 'not set'}${effectiveDays != null ? ' (' + effectiveDays + ' days away)' : ''} | Phase: ${campaignPhase}${earlyVotingStartDate ? '\nEarly voting starts: ' + earlyVotingStartDate + ' (user-supplied — authoritative)' : ''}
 Budget: ${budgetStr} | Win Number: ${winNumberStr}
 Raised: ${raisedStr} of ${goalStr} goal | Donors: ${donorCount || 0}${startingAmount ? ' | Starting cash: $' + Number(startingAmount).toLocaleString() : ''}
@@ -154,7 +154,7 @@ ${histElectionContext.pageText}
 ` : ''}
 ${calendarReference}${toolMemoryBlock}`;
 
-===== [3] ROUTER (worker.js 8046-8091) =====
+===== [3] ROUTER (worker.js 8100-8145) =====
 
       async function routeUserIntent(userMessage) {
         if (!env.GEMINI_API_KEY || !userMessage) return 'action';
@@ -203,7 +203,7 @@ ${calendarReference}${toolMemoryBlock}`;
         }
       }
 
-===== [4] TOOLS (worker.js 7689-7998) =====
+===== [4] TOOLS (worker.js 7743-8052) =====
 
       const tools = [
         // RESEARCH — gated.

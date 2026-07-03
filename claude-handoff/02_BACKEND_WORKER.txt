@@ -1,4 +1,4 @@
-===== FILE: worker.js  (11994 lines) — pm-punchlist-2 branch (Phases 0-7 + punch list A-D + safe-mode fix + pm-punchlist-2 A-B) =====
+===== FILE: worker.js  (12106 lines) — pm-punchlist-2 branch (Phases 0-7 + punch list A-D + safe-mode fix + pm-punchlist-2 A-C) =====
 ===== Secret VALUES redacted; env.* NAMES retained; password-hash salt redacted. =====
 
 import { stripToolReferencesForGemini } from './lib/strip_tool_references.mjs';
@@ -953,6 +953,51 @@ export default {
         notes: 'Federal races (US House, US Senate, President) report to and are regulated by the FEC — not the state authority.',
         jurisdiction_specific: null
       };
+    }
+
+    // punchlist2 item 1: server-enforced lookup fall-through helpers.
+    // buildLookupFallthroughQuery constructs the grounding query for an empty
+    // lookup from the tool's own arguments + fact class (federal → FEC, state →
+    // official state source). lookupResultLacksData detects a no-verified-data
+    // tool_result (status 'unsupported'/stub, no usable data) while NOT
+    // re-searching when the lookup endpoint already attached its own
+    // web_search_fallback excerpt.
+    function buildLookupFallthroughQuery(name, input) {
+      const inp = input || {};
+      const stateFull = expandStateName(inp.state || '') || (inp.state || '');
+      const office = inp.office || '';
+      const yr = inp.race_year || new Date().getFullYear();
+      const juris = inp.jurisdiction_name || inp.district || '';
+      const federal = isFederalOffice(office);
+      switch (name) {
+        case 'lookup_finance_reports':
+          return federal
+            ? `FEC ${yr} quarterly reporting deadlines candidate committee`
+            : `${stateFull} campaign finance report deadlines ${office} ${yr} site official`;
+        case 'lookup_compliance_deadlines':
+          return `${stateFull} ${office} ${yr} filing qualifying deadline secretary of state`;
+        case 'lookup_donation_limits':
+          return federal
+            ? `FEC ${yr} individual contribution limits candidate committee`
+            : `${stateFull} ${office} contribution limits ${yr}`;
+        case 'lookup_jurisdiction':
+          return `${stateFull} ${juris} municipalities parishes communities ${yr}`;
+        default:
+          return `${stateFull} ${office} ${yr}`.trim();
+      }
+    }
+    function lookupResultLacksData(content) {
+      let s = '';
+      if (typeof content === 'string') s = content;
+      else if (Array.isArray(content)) s = content.map(b => (b && typeof b.text === 'string') ? b.text : (typeof b === 'string' ? b : JSON.stringify(b))).join(' ');
+      else if (content && typeof content === 'object') s = JSON.stringify(content);
+      const lc = s.toLowerCase();
+      if (!lc.trim()) return false;
+      // The endpoint already ran its own web_search_fallback and attached an
+      // excerpt — data is present, don't double-search.
+      if (lc.includes('web_search_fallback') || lc.includes('"web_search"') || lc.includes('excerpt')) return false;
+      // No-verified-data signals from the lookup endpoints.
+      return lc.includes('unsupported') || lc.includes('stub_authority_only') || lc.includes('no verified data');
     }
 
     // Punch-list item 3: map internal placeholder tokens to natural language
@@ -7180,6 +7225,15 @@ End of next month: ${fl(eonm)}, ${ymd(eonm)}${electionLine}
       const _toolMemoryRows = conversation_id ? await loadRecentToolMemory(conversation_id) : [];
       const toolMemoryBlock = formatToolMemoryBlock(_toolMemoryRows);
 
+      // punchlist2 item 2: put the state's local-subdivision term IN ground truth
+      // (proximity beats a distant rule). Louisiana has parishes, Alaska has
+      // boroughs; everywhere else "county" is correct and needs no note.
+      const SUBDIVISION_TERMS = { LA: { sing: 'parish', plur: 'parishes' }, AK: { sing: 'borough', plur: 'boroughs' } };
+      const _sub = SUBDIVISION_TERMS[(state || '').toUpperCase().trim()];
+      const subdivisionLine = _sub
+        ? `\nLocal subdivisions: ${expandStateName(state)} has ${_sub.plur}, not counties — its local election offices are ${_sub.sing} offices. Say "${_sub.sing}," never "county."`
+        : '';
+
       let systemPrompt = `${MODULE_IDENTITY}
 
 ${MODULE_TRUST_LADDER}
@@ -7195,7 +7249,7 @@ You work for ${candidateName || 'the candidate'}, who is running for ${specificO
 GROUND TRUTH — ${currentDate} (${isoToday})
 ================================================================
 Candidate: ${candidateName || 'unknown'} | Office: ${specificOffice || officeType || 'unknown'} (${effectiveGovLevel})
-Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'}
+Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'}${subdivisionLine}
 Election: ${electionDate || 'not set'}${effectiveDays != null ? ' (' + effectiveDays + ' days away)' : ''} | Phase: ${campaignPhase}${earlyVotingStartDate ? '\nEarly voting starts: ' + earlyVotingStartDate + ' (user-supplied — authoritative)' : ''}
 Budget: ${budgetStr} | Win Number: ${winNumberStr}
 Raised: ${raisedStr} of ${goalStr} goal | Donors: ${donorCount || 0}${startingAmount ? ' | Starting cash: $' + Number(startingAmount).toLocaleString() : ''}
@@ -8249,12 +8303,70 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
           }
         }
 
+        // ============================================================
+        // SERVER-ENFORCED LOOKUP FALL-THROUGH (punchlist2 item 1)
+        // The invariant "lookup empty → search → cite → advise" no longer
+        // depends on the model choosing to call request_web_search. If the most
+        // recent user turn carried a lookup_* tool_result with no verified data,
+        // run grounding HERE with a fact-class query and splice the results into
+        // the turn the model sees (tagged VERIFIED LOOKUP / SEARCH RESULTS), so
+        // Sam synthesizes with citations instead of bare-deferring. Shares the
+        // 2-search/turn grounding budget with the request_web_search escape
+        // hatch. Prompt-level fall-through language stays as reinforcement.
+        // ============================================================
+        let _fallthroughGroundingUsed = 0;
+        {
+          const LOOKUP_NAMES = new Set(['lookup_finance_reports', 'lookup_compliance_deadlines', 'lookup_donation_limits', 'lookup_jurisdiction']);
+          const useById = new Map();
+          for (const m of maskedMsgs) {
+            if (m && m.role === 'assistant' && Array.isArray(m.content)) {
+              for (const b of m.content) if (b && b.type === 'tool_use' && b.id) useById.set(b.id, { name: b.name, input: b.input || {} });
+            }
+          }
+          // Consider only the most recent tool-result-bearing user turn.
+          const emptyLookups = [];
+          for (let i = maskedMsgs.length - 1; i >= 0; i--) {
+            const m = maskedMsgs[i];
+            if (!m || m.role !== 'user' || !Array.isArray(m.content)) continue;
+            const trs = m.content.filter(b => b && b.type === 'tool_result');
+            if (trs.length === 0) continue;
+            for (const b of trs) {
+              const use = b.tool_use_id ? useById.get(b.tool_use_id) : null;
+              if (use && LOOKUP_NAMES.has(use.name) && lookupResultLacksData(b.content) && !emptyLookups.some(e => e.name === use.name)) {
+                emptyLookups.push(use);
+              }
+            }
+            break; // stop at the first (most recent) turn that carried tool results
+          }
+          const _blocks = [];
+          for (const use of emptyLookups) {
+            if (_fallthroughGroundingUsed >= 2) break; // shared 2-search/turn cap
+            const _q = buildLookupFallthroughQuery(use.name, use.input);
+            _fallthroughGroundingUsed++;
+            const _sub = await runGroundingSubturn(_q);
+            const _srcs = (_sub.sources && _sub.sources.length)
+              ? '\nSources: ' + _sub.sources.map(s => (s && (s.uri || s.title)) ? `[${s.title || 'source'}](${s.uri || ''})` : '').filter(Boolean).join(', ')
+              : '';
+            _blocks.push(
+              `[VERIFIED LOOKUP — ${use.name}: no verified data on file for this race.]\n` +
+              `[SEARCH RESULTS (live web — synthesize from these, cite the sources inline, and add a one-line note to confirm with the named authority before acting): ${_sub.excerpt || 'no results found'}${_srcs}]`
+            );
+          }
+          if (_blocks.length && geminiContents.length) {
+            const _last = geminiContents[geminiContents.length - 1];
+            const _augment = { text: '\n\n' + _blocks.join('\n\n') };
+            if (_last && _last.role === 'user' && Array.isArray(_last.parts)) _last.parts.push(_augment);
+            else geminiContents.push({ role: 'user', parts: [_augment] });
+          }
+        }
+
         // Main generate loop. Normally one pass; when the model invokes
         // request_web_search we run grounding server-side, feed the result back
         // as a functionResponse, and re-call — keeping the full function toolset
         // available. Grounding is capped at 2 calls per turn; the outer bound
-        // is a safety net.
-        let groundingUsed = 0;
+        // is a safety net. Budget starts at the count already spent by the
+        // server-enforced lookup fall-through above.
+        let groundingUsed = _fallthroughGroundingUsed;
         let _searchNudged = false; // item 4: one-shot guard against narrated-but-uncalled search
         let loopContents = geminiContents;
         for (let _round = 0; _round < 5; _round++) {
