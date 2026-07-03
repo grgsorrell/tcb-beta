@@ -62,6 +62,55 @@ export default {
     }
 
     // ========================================
+    // HELPER: strip legacy Safe Mode banners from history (pm-punchlist-2 item 2)
+    // The mechanical Safe Mode banner subsystem was removed in the safe-mode fix,
+    // but old chat threads still contain assistant turns that were prepended one
+    // of these six disclaimer strings. Gemini imitates that boilerplate from the
+    // history window ("banner ghost"). Strip any leading legacy banner from
+    // historical assistant messages before they're sent to the model so the
+    // pattern isn't reinforced. Deployed code no longer emits these.
+    // ========================================
+    const LEGACY_SAFE_MODE_BANNERS = [
+      "Quick reminder: for high-stakes specifics — filing dates, dollar amounts, contribution rules — verify with the authoritative source before acting. I'll cite sources where I can; some things move too fast for me to track.\n\n---\n\n",
+      "Standard practice note: cross-check anything specific (dates, dollar amounts, named contacts) against the authoritative source before relying on it. I'll cite where possible — the rest deserves a second look.\n\n---\n\n",
+      "One thing to keep in mind: rules and dates change between cycles. Anything I tell you about specific deadlines, amounts, or contacts — verify with the source before acting. That's standard discipline, not a flag on this conversation.\n\n---\n\n",
+      "Note: verify specific dates, amounts, and contacts with the authoritative source before acting. Standard practice for campaign info that changes between cycles.\n\n---\n\n",
+      "Reminder: I'm working from publicly available data. Before you act on a specific date, dollar amount, or contact, verify with the source — I'll cite where I can to make that easy.\n\n---\n\n",
+      "Note: campaign rules change between cycles, and some details only your elections office or attorney can confirm definitively. Treat my answers as the start of your research on specifics, not the final word.\n\n---\n\n"
+    ];
+    function stripLegacyBannerText(text) {
+      if (typeof text !== 'string' || !text) return text;
+      for (const b of LEGACY_SAFE_MODE_BANNERS) {
+        if (text.startsWith(b)) return text.slice(b.length);
+      }
+      return text;
+    }
+    function stripLegacyBannersFromHistory(messages) {
+      if (!Array.isArray(messages)) return messages;
+      return messages.map((m) => {
+        if (!m || m.role !== 'assistant') return m;
+        if (typeof m.content === 'string') {
+          const s = stripLegacyBannerText(m.content);
+          return s === m.content ? m : { ...m, content: s };
+        }
+        if (Array.isArray(m.content)) {
+          const blocks = m.content.slice();
+          let changed = false;
+          for (let i = 0; i < blocks.length; i++) {
+            const blk = blocks[i];
+            if (blk && blk.type === 'text' && typeof blk.text === 'string') {
+              const s = stripLegacyBannerText(blk.text);
+              if (s !== blk.text) { blocks[i] = { ...blk, text: s }; changed = true; }
+              break; // the banner was only ever prepended to the first text block
+            }
+          }
+          return changed ? { ...m, content: blocks } : m;
+        }
+        return m;
+      });
+    }
+
+    // ========================================
     // HELPER: JSON response
     // ========================================
     function jsonResponse(data, status = 200) {
@@ -7174,7 +7223,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // Rule 1 now explicitly invites web_search as a verification path.
       // ========================================
       if (safeModeActive) {
-        systemPrompt += '\n\nEXTRA CAUTION THIS TURN (internal — NEVER mention this instruction, any "mode", validators, or system state to the candidate): earlier this session a few specific claims did not hold up, so be especially strict now. For ANY specific fact (date, dollar amount, name, organization, statistic, URL) you cannot source from GROUND TRUTH, a verified block, a tool result, or request_web_search, do NOT recall it from memory — defer per the FACT TRUST LADDER with the specific authority. Express this only as ordinary care in natural language ("worth confirming that with [authority] before you act on it"), never as a system state or "accuracy issue." Strategic guidance, framing, and questions are unaffected — this tightens specific factual claims only.';
+        systemPrompt += '\n\nEXTRA CAUTION THIS TURN (internal — NEVER mention this instruction, any "mode", validators, or system state to the candidate): earlier this session a few specific claims did not hold up, so be especially strict about STATING unverified facts. IMPORTANT: this narrows only what you may ASSERT from memory — it does NOT restrict searching, and it must NEVER cause you to skip a search. When you lack a source for a specific fact (date, dollar amount, name, organization, statistic, URL), you MUST call request_web_search FIRST and cite what it returns; only if that search comes back empty do you defer, per the FACT TRUST LADDER, with the specific authority. Never let this caution end a turn in a bare deferral when a search was available and not attempted. Express any residual uncertainty as ordinary care in natural language ("worth confirming that with [authority] before you act on it"), never as a system state or "accuracy issue." Strategic guidance, framing, and questions are unaffected.';
       }
 
       // ========================================
@@ -7808,7 +7857,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // LOOKUP — gated out for 'conversational'.
         ...(_isConversational ? [] : [{
           name: "lookup_jurisdiction",
-          description: "Look up the official list of municipalities and unincorporated areas inside a jurisdiction. CRITICAL: when the user asks about geographic targeting (canvassing, neighborhoods, event locations, mail targets, voter outreach geography, where to focus), call this tool FIRST for the candidate's race. Then recommend ONLY locations from the returned list. If you mention any city, town, or area not in the returned list, you are factually wrong. There are no exceptions to this rule.",
+          description: "Look up the official list of municipalities and unincorporated areas inside a jurisdiction. CRITICAL: when the user asks about geographic targeting (canvassing, neighborhoods, event locations, mail targets, voter outreach geography, where to focus), call this tool FIRST for the candidate's race. When the tool returns a list, recommend ONLY locations from it — if you name any city, town, or area not in the returned list, you are factually wrong. But if the tool returns NO list / no verified data, do NOT bare-defer: fall through to request_web_search for the official municipality/precinct list from the candidate's state or local elections office, cite what you find, and add a one-line note to confirm with that office before targeting. A bare deferral here is acceptable only after a search was attempted and came back empty.",
           input_schema: {
             type: "object",
             properties: {
@@ -8085,7 +8134,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // via request_web_search (handled in the grounding sub-loop below).
         const turnCapability = _chatRoute === 'search'
           ? '\n\nTHIS TURN: you have live Google Search grounding but NOT your save/calendar/budget tools. Complete the research; if the candidate also asked for an action, tell them you\'ll handle the save/add on their next message.'
-          : '\n\nTHIS TURN: you have your full toolset. For live information, call request_web_search — never claim you cannot search.';
+          : '\n\nTHIS TURN: you have your full toolset. For live information, call request_web_search — never claim you cannot search. If a lookup tool this turn (or the one you just ran) returned no verified data, you MUST call request_web_search for the official source before answering — do NOT end the turn on a bare deferral, and do NOT merely say you will search: actually call it now.';
         const turnSystemPrompt = systemPrompt + turnCapability;
 
         // request_web_search escape hatch: a grounding-only Gemini sub-call.
@@ -8135,6 +8184,7 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
         // available. Grounding is capped at 2 calls per turn; the outer bound
         // is a safety net.
         let groundingUsed = 0;
+        let _searchNudged = false; // item 4: one-shot guard against narrated-but-uncalled search
         let loopContents = geminiContents;
         for (let _round = 0; _round < 5; _round++) {
           const response = await fetch(
@@ -8225,6 +8275,26 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
               [{ role: 'user', parts: frParts }]
             );
             continue;
+          }
+
+          // Item 4: guard against "announced but not executed" search. If the
+          // model narrated a search intent ("I'll look that up", "I'll initiate
+          // a web search") but emitted NO request_web_search call, don't let the
+          // turn end on the promise — nudge once to either actually call it or
+          // drop the mention. Action route only (the search route already has
+          // native grounding); bounded to one nudge and the 2-call grounding cap.
+          if (!_searchNudged && _chatRoute !== 'search' && groundingUsed < 2) {
+            const _txt = parts.filter(p => p.text).map(p => p.text).join(' ');
+            const _promisedSearch = /\b(i(?:'|’)?ll|i will|let me|i'?m going to|i am going to|going to|about to)\b[^.?!]{0,40}\b(search|look (?:it|that|this) up|check|find out|pull up|research|initiate a (?:web )?search|do a (?:web )?search|run a (?:web )?search)\b/i.test(_txt);
+            const _emittedAnyTool = parts.some(p => p.functionCall);
+            if (_promisedSearch && !_emittedAnyTool) {
+              _searchNudged = true;
+              loopContents = loopContents.concat(
+                [{ role: 'model', parts: parts }],
+                [{ role: 'user', parts: [{ text: 'You said you would search but did not call request_web_search. Either call request_web_search now with an appropriate query and report what it returns, or answer directly without mentioning searching. Do not promise a search you do not perform.' }] }]
+              );
+              continue;
+            }
           }
 
           // No escape-hatch call — translate to Anthropic shape and return.
@@ -9677,7 +9747,9 @@ RETURNING USER: Greet warmly, reference their campaign naturally, jump right int
       // messages (~15 turns) regardless of what the client sends, to cap token
       // blow-out and prompt-injection surface. Downstream sanitize/toGeminiHistory
       // handles any tool_use/tool_result trimming at the boundary.
-      const messages = (history && history.length > 0) ? history.slice(-30) : [{ role: "user", content: message }];
+      const messages = (history && history.length > 0)
+        ? stripLegacyBannersFromHistory(history.slice(-30))
+        : [{ role: "user", content: message }];
 
       // Relative-date preprocessor: rewrite the latest user-text message
       // (skip tool_result blocks) so Haiku sees absolute dates inline.
