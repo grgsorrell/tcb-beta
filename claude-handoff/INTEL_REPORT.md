@@ -321,4 +321,47 @@ watch item / likely fast-follow, not built here.)
 - No backend change; no model/search calls on render (client globals only). Navy/gold tiles reuse the
   `.rc-tile`/`.rc-bar` idioms; chips thumb-sized; logo/avatar untouched.
 
-**STOP — awaiting go-ahead for Phase 5 (Today / pulse section).**
+## Phase 5 — TODAY / PULSE SECTION (frontend, commit 6)
+
+`renderTodaySection()` renders `#intel-today-section` from the **cached** `ctb_intel_data.pulse` items —
+District Pulse returns in the new layout.
+
+- **Cached items + gold citation links unchanged**: `renderTodayItem` reuses `renderPulseTab`'s exact
+  item structure — category tag, TRENDING sentiment, headline (Playfair italic), summary, "WHY IT
+  MATTERS", and the **gold source link** (validates `^https?://`, `target=_blank rel=noopener`, `↗
+  host`) verbatim.
+- **Added per item**: a **source + relative time** meta line — the gold link plus
+  `relativeFromDateStr(item.date)` ("2h ago" / "3d ago"; freeform dates like "last week" pass through
+  unchanged; unit-tested). A section "Updated [timeAgo]" line reuses the existing `timeAgo`.
+- **Chips**: "Draft response" / "Why it matters" → `pulseChip(idx, kind)` → `openSamWithPrompt` with the
+  **headline in the prompt**. Same apostrophe-proof pattern as the opponent chips: **dispatch by item
+  index**, headline looked up from cache inside `pulseChip` and passed only as data (verified with a
+  headline containing an apostrophe).
+
+### Header Refresh button — existing cooldown UX, unchanged
+`renderIntelPanel` re-shows the header `#intel-refresh-btn`; `refreshActiveIntelTab()` was re-pointed to
+the pulse/Today section but keeps the **exact** existing UX: **72h cooldown** on `cache.pulse`, "Next
+refresh in Xh" with the dimmed button reverting after 3s, else "Researching…" → `loadTodaySection(true)`
+→ `fetchPulse()`. `fetchPulse`'s render targets were moved from the (retired) `renderIntelTabContent
+('pulse')` to `renderTodaySection()`; the background onboarding pre-fetch (`setTimeout(fetchPulse, 5000)`)
+still just warms the cache and no-ops the render when the panel is closed. `startFreshCampaignForProfile`
+now re-renders the whole panel.
+
+### Empty-state check (requested) — CONFIRMED
+With **nothing cached** (fresh account, or after a campaign reset clears `cache.pulse`),
+`renderTodaySection()` takes the `items.length === 0` branch and renders the **refresh affordance**, not
+a blank section: *"No district pulse yet. Tap 🔄 Refresh (top right) to pull today's news for your
+race."* The header Refresh button is visible and functional. **No auto-fetch on open** — the section
+renders from cache only; a pull happens exclusively when the candidate taps Refresh (inside the 72h
+cooldown). So **zero model/search calls fire on panel open** even when the pulse cache is empty or stale.
+
+### Verification (Phase 5)
+- All inline `<script>` blocks parse cleanly. `relativeFromDateStr` + `pulseChip` unit-tested. Dead-code
+  isolation confirmed: `loadIntelTab`/`switchIntelTab` (and the one remaining
+  `renderIntelTabContent('pulse')` inside them) have no live callers — Phase 6 removes them.
+- Cost control: panel open → `loadTodaySection(false)` → cache-only render, no fetch. Verified by code
+  path.
+- Branding/mobile: gold links + `.intel-relevance` reused; chips (`.rc-chip-sm`) wrap and are
+  thumb-sized; navy/gold; logo/avatar untouched.
+
+**STOP — awaiting go-ahead for Phase 6 (polish, mobile, and the three folded-in frontend fixes).**

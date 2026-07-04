@@ -6297,18 +6297,18 @@ function renderIntelPanel() {
   var el = document.getElementById('intel-content');
   if (!el) return;
   // Redesigned layout (Phases 2-5): Reality Check hero + stacked sections,
-  // replacing the old tab strip. Money (Phase 4) and Today/pulse (Phase 5) fill
-  // their containers in later phases; the header refresh button belongs to the
-  // Today section and is hidden until then.
+  // replacing the old tab strip. The header Refresh button drives the Today
+  // (pulse) section, keeping the existing 72h-cooldown UX.
   el.innerHTML = '<div id="reality-check-hero"></div>' +
     '<div id="intel-opponents-section"></div>' +
     '<div id="intel-money-section"></div>' +
     '<div id="intel-today-section"></div>';
   var rb = document.getElementById('intel-refresh-btn');
-  if (rb) rb.style.display = 'none';
+  if (rb) rb.style.display = '';
   loadRealityCheckHero();
   loadOpponentsSection();
   renderMoneySection();
+  loadTodaySection(false); // render pulse from cache ONLY — never fetch on open
 }
 
 // ============================================
@@ -6659,6 +6659,99 @@ function isFederalRace() {
     (office.indexOf('senate') >= 0 && office.indexOf('state') < 0) || office.indexOf('president') >= 0;
 }
 
+// ============================================
+// TODAY / PULSE SECTION (intel-redesign Phase 5)
+// Renders the CACHED District Pulse items (gold citation links unchanged),
+// adds source + relative time + Sam chips per item. NEVER fetches on panel
+// open — only the header Refresh button (72h cooldown, unchanged) triggers a
+// model/search call. Empty state shows the refresh affordance, never blank.
+// ============================================
+function loadTodaySection(forceRefresh) {
+  var host = document.getElementById('intel-today-section');
+  if (!host) return;
+  if (!forceRefresh) { renderTodaySection(); return; } // cache-only on open
+  // Forced refresh (header button; cooldown already checked): fetch fresh.
+  host.innerHTML = '<div class="intel-section"><div class="intel-section-hd">Today</div><div id="today-loading"></div></div>';
+  var le = document.getElementById('today-loading');
+  if (le) showIntelLoading(le);
+  fetchPulse();
+}
+
+function relativeFromDateStr(ds) {
+  if (!ds) return '';
+  var t = Date.parse(ds);
+  if (isNaN(t)) return ds; // freeform ("last week") — show as given
+  var diff = Math.floor((Date.now() - t) / 1000);
+  if (diff < 0) return new Date(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  if (diff < 3600) return Math.max(1, Math.floor(diff / 60)) + ' min ago';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+  if (diff < 86400 * 30) return Math.floor(diff / 86400) + 'd ago';
+  return new Date(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function renderTodaySection() {
+  var host = document.getElementById('intel-today-section');
+  if (!host) return;
+  var cache = getIntelCache();
+  var items = getCachedPulseItems();
+  var fetchedAt = (cache.pulse && cache.pulse.fetchedAt) || null;
+  var html = '<div class="intel-section"><div class="intel-section-hd">Today</div>';
+  if (!items || items.length === 0) {
+    // Empty state — refresh affordance, NEVER a blank section.
+    html += '<div class="rc-instr">No district pulse yet. Tap <strong>🔄 Refresh</strong> (top right) to pull today\'s news for your race.</div>';
+    html += '</div>';
+    host.innerHTML = html;
+    return;
+  }
+  html += '<div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:10px">Updated ' + timeAgo(fetchedAt) + '</div>';
+  items.forEach(function(item, idx){ html += renderTodayItem(item, idx); });
+  html += '</div>';
+  host.innerHTML = html;
+}
+
+function renderTodayItem(item, idx) {
+  var catColors = {'local-politics':'var(--purple)','issues':'var(--blue)','opponent':'var(--red)','community':'var(--green)','economy':'var(--gold)'};
+  var catColor = catColors[item.category] || 'var(--t3)';
+  var sentIcon = item.sentiment === 'positive' ? '<span style="color:var(--green);font-size:9px;font-weight:700;letter-spacing:.08em">TRENDING ↑</span>' : item.sentiment === 'negative' ? '<span style="color:var(--red);font-size:9px;font-weight:700;letter-spacing:.08em">TRENDING ↓</span>' : '<span style="color:var(--t3);font-size:9px;font-weight:700;letter-spacing:.08em">TRENDING →</span>';
+  // Gold citation link — UNCHANGED from renderPulseTab (validates https, new tab, noopener).
+  var sourceLinkHtml = '';
+  if (item.source_url && typeof item.source_url === 'string' && /^https?:\/\//i.test(item.source_url)) {
+    var sourceHost = '';
+    try { sourceHost = new URL(item.source_url).hostname.replace(/^www\./, ''); } catch (e) { sourceHost = 'source'; }
+    sourceLinkHtml = '<a href="' + escapeHtml(item.source_url) + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none;border-bottom:1px dotted var(--gold)">↗ ' + escapeHtml(sourceHost) + '</a>';
+  }
+  var rel = relativeFromDateStr(item.date);
+  // source + relative time line
+  var metaBits = [];
+  if (sourceLinkHtml) metaBits.push(sourceLinkHtml);
+  if (rel) metaBits.push('<span style="color:var(--t3)">' + escapeHtml(rel) + '</span>');
+  var metaLine = metaBits.length ? '<div style="margin-top:6px;font-size:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">' + metaBits.join('') + '</div>' : '';
+  return '<div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center">' +
+      '<span style="font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' + catColor + '">' + escapeHtml(item.category || '') + '</span>' + sentIcon +
+    '</div>' +
+    '<div style="font-family:var(--font-d);font-style:italic;font-size:13px;font-weight:600;color:var(--t1);margin:4px 0">' + escapeHtml(item.headline || '') + '</div>' +
+    '<div style="font-size:11px;color:var(--t2);line-height:1.6">' + escapeHtml(item.summary || '') + '</div>' +
+    (item.relevance ? '<div class="intel-relevance">WHY IT MATTERS: ' + escapeHtml(item.relevance) + '</div>' : '') +
+    metaLine +
+    '<div class="opp-chips" style="border-top:none;padding-top:8px">' +
+      '<button class="rc-chip-sm" onclick="pulseChip(' + idx + ',\'response\')">Draft response</button>' +
+      '<button class="rc-chip-sm" onclick="pulseChip(' + idx + ',\'why\')">Why it matters</button>' +
+    '</div>' +
+  '</div>';
+}
+
+function pulseChip(idx, kind) {
+  var items = getCachedPulseItems();
+  var item = items[idx];
+  if (!item) return;
+  var headline = item.headline || 'this news';
+  var prompt = kind === 'response'
+    ? 'Draft a response I can use to this news: "' + headline + '"'
+    : 'Why does this matter for my race? "' + headline + '"';
+  openSamWithPrompt(prompt);
+}
+
 function switchIntelTab(tab) {
   intelActiveTab = tab;
   document.querySelectorAll('.intel-tab').forEach(function(t){ t.classList.remove('on'); });
@@ -6733,11 +6826,12 @@ function loadIntelTab(tabKey, forceRefresh) {
 }
 
 function refreshActiveIntelTab() {
-  if (intelActiveTab === 'opponents' || intelActiveTab === 'threats') return;
+  // The Today (pulse) section is the only refreshable section in the redesigned
+  // panel. Cooldown UX preserved EXACTLY: 72h gate on cache.pulse, "Next refresh
+  // in Xh" with dimmed button reverting after 3s, else "Researching...".
   var btn = document.getElementById('intel-refresh-btn');
-  // Enforce 72-hour cooldown on manual refresh
   var cache = getIntelCache();
-  var tabData = cache[intelActiveTab];
+  var tabData = cache.pulse;
   if (tabData && tabData.fetchedAt) {
     var hoursSince = (Date.now() - tabData.fetchedAt) / (1000 * 60 * 60);
     if (hoursSince < 72) {
@@ -6748,7 +6842,7 @@ function refreshActiveIntelTab() {
     }
   }
   if (btn) { btn.textContent = 'Researching...'; btn.style.opacity = '.5'; btn.style.pointerEvents = 'none'; }
-  loadIntelTab(intelActiveTab, true);
+  loadTodaySection(true);
 }
 
 function showIntelLoading(tc) {
@@ -6821,13 +6915,13 @@ function fetchPulse() {
       var cache = getIntelCache();
       cache.pulse = { data: obj, fetchedAt: Date.now() };
       saveIntelCache(cache);
-      renderIntelTabContent('pulse', obj, Date.now());
+      renderTodaySection(); // renders from the cache just written; no-ops if panel closed
     } else {
-      showIntelError();
+      renderTodaySection(); // empty cache -> instructional refresh affordance
     }
   }).catch(function(){
     if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
-    showIntelError();
+    renderTodaySection();
   }).finally(function(){
     var btn = document.getElementById('intel-refresh-btn');
     if (btn) { btn.textContent = '\uD83D\uDD04 Refresh'; btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
@@ -6860,7 +6954,7 @@ function startFreshCampaignForProfile() {
     delete cache.pulse;
     saveIntelCache(cache);
   } catch(e) {}
-  loadIntelTab('opponents', true);
+  renderIntelPanel();
 }
 
 function ensureActiveCampaign(cb) {
