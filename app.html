@@ -6308,6 +6308,7 @@ function renderIntelPanel() {
   if (rb) rb.style.display = 'none';
   loadRealityCheckHero();
   loadOpponentsSection();
+  renderMoneySection();
 }
 
 // ============================================
@@ -6325,7 +6326,10 @@ var RC_PROMPTS = {
   catchup: "I'm behind on my voter contact pace. Build me a catch-up plan for the next 4 weeks using my calendar.",
   next: "I'm on pace with my voter contact. What should I focus on next?",
   winnum: "Calculate my win number for this race.",
-  addopp: "I want to start tracking an opponent in my race — help me build their file. Who should I start with?"
+  addopp: "I want to start tracking an opponent in my race — help me build their file. Who should I start with?",
+  moneysetup: "Help me set a fundraising goal for my race and start tracking my contributions.",
+  calllist_fed: "Build me a fundraising call list from FEC data — the top donors I should be calling for my race.",
+  calllist_local: "Build me a fundraising call list from my personal network and past donors for my race."
 };
 function rcChip(key) { if (RC_PROMPTS[key]) openSamWithPrompt(RC_PROMPTS[key]); }
 
@@ -6452,7 +6456,9 @@ function loadOpponentsSection() {
   if (!host) return;
   if (!intelOpponentsLoaded) {
     host.innerHTML = '<div class="intel-section"><div class="intel-section-hd">Opponents</div><div style="font-size:11px;color:rgba(255,255,255,.35);font-style:italic;padding:8px 0">Loading opponents…</div></div>';
-    loadOpponentsFromD1(function(){ renderOpponentsSection(); });
+    // Re-render Money too: the "vs Top Opp" ratio depends on opponent finances,
+    // which aren't known until opponents finish loading.
+    loadOpponentsFromD1(function(){ renderOpponentsSection(); renderMoneySection(); });
   } else {
     renderOpponentsSection();
   }
@@ -6463,7 +6469,7 @@ function renderOpponentsSection() {
   if (!host) return;
   var html = '<div class="intel-section"><div class="intel-section-hd">Opponents</div>';
   if (!intelOpponents || intelOpponents.length === 0) {
-    html += '<div class="rc-instr">No opponents tracked yet. Tell Sam who you\'re running against and he\'ll start building their file.</div>';
+    html += '<div class="rc-instr">No opponents tracked yet. Add them by name below, or tell Sam about them and he\'ll start building their file.</div>';
     html += '<button class="rc-chip" onclick="rcChip(\'addopp\')">Tell Sam my opponent</button>';
   } else {
     var items = getCachedPulseItems();
@@ -6589,6 +6595,68 @@ function oppChip(oppId, kind) {
     ? 'Draft a contrast message between my campaign and ' + name + '.'
     : 'Where is ' + name + ' weak? Give me their key vulnerabilities I can use.';
   openSamWithPrompt(prompt);
+}
+
+// ============================================
+// MONEY SECTION (intel-redesign Phase 4)
+// Stat tiles from client Ground Truth (contributions + campaignBudget). The
+// comparison ratio renders ONLY when an opponent's finance data actually
+// exists — never invented. Chip picked by office_level. No network calls.
+// ============================================
+function renderMoneySection() {
+  var host = document.getElementById('intel-money-section');
+  if (!host) return;
+  var raised = (typeof contributions !== 'undefined' && contributions && contributions.length)
+    ? contributions.reduce(function(s, c){ return s + (c.amount || 0); }, 0) : 0;
+  var goal = (typeof campaignBudget !== 'undefined' && campaignBudget && campaignBudget.fundraisingGoal) ? campaignBudget.fundraisingGoal : 0;
+  var html = '<div class="intel-section"><div class="intel-section-hd">Money</div>';
+  if (!goal && !raised) {
+    html += '<div class="rc-instr">Set a fundraising goal and log your contributions so Sam can track your money against the race.</div>';
+    html += '<button class="rc-chip" onclick="rcChip(\'moneysetup\')">Set my fundraising goal</button></div>';
+    host.innerHTML = html;
+    return;
+  }
+  var oppRaised = getLeadingOpponentRaised(); // null unless an opponent has real finance data
+  html += '<div class="rc-tiles">' +
+    moneyTile('Raised', '$' + rcFmt(raised), '') +
+    moneyTile('Goal', goal > 0 ? '$' + rcFmt(goal) : '—', goal > 0 ? '' : 'not set');
+  if (oppRaised != null && oppRaised > 0 && raised > 0) {
+    var ratio = Math.round((raised / oppRaised) * 10) / 10; // one rounded decimal
+    html += moneyTile('vs Top Opp', ratio + '×', 'their $' + rcFmt(oppRaised));
+  }
+  html += '</div>';
+  if (goal > 0) {
+    var pct = Math.min(100, Math.round((raised / goal) * 100));
+    html += '<div class="rc-bar"><div class="rc-bar-fill" style="width:' + pct + '%"></div></div>';
+  }
+  var fed = isFederalRace();
+  html += '<button class="rc-chip" onclick="rcChip(\'' + (fed ? 'calllist_fed' : 'calllist_local') + '\')">Build my call list</button>';
+  html += '</div>';
+  host.innerHTML = html;
+}
+
+function moneyTile(label, value, sub) {
+  return '<div class="rc-tile"><div class="rc-tile-lbl">' + label + '</div><div class="rc-tile-val" style="font-size:18px">' + value + '</div><div class="rc-tile-sub">' + (sub || '&nbsp;') + '</div></div>';
+}
+
+function getLeadingOpponentRaised() {
+  if (!intelOpponents || !intelOpponents.length) return null;
+  var max = null;
+  intelOpponents.forEach(function(o){
+    var f = o.data && o.data.finances;
+    if (f && f.total_raised != null && !isNaN(f.total_raised)) {
+      if (max == null || f.total_raised > max) max = f.total_raised;
+    }
+  });
+  return max;
+}
+
+function isFederalRace() {
+  var lvl = (campaignData.officeType || campaignData.govLevel || '').toLowerCase();
+  if (lvl === 'federal') return true;
+  var office = (campaignData.specificOffice || '').toLowerCase();
+  return office.indexOf('congress') >= 0 || office.indexOf('u.s. house') >= 0 || office.indexOf('us house') >= 0 ||
+    (office.indexOf('senate') >= 0 && office.indexOf('state') < 0) || office.indexOf('president') >= 0;
 }
 
 function switchIntelTab(tab) {

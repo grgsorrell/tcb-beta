@@ -285,4 +285,40 @@ a future `add_opponent` Sam tool would close that loop (logged as a follow-up, n
 - Branding/mobile: reused `.intel-card` + new `.intel-section`/`.rc-chip-sm`; chips wrap; controls
   thumb-sized; aria-labels on refresh/remove/add. Navy/gold; logo/avatar untouched.
 
-**STOP — awaiting go-ahead for Phase 4 (Money section).**
+### Folded-in mitigation (Phase 3 follow-up, per Greg)
+Opponents empty-state copy is now honest about both add paths: **"No opponents tracked yet. Add them by
+name below, or tell Sam about them and he'll start building their file."** — naming the add-input
+(rendered right below) alongside the Sam chip. (The `add_opponent` Sam tool remains a logged test-day
+watch item / likely fast-follow, not built here.)
+
+---
+
+## Phase 4 — MONEY SECTION (frontend, commit 5)
+
+`renderMoneySection()` renders `#intel-money-section` from **client Ground Truth only** — `contributions`
+(summed) and `campaignBudget.fundraisingGoal`. **No network calls** (cost-safe on open).
+
+- **Stat tiles**: **Raised** (`$` sum of contributions), **Goal** (`campaignBudget.fundraisingGoal`, or
+  "— / not set"), and a progress bar `raised/goal` when a goal exists. Values via `rcFmt` (rounded, no
+  decimals).
+- **Comparison ratio — only when opponent finance data actually exists**: `getLeadingOpponentRaised()`
+  returns the max `data.finances.total_raised` across `intelOpponents`, or **null** when no opponent has
+  real finance data. The "vs Top Opp" tile (`1.4×`, subtext "their $X") renders **only** when that is
+  non-null and both sides are > 0 — **never invented**. Unit-tested: null for no opponents and for
+  opponents lacking finances; picks the max when present. Because opponent finances aren't known until
+  the async opponents load completes, the opponents-load callback also re-runs `renderMoneySection()` so
+  the ratio appears once the data lands.
+- **Chip picked by office_level** (`isFederalRace()` — `officeType/govLevel === 'federal'`, with an
+  office-string fallback for "Congress/US House/US Senate/President"): federal → "Build my call list"
+  (FEC-data prompt), non-federal → "Build my call list" (personal-network / past-donors prompt). Both via
+  `rcChip(...)`. Unit-tested: federal by level, US House by string, state senate / mayor → non-federal.
+- **Empty state** (no goal and nothing raised): "Set a fundraising goal and log your contributions so Sam
+  can track your money against the race." + a setup chip (`rcChip('moneysetup')`).
+
+### Verification (Phase 4)
+- All inline `<script>` blocks parse cleanly.
+- Money logic unit-tested (ratio-only-when-opponent-data, office_level chip pick).
+- No backend change; no model/search calls on render (client globals only). Navy/gold tiles reuse the
+  `.rc-tile`/`.rc-bar` idioms; chips thumb-sized; logo/avatar untouched.
+
+**STOP — awaiting go-ahead for Phase 5 (Today / pulse section).**
