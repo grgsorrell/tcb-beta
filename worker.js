@@ -170,12 +170,61 @@ export default {
     function scrubGroundingRedirects(text, sources) {
       if (!text) return text;
       let out = String(text);
+
+      // Balance-safe removal of orphan close-parens: drops any ')' that has no
+      // matching '(' before it (and the whitespace immediately before it),
+      // leaving legitimate balanced parentheticals untouched.
+      const dropOrphanCloseParens = (str) => {
+        let depth = 0, res = '';
+        for (let i = 0; i < str.length; i++) {
+          const ch = str[i];
+          if (ch === '(') { depth++; res += ch; }
+          else if (ch === ')') {
+            if (depth > 0) { depth--; res += ch; }
+            else { res = res.replace(/[ \t]+$/, ''); } // orphan ')' -> drop it + preceding space
+          } else res += ch;
+        }
+        return res;
+      };
+
+      // (1) Vertex markdown links WITH a clean title -> substitute the title
+      // (the working path). Empty titles and vertexaisearch-domain "titles" are
+      // left in place so the wrapper removal in (3) can consume the whole
+      // citation instead of stranding the enclosing parens.
+      out = out.replace(/\[([^\]]*)\]\(https?:\/\/vertexaisearch\.cloud\.google\.com\/[^)]*\)/gi, (m, title) => {
+        const t = (title || '').trim();
+        if (!t || /vertexaisearch\.cloud\.google\.com/i.test(t)) return m; // no clean substitute
+        return t;
+      });
+
+      // (2) Bare redirect URLs present in the grounding `sources` list -> the
+      // source title (only bare occurrences remain after step 1).
       for (const s of (sources || [])) {
-        if (s && s.uri) out = out.split(s.uri).join(s.title || 'source');
+        if (s && s.uri && s.title && !/vertexaisearch\.cloud\.google\.com/i.test(s.title)) {
+          out = out.split(s.uri).join(s.title);
+        }
       }
-      out = out.replace(/\[([^\]]*)\]\(https?:\/\/vertexaisearch\.cloud\.google\.com\/[^)]*\)/gi, '$1');
+
+      // (3) THE ORPHAN FIX: a citation wrapper with no clean substitute -> remove
+      // the ENTIRE wrapper (leading space + enclosing parens + any
+      // Source:/Per/See/Via/cf label + the vertex link/url), not just the URL.
+      out = out.replace(
+        /\s*\(\s*(?:sources?|per|see|via|cf\.?)?\s*:?\s*(?:\[[^\]]*\]\s*\()?\s*https?:\/\/vertexaisearch\.cloud\.google\.com\/[^)]*\)?\s*\)/gi,
+        ''
+      );
+
+      // (4) Any remaining bare redirect URL / host mention outside a wrapper.
       out = out.replace(/https?:\/\/vertexaisearch\.cloud\.google\.com\/[^\s)\]]*/gi, '');
       out = out.replace(/\(?\s*vertexaisearch\.cloud\.google\.com\b[^\s)]*\)?/gi, '');
+
+      // (5) Safety-net cleanup for stranded fragments left by any partial
+      // removal: label-only parens, empty parens, orphan close-parens, double
+      // spaces, and spaces before punctuation.
+      out = out.replace(/\(\s*(?:sources?|per|see|via|cf\.?)\s*:?\s*\)/gi, ''); // "(Source: )"
+      out = out.replace(/\(\s*\)/g, '');                 // "()" / "( )"
+      out = dropOrphanCloseParens(out);                  // " )." -> "."
+      out = out.replace(/[ \t]{2,}/g, ' ');              // collapse runs of spaces
+      out = out.replace(/[ \t]+([.,;:!?])/g, '$1');      // " ." -> "."
       return out;
     }
 

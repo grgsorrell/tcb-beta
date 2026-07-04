@@ -291,3 +291,50 @@ Only emitted for LA/AK, so county-default states stay lean.
   wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
   ```
 - Not merged to master.
+
+---
+
+## Citation-scrubber orphan fix (branch `citation-fix`, one commit)
+
+**Bug (live, Shannan's intel test):** the vertexaisearch citation scrubber
+(`scrubGroundingRedirects` in worker.js) left dangling `)` fragments when it
+removed a redirect link with no clean title/domain substitute — e.g. "…major
+Republican candidates in this race )." and "…a point of discussion among
+voters ).".
+
+**Root cause (confirmed by repro):** the original model output is a citation
+wrapper — `(Source: [title](vertexaisearch-url))`, `([domain](url))`, or a bare
+`(Source: <url>)`. The old scrubber removed only the **link/URL** (or replaced a
+domain/empty title with nothing), leaving the **enclosing wrapper punctuation**
+— the `(Source: `/`(` and the closing `)` — stranded. Reproduced the residues
+`(Source: )`, `()`, ` .`, and the literal ` ).` (bare-host-with-space variant)
+from realistic inputs before fixing.
+
+**Fix (in the scrubber itself):**
+1. Vertex markdown links **with a clean title** still substitute the title (the
+   working path) — `[Ballotpedia](url)` → `Ballotpedia`, so `(Source:
+   [Ballotpedia](url))` → `(Source: Ballotpedia)` as before. Empty titles and
+   vertex-domain "titles" are deliberately left in place for step 3.
+2. Bare redirect URLs found in the grounding `sources` list → the source title.
+3. **Orphan fix:** a citation wrapper with no clean substitute now has its
+   **ENTIRE wrapper consumed** — the leading space, enclosing parens, any
+   `Source:`/`Per`/`See`/`Via`/`cf` label, and the vertex link/url — not just the
+   URL.
+4. Remaining bare redirect URLs / host mentions stripped (as before).
+5. **Safety-net cleanup:** label-only parens `(Source: )`, empty parens `()`,
+   a **balance-safe** orphan-close-paren pass (drops only a `)` with no matching
+   `(`, so legitimate parentheticals like "(if no majority)" are untouched),
+   double spaces, and spaces before punctuation.
+
+**Unit-tested (8/8 pass, `node --check` clean, no pipe):** both exact live
+examples come out clean ("…in this race." / "…among voters."), including the
+literal ` ).` bare-host variant; the working-substitution cases (wrapper with a
+real title, inline `[title](url)`, and `sources`-list substitution) are
+unchanged — proving no regression; and a legitimate parenthetical is left
+intact.
+
+**Redeploy command for Greg** (backend only):
+```powershell
+wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
+```
+Not merged to master.
