@@ -527,6 +527,14 @@ select{-webkit-appearance:none;appearance:none;}
 .opp-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);}
 .rc-chip-sm{background:rgba(212,165,116,.13);border:1px solid rgba(212,165,116,.35);color:var(--gold);padding:7px 12px;border-radius:18px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-b);min-height:34px;}
 .rc-chip-sm:hover{background:rgba(212,165,116,.22);}
+/* Reality Check / sections — phone width: tiles wrap to 2-up, chips full-width thumb targets, quick-log wraps */
+@media(max-width:768px){
+  .rc-tile{min-width:44%;}
+  .rc-qlog-f{min-width:56px;}
+  .rc-log-btn{flex:1 0 100%;}
+  .rc-chip,.rc-chip-sm{min-height:40px;padding-top:9px;padding-bottom:9px;}
+  .opp-chips{gap:8px;}
+}
 .reg-bar{height:8px;border-radius:4px;display:flex;overflow:hidden;margin:8px 0;}
 
 /* ENDORSEMENTS specifics */
@@ -822,7 +830,7 @@ select{-webkit-appearance:none;appearance:none;}
     <div class="oh" style="background:linear-gradient(135deg,#0d0e18,#12131f);border-bottom:1px solid rgba(212,165,116,.12)">
       <span class="ot" style="color:var(--gold)">&#127919; Intelligence Center</span>
       <div style="display:flex;align-items:center;gap:8px">
-        <button id="intel-refresh-btn" onclick="refreshActiveIntelTab()" style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);padding:4px 10px;border-radius:3px;cursor:pointer">&#128260; Refresh</button>
+        <button id="intel-refresh-btn" onclick="refreshActiveIntelTab()" aria-label="Refresh today's district pulse" title="Refresh today's district pulse" style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);padding:4px 10px;border-radius:3px;cursor:pointer">&#128260; Refresh</button>
         <button onclick="closeOverlay()" style="color:var(--t2);font-size:18px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center">&times;</button>
       </div>
     </div>
@@ -1276,6 +1284,7 @@ try { campaignBudget = JSON.parse(localStorage.getItem(storageKey('ctb_budget'))
 if (campaignBudget.totalBudget && !campaignBudget.total) { campaignBudget.total = campaignBudget.totalBudget; }
 if (campaignBudget.totalBudget) { campaignBudget.total = campaignBudget.totalBudget; delete campaignBudget.totalBudget; saveBudget(); }
 try { folders = JSON.parse(localStorage.getItem(storageKey('ctb_folders'))) || []; } catch(e) { folders = []; }
+try { if (typeof applyFoldersMigration === 'function') applyFoldersMigration(); } catch(e) {} // Phase 6: Notes default folder (localStorage; D1 persist deferred to session)
 try { chatHistory = JSON.parse(localStorage.getItem(storageKey('ctb_chatHistory'))) || []; } catch(e) { chatHistory = []; }
 
 // Conversation id — keys server-side sam_tool_memory rows so tool
@@ -2340,7 +2349,7 @@ function loadFromD1() {
       saveState(storageKey('ctb_budget'), campaignBudget);
     }
     // D1 WINS: Folders/Notes
-    if (data.folders) { folders = data.folders; saveState(storageKey('ctb_folders'), folders); }
+    if (data.folders) { folders = data.folders; saveState(storageKey('ctb_folders'), folders); applyFoldersMigration(); } // Phase 6: migrate D1 folders to Notes default (persists to D1)
     // D1 WINS: Endorsements
     if (data.endorsements) { localStorage.setItem(storageKey('ctb_endorsements'), JSON.stringify(data.endorsements)); }
     // D1 WINS: Contributions
@@ -5183,7 +5192,7 @@ function saveNoteFromModal() {
     // Create new - put in first folder or create one
     var firstFolderIsNew = false;
     if (folders.length === 0) {
-      folders.push({ id: Date.now(), name: 'Campaign Notes', notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+      folders.push({ id: Date.now(), name: 'Notes', notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
       firstFolderIsNew = true;
     }
     var newNote = { id: Date.now(), title: title || 'Untitled', content: content, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
@@ -6179,6 +6188,7 @@ function closeOverlay() {
 var defaultFolderStructure = [
   { section: 'Campaign', items: [
     { icon: '&#11088;', name: 'All Notes', isAll: true },
+    { icon: '&#128221;', name: 'Notes' },
     { icon: '&#128203;', name: 'Talking Points' },
     { icon: '&#9993;&#65039;', name: 'Email Drafts' },
     { icon: '&#127908;', name: 'Speeches' },
@@ -6206,6 +6216,103 @@ function getFolderNoteCount(folderName) {
 
 function getAllNoteCount() {
   return folders.reduce(function(s, f) { return s + (f.notes ? f.notes.length : 0); }, 0);
+}
+
+// ============================================
+// FOLDERS/NOTES RESTRUCTURE (Phase 6, per Shannan)
+// "Notes" becomes the canonical default folder. This migration is PURE and
+// IDEMPOTENT and NEVER deletes or overwrites a note under any path — notes are
+// only ever appended/moved. Returns { folders, changed, notesFolder, movedNotes }.
+//
+// Behaviour by case:
+//  (a) notes with no folder (a blank-named folder, or a stray note object) ->
+//      appended into the "Notes" folder.
+//  (b) notes in named folders ("Media", "Email Drafts", ...) -> UNTOUCHED.
+//  (c) a folder that collides with the new default "Notes" -> MERGED: existing
+//      "Notes" notes are preserved, legacy notes appended, deduped by id, no
+//      duplicate "Notes" folder created, nothing overwritten.
+// The legacy implicit default "Campaign Notes" is renamed in place to "Notes"
+// when no "Notes" folder exists yet (preserves ids + D1 folder_id linkage);
+// otherwise its notes merge into the existing "Notes".
+// ============================================
+function migrateFoldersToNotesDefault(foldersInput) {
+  var flds = Array.isArray(foldersInput) ? foldersInput.slice() : [];
+  var changed = false;
+  var movedNotes = [];
+
+  var nameOf = function(f){ return (f && f.name || '').trim(); };
+  var isNotes = function(f){ return nameOf(f).toLowerCase() === 'notes'; };
+  var isLegacyDefault = function(f){ var n = nameOf(f).toLowerCase(); return n === '' || n === 'campaign notes'; };
+
+  // 1. Canonical "Notes" folder: reuse existing, else rename a lone legacy
+  //    default in place, else create one at the front.
+  var notesFolder = null;
+  for (var i = 0; i < flds.length; i++) { if (isNotes(flds[i])) { notesFolder = flds[i]; break; } }
+  if (!notesFolder) {
+    for (var j = 0; j < flds.length; j++) {
+      if (flds[j] && Array.isArray(flds[j].notes) && isLegacyDefault(flds[j])) { flds[j].name = 'Notes'; notesFolder = flds[j]; changed = true; break; }
+    }
+  }
+  if (!notesFolder) {
+    notesFolder = { id: Date.now(), name: 'Notes', notes: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+    flds.unshift(notesFolder);
+    changed = true;
+  }
+  if (!Array.isArray(notesFolder.notes)) notesFolder.notes = [];
+
+  var haveIds = {};
+  notesFolder.notes.forEach(function(n){ if (n && n.id != null) haveIds[String(n.id)] = true; });
+
+  // 2. Consolidate loose notes into "Notes"; leave named folders untouched.
+  var kept = [];
+  flds.forEach(function(f){
+    if (f === notesFolder) { kept.push(f); return; }
+    if (!f) return;
+    // A stray note object (has content/title but no notes[]) -> loose note.
+    if (!Array.isArray(f.notes) && (f.title != null || f.content != null)) {
+      if (f.id == null || !haveIds[String(f.id)]) { notesFolder.notes.push(f); if (f.id != null) haveIds[String(f.id)] = true; movedNotes.push(f); changed = true; }
+      return;
+    }
+    if (isLegacyDefault(f)) {
+      (f.notes || []).forEach(function(n){
+        if (n && (n.id == null || !haveIds[String(n.id)])) {
+          notesFolder.notes.push(n);
+          if (n && n.id != null) haveIds[String(n.id)] = true;
+          movedNotes.push(n);
+          changed = true;
+        }
+      });
+      // The now-empty legacy shell is dropped (its notes were MOVED, not deleted).
+    } else {
+      kept.push(f); // named folder — untouched
+    }
+  });
+
+  // 3. Notes is the default landing folder -> keep it first.
+  var idx = kept.indexOf(notesFolder);
+  if (idx > 0) { kept.splice(idx, 1); kept.unshift(notesFolder); changed = true; }
+
+  return { folders: kept, changed: changed, notesFolder: notesFolder, movedNotes: movedNotes };
+}
+
+// Run the migration on the live `folders`, persist to localStorage, and (best
+// effort) persist to D1. Idempotent: after the first successful D1 persist,
+// later runs are no-ops, so the 60s poll can't cause churn.
+function applyFoldersMigration() {
+  try {
+    var res = migrateFoldersToNotesDefault(folders);
+    if (!res.changed) return false;
+    folders = res.folders;
+    saveState(storageKey('ctb_folders'), folders);
+    // Persist to D1 only when a session exists (skips the premature initial-load
+    // call; the authoritative persist happens after the D1 folders load).
+    var _sess = (typeof getD1Session === 'function') ? getD1Session() : null;
+    if (_sess) {
+      if (typeof saveOneFolder === 'function') saveOneFolder(res.notesFolder);       // rename/create
+      if (typeof saveOneNote === 'function') res.movedNotes.forEach(function(n){ saveOneNote(n, res.notesFolder.id); }); // reassign moved notes
+    }
+    return true;
+  } catch (e) { console.warn('[folders migration] failed (non-fatal):', e && e.message); return false; }
 }
 
 function renderFoldersOverlay() {
@@ -6752,78 +6859,9 @@ function pulseChip(idx, kind) {
   openSamWithPrompt(prompt);
 }
 
-function switchIntelTab(tab) {
-  intelActiveTab = tab;
-  document.querySelectorAll('.intel-tab').forEach(function(t){ t.classList.remove('on'); });
-  var tabs = document.querySelectorAll('.intel-tab');
-  var tabKeys = ['opponents','pulse','threats','notes'];
-  var idx = tabKeys.indexOf(tab);
-  if (idx >= 0 && tabs[idx]) tabs[idx].classList.add('on');
-  loadIntelTab(tab, false);
-}
-
-function setIntelRefreshVisibility(tabKey) {
-  var btn = document.getElementById('intel-refresh-btn');
-  if (!btn) return;
-  // Opponents has per-card refresh. Threats auto-reflects opponents state.
-  // Notes is user-edited (no refresh applies). No global refresh on these.
-  if (tabKey === 'opponents' || tabKey === 'threats' || tabKey === 'notes') {
-    btn.style.display = 'none';
-  } else {
-    btn.style.display = '';
-    btn.textContent = '\ud83d\udd04 Refresh';
-    btn.style.opacity = '1';
-    btn.style.pointerEvents = 'auto';
-  }
-}
-
-function loadIntelTab(tabKey, forceRefresh) {
-  var tc = document.getElementById('intel-tab-content');
-  if (!tc) return;
-  setIntelRefreshVisibility(tabKey);
-
-  if (tabKey === 'opponents' || tabKey === 'threats') {
-    if (!intelOpponentsLoaded) {
-      showIntelLoading(tc);
-      loadOpponentsFromD1(function(){
-        if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
-        renderIntelTabContent(tabKey, intelOpponents, null);
-      });
-    } else {
-      renderIntelTabContent(tabKey, intelOpponents, null);
-    }
-    return;
-  }
-
-  if (tabKey === 'notes') {
-    // Notes tab depends on opponents being loaded (Tab 1 is source of truth)
-    // and the notes blob from D1. Load both in sequence, then render.
-    var doRender = function(){
-      loadOppositionNotesFromD1(function(){
-        if (window._intelLoadingInterval) clearInterval(window._intelLoadingInterval);
-        renderIntelTabContent('notes', intelOpponents, null);
-      });
-    };
-    if (!intelOpponentsLoaded) {
-      showIntelLoading(tc);
-      loadOpponentsFromD1(doRender);
-    } else {
-      doRender();
-    }
-    return;
-  }
-
-  if (tabKey === 'pulse') {
-    var cache = getIntelCache();
-    if (!forceRefresh && cache.pulse && cache.pulse.data && !isIntelStale('pulse', 72)) {
-      renderIntelTabContent('pulse', cache.pulse.data, cache.pulse.fetchedAt);
-      return;
-    }
-    showIntelLoading(tc);
-    fetchPulse();
-    return;
-  }
-}
+// (Phase 6) Removed dead tab-navigation machinery — switchIntelTab,
+// setIntelRefreshVisibility, loadIntelTab — superseded by the stacked-
+// sections layout (renderIntelPanel + load*Section + renderTodaySection).
 
 function refreshActiveIntelTab() {
   // The Today (pulse) section is the only refreshable section in the redesigned
@@ -9376,7 +9414,7 @@ async function executeToolCall(block) {
     // claiming success while D1 had nothing, then the 60s poll wiped local.
     // New contract: confirmMsg only says "Saved" after a 200 from
     // /api/notes/save. On any failure, local state is untouched.
-    var folderName = inp.folder || inp.folder_name || 'Campaign Notes';
+    var folderName = inp.folder || inp.folder_name || 'Notes';
     var noteTitle = inp.title || inp.note_title || 'Untitled';
     var noteContent = inp.content || '';
     var noteStatus = inp.status || 'Ready';
@@ -9784,10 +9822,32 @@ function showHallucinationToast() {
 
 // Detect if text looks like a long-form document (speech, email, talking points, etc.)
 function isDocumentContent(text) {
+  // Phase 6 fix: only wrap GENUINE documents. The old "length > 800 &&
+  // multipleParagraphs" clause wrapped ordinary long conversational replies —
+  // removed. A document is now recognized by explicit structural signals only:
+  //   (1) OPENERS (anchored at a line start): salutations/speech openings
+  //       (Dear, Good evening/morning/afternoon, Ladies and gentlemen, Fellow,
+  //       My name is, Thank you for), email headers (Subject:/To:/From:), a
+  //       press-release lead (FOR IMMEDIATE RELEASE), or an op-ed byline
+  //       ("By First Last").
+  //   (2) MARKERS (anywhere): sign-offs (Sincerely,/Respectfully,/Warm
+  //       regards,), press-release furniture (### , -30-), disclaimers (Paid
+  //       for by), and phone/canvass-script cues (May I speak, Hi my name is,
+  //       Do you have a minute, [if.../[pause]/[beat]).
+  // A long strategy/conversational answer matches none of these -> not wrapped.
   if (!text || text.length < 400) return false;
-  var docPatterns = /^(dear |good evening|good morning|good afternoon|ladies and gentlemen|fellow |my name is|thank you for|subject:|to:|from:)/im;
-  var hasMultipleParagraphs = (text.match(/\n\n/g) || []).length >= 2;
-  return docPatterns.test(text) || (text.length > 800 && hasMultipleParagraphs);
+  var t = text.trim();
+  var openers = /^(dear\s|good\s+(evening|morning|afternoon)|ladies and gentlemen|fellow\s|my name is\s|thank you for\s|subject:|to:\s|from:\s|for immediate release|by\s+[A-Z][a-z]+\s+[A-Z])/im;
+  if (openers.test(t)) return true;
+  var markers = /(for immediate release|paid for (and authorized )?by|\bsincerely,|\brespectfully,|\bwarm(est)? regards,|###\s*$|(^|\n)\s*-\s?30\s?-\s*($|\n)|\bmay i speak (with|to)\b|\bhi,?\s+my name is\b|do you have a (quick )?minute|\[(if\b|pause|beat))/im;
+  if (markers.test(t)) return true;
+  return false;
+}
+
+// Client-side write tools (produce persistent changes). Used by the done-bubble
+// fallback so a silent write action still shows the user a confirmation.
+function isWriteTool(name) {
+  return ['add_calendar_event','update_task','delete_task','complete_task','update_event','delete_event','add_expense','log_contribution','set_budget','set_category_allocation','save_note','add_note','save_document','save_to_notes','add_endorsement','save_win_number','save_candidate_profile','log_voter_contact'].indexOf(name) >= 0;
 }
 
 function extractDocTitle(text) {
@@ -10214,6 +10274,11 @@ async function sendSamMessage() {
       }
     }
 
+    // Track whether ANYTHING visible was rendered this turn (across both
+    // rounds). Drives the done-bubble decision below so a read-only tool round
+    // whose follow-up answered never shows a phantom "Done!" bubble.
+    var _renderedAnything = false;
+
     if (fullText.trim() && !_suppressRound1) {
       if (isDocumentContent(fullText)) {
         msgsEl.innerHTML += renderDocumentBubble(extractDocTitle(fullText), fullText);
@@ -10222,6 +10287,7 @@ async function sendSamMessage() {
         samSpeak(fullText);
       }
       msgsEl.scrollTop = msgsEl.scrollHeight;
+      _renderedAnything = true;
     }
 
     if (checkHallucinatedSave(fullText, toolBlocks.length > 0)) {
@@ -10264,6 +10330,7 @@ async function sendSamMessage() {
     confirmations.forEach(function(msg) {
       msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>';
     });
+    if (confirmations.length > 0) _renderedAnything = true;
     msgsEl.scrollTop = msgsEl.scrollHeight;
 
     // Save to history. When round-1 was suppressed for narration,
@@ -10329,8 +10396,10 @@ async function sendSamMessage() {
             msgsEl.innerHTML += '<div class="sam-msg">' + formatSamText(followText) + '</div>';
             samSpeak(followText);
           }
+          _renderedAnything = true;
         }
         followConfirms.forEach(function(msg) { msgsEl.innerHTML += '<div class="sam-confirm">' + msg + '</div>'; });
+        if (followConfirms.length > 0) _renderedAnything = true;
         msgsEl.scrollTop = msgsEl.scrollHeight;
         if (checkHallucinatedSave(followText, followToolBlocks.length > 0)) {
           console.warn('[Sam] Hallucinated save detected (follow-up): text claims a save but no tool_use block was emitted. Text:', followText.slice(0, 300));
@@ -10355,17 +10424,27 @@ async function sendSamMessage() {
           msgsEl.scrollTop = msgsEl.scrollHeight;
           chatHistory.push({ role: 'assistant', content: _suppressedRound1Text });
           saveChatHistory();
+          _renderedAnything = true;
           console.debug('[round-1-narration-restored-on-failure]');
         }
       }
     }
 
-    // If no text and no confirmations
-    if (!fullText.trim() && confirmations.length === 0) {
-      msgsEl.innerHTML += '<div class="sam-msg">Done! What would you like to work on next?</div>';
-      chatHistory.push({ role: 'assistant', content: 'Done! What would you like to work on next?' });
-      saveChatHistory();
-      msgsEl.scrollTop = msgsEl.scrollHeight;
+    // Phantom "Done!" bubble fix (Phase 6): act only when NOTHING visible was
+    // rendered this turn (across both rounds). A read-only tool round whose
+    // follow-up already answered has rendered -> stay silent (no phantom
+    // bubble). A genuine WRITE action that produced no text/confirmation falls
+    // back to a confirmation line so the user always sees evidence their action
+    // happened -> never left silent, never a generic "Done! What would you...".
+    if (!_renderedAnything) {
+      var _didWrite = turnToolCalls.some(function(tc){ return isWriteTool(tc.name); });
+      if (_didWrite) {
+        msgsEl.innerHTML += '<div class="sam-confirm">✅ Done.</div>';
+        chatHistory.push({ role: 'assistant', content: '✅ Done.' });
+        saveChatHistory();
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+      }
+      // else: read-only turn with no visible output -> suppress entirely.
     }
 
     // Forensic per-turn log — fire-and-forget. Captures user message,

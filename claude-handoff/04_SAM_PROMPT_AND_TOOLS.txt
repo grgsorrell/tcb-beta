@@ -1,4 +1,4 @@
-===== SAM PROMPT MODULES + ROUTER + TOOLS — pm-punchlist-2 @ d10a519 =====
+===== SAM PROMPT MODULES + ROUTER + TOOLS — intel-redesign @ f4d906f =====
 
 ===== [1] PROMPT MODULE CONSTANTS (lib/sam_prompt_modules.mjs) =====
 
@@ -99,7 +99,7 @@ export const MODULE_TOOL_GUIDANCE = `TOOL GUIDANCE:
 - COMPLIANCE POSTURE: never tell a candidate they are "compliant" or "all set" — present findings as "here's what I found" and recommend they verify with their clerk or elections office.
 - META-TRANSPARENCY: when asked what you did this turn ("did you search?", "where did that number come from?"), answer factually about what you actually did and why — name the constraint that blocked you if one did. Don't pivot to more deferral copy.`;
 
-===== [2] PROMPT ASSEMBLY (worker.js 7234-7285) =====
+===== [2] PROMPT ASSEMBLY (worker.js 7377-7428) =====
 
       let systemPrompt = `${MODULE_IDENTITY}
 
@@ -118,7 +118,7 @@ GROUND TRUTH — ${currentDate} (${isoToday})
 Candidate: ${candidateName || 'unknown'} | Office: ${specificOffice || officeType || 'unknown'} (${effectiveGovLevel})
 Location: ${location || 'unknown'}, ${state || 'unknown'} | Party: ${party || 'not specified'}${subdivisionLine}
 Election: ${electionDate || 'not set'}${effectiveDays != null ? ' (' + effectiveDays + ' days away)' : ''} | Phase: ${campaignPhase}${earlyVotingStartDate ? '\nEarly voting starts: ' + earlyVotingStartDate + ' (user-supplied — authoritative)' : ''}
-Budget: ${budgetStr} | Win Number: ${winNumberStr}
+Budget: ${budgetStr} | Win Number: ${winNumberStr}${paceBlock}
 Raised: ${raisedStr} of ${goalStr} goal | Donors: ${donorCount || 0}${startingAmount ? ' | Starting cash: $' + Number(startingAmount).toLocaleString() : ''}
 Filed: ${filingStatus || 'unknown'}${effectiveDays != null && effectiveDays > 180 ? ' (early planning — do not ask about filing)' : ''}
 ${briefProse ? `\nRACE INTELLIGENCE:\n${briefProse}` : ''}
@@ -154,7 +154,7 @@ ${histElectionContext.pageText}
 ` : ''}
 ${calendarReference}${toolMemoryBlock}`;
 
-===== [3] ROUTER (worker.js 8100-8145) =====
+===== [3] ROUTER (worker.js 8257-8302) =====
 
       async function routeUserIntent(userMessage) {
         if (!env.GEMINI_API_KEY || !userMessage) return 'action';
@@ -203,7 +203,7 @@ ${calendarReference}${toolMemoryBlock}`;
         }
       }
 
-===== [4] TOOLS (worker.js 7743-8052) =====
+===== [4] TOOLS (worker.js 7886-8209) =====
 
       const tools = [
         // RESEARCH — gated.
@@ -346,6 +346,20 @@ ${calendarReference}${toolMemoryBlock}`;
               notes: { type: "string" }
             },
             required: ["donorName", "amount", "source"]
+          }
+        },
+        {
+          name: "log_voter_contact",
+          description: "Log the candidate's voter contact numbers when they report door-knocking, phone-banking, or texting activity, e.g. 'I knocked 40 doors today'. Additive to any numbers already logged for that date. Confirm the totals back to the candidate.",
+          input_schema: {
+            type: "object",
+            properties: {
+              doors: { type: "number", description: "Doors knocked" },
+              calls: { type: "number", description: "Phone calls made" },
+              texts: { type: "number", description: "Texts sent" },
+              date: { type: "string", description: "Date in YYYY-MM-DD (defaults to today)" }
+            },
+            required: []
           }
         },
         {

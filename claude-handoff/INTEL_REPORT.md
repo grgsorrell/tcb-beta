@@ -364,4 +364,140 @@ cooldown). So **zero model/search calls fire on panel open** even when the pulse
 - Branding/mobile: gold links + `.intel-relevance` reused; chips (`.rc-chip-sm`) wrap and are
   thumb-sized; navy/gold; logo/avatar untouched.
 
-**STOP — awaiting go-ahead for Phase 6 (polish, mobile, and the three folded-in frontend fixes).**
+## Phase 6 — POLISH + MOBILE + FOLDED-IN FIXES (frontend, commit 7)
+
+### Cost-control verification (cached-only on panel open)
+Traced every path that runs when the Intel panel opens (`renderIntelPanel` → `loadRealityCheckHero` +
+`loadOpponentsSection` + `renderMoneySection` + `loadTodaySection(false)`):
+- **Reality Check hero** → `GET /api/voter-contact/summary` — a **D1 read only** (no model/search).
+- **Opponents** → `intelOpponents` from D1 (`/api/opponents/list`), cross-referenced against the **cached**
+  `ctb_intel_data.pulse` — no model/search.
+- **Money** → client globals (`contributions`, `campaignBudget`, `intelOpponents`) — no network at all.
+- **Today** → `loadTodaySection(false)` renders from cache **only**; the pulse research call
+  (`fetchPulse`, the sole model/search call) fires **exclusively** from the header Refresh button behind
+  the 72h cooldown — never on open.
+**Conclusion: zero model/search calls fire on panel open.** The only open-time network call is the cheap
+`voter-contact/summary` DB read (documented in Phase 2 as expected/exempt).
+
+### Fix 1 — phantom "Done!" bubble (caution 3 honored)
+The old branch fired on round-1 `!fullText && confirmations.length===0`, ignoring the follow-up round —
+so a read-only lookup whose follow-up answered still appended "Done! What would you like to work on
+next?". Replaced with a `_renderedAnything` flag set at **every** render site (round-1 text, round-1
+confirmations, follow-up text, follow-up confirmations, and the narration-restore catch). New logic:
+- **Something rendered** → nothing appended (no phantom bubble).
+- **Nothing rendered + a WRITE tool ran** (`turnToolCalls.some(isWriteTool)`) → append a `✅ Done.`
+  confirmation so a genuine action is **never silent** (caution 3).
+- **Nothing rendered + read-only only** → suppressed entirely.
+`isWriteTool` enumerates the client write tools (calendar/task/event/expense/contribution/budget/note/
+endorsement/win-number/profile/voter-contact).
+
+### Fix 2 — `isDocumentContent` over-wrap (caution 2 honored)
+Removed the `text.length > 800 && hasMultipleParagraphs` clause (the false-positive source). A document
+is now recognized by **explicit signals only** (both directions unit-tested):
+- **Qualifying signals** — OPENERS (line-anchored): `Dear`, `Good evening/morning/afternoon`, `Ladies and
+  gentlemen`, `Fellow`, `My name is`, `Thank you for`, email headers `Subject:/To:/From:`, press lead
+  `FOR IMMEDIATE RELEASE`, op-ed byline `By First Last`; MARKERS (anywhere): `Paid for (and authorized)
+  by`, sign-offs `Sincerely,/Respectfully,/Warm regards,`, press furniture `###` / `-30-`, phone-script
+  cues `May I speak`, `Hi, my name is`, `Do you have a minute`, `[if…]`/`[pause]`/`[beat]`.
+- **Verified:** a long conversational strategy answer → **does NOT wrap**; op-ed (byline), call script,
+  and email draft → **DO wrap**; short replies → never wrap.
+
+### Fix 3 — Folders/Notes restructure (caution 1 — the dangerous one)
+Shannan's model: **Folders is top-level, "Notes" is the default folder.** Changes:
+- `defaultFolderStructure` gains a first-class **"Notes"** folder; both new-note save paths
+  (`saveNoteFromModal` and the `save_note` tool default) now target **"Notes"** instead of the legacy
+  "Campaign Notes". "Save to X folder" already creates/finds by name (unchanged, verified).
+- **Migration `migrateFoldersToNotesDefault(folders)` — pure, idempotent, and NEVER deletes or overwrites
+  a note under any path** (notes are only appended/moved). Behaviour, unit-tested before wiring:
+  - **(a) notes with no folder** (a blank-named folder, or a stray note object) → **appended into
+    "Notes"**; the empty shell is dropped (its notes were moved, not deleted).
+  - **(b) notes in named folders** ("Media", "Email Drafts", …) → **untouched** (folder + notes intact).
+  - **(c) collision** — a folder already named "Notes" → **merged**: existing Notes notes preserved,
+    legacy notes appended, **deduped by id**, no duplicate "Notes" folder, nothing overwritten.
+  - The lone legacy default "Campaign Notes" (no "Notes" present) → **renamed in place** to "Notes"
+    (preserves ids + D1 `folder_id` linkage — the least-destructive path).
+  - **Idempotent** (2nd run = no-op) and **total-note-count conserved** — both unit-tested.
+- **Persistence:** `applyFoldersMigration` saves localStorage always, and persists to D1 **only when a
+  session exists** (`saveOneFolder` for the rename/create + `saveOneNote` for any moved note). Runs at
+  the localStorage load (UI correctness) and after the authoritative D1 folders load; idempotency means
+  the 60s poll can't churn once D1 is migrated.
+
+### Mobile + a11y
+- Full-screen overlay (unchanged pattern); `@media(max-width:768px)`: hero tiles wrap 2-up, quick-log
+  wraps with a full-width "Log today", chips become 40px thumb targets.
+- aria-labels on: quick-log inputs + Log-today button, opponent refresh/remove + add input, and the
+  header Refresh button. Text-labelled chips need none.
+
+### Dead code removed
+`switchIntelTab`, `setIntelRefreshVisibility`, `loadIntelTab` (72 lines) — superseded by the
+stacked-sections layout; confirmed no live callers before removal. (`renderIntelTabContent` kept — still
+referenced by live opposition-notes code.)
+
+### Handoff dumps refreshed
+`02_BACKEND_WORKER.txt` (worker.js + voter_contact), `03_FRONTEND_WORKER.txt` (**full current app.html —
+changed heavily**), `04_SAM_PROMPT_AND_TOOLS.txt` (now includes the `log_voter_contact` tool). Zero
+secret leaks verified in all three.
+
+### Verification (Phase 6)
+- All inline `<script>` blocks parse cleanly; `node --check worker.js` exit 0; budget guard green.
+- Unit-tested: `isDocumentContent` (both directions), the folders migration (cases a/b/c + rename +
+  idempotency + note-count conservation), done-bubble `isWriteTool` set.
+
+---
+
+## MANUAL TEST CHECKLIST FOR GREG (run after deploy-and-test)
+
+Deploy is TWO commands (backend + frontend), per CLAUDE.md — I did **not** deploy or merge:
+```powershell
+wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
+wrangler deploy --name tcb-beta --assets . --compatibility-date 2026-04-07
+```
+(The `voter_contact` table + index are already applied to remote D1.)
+
+**Reality Check hero / pace**
+- [ ] Open Intel: hero shows Win Number, Days Out, Pace; **no model/search call fires on open** (watch
+      network — only `voter-contact/summary` should appear).
+- [ ] Quick-log Doors/Calls/Texts → "Log today" updates the hero (total + pace) without a full reload.
+- [ ] Tell Sam "I knocked 40 doors today" → hero reflects +40 after you reopen/refresh the hero; Sam
+      confirms the totals.
+- [ ] Log a big volume → pace flips **Behind → On pace** (amber → green); the pace sentence rounds
+      cleanly (no long decimals).
+- [ ] Every chip opens Sam with the right pre-filled message and real context (catch-up, what's next,
+      calculate win number, contrast/weakness per opponent, call list, draft-response/why-it-matters).
+
+**Empty states (fresh account)**
+- [ ] No win number → hero shows the "Ask Sam to calculate your win number" instructional + chip.
+- [ ] No contacts → "Log your first day…" + quick-log row.
+- [ ] No opponents → "Add them by name below, or tell Sam about them" + add-input + chip.
+- [ ] Money with no goal → set-goal instructional + chip.
+- [ ] Today with nothing cached → **refresh affordance shown, not blank**; tapping Refresh pulls pulse;
+      a second immediate tap shows "Next refresh in Xh" (72h cooldown intact).
+
+**Opponents / Money / Today**
+- [ ] Opponent cards show money **only when FEC/finance data exists** (no invented figures); "vs Top Opp"
+      money ratio appears **only** when an opponent has real finance data.
+- [ ] Today items keep the **gold source links** + show relative time; "Draft response"/"Why it matters"
+      pass the headline to Sam.
+
+**Three folded-in fixes**
+- [ ] A read-only Sam turn (e.g. a deadline lookup) no longer ends with a phantom "Done! What would you
+      like to work on next?" bubble.
+- [ ] A write action (e.g. "add a fundraiser Friday") always shows a confirmation, never silence.
+- [ ] Ask Sam for a **strategy answer** (long) → renders as a normal chat bubble (NOT a Campaign Document
+      card). Ask for an **op-ed / call script / email draft** → renders as a Campaign Document card.
+
+**Folders migration (verify NO notes lost — Shannan's op-ed + email drafts)**
+- [ ] Before/after: total note count is unchanged; open each named folder ("Media"/"Email Drafts"/etc.)
+      and confirm every note is present and unedited.
+- [ ] A "Notes" default folder exists and is where new quick-notes land; "save to [folder]" via Sam still
+      lands in the right (or newly-created) folder.
+- [ ] If you previously had a "Campaign Notes" folder, its notes now appear under "Notes" (renamed) with
+      nothing missing; if you already had a "Notes" folder, it wasn't duplicated and kept its notes.
+- [ ] Reload twice — no duplicate notes, no duplicate "Notes" folder (idempotent).
+
+**Mobile**
+- [ ] On a phone width, hero tiles wrap, quick-log stacks, chips are thumb-sized; the panel is
+      full-screen like the others.
+
+**Do not merge until the checklist passes.**
+
