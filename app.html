@@ -497,6 +497,27 @@ select{-webkit-appearance:none;appearance:none;}
 .intel-relevance{margin-top:6px;background:rgba(212,165,116,.06);border-left:2px solid rgba(212,165,116,.3);padding:6px 8px;font-size:10px;color:rgba(212,165,116,.8);font-style:italic;}
 .intel-risk{background:rgba(232,112,112,.06);border-left:2px solid rgba(232,112,112,.3);padding:6px 8px;margin-top:6px;font-size:10px;color:rgba(255,255,255,.6);}
 .intel-rec{border:1px solid rgba(212,165,116,.25);background:rgba(212,165,116,.05);padding:12px;border-radius:6px;margin-top:14px;}
+/* Reality Check hero (intel-redesign Phase 2) — premium navy/gold, mobile-first (tiles wrap). */
+.rc-hero{background:linear-gradient(160deg,rgba(42,82,152,.10),rgba(11,17,32,.30));border:1px solid rgba(212,165,116,.28);border-radius:12px;padding:16px;margin-bottom:18px;}
+.rc-hd{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.rc-tiles{display:flex;gap:10px;flex-wrap:wrap;}
+.rc-tile{flex:1;min-width:92px;background:rgba(255,255,255,.03);border:1px solid var(--br);border-radius:10px;padding:12px 10px;text-align:center;}
+.rc-tile-lbl{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);}
+.rc-tile-val{font-size:22px;font-weight:800;font-family:var(--font-d);line-height:1.1;margin-top:5px;color:var(--t1);}
+.rc-tile-sub{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-top:3px;}
+.rc-pace-on{color:var(--green)!important;}.rc-pace-behind{color:var(--gold)!important;}.rc-pace-idle{color:var(--t2)!important;}
+.rc-bar{height:9px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden;margin:14px 0 8px;}
+.rc-bar-fill{height:100%;background:linear-gradient(90deg,var(--n5),var(--gold));transition:width .35s ease;}
+.rc-sentence{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:4px;}
+.rc-instr{font-size:11px;color:var(--t2);line-height:1.6;background:rgba(212,165,116,.06);border:1px solid rgba(212,165,116,.22);border-radius:8px;padding:11px 12px;margin-top:12px;}
+.rc-qlog{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:14px;}
+.rc-qlog-f{display:flex;flex-direction:column;gap:3px;flex:1;min-width:62px;}
+.rc-qlog-f label{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);}
+.rc-qlog-f input{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:8px 8px;color:var(--t1);font-size:14px;font-family:var(--font-b);outline:none;width:100%;text-align:center;}
+.rc-log-btn{background:rgba(212,165,116,.18);border:1px solid rgba(212,165,116,.45);color:var(--gold);padding:9px 16px;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:.05em;cursor:pointer;min-height:38px;white-space:nowrap;}
+.rc-log-btn:disabled{opacity:.5;cursor:default;}
+.rc-chip{display:inline-block;margin-top:12px;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.4);color:var(--gold);padding:9px 16px;border-radius:22px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b);min-height:38px;}
+.rc-chip:hover{background:rgba(212,165,116,.24);}
 .reg-bar{height:8px;border-radius:4px;display:flex;overflow:hidden;margin:8px 0;}
 
 /* ENDORSEMENTS specifics */
@@ -6266,12 +6287,145 @@ function renderIntelOverlay() { renderIntelPanel(); }
 function renderIntelPanel() {
   var el = document.getElementById('intel-content');
   if (!el) return;
-  var html = '<div class="intel-tabs">';
+  // Reality Check hero is always visible, above the tab strip (Phase 2).
+  var html = '<div id="reality-check-hero"></div>';
+  html += '<div class="intel-tabs">';
   var tabs = [{key:'opponents',label:'My Opponents'},{key:'pulse',label:'District Pulse'},{key:'threats',label:'Threat Assessment'},{key:'notes',label:'Opposition Notes'}];
   tabs.forEach(function(t){ html += '<div class="intel-tab' + (intelActiveTab===t.key?' on':'') + '" onclick="switchIntelTab(\'' + t.key + '\')">' + t.label + '</div>'; });
   html += '</div><div id="intel-tab-content"></div>';
   el.innerHTML = html;
+  loadRealityCheckHero();
   loadIntelTab(intelActiveTab, false);
+}
+
+// ============================================
+// REALITY CHECK HERO (intel-redesign Phase 2)
+// Reads GET /api/voter-contact/summary on panel open and after each quick-log.
+// NOTE: this is a cheap DB read — it is NOT a model/search call, so it is
+// exempt from the "no calls on panel open" cost rule (which governs model +
+// web-search spend only). See INTEL_REPORT.md Phase 2 / cost-control note.
+// ============================================
+var _rcSummary = null;
+
+// Chip prompts kept as constants (exact spec copy) and dispatched by key, so
+// no inline-onclick quote-escaping is needed for apostrophes.
+var RC_PROMPTS = {
+  catchup: "I'm behind on my voter contact pace. Build me a catch-up plan for the next 4 weeks using my calendar.",
+  next: "I'm on pace with my voter contact. What should I focus on next?",
+  winnum: "Calculate my win number for this race."
+};
+function rcChip(key) { if (RC_PROMPTS[key]) openSamWithPrompt(RC_PROMPTS[key]); }
+
+function rcRound(n, step) { if (n == null || isNaN(n)) return null; return Math.round(Number(n) / step) * step; }
+function rcFmt(n) { return (n == null || isNaN(n)) ? '—' : Number(Math.round(n)).toLocaleString(); }
+function rcTodayLocal() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+
+function loadRealityCheckHero() {
+  var host = document.getElementById('reality-check-hero');
+  if (!host) return;
+  var sess = getD1Session();
+  if (!sess) { host.innerHTML = ''; return; }
+  host.innerHTML = '<div class="rc-hero"><div class="rc-hd">Reality Check</div><div style="font-size:11px;color:rgba(255,255,255,.35);font-style:italic">Loading your pace…</div></div>';
+  fetch(D1_API + '/api/voter-contact/summary', { headers: { 'Authorization': 'Bearer ' + sess } })
+    .then(function(r){ return r.json(); })
+    .then(function(data){ _rcSummary = (data && data.success) ? data : null; renderRealityCheckHero(); })
+    .catch(function(){ _rcSummary = null; renderRealityCheckHero(); });
+}
+
+function renderRealityCheckHero() {
+  var host = document.getElementById('reality-check-hero');
+  if (!host) return;
+  var pace = (_rcSummary && _rcSummary.pace) || {};
+  var status = pace.pace_status || (campaignData.winNumber ? 'not_started' : 'no_target');
+  var winNum = campaignData.winNumber || pace.contact_target || null;
+  var days = calcDaysToElection();
+  var total = pace.total_contacts != null ? pace.total_contacts : (_rcSummary ? _rcSummary.total : 0);
+
+  // Pace tile styling
+  var paceLabel, paceCls;
+  if (status === 'on_pace') { paceLabel = 'On pace'; paceCls = 'rc-pace-on'; }
+  else if (status === 'behind') { paceLabel = 'Behind'; paceCls = 'rc-pace-behind'; }
+  else { paceLabel = 'Not started'; paceCls = 'rc-pace-idle'; }
+
+  var html = '<div class="rc-hero"><div class="rc-hd">Reality Check</div>';
+
+  // Three stat tiles (wrap at phone width)
+  html += '<div class="rc-tiles">' +
+    '<div class="rc-tile"><div class="rc-tile-lbl">Win Number</div><div class="rc-tile-val">' + (winNum ? rcFmt(winNum) : '—') + '</div><div class="rc-tile-sub">' + (winNum ? 'votes' : 'not set') + '</div></div>' +
+    '<div class="rc-tile"><div class="rc-tile-lbl">Days Out</div><div class="rc-tile-val">' + (days != null ? days : '—') + '</div><div class="rc-tile-sub">to election</div></div>' +
+    '<div class="rc-tile"><div class="rc-tile-lbl">Pace</div><div class="rc-tile-val ' + paceCls + '" style="font-size:16px;padding-top:6px">' + paceLabel + '</div><div class="rc-tile-sub">' + rcFmt(total) + ' logged</div></div>' +
+  '</div>';
+
+  if (status === 'no_target') {
+    // Empty state: no win number anchors the page.
+    html += '<div class="rc-instr">Ask Sam to calculate your win number — it anchors everything on this page.</div>';
+    html += '<button class="rc-chip" onclick="rcChip(\'winnum\')">Calculate my win number</button>';
+    html += '</div>';
+    host.innerHTML = html;
+    return;
+  }
+
+  // Progress bar total/target
+  var target = pace.contact_target || winNum || 0;
+  var pct = target > 0 ? Math.min(100, Math.round((total / target) * 100)) : 0;
+  html += '<div class="rc-bar"><div class="rc-bar-fill" style="width:' + pct + '%"></div></div>';
+
+  if (status === 'not_started') {
+    html += '<div class="rc-instr">Log your first day of doors or calls and Sam starts tracking your pace.</div>';
+    html += renderRcQuickLog();
+    html += '</div>';
+    host.innerHTML = html;
+    return;
+  }
+
+  // on_pace / behind: pace sentence (exact spec copy, aggressively rounded)
+  var projected = rcRound(pace.projected_total, 100);
+  var weekly = rcRound(pace.weekly_needed, 10);
+  // v1 — doors:calls productivity ratio for this sentence is 1:1 (each channel
+  // counts as one contact, matching the pace math). Shannan may want calls to
+  // require more volume than doors (spec example implied ~180 doors / 420
+  // calls); when decided, set RC_CALLS_PER_DOOR and the copy reflects it.
+  var RC_CALLS_PER_DOOR = 1;
+  var callsWeekly = rcRound((pace.weekly_needed || 0) * RC_CALLS_PER_DOOR, 10);
+  html += '<div class="rc-sentence">At this pace you reach ~' + rcFmt(projected) + ' of ' + rcFmt(target) + ' by election day — staying on track means ~' + rcFmt(weekly) + ' doors or ' + rcFmt(callsWeekly) + ' calls per week.</div>';
+
+  html += renderRcQuickLog();
+
+  if (status === 'behind') {
+    html += '<button class="rc-chip" onclick="rcChip(\'catchup\')">Ask Sam how to catch up</button>';
+  } else {
+    html += '<button class="rc-chip" onclick="rcChip(\'next\')">Ask Sam what’s next</button>';
+  }
+
+  html += '</div>';
+  host.innerHTML = html;
+}
+
+function renderRcQuickLog() {
+  return '<div class="rc-qlog">' +
+    '<div class="rc-qlog-f"><label for="rc-doors">Doors</label><input id="rc-doors" type="number" min="0" inputmode="numeric" placeholder="0" aria-label="Doors knocked today"></div>' +
+    '<div class="rc-qlog-f"><label for="rc-calls">Calls</label><input id="rc-calls" type="number" min="0" inputmode="numeric" placeholder="0" aria-label="Calls made today"></div>' +
+    '<div class="rc-qlog-f"><label for="rc-texts">Texts</label><input id="rc-texts" type="number" min="0" inputmode="numeric" placeholder="0" aria-label="Texts sent today"></div>' +
+    '<button id="rc-log-btn" class="rc-log-btn" onclick="logVoterContactToday()" aria-label="Log today’s voter contact">Log today</button>' +
+  '</div>';
+}
+
+function logVoterContactToday() {
+  var sess = getD1Session();
+  if (!sess) return;
+  var doors = parseInt((document.getElementById('rc-doors')||{}).value, 10) || 0;
+  var calls = parseInt((document.getElementById('rc-calls')||{}).value, 10) || 0;
+  var texts = parseInt((document.getElementById('rc-texts')||{}).value, 10) || 0;
+  if (doors + calls + texts <= 0) return;
+  var btn = document.getElementById('rc-log-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Logging…'; }
+  fetch(D1_API + '/api/voter-contact/log', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
+    body: JSON.stringify({ doors: doors, calls: calls, texts: texts, date: rcTodayLocal() })
+  }).then(function(r){ return r.json(); })
+    .then(function(){ loadRealityCheckHero(); })   // re-fetch summary + re-render, no full panel reload
+    .catch(function(){ if (btn) { btn.disabled = false; btn.textContent = 'Log today'; } });
 }
 
 function switchIntelTab(tab) {
@@ -8573,11 +8727,19 @@ function addSamMsg(text) {
   saveChatHistory();
 }
 
-function sendSamChip(text) {
-  document.getElementById('sam-input').value = text;
+// openSamWithPrompt (intel-redesign Phase 2): open the Sam panel and send `text`
+// as the user through the normal send path (rate limit + history). The Reality
+// Check chips are the only Sam triggers on the Intel panel.
+function openSamWithPrompt(text) {
+  if (!text) return;
+  var inp = document.getElementById('sam-input');
+  if (!inp) return;
   openSam();
+  inp.value = text;
   sendSamMessage();
 }
+
+function sendSamChip(text) { openSamWithPrompt(text); }
 
 function askSamAbout(question) {
   var days = calcDaysToElection();

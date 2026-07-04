@@ -164,4 +164,72 @@ try/catch → empty block on any failure, never blocks a chat turn.
 Handoff dumps `02_BACKEND_WORKER.txt` / `04_SAM_PROMPT_AND_TOOLS.txt` will be refreshed once in Phase 6
 (rather than every phase) to keep per-phase diffs focused.
 
-**STOP — awaiting go-ahead for Phase 2 (Reality Check hero, frontend).**
+### Endorsed design decisions (Phase 1, confirmed by Greg)
+- **`user_id` = workspace owner id** in `voter_contact` — pace is a campaign-wide metric; the candidate
+  and every field-team sub-user roll into one picture. (Not per-caller.)
+- **`log_voter_contact` executes server-side** in the callGemini loop (not client-executed like the
+  other action tools) — the tool only writes to D1, so handling it server-side makes it work end-to-end
+  with no client wiring and produces no client action bubble.
+
+---
+
+## Phase 2 — REALITY CHECK HERO (frontend, commit 3)
+
+### 1. `openSamWithPrompt(text)` — the chip primitive
+Added to app.html: opens the Sam panel (`openSam()`), sets `#sam-input`, and calls `sendSamMessage()` —
+the **normal send path**, so every chip goes through the existing rate limit + chat-history write.
+`sendSamChip()` now delegates to it (single implementation). Chip prompts are stored as constants
+(`RC_PROMPTS`) and dispatched by key (`rcChip('catchup'|'next'|'winnum')`) so the exact spec prompt text
+(with apostrophes) lives in a JS constant and needs no inline-onclick quote-escaping.
+
+### 2. Hero — always visible, above the tabs
+`renderIntelPanel()` now renders `#reality-check-hero` above the tab strip and calls
+`loadRealityCheckHero()`. The hero:
+- **Three stat tiles** (wrap at phone width via `flex-wrap`): **Win Number** (`campaignData.winNumber`),
+  **Days Out** (`calcDaysToElection()`), **Pace** — green "On pace" / amber "Behind" / neutral "Not
+  started" (`.rc-pace-on/behind/idle`), with logged-contacts subtext.
+- **Progress bar** `total_contacts / contact_target` (navy→gold gradient fill, capped 100%).
+- **Pace sentence — exact spec copy, aggressively rounded**: "At this pace you reach ~X of Y by election
+  day — staying on track means ~N doors or M calls per week." Projected rounded to nearest 100, target
+  as-is, weekly to nearest 10; `rcFmt` guarantees no unrounded decimals anywhere.
+
+### 3. Quick-log row
+Doors / Calls / Texts number inputs + "Log today" → `logVoterContactToday()` POSTs to
+`/api/voter-contact/log` (with the client's local date) and on success calls `loadRealityCheckHero()` to
+re-fetch the summary and re-render the hero in place — **no full panel reload**. Inputs and button carry
+`aria-label`s; button is thumb-sized (`min-height:38px`).
+
+### 4. Chip
+- **behind** → "Ask Sam how to catch up" → the specced catch-up prompt.
+- **on pace** → "Ask Sam what's next" → focus prompt.
+Both via `rcChip(...)` → `openSamWithPrompt`.
+
+### 5. Instructional empty states (never blank)
+- **no win number** (`no_target`) → tiles + "Ask Sam to calculate your win number — it anchors
+  everything on this page." + a chip that sends the calculate-win-number prompt.
+- **no contacts** (`not_started`) → tiles + progress bar + "Log your first day of doors or calls and Sam
+  starts tracking your pace." + the quick-log row (the affordance).
+
+### Cost-control note (important for Phase 6 verification — do NOT false-flag)
+The hero reads **`GET /api/voter-contact/summary` on panel open and after each quick-log POST**. This is
+a **cheap D1 read, NOT a model or web-search call**. The "no calls on panel open" cost rule governs
+**model + search spend only** (the pulse/opponent research paths). Panel open still fires **zero
+model/search calls** — the pulse renders from the `ctb_intel_data` cache and opponents from D1 as
+before. Phase 6's cost verification should confirm "no *model/search* calls on open," and the
+`voter-contact/summary` read is expected and exempt.
+
+### Open copy decision flagged for Shannan
+The pace sentence's doors-vs-calls figures use a v1 **1:1 ratio** (`RC_CALLS_PER_DOOR = 1` in
+`renderRealityCheckHero`), so "N doors or M calls" currently shows the same number — honest to the
+equal-weight pace math. The spec's illustrative example (~180 doors / 420 calls) implies Shannan may
+want calls to require more volume than doors; the constant is the single, commented hook to set that
+ratio when she decides. Mirrors the `contact_target` "v1 — tuned by Shannan" pattern.
+
+### Verification (Phase 2)
+- All inline `<script>` blocks in app.html parse cleanly (`new Function` over each block) — validates the
+  new functions and onclick quoting.
+- No backend change this phase; worker budget guard unaffected.
+- Branding: navy/gold, `--font-d`/`--font-b`, reused `.intel-*` idioms + new `.rc-*` classes; logo and
+  Sam avatar untouched. Mobile: tiles + quick-log wrap; chips/buttons thumb-sized.
+
+**STOP — awaiting go-ahead for Phase 3 (Opponents section).**
