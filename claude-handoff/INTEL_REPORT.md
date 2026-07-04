@@ -232,4 +232,57 @@ ratio when she decides. Mirrors the `contact_target` "v1 — tuned by Shannan" p
 - Branding: navy/gold, `--font-d`/`--font-b`, reused `.intel-*` idioms + new `.rc-*` classes; logo and
   Sam avatar untouched. Mobile: tiles + quick-log wrap; chips/buttons thumb-sized.
 
-**STOP — awaiting go-ahead for Phase 3 (Opponents section).**
+## Phase 3 — OPPONENTS SECTION (frontend, commit 4)
+
+### Layout transition
+`renderIntelPanel()` now renders the redesigned **stacked-sections** layout — hero +
+`#intel-opponents-section` + (empty) `#intel-money-section` + `#intel-today-section` — **replacing the
+old 4-tab strip**. Money fills in Phase 4, Today/pulse in Phase 5. The header refresh button belongs to
+the Today section and is hidden until then. (District Pulse returns as the Today section in Phase 5;
+this is an unmerged, undeployed branch, so the interim absence of the pulse view between Phases 3–5 is
+expected.) The old tab renderers (`renderPulseTab` etc.) remain defined — Phase 5 reuses `renderPulseTab`
+unchanged; dead ones get cleaned up in Phase 6.
+
+### Opponent cards (from cached data — no model/search calls)
+`loadOpponentsSection()` renders from the D1-backed `intelOpponents` (already loaded on panel open) and
+cross-references the **cached** `ctb_intel_data.pulse` items — **zero new model/search calls on render**.
+Each `renderOpponentSectionCard`:
+- **Name + role/status** (`o.name`, `data.office`) + party pill.
+- **Money raised with source label** — `Raised $… · Cash $…  (FEC|web)` from `data.finances` +
+  `data.source`. **Omitted entirely when finances are unknown** (omit-rather-than-guess).
+- **Latest cached pulse mention** — `findLatestPulseMention` scans the cached pulse items for the newest
+  one naming the opponent (full name or last name ≥4 chars), rendered as "In the news: [headline] ↗
+  [host] · [date]" with the existing gold source-link treatment. Omitted when none.
+- **Two Sam chips** (every card ends in a verb): "Draft contrast message" / "Where are they weak?" →
+  `oppChip(id, kind)` → `openSamWithPrompt` with the opponent's name. Chips **dispatch by opponent id**
+  (not name) so apostrophe names (O'Brien) never break the inline onclick; the name is looked up from
+  `intelOpponents` and only ever travels as data through the send path.
+
+### No endorsements line — and why (per Greg's note)
+The opponent research `data` has **no endorsements field**. Per the spec's omit-rather-than-guess rule,
+the card simply **renders no endorsements line** — nothing is improvised. **Adding endorsements to
+opponent research is a future backend item** (opponent-add/refresh would need to capture and store
+them), not done here. A code comment marks the spot.
+
+### Preserved functionality (no regression)
+The add-opponent input (→ `addOpponentFromInput` → `/api/opponents/add` FEC research) is preserved as a
+section footer, and subtle per-card **refresh** (respecting the **72h cooldown** cost control) + **remove**
+controls are kept. The add/refresh/remove handlers' 7 re-render calls were repointed from
+`renderIntelTabContent('opponents', …)` (old tab target) to `renderOpponentsSection()`. All write
+controls stay gated by `canEdit('intel')`.
+
+### Empty state (instructional)
+No opponents → "No opponents tracked yet. Tell Sam who you're running against and he'll start building
+their file." + a chip (`rcChip('addopp')`) that opens Sam. **Note:** Sam has no add-opponent *tool*
+today, so the chip starts the conversation while the actual research still runs through the add-input;
+a future `add_opponent` Sam tool would close that loop (logged as a follow-up, not built here).
+
+### Verification (Phase 3)
+- All inline `<script>` blocks parse cleanly; no leftover `renderIntelTabContent('opponents'…)` calls;
+  new section functions present.
+- Unit-tested: pulse-mention matching (newest match, `www.` stripped, no-match → null, short last name
+  not over-matched), chip-prompt building (incl. an apostrophe name), and money-omit-when-unknown.
+- Branding/mobile: reused `.intel-card` + new `.intel-section`/`.rc-chip-sm`; chips wrap; controls
+  thumb-sized; aria-labels on refresh/remove/add. Navy/gold; logo/avatar untouched.
+
+**STOP — awaiting go-ahead for Phase 4 (Money section).**

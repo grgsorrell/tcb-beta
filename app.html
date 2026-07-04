@@ -518,6 +518,15 @@ select{-webkit-appearance:none;appearance:none;}
 .rc-log-btn:disabled{opacity:.5;cursor:default;}
 .rc-chip{display:inline-block;margin-top:12px;background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.4);color:var(--gold);padding:9px 16px;border-radius:22px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b);min-height:38px;}
 .rc-chip:hover{background:rgba(212,165,116,.24);}
+/* Stacked sections (Phase 3+) */
+.intel-section{margin-bottom:22px;}
+.intel-section-hd{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(212,165,116,.18);}
+.opp-meta{font-size:10px;color:var(--t3);line-height:1.5;margin-top:2px;}
+.opp-money{font-size:11px;color:var(--t2);margin:6px 0;padding:6px 8px;background:rgba(212,165,116,.06);border-left:2px solid rgba(212,165,116,.3);border-radius:3px;}
+.opp-mention{font-size:10px;color:var(--t3);line-height:1.5;margin:6px 0;}
+.opp-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);}
+.rc-chip-sm{background:rgba(212,165,116,.13);border:1px solid rgba(212,165,116,.35);color:var(--gold);padding:7px 12px;border-radius:18px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-b);min-height:34px;}
+.rc-chip-sm:hover{background:rgba(212,165,116,.22);}
 .reg-bar{height:8px;border-radius:4px;display:flex;overflow:hidden;margin:8px 0;}
 
 /* ENDORSEMENTS specifics */
@@ -6287,15 +6296,18 @@ function renderIntelOverlay() { renderIntelPanel(); }
 function renderIntelPanel() {
   var el = document.getElementById('intel-content');
   if (!el) return;
-  // Reality Check hero is always visible, above the tab strip (Phase 2).
-  var html = '<div id="reality-check-hero"></div>';
-  html += '<div class="intel-tabs">';
-  var tabs = [{key:'opponents',label:'My Opponents'},{key:'pulse',label:'District Pulse'},{key:'threats',label:'Threat Assessment'},{key:'notes',label:'Opposition Notes'}];
-  tabs.forEach(function(t){ html += '<div class="intel-tab' + (intelActiveTab===t.key?' on':'') + '" onclick="switchIntelTab(\'' + t.key + '\')">' + t.label + '</div>'; });
-  html += '</div><div id="intel-tab-content"></div>';
-  el.innerHTML = html;
+  // Redesigned layout (Phases 2-5): Reality Check hero + stacked sections,
+  // replacing the old tab strip. Money (Phase 4) and Today/pulse (Phase 5) fill
+  // their containers in later phases; the header refresh button belongs to the
+  // Today section and is hidden until then.
+  el.innerHTML = '<div id="reality-check-hero"></div>' +
+    '<div id="intel-opponents-section"></div>' +
+    '<div id="intel-money-section"></div>' +
+    '<div id="intel-today-section"></div>';
+  var rb = document.getElementById('intel-refresh-btn');
+  if (rb) rb.style.display = 'none';
   loadRealityCheckHero();
-  loadIntelTab(intelActiveTab, false);
+  loadOpponentsSection();
 }
 
 // ============================================
@@ -6312,7 +6324,8 @@ var _rcSummary = null;
 var RC_PROMPTS = {
   catchup: "I'm behind on my voter contact pace. Build me a catch-up plan for the next 4 weeks using my calendar.",
   next: "I'm on pace with my voter contact. What should I focus on next?",
-  winnum: "Calculate my win number for this race."
+  winnum: "Calculate my win number for this race.",
+  addopp: "I want to start tracking an opponent in my race — help me build their file. Who should I start with?"
 };
 function rcChip(key) { if (RC_PROMPTS[key]) openSamWithPrompt(RC_PROMPTS[key]); }
 
@@ -6426,6 +6439,156 @@ function logVoterContactToday() {
   }).then(function(r){ return r.json(); })
     .then(function(){ loadRealityCheckHero(); })   // re-fetch summary + re-render, no full panel reload
     .catch(function(){ if (btn) { btn.disabled = false; btn.textContent = 'Log today'; } });
+}
+
+// ============================================
+// OPPONENTS SECTION (intel-redesign Phase 3)
+// Renders from the D1-backed intelOpponents (loaded on panel open — no model
+// call) + cross-references the CACHED District Pulse items for a latest
+// mention. Every card ends in Sam chips. No new network calls on render.
+// ============================================
+function loadOpponentsSection() {
+  var host = document.getElementById('intel-opponents-section');
+  if (!host) return;
+  if (!intelOpponentsLoaded) {
+    host.innerHTML = '<div class="intel-section"><div class="intel-section-hd">Opponents</div><div style="font-size:11px;color:rgba(255,255,255,.35);font-style:italic;padding:8px 0">Loading opponents…</div></div>';
+    loadOpponentsFromD1(function(){ renderOpponentsSection(); });
+  } else {
+    renderOpponentsSection();
+  }
+}
+
+function renderOpponentsSection() {
+  var host = document.getElementById('intel-opponents-section');
+  if (!host) return;
+  var html = '<div class="intel-section"><div class="intel-section-hd">Opponents</div>';
+  if (!intelOpponents || intelOpponents.length === 0) {
+    html += '<div class="rc-instr">No opponents tracked yet. Tell Sam who you\'re running against and he\'ll start building their file.</div>';
+    html += '<button class="rc-chip" onclick="rcChip(\'addopp\')">Tell Sam my opponent</button>';
+  } else {
+    var items = getCachedPulseItems();
+    intelOpponents.forEach(function(o){ html += renderOpponentSectionCard(o, items); });
+  }
+  html += renderOppAddInput(intelOpponents && intelOpponents.length > 0);
+  html += '</div>';
+  host.innerHTML = html;
+}
+
+function getCachedPulseItems() {
+  try { var c = getIntelCache(); return (c.pulse && c.pulse.data && c.pulse.data.items) || []; } catch (e) { return []; }
+}
+
+// Find the most recent CACHED pulse item that mentions this opponent (by full
+// name or last name), for the "in the news" line. Returns null if none.
+function findLatestPulseMention(name, items) {
+  if (!name || !items || !items.length) return null;
+  var nm = name.toLowerCase();
+  var parts = nm.split(/\s+/);
+  var last = parts[parts.length - 1] || '';
+  var matches = items.filter(function(it){
+    var hay = ((it.headline || '') + ' ' + (it.summary || '')).toLowerCase();
+    return hay.indexOf(nm) >= 0 || (last.length >= 4 && hay.indexOf(last) >= 0);
+  });
+  if (!matches.length) return null;
+  matches.sort(function(a, b){ return (b.date || '') < (a.date || '') ? -1 : ((b.date || '') > (a.date || '') ? 1 : 0); });
+  var m = matches[0];
+  var host = '', url = '';
+  if (m.source_url && /^https?:\/\//i.test(m.source_url)) {
+    url = m.source_url;
+    try { host = new URL(m.source_url).hostname.replace(/^www\./, ''); } catch (e) { host = 'source'; }
+  }
+  return { headline: m.headline || '', host: host, url: url, date: m.date || '' };
+}
+
+function partyPillStyle(p) {
+  p = (p || '').toString();
+  if (p.match(/rep|^r$/i)) return 'background:rgba(232,112,112,.15);border:1px solid rgba(232,112,112,.3);color:var(--red)';
+  if (p.match(/dem|^d$/i)) return 'background:rgba(107,156,216,.15);border:1px solid rgba(107,156,216,.3);color:var(--blue)';
+  return 'background:rgba(255,255,255,.08);color:var(--t2)';
+}
+
+function renderOpponentSectionCard(o, items) {
+  if (o._loading) {
+    return '<div class="intel-card"><div style="display:flex;justify-content:space-between;align-items:center">' +
+      '<div style="font-size:13px;font-weight:700;color:var(--t1)">' + escapeHtml(o.name || '') + '</div>' +
+      '<div style="font-size:9px;color:var(--gold);letter-spacing:.1em">RESEARCHING…</div></div>' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11px;color:rgba(255,255,255,.4);font-style:italic">' +
+      '<div class="intel-spinner" style="width:14px;height:14px;margin:0;border-width:2px"></div> Sam is pulling FEC data and recent news…</div></div>';
+  }
+  var d = o.data || {};
+  var oid = (o.id || '').toString().replace(/'/g, '');
+  var html = '<div class="intel-card">';
+  // Header: name + role/status, party pill, and a subtle refresh/remove cluster.
+  html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">' +
+    '<div><div style="font-size:13px;font-weight:700;color:var(--t1)">' + escapeHtml(o.name || 'Opponent') + '</div>' +
+    (d.office ? '<div class="opp-meta">' + escapeHtml(d.office) + '</div>' : '') + '</div>' +
+    '<div style="display:flex;gap:6px;align-items:center">' +
+    (d.party ? '<span class="intel-party-pill" style="' + partyPillStyle(d.party) + '">' + escapeHtml(d.party) + '</span>' : '') +
+    renderOppUtilBtns(o, oid) +
+    '</div></div>';
+  // Money raised, with source label — omit entirely when unknown.
+  if (d.finances && (d.finances.total_raised != null || d.finances.cash_on_hand != null)) {
+    var src = d.source === 'fec_vps' ? 'FEC' : 'web';
+    var mp = [];
+    if (d.finances.total_raised != null) mp.push('Raised $' + Math.round(d.finances.total_raised).toLocaleString());
+    if (d.finances.cash_on_hand != null) mp.push('Cash $' + Math.round(d.finances.cash_on_hand).toLocaleString());
+    html += '<div class="opp-money">' + mp.join(' · ') + ' <span style="color:var(--t3);font-size:9px">(' + src + ')</span></div>';
+  }
+  // Latest CACHED pulse mention with source + date.
+  var mention = findLatestPulseMention(o.name, items);
+  if (mention && mention.headline) {
+    html += '<div class="opp-mention"><span style="color:rgba(107,156,216,.7);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:8px">In the news:</span> ' + escapeHtml(mention.headline) +
+      (mention.host ? ' <a href="' + escapeHtml(mention.url) + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none">↗ ' + escapeHtml(mention.host) + '</a>' : '') +
+      (mention.date ? ' <span style="color:var(--t3)">· ' + escapeHtml(mention.date) + '</span>' : '') + '</div>';
+  }
+  // NOTE: no endorsements line — the opponent data has no endorsements field.
+  // Per the spec's omit-rather-than-guess rule we render nothing; adding
+  // endorsements to opponent research is a future backend item, not improvised.
+  // Action chips — every card ends in a verb.
+  html += '<div class="opp-chips">' +
+    '<button class="rc-chip-sm" onclick="oppChip(\'' + oid + '\',\'contrast\')">Draft contrast message</button>' +
+    '<button class="rc-chip-sm" onclick="oppChip(\'' + oid + '\',\'weak\')">Where are they weak?</button>' +
+  '</div></div>';
+  return html;
+}
+
+// Subtle per-card utility controls (preserve the 72h refresh cooldown + remove).
+function renderOppUtilBtns(o, oid) {
+  if (!canEdit('intel')) return '';
+  var refreshBtn;
+  var cool = false;
+  if (o.last_researched_at) {
+    var hoursSince = (Date.now() - new Date(o.last_researched_at).getTime()) / (1000 * 60 * 60);
+    if (hoursSince < 72) cool = true;
+  }
+  if (cool) {
+    var hLeft = Math.ceil(72 - (Date.now() - new Date(o.last_researched_at).getTime()) / (1000 * 60 * 60));
+    refreshBtn = '<button disabled title="Refresh available in ' + hLeft + 'h" aria-label="Refresh available in ' + hLeft + ' hours" style="background:transparent;border:none;color:rgba(255,255,255,.2);font-size:12px;cursor:not-allowed;padding:2px 4px">↻</button>';
+  } else {
+    refreshBtn = '<button onclick="refreshOpponent(\'' + oid + '\')" title="Refresh research" aria-label="Refresh opponent research" style="background:transparent;border:none;color:var(--gold);font-size:12px;cursor:pointer;padding:2px 4px">↻</button>';
+  }
+  var removeBtn = '<button onclick="removeOpponent(\'' + oid + '\')" title="Remove opponent" aria-label="Remove opponent" style="background:transparent;border:none;color:rgba(232,112,112,.6);font-size:14px;cursor:pointer;padding:2px 4px">×</button>';
+  return refreshBtn + removeBtn;
+}
+
+function renderOppAddInput(hasAny) {
+  if (!canEdit('intel')) return '';
+  var label = hasAny ? 'Add another opponent' : 'Add an opponent';
+  return '<div style="margin-top:12px;padding:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:6px">' +
+    '<div style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:8px">' + label + '</div>' +
+    '<div style="display:flex;gap:8px">' +
+      '<input id="opponent-name-input" type="text" placeholder="Opponent full name" onkeydown="if(event.key===\'Enter\')addOpponentFromInput()" aria-label="Opponent full name" style="flex:1;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:8px 10px;color:var(--t1);font-size:12px;font-family:var(--font-b);outline:none">' +
+      '<button id="opponent-add-btn" onclick="addOpponentFromInput()" style="background:rgba(212,165,116,.15);border:1px solid rgba(212,165,116,.4);color:var(--gold);padding:8px 14px;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer">+ Add</button>' +
+    '</div></div>';
+}
+
+function oppChip(oppId, kind) {
+  var o = (intelOpponents || []).find(function(x){ return (x.id || '').toString() === oppId; });
+  var name = (o && o.name) ? o.name : 'my opponent';
+  var prompt = kind === 'contrast'
+    ? 'Draft a contrast message between my campaign and ' + name + '.'
+    : 'Where is ' + name + ' weak? Give me their key vulnerabilities I can use.';
+  openSamWithPrompt(prompt);
 }
 
 function switchIntelTab(tab) {
@@ -6732,7 +6895,7 @@ function _finishAddOpponent(name, sess, campaignId) {
   if (input) input.value = '';
   var placeholder = { id: 'pending-' + Date.now(), name: name, data: {}, last_researched_at: null, created_at: new Date().toISOString(), _loading: true };
   intelOpponents.push(placeholder);
-  renderIntelTabContent('opponents', intelOpponents, null);
+  renderOpponentsSection();
   fetch(D1_API + '/api/opponents/add', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
@@ -6758,10 +6921,10 @@ function _finishAddOpponent(name, sess, campaignId) {
     } else {
       alert('Could not add opponent: ' + ((res.body && res.body.error) || 'unknown error'));
     }
-    renderIntelTabContent('opponents', intelOpponents, null);
+    renderOpponentsSection();
   }).catch(function(e){
     intelOpponents = intelOpponents.filter(function(o){ return o.id !== placeholder.id; });
-    renderIntelTabContent('opponents', intelOpponents, null);
+    renderOpponentsSection();
     if (e.message !== 'unauthenticated') alert('Could not add opponent: ' + e.message);
   });
 }
@@ -6776,7 +6939,7 @@ function refreshOpponent(id) {
   var sess = getD1Session();
   if (!sess) { handleUnauthenticated('Your session expired.'); return; }
   opp._loading = true;
-  renderIntelTabContent('opponents', intelOpponents, null);
+  renderOpponentsSection();
   fetch(D1_API + '/api/opponents/refresh', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + sess },
@@ -6795,10 +6958,10 @@ function refreshOpponent(id) {
   }).then(function(data) {
     opp._loading = false;
     if (data && data.opponent) Object.assign(opp, data.opponent);
-    renderIntelTabContent('opponents', intelOpponents, null);
+    renderOpponentsSection();
   }).catch(function(e){
     opp._loading = false;
-    renderIntelTabContent('opponents', intelOpponents, null);
+    renderOpponentsSection();
     if (e.message !== 'unauthenticated') alert('Refresh failed: ' + e.message);
   });
 }
@@ -6813,7 +6976,7 @@ function removeOpponent(id) {
   var removedName = removed ? removed.name : null;
   intelOpponents = intelOpponents.filter(function(o){ return o.id !== id; });
   if (removedName && typeof deleteOppNotesFor === 'function') deleteOppNotesFor(removedName);
-  renderIntelTabContent(intelActiveTab, intelOpponents, null);
+  renderOpponentsSection();
   if (!sess) return;
   fetch(D1_API + '/api/opponents/remove', {
     method: 'POST',
