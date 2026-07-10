@@ -388,3 +388,17 @@ only spots where I couldn't pixel-match without the image.
 wrangler deploy --name tcb-beta --assets . --compatibility-date 2026-04-07
 ```
 Not merged to master.
+
+### Ribbon adjustment (follow-up commit on `homepage-refresh`)
+Two fixes to the corner ribbon (still `index.html` only; nothing else from the prior commit changed):
+1. **Position:** moved from `fixed top-0 right-0` (which collided with the floating nav pill) to
+   `absolute` **inside `#hero`**, at `top-[84px] right-5 sm:right-8`. It now sits in the hero's top-right
+   corner in the clear band between the nav (~73px tall) and the headline (~168px top), so it **never
+   overlaps the nav at any width ≥640px**. The `<640px` hide (`hidden sm:block`) is preserved.
+2. **Style:** no longer a solid orange box — now **transparent background with a short vertical orange
+   rule (`border-left: 3px`)** on the left, left-aligned stacked text: "EARLY ACCESS OFFER" (small-caps,
+   muted) · **Half Off** (large, orange Playfair) · **$49.99/mo** (kept) · "FOR A LIMITED TIME"
+   (small-caps, muted). Removed the fill/shadow/radius.
+
+Screenshots weren't attached; positioned to the written spec (nav-clear top-right, transparent + left
+rule). Greg — please eyeball the exact vertical offset/type sizes against the target screenshot.

@@ -160,26 +160,21 @@
         outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px;
       }
 
-      /* --- Early Access corner ribbon (top-right). Hidden < 640px so it never
-             overlaps the floating nav pill on phones; the same offer still shows
-             in the hero accent line there. It's a signup CTA, so where it meets
-             the nav's Early Access button on mid widths both do the same thing. --- */
+      /* --- Early Access offer ribbon: transparent, left orange rule, stacked
+             text. Positioned absolute inside the hero (below the fixed nav) via
+             utility classes; hidden < 640px (offer still shows in the hero
+             accent line there). --- */
       .corner-ribbon {
-        background: linear-gradient(150deg, #D9784E 0%, #C0532B 55%, #A8431F 100%);
-        border-bottom-left-radius: 16px;
-        border-left: 1px solid rgba(232,201,160,0.35);
-        border-bottom: 1px solid rgba(232,201,160,0.35);
-        box-shadow: 0 10px 26px rgba(8,16,29,0.40), inset 0 1px 0 rgba(255,255,255,0.16);
-        padding: 11px 18px 12px;
-        color: #FBF8F2;
-        line-height: 1.12;
-        transition: filter .2s ease;
+        padding-left: 14px;
+        border-left: 3px solid #C0532B;   /* short vertical orange rule */
+        line-height: 1.15;
+        text-align: left;
       }
-      .corner-ribbon:hover { filter: brightness(1.06); }
-      .corner-ribbon .cr-eyebrow { display: block; font-size: 8.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #E8C9A0; }
-      .corner-ribbon .cr-big { display: block; font-family: "Playfair Display", Georgia, serif; font-size: 16px; font-weight: 700; letter-spacing: 0.01em; margin-top: 2px; }
-      .corner-ribbon .cr-price { display: block; font-size: 13px; font-weight: 700; color: #ffffff; margin-top: 1px; }
-      .corner-ribbon .cr-foot { display: block; font-size: 8px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(251,248,242,0.72); margin-top: 3px; }
+      .corner-ribbon .cr-eyebrow { display: block; font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(245,241,232,0.55); }
+      .corner-ribbon .cr-big { display: block; font-family: "Playfair Display", Georgia, serif; font-size: 22px; font-weight: 700; letter-spacing: 0.005em; line-height: 1.05; color: #D9784E; margin-top: 3px; transition: filter .2s ease; }
+      .corner-ribbon .cr-price { display: block; font-size: 14px; font-weight: 700; color: #F5F1E8; margin-top: 3px; }
+      .corner-ribbon .cr-foot { display: block; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(245,241,232,0.50); margin-top: 4px; }
+      .corner-ribbon:hover .cr-big { filter: brightness(1.08); }
 
       /* Respect reduced motion: kill all the movement, keep the design */
       @media (prefers-reduced-motion: reduce) {
@@ -190,7 +185,7 @@
         .parallax { transform: none !important; }
         .sam-msg { animation: none !important; }
         .typing-dots span { animation: none !important; }
-        .corner-ribbon { transition: none !important; }
+        .corner-ribbon .cr-big { transition: none !important; }
       }
     </style>
 </head>
@@ -227,19 +222,21 @@
       </nav>
     </header>
 
-    <!-- Early Access corner ribbon (top-right corner). Copy per lead-engineer change #2. -->
-    <a href="javascript:void(0)" onclick="openLoginModal()" class="corner-ribbon fixed top-0 right-0 z-[60] hidden text-center sm:block" aria-label="Early Access offer: half off, $49.99 per month, for a limited time">
-      <span class="cr-eyebrow">Early Access Offer</span>
-      <span class="cr-big">Half Off</span>
-      <span class="cr-price">$49.99/mo</span>
-      <span class="cr-foot">For a limited time</span>
-    </a>
-
     <main id="main">
       <!-- ============================== HERO ============================== -->
       <section id="hero" class="relative flex min-h-[100svh] items-center overflow-hidden">
         <!-- Three.js renders here; falls back to the CSS gradient if WebGL is missing -->
         <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+        <!-- Early Access offer ribbon — hero top-right, below the fixed nav (change #2).
+             absolute inside #hero so it sits in the hero corner and never overlaps the
+             nav (top-24 = 96px clears the ~72px fixed nav). Hidden < 640px. -->
+        <a href="javascript:void(0)" onclick="openLoginModal()" class="corner-ribbon absolute right-5 top-[84px] z-20 hidden sm:block sm:right-8" aria-label="Early Access offer: half off, $49.99 per month, for a limited time">
+          <span class="cr-eyebrow">Early Access Offer</span>
+          <span class="cr-big">Half Off</span>
+          <span class="cr-price">$49.99/mo</span>
+          <span class="cr-foot">For a limited time</span>
+        </a>
 
         <div class="hero-content mx-auto w-full max-w-7xl px-5 pt-28 pb-20 sm:px-8 sm:pt-32">
           <div class="max-w-2xl" style="perspective: 1000px;">
