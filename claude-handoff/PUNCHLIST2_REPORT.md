@@ -338,3 +338,53 @@ intact.
 wrangler deploy worker.js --name candidate-toolbox-secretary2 --compatibility-date 2026-04-07
 ```
 Not merged to master.
+
+---
+
+## Homepage refresh (branch `homepage-refresh`, one commit)
+
+**Scope:** frontend static only — **`index.html`** is the sole file changed. `worker.js` untouched; the
+logo (`/icon512.png`) and Sam avatar (`samavatar.png`) are referenced as-is, not modified. Three.js
+polyhedra hero background, Meet Sam demo, tilt cards, and footer are unchanged.
+
+**Note on the screenshot:** the image was not attached to the request, so I matched the detailed written
+spec plus the three lead-engineer copy changes. The current homepage already matched almost the entire
+spec verbatim (nav Features / Meet Sam / Why TCB / Log in → / orange Early Access button; the "Early
+Access" + "BUILT FOR EVERY RACE" pills; the headline **"Win your race. We'll help you _get there._"**
+with "get there." in italic gold serif; the orange "Early Access →" button + "See how it works ↓" ghost
+link; the existing subhead paragraph). The **new** work was the Early-Access pricing offer (accent line +
+corner ribbon) and the trust-marker fix. I kept the existing subhead as the verbatim copy. **Greg: please
+eyeball the corner-ribbon placement/style and the subhead against the actual screenshot** — those are the
+only spots where I couldn't pixel-match without the image.
+
+**Changes made:**
+1. **Accent line above the CTA** (copy change #1) — new line between subhead and buttons:
+   `EARLY ACCESS OFFER | ~~$99.99~~ **$49.99**/mo — HALF OFF FOR A LIMITED TIME`. Real `line-through` on
+   `$99.99`; `$49.99/mo` emphasized (larger, white). The button stays clean ("Early Access →", no price).
+2. **Top-right corner ribbon** (copy change #2) — new fixed element, four lines: **Early Access Offer /
+   Half Off / $49.99/mo / For a limited time** (no strikethrough on the ribbon price). Styled to the
+   existing clay→gold system (`.corner-ribbon` in the `<style>` block). It's a signup CTA
+   (`openLoginModal()`), so where it meets the nav's Early Access button on mid widths both do the same
+   thing.
+3. **Trust markers** (copy change #3) — hero line now reads **Cancel anytime · Set up in two minutes ·
+   Built for the underdog**. "No credit card" removed.
+4. **Judgment call — flagged:** "No credit card" also appeared in the closing-CTA paragraph ("… No credit
+   card. No catch."). Since the whole reason for change #3 is that the signup flow *requires* a card,
+   shipping that claim anywhere is false, so I removed it there too (now "… No catch."). Revert if you'd
+   rather keep the closing CTA byte-identical.
+
+**Mobile responsiveness (checked at phone width):**
+- **Ribbon:** hidden below 640px (`hidden sm:block`) so it never overlaps the floating nav pill on
+  phones; the **same offer still shows in the hero accent line**, which wraps cleanly (`flex-wrap`). On
+  ≥640px it's pinned to the top-right corner (nav is a centered `max-w-7xl` pill, so the corner is clear
+  on wide screens; on mid widths the ribbon layers over the pill's right edge — both are the same CTA).
+- **Hero:** headline uses responsive sizes (`text-[2.6rem]`→`sm:text-6xl`→`lg:text-[4.25rem]`); accent
+  line and buttons stack on mobile (`flex-col` → `sm:flex-row`).
+- **Trust markers:** already `flex-wrap`, wrap to multiple rows on narrow screens.
+- Verified tag balance (div/a/p/span/section all balanced) and no leftover "No credit card".
+
+**Frontend deploy command for Greg** (static assets — no backend change):
+```powershell
+wrangler deploy --name tcb-beta --assets . --compatibility-date 2026-04-07
+```
+Not merged to master.

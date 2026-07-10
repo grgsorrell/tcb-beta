@@ -160,6 +160,27 @@
         outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px;
       }
 
+      /* --- Early Access corner ribbon (top-right). Hidden < 640px so it never
+             overlaps the floating nav pill on phones; the same offer still shows
+             in the hero accent line there. It's a signup CTA, so where it meets
+             the nav's Early Access button on mid widths both do the same thing. --- */
+      .corner-ribbon {
+        background: linear-gradient(150deg, #D9784E 0%, #C0532B 55%, #A8431F 100%);
+        border-bottom-left-radius: 16px;
+        border-left: 1px solid rgba(232,201,160,0.35);
+        border-bottom: 1px solid rgba(232,201,160,0.35);
+        box-shadow: 0 10px 26px rgba(8,16,29,0.40), inset 0 1px 0 rgba(255,255,255,0.16);
+        padding: 11px 18px 12px;
+        color: #FBF8F2;
+        line-height: 1.12;
+        transition: filter .2s ease;
+      }
+      .corner-ribbon:hover { filter: brightness(1.06); }
+      .corner-ribbon .cr-eyebrow { display: block; font-size: 8.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #E8C9A0; }
+      .corner-ribbon .cr-big { display: block; font-family: "Playfair Display", Georgia, serif; font-size: 16px; font-weight: 700; letter-spacing: 0.01em; margin-top: 2px; }
+      .corner-ribbon .cr-price { display: block; font-size: 13px; font-weight: 700; color: #ffffff; margin-top: 1px; }
+      .corner-ribbon .cr-foot { display: block; font-size: 8px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(251,248,242,0.72); margin-top: 3px; }
+
       /* Respect reduced motion: kill all the movement, keep the design */
       @media (prefers-reduced-motion: reduce) {
         html { scroll-behavior: auto; }
@@ -169,6 +190,7 @@
         .parallax { transform: none !important; }
         .sam-msg { animation: none !important; }
         .typing-dots span { animation: none !important; }
+        .corner-ribbon { transition: none !important; }
       }
     </style>
 </head>
@@ -205,6 +227,14 @@
       </nav>
     </header>
 
+    <!-- Early Access corner ribbon (top-right corner). Copy per lead-engineer change #2. -->
+    <a href="javascript:void(0)" onclick="openLoginModal()" class="corner-ribbon fixed top-0 right-0 z-[60] hidden text-center sm:block" aria-label="Early Access offer: half off, $49.99 per month, for a limited time">
+      <span class="cr-eyebrow">Early Access Offer</span>
+      <span class="cr-big">Half Off</span>
+      <span class="cr-price">$49.99/mo</span>
+      <span class="cr-foot">For a limited time</span>
+    </a>
+
     <main id="main">
       <!-- ============================== HERO ============================== -->
       <section id="hero" class="relative flex min-h-[100svh] items-center overflow-hidden">
@@ -233,7 +263,16 @@
               From a first local run to a mid-size or state &amp; federal campaign, The Candidate's Toolbox gives you the same strategic edge the biggest operations take for granted. Whatever the size of your race, Sam handles it all — organization, strategy, and a campaign manager in your pocket.
             </p>
 
-            <div class="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <!-- Early Access pricing offer accent line (lead-engineer change #1) -->
+            <p class="mt-8 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+              <span class="text-[11px] font-700 uppercase tracking-[0.18em] text-gold">Early Access Offer</span>
+              <span aria-hidden="true" class="text-cream/30">|</span>
+              <span class="text-sm font-600 text-cream/45 line-through decoration-clay decoration-2">$99.99</span>
+              <span class="text-lg font-700 leading-none text-white">$49.99<span class="text-sm font-600 text-cream/70">/mo</span></span>
+              <span class="text-[11px] font-700 uppercase tracking-[0.16em] text-gold-light/90">— Half off for a limited time</span>
+            </p>
+
+            <div class="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
               <a href="javascript:void(0)" onclick="openLoginModal()" class="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-b from-clay-light to-clay px-6 py-3.5 text-base font-700 text-white shadow-xl shadow-clay/30 transition hover:from-clay hover:to-clay-dark hover:shadow-clay/50">
                 Early Access
                 <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -246,7 +285,7 @@
 
             <!-- Trust line -->
             <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-cream/55">
-              <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 text-gold" aria-hidden="true"><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg> No credit card</span>
+              <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 text-gold" aria-hidden="true"><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg> Cancel anytime</span>
               <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 text-gold" aria-hidden="true"><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg> Set up in two minutes</span>
               <span class="inline-flex items-center gap-2"><svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 text-gold" aria-hidden="true"><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg> Built for the underdog</span>
             </div>
@@ -449,7 +488,7 @@
               Your campaign <span class="italic text-clay">starts here.</span>
             </h2>
             <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-navy/70">
-              Set up your profile in two minutes. Sam will find your deadlines, set up your calendar, and start building your campaign plan. No credit card. No catch.
+              Set up your profile in two minutes. Sam will find your deadlines, set up your calendar, and start building your campaign plan. No catch.
             </p>
             <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a href="javascript:void(0)" onclick="openLoginModal()" class="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-b from-clay-light to-clay px-7 py-4 text-base font-700 text-white shadow-xl shadow-clay/30 transition hover:from-clay hover:to-clay-dark hover:shadow-clay/50">
